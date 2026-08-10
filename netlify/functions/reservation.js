@@ -1,4 +1,5 @@
-// Fonction Netlify — envoie les réservations Coach Yass dans Notion
+// Fonction Netlify — envoie les réservations Gravity Coaching (anciennement
+// « Coach Yass », même service/historique) dans Notion.
 // La clé secrète NOTION_TOKEN reste côté serveur : jamais visible par les visiteurs.
 
 const NOTION_DB = process.env.NOTION_DB_COACH_YASS || '7eda882ea6144a65a465e4fdb1e92b94';
