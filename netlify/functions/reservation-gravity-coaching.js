@@ -1,7 +1,12 @@
-// Fonction Netlify — envoie les réservations Coach Yass dans Notion
+// Fonction Netlify — envoie les réservations Gravity Coaching dans Notion
 // La clé secrète NOTION_TOKEN reste côté serveur : jamais visible par les visiteurs.
+//
+// NOTION_DB_GRAVITY_COACHING doit pointer vers une base Notion avec le même schéma
+// que « Réservations — Coach Yass » (title: JOUEUR, Email, Téléphone, Forfait (select),
+// Montant (number $), Date séance (date), Terrain (text), Remarque (text), Statut (status),
+// Payé (checkbox), Photos autorisées (checkbox)).
 
-const NOTION_DB = process.env.NOTION_DB_COACH_YASS || '7eda882ea6144a65a465e4fdb1e92b94';
+const NOTION_DB = process.env.NOTION_DB_GRAVITY_COACHING;
 
 const MONTANTS = { '1': 20, '3': 55, '6': 100, '12': 180 };
 
@@ -18,8 +23,8 @@ exports.handler = async (event) => {
   }
 
   const token = process.env.NOTION_TOKEN;
-  if (!token) {
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'NOTION_TOKEN manquant dans les variables Netlify' }) };
+  if (!token || !NOTION_DB) {
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'NOTION_TOKEN ou NOTION_DB_GRAVITY_COACHING manquant dans les variables Netlify' }) };
   }
 
   let d;
@@ -29,7 +34,6 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'JSON invalide' }) };
   }
 
-  // Garde-fous simples
   const nom = String(d.nom || '').trim().slice(0, 200);
   const email = String(d.email || '').trim().slice(0, 200);
   if (!nom || !email) {
@@ -48,9 +52,6 @@ exports.handler = async (event) => {
   if (d.forfait) properties['Forfait'] = { select: { name: String(d.forfait) } };
   if (MONTANTS[forfaitKey]) properties['Montant'] = { number: MONTANTS[forfaitKey] };
 
-  // d.seances = [{date: 'YYYY-MM-DD', heure: 'HH:MM'}, ...] — une réservation multi-séances
-  // reste UNE ligne Notion (schéma existant) : on logue la 1re séance ici, et la liste
-  // complète est ajoutée à la Remarque pour ne rien perdre.
   const seances = Array.isArray(d.seances) ? d.seances : (d.date ? [{ date: d.date, heure: d.heure }] : []);
   if (seances.length) {
     const first = seances[0];
