@@ -1,12 +1,12 @@
 // Fonction Netlify — envoie les réservations Gravity Coaching dans Notion
 // La clé secrète NOTION_TOKEN reste côté serveur : jamais visible par les visiteurs.
 //
-// NOTION_DB_GRAVITY_COACHING doit pointer vers une base Notion avec le même schéma
-// que « Réservations — Coach Yass » (title: JOUEUR, Email, Téléphone, Forfait (select),
-// Montant (number $), Date séance (date), Terrain (text), Remarque (text), Statut (status),
-// Payé (checkbox), Photos autorisées (checkbox)).
+// Base Notion « Réservations — Gravity Coaching » (créée le 10 août 2026) :
+// title: JOUEUR, Email, Téléphone, Forfait (select), Montant (number $),
+// Date séance (date), Terrain (text), Remarque (text), Statut (status : Pas commencé/
+// En cours/Terminé), Payé (checkbox), Photos autorisées (checkbox).
 
-const NOTION_DB = process.env.NOTION_DB_GRAVITY_COACHING;
+const NOTION_DB = process.env.NOTION_DB_GRAVITY_COACHING || 'f55adb865220465980ff72c1b2a5dfd7';
 
 const MONTANTS = { '1': 20, '3': 55, '6': 100, '12': 180 };
 
@@ -44,7 +44,7 @@ exports.handler = async (event) => {
   const properties = {
     'JOUEUR': { title: [{ text: { content: nom } }] },
     'Email': { email: email },
-    'Statut': { status: { name: 'Not started' } },
+    'Statut': { status: { name: 'Pas commencé' } },
     'Payé': { checkbox: false },
     'Photos autorisées': { checkbox: d.photos === true }
   };

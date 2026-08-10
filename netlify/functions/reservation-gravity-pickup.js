@@ -1,16 +1,21 @@
 // Fonction Netlify — envoie les réservations Gravity Pickup dans Notion,
 // avec une limite de 15 joueurs par date de séance.
 //
-// NOTION_DB_GRAVITY_PICKUP doit pointer vers une base Notion avec le schéma :
+// Base Notion « Réservations — Gravity Pickup » (créée le 10 août 2026) :
 // title: JOUEUR, Email, Téléphone, Forfait (select), Créneau (select),
 // Date séance (date), Niveau (select), Attentes (text),
-// Groupe réservation (text), Statut (status), Payé (checkbox), Photos autorisées (checkbox).
+// Groupe réservation (text), Statut (status : Pas commencé/En cours/Terminé),
+// Payé (checkbox), Photos autorisées (checkbox).
+// Contient déjà, en date du 10 août 2026, les 25 séances des 5 réservations
+// reçues avant la mise en place de ce compteur (Joshua, Willy Limoges,
+// Jean-Philippe Limoges, Tachefin Nekaa, Greg Rene), pour que le compte de
+// places prises par date parte du bon total.
 //
 // Une réservation multi-séances (3 ou 6 séances) crée UNE ligne Notion PAR DATE,
 // toutes partageant le même « Groupe réservation », pour permettre de compter
 // les places prises par date exacte.
 
-const NOTION_DB = process.env.NOTION_DB_GRAVITY_PICKUP;
+const NOTION_DB = process.env.NOTION_DB_GRAVITY_PICKUP || 'e3a8b88ecadf45839cb8c7ccf2829a8e';
 const CAPACITE_MAX = 15;
 
 const MONTANTS = { '1': 12, '3': 32, '6': 60 };
@@ -107,7 +112,7 @@ exports.handler = async (event) => {
       const properties = {
         'JOUEUR': { title: [{ text: { content: nom } }] },
         'Email': { email },
-        'Statut': { status: { name: 'Not started' } },
+        'Statut': { status: { name: 'Pas commencé' } },
         'Payé': { checkbox: false },
         'Photos autorisées': { checkbox: d.photos === true },
         'Date séance': { date: { start: s.date } },
