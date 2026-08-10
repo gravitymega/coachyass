@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gravity Montréal — Coaching &amp; Pickup Basketball</title>
-<meta property="og:title" content="Gravity Montréal — Basketball à Montréal 🏀">
-<meta property="og:description" content="Coaching privé et sessions pickup à Montréal. Réserve ta séance en 1 minute.">
+<title>Coach Yass — Réservation séance de basket</title>
+<meta property="og:title" content="Coach Yass — Réserve ta séance de basket 🏀">
+<meta property="og:description" content="Coaching basketball à Montréal. Forfaits dès 15 $/séance. Réserve ta séance sur le terrain en 1 minute.">
 <meta property="og:type" content="website">
+<!-- IMPORTANT : pour que le logo apparaisse dans l'aperçu de partage, hébergez le fichier logo-coach-yass.jpg au même endroit que cette page, puis remplacez l'URL ci-dessous par l'adresse complète, ex : https://votresite.netlify.app/logo-coach-yass.jpg -->
 <meta property="og:image" content="https://coachyass.netlify.app/logo-coach-yass.jpg">
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,7 +58,7 @@
     pointer-events:none;
   }
   .hero .logo{
-    width:110px;height:110px;
+    width:120px;height:120px;
     border-radius:50%;
     object-fit:cover;
     margin-bottom:14px;
@@ -70,7 +71,7 @@
     font-variation-settings:"wdth" 118, "wght" 880;
     text-transform:uppercase;
     letter-spacing:.04em;
-    font-size:clamp(30px,7vw,44px);
+    font-size:clamp(30px,7vw,42px);
     margin:0 0 6px;
     line-height:1.05;
   }
@@ -81,77 +82,6 @@
     letter-spacing:.02em;
   }
   .wrap{max-width:560px;margin:-36px auto 0;padding:0 16px;position:relative;z-index:2;}
-
-  /* Program picker */
-  .programs-nav{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    margin-bottom:22px;
-  }
-  .programs-nav a{
-    display:block;
-    text-decoration:none;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:14px 8px;
-    text-align:center;
-    box-shadow:0 2px 10px rgba(30,58,47,.06);
-    color:var(--ink);
-    transition:border-color .15s, transform .15s;
-  }
-  .programs-nav a:hover{border-color:var(--orange);transform:translateY(-2px);}
-  .programs-nav .emoji{font-size:24px;display:block;margin-bottom:4px;}
-  .programs-nav .name{
-    font-family:'Archivo',sans-serif;
-    font-variation-settings:"wdth" 110, "wght" 750;
-    font-size:11.5px;
-    text-transform:uppercase;
-    letter-spacing:.03em;
-    color:var(--green);
-    line-height:1.25;
-  }
-  .programs-nav .from{font-size:11px;color:var(--gray);margin-top:3px;}
-
-  .program{scroll-margin-top:20px;}
-  .program-intro{
-    text-align:center;
-    margin:40px 0 18px;
-  }
-  .program-intro .tag{
-    display:inline-block;
-    font-family:'Archivo',sans-serif;
-    font-variation-settings:"wdth" 110, "wght" 800;
-    text-transform:uppercase;
-    letter-spacing:.05em;
-    font-size:11.5px;
-    color:var(--orange);
-    background:#FFF4EB;
-    border:1px solid #F3D3B8;
-    border-radius:20px;
-    padding:5px 14px;
-    margin-bottom:10px;
-  }
-  .program-intro h2{
-    font-family:'Archivo',sans-serif;
-    font-variation-settings:"wdth" 116, "wght" 850;
-    text-transform:uppercase;
-    letter-spacing:.03em;
-    font-size:24px;
-    color:var(--green);
-    margin:0 0 8px;
-  }
-  .program-intro p{
-    font-size:13.5px;
-    color:var(--gray);
-    line-height:1.55;
-    margin:0;
-    max-width:440px;
-    margin:0 auto;
-  }
-  .program:not(:first-of-type) .program-intro{border-top:1px solid var(--border);padding-top:34px;}
-
   .card{
     background:var(--card);
     border:1px solid var(--border);
@@ -160,7 +90,7 @@
     margin-bottom:18px;
     box-shadow:0 2px 10px rgba(30,58,47,.06);
   }
-  .card h3{
+  .card h2{
     font-family:'Archivo',sans-serif;
     font-variation-settings:"wdth" 110, "wght" 750;
     text-transform:uppercase;
@@ -171,7 +101,7 @@
     display:flex;align-items:center;gap:8px;
   }
   label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink);}
-  input[type=text], input[type=date], input[type=time], input[type=tel], input[type=email], textarea, select{
+  input[type=text], input[type=date], input[type=time], input[type=tel], input[type=email], textarea{
     width:100%;
     padding:10px 12px;
     border:1px solid var(--border);
@@ -182,7 +112,7 @@
     background:#fff;
     color:var(--ink);
   }
-  input:focus, textarea:focus, select:focus{
+  input:focus, textarea:focus{
     outline:2px solid var(--orange);
     outline-offset:1px;
     border-color:var(--orange);
@@ -220,43 +150,6 @@
     color:var(--orange);
     font-weight:800;
   }
-  .creneaux{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
-  .creneau{
-    border:2px solid var(--border);
-    border-radius:10px;
-    padding:12px;
-    cursor:pointer;
-    position:relative;
-    transition:border-color .15s, background .15s;
-    background:#fff;
-  }
-  .creneau:hover{border-color:var(--green);}
-  .creneau input{position:absolute;opacity:0;}
-  .creneau .day{font-weight:700;font-size:14px;color:var(--green);}
-  .creneau .time{font-family:'Archivo',sans-serif;font-variation-settings:"wdth" 112, "wght" 800;font-size:16px;color:var(--orange);margin-top:2px;}
-  .creneau .place{font-size:11px;color:var(--gray);margin-top:2px;}
-  .creneau.selected{border-color:var(--orange);background:#FFF4EB;}
-  .creneau.selected::after{content:"✓";position:absolute;top:8px;right:10px;color:var(--orange);font-weight:800;}
-  .seance-row{
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px 12px 0;
-    margin-bottom:12px;
-    background:#fff;
-  }
-  .seance-row .seance-label{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;}
-  .seance-preview{
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:10px 12px;
-    margin-bottom:12px;
-    background:#fff;
-    font-size:13.5px;
-    color:var(--ink);
-    display:flex;justify-content:space-between;align-items:center;
-  }
-  .seance-preview .n{color:var(--gray);font-size:12px;}
-  .hint{font-size:12px;color:var(--gray);margin:-8px 0 14px;line-height:1.4;}
   .rain-note{
     background:#EDF3EF;
     border:1px solid #C7D8CD;
@@ -352,7 +245,7 @@
     background:var(--green);color:var(--cream);
     font-size:30px;margin-bottom:16px;
   }
-  .success h3{
+  .success h2{
     font-family:'Archivo',sans-serif;
     font-variation-settings:"wdth" 112, "wght" 800;
     text-transform:uppercase;
@@ -371,19 +264,9 @@
   }
   .footer-note a{color:var(--green);font-weight:600;text-decoration:none;}
   .footer-note a:hover{text-decoration:underline;}
-  .site-footer{
-    text-align:center;
-    font-size:12px;
-    color:var(--gray);
-    margin-top:50px;
-    padding-top:20px;
-    border-top:1px solid var(--border);
-  }
 
   @media (max-width:400px){
     .row{grid-template-columns:1fr;}
-    .creneaux{grid-template-columns:1fr;}
-    .programs-nav{grid-template-columns:1fr 1fr;}
   }
   @media (prefers-reduced-motion: reduce){
     *{transition:none !important;animation:none !important;}
@@ -393,399 +276,180 @@
 <body>
 
 <header class="hero">
-  <img class="logo" src="logo-coach-yass.jpg" alt="Gravity Montréal">
-  <h1>Gravity Montréal</h1>
-  <p>Basketball à Montréal · Coaching privé &amp; sessions pickup</p>
+  <img class="logo" src="data:image/jpeg;base64,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" alt="Logo Coach Yass">
+  <h1>Coach Yass</h1>
+  <p>Coach de basket-ball · Réservez votre séance sur le terrain</p>
 </header>
 
 <div class="wrap">
 
-  <nav class="programs-nav" aria-label="Choisir un programme">
-    <a href="#gravity-coaching">
-      <span class="emoji">🎯</span>
-      <span class="name">Gravity<br>Coaching</span>
-      <span class="from">dès 20 $</span>
-    </a>
-    <a href="#gravity-pickup">
-      <span class="emoji">👥</span>
-      <span class="name">Gravity<br>Pickup</span>
-      <span class="from">dès 12 $</span>
-    </a>
-  </nav>
+  <form id="bookingForm" novalidate>
 
-  <!-- ============================================================ -->
-  <!-- PROGRAMME 1 — GRAVITY COACHING (coaching privé, individuel ; -->
-  <!-- anciennement « Coach Yass », même historique/base Notion)    -->
-  <!-- ============================================================ -->
-  <section class="program" id="gravity-coaching" data-subject="Nouvelle réservation — Gravity Coaching Basket" data-endpoint="/.netlify/functions/reservation">
-    <div class="program-intro">
-      <span class="tag">Coaching privé</span>
-      <h2>Gravity Coaching</h2>
-      <p>Le même coaching individuel, sous la bannière Gravity Basketball.</p>
-    </div>
-
-    <form class="booking-form" data-role="form" novalidate>
-      <div class="card">
-        <h3>🏀 Forfait</h3>
-        <div class="packages" data-role="packages">
-          <label class="pkg" data-key="1" data-price="20">
-            <input type="radio" name="Forfait" value="1 séance — 20 $" required>
-            <div class="label">1 séance</div>
-            <div class="price">20 $</div>
-            <div class="unit">à l'unité</div>
-          </label>
-          <label class="pkg" data-key="3" data-price="55">
-            <input type="radio" name="Forfait" value="3 séances — 55 $">
-            <div class="label">3 séances</div>
-            <div class="price">55 $</div>
-            <div class="unit">≈ 18,30 $ / séance</div>
-          </label>
-          <label class="pkg" data-key="6" data-price="100">
-            <input type="radio" name="Forfait" value="6 séances — 100 $">
-            <div class="label">6 séances</div>
-            <div class="price">100 $</div>
-            <div class="unit">≈ 16,70 $ / séance</div>
-          </label>
-          <label class="pkg" data-key="12" data-price="180">
-            <input type="radio" name="Forfait" value="12 séances — 180 $">
-            <div class="label">12 séances</div>
-            <div class="price">180 $</div>
-            <div class="unit">15 $ / séance</div>
-          </label>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>📅 Date(s) &amp; heure(s)</h3>
-        <p class="hint">Choisis d'abord un forfait ci-dessus pour indiquer la ou les date(s) de séance.</p>
-        <div data-role="dates-container"></div>
-      </div>
-
-      <div class="card">
-        <h3>📍 Terrain</h3>
-        <label for="gc-park">Terrain de basket souhaité</label>
-        <input type="text" id="gc-park" data-role="terrain" placeholder="Ex : Explorateurs à Laval" required>
-        <div class="rain-note">
-          ☔ <span><strong>Note :</strong> en cas de pluie, la séance sera reportée à une autre date. Vous serez recontacté(e) pour reprogrammer.</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>🙋 Vos coordonnées</h3>
-        <label for="gc-name">Nom complet</label>
-        <input type="text" id="gc-name" data-role="name" autocomplete="name" required>
-        <label for="gc-phone">Téléphone</label>
-        <input type="tel" id="gc-phone" data-role="phone" autocomplete="tel" placeholder="514-123-4567" required>
-        <label for="gc-email">Email</label>
-        <input type="email" id="gc-email" data-role="email" autocomplete="email" required>
-        <label for="gc-notes">Remarque (optionnel)</label>
-        <textarea id="gc-notes" data-role="remarque" placeholder="Niveau, poste, objectifs, blessures..."></textarea>
-
-        <label class="consent">
-          <input type="checkbox" data-role="consent" value="Oui">
-          <span>J'autorise Gravity Coaching à utiliser des photos/vidéos prises pendant la séance sur ses réseaux sociaux (Instagram, TikTok, etc.).</span>
+    <div class="card">
+      <h2>🏀 Forfait</h2>
+      <div class="packages" id="packages">
+        <label class="pkg" data-key="1">
+          <input type="radio" name="Forfait" value="1 séance — 20 $" required>
+          <div class="label">1 séance</div>
+          <div class="price">20 $</div>
+          <div class="unit">à l'unité</div>
+        </label>
+        <label class="pkg" data-key="3">
+          <input type="radio" name="Forfait" value="3 séances — 55 $">
+          <div class="label">3 séances</div>
+          <div class="price">55 $</div>
+          <div class="unit">≈ 18,30 $ / séance</div>
+        </label>
+        <label class="pkg" data-key="6">
+          <input type="radio" name="Forfait" value="6 séances — 100 $">
+          <div class="label">6 séances</div>
+          <div class="price">100 $</div>
+          <div class="unit">≈ 16,70 $ / séance</div>
+        </label>
+        <label class="pkg" data-key="12">
+          <input type="radio" name="Forfait" value="12 séances — 180 $">
+          <div class="label">12 séances</div>
+          <div class="price">180 $</div>
+          <div class="unit">15 $ / séance</div>
         </label>
       </div>
-
-      <div class="recap" data-role="recap" aria-live="polite">
-        <div class="recap-title">Récapitulatif</div>
-        <div data-role="recap-text"></div>
-      </div>
-
-      <button type="submit" class="submit-btn" data-role="submit">Envoyer ma demande de réservation</button>
-      <div class="error-msg" data-role="error"></div>
-      <div class="summary">Le paiement se fait séparément avec le coach<br>(sur place, Interac ou virement).</div>
-    </form>
-
-    <div class="success" data-role="success">
-      <div class="check">✓</div>
-      <h3>Demande envoyée !</h3>
-      <p>Merci ! Gravity Coaching a bien reçu votre demande de réservation.</p>
-      <p>Vous recevrez une confirmation par email avant la séance.</p>
     </div>
 
-    <div class="footer-note">
-      Gravity Coaching · Basketball · Montréal<br>
-      📸 <a href="https://www.instagram.com/coach_yass1" target="_blank" rel="noopener">@coach_yass1</a>
-    </div>
-  </section>
-
-  <!-- ============================================================ -->
-  <!-- PROGRAMME 3 — GRAVITY PICKUP (sessions de groupe, créneaux fixes) -->
-  <!-- ============================================================ -->
-  <section class="program" id="gravity-pickup" data-subject="Nouvelle réservation — Gravity Pickup" data-endpoint="/.netlify/functions/reservation-gravity-pickup">
-    <div class="program-intro">
-      <span class="tag">Session de groupe</span>
-      <h2>Gravity Pickup</h2>
-      <p>Deux créneaux fixes à Montréal, places limitées à 15 joueurs par date pour que tout le monde ait vraiment du temps de jeu.</p>
-    </div>
-
-    <form class="booking-form" data-role="form" novalidate>
-      <div class="card">
-        <h3>🏀 Forfait</h3>
-        <div class="packages" data-role="packages">
-          <label class="pkg" data-key="1" data-price="12">
-            <input type="radio" name="Forfait" value="1 séance — 12 $" required>
-            <div class="label">1 séance</div>
-            <div class="price">12 $</div>
-            <div class="unit">à l'unité</div>
-          </label>
-          <label class="pkg" data-key="3" data-price="32">
-            <input type="radio" name="Forfait" value="3 séances — 32 $">
-            <div class="label">3 séances</div>
-            <div class="price">32 $</div>
-            <div class="unit">≈ 10,67 $ / séance</div>
-          </label>
-          <label class="pkg" data-key="6" data-price="60">
-            <input type="radio" name="Forfait" value="6 séances — 60 $">
-            <div class="label">6 séances</div>
-            <div class="price">60 $</div>
-            <div class="unit">10 $ / séance</div>
-          </label>
+    <div class="card">
+      <h2>📅 Date &amp; heure</h2>
+      <div class="row">
+        <div>
+          <label for="date">Jour de la séance</label>
+          <input type="date" id="date" name="Date" required>
+        </div>
+        <div>
+          <label for="time">Heure</label>
+          <input type="time" id="time" name="Heure" required>
         </div>
       </div>
-
-      <div class="card">
-        <h3>📍 Créneau</h3>
-        <div class="creneaux" data-role="creneaux">
-          <label class="creneau" data-key="mercredi" data-weekday="3" data-time="20h30–22h00" data-lieu="Collège André-Grasset">
-            <input type="radio" name="Créneau" value="Mercredi 20h30-22h00 — Collège André-Grasset" required>
-            <div class="day">Mercredi</div>
-            <div class="time">20h30–22h00</div>
-            <div class="place">Collège André-Grasset</div>
-          </label>
-          <label class="creneau" data-key="samedi" data-weekday="6" data-time="11h00–13h00" data-lieu="Dorval">
-            <input type="radio" name="Créneau" value="Samedi 11h00-13h00 — Dorval">
-            <div class="day">Samedi</div>
-            <div class="time">11h00–13h00</div>
-            <div class="place">Dorval</div>
-          </label>
-          <label class="creneau" data-key="jeudi" data-weekday="4" data-time="20h30–22h00" data-lieu="Collège André-Grasset (Gym 3)">
-            <input type="radio" name="Créneau" value="Jeudi 20h30-22h00 — Collège André-Grasset (Gym 3)">
-            <div class="day">Jeudi</div>
-            <div class="time">20h30–22h00</div>
-            <div class="place">Collège André-Grasset (Gym 3)</div>
-          </label>
-        </div>
-        <p class="hint">Choisis d'abord un créneau pour voir la ou les prochaine(s) date(s) disponible(s).</p>
-        <div data-role="dates-container"></div>
-      </div>
-
-      <div class="card">
-        <h3>🙋 Vos coordonnées</h3>
-        <label for="gp-level">Niveau</label>
-        <select id="gp-level" data-role="niveau" required>
-          <option value="" disabled selected>Choisir…</option>
-          <option value="Débutant">Débutant</option>
-          <option value="Intermédiaire">Intermédiaire</option>
-          <option value="Avancé">Avancé</option>
-        </select>
-        <label for="gp-expect">Attentes (optionnel)</label>
-        <textarea id="gp-expect" data-role="attentes" placeholder="Ex : jouer du 5 contre 5, cardio, ambiance détendue..."></textarea>
-        <label for="gp-name">Nom complet</label>
-        <input type="text" id="gp-name" data-role="name" autocomplete="name" required>
-        <label for="gp-phone">Téléphone</label>
-        <input type="tel" id="gp-phone" data-role="phone" autocomplete="tel" placeholder="514-123-4567" required>
-        <label for="gp-email">Email</label>
-        <input type="email" id="gp-email" data-role="email" autocomplete="email" required>
-
-        <div class="seance-preview" data-role="payment-note" style="display:none;"></div>
-
-        <label class="consent">
-          <input type="checkbox" data-role="consent" value="Oui">
-          <span>J'autorise Gravity Pickup à utiliser des photos/vidéos prises pendant la séance sur ses réseaux sociaux (Instagram, TikTok, etc.).</span>
-        </label>
-      </div>
-
-      <div class="recap" data-role="recap" aria-live="polite">
-        <div class="recap-title">Récapitulatif</div>
-        <div data-role="recap-text"></div>
-      </div>
-
-      <button type="submit" class="submit-btn" data-role="submit">Envoyer ma demande de réservation</button>
-      <div class="error-msg" data-role="error"></div>
-      <div class="summary">Paiement par virement Interac<br>au 438-341-2051 ou mqtad9@hotmail.com.</div>
-    </form>
-
-    <div class="success" data-role="success">
-      <div class="check">✓</div>
-      <h3>Demande envoyée !</h3>
-      <p>Merci ! Gravity Pickup a bien reçu votre inscription.</p>
-      <p>Vous recevrez une confirmation par email avant la séance.</p>
     </div>
 
-    <div class="footer-note">
-      Gravity Pickup · Basketball · Montréal<br>
-      📸 <a href="https://www.instagram.com/basket_libre" target="_blank" rel="noopener">@basket_libre</a>
-    </div>
-  </section>
+    <div class="card">
+      <h2>📍 Terrain</h2>
+      <label for="park">Terrain de basket souhaité</label>
+      <input type="text" id="park" name="Terrain souhaité" placeholder="Ex : Terrain de la Ligue Arabe" required>
 
-  <div class="site-footer">
-    Gravity Montréal — Gravity Coaching · Gravity Pickup<br>
-    Les demandes sont confirmées par email avant chaque séance.
+      <div class="rain-note">
+        ☔ <span><strong>Note :</strong> en cas de pluie, la séance sera reportée à une autre date. Vous serez recontacté(e) pour reprogrammer.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🙋 Vos coordonnées</h2>
+      <label for="name">Nom complet</label>
+      <input type="text" id="name" name="Nom" autocomplete="name" required>
+      <label for="phone">Téléphone</label>
+      <input type="tel" id="phone" name="Téléphone" autocomplete="tel" placeholder="514-123-4567" required>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="Email" autocomplete="email" required>
+      <label for="notes">Remarque (optionnel)</label>
+      <textarea id="notes" name="Remarque" placeholder="Niveau, poste, objectifs, blessures..."></textarea>
+
+      <label class="consent">
+        <input type="checkbox" name="Autorisation réseaux sociaux" value="Oui">
+        <span>J'autorise Coach Yass à utiliser des photos/vidéos prises pendant la séance sur ses réseaux sociaux (Instagram, TikTok, etc.).</span>
+      </label>
+    </div>
+
+    <div class="recap" id="recap" aria-live="polite">
+      <div class="recap-title">Récapitulatif</div>
+      <div id="recapText"></div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">Envoyer ma demande de réservation</button>
+
+    <div class="error-msg" id="errorMsg"></div>
+
+    <div class="summary">
+      Le paiement se fait séparément avec Coach Yass<br>
+      (sur place, Interac ou virement).
+    </div>
+  </form>
+
+  <div class="success" id="successBox">
+    <div class="check">✓</div>
+    <h2>Demande envoyée !</h2>
+    <p>Merci ! Coach Yass a bien reçu votre demande de réservation.</p>
+    <p>Vous recevrez une confirmation par email avant la séance.</p>
+  </div>
+
+  <div class="footer-note">
+    Coach Yass · Basketball · Montréal<br>
+    Les demandes sont confirmées par email avant la séance.<br>
+    📸 <a href="https://www.instagram.com/coach_yass1" target="_blank" rel="noopener">@coach_yass1</a> · <a href="https://www.instagram.com/basket_libre" target="_blank" rel="noopener">@basket_libre</a>
   </div>
 </div>
 
 <script>
-/* =====================================================================
-   Moteur générique de formulaire de réservation, utilisé par les 3
-   programmes (Coach Yass, Gravity Coaching, Gravity Pickup). Chaque
-   section <section class="program"> décrit sa config via data-* et son
-   markup interne (data-role="..."), ce moteur branche le comportement.
-   ===================================================================== */
+  /* ===================== FORMULAIRE ===================== */
+  const form = document.getElementById('bookingForm');
+  const recap = document.getElementById('recap');
+  const recapText = document.getElementById('recapText');
+  const errorMsg = document.getElementById('errorMsg');
+  const submitBtn = document.getElementById('submitBtn');
+  const successBox = document.getElementById('successBox');
+  const dateInput = document.getElementById('date');
+  const timeInput = document.getElementById('time');
 
-const FORMSUBMIT_EMAIL = 'moqtad6@gmail.com';
+  // Bloquer les dates passées
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const todayIso = `${yyyy}-${mm}-${dd}`;
+  dateInput.min = todayIso;
 
-function todayIso() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-
-function formatDateFr(iso) {
-  if (!iso) return '';
-  const d = new Date(iso + 'T12:00:00');
-  return d.toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-}
-
-// Prochaine date (>= demain) tombant sur `weekday` (0=dim...6=sam), puis les N suivantes à 7 jours d'intervalle
-function nextWeeklyDates(weekday, count) {
-  const dates = [];
-  const d = new Date();
-  d.setDate(d.getDate() + 1); // à partir de demain
-  while (d.getDay() !== weekday) d.setDate(d.getDate() + 1);
-  for (let i = 0; i < count; i++) {
-    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    dates.push(iso);
-    d.setDate(d.getDate() + 7);
-  }
-  return dates;
-}
-
-function initBookingForm(root) {
-  const form = root.querySelector('[data-role="form"]');
-  const recap = root.querySelector('[data-role="recap"]');
-  const recapText = root.querySelector('[data-role="recap-text"]');
-  const errorMsg = root.querySelector('[data-role="error"]');
-  const submitBtn = root.querySelector('[data-role="submit"]');
-  const successBox = root.querySelector('[data-role="success"]');
-  const datesContainer = root.querySelector('[data-role="dates-container"]');
-  const creneauxGroup = root.querySelector('[data-role="creneaux"]');
-  const paymentNote = root.querySelector('[data-role="payment-note"]');
-  const isPickup = !!creneauxGroup;
-
-  const subject = root.dataset.subject;
-  const endpoint = root.dataset.endpoint;
-
-  let seanceCount = 0;
-  let selectedCreneau = null;
-
-  // --------- sélection visuelle des forfaits ---------
-  root.querySelectorAll('.pkg').forEach(pkg => {
+  // Sélection visuelle des forfaits
+  document.querySelectorAll('.pkg').forEach(pkg => {
     pkg.addEventListener('click', () => {
-      root.querySelectorAll('.pkg').forEach(p => p.classList.remove('selected'));
+      document.querySelectorAll('.pkg').forEach(p => p.classList.remove('selected'));
       pkg.classList.add('selected');
       pkg.querySelector('input').checked = true;
-      seanceCount = parseInt(pkg.dataset.key, 10) || 1;
-      renderDates();
-      updatePaymentNote(pkg);
       updateRecap();
     });
   });
 
-  // --------- sélection visuelle des créneaux (Gravity Pickup) ---------
-  if (creneauxGroup) {
-    root.querySelectorAll('.creneau').forEach(cr => {
-      cr.addEventListener('click', () => {
-        root.querySelectorAll('.creneau').forEach(c => c.classList.remove('selected'));
-        cr.classList.add('selected');
-        cr.querySelector('input').checked = true;
-        selectedCreneau = {
-          key: cr.dataset.key,
-          weekday: parseInt(cr.dataset.weekday, 10),
-          time: cr.dataset.time,
-          lieu: cr.dataset.lieu,
-          label: cr.querySelector('input').value
-        };
-        renderDates();
-        updateRecap();
-      });
-    });
+  function selectPackageByKey(key) {
+    const pkg = document.querySelector(`.pkg[data-key="${key}"]`);
+    if (!pkg) return false;
+    document.querySelectorAll('.pkg').forEach(p => p.classList.remove('selected'));
+    pkg.classList.add('selected');
+    pkg.querySelector('input').checked = true;
+    pkg.classList.add('field-flash');
+    setTimeout(() => pkg.classList.remove('field-flash'), 1300);
+    updateRecap();
+    return true;
   }
 
-  function updatePaymentNote(pkg) {
-    if (!paymentNote) return;
-    const price = pkg.dataset.price;
-    paymentNote.style.display = 'flex';
-    paymentNote.innerHTML = `<span>💳 Paiement</span><strong>Interac ${price} $ — 438-341-2051 ou mqtad9@hotmail.com</strong>`;
+  function formatDateFr(iso) {
+    if (!iso) return '';
+    const d = new Date(iso + 'T12:00:00');
+    return d.toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   }
 
-  // --------- génère les champs de date selon le mode ---------
-  function renderDates() {
-    datesContainer.innerHTML = '';
-    if (!seanceCount) return;
-
-    if (isPickup) {
-      if (!selectedCreneau) return;
-      const dates = nextWeeklyDates(selectedCreneau.weekday, seanceCount);
-      dates.forEach((iso, i) => {
-        const div = document.createElement('div');
-        div.className = 'seance-preview';
-        div.innerHTML = `<span>${formatDateFr(iso)} · ${selectedCreneau.time}</span><span class="n">Séance ${i + 1}/${seanceCount}</span>`;
-        div.dataset.iso = iso;
-        datesContainer.appendChild(div);
-      });
-      updateRecap();
-      return;
-    }
-
-    // Coach Yass / Gravity Coaching : dates libres choisies par le client
-    for (let i = 1; i <= seanceCount; i++) {
-      const row = document.createElement('div');
-      row.className = 'seance-row';
-      const label = seanceCount > 1 ? `Séance ${i}` : 'Date de la séance';
-      row.innerHTML = `
-        <div class="seance-label">${label}</div>
-        <div class="row">
-          <div>
-            <label>Jour</label>
-            <input type="date" data-role="seance-date" min="${todayIso()}" required>
-          </div>
-          <div>
-            <label>Heure</label>
-            <input type="time" data-role="seance-time" required>
-          </div>
-        </div>`;
-      datesContainer.appendChild(row);
-    }
-    datesContainer.querySelectorAll('[data-role="seance-date"], [data-role="seance-time"]').forEach(el => {
-      el.addEventListener('change', updateRecap);
-    });
-  }
-
-  // --------- récapitulatif ---------
   function updateRecap() {
     const forfait = form.querySelector('input[name="Forfait"]:checked');
-    const parts = [];
-    if (forfait) parts.push(`<strong>${forfait.value}</strong>`);
+    const date = dateInput.value;
+    const time = timeInput.value;
+    const park = document.getElementById('park').value.trim();
 
-    if (isPickup) {
-      if (selectedCreneau) parts.push(`📍 ${selectedCreneau.label}`);
-      datesContainer.querySelectorAll('[data-iso]').forEach(el => {
-        parts.push(formatDateFr(el.dataset.iso));
-      });
-    } else {
-      datesContainer.querySelectorAll('.seance-row').forEach(row => {
-        const date = row.querySelector('[data-role="seance-date"]').value;
-        const time = row.querySelector('[data-role="seance-time"]').value;
-        if (date) {
-          let line = formatDateFr(date);
-          if (time) line += ` à ${time.replace(':', 'h')}`;
-          parts.push(line);
-        }
-      });
-      const terrain = root.querySelector('[data-role="terrain"]');
-      if (terrain && terrain.value.trim()) parts.push(`📍 ${terrain.value.trim()}`);
+    if (!forfait && !date && !time) { recap.classList.remove('visible'); return; }
+
+    let parts = [];
+    if (forfait) parts.push(`<strong>${forfait.value}</strong>`);
+    if (date) {
+      let line = formatDateFr(date);
+      if (time) line += ` à ${time.replace(':', 'h')}`;
+      parts.push(line);
+    } else if (time) {
+      parts.push(`Heure : ${time.replace(':', 'h')}`);
     }
+    if (park) parts.push(`📍 ${park}`);
 
     if (parts.length) {
       recapText.innerHTML = parts.join('<br>');
@@ -795,8 +459,11 @@ function initBookingForm(root) {
     }
   }
 
-  const terrainInput = root.querySelector('[data-role="terrain"]');
-  if (terrainInput) terrainInput.addEventListener('input', updateRecap);
+  ['change', 'input'].forEach(evt => {
+    dateInput.addEventListener(evt, updateRecap);
+    timeInput.addEventListener(evt, updateRecap);
+    document.getElementById('park').addEventListener(evt, updateRecap);
+  });
 
   function showError(msg) {
     errorMsg.textContent = msg;
@@ -810,119 +477,63 @@ function initBookingForm(root) {
 
     const forfait = form.querySelector('input[name="Forfait"]:checked');
     if (!forfait) { showError('Veuillez choisir un forfait.'); return; }
-
-    let seances = []; // [{date: iso, heure: 'HH:MM'}]
-
-    if (isPickup) {
-      if (!selectedCreneau) { showError('Veuillez choisir un créneau.'); return; }
-      datesContainer.querySelectorAll('[data-iso]').forEach(el => {
-        seances.push({ date: el.dataset.iso, heure: selectedCreneau.time.split('–')[0].replace('h', ':') });
-      });
-    } else {
-      let ok = true;
-      datesContainer.querySelectorAll('.seance-row').forEach(row => {
-        const date = row.querySelector('[data-role="seance-date"]').value;
-        const time = row.querySelector('[data-role="seance-time"]').value;
-        if (!date || !time) ok = false;
-        else seances.push({ date, heure: time });
-      });
-      if (!ok || !seances.length) { showError('Veuillez indiquer la date et l\'heure de chaque séance.'); return; }
-      const terrain = root.querySelector('[data-role="terrain"]');
-      if (!terrain.value.trim()) { showError('Veuillez indiquer le terrain souhaité.'); return; }
-    }
-
-    if (isPickup) {
-      const niveau = root.querySelector('[data-role="niveau"]');
-      if (!niveau.value) { showError('Veuillez choisir votre niveau.'); return; }
-    }
-
-    const name = root.querySelector('[data-role="name"]').value.trim();
-    if (!name) { showError('Veuillez indiquer votre nom complet.'); return; }
-    const phone = root.querySelector('[data-role="phone"]').value.trim();
+    if (!dateInput.value) { showError('Veuillez choisir une date.'); return; }
+    if (dateInput.value < dateInput.min) { showError('La date choisie est déjà passée. Veuillez choisir une date à venir.'); return; }
+    if (!timeInput.value) { showError('Veuillez choisir une heure.'); return; }
+    if (!document.getElementById('park').value.trim()) { showError('Veuillez indiquer le terrain souhaité.'); return; }
+    if (!document.getElementById('name').value.trim()) { showError('Veuillez indiquer votre nom complet.'); return; }
+    const phone = document.getElementById('phone').value.trim();
     if (!/^[\d\s\-\+\(\)\.]{7,}$/.test(phone)) { showError('Veuillez indiquer un numéro de téléphone valide (ex : 514-123-4567).'); return; }
-    const email = root.querySelector('[data-role="email"]').value.trim();
+    const email = document.getElementById('email').value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Veuillez indiquer une adresse email valide.'); return; }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Envoi en cours...';
 
-    const consentEl = root.querySelector('[data-role="consent"]');
-    const consent = consentEl ? consentEl.checked : false;
-
-    // ---- Payload email (FormSubmit) ----
-    const emailData = {
-      _subject: subject,
+    const data = {
+      _subject: 'Nouvelle réservation — Coach Yass Basket',
       _template: 'table',
       _captcha: 'false',
       'Forfait': forfait.value,
-      'Nom': name,
+      'Date': formatDateFr(dateInput.value),
+      'Heure': timeInput.value.replace(':', 'h'),
+      'Terrain souhaité': document.getElementById('park').value.trim(),
+      'Nom': document.getElementById('name').value.trim(),
       'Téléphone': phone,
       'Email': email,
-      'Autorisation réseaux sociaux': consent ? 'Oui' : 'Non'
+      'Remarque': document.getElementById('notes').value.trim() || '—',
+      'Autorisation réseaux sociaux': form.querySelector('input[name="Autorisation réseaux sociaux"]').checked ? 'Oui' : 'Non'
     };
-    if (isPickup) {
-      emailData['Créneau'] = selectedCreneau.label;
-      seances.forEach((s, i) => {
-        const prefix = seances.length > 1 ? `Séance ${i + 1} - ` : '';
-        emailData[`${prefix}Date`] = formatDateFr(s.date);
-      });
-      emailData['Heure'] = selectedCreneau.time;
-      emailData['Niveau'] = root.querySelector('[data-role="niveau"]').value;
-      emailData['Attentes'] = root.querySelector('[data-role="attentes"]').value.trim() || '—';
-    } else {
-      seances.forEach((s, i) => {
-        const prefix = seances.length > 1 ? `Séance ${i + 1} - ` : '';
-        emailData[`${prefix}Date`] = formatDateFr(s.date);
-        emailData[`${prefix}Heure`] = s.heure.replace(':', 'h');
-      });
-      emailData['Terrain souhaité'] = root.querySelector('[data-role="terrain"]').value.trim();
-      emailData['Remarque'] = root.querySelector('[data-role="remarque"]').value.trim() || '—';
-    }
 
-    // ---- Payload structuré pour Notion (fonction Netlify) ----
+    // Données structurées pour Notion
     const pkgEl = forfait.closest('.pkg');
     const notionData = {
-      nom: name,
-      email,
+      nom: document.getElementById('name').value.trim(),
+      email: email,
       telephone: phone,
       forfait: forfait.value,
       forfaitKey: pkgEl ? pkgEl.dataset.key : '',
-      seances,
-      photos: consent
+      date: dateInput.value,
+      heure: timeInput.value,
+      terrain: document.getElementById('park').value.trim(),
+      remarque: document.getElementById('notes').value.trim(),
+      photos: form.querySelector('input[name="Autorisation réseaux sociaux"]').checked
     };
-    if (isPickup) {
-      notionData.creneau = selectedCreneau.label;
-      notionData.niveau = root.querySelector('[data-role="niveau"]').value;
-      notionData.attentes = root.querySelector('[data-role="attentes"]').value.trim();
-    } else {
-      notionData.terrain = root.querySelector('[data-role="terrain"]').value.trim();
-      notionData.remarque = root.querySelector('[data-role="remarque"]').value.trim();
-    }
 
     try {
+      // Envoi en parallèle : email (FormSubmit) + Notion
       const results = await Promise.allSettled([
-        fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
+        fetch('https://formsubmit.co/ajax/moqtad6@gmail.com', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify(emailData)
+          body: JSON.stringify(data)
         }),
-        fetch(endpoint, {
+        fetch('/.netlify/functions/reservation', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(notionData)
         })
       ]);
-
-      // Si la fonction Netlify répond 409 (complet), on l'affiche même si l'email est parti
-      const notionResult = results[1];
-      if (notionResult.status === 'fulfilled' && notionResult.value && notionResult.value.status === 409) {
-        const body = await notionResult.value.json().catch(() => ({}));
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Envoyer ma demande de réservation';
-        showError(body.error || "Cette date est complète (15 places prises). Merci de choisir une autre date.");
-        return;
-      }
-
       const ok = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
       if (!ok) throw new Error('Erreur réseau');
       form.style.display = 'none';
@@ -934,9 +545,7 @@ function initBookingForm(root) {
       showError("L'envoi n'a pas fonctionné. Vérifiez votre connexion internet et réessayez.");
     }
   });
-}
 
-document.querySelectorAll('.program').forEach(initBookingForm);
 </script>
 
 </body>

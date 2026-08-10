@@ -1,5 +1,4 @@
-// Fonction Netlify — envoie les réservations Gravity Coaching (anciennement
-// « Coach Yass », même service/historique) dans Notion.
+// Fonction Netlify — envoie les réservations Coach Yass dans Notion
 // La clé secrète NOTION_TOKEN reste côté serveur : jamais visible par les visiteurs.
 
 const NOTION_DB = process.env.NOTION_DB_COACH_YASS || '7eda882ea6144a65a465e4fdb1e92b94';
@@ -39,7 +38,7 @@ exports.handler = async (event) => {
 
   const forfaitKey = String(d.forfaitKey || '');
   const properties = {
-    'JOUEUR': { title: [{ text: { content: nom } }] },
+    'Nom': { title: [{ text: { content: nom } }] },
     'Email': { email: email },
     'Statut': { status: { name: 'Not started' } },
     'Payé': { checkbox: false },
@@ -48,25 +47,14 @@ exports.handler = async (event) => {
 
   if (d.forfait) properties['Forfait'] = { select: { name: String(d.forfait) } };
   if (MONTANTS[forfaitKey]) properties['Montant'] = { number: MONTANTS[forfaitKey] };
-
-  // d.seances = [{date: 'YYYY-MM-DD', heure: 'HH:MM'}, ...] — une réservation multi-séances
-  // reste UNE ligne Notion (schéma existant) : on logue la 1re séance ici, et la liste
-  // complète est ajoutée à la Remarque pour ne rien perdre.
-  const seances = Array.isArray(d.seances) ? d.seances : (d.date ? [{ date: d.date, heure: d.heure }] : []);
-  if (seances.length) {
-    const first = seances[0];
-    const start = first.heure ? `${first.date}T${first.heure}:00-04:00` : first.date;
+  if (d.date) {
+    // date + heure combinées si l'heure est fournie
+    const start = d.heure ? `${d.date}T${d.heure}:00-04:00` : d.date;
     properties['Date séance'] = { date: { start } };
   }
   if (d.terrain) properties['Terrain'] = { rich_text: [{ text: { content: String(d.terrain).slice(0, 1800) } }] };
   if (d.telephone) properties['Téléphone'] = { phone_number: String(d.telephone).slice(0, 50) };
-
-  let remarque = String(d.remarque || '').trim();
-  if (seances.length > 1) {
-    const list = seances.map((s, i) => `Séance ${i + 1} : ${s.date}${s.heure ? ' ' + s.heure : ''}`).join(' · ');
-    remarque = remarque ? `${remarque}\n${list}` : list;
-  }
-  if (remarque) properties['Remarque'] = { rich_text: [{ text: { content: remarque.slice(0, 1800) } }] };
+  if (d.remarque) properties['Remarque'] = { rich_text: [{ text: { content: String(d.remarque).slice(0, 1800) } }] };
 
   try {
     const res = await fetch('https://api.notion.com/v1/pages', {
