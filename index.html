@@ -85,7 +85,7 @@
   /* Program picker */
   .programs-nav{
     display:grid;
-    grid-template-columns:1fr 1fr 1fr;
+    grid-template-columns:1fr 1fr;
     gap:10px;
     margin-bottom:22px;
   }
@@ -401,11 +401,6 @@
 <div class="wrap">
 
   <nav class="programs-nav" aria-label="Choisir un programme">
-    <a href="#coach-yass">
-      <span class="emoji">🏀</span>
-      <span class="name">Coach Yass<br>Coaching privé</span>
-      <span class="from">dès 20 $</span>
-    </a>
     <a href="#gravity-coaching">
       <span class="emoji">🎯</span>
       <span class="name">Gravity<br>Coaching</span>
@@ -419,105 +414,10 @@
   </nav>
 
   <!-- ============================================================ -->
-  <!-- PROGRAMME 1 — COACH YASS (coaching privé, individuel)         -->
+  <!-- PROGRAMME 1 — GRAVITY COACHING (coaching privé, individuel ; -->
+  <!-- anciennement « Coach Yass », même historique/base Notion)    -->
   <!-- ============================================================ -->
-  <section class="program" id="coach-yass" data-subject="Nouvelle réservation — Coach Yass Basket" data-endpoint="/.netlify/functions/reservation">
-    <div class="program-intro">
-      <span class="tag">Coaching privé</span>
-      <h2>Coach Yass</h2>
-      <p>Séances individuelles sur le terrain de ton choix, à l'heure qui te convient.</p>
-    </div>
-
-    <form class="booking-form" data-role="form" novalidate>
-      <div class="card">
-        <h3>🏀 Forfait</h3>
-        <div class="packages" data-role="packages">
-          <label class="pkg" data-key="1" data-price="20">
-            <input type="radio" name="Forfait" value="1 séance — 20 $" required>
-            <div class="label">1 séance</div>
-            <div class="price">20 $</div>
-            <div class="unit">à l'unité</div>
-          </label>
-          <label class="pkg" data-key="3" data-price="55">
-            <input type="radio" name="Forfait" value="3 séances — 55 $">
-            <div class="label">3 séances</div>
-            <div class="price">55 $</div>
-            <div class="unit">≈ 18,30 $ / séance</div>
-          </label>
-          <label class="pkg" data-key="6" data-price="100">
-            <input type="radio" name="Forfait" value="6 séances — 100 $">
-            <div class="label">6 séances</div>
-            <div class="price">100 $</div>
-            <div class="unit">≈ 16,70 $ / séance</div>
-          </label>
-          <label class="pkg" data-key="12" data-price="180">
-            <input type="radio" name="Forfait" value="12 séances — 180 $">
-            <div class="label">12 séances</div>
-            <div class="price">180 $</div>
-            <div class="unit">15 $ / séance</div>
-          </label>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>📅 Date(s) &amp; heure(s)</h3>
-        <p class="hint">Choisis d'abord un forfait ci-dessus pour indiquer la ou les date(s) de séance.</p>
-        <div data-role="dates-container"></div>
-      </div>
-
-      <div class="card">
-        <h3>📍 Terrain</h3>
-        <label for="cy-park">Terrain de basket souhaité</label>
-        <input type="text" id="cy-park" data-role="terrain" placeholder="Ex : Terrain de la Ligue Arabe" required>
-        <div class="rain-note">
-          ☔ <span><strong>Note :</strong> en cas de pluie, la séance sera reportée à une autre date. Vous serez recontacté(e) pour reprogrammer.</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>🙋 Vos coordonnées</h3>
-        <label for="cy-name">Nom complet</label>
-        <input type="text" id="cy-name" data-role="name" autocomplete="name" required>
-        <label for="cy-phone">Téléphone</label>
-        <input type="tel" id="cy-phone" data-role="phone" autocomplete="tel" placeholder="514-123-4567" required>
-        <label for="cy-email">Email</label>
-        <input type="email" id="cy-email" data-role="email" autocomplete="email" required>
-        <label for="cy-notes">Remarque (optionnel)</label>
-        <textarea id="cy-notes" data-role="remarque" placeholder="Niveau, poste, objectifs, blessures..."></textarea>
-
-        <label class="consent">
-          <input type="checkbox" data-role="consent" value="Oui">
-          <span>J'autorise Coach Yass à utiliser des photos/vidéos prises pendant la séance sur ses réseaux sociaux (Instagram, TikTok, etc.).</span>
-        </label>
-      </div>
-
-      <div class="recap" data-role="recap" aria-live="polite">
-        <div class="recap-title">Récapitulatif</div>
-        <div data-role="recap-text"></div>
-      </div>
-
-      <button type="submit" class="submit-btn" data-role="submit">Envoyer ma demande de réservation</button>
-      <div class="error-msg" data-role="error"></div>
-      <div class="summary">Le paiement se fait séparément avec Coach Yass<br>(sur place, Interac ou virement).</div>
-    </form>
-
-    <div class="success" data-role="success">
-      <div class="check">✓</div>
-      <h3>Demande envoyée !</h3>
-      <p>Merci ! Coach Yass a bien reçu votre demande de réservation.</p>
-      <p>Vous recevrez une confirmation par email avant la séance.</p>
-    </div>
-
-    <div class="footer-note">
-      Coach Yass · Basketball · Montréal<br>
-      📸 <a href="https://www.instagram.com/coach_yass1" target="_blank" rel="noopener">@coach_yass1</a>
-    </div>
-  </section>
-
-  <!-- ============================================================ -->
-  <!-- PROGRAMME 2 — GRAVITY COACHING (coaching privé, marque Gravity) -->
-  <!-- ============================================================ -->
-  <section class="program" id="gravity-coaching" data-subject="Nouvelle réservation — Gravity Coaching Basket" data-endpoint="/.netlify/functions/reservation-gravity-coaching">
+  <section class="program" id="gravity-coaching" data-subject="Nouvelle réservation — Gravity Coaching Basket" data-endpoint="/.netlify/functions/reservation">
     <div class="program-intro">
       <span class="tag">Coaching privé</span>
       <h2>Gravity Coaching</h2>
@@ -605,7 +505,8 @@
     </div>
 
     <div class="footer-note">
-      Gravity Coaching · Basketball · Montréal
+      Gravity Coaching · Basketball · Montréal<br>
+      📸 <a href="https://www.instagram.com/coach_yass1" target="_blank" rel="noopener">@coach_yass1</a>
     </div>
   </section>
 
@@ -714,7 +615,7 @@
   </section>
 
   <div class="site-footer">
-    Gravity Montréal — Coach Yass · Gravity Coaching · Gravity Pickup<br>
+    Gravity Montréal — Gravity Coaching · Gravity Pickup<br>
     Les demandes sont confirmées par email avant chaque séance.
   </div>
 </div>
