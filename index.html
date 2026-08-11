@@ -100,6 +100,19 @@
     margin:0 0 16px;
     display:flex;align-items:center;gap:8px;
   }
+  .badges{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+  .badge{
+    display:flex;align-items:center;gap:8px;
+    background:#FFF4EB;
+    border:1px solid #F3D3B8;
+    border-radius:20px;
+    padding:8px 14px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--orange);
+  }
+  .bio p{font-size:13.5px;color:var(--ink);line-height:1.6;margin:0 0 10px;}
+  .bio p:last-child{margin-bottom:0;}
   label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink);}
   input[type=text], input[type=date], input[type=time], input[type=tel], input[type=email], textarea{
     width:100%;
@@ -282,6 +295,17 @@
 </header>
 
 <div class="wrap">
+
+  <div class="card bio">
+    <h2>🎖️ La bio de Gravity Coaching</h2>
+    <div class="badges">
+      <div class="badge">🎓 Certifié Basketball Québec</div>
+      <div class="badge">🎓 Certifié Basketball Canada</div>
+      <div class="badge">🤝 Certification Coach Humaniste — Pour3Points</div>
+    </div>
+    <p>Certifié par Basketball Québec et Basketball Canada, et Coach Humaniste (Pour3Points). Ancien joueur professionnel et international (Maroc), aujourd'hui basé à Montréal.</p>
+    <p>Il a coaché les équipes de Stanislas, Brébeuf, Saint-Exupéry, Nobel et DDO, et dirige aujourd'hui Gravity Basketball.</p>
+  </div>
 
   <form id="bookingForm" novalidate>
 
