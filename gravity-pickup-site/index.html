@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gravity Pickup — Réservation session basketball</title>
+<meta property="og:title" content="Gravity Pickup — Réserve ta session de basket 🏀">
+<meta property="og:description" content="Sessions pickup basketball à Montréal. Forfaits dès 12 $/séance. Réserve ta session en 1 minute.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F5F0E1;
+    --green:#1E3A2F;
+    --green-deep:#152B22;
+    --orange:#E8722C;
+    --ink:#141414;
+    --gray:#6d6a60;
+    --card:#FFFDF7;
+    --border:#E3DCC8;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    padding:0 0 60px;
+  }
+  .hero{
+    background:var(--green);
+    background-image:
+      radial-gradient(rgba(245,240,225,.10) 1.4px, transparent 1.4px),
+      linear-gradient(160deg, var(--green) 55%, var(--green-deep));
+    background-size:18px 18px, cover;
+    color:var(--cream);
+    text-align:center;
+    padding:44px 20px 70px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-140px;
+    width:340px;
+    height:340px;
+    transform:translateX(-50%);
+    border:2px solid rgba(232,114,44,.55);
+    border-radius:50%;
+    pointer-events:none;
+  }
+  .hero h1{
+    font-family:'Archivo',sans-serif;
+    font-variation-settings:"wdth" 118, "wght" 880;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    font-size:clamp(30px,7vw,42px);
+    margin:0 0 6px;
+    line-height:1.05;
+  }
+  .hero p{
+    margin:0;
+    font-size:14px;
+    color:rgba(245,240,225,.82);
+    letter-spacing:.02em;
+  }
+  .wrap{max-width:560px;margin:-36px auto 0;padding:0 16px;position:relative;z-index:2;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:22px;
+    margin-bottom:18px;
+    box-shadow:0 2px 10px rgba(30,58,47,.06);
+  }
+  .card h3{
+    font-family:'Archivo',sans-serif;
+    font-variation-settings:"wdth" 110, "wght" 750;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    font-size:14px;
+    color:var(--green);
+    margin:0 0 16px;
+    display:flex;align-items:center;gap:8px;
+  }
+  label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink);}
+  input[type=text], input[type=tel], input[type=email], textarea, select{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    font-size:15px;
+    margin-bottom:14px;
+    font-family:inherit;
+    background:#fff;
+    color:var(--ink);
+  }
+  input:focus, textarea:focus, select:focus{
+    outline:2px solid var(--orange);
+    outline-offset:1px;
+    border-color:var(--orange);
+  }
+  textarea{resize:vertical;min-height:60px;}
+  .packages{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .pkg{
+    border:2px solid var(--border);
+    border-radius:10px;
+    padding:12px;
+    cursor:pointer;
+    position:relative;
+    transition:border-color .15s, background .15s;
+    background:#fff;
+  }
+  .pkg:hover{border-color:var(--green);}
+  .pkg input{position:absolute;opacity:0;}
+  .pkg .label{font-weight:700;font-size:14px;color:var(--green);}
+  .pkg .price{
+    font-family:'Archivo',sans-serif;
+    font-variation-settings:"wdth" 115, "wght" 850;
+    font-size:22px;
+    color:var(--orange);
+    margin-top:2px;
+  }
+  .pkg .unit{font-size:11px;color:var(--gray);margin-top:2px;}
+  .pkg.selected{border-color:var(--orange);background:#FFF4EB;}
+  .pkg.selected::after{content:"✓";position:absolute;top:8px;right:10px;color:var(--orange);font-weight:800;}
+  .creneaux{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .creneau{
+    border:2px solid var(--border);
+    border-radius:10px;
+    padding:12px;
+    cursor:pointer;
+    position:relative;
+    transition:border-color .15s, background .15s;
+    background:#fff;
+  }
+  .creneau:hover{border-color:var(--green);}
+  .creneau input{position:absolute;opacity:0;}
+  .creneau .day{font-weight:700;font-size:14px;color:var(--green);}
+  .creneau .time{font-family:'Archivo',sans-serif;font-variation-settings:"wdth" 112, "wght" 800;font-size:16px;color:var(--orange);margin-top:2px;}
+  .creneau .place{font-size:11px;color:var(--gray);margin-top:2px;}
+  .creneau.selected{border-color:var(--orange);background:#FFF4EB;}
+  .creneau.selected::after{content:"✓";position:absolute;top:8px;right:10px;color:var(--orange);font-weight:800;}
+  .seance-preview{
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px 12px;
+    margin-bottom:12px;
+    background:#fff;
+    font-size:13.5px;
+    color:var(--ink);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .seance-preview .n{color:var(--gray);font-size:12px;}
+  .hint{font-size:12px;color:var(--gray);margin:-8px 0 14px;line-height:1.4;}
+  .consent{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    background:#FAF7EE;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:13px;
+    color:var(--ink);
+    margin-bottom:4px;
+    cursor:pointer;
+    line-height:1.45;
+  }
+  .consent input{width:18px;height:18px;flex:none;margin-top:1px;accent-color:var(--green);}
+  .recap{
+    background:var(--green);
+    color:var(--cream);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:14px;
+    line-height:1.5;
+    margin-bottom:14px;
+    display:none;
+  }
+  .recap.visible{display:block;}
+  .recap strong{color:#FFB584;}
+  .recap .recap-title{
+    font-family:'Archivo',sans-serif;
+    font-variation-settings:"wdth" 110, "wght" 750;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    font-size:12px;
+    margin-bottom:6px;
+    color:rgba(245,240,225,.75);
+  }
+  .submit-btn{
+    width:100%;
+    padding:15px;
+    background:var(--orange);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-family:'Archivo',sans-serif;
+    font-variation-settings:"wdth" 110, "wght" 800;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    font-size:15px;
+    cursor:pointer;
+    margin-top:6px;
+    transition:background .15s;
+  }
+  .submit-btn:hover{background:#d3641f;}
+  .submit-btn:disabled{background:#cfc9b8;cursor:not-allowed;}
+  .submit-btn:focus-visible{outline:3px solid var(--green);outline-offset:2px;}
+  .summary{font-size:13px;color:var(--gray);text-align:center;margin-top:12px;line-height:1.5;}
+  .error-msg{
+    display:none;
+    background:#FDEEE6;
+    border:1px solid #F0BDA0;
+    color:#9A3E0F;
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:13px;
+    margin-top:12px;
+    line-height:1.45;
+  }
+  .error-msg.visible{display:block;}
+  .success{
+    display:none;
+    text-align:center;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:40px 24px;
+    box-shadow:0 2px 10px rgba(30,58,47,.06);
+  }
+  .success.visible{display:block;}
+  .success .check{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:60px;height:60px;border-radius:50%;
+    background:var(--green);color:var(--cream);
+    font-size:30px;margin-bottom:16px;
+  }
+  .success h3{
+    font-family:'Archivo',sans-serif;
+    font-variation-settings:"wdth" 112, "wght" 800;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--green);
+    font-size:20px;
+    margin:0 0 10px;
+  }
+  .success p{color:var(--gray);font-size:14px;line-height:1.6;margin:0 0 6px;}
+  .footer-note{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--gray);
+    margin-top:24px;
+    line-height:1.7;
+  }
+  .footer-note a{color:var(--green);font-weight:600;text-decoration:none;}
+  .footer-note a:hover{text-decoration:underline;}
+  @media (max-width:400px){
+    .creneaux{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Gravity Pickup</h1>
+  <p>Sessions pickup basketball · Montréal · Places limitées à 15 par date</p>
+</header>
+
+<div class="wrap">
+
+  <form class="booking-form" id="bookingForm" data-role="form" novalidate>
+    <div class="card">
+      <h3>🏀 Forfait</h3>
+      <div class="packages" data-role="packages">
+        <label class="pkg" data-key="1" data-price="12">
+          <input type="radio" name="Forfait" value="1 séance — 12 $" required>
+          <div class="label">1 séance</div>
+          <div class="price">12 $</div>
+          <div class="unit">à l'unité</div>
+        </label>
+        <label class="pkg" data-key="3" data-price="32">
+          <input type="radio" name="Forfait" value="3 séances — 32 $">
+          <div class="label">3 séances</div>
+          <div class="price">32 $</div>
+          <div class="unit">≈ 10,67 $ / séance</div>
+        </label>
+        <label class="pkg" data-key="6" data-price="60">
+          <input type="radio" name="Forfait" value="6 séances — 60 $">
+          <div class="label">6 séances</div>
+          <div class="price">60 $</div>
+          <div class="unit">10 $ / séance</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📍 Créneau</h3>
+      <div class="creneaux" data-role="creneaux">
+        <label class="creneau" data-key="mercredi" data-weekday="3" data-time="20h30–22h00" data-lieu="Collège André-Grasset">
+          <input type="radio" name="Créneau" value="Mercredi 20h30-22h00 — Collège André-Grasset" required>
+          <div class="day">Mercredi</div>
+          <div class="time">20h30–22h00</div>
+          <div class="place">Collège André-Grasset</div>
+        </label>
+        <label class="creneau" data-key="samedi" data-weekday="6" data-time="11h00–13h00" data-lieu="Dorval">
+          <input type="radio" name="Créneau" value="Samedi 11h00-13h00 — Dorval">
+          <div class="day">Samedi</div>
+          <div class="time">11h00–13h00</div>
+          <div class="place">Dorval</div>
+        </label>
+        <label class="creneau" data-key="jeudi" data-weekday="4" data-time="20h30–22h00" data-lieu="Collège André-Grasset (Gym 3)">
+          <input type="radio" name="Créneau" value="Jeudi 20h30-22h00 — Collège André-Grasset (Gym 3)">
+          <div class="day">Jeudi</div>
+          <div class="time">20h30–22h00</div>
+          <div class="place">Collège André-Grasset (Gym 3)</div>
+        </label>
+      </div>
+      <p class="hint">Choisis d'abord un créneau pour voir la ou les prochaine(s) date(s) disponible(s).</p>
+      <div data-role="dates-container"></div>
+    </div>
+
+    <div class="card">
+      <h3>🙋 Vos coordonnées</h3>
+      <label for="level">Niveau</label>
+      <select id="level" data-role="niveau" required>
+        <option value="" disabled selected>Choisir…</option>
+        <option value="Débutant">Débutant</option>
+        <option value="Intermédiaire">Intermédiaire</option>
+        <option value="Avancé">Avancé</option>
+      </select>
+      <label for="expect">Attentes (optionnel)</label>
+      <textarea id="expect" data-role="attentes" placeholder="Ex : jouer du 5 contre 5, cardio, ambiance détendue..."></textarea>
+      <label for="name">Nom complet</label>
+      <input type="text" id="name" data-role="name" autocomplete="name" required>
+      <label for="phone">Téléphone</label>
+      <input type="tel" id="phone" data-role="phone" autocomplete="tel" placeholder="514-123-4567" required>
+      <label for="email">Email</label>
+      <input type="email" id="email" data-role="email" autocomplete="email" required>
+
+      <div class="seance-preview" data-role="payment-note" style="display:none;"></div>
+
+      <label class="consent">
+        <input type="checkbox" data-role="consent" value="Oui">
+        <span>J'autorise Gravity Pickup à utiliser des photos/vidéos prises pendant la séance sur ses réseaux sociaux (Instagram, TikTok, etc.).</span>
+      </label>
+    </div>
+
+    <div class="recap" data-role="recap" aria-live="polite">
+      <div class="recap-title">Récapitulatif</div>
+      <div data-role="recap-text"></div>
+    </div>
+
+    <button type="submit" class="submit-btn" data-role="submit">Envoyer ma demande de réservation</button>
+    <div class="error-msg" data-role="error"></div>
+    <div class="summary">Paiement par virement Interac<br>au 438-341-2051 ou mqtad9@hotmail.com.</div>
+  </form>
+
+  <div class="success" data-role="success">
+    <div class="check">✓</div>
+    <h3>Demande envoyée !</h3>
+    <p>Merci ! Gravity Pickup a bien reçu votre inscription.</p>
+    <p>Vous recevrez une confirmation par email avant la séance.</p>
+  </div>
+
+  <div class="footer-note">
+    Gravity Pickup · Basketball · Montréal<br>
+    📸 <a href="https://www.instagram.com/basket_libre" target="_blank" rel="noopener">@basket_libre</a>
+  </div>
+</div>
+
+<script>
+  const FORMSUBMIT_EMAIL = 'moqtad6@gmail.com';
+  const ENDPOINT = '/.netlify/functions/reservation-gravity-pickup';
+  const SUBJECT = 'Nouvelle réservation — Gravity Pickup';
+
+  const root = document;
+  const form = document.getElementById('bookingForm');
+  const recap = root.querySelector('[data-role="recap"]');
+  const recapText = root.querySelector('[data-role="recap-text"]');
+  const errorMsg = root.querySelector('[data-role="error"]');
+  const submitBtn = root.querySelector('[data-role="submit"]');
+  const successBox = root.querySelector('[data-role="success"]');
+  const datesContainer = root.querySelector('[data-role="dates-container"]');
+  const creneauxGroup = root.querySelector('[data-role="creneaux"]');
+  const paymentNote = root.querySelector('[data-role="payment-note"]');
+
+  let seanceCount = 0;
+  let selectedCreneau = null;
+
+  function formatDateFr(iso) {
+    const d = new Date(iso + 'T12:00:00');
+    return d.toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  function nextWeeklyDates(weekday, count) {
+    const dates = [];
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    while (d.getDay() !== weekday) d.setDate(d.getDate() + 1);
+    for (let i = 0; i < count; i++) {
+      const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      dates.push(iso);
+      d.setDate(d.getDate() + 7);
+    }
+    return dates;
+  }
+
+  root.querySelectorAll('.pkg').forEach(pkg => {
+    pkg.addEventListener('click', () => {
+      root.querySelectorAll('.pkg').forEach(p => p.classList.remove('selected'));
+      pkg.classList.add('selected');
+      pkg.querySelector('input').checked = true;
+      seanceCount = parseInt(pkg.dataset.key, 10) || 1;
+      renderDates();
+      updatePaymentNote(pkg);
+      updateRecap();
+    });
+  });
+
+  root.querySelectorAll('.creneau').forEach(cr => {
+    cr.addEventListener('click', () => {
+      root.querySelectorAll('.creneau').forEach(c => c.classList.remove('selected'));
+      cr.classList.add('selected');
+      cr.querySelector('input').checked = true;
+      selectedCreneau = {
+        key: cr.dataset.key,
+        weekday: parseInt(cr.dataset.weekday, 10),
+        time: cr.dataset.time,
+        lieu: cr.dataset.lieu,
+        label: cr.querySelector('input').value
+      };
+      renderDates();
+      updateRecap();
+    });
+  });
+
+  function updatePaymentNote(pkg) {
+    const price = pkg.dataset.price;
+    paymentNote.style.display = 'flex';
+    paymentNote.innerHTML = `<span>💳 Paiement</span><strong>Interac ${price} $ — 438-341-2051 ou mqtad9@hotmail.com</strong>`;
+  }
+
+  function renderDates() {
+    datesContainer.innerHTML = '';
+    if (!seanceCount || !selectedCreneau) return;
+    const dates = nextWeeklyDates(selectedCreneau.weekday, seanceCount);
+    dates.forEach((iso, i) => {
+      const div = document.createElement('div');
+      div.className = 'seance-preview';
+      div.innerHTML = `<span>${formatDateFr(iso)} · ${selectedCreneau.time}</span><span class="n">Séance ${i + 1}/${seanceCount}</span>`;
+      div.dataset.iso = iso;
+      datesContainer.appendChild(div);
+    });
+    updateRecap();
+  }
+
+  function updateRecap() {
+    const forfait = form.querySelector('input[name="Forfait"]:checked');
+    const parts = [];
+    if (forfait) parts.push(`<strong>${forfait.value}</strong>`);
+    if (selectedCreneau) parts.push(`📍 ${selectedCreneau.label}`);
+    datesContainer.querySelectorAll('[data-iso]').forEach(el => parts.push(formatDateFr(el.dataset.iso)));
+    if (parts.length) {
+      recapText.innerHTML = parts.join('<br>');
+      recap.classList.add('visible');
+    } else {
+      recap.classList.remove('visible');
+    }
+  }
+
+  function showError(msg) {
+    errorMsg.textContent = msg;
+    errorMsg.classList.add('visible');
+    errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorMsg.classList.remove('visible');
+
+    const forfait = form.querySelector('input[name="Forfait"]:checked');
+    if (!forfait) { showError('Veuillez choisir un forfait.'); return; }
+    if (!selectedCreneau) { showError('Veuillez choisir un créneau.'); return; }
+
+    const seances = [];
+    datesContainer.querySelectorAll('[data-iso]').forEach(el => {
+      seances.push({ date: el.dataset.iso, heure: selectedCreneau.time.split('–')[0].replace('h', ':') });
+    });
+
+    const niveau = root.querySelector('[data-role="niveau"]');
+    if (!niveau.value) { showError('Veuillez choisir votre niveau.'); return; }
+    const name = root.querySelector('[data-role="name"]').value.trim();
+    if (!name) { showError('Veuillez indiquer votre nom complet.'); return; }
+    const phone = root.querySelector('[data-role="phone"]').value.trim();
+    if (!/^[\d\s\-\+\(\)\.]{7,}$/.test(phone)) { showError('Veuillez indiquer un numéro de téléphone valide (ex : 514-123-4567).'); return; }
+    const email = root.querySelector('[data-role="email"]').value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Veuillez indiquer une adresse email valide.'); return; }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Envoi en cours...';
+
+    const consent = root.querySelector('[data-role="consent"]').checked;
+
+    const emailData = {
+      _subject: SUBJECT,
+      _template: 'table',
+      _captcha: 'false',
+      'Forfait': forfait.value,
+      'Créneau': selectedCreneau.label,
+      'Nom': name,
+      'Téléphone': phone,
+      'Email': email,
+      'Autorisation réseaux sociaux': consent ? 'Oui' : 'Non',
+      'Niveau': niveau.value,
+      'Attentes': root.querySelector('[data-role="attentes"]').value.trim() || '—'
+    };
+    seances.forEach((s, i) => {
+      const prefix = seances.length > 1 ? `Séance ${i + 1} - ` : '';
+      emailData[`${prefix}Date`] = formatDateFr(s.date);
+    });
+    emailData['Heure'] = selectedCreneau.time;
+
+    const pkgEl = forfait.closest('.pkg');
+    const notionData = {
+      nom: name,
+      email,
+      telephone: phone,
+      forfait: forfait.value,
+      forfaitKey: pkgEl ? pkgEl.dataset.key : '',
+      seances,
+      photos: consent,
+      creneau: selectedCreneau.label,
+      niveau: niveau.value,
+      attentes: root.querySelector('[data-role="attentes"]').value.trim()
+    };
+
+    try {
+      const results = await Promise.allSettled([
+        fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(emailData)
+        }),
+        fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(notionData)
+        })
+      ]);
+
+      const notionResult = results[1];
+      if (notionResult.status === 'fulfilled' && notionResult.value && notionResult.value.status === 409) {
+        const body = await notionResult.value.json().catch(() => ({}));
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Envoyer ma demande de réservation';
+        showError(body.error || "Cette date est complète (15 places prises). Merci de choisir une autre date.");
+        return;
+      }
+
+      const ok = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
+      if (!ok) throw new Error('Erreur réseau');
+      form.style.display = 'none';
+      successBox.classList.add('visible');
+      successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Envoyer ma demande de réservation';
+      showError("L'envoi n'a pas fonctionné. Vérifiez votre connexion internet et réessayez.");
+    }
+  });
+</script>
+
+</body>
+</html>
