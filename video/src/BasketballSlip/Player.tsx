@@ -78,13 +78,15 @@ export const getPose = (frame: number): Pose => {
   }
 
   // Slip: both feet fly up, body slams backward toward the ground.
+  // The pivot (feet) slides right as the body swings flat, so the
+  // sprawled character stays centered in frame instead of falling off it.
   if (frame < slipEnd) {
     const t = interpolate(frame, TIMELINE.slip, [0, 1], clampOpts);
     const flail = Math.sin(t * Math.PI * 3) * (1 - t) * 60;
     return {
-      x: interpolate(t, [0, 1], [14, -30]),
+      x: interpolate(t, [0, 1], [14, 190]),
       y: interpolate(t, [0, 1], [0, -70], clampOpts) + Math.max(0, t - 0.6) * 260,
-      rotation: interpolate(t, [0, 1], [-18, -95]),
+      rotation: interpolate(t, [0, 1], [-18, -88]),
       legL: interpolate(t, [0, 1], [-55, 70]) + flail,
       legR: interpolate(t, [0, 1], [30, 85]) + flail,
       armL: interpolate(t, [0, 1], [-150, -210]) + flail,
@@ -99,9 +101,9 @@ export const getPose = (frame: number): Pose => {
   const t = frame - slipEnd;
   const twitch = Math.sin(t * 0.6) * 4;
   return {
-    x: -30,
+    x: 190,
     y: 190,
-    rotation: -95 + twitch,
+    rotation: -88 + twitch,
     legL: 80 + twitch,
     legR: 90 - twitch,
     armL: -205 + twitch,
@@ -120,7 +122,8 @@ const Limb: React.FC<{
   width: number;
   color: string;
   z: number;
-}> = ({ angle, originTop, originLeft, length, width, color, z }) => (
+  foot?: { width: number; height: number; color: string; border?: string };
+}> = ({ angle, originTop, originLeft, length, width, color, z, foot }) => (
   <div
     style={{
       position: "absolute",
@@ -128,14 +131,36 @@ const Limb: React.FC<{
       left: originLeft,
       width,
       height: length,
-      background: color,
-      borderRadius: width / 2,
       transformOrigin: "50% 0%",
       transform: `translateX(-50%) rotate(${angle}deg)`,
       zIndex: z,
-      boxShadow: "inset 0 0 0 2px rgba(0,0,0,0.08)",
     }}
-  />
+  >
+    <div
+      style={{
+        width,
+        height: length,
+        background: color,
+        borderRadius: width / 2,
+        boxShadow: "inset 0 0 0 2px rgba(0,0,0,0.08)",
+      }}
+    />
+    {foot ? (
+      <div
+        style={{
+          position: "absolute",
+          top: length - foot.height * 0.6,
+          left: "50%",
+          width: foot.width,
+          height: foot.height,
+          borderRadius: foot.height / 2,
+          background: foot.color,
+          border: foot.border,
+          transform: "translateX(-30%)",
+        }}
+      />
+    ) : null}
+  </div>
 );
 
 export const Player: React.FC<{ frame: number }> = ({ frame }) => {
@@ -160,39 +185,25 @@ export const Player: React.FC<{ frame: number }> = ({ frame }) => {
         }}
       >
         {/* Legs (skinny dark-denim jeans + clean white sneakers) */}
-        <Limb angle={pose.legL} originTop={-210} originLeft={-14} length={150} width={26} color={COLORS.denim} z={1} />
-        <Limb angle={pose.legR} originTop={-210} originLeft={14} length={150} width={26} color={COLORS.denimDark} z={1} />
-
-        {/* Sneakers */}
-        <div
-          style={{
-            position: "absolute",
-            top: -210,
-            left: -14,
-            width: 54,
-            height: 24,
-            borderRadius: 10,
-            background: COLORS.white,
-            border: `2px solid ${COLORS.orange}`,
-            transformOrigin: "10% 0%",
-            transform: `rotate(${pose.legL}deg) translate(90px, 8px)`,
-            zIndex: 2,
-          }}
+        <Limb
+          angle={pose.legL}
+          originTop={-210}
+          originLeft={-24}
+          length={200}
+          width={26}
+          color={COLORS.denim}
+          z={1}
+          foot={{ width: 56, height: 26, color: COLORS.white, border: `2px solid ${COLORS.orange}` }}
         />
-        <div
-          style={{
-            position: "absolute",
-            top: -210,
-            left: 14,
-            width: 54,
-            height: 24,
-            borderRadius: 10,
-            background: COLORS.white,
-            border: `2px solid ${COLORS.orange}`,
-            transformOrigin: "10% 0%",
-            transform: `rotate(${pose.legR}deg) translate(90px, 8px)`,
-            zIndex: 2,
-          }}
+        <Limb
+          angle={pose.legR}
+          originTop={-210}
+          originLeft={24}
+          length={200}
+          width={26}
+          color={COLORS.denimDark}
+          z={2}
+          foot={{ width: 56, height: 26, color: COLORS.white, border: `2px solid ${COLORS.orange}` }}
         />
 
         {/* Torso: orange jersey */}
@@ -226,8 +237,26 @@ export const Player: React.FC<{ frame: number }> = ({ frame }) => {
         </div>
 
         {/* Arms */}
-        <Limb angle={pose.armL} originTop={-345} originLeft={-52} length={130} width={24} color={COLORS.skin} z={4} />
-        <Limb angle={pose.armR} originTop={-345} originLeft={52} length={130} width={24} color={COLORS.skin} z={4} />
+        <Limb
+          angle={pose.armL}
+          originTop={-345}
+          originLeft={-66}
+          length={125}
+          width={24}
+          color={COLORS.skin}
+          z={4}
+          foot={{ width: 30, height: 30, color: COLORS.skin }}
+        />
+        <Limb
+          angle={pose.armR}
+          originTop={-345}
+          originLeft={66}
+          length={125}
+          width={24}
+          color={COLORS.skin}
+          z={4}
+          foot={{ width: 30, height: 30, color: COLORS.skin }}
+        />
 
         {/* Head */}
         <div

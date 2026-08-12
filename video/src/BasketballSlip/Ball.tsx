@@ -53,7 +53,7 @@ export const Ball: React.FC<{ frame: number }> = ({ frame }) => {
     const bounce = Math.abs(Math.sin(t * 0.5));
     const y = GROUND_Y - 40 - bounce * 260;
     return (
-      <div style={{ position: "absolute", left: "calc(50% + 78px)", top: y, transform: "translate(-50%,-50%)" }}>
+      <div style={{ position: "absolute", left: "calc(50% + 92px)", top: y, transform: "translate(-50%,-50%)" }}>
         <BallGraphic size={size} spin={t * 10} />
       </div>
     );
@@ -64,7 +64,7 @@ export const Ball: React.FC<{ frame: number }> = ({ frame }) => {
     const t = interpolate(frame, [wobbleStart, wobbleEnd], [0, 1], clampOpts);
     const bounce = Math.abs(Math.sin((frame - TIMELINE.walkIn[1]) * 0.5));
     const y = GROUND_Y - 40 - bounce * 260;
-    const x = 78 + t * 40;
+    const x = 92 + t * 40;
     return (
       <div style={{ position: "absolute", left: `calc(50% + ${x}px)`, top: y, transform: "translate(-50%,-50%)" }}>
         <BallGraphic size={size} spin={frame * 10} />
