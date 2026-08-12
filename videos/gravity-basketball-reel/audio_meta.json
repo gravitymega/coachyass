@@ -1,0 +1,40 @@
+{
+  "tts_provider": "kokoro",
+  "voice_id": "ff_siwis",
+  "bgm": {
+    "path": "assets/bgm/track.wav",
+    "volume": 0.12,
+    "mode": "detached-seed-trim",
+    "duration_s": null
+  },
+  "bgm_pending": true,
+  "bgm_provider": "musicgen",
+  "bgm_pid": 27662,
+  "bgm_log": "/home/user/coachyass/videos/gravity-basketball-reel/assets/bgm/bgm-1786515390092.log",
+  "bgm_mode": "detached-seed-trim",
+  "bgm_target_duration_s": 5.781,
+  "bgm_seed_duration_s": 28,
+  "bgm_loop_count": 1,
+  "voices": [
+    {
+      "id": "hook",
+      "path": "assets/voice/hook.wav",
+      "duration_s": 1.728,
+      "words": []
+    },
+    {
+      "id": "community",
+      "path": "assets/voice/community.wav",
+      "duration_s": 2.048,
+      "words": []
+    },
+    {
+      "id": "cta",
+      "path": "assets/voice/cta.wav",
+      "duration_s": 2.005,
+      "words": []
+    }
+  ],
+  "sfx": [],
+  "total_duration_s": 5.781
+}

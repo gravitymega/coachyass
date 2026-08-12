@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "preferences": {
+    "destination": {
+      "value": "instagram-reels",
+      "confirmed_in": [
+        "gravity-basketball-reel"
+      ],
+      "updated_at": "2026-08-12T06:05:50.086Z"
+    },
+    "aspect": {
+      "value": "1080x1920",
+      "confirmed_in": [
+        "gravity-basketball-reel"
+      ],
+      "updated_at": "2026-08-12T06:05:50.147Z"
+    },
+    "language": {
+      "value": "fr",
+      "confirmed_in": [
+        "gravity-basketball-reel"
+      ],
+      "updated_at": "2026-08-12T06:05:50.202Z"
+    },
+    "flow": {
+      "value": "automation",
+      "confirmed_in": [
+        "gravity-basketball-reel"
+      ],
+      "updated_at": "2026-08-12T06:05:50.280Z"
+    },
+    "storyboard": {
+      "value": "yes",
+      "confirmed_in": [
+        "gravity-basketball-reel"
+      ],
+      "updated_at": "2026-08-12T06:05:50.367Z"
+    }
+  },
+  "sightings": {}
+}

@@ -1,0 +1,14 @@
+{
+  "provider": "kokoro",
+  "lang": "fr-fr",
+  "voice": "ff_siwis",
+  "lines": [
+    { "id": "hook", "text": "Tu veux progresser sur le terrain ?" },
+    { "id": "community", "text": "Une communauté de joueurs, à Montréal." },
+    { "id": "cta", "text": "Réserve ta place. Lien en bio." }
+  ],
+  "bgm": {
+    "mode": "generate",
+    "prompt": "energetic instrumental street hip-hop beat, punchy 808 kick and snare, boom bap drums, gritty urban basketball court energy, no vocals, confident and driving, 95 bpm"
+  }
+}

@@ -1,0 +1,6 @@
+node_modules/
+
+# HyperFrames agent-skill tooling (regenerate with `npx skills add heygen-com/hyperframes`)
+.agents/
+.claude/
+skills-lock.json
