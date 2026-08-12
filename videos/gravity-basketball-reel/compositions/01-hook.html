@@ -1,0 +1,99 @@
+<template>
+  <div
+    data-composition-id="hook"
+    id="hook-root"
+    data-width="1080"
+    data-height="1920"
+    data-duration="3"
+    style="position: absolute; inset: 0; overflow: hidden; background: #050505"
+  >
+    <style>
+      #hook-root {
+        font-family: "Archivo Black", sans-serif;
+      }
+      #hook-root .bg-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: saturate(0.85) brightness(0.8);
+      }
+      #hook-root .scrim {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(5, 5, 5, 0.45) 0%, rgba(5, 5, 5, 0.35) 45%, rgba(5, 5, 5, 0.75) 100%);
+      }
+      #hook-root .hook-text {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 0 48px;
+      }
+      #hook-root .hook-line {
+        display: block;
+        color: #ffffff;
+        font-size: 96px;
+        line-height: 1.02;
+        letter-spacing: -0.03em;
+        text-align: center;
+        text-transform: uppercase;
+        text-shadow: 0 6px 28px rgba(0, 0, 0, 0.55);
+      }
+      #hook-root .hook-line.accent {
+        color: #ff5c00;
+      }
+    </style>
+
+    <video
+      id="hook-bg"
+      class="clip bg-video"
+      src="assets/clip-pickup.mov"
+      data-start="0"
+      data-duration="3"
+      data-media-start="10"
+      data-track-index="1"
+      muted
+      playsinline
+    ></video>
+    <div class="scrim"></div>
+
+    <div class="hook-text">
+      <span id="hook-l1" class="hook-line">Tu veux</span>
+      <span id="hook-l2" class="hook-line accent">progresser</span>
+      <span id="hook-l3" class="hook-line">sur le terrain ?</span>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(
+        "#hook-l1",
+        { opacity: 0, scale: 1.25, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.32, ease: "power3.out" },
+        0.1,
+      );
+      tl.fromTo(
+        "#hook-l2",
+        { opacity: 0, scale: 1.25, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.32, ease: "power3.out" },
+        0.28,
+      );
+      tl.fromTo(
+        "#hook-l3",
+        { opacity: 0, scale: 1.25, filter: "blur(10px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.32, ease: "power3.out" },
+        0.46,
+      );
+
+      window.__timelines["hook"] = tl;
+    </script>
+  </div>
+</template>

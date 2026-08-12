@@ -1,0 +1,105 @@
+<template>
+  <div
+    data-composition-id="pickup"
+    id="pickup-root"
+    data-width="1080"
+    data-height="1920"
+    data-duration="6"
+    style="position: absolute; inset: 0; overflow: hidden; background: #050505"
+  >
+    <style>
+      #pickup-root video.cut {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      #pickup-root .label {
+        position: absolute;
+        left: 48px;
+        bottom: 220px;
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 26px;
+        background: #ff5c00;
+        border-radius: 6px;
+      }
+      #pickup-root .label-text {
+        font-family: "Space Mono", monospace;
+        font-weight: 700;
+        font-size: 34px;
+        letter-spacing: 0.12em;
+        color: #050505;
+        text-transform: uppercase;
+      }
+      #pickup-root .vignette {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(5, 5, 5, 0.3) 0%, rgba(5, 5, 5, 0) 22%, rgba(5, 5, 5, 0) 65%, rgba(5, 5, 5, 0.55) 100%);
+        pointer-events: none;
+      }
+    </style>
+
+    <!-- Three hard-cut sub-clips from the real pickup footage. -->
+    <video
+      id="pickup-cut1"
+      class="clip cut"
+      src="assets/clip-pickup.mov"
+      data-start="0"
+      data-duration="2"
+      data-media-start="8"
+      data-track-index="1"
+      muted
+      playsinline
+    ></video>
+    <video
+      id="pickup-cut2"
+      class="clip cut"
+      src="assets/clip-pickup.mov"
+      data-start="2"
+      data-duration="2"
+      data-media-start="16"
+      data-track-index="1"
+      muted
+      playsinline
+    ></video>
+    <video
+      id="pickup-cut3"
+      class="clip cut"
+      src="assets/clip-pickup.mov"
+      data-start="4"
+      data-duration="2"
+      data-media-start="24"
+      data-track-index="1"
+      muted
+      playsinline
+    ></video>
+
+    <div class="vignette"></div>
+
+    <div id="pickup-label" class="label">
+      <span class="label-text">Pickup ouvert</span>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#pickup-cut1", { x: 60, filter: "blur(14px)" }, { x: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 0);
+      tl.fromTo("#pickup-cut2", { x: -60, filter: "blur(14px)" }, { x: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 2);
+      tl.fromTo("#pickup-cut3", { x: 60, filter: "blur(14px)" }, { x: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, 4);
+
+      tl.fromTo(
+        "#pickup-label",
+        { autoAlpha: 0, scale: 0.85, y: 16 },
+        { autoAlpha: 1, scale: 1, y: 0, duration: 0.28, ease: "back.out(2.4)" },
+        0.2,
+      );
+      tl.to("#pickup-label", { autoAlpha: 0, duration: 0.25, ease: "power2.in" }, 1.6);
+
+      window.__timelines["pickup"] = tl;
+    </script>
+  </div>
+</template>

@@ -31,7 +31,7 @@ wordmark "GRAVITY BASKETBALL — MONTRÉAL" en filigrane permanent + plein écra
 ## Customizations
 
 - Voix off IA en français synchronisée sur les coupes (pas seulement du texte à l'écran).
-- Musique instrumentale street/hip-hop énergique, non fournie par le client — à choisir/générer.
+- Pas de musique de fond intégrée (décision du client le 2026-08-12) : la génération locale (MusicGen) échoue faute d'accès réseau à Hugging Face dans ce sandbox, et le client a choisi de ne pas fournir de piste ni de clé API Gemini. Le client ajoutera une piste tendance directement dans Instagram à la publication. Compensé par des SFX ponctuels (whoosh sur les transitions, impact sur le CTA, sparkle sur le logo) pour garder de l'énergie.
 - Logo filigrane discret en permanence à l'écran, wordmark plein écran au générique de fin.
 - Texte animé en accent orange (#FF5C00) pour les mots-clés du script.
 - Transitions dynamiques type whip pan / zoom / cut sur le rythme — pas de plan statique de plus de 2-3s.

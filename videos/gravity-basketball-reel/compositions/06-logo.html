@@ -1,0 +1,81 @@
+<template>
+  <div
+    data-composition-id="logo"
+    id="logo-root"
+    data-width="1080"
+    data-height="1920"
+    data-duration="3"
+    style="position: absolute; inset: 0; overflow: hidden; background: #050505"
+  >
+    <style>
+      #logo-root .dots {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 92, 0, 0.14) 2px, transparent 2px);
+        background-size: 34px 34px;
+        opacity: 0.5;
+      }
+      #logo-root .lockup {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 22px;
+      }
+      #logo-root .wordmark {
+        font-family: "Archivo Black", sans-serif;
+        color: #ffffff;
+        font-size: 104px;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        text-align: center;
+        text-transform: uppercase;
+      }
+      #logo-root .rule {
+        width: 0px;
+        height: 6px;
+        background: #ff5c00;
+        border-radius: 3px;
+      }
+      #logo-root .city {
+        font-family: "Space Mono", monospace;
+        font-weight: 700;
+        font-size: 40px;
+        letter-spacing: 0.32em;
+        color: #ff5c00;
+        text-transform: uppercase;
+      }
+    </style>
+
+    <div class="dots"></div>
+
+    <div class="lockup">
+      <div id="logo-word" class="wordmark">Gravity<br />Basketball</div>
+      <div id="logo-rule" class="rule"></div>
+      <div id="logo-city" class="city">Montréal</div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(
+        "#logo-word",
+        { opacity: 0, scale: 0.82, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "back.out(1.8)" },
+        0.15,
+      );
+      tl.fromTo("#logo-rule", { width: 0 }, { width: 220, duration: 0.35, ease: "power3.out" }, 0.5);
+      tl.fromTo(
+        "#logo-city",
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
+        0.62,
+      );
+
+      window.__timelines["logo"] = tl;
+    </script>
+  </div>
+</template>

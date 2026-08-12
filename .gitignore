@@ -4,3 +4,8 @@ node_modules/
 .agents/
 .claude/
 skills-lock.json
+
+# HyperFrames render output / snapshots (regenerate with `npm run render`)
+videos/*/out/
+videos/*/snapshots/
+videos/*/.transcode-cache/
