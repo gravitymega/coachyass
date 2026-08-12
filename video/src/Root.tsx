@@ -2,6 +2,8 @@ import "./index.css";
 import { Composition } from "remotion";
 import { HelloWorld, myCompSchema } from "./HelloWorld";
 import { Logo, myCompSchema2 } from "./HelloWorld/Logo";
+import { BasketballSlip } from "./BasketballSlip";
+import { DURATION, FPS, HEIGHT, WIDTH } from "./BasketballSlip/constants";
 
 // Each <Composition> is an entry in the sidebar!
 
@@ -41,6 +43,15 @@ export const RemotionRoot: React.FC = () => {
           logoColor1: "#91dAE2" as const,
           logoColor2: "#86A8E7" as const,
         }}
+      />
+
+      <Composition
+        id="BasketballSlip"
+        component={BasketballSlip}
+        durationInFrames={DURATION}
+        fps={FPS}
+        width={WIDTH}
+        height={HEIGHT}
       />
     </>
   );
