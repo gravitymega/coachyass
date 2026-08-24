@@ -3,7 +3,7 @@
 
 const NOTION_DB = process.env.NOTION_DB_COACH_YASS || '7eda882ea6144a65a465e4fdb1e92b94';
 
-const MONTANTS = { '1': 20, '3': 55, '6': 100, '12': 180 };
+const MONTANTS = { '1': 30, '3': 65, '6': 110, '12': 190 };
 
 exports.handler = async (event) => {
   const headers = {
