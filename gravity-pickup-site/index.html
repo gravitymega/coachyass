@@ -389,6 +389,11 @@
         <input type="checkbox" data-role="consent" value="Oui">
         <span>J'autorise Gravity Pickup à utiliser des photos/vidéos prises pendant la séance sur ses réseaux sociaux (Instagram, TikTok, etc.).</span>
       </label>
+
+      <label class="consent">
+        <input type="checkbox" data-role="waiver" value="Oui" required>
+        <span>Je reconnais que la pratique du basketball comporte des risques de blessures et je participe aux séances à mes propres risques. Je décharge Gravity Pickup de toute responsabilité en cas de blessure survenue avant, pendant ou après une séance.</span>
+      </label>
     </div>
 
     <div class="recap" data-role="recap" aria-live="polite">
@@ -562,6 +567,7 @@
     if (!/^[\d\s\-\+\(\)\.]{7,}$/.test(phone)) { showError('Veuillez indiquer un numéro de téléphone valide (ex : 514-123-4567).'); return; }
     const email = root.querySelector('[data-role="email"]').value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Veuillez indiquer une adresse email valide.'); return; }
+    if (!root.querySelector('[data-role="waiver"]').checked) { showError('Veuillez accepter la décharge de responsabilité pour continuer.'); return; }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Envoi en cours...';
@@ -578,6 +584,7 @@
       'Téléphone': phone,
       'Email': email,
       'Autorisation réseaux sociaux': consent ? 'Oui' : 'Non',
+      'Décharge de responsabilité': 'Acceptée',
       'Niveau': niveau.value,
       'Attentes': root.querySelector('[data-role="attentes"]').value.trim() || '—'
     };

@@ -358,6 +358,11 @@
         <input type="checkbox" name="Autorisation réseaux sociaux" value="Oui">
         <span>J'autorise Coach Yass à utiliser des photos/vidéos prises pendant la séance sur ses réseaux sociaux (Instagram, TikTok, etc.).</span>
       </label>
+
+      <label class="consent">
+        <input type="checkbox" name="Décharge de responsabilité" value="Oui" data-role="waiver" required>
+        <span>Je reconnais que la pratique du basketball comporte des risques de blessures et je participe aux séances à mes propres risques. Je décharge Coach Yass de toute responsabilité en cas de blessure survenue avant, pendant ou après une séance.</span>
+      </label>
     </div>
 
     <div class="recap" id="recap" aria-live="polite">
@@ -491,6 +496,7 @@
     if (!/^[\d\s\-\+\(\)\.]{7,}$/.test(phone)) { showError('Veuillez indiquer un numéro de téléphone valide (ex : 514-123-4567).'); return; }
     const email = document.getElementById('email').value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Veuillez indiquer une adresse email valide.'); return; }
+    if (!form.querySelector('input[data-role="waiver"]').checked) { showError('Veuillez accepter la décharge de responsabilité pour continuer.'); return; }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Envoi en cours...';
@@ -507,7 +513,8 @@
       'Téléphone': phone,
       'Email': email,
       'Remarque': document.getElementById('notes').value.trim() || '—',
-      'Autorisation réseaux sociaux': form.querySelector('input[name="Autorisation réseaux sociaux"]').checked ? 'Oui' : 'Non'
+      'Autorisation réseaux sociaux': form.querySelector('input[name="Autorisation réseaux sociaux"]').checked ? 'Oui' : 'Non',
+      'Décharge de responsabilité': 'Acceptée'
     };
 
     // Données structurées pour Notion
