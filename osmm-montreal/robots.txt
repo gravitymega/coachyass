@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://osmm-montreal.netlify.app/sitemap.xml
+Sitemap: https://osmm-mtl.site/sitemap.xml
