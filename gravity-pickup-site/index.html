@@ -404,17 +404,14 @@
     return d.toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   }
 
-  function nextWeeklyDates(weekday, count) {
-    const dates = [];
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    while (d.getDay() !== weekday) d.setDate(d.getDate() + 1);
-    for (let i = 0; i < count; i++) {
-      const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-      dates.push(iso);
-      d.setDate(d.getDate() + 7);
-    }
-    return dates;
+  const FIXED_DATES = {
+    mercredi: ['2026-08-26'],
+    jeudi: ['2026-08-27','2026-09-03','2026-09-10','2026-09-17','2026-09-24','2026-10-01','2026-10-08','2026-10-15','2026-10-22','2026-10-29','2026-11-05','2026-11-12','2026-11-19','2026-11-26','2026-12-03'],
+    samedi: ['2026-08-29','2026-09-05']
+  };
+
+  function upcomingDates(creneauKey, count) {
+    return (FIXED_DATES[creneauKey] || []).slice(0, count);
   }
 
   root.querySelectorAll('.pkg').forEach(pkg => {
@@ -455,7 +452,7 @@
   function renderDates() {
     datesContainer.innerHTML = '';
     if (!seanceCount || !selectedCreneau) return;
-    const dates = nextWeeklyDates(selectedCreneau.weekday, seanceCount);
+    const dates = upcomingDates(selectedCreneau.key, seanceCount);
     dates.forEach((iso, i) => {
       const div = document.createElement('div');
       div.className = 'seance-preview';
@@ -463,6 +460,15 @@
       div.dataset.iso = iso;
       datesContainer.appendChild(div);
     });
+    if (dates.length < seanceCount) {
+      const warn = document.createElement('p');
+      warn.className = 'hint';
+      warn.style.color = '#9A3E0F';
+      warn.textContent = dates.length
+        ? `⚠️ Il ne reste que ${dates.length} date(s) disponible(s) pour ce créneau (sur ${seanceCount} séances du forfait).`
+        : `⚠️ Aucune date disponible pour ce créneau pour le moment.`;
+      datesContainer.appendChild(warn);
+    }
     updateRecap();
   }
 
