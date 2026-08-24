@@ -146,6 +146,7 @@
     color:var(--orange);
     font-weight:800;
   }
+  .hint{font-size:12px;color:var(--gray);margin:0 0 14px;line-height:1.4;}
   .rain-note{
     background:var(--field);
     border:1px solid var(--border);
@@ -356,6 +357,13 @@
       </label>
     </div>
 
+    <div class="card">
+      <h2>💳 Paiement Interac</h2>
+      <p class="hint">Envoie le montant du forfait par virement Interac au <strong>438-341-2051</strong> ou <strong>mqtad9@hotmail.com</strong>, puis colle ici le numéro de référence reçu par courriel pour confirmer ta réservation.</p>
+      <label for="interacRef">Numéro de référence Interac</label>
+      <input type="text" id="interacRef" name="Référence Interac" placeholder="Ex : 123456789" required>
+    </div>
+
     <div class="recap" id="recap" aria-live="polite">
       <div class="recap-title">Récapitulatif</div>
       <div id="recapText"></div>
@@ -488,6 +496,8 @@
     const email = document.getElementById('email').value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Veuillez indiquer une adresse email valide.'); return; }
     if (!form.querySelector('input[data-role="waiver"]').checked) { showError('Veuillez accepter la décharge de responsabilité pour continuer.'); return; }
+    const interacRef = document.getElementById('interacRef').value.trim();
+    if (!interacRef) { showError('Veuillez indiquer le numéro de référence Interac reçu après votre paiement.'); return; }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Envoi en cours...';
@@ -505,7 +515,8 @@
       'Email': email,
       'Remarque': document.getElementById('notes').value.trim() || '—',
       'Autorisation réseaux sociaux': form.querySelector('input[name="Autorisation réseaux sociaux"]').checked ? 'Oui' : 'Non',
-      'Décharge de responsabilité': 'Acceptée'
+      'Décharge de responsabilité': 'Acceptée',
+      'Référence Interac': interacRef
     };
 
     // Données structurées pour Notion
@@ -520,7 +531,8 @@
       heure: timeInput.value,
       terrain: document.getElementById('park').value.trim(),
       remarque: document.getElementById('notes').value.trim(),
-      photos: form.querySelector('input[name="Autorisation réseaux sociaux"]').checked
+      photos: form.querySelector('input[name="Autorisation réseaux sociaux"]').checked,
+      referenceInterac: interacRef
     };
 
     try {

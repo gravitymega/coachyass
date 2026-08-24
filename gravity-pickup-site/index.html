@@ -374,6 +374,20 @@
       <div class="seance-preview" data-role="payment-note" style="display:none;"></div>
       <a class="zeffy-btn" data-role="zeffy" href="#" target="_blank" rel="noopener" style="display:none;">🎟️ Payer avec Zeffy</a>
 
+      <label>Mode de paiement</label>
+      <label class="consent">
+        <input type="radio" name="ModePaiement" value="Interac" data-role="pay-interac" required>
+        <span>Interac — au 438-341-2051 ou mqtad9@hotmail.com</span>
+      </label>
+      <label class="consent">
+        <input type="radio" name="ModePaiement" value="Zeffy" data-role="pay-zeffy">
+        <span>Zeffy — via le bouton de paiement en ligne ci-dessus</span>
+      </label>
+      <div data-role="interac-ref-wrap" style="display:none;">
+        <label for="interacRef">Numéro de référence Interac</label>
+        <input type="text" id="interacRef" data-role="interacRef" placeholder="Ex : 123456789">
+      </div>
+
       <label class="consent">
         <input type="checkbox" data-role="consent" value="Oui">
         <span>J'autorise Gravity Pickups à utiliser des photos/vidéos prises pendant la séance sur ses réseaux sociaux (Instagram, TikTok, etc.).</span>
@@ -425,6 +439,19 @@
   const creneauxGroup = root.querySelector('[data-role="creneaux"]');
   const paymentNote = root.querySelector('[data-role="payment-note"]');
   const zeffyBtn = root.querySelector('[data-role="zeffy"]');
+  const interacRefWrap = root.querySelector('[data-role="interac-ref-wrap"]');
+  const interacRefInput = root.querySelector('[data-role="interacRef"]');
+
+  root.querySelectorAll('input[name="ModePaiement"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (radio.value === 'Interac' && radio.checked) {
+        interacRefWrap.style.display = 'block';
+      } else if (radio.checked) {
+        interacRefWrap.style.display = 'none';
+        interacRefInput.value = '';
+      }
+    });
+  });
 
   const ZEFFY_LINKS = {
     mercredi: 'https://www.zeffy.com/en-CA/ticketing/gravity-ligue-maison-inscription',
@@ -557,6 +584,10 @@
     const email = root.querySelector('[data-role="email"]').value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Veuillez indiquer une adresse email valide.'); return; }
     if (!root.querySelector('[data-role="waiver"]').checked) { showError('Veuillez accepter la décharge de responsabilité pour continuer.'); return; }
+    const modePaiement = form.querySelector('input[name="ModePaiement"]:checked');
+    if (!modePaiement) { showError('Veuillez choisir un mode de paiement.'); return; }
+    const interacRef = interacRefInput.value.trim();
+    if (modePaiement.value === 'Interac' && !interacRef) { showError('Veuillez indiquer le numéro de référence Interac reçu après votre paiement.'); return; }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Envoi en cours...';
@@ -574,6 +605,8 @@
       'Email': email,
       'Autorisation réseaux sociaux': consent ? 'Oui' : 'Non',
       'Décharge de responsabilité': 'Acceptée',
+      'Mode de paiement': modePaiement.value,
+      'Référence Interac': interacRef || '—',
       'Niveau': niveau.value,
       'Attentes': root.querySelector('[data-role="attentes"]').value.trim() || '—'
     };
@@ -594,7 +627,9 @@
       photos: consent,
       creneau: selectedCreneau.label,
       niveau: niveau.value,
-      attentes: root.querySelector('[data-role="attentes"]').value.trim()
+      attentes: root.querySelector('[data-role="attentes"]').value.trim(),
+      modePaiement: modePaiement.value,
+      referenceInterac: interacRef
     };
 
     try {

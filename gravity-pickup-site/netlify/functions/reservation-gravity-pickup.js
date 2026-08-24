@@ -123,6 +123,8 @@ exports.handler = async (event) => {
       if (d.niveau) properties['Niveau'] = { select: { name: String(d.niveau) } };
       if (d.telephone) properties['Téléphone'] = { phone_number: String(d.telephone).slice(0, 50) };
       if (d.attentes) properties['Attentes'] = { rich_text: [{ text: { content: String(d.attentes).slice(0, 1800) } }] };
+      if (d.modePaiement) properties['Mode de paiement'] = { select: { name: String(d.modePaiement) } };
+      if (d.referenceInterac) properties['Référence Interac'] = { rich_text: [{ text: { content: String(d.referenceInterac).slice(0, 200) } }] };
 
       const res = await notionFetch('/v1/pages', {
         method: 'POST',

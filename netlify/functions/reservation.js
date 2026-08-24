@@ -55,6 +55,7 @@ exports.handler = async (event) => {
   if (d.terrain) properties['Terrain'] = { rich_text: [{ text: { content: String(d.terrain).slice(0, 1800) } }] };
   if (d.telephone) properties['Téléphone'] = { phone_number: String(d.telephone).slice(0, 50) };
   if (d.remarque) properties['Remarque'] = { rich_text: [{ text: { content: String(d.remarque).slice(0, 1800) } }] };
+  if (d.referenceInterac) properties['Référence Interac'] = { rich_text: [{ text: { content: String(d.referenceInterac).slice(0, 200) } }] };
 
   try {
     const res = await fetch('https://api.notion.com/v1/pages', {
