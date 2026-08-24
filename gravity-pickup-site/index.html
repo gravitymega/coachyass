@@ -195,6 +195,25 @@
     margin-bottom:6px;
     color:rgba(245,240,225,.75);
   }
+  .zeffy-btn{
+    display:block;
+    text-align:center;
+    width:100%;
+    padding:12px;
+    margin-bottom:14px;
+    background:#fff;
+    color:var(--orange);
+    border:2px solid var(--orange);
+    border-radius:10px;
+    font-family:'Archivo',sans-serif;
+    font-variation-settings:"wdth" 110, "wght" 800;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    font-size:14px;
+    text-decoration:none;
+    transition:background .15s, color .15s;
+  }
+  .zeffy-btn:hover{background:var(--orange);color:#fff;}
   .submit-btn{
     width:100%;
     padding:15px;
@@ -349,6 +368,7 @@
       <input type="email" id="email" data-role="email" autocomplete="email" required>
 
       <div class="seance-preview" data-role="payment-note" style="display:none;"></div>
+      <a class="zeffy-btn" data-role="zeffy" href="#" target="_blank" rel="noopener" style="display:none;">🎟️ Payer avec Zeffy</a>
 
       <label class="consent">
         <input type="checkbox" data-role="consent" value="Oui">
@@ -395,6 +415,13 @@
   const datesContainer = root.querySelector('[data-role="dates-container"]');
   const creneauxGroup = root.querySelector('[data-role="creneaux"]');
   const paymentNote = root.querySelector('[data-role="payment-note"]');
+  const zeffyBtn = root.querySelector('[data-role="zeffy"]');
+
+  const ZEFFY_LINKS = {
+    mercredi: 'https://www.zeffy.com/en-CA/ticketing/gravity-ligue-maison-inscription',
+    jeudi: 'https://www.zeffy.com/en-CA/ticketing/gravity-pickup-jeudi-andre-grasset-5v5-18-ans-et',
+    samedi: 'https://www.zeffy.com/en-CA/ticketing/gravity-pickup-samedi-dorval-5v5-18-ans-et'
+  };
 
   let seanceCount = 0;
   let selectedCreneau = null;
@@ -438,6 +465,13 @@
         lieu: cr.dataset.lieu,
         label: cr.querySelector('input').value
       };
+      const zeffyUrl = ZEFFY_LINKS[cr.dataset.key];
+      if (zeffyUrl) {
+        zeffyBtn.href = zeffyUrl;
+        zeffyBtn.style.display = 'block';
+      } else {
+        zeffyBtn.style.display = 'none';
+      }
       renderDates();
       updateRecap();
     });
