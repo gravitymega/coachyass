@@ -279,6 +279,29 @@
     margin:0 0 10px;
   }
   .success p{color:var(--gray);font-size:14px;line-height:1.6;margin:0 0 6px;}
+  .success-payment{
+    display:none;
+    text-align:left;
+    background:var(--field);
+    border:1px solid var(--border);
+    border-left:3px solid var(--orange);
+    border-radius:10px;
+    padding:14px 16px;
+    margin:16px 0;
+    font-size:14px;
+    line-height:1.6;
+    color:var(--ink);
+  }
+  .success-payment.visible{display:block;}
+  .success-payment .pay-title{
+    font-family:'Anton',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    font-size:12px;
+    color:var(--orange);
+    margin-bottom:8px;
+  }
+  .success-payment p{color:var(--ink);margin:0;}
   .footer-note{
     text-align:center;
     font-size:13.5px;
@@ -385,32 +408,25 @@
       </label>
     </div>
 
-    <div class="card">
-      <h2>💳 Paiement Interac</h2>
-      <p class="hint">Envoie le montant du forfait par virement Interac au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou <strong>mqtad9@hotmail.com</strong>, puis colle ici le numéro de référence reçu par courriel pour confirmer ta réservation.</p>
-      <label for="interacRef">Numéro de référence Interac</label>
-      <input type="text" id="interacRef" name="Référence Interac" placeholder="Ex : 123456789" required>
-    </div>
-
     <div class="recap" id="recap" aria-live="polite">
       <div class="recap-title">Récapitulatif</div>
       <div id="recapText"></div>
     </div>
 
-    <button type="submit" class="submit-btn" id="submitBtn">Envoyer ma demande de réservation</button>
+    <button type="submit" class="submit-btn" id="submitBtn">Réserver ma place</button>
 
     <div class="error-msg" id="errorMsg"></div>
 
     <div class="summary">
-      Le paiement se fait séparément avec Gravity Coaching<br>
-      (sur place, Interac ou virement).
+      Le paiement (Interac) se complète juste après votre réservation.
     </div>
   </form>
 
   <div class="success" id="successBox">
     <div class="check">✓</div>
-    <h2>Demande envoyée !</h2>
+    <h2>Réservation reçue !</h2>
     <p>Merci ! Gravity Coaching a bien reçu votre demande de réservation.</p>
+    <div class="success-payment" id="successPayment"></div>
     <p>Vous recevrez une confirmation par email avant la séance.</p>
   </div>
 
@@ -508,6 +524,16 @@
     errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
+  const successPayment = document.getElementById('successPayment');
+
+  function renderSuccessPayment(price) {
+    successPayment.innerHTML = `
+      <div class="pay-title">💳 Paiement — Interac</div>
+      <p>Envoyez ${price ? `<strong>${price} $</strong>` : 'le montant du forfait'} par virement Interac au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou à mqtad9@hotmail.com pour confirmer votre place.</p>
+    `;
+    successPayment.classList.add('visible');
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorMsg.classList.remove('visible');
@@ -524,8 +550,6 @@
     const email = document.getElementById('email').value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Veuillez indiquer une adresse email valide.'); return; }
     if (!form.querySelector('input[data-role="waiver"]').checked) { showError('Veuillez accepter la décharge de responsabilité pour continuer.'); return; }
-    const interacRef = document.getElementById('interacRef').value.trim();
-    if (!interacRef) { showError('Veuillez indiquer le numéro de référence Interac reçu après votre paiement.'); return; }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Envoi en cours...';
@@ -543,8 +567,7 @@
       'Email': email,
       'Remarque': document.getElementById('notes').value.trim() || '—',
       'Autorisation réseaux sociaux': form.querySelector('input[name="Autorisation réseaux sociaux"]').checked ? 'Oui' : 'Non',
-      'Décharge de responsabilité': 'Acceptée',
-      'Référence Interac': interacRef
+      'Décharge de responsabilité': 'Acceptée'
     };
 
     // Données structurées pour Notion
@@ -559,8 +582,7 @@
       heure: timeInput.value,
       terrain: document.getElementById('park').value.trim(),
       remarque: document.getElementById('notes').value.trim(),
-      photos: form.querySelector('input[name="Autorisation réseaux sociaux"]').checked,
-      referenceInterac: interacRef
+      photos: form.querySelector('input[name="Autorisation réseaux sociaux"]').checked
     };
 
     try {
@@ -579,12 +601,14 @@
       ]);
       const ok = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
       if (!ok) throw new Error('Erreur réseau');
+      const priceMatch = forfait.value.match(/(\d+(?:[.,]\d+)?)\s*\$\s*$/);
+      renderSuccessPayment(priceMatch ? priceMatch[1] : '');
       form.style.display = 'none';
       successBox.classList.add('visible');
       successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (err) {
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Envoyer ma demande de réservation';
+      submitBtn.textContent = 'Réserver ma place';
       showError("L'envoi n'a pas fonctionné. Vérifiez votre connexion internet et réessayez.");
     }
   });
