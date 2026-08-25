@@ -304,6 +304,30 @@
     margin:0 0 10px;
   }
   .success p{color:var(--gray);font-size:14px;line-height:1.6;margin:0 0 6px;}
+  .success-payment{
+    display:none;
+    text-align:left;
+    background:var(--field);
+    border:1px solid var(--border);
+    border-left:3px solid var(--orange);
+    border-radius:10px;
+    padding:14px 16px;
+    margin:16px 0;
+    font-size:14px;
+    line-height:1.6;
+    color:var(--ink);
+  }
+  .success-payment.visible{display:block;}
+  .success-payment .pay-title{
+    font-family:'Anton',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    font-size:12px;
+    color:var(--orange);
+    margin-bottom:8px;
+  }
+  .success-payment p{color:var(--ink);}
+  .success-payment .zeffy-btn{margin:10px 0 0;}
   .footer-note{
     text-align:center;
     font-size:13.5px;
@@ -401,7 +425,6 @@
       <input type="email" id="email" data-role="email" autocomplete="email" required>
 
       <div class="seance-preview" data-role="payment-note" style="display:none;"></div>
-      <a class="zeffy-btn" data-role="zeffy" href="#" target="_blank" rel="noopener" style="display:none;">🎟️ Payer avec Zeffy</a>
 
       <label>Mode de paiement</label>
       <label class="consent">
@@ -410,12 +433,8 @@
       </label>
       <label class="consent">
         <input type="radio" name="ModePaiement" value="Zeffy" data-role="pay-zeffy">
-        <span>Zeffy — via le bouton de paiement en ligne ci-dessus</span>
+        <span>Zeffy — paiement en ligne par carte</span>
       </label>
-      <div data-role="interac-ref-wrap" style="display:none;">
-        <label for="interacRef">Numéro de référence Interac</label>
-        <input type="text" id="interacRef" data-role="interacRef" placeholder="Ex : 123456789">
-      </div>
 
       <label class="consent">
         <input type="checkbox" data-role="consent" value="Oui">
@@ -433,15 +452,16 @@
       <div data-role="recap-text"></div>
     </div>
 
-    <button type="submit" class="submit-btn" data-role="submit">Envoyer ma demande de réservation</button>
+    <button type="submit" class="submit-btn" data-role="submit">Réserver ma place</button>
     <div class="error-msg" data-role="error"></div>
-    <div class="summary">Paiement par virement Interac<br>au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou mqtad9@hotmail.com.</div>
+    <div class="summary">Le paiement (Interac ou Zeffy) se complète juste après votre réservation.</div>
   </form>
 
   <div class="success" data-role="success">
     <div class="check">✓</div>
-    <h3>Demande envoyée !</h3>
-    <p>Merci ! Gravity Pickups a bien reçu votre inscription.</p>
+    <h3>Réservation reçue !</h3>
+    <p>Merci ! Gravity Pickups a bien reçu votre réservation.</p>
+    <div class="success-payment" data-role="success-payment"></div>
     <p>Vous recevrez une confirmation par email avant la séance.</p>
   </div>
 
@@ -467,20 +487,7 @@
   const datesContainer = root.querySelector('[data-role="dates-container"]');
   const creneauxGroup = root.querySelector('[data-role="creneaux"]');
   const paymentNote = root.querySelector('[data-role="payment-note"]');
-  const zeffyBtn = root.querySelector('[data-role="zeffy"]');
-  const interacRefWrap = root.querySelector('[data-role="interac-ref-wrap"]');
-  const interacRefInput = root.querySelector('[data-role="interacRef"]');
-
-  root.querySelectorAll('input[name="ModePaiement"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-      if (radio.value === 'Interac' && radio.checked) {
-        interacRefWrap.style.display = 'block';
-      } else if (radio.checked) {
-        interacRefWrap.style.display = 'none';
-        interacRefInput.value = '';
-      }
-    });
-  });
+  const successPayment = root.querySelector('[data-role="success-payment"]');
 
   const ZEFFY_LINKS = {
     mercredi: 'https://www.zeffy.com/en-CA/ticketing/gravity-ligue-maison-inscription',
@@ -530,13 +537,6 @@
         lieu: cr.dataset.lieu,
         label: cr.querySelector('input').value
       };
-      const zeffyUrl = ZEFFY_LINKS[cr.dataset.key];
-      if (zeffyUrl) {
-        zeffyBtn.href = zeffyUrl;
-        zeffyBtn.style.display = 'block';
-      } else {
-        zeffyBtn.style.display = 'none';
-      }
       renderDates();
       updateRecap();
     });
@@ -545,7 +545,24 @@
   function updatePaymentNote(pkg) {
     const price = pkg.dataset.price;
     paymentNote.style.display = 'flex';
-    paymentNote.innerHTML = `<span>💳 Paiement</span><strong>Interac ${price} $ — <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou mqtad9@hotmail.com</strong>`;
+    paymentNote.innerHTML = `<span>💳 Montant</span><strong>${price} $</strong>`;
+  }
+
+  function renderSuccessPayment(mode, price) {
+    if (mode === 'Zeffy') {
+      const zeffyUrl = selectedCreneau ? ZEFFY_LINKS[selectedCreneau.key] : null;
+      successPayment.innerHTML = `
+        <div class="pay-title">💳 Paiement — Zeffy</div>
+        <p style="margin:0 0 4px;">Complétez votre paiement de <strong>${price} $</strong> en ligne pour confirmer votre place.</p>
+        ${zeffyUrl ? `<a class="zeffy-btn" href="${zeffyUrl}" target="_blank" rel="noopener">🎟️ Payer avec Zeffy</a>` : ''}
+      `;
+    } else {
+      successPayment.innerHTML = `
+        <div class="pay-title">💳 Paiement — Interac</div>
+        <p style="margin:0;">Envoyez <strong>${price} $</strong> par virement Interac au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou à mqtad9@hotmail.com pour confirmer votre place.</p>
+      `;
+    }
+    successPayment.classList.add('visible');
   }
 
   function renderDates() {
@@ -615,8 +632,6 @@
     if (!root.querySelector('[data-role="waiver"]').checked) { showError('Veuillez accepter la décharge de responsabilité pour continuer.'); return; }
     const modePaiement = form.querySelector('input[name="ModePaiement"]:checked');
     if (!modePaiement) { showError('Veuillez choisir un mode de paiement.'); return; }
-    const interacRef = interacRefInput.value.trim();
-    if (modePaiement.value === 'Interac' && !interacRef) { showError('Veuillez indiquer le numéro de référence Interac reçu après votre paiement.'); return; }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Envoi en cours...';
@@ -635,7 +650,6 @@
       'Autorisation réseaux sociaux': consent ? 'Oui' : 'Non',
       'Décharge de responsabilité': 'Acceptée',
       'Mode de paiement': modePaiement.value,
-      'Référence Interac': interacRef || '—',
       'Niveau': niveau.value,
       'Attentes': root.querySelector('[data-role="attentes"]').value.trim() || '—'
     };
@@ -657,8 +671,7 @@
       creneau: selectedCreneau.label,
       niveau: niveau.value,
       attentes: root.querySelector('[data-role="attentes"]').value.trim(),
-      modePaiement: modePaiement.value,
-      referenceInterac: interacRef
+      modePaiement: modePaiement.value
     };
 
     try {
@@ -679,13 +692,14 @@
       if (notionResult.status === 'fulfilled' && notionResult.value && notionResult.value.status === 409) {
         const body = await notionResult.value.json().catch(() => ({}));
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Envoyer ma demande de réservation';
+        submitBtn.textContent = 'Réserver ma place';
         showError(body.error || "Cette date est complète (15 places prises). Merci de choisir une autre date.");
         return;
       }
 
       const ok = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
       if (!ok) throw new Error('Erreur réseau');
+      renderSuccessPayment(modePaiement.value, pkgEl ? pkgEl.dataset.price : '');
       form.style.display = 'none';
       successBox.classList.add('visible');
       successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
