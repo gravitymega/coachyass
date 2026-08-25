@@ -1,0 +1,7 @@
+{
+  "name": "gravity-pickup",
+  "private": true,
+  "dependencies": {
+    "nodemailer": "^9.0.5"
+  }
+}
