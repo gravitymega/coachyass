@@ -238,6 +238,9 @@
   .submit-btn:disabled{background:#3A3A3A;color:#8a8a85;cursor:not-allowed;}
   .submit-btn:focus-visible{outline:3px solid var(--orange);outline-offset:2px;}
   .summary{font-size:13px;color:var(--gray);text-align:center;margin-top:12px;line-height:1.5;}
+  .tel-link{color:var(--orange);font-weight:600;text-decoration:none;}
+  .tel-link:visited{color:var(--orange);}
+  .tel-link:hover{text-decoration:underline;}
   .error-msg{
     display:none;
     background:#2A1310;
@@ -377,7 +380,7 @@
       <label>Mode de paiement</label>
       <label class="consent">
         <input type="radio" name="ModePaiement" value="Interac" data-role="pay-interac" required>
-        <span>Interac — au 438-341-2051 ou mqtad9@hotmail.com</span>
+        <span>Interac — au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou mqtad9@hotmail.com</span>
       </label>
       <label class="consent">
         <input type="radio" name="ModePaiement" value="Zeffy" data-role="pay-zeffy">
@@ -406,7 +409,7 @@
 
     <button type="submit" class="submit-btn" data-role="submit">Envoyer ma demande de réservation</button>
     <div class="error-msg" data-role="error"></div>
-    <div class="summary">Paiement par virement Interac<br>au 438-341-2051 ou mqtad9@hotmail.com.</div>
+    <div class="summary">Paiement par virement Interac<br>au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou mqtad9@hotmail.com.</div>
   </form>
 
   <div class="success" data-role="success">
@@ -516,7 +519,7 @@
   function updatePaymentNote(pkg) {
     const price = pkg.dataset.price;
     paymentNote.style.display = 'flex';
-    paymentNote.innerHTML = `<span>💳 Paiement</span><strong>Interac ${price} $ — 438-341-2051 ou mqtad9@hotmail.com</strong>`;
+    paymentNote.innerHTML = `<span>💳 Paiement</span><strong>Interac ${price} $ — <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou mqtad9@hotmail.com</strong>`;
   }
 
   function renderDates() {
