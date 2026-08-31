@@ -491,6 +491,10 @@ document.addEventListener('DOMContentLoaded', () => {
       ? `<span class="team-genre-badge">${escapeHtml(team.genre)}</span>`
       : '';
 
+    const description = team.description
+      ? `<p class="team-description">${escapeHtml(team.description)}</p>`
+      : '';
+
     return `
       <div class="team-card">
         <div class="team-card-head">
@@ -498,6 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ${genreBadge}
         </div>
         ${poster}
+        ${description}
         <div class="team-zeffy">${zeffy}</div>
         <div class="players-grid">${playersHtml}</div>
       </div>`;

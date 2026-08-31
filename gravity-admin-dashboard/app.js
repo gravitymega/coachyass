@@ -13,6 +13,7 @@ const SITE_LABELS = {
   coachyass: 'CoachYass',
   basketlibre: 'BasketLibre',
   'gravity-basketball-mtl': 'Gravity Basketball MTL',
+  osmm: 'OSMM Montréal',
 };
 // Panneau "Disponibilités" — pertinent uniquement pour Gravity Coaching
 // (site interne 'coachyass') et Gravity Pickup (site interne 'basketlibre').
@@ -187,6 +188,7 @@ const teamFormTitle = document.getElementById('team-form-title');
 const teamIdInput = document.getElementById('team-id');
 const teamAfficheFileInput = document.getElementById('team-affiche-file');
 const teamAffichePreviewEl = document.getElementById('team-affiche-preview');
+const teamDescriptionInput = document.getElementById('team-description');
 const teamZeffyInput = document.getElementById('team-zeffy');
 const teamOrderInput = document.getElementById('team-order');
 const teamActiveCheckbox = document.getElementById('team-active');
@@ -966,6 +968,7 @@ function openTeamForm(team) {
   teamForm.hidden = false;
   teamIdInput.value = team.id;
   teamFormTitle.textContent = `${team.categorie} — ${team.genre} (${team.nom_equipe})`;
+  teamDescriptionInput.value = team.description || '';
   teamZeffyInput.value = team.zeffy_url || '';
   teamOrderInput.value = team.display_order;
   teamActiveCheckbox.checked = team.active;
@@ -1018,6 +1021,7 @@ teamForm?.addEventListener('submit', async (e) => {
 
   const payload = {
     affiche_url: afficheUrl,
+    description: teamDescriptionInput.value.trim() || null,
     zeffy_url: teamZeffyInput.value.trim() || null,
     display_order: parseInt(teamOrderInput.value, 10) || 0,
     active: teamActiveCheckbox.checked,
