@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const programmeRadios = form.querySelectorAll('input[name="programme"]');
   const fieldTypeInscription = document.getElementById('field-type-inscription');
   const fieldPrepDetails = document.getElementById('field-prep-details');
+  const dechargePrepCheckbox = document.getElementById('decharge_prep');
   const ageCategorieSelect = document.getElementById('age_categorie');
   const inscriptionTitle = document.getElementById('inscription-title');
   const programmeToggles = document.querySelectorAll('#field-programme .type-toggle');
@@ -68,6 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (fieldPrepDetails) fieldPrepDetails.style.display = isPrep ? 'block' : 'none';
+    // La décharge n'est exigée (et interactible) que pour Gravity Prep — un
+    // champ requis mais caché bloquerait la soumission des autres programmes.
+    if (dechargePrepCheckbox) {
+      dechargePrepCheckbox.required = isPrep;
+      if (!isPrep) dechargePrepCheckbox.checked = false;
+    }
 
     ageCategorieSelect.value = isLigueMaison ? '9-10 ans' : (isPrep ? 'Prep' : '13-14 ans');
     inscriptionTitle.textContent = isLigueMaison
@@ -140,6 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
           poids: get('poids'),
           occupation: get('occupation'),
           objectif_saison: get('objectif_saison'),
+          reseaux_sociaux: get('reseaux_sociaux'),
+          disponibilites: get('disponibilites'),
+          decharge_acceptee: data.get('decharge_prep') === 'Oui',
         } : {}),
       },
     };
