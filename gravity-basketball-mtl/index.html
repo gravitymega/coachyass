@@ -520,6 +520,18 @@
           <input type="text" id="reference" name="reference" placeholder="Nom d'un ami, d'un coéquipier...">
         </div>
 
+        <div class="field" id="field-mode-paiement">
+          <label>Mode de paiement</label>
+          <label class="checkbox-field">
+            <input type="radio" name="mode_paiement" value="Interac" checked>
+            <span>Interac — au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou mqtad9@hotmail.com</span>
+          </label>
+          <label class="checkbox-field">
+            <input type="radio" name="mode_paiement" value="Zeffy">
+            <span>Zeffy — paiement en ligne par carte</span>
+          </label>
+        </div>
+
         <label class="checkbox-field">
           <input type="checkbox" name="consentement_medias" value="Oui">
           <span>J'autorise Gravity Basketball à utiliser des photos/vidéos prises pendant les matchs (résumés, réseaux sociaux Instagram/Facebook).</span>
@@ -533,7 +545,10 @@
         <h3>Demande envoyée !</h3>
         <p>Merci ! Gravity Basketball a bien reçu ta demande d'inscription.</p>
         <p>On te recontacte par téléphone, courriel ou Instagram pour confirmer.</p>
-        <div class="zeffy-payment-cta" id="zeffy-payment-cta" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border, #2a2536);">
+        <div class="zeffy-payment-cta" id="interac-payment-cta" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border, #2a2536);" hidden>
+          <p class="section-lead">Dernière étape : envoie le montant d'inscription par virement Interac au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou à mqtad9@hotmail.com pour confirmer ta place.</p>
+        </div>
+        <div class="zeffy-payment-cta" id="zeffy-payment-cta" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border, #2a2536);" hidden>
           <p class="section-lead" style="margin-bottom:12px;">Dernière étape : règle les frais d'inscription en ligne (paiement sécurisé par carte débit et crédit, sans frais pour Gravity Basketball).</p>
           <a href="#" id="zeffy-payment-link" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Payer par carte débit et crédit</a>
         </div>

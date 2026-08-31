@@ -138,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         remarque: get('remarque'),
         reference: get('reference'),
         consentement_medias: data.get('consentement_medias') === 'Oui',
+        mode_paiement: get('mode_paiement') || 'Interac',
         ...(isPrep ? {
           adresse: get('adresse'),
           niveau: get('niveau'),
@@ -168,19 +169,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!res.ok) throw new Error('supabase insert failed: ' + res.status);
         form.hidden = true;
         success.hidden = false;
+        const interacCta = document.getElementById('interac-payment-cta');
         const zeffyCta = document.getElementById('zeffy-payment-cta');
         const zeffyLink = document.getElementById('zeffy-payment-link');
         const paymentPendingCta = document.getElementById('payment-pending-cta');
+        const modePaiement = get('mode_paiement') || 'Interac';
         const link = ZEFFY_LINKS[programme];
-        if (link) {
-          if (zeffyLink) zeffyLink.href = link;
-          if (zeffyCta) zeffyCta.hidden = false;
-          if (paymentPendingCta) paymentPendingCta.hidden = true;
+
+        interacCta.hidden = true;
+        zeffyCta.hidden = true;
+        paymentPendingCta.hidden = true;
+
+        if (modePaiement === 'Zeffy' && link) {
+          zeffyLink.href = link;
+          zeffyCta.hidden = false;
+        } else if (modePaiement === 'Zeffy') {
+          // Zeffy choisi mais pas de lien dédié pour ce programme (ex. Gravity
+          // Prep) — on ne redirige jamais vers le mauvais événement de paiement.
+          paymentPendingCta.hidden = false;
         } else {
-          // Pas de lien Zeffy dédié pour ce programme (ex. Ligue 3v3) — on ne
-          // redirige jamais vers le mauvais événement de paiement.
-          if (zeffyCta) zeffyCta.hidden = true;
-          if (paymentPendingCta) paymentPendingCta.hidden = false;
+          interacCta.hidden = false;
         }
         success.scrollIntoView({ behavior: 'smooth', block: 'center' });
       })
