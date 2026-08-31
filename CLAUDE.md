@@ -37,14 +37,7 @@ Ce repo (`gravitymega/coachyass`) héberge plusieurs sites statiques déployés 
 6. ✅ Mercredi retiré des créneaux Gravity Pickup
 7. ✅ Système d'affiliation revu (Coaching/Pickup n'avaient aucune section partenaires ; OSMM avait un lien texte non cliquable) — harmonisé sur les 3
 8. ✅ Logos partenaires cliquables — fait pour Gravity Basketball (seul partenaire réel), branché sur Supabase pour les futurs ajouts
-9. ⚠️ **Presque fait** — `osmm` ajouté à `SITE_LABELS` dans `gravity-admin-dashboard/app.js` et au sélecteur de site de la galerie photo (`#photo-gallery-site`). Le sélecteur de partenaires (`#partner-site`) est peuplé dynamiquement depuis `currentAdmin.sites` (colonne `admin_users.sites` en base) : **reste à faire côté utilisateur** — ajouter `"osmm"` à ce tableau pour le compte admin Yassine (`id = 871b01c9-92ac-4ec7-b4f4-a17293b64add`) dans Supabase (SQL Editor du projet `aevoulzotvmnrnclfuek`) :
-   ```sql
-   update admin_users
-   set sites = sites || '["osmm"]'::jsonb
-   where id = '871b01c9-92ac-4ec7-b4f4-a17293b64add'
-     and not sites @> '["osmm"]'::jsonb;
-   ```
-   (Bloqué automatiquement côté agent — écriture sur les permissions admin en production, à faire manuellement.)
+9. ✅ `osmm` ajouté à `SITE_LABELS` dans `gravity-admin-dashboard/app.js` et au sélecteur de site de la galerie photo (`#photo-gallery-site`). Le sélecteur de partenaires (`#partner-site`) est peuplé dynamiquement depuis `currentAdmin.sites` (colonne `admin_users.sites` — c'est un `text[]`, pas du `jsonb`) : `"osmm"` a été ajouté à ce tableau pour le compte admin Yassine (`id = 871b01c9-92ac-4ec7-b4f4-a17293b64add`) via `array_append`. Le Dashboard gère maintenant OSMM comme les autres sites.
 
 **PR mergées le 31 août 2026** : #15 (points 1, 3, 4, 6, 7, 8) et #16 (import des 2 sites, point 5/9 préparatoire).
 
