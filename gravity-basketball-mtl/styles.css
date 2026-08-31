@@ -936,6 +936,12 @@ body { padding-bottom: 88px; }
   padding: 12px;
 }
 
+.team-description {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0 0 16px;
+}
+
 .team-zeffy { margin-bottom: 20px; }
 
 .team-zeffy-soon {

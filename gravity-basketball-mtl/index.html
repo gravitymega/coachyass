@@ -112,7 +112,6 @@
       <a href="#top">Accueil</a>
       <a href="#apropos">Qui sommes-nous</a>
       <a href="#programmes">Programmes</a>
-      <a href="#mes-equipes">Mes équipes</a>
       <a href="#autres-activites">Autres activités</a>
       <a href="https://gravity-championnat.netlify.app" target="_blank" rel="noopener">Championnat</a>
       <a href="#videos">Vidéos</a>
@@ -185,7 +184,7 @@
     <div class="container">
       <p class="section-kicker">Nos programmes</p>
       <h2 class="section-title">Nos programmes Gravity Basketball</h2>
-      <p class="section-lead">Deux programmes sous la bannière Gravity Basketball, secteur Dorval-Lachine à Montréal — d'autres suivront.</p>
+      <p class="section-lead">Trois programmes sous la bannière Gravity Basketball, secteur Dorval-Lachine à Montréal — d'autres suivront.</p>
 
       <h3 class="programme-name" id="programme-name-ligue-3v3">Gravity Basketball Ligue 3v3</h3>
       <div class="programme-card">
@@ -274,18 +273,38 @@
           <a href="#inscription" class="btn btn-primary btn-block" data-programme="Ligue Maison">Réserver ma place</a>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- MES ÉQUIPES -->
-  <section id="mes-equipes" class="section section-alt">
-    <div class="container">
-      <p class="section-kicker">Mes équipes</p>
-      <h2 class="section-title">Nos équipes, catégorie par catégorie</h2>
-      <p class="section-lead">Novice, Mini, Atome, Cadet, Juvénile (Garçons et Filles) et Prép — retrouve l'affiche, l'inscription et les joueurs de chaque équipe.</p>
-
-      <div id="mes-equipes-content">
-        <p class="teams-empty" id="mes-equipes-empty">Chargement des équipes...</p>
+      <h3 class="programme-name" id="programme-name-gravity-prep">Gravity Prep</h3>
+      <div class="programme-card">
+        <div class="programme-badge">
+          <img src="assets/logo.png" alt="Gravity Basketball" width="512" height="396" loading="lazy">
+        </div>
+        <div class="programme-details">
+          <p class="section-lead" style="margin-bottom:16px;" id="programme-desc-gravity-prep">Programme individuel de préparation et de développement pour joueurs sérieux. Détails complets à venir.</p>
+          <ul class="programme-list" id="programme-list-gravity-prep">
+            <li>
+              <span class="li-label">Catégorie d'âge</span>
+              <span class="li-value">À définir</span>
+            </li>
+            <li>
+              <span class="li-label">Format</span>
+              <span class="li-value">Individuel</span>
+            </li>
+            <li>
+              <span class="li-label">Horaire</span>
+              <span class="li-value">À définir</span>
+            </li>
+            <li>
+              <span class="li-label">Secteur</span>
+              <span class="li-value">Dorval-Lachine</span>
+            </li>
+            <li>
+              <span class="li-label">Coût</span>
+              <span class="li-value">À définir</span>
+            </li>
+          </ul>
+          <a href="#inscription" class="btn btn-primary btn-block" data-programme="Gravity Prep">Réserver ma place</a>
+        </div>
       </div>
     </div>
   </section>
@@ -366,6 +385,10 @@
             <input type="radio" name="programme" value="Ligue Maison">
             <span>Ligue Maison (9-10 ans)</span>
           </label>
+          <label class="type-toggle">
+            <input type="radio" name="programme" value="Gravity Prep">
+            <span>Gravity Prep</span>
+          </label>
         </div>
 
         <div class="form-row" id="field-type-inscription">
@@ -394,6 +417,7 @@
           <select id="age_categorie" name="age_categorie" required>
             <option value="13-14 ans">13-14 ans</option>
             <option value="9-10 ans">9-10 ans</option>
+            <option value="Prep">Prep</option>
           </select>
         </div>
 
@@ -407,6 +431,85 @@
           <input type="email" id="email" name="email" required>
         </div>
 
+        <div id="field-prep-details" style="display:none;">
+          <div class="field">
+            <label for="adresse">Adresse</label>
+            <input type="text" id="adresse" name="adresse">
+          </div>
+
+          <div class="field">
+            <label for="niveau">Niveau de jeu</label>
+            <select id="niveau" name="niveau">
+              <option value="">Sélectionner...</option>
+              <option value="Débutant">Débutant</option>
+              <option value="Intermédiaire">Intermédiaire</option>
+              <option value="Avancé">Avancé</option>
+              <option value="Élite">Élite</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="poste_de_jeu">Poste de jeu</label>
+            <select id="poste_de_jeu" name="poste_de_jeu">
+              <option value="">Sélectionner...</option>
+              <option value="Meneur">Meneur (PG)</option>
+              <option value="Arrière">Arrière (SG)</option>
+              <option value="Ailier">Ailier (SF)</option>
+              <option value="Ailier fort">Ailier fort (PF)</option>
+              <option value="Pivot">Pivot (C)</option>
+              <option value="Polyvalent">Polyvalent</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="taille_vetement">Taille pour jersey et vêtement</label>
+            <select id="taille_vetement" name="taille_vetement">
+              <option value="">Sélectionner...</option>
+              <option value="XS">XS</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="grandeur">Grandeur</label>
+            <input type="text" id="grandeur" name="grandeur" placeholder="Ex. 5'10 / 178 cm">
+          </div>
+
+          <div class="field">
+            <label for="poids">Poids</label>
+            <input type="text" id="poids" name="poids" placeholder="Ex. 150 lb / 68 kg">
+          </div>
+
+          <div class="field">
+            <label for="occupation">Occupation</label>
+            <input type="text" id="occupation" name="occupation" placeholder="Ex. Étudiant, travailleur...">
+          </div>
+
+          <div class="field">
+            <label for="objectif_saison">Objectif durant la saison</label>
+            <textarea id="objectif_saison" name="objectif_saison" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="reseaux_sociaux">Réseaux sociaux (Instagram, etc.)</label>
+            <input type="text" id="reseaux_sociaux" name="reseaux_sociaux" placeholder="@tonpseudo">
+          </div>
+
+          <div class="field">
+            <label for="disponibilites">Disponibilités (jours et heures)</label>
+            <textarea id="disponibilites" name="disponibilites" rows="2" placeholder="Ex. Lundi et mercredi soir, samedi matin"></textarea>
+          </div>
+
+          <label class="checkbox-field">
+            <input type="checkbox" name="decharge_prep" value="Oui" id="decharge_prep">
+            <span>Je comprends que Gravity Prep implique une évaluation physique et des entraînements, et je décharge Gravity Basketball de toute responsabilité en cas de blessure survenue durant les activités du programme.</span>
+          </label>
+        </div>
+
         <div class="field">
           <label for="remarque">Remarque (optionnel)</label>
           <textarea id="remarque" name="remarque" rows="3"></textarea>
@@ -415,6 +518,18 @@
         <div class="field">
           <label for="reference">Qui t'a parlé de Gravity Basketball ? (optionnel)</label>
           <input type="text" id="reference" name="reference" placeholder="Nom d'un ami, d'un coéquipier...">
+        </div>
+
+        <div class="field" id="field-mode-paiement">
+          <label>Mode de paiement</label>
+          <label class="checkbox-field">
+            <input type="radio" name="mode_paiement" value="Interac" checked>
+            <span>Interac — au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou mqtad9@hotmail.com</span>
+          </label>
+          <label class="checkbox-field">
+            <input type="radio" name="mode_paiement" value="Zeffy">
+            <span>Zeffy — paiement en ligne par carte</span>
+          </label>
         </div>
 
         <label class="checkbox-field">
@@ -430,7 +545,10 @@
         <h3>Demande envoyée !</h3>
         <p>Merci ! Gravity Basketball a bien reçu ta demande d'inscription.</p>
         <p>On te recontacte par téléphone, courriel ou Instagram pour confirmer.</p>
-        <div class="zeffy-payment-cta" id="zeffy-payment-cta" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border, #2a2536);">
+        <div class="zeffy-payment-cta" id="interac-payment-cta" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border, #2a2536);" hidden>
+          <p class="section-lead">Dernière étape : envoie le montant d'inscription par virement Interac au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou à mqtad9@hotmail.com pour confirmer ta place.</p>
+        </div>
+        <div class="zeffy-payment-cta" id="zeffy-payment-cta" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border, #2a2536);" hidden>
           <p class="section-lead" style="margin-bottom:12px;">Dernière étape : règle les frais d'inscription en ligne (paiement sécurisé par carte débit et crédit, sans frais pour Gravity Basketball).</p>
           <a href="#" id="zeffy-payment-link" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Payer par carte débit et crédit</a>
         </div>
