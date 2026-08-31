@@ -453,6 +453,9 @@
 
 <script>
   /* ===================== FORMULAIRE ===================== */
+  const MAILER_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/send-confirmation';
+  const MAILER_KEY = '11c58c7548b0ed0666742f1e44a9cec1777bddee1c9fcbe5';
+
   const form = document.getElementById('bookingForm');
   const recap = document.getElementById('recap');
   const recapText = document.getElementById('recapText');
@@ -610,6 +613,15 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(notionData)
+        }),
+        fetch(MAILER_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-mailer-key': MAILER_KEY },
+          body: JSON.stringify({
+            type: 'coaching',
+            to: email,
+            fields: { nom: notionData.nom, forfait: notionData.forfait, date: formatDateFr(dateInput.value), heure: timeInput.value }
+          })
         })
       ]);
       const ok = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
