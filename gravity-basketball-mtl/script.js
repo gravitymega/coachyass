@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selected = form.querySelector('input[name="programme"]:checked').value;
     const isLigueMaison = selected === 'Ligue Maison';
     const isPrep = selected === 'Gravity Prep';
+    const isU15Masculin = selected === 'Gravity U15 Masculin';
 
     // La Ligue Maison et Gravity Prep n'ont pas de formule "équipe" — ce sont
     // des programmes individuels.
@@ -76,12 +77,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isPrep) dechargePrepCheckbox.checked = false;
     }
 
-    ageCategorieSelect.value = isLigueMaison ? '9-10 ans' : (isPrep ? 'Prep' : '13-14 ans');
+    ageCategorieSelect.value = isLigueMaison ? '9-10 ans' : isPrep ? 'Prep' : isU15Masculin ? 'U15' : '13-14 ans';
     inscriptionTitle.textContent = isLigueMaison
       ? 'Réserve ta place — Ligue Maison'
       : isPrep
         ? 'Réserve ta place — Gravity Prep'
-        : 'Réserve ta place — Gravity Basketball Ligue 3v3';
+        : isU15Masculin
+          ? 'Réserve ta place — Gravity U15 Masculin'
+          : 'Réserve ta place — Gravity Basketball Ligue 3v3';
 
     programmeToggles.forEach(t => {
       const input = t.querySelector('input');
@@ -119,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const programme = get('programme') || 'Ligue 3v3';
     const isPrep = programme === 'Gravity Prep';
+    const isU15Masculin = programme === 'Gravity U15 Masculin';
     const isIndividuelSeulement = programme === 'Ligue Maison' || isPrep;
     const payload = {
       site: 'gravity-basketball',
@@ -126,7 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ? 'inscription_ligue_maison'
         : isPrep
           ? 'inscription_gravity_prep'
-          : 'inscription_ligue_3v3',
+          : isU15Masculin
+            ? 'inscription_u15_masculin'
+            : 'inscription_ligue_3v3',
       contact_name: get('nom_complet'),
       contact_email: get('email'),
       contact_phone: get('telephone'),

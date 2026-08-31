@@ -197,6 +197,9 @@
   }
   .cap-badge.low{color:var(--orange);font-weight:600;}
   .cap-badge.full{color:#FF9B7A;font-weight:700;}
+  .creneau-cap{font-size:11.5px;color:var(--gray);margin-top:4px;}
+  .creneau-cap.low{color:var(--orange);font-weight:600;}
+  .creneau-cap.full{color:#FF9B7A;font-weight:700;}
   .hint{font-size:14px;color:var(--gray);margin:-8px 0 14px;line-height:1.5;}
   .consent{
     display:flex;
@@ -404,12 +407,14 @@
           <div class="day">Samedi</div>
           <div class="time">11h00–13h00</div>
           <div class="place">Dorval</div>
+          <div class="creneau-cap" data-cap-for-creneau="samedi">Vérification des places…</div>
         </label>
         <label class="creneau" data-key="jeudi" data-weekday="4" data-time="20h30–22h00" data-lieu="Collège André-Grasset (Gym 3)">
           <input type="radio" name="Créneau" value="Jeudi 20h30-22h00 — Collège André-Grasset (Gym 3)">
           <div class="day">Jeudi</div>
           <div class="time">20h30–22h00</div>
           <div class="place">Collège André-Grasset (Gym 3)</div>
+          <div class="creneau-cap" data-cap-for-creneau="jeudi">Vérification des places…</div>
         </label>
       </div>
       <p class="hint">Choisis d'abord un créneau pour voir la ou les prochaine(s) date(s) disponible(s).</p>
@@ -763,6 +768,49 @@
       showError("L'envoi n'a pas fonctionné. Vérifiez votre connexion internet et réessayez.");
     }
   });
+
+  // Affiche, dès l'arrivée sur la page (avant même de choisir un forfait),
+  // le nombre de places déjà prises pour la prochaine date de chaque créneau —
+  // le compte inclut déjà les personnes qui ont pris un forfait multi-séances,
+  // car chaque séance d'un forfait crée sa propre ligne Notion par date.
+  async function initCreneauCaps() {
+    const todayIso = new Date().toISOString().slice(0, 10);
+    const nextDateByCreneau = {};
+    Object.keys(FIXED_DATES).forEach(key => {
+      const next = (FIXED_DATES[key] || []).find(iso => iso >= todayIso);
+      if (next) nextDateByCreneau[key] = next;
+    });
+
+    const dates = Object.values(nextDateByCreneau);
+    if (!dates.length) return;
+
+    try {
+      const res = await fetch(`${ENDPOINT}?dates=${encodeURIComponent(dates.join(','))}`);
+      if (res.ok) {
+        const body = await res.json();
+        Object.assign(capaciteCache, body.counts || {});
+      }
+    } catch (err) {
+      // Affichage indicatif seulement : une erreur réseau ici ne doit pas bloquer la réservation.
+    }
+
+    Object.keys(nextDateByCreneau).forEach(key => {
+      const el = root.querySelector(`[data-cap-for-creneau="${key}"]`);
+      if (!el) return;
+      const count = capaciteCache[nextDateByCreneau[key]];
+      if (typeof count !== 'number') { el.textContent = ''; return; }
+      const restantes = Math.max(0, CAPACITE_MAX - count);
+      el.classList.remove('full', 'low');
+      if (restantes <= 0) {
+        el.textContent = `Prochaine date complète — ${count}/${CAPACITE_MAX}`;
+        el.classList.add('full');
+      } else {
+        el.textContent = `Prochaine date : ${count}/${CAPACITE_MAX} places prises`;
+        if (restantes <= 3) el.classList.add('low');
+      }
+    });
+  }
+  initCreneauCaps();
 </script>
 
 <!-- Dashboard (Supabase) : ajoute automatiquement les partenaires propres à
