@@ -53,17 +53,39 @@ exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS'
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
   };
 
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers };
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Méthode non permise' }) };
-  }
 
   const token = process.env.NOTION_TOKEN;
   if (!token || !NOTION_DB) {
     return { statusCode: 500, headers, body: JSON.stringify({ error: 'NOTION_TOKEN ou NOTION_DB_GRAVITY_PICKUP manquant dans les variables Netlify' }) };
+  }
+
+  // GET /.netlify/functions/reservation-gravity-pickup?dates=2026-09-03,2026-09-10
+  // Renvoie le nombre de places déjà prises pour chaque date demandée, pour
+  // afficher "X/15 places prises" côté client avant la réservation.
+  if (event.httpMethod === 'GET') {
+    const raw = (event.queryStringParameters && event.queryStringParameters.dates) || '';
+    const dates = raw.split(',').map(s => s.trim()).filter(Boolean).slice(0, 30);
+    if (!dates.length) {
+      return { statusCode: 400, headers, body: JSON.stringify({ error: 'Paramètre "dates" requis (dates séparées par des virgules)' }) };
+    }
+    try {
+      const counts = {};
+      for (const date of dates) {
+        counts[date] = await countForDate(date, token);
+      }
+      return { statusCode: 200, headers, body: JSON.stringify({ ok: true, capacite: CAPACITE_MAX, counts }) };
+    } catch (err) {
+      console.error('Erreur vérification capacité (GET) :', err);
+      return { statusCode: 500, headers, body: JSON.stringify({ error: 'Impossible de vérifier les places disponibles, réessayez.' }) };
+    }
+  }
+
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Méthode non permise' }) };
   }
 
   let d;

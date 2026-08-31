@@ -311,6 +311,14 @@
   }
   .footer-note a{color:var(--orange);font-weight:600;text-decoration:none;}
   .footer-note a:hover{text-decoration:underline;}
+  .partner-badge{
+    display:inline-flex;align-items:center;gap:10px;margin:20px 0 0;padding:8px 16px;
+    border:1px solid var(--border);border-radius:999px;background:var(--card);text-decoration:none;
+    transition:border-color .15s;
+  }
+  .partner-badge:hover{border-color:var(--orange);}
+  .partner-badge img{width:26px;height:26px;border-radius:50%;object-fit:cover;}
+  .partner-badge span{font-size:12.5px;color:var(--ink);font-weight:600;}
 
   @media (max-width:400px){
     .row{grid-template-columns:1fr;}
@@ -434,7 +442,12 @@
     Gravity Coaching · Basketball · Montréal<br>
     Les demandes sont confirmées par email avant la séance.<br>
     📸 <a href="https://www.instagram.com/coach_yass1" target="_blank" rel="noopener">@coach_yass1</a> · <a href="https://www.instagram.com/basket_libre" target="_blank" rel="noopener">@basket_libre</a><br>
-    <a href="/conditions-confidentialite.html">Conditions d'utilisation &amp; confidentialité</a>
+    <a href="/conditions-confidentialite.html">Conditions d'utilisation &amp; confidentialité</a><br>
+    <a class="partner-badge" href="https://osmm-mtl.site" target="_blank" rel="noopener" aria-label="Organisme Sportif Maghrébin Montréal">
+      <img src="logo-osmm.png" alt="OSMM">
+      <span>Un partenaire de l'OSMM</span>
+    </a>
+    <span id="partnerExtra"></span>
   </div>
 </div>
 
@@ -613,6 +626,51 @@
     }
   });
 
+</script>
+
+<!-- Dashboard (Supabase) : ajoute automatiquement les partenaires propres à
+     Gravity Coaching ajoutés depuis le Dashboard admin. Lecture seule (clé
+     publique "anon", protégée par RLS). -->
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const supabase = createClient(
+    'https://aevoulzotvmnrnclfuek.supabase.co',
+    'sb_publishable_NAj99iQim_odAYNwR-qucg_2KKHYf7Z'
+  );
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  async function loadPartners() {
+    const holder = document.getElementById('partnerExtra');
+    if (!holder) return;
+    const { data, error } = await supabase
+      .from('partners')
+      .select('*')
+      .eq('site', 'coachyass')
+      .eq('active', true)
+      .order('display_order', { ascending: true });
+    if (error || !data || !data.length) return;
+    data.forEach((p) => {
+      const a = document.createElement('a');
+      a.className = 'partner-badge';
+      a.href = p.website_url || '#';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.setAttribute('aria-label', p.name || '');
+      a.innerHTML = `
+        ${p.logo_url ? `<img src="${escapeHtml(p.logo_url)}" alt="${escapeHtml(p.name)}">` : ''}
+        <span>${escapeHtml(p.name)}</span>
+      `;
+      holder.appendChild(a);
+    });
+  }
+
+  loadPartners();
 </script>
 
 </body>

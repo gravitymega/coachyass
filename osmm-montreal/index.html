@@ -238,6 +238,28 @@
   .badge-flag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--burgundy);color:#fff;padding:4px 10px;border-radius:999px;margin-bottom:10px;}
   .badge-free{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--navy);color:#fff;padding:4px 10px;border-radius:999px;margin-bottom:10px;}
 
+  /* ---------- GALERIE ---------- */
+  .gallery-scroll{
+    display:flex;gap:20px;margin-top:44px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:16px;-webkit-overflow-scrolling:touch;
+  }
+  .gallery-scroll::-webkit-scrollbar{height:9px;}
+  .gallery-scroll::-webkit-scrollbar-track{background:rgba(17,17,17,.06);border-radius:10px;}
+  .gallery-scroll::-webkit-scrollbar-thumb{background:linear-gradient(90deg,var(--burgundy),var(--navy));border-radius:10px;}
+  .gallery-item{
+    flex:0 0 80%;aspect-ratio:16/9;scroll-snap-align:center;border-radius:var(--radius);overflow:hidden;
+    box-shadow:var(--shadow);position:relative;background:var(--white);
+  }
+  @media (min-width:640px){.gallery-item{flex:0 0 46%;}}
+  @media (min-width:980px){.gallery-item{flex:0 0 31%;}}
+  .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;}
+  .gallery-item.placeholder{
+    border:1.5px dashed rgba(17,17,17,.22);color:var(--grey);font-size:13px;font-weight:600;text-align:center;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;
+  }
+  .gallery-item.placeholder .icon{font-size:28px;}
+  .gallery-hint{font-size:13px;color:var(--grey);margin-top:6px;}
+
   /* ---------- PARTENAIRES ---------- */
   .partner-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:44px;}
   @media (max-width:760px){.partner-grid{grid-template-columns:repeat(2,1fr);}}
@@ -247,9 +269,11 @@
   }
   .partner-real{
     background:var(--white);border:1.5px solid rgba(143,48,73,.25);color:var(--navy-dark);font-size:15px;font-weight:800;
-    box-shadow:var(--shadow);transition:transform .15s ease;
+    box-shadow:var(--shadow);transition:transform .15s ease;flex-direction:column;gap:8px;
   }
   .partner-real:hover{transform:translateY(-2px);color:var(--burgundy);}
+  .partner-real .partner-logo{max-height:44px;width:auto;max-width:88%;}
+  .partner-real .partner-name{font-size:13px;}
   .partner-cta{
     margin-top:36px;background:var(--navy-dark);color:#fff;border-radius:var(--radius);padding:30px 34px;
     display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
@@ -350,6 +374,7 @@
       <li><a href="#qui-sommes-nous" data-fr>Qui sommes-nous</a><a href="#qui-sommes-nous" data-en>Who we are</a></li>
       <li><a href="#mission-vision" data-fr>Mission &amp; Vision</a><a href="#mission-vision" data-en>Mission &amp; Vision</a></li>
       <li><a href="#activites" data-fr>Activités</a><a href="#activites" data-en>Activities</a></li>
+      <li><a href="#galerie" data-fr>Galerie</a><a href="#galerie" data-en>Gallery</a></li>
       <li><a href="#partenaires" data-fr>Partenaires</a><a href="#partenaires" data-en>Partners</a></li>
       <li><a href="#devenir-membre" data-fr>Devenir membre</a><a href="#devenir-membre" data-en>Become a member</a></li>
       <li><a href="#benevolat" data-fr>Devenir bénévole</a><a href="#benevolat" data-en>Volunteer</a></li>
@@ -496,6 +521,53 @@
   </div>
 </section>
 
+<!-- ===================== GALERIE ===================== -->
+<section class="brand-wash" id="galerie">
+  <div class="container">
+    <span class="eyebrow" data-fr>En images</span>
+    <span class="eyebrow" data-en>In pictures</span>
+    <h2>
+      <span data-fr>Galerie photo</span>
+      <span data-en>Photo gallery</span>
+    </h2>
+    <p style="max-width:600px;">
+      <span data-fr>Un aperçu de nos matchs, camps et événements. Fais glisser pour voir plus de photos.</span>
+      <span data-en>A look at our games, camps, and events. Swipe to see more photos.</span>
+    </p>
+    <div class="gallery-scroll" id="galleryScroll">
+      <div class="gallery-item placeholder reveal">
+        <div class="icon">&#128247;</div>
+        <span data-fr>Photo à venir</span>
+        <span data-en>Photo coming soon</span>
+      </div>
+      <div class="gallery-item placeholder reveal">
+        <div class="icon">&#128247;</div>
+        <span data-fr>Photo à venir</span>
+        <span data-en>Photo coming soon</span>
+      </div>
+      <div class="gallery-item placeholder reveal">
+        <div class="icon">&#128247;</div>
+        <span data-fr>Photo à venir</span>
+        <span data-en>Photo coming soon</span>
+      </div>
+      <div class="gallery-item placeholder reveal">
+        <div class="icon">&#128247;</div>
+        <span data-fr>Photo à venir</span>
+        <span data-en>Photo coming soon</span>
+      </div>
+      <div class="gallery-item placeholder reveal">
+        <div class="icon">&#128247;</div>
+        <span data-fr>Photo à venir</span>
+        <span data-en>Photo coming soon</span>
+      </div>
+    </div>
+    <p class="gallery-hint">
+      <span data-fr>Les photos de nos activités seront ajoutées ici au fur et à mesure.</span>
+      <span data-en>Photos from our activities will be added here over time.</span>
+    </p>
+  </div>
+</section>
+
 <!-- ===================== PARTENAIRES ===================== -->
 <section class="section-alt brand-wash" id="partenaires">
   <div class="container">
@@ -509,8 +581,11 @@
       <span data-fr>Les logos de nos partenaires seront ajoutés ici au fur et à mesure des collaborations.</span>
       <span data-en>Our partners' logos will be added here as new collaborations begin.</span>
     </p>
-    <div class="partner-grid">
-      <a class="partner-slot partner-real" href="https://gravity.osmm-mtl.site" target="_blank" rel="noopener">Gravity Basketball</a>
+    <div class="partner-grid" id="partnerGrid">
+      <a class="partner-slot partner-real" href="https://gravity.osmm-mtl.site" target="_blank" rel="noopener" aria-label="Gravity Basketball">
+        <img class="partner-logo" src="gravity-logo.png" alt="Gravity Basketball" loading="lazy">
+        <span class="partner-name">Gravity Basketball</span>
+      </a>
       <div class="partner-slot" data-fr>Logo partenaire</div>
       <div class="partner-slot" data-en style="display:none;">Partner logo</div>
       <div class="partner-slot" data-fr>Logo partenaire</div>
@@ -814,6 +889,71 @@
     { id: 'cEmail', label: 'Courriel' },
     { id: 'cMessage', label: 'Message' }
   ]);
+</script>
+
+<!-- Dashboard OSMM (Supabase) : lit en direct les partenaires et les photos
+     de galerie ajoutés depuis le Dashboard admin. Lecture seule (clé
+     publique "anon", protégée par RLS) — aucune écriture depuis le site. -->
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const supabase = createClient(
+    'https://aevoulzotvmnrnclfuek.supabase.co',
+    'sb_publishable_NAj99iQim_odAYNwR-qucg_2KKHYf7Z'
+  );
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  async function loadPartners() {
+    const grid = document.getElementById('partnerGrid');
+    if (!grid) return;
+    const { data, error } = await supabase
+      .from('partners')
+      .select('*')
+      .or('site.eq.osmm,site.is.null')
+      .eq('active', true)
+      .order('display_order', { ascending: true });
+    if (error || !data || !data.length) return;
+    data.forEach((p) => {
+      const a = document.createElement('a');
+      a.className = 'partner-slot partner-real';
+      a.href = p.website_url || '#';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.setAttribute('aria-label', p.name || '');
+      a.innerHTML = `
+        ${p.logo_url ? `<img class="partner-logo" src="${escapeHtml(p.logo_url)}" alt="${escapeHtml(p.name)}" loading="lazy">` : ''}
+        <span class="partner-name">${escapeHtml(p.name)}</span>
+      `;
+      grid.appendChild(a);
+    });
+  }
+
+  async function loadGallery() {
+    const scroll = document.getElementById('galleryScroll');
+    if (!scroll) return;
+    const { data, error } = await supabase
+      .from('photo_gallery')
+      .select('*')
+      .eq('site', 'osmm')
+      .eq('active', true)
+      .order('position', { ascending: true });
+    if (error || !data || !data.length) return;
+    scroll.innerHTML = '';
+    data.forEach((p) => {
+      const div = document.createElement('div');
+      div.className = 'gallery-item reveal';
+      div.innerHTML = `<img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.caption || '')}" loading="lazy">`;
+      scroll.appendChild(div);
+    });
+  }
+
+  loadPartners();
+  loadGallery();
 </script>
 
 </body>
