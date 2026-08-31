@@ -447,6 +447,7 @@
       <img src="logo-osmm.png" alt="OSMM">
       <span>Un partenaire de l'OSMM</span>
     </a>
+    <span id="partnerExtra"></span>
   </div>
 </div>
 
@@ -625,6 +626,51 @@
     }
   });
 
+</script>
+
+<!-- Dashboard (Supabase) : ajoute automatiquement les partenaires propres à
+     Gravity Coaching ajoutés depuis le Dashboard admin. Lecture seule (clé
+     publique "anon", protégée par RLS). -->
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const supabase = createClient(
+    'https://aevoulzotvmnrnclfuek.supabase.co',
+    'sb_publishable_NAj99iQim_odAYNwR-qucg_2KKHYf7Z'
+  );
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  async function loadPartners() {
+    const holder = document.getElementById('partnerExtra');
+    if (!holder) return;
+    const { data, error } = await supabase
+      .from('partners')
+      .select('*')
+      .eq('site', 'coachyass')
+      .eq('active', true)
+      .order('display_order', { ascending: true });
+    if (error || !data || !data.length) return;
+    data.forEach((p) => {
+      const a = document.createElement('a');
+      a.className = 'partner-badge';
+      a.href = p.website_url || '#';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.setAttribute('aria-label', p.name || '');
+      a.innerHTML = `
+        ${p.logo_url ? `<img src="${escapeHtml(p.logo_url)}" alt="${escapeHtml(p.name)}">` : ''}
+        <span>${escapeHtml(p.name)}</span>
+      `;
+      holder.appendChild(a);
+    });
+  }
+
+  loadPartners();
 </script>
 
 </body>

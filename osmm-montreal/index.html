@@ -534,7 +534,7 @@
       <span data-fr>Un aperçu de nos matchs, camps et événements. Fais glisser pour voir plus de photos.</span>
       <span data-en>A look at our games, camps, and events. Swipe to see more photos.</span>
     </p>
-    <div class="gallery-scroll">
+    <div class="gallery-scroll" id="galleryScroll">
       <div class="gallery-item placeholder reveal">
         <div class="icon">&#128247;</div>
         <span data-fr>Photo à venir</span>
@@ -581,7 +581,7 @@
       <span data-fr>Les logos de nos partenaires seront ajoutés ici au fur et à mesure des collaborations.</span>
       <span data-en>Our partners' logos will be added here as new collaborations begin.</span>
     </p>
-    <div class="partner-grid">
+    <div class="partner-grid" id="partnerGrid">
       <a class="partner-slot partner-real" href="https://gravity.osmm-mtl.site" target="_blank" rel="noopener" aria-label="Gravity Basketball">
         <img class="partner-logo" src="gravity-logo.png" alt="Gravity Basketball" loading="lazy">
         <span class="partner-name">Gravity Basketball</span>
@@ -889,6 +889,71 @@
     { id: 'cEmail', label: 'Courriel' },
     { id: 'cMessage', label: 'Message' }
   ]);
+</script>
+
+<!-- Dashboard OSMM (Supabase) : lit en direct les partenaires et les photos
+     de galerie ajoutés depuis le Dashboard admin. Lecture seule (clé
+     publique "anon", protégée par RLS) — aucune écriture depuis le site. -->
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const supabase = createClient(
+    'https://aevoulzotvmnrnclfuek.supabase.co',
+    'sb_publishable_NAj99iQim_odAYNwR-qucg_2KKHYf7Z'
+  );
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  async function loadPartners() {
+    const grid = document.getElementById('partnerGrid');
+    if (!grid) return;
+    const { data, error } = await supabase
+      .from('partners')
+      .select('*')
+      .or('site.eq.osmm,site.is.null')
+      .eq('active', true)
+      .order('display_order', { ascending: true });
+    if (error || !data || !data.length) return;
+    data.forEach((p) => {
+      const a = document.createElement('a');
+      a.className = 'partner-slot partner-real';
+      a.href = p.website_url || '#';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.setAttribute('aria-label', p.name || '');
+      a.innerHTML = `
+        ${p.logo_url ? `<img class="partner-logo" src="${escapeHtml(p.logo_url)}" alt="${escapeHtml(p.name)}" loading="lazy">` : ''}
+        <span class="partner-name">${escapeHtml(p.name)}</span>
+      `;
+      grid.appendChild(a);
+    });
+  }
+
+  async function loadGallery() {
+    const scroll = document.getElementById('galleryScroll');
+    if (!scroll) return;
+    const { data, error } = await supabase
+      .from('photo_gallery')
+      .select('*')
+      .eq('site', 'osmm')
+      .eq('active', true)
+      .order('position', { ascending: true });
+    if (error || !data || !data.length) return;
+    scroll.innerHTML = '';
+    data.forEach((p) => {
+      const div = document.createElement('div');
+      div.className = 'gallery-item reveal';
+      div.innerHTML = `<img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.caption || '')}" loading="lazy">`;
+      scroll.appendChild(div);
+    });
+  }
+
+  loadPartners();
+  loadGallery();
 </script>
 
 </body>
