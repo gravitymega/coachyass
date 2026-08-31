@@ -189,6 +189,14 @@
     display:flex;justify-content:space-between;align-items:center;
   }
   .seance-preview .n{color:var(--gray);font-size:13px;}
+  .cap-badge{
+    font-size:12.5px;
+    color:var(--gray);
+    margin:-8px 0 12px;
+    padding-left:2px;
+  }
+  .cap-badge.low{color:var(--orange);font-weight:600;}
+  .cap-badge.full{color:#FF9B7A;font-weight:700;}
   .hint{font-size:14px;color:var(--gray);margin:-8px 0 14px;line-height:1.5;}
   .consent{
     display:flex;
@@ -337,6 +345,14 @@
   }
   .footer-note a{color:var(--orange);font-weight:600;text-decoration:none;}
   .footer-note a:hover{text-decoration:underline;}
+  .partner-badge{
+    display:inline-flex;align-items:center;gap:10px;margin:20px 0 0;padding:8px 16px;
+    border:1px solid var(--border);border-radius:999px;background:var(--card);text-decoration:none;
+    transition:border-color .15s;
+  }
+  .partner-badge:hover{border-color:var(--orange);}
+  .partner-badge img{width:26px;height:26px;border-radius:50%;object-fit:cover;}
+  .partner-badge span{font-size:12.5px;color:var(--ink);font-weight:600;}
   @media (max-width:400px){
     .creneaux{grid-template-columns:1fr;}
   }
@@ -383,14 +399,8 @@
     <div class="card">
       <h3>📍 Créneau</h3>
       <div class="creneaux" data-role="creneaux">
-        <label class="creneau" data-key="mercredi" data-weekday="3" data-time="20h30–22h00" data-lieu="Collège André-Grasset">
-          <input type="radio" name="Créneau" value="Mercredi 20h30-22h00 — Collège André-Grasset" required>
-          <div class="day">Mercredi</div>
-          <div class="time">20h30–22h00</div>
-          <div class="place">Collège André-Grasset</div>
-        </label>
         <label class="creneau" data-key="samedi" data-weekday="6" data-time="11h00–13h00" data-lieu="Dorval">
-          <input type="radio" name="Créneau" value="Samedi 11h00-13h00 — Dorval">
+          <input type="radio" name="Créneau" value="Samedi 11h00-13h00 — Dorval" required>
           <div class="day">Samedi</div>
           <div class="time">11h00–13h00</div>
           <div class="place">Dorval</div>
@@ -468,7 +478,11 @@
   <div class="footer-note">
     Gravity Pickups · Basketball · Montréal<br>
     📸 <a href="https://www.instagram.com/basket_libre" target="_blank" rel="noopener">@basket_libre</a><br>
-    <a href="/conditions-confidentialite.html">Conditions d'utilisation &amp; confidentialité</a>
+    <a href="/conditions-confidentialite.html">Conditions d'utilisation &amp; confidentialité</a><br>
+    <a class="partner-badge" href="https://osmm-mtl.site" target="_blank" rel="noopener" aria-label="Organisme Sportif Maghrébin Montréal">
+      <img src="logo-osmm.png" alt="OSMM">
+      <span>Un partenaire de l'OSMM</span>
+    </a>
   </div>
 </div>
 
@@ -490,7 +504,6 @@
   const successPayment = root.querySelector('[data-role="success-payment"]');
 
   const ZEFFY_LINKS = {
-    mercredi: 'https://www.zeffy.com/en-CA/ticketing/gravity-ligue-maison-inscription',
     jeudi: 'https://www.zeffy.com/en-CA/ticketing/gravity-pickup-jeudi-andre-grasset-5v5-18-ans-et',
     samedi: 'https://www.zeffy.com/en-CA/ticketing/gravity-pickup-samedi-dorval-5v5-18-ans-et'
   };
@@ -504,10 +517,11 @@
   }
 
   const FIXED_DATES = {
-    mercredi: ['2026-08-26'],
     jeudi: ['2026-08-27','2026-09-03','2026-09-10','2026-09-17','2026-09-24','2026-10-01','2026-10-08','2026-10-15','2026-10-22','2026-10-29','2026-11-05','2026-11-12','2026-11-19','2026-11-26','2026-12-03'],
     samedi: ['2026-08-29','2026-09-05']
   };
+  const CAPACITE_MAX = 15;
+  const capaciteCache = {};
 
   function upcomingDates(creneauKey, count) {
     return (FIXED_DATES[creneauKey] || []).slice(0, count);
@@ -575,6 +589,11 @@
       div.innerHTML = `<span>${formatDateFr(iso)} · ${selectedCreneau.time}</span><span class="n">Séance ${i + 1}/${seanceCount}</span>`;
       div.dataset.iso = iso;
       datesContainer.appendChild(div);
+      const cap = document.createElement('div');
+      cap.className = 'cap-badge';
+      cap.dataset.capFor = iso;
+      cap.textContent = 'Vérification des places…';
+      datesContainer.appendChild(cap);
     });
     if (dates.length < seanceCount) {
       const warn = document.createElement('p');
@@ -586,6 +605,39 @@
       datesContainer.appendChild(warn);
     }
     updateRecap();
+    fetchCapacites(dates);
+  }
+
+  // Affiche, pour chaque date proposée, le nombre de places déjà prises sur
+  // les 15 places max (données Notion via la fonction Netlify côté serveur).
+  async function fetchCapacites(dates) {
+    const toFetch = dates.filter(d => !(d in capaciteCache));
+    if (toFetch.length) {
+      try {
+        const res = await fetch(`${ENDPOINT}?dates=${encodeURIComponent(toFetch.join(','))}`);
+        if (res.ok) {
+          const body = await res.json();
+          Object.assign(capaciteCache, body.counts || {});
+        }
+      } catch (err) {
+        // Affichage indicatif seulement : une erreur réseau ici ne doit pas bloquer la réservation.
+      }
+    }
+    dates.forEach(iso => {
+      const el = datesContainer.querySelector(`[data-cap-for="${iso}"]`);
+      if (!el) return;
+      const count = capaciteCache[iso];
+      if (typeof count !== 'number') { el.textContent = ''; return; }
+      const restantes = Math.max(0, CAPACITE_MAX - count);
+      el.classList.remove('full', 'low');
+      if (restantes <= 0) {
+        el.textContent = `Complet — ${count}/${CAPACITE_MAX} places prises`;
+        el.classList.add('full');
+      } else {
+        el.textContent = `${count}/${CAPACITE_MAX} places prises · ${restantes} place${restantes > 1 ? 's' : ''} restante${restantes > 1 ? 's' : ''}`;
+        if (restantes <= 3) el.classList.add('low');
+      }
+    });
   }
 
   function updateRecap() {
@@ -699,6 +751,7 @@
 
       const ok = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
       if (!ok) throw new Error('Erreur réseau');
+      seances.forEach(s => delete capaciteCache[s.date]);
       renderSuccessPayment(modePaiement.value, pkgEl ? pkgEl.dataset.price : '');
       form.style.display = 'none';
       successBox.classList.add('visible');

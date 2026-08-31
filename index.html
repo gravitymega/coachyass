@@ -311,6 +311,14 @@
   }
   .footer-note a{color:var(--orange);font-weight:600;text-decoration:none;}
   .footer-note a:hover{text-decoration:underline;}
+  .partner-badge{
+    display:inline-flex;align-items:center;gap:10px;margin:20px 0 0;padding:8px 16px;
+    border:1px solid var(--border);border-radius:999px;background:var(--card);text-decoration:none;
+    transition:border-color .15s;
+  }
+  .partner-badge:hover{border-color:var(--orange);}
+  .partner-badge img{width:26px;height:26px;border-radius:50%;object-fit:cover;}
+  .partner-badge span{font-size:12.5px;color:var(--ink);font-weight:600;}
 
   @media (max-width:400px){
     .row{grid-template-columns:1fr;}
@@ -434,7 +442,11 @@
     Gravity Coaching · Basketball · Montréal<br>
     Les demandes sont confirmées par email avant la séance.<br>
     📸 <a href="https://www.instagram.com/coach_yass1" target="_blank" rel="noopener">@coach_yass1</a> · <a href="https://www.instagram.com/basket_libre" target="_blank" rel="noopener">@basket_libre</a><br>
-    <a href="/conditions-confidentialite.html">Conditions d'utilisation &amp; confidentialité</a>
+    <a href="/conditions-confidentialite.html">Conditions d'utilisation &amp; confidentialité</a><br>
+    <a class="partner-badge" href="https://osmm-mtl.site" target="_blank" rel="noopener" aria-label="Organisme Sportif Maghrébin Montréal">
+      <img src="logo-osmm.png" alt="OSMM">
+      <span>Un partenaire de l'OSMM</span>
+    </a>
   </div>
 </div>
 
