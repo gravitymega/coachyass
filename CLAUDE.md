@@ -33,12 +33,19 @@ Ce repo (`gravitymega/coachyass`) héberge plusieurs sites statiques déployés 
 2. ✅ Regrouper les équipes sous un onglet — déjà existant sur `gravity-basketball-mtl`, rien à construire
 3. ✅ Galerie photo panoramique OSMM — structure créée + branchée sur `photo_gallery` (vide, en attente de photos)
 4. ✅ Vidéos Instagram enlevées — 6 lignes supprimées de `instagram_carousel` (site `gravity-basketball-mtl`)
-5. ⚠️ **Reste à faire** — Description d'équipe : colonne `description` déjà ajoutée à `public.teams` (migration Supabase), mais pas encore éditable ni affichée. Bloqué tant que `gravity-admin-dashboard/` et `gravity-basketball-mtl/` ne sont pas reliés à Git dans Netlify (voir ci-dessus). Une fois relié : ajouter un champ dans `gravity-admin-dashboard/app.js` (formulaire équipe) + afficher dans `teamCardHtml()` de `gravity-basketball-mtl/script.js`.
+5. ✅ Description d'équipe : champ éditable ajouté au formulaire équipe (`gravity-admin-dashboard/app.js` + `index.html`, textarea `#team-description`), affiché via `teamCardHtml()` dans `gravity-basketball-mtl/script.js` (classe CSS `.team-description`). La colonne `description` existait déjà côté Supabase.
 6. ✅ Mercredi retiré des créneaux Gravity Pickup
 7. ✅ Système d'affiliation revu (Coaching/Pickup n'avaient aucune section partenaires ; OSMM avait un lien texte non cliquable) — harmonisé sur les 3
 8. ✅ Logos partenaires cliquables — fait pour Gravity Basketball (seul partenaire réel), branché sur Supabase pour les futurs ajouts
-9. ⚠️ **Reste à faire** — Dashboard entièrement automatisé : fonctionne déjà pour Coaching/Pickup (partenaires). Pour OSMM, il faut ajouter `osmm` à la variable `SITES` (et aux `<select>` HTML correspondants) dans `gravity-admin-dashboard/app.js` — bloqué par le même relink Netlify que le point 5.
+9. ⚠️ **Presque fait** — `osmm` ajouté à `SITE_LABELS` dans `gravity-admin-dashboard/app.js` et au sélecteur de site de la galerie photo (`#photo-gallery-site`). Le sélecteur de partenaires (`#partner-site`) est peuplé dynamiquement depuis `currentAdmin.sites` (colonne `admin_users.sites` en base) : **reste à faire côté utilisateur** — ajouter `"osmm"` à ce tableau pour le compte admin Yassine (`id = 871b01c9-92ac-4ec7-b4f4-a17293b64add`) dans Supabase (SQL Editor du projet `aevoulzotvmnrnclfuek`) :
+   ```sql
+   update admin_users
+   set sites = sites || '["osmm"]'::jsonb
+   where id = '871b01c9-92ac-4ec7-b4f4-a17293b64add'
+     and not sites @> '["osmm"]'::jsonb;
+   ```
+   (Bloqué automatiquement côté agent — écriture sur les permissions admin en production, à faire manuellement.)
 
 **PR mergées le 31 août 2026** : #15 (points 1, 3, 4, 6, 7, 8) et #16 (import des 2 sites, point 5/9 préparatoire).
 
-**Prochaine étape (côté utilisateur)** : relier `gravity-admin-dashboard` et `gravity-basketball-mtl` à Git dans Netlify. Ensuite, reprendre les points 5 et 9.
+**Points 5 et 9 traités le 31 août 2026** (PR #17, une fois `gravity-admin-dashboard` et `gravity-basketball-mtl` reliés à Git dans Netlify par l'utilisateur). Il ne reste que la requête SQL ci-dessus à exécuter manuellement pour finaliser le point 9.
