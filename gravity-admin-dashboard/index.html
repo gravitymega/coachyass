@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard admin — coachyass / basketlibre / gravity-basketball</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen" class="login-screen">
+  <form id="login-form" class="login-card">
+    <h1>Dashboard admin</h1>
+    <p class="muted">coachyass · basketlibre · gravity-basketball</p>
+    <div class="field">
+      <label for="login-email">Courriel</label>
+      <input type="email" id="login-email" required autocomplete="username">
+    </div>
+    <div class="field">
+      <label for="login-password">Mot de passe</label>
+      <input type="password" id="login-password" required autocomplete="current-password">
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+    <p class="login-error" id="login-error" hidden></p>
+    <div class="login-divider"><span>ou</span></div>
+    <button type="button" id="google-login-btn" class="btn btn-google btn-block">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+        <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/>
+        <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.83.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.98v2.33A9 9 0 0 0 9 18z"/>
+        <path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.98A9 9 0 0 0 0 9c0 1.45.35 2.83.98 4.03l2.97-2.33z"/>
+        <path fill="#EA4335" d="M9 3.58c1.32 0 2.51.46 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .98 4.97l2.97 2.33C4.66 5.17 6.65 3.58 9 3.58z"/>
+      </svg>
+      Se connecter avec Google
+    </button>
+  </form>
+</div>
+
+<!-- APP -->
+<div id="app" class="app" hidden>
+  <header class="app-header">
+    <div class="app-header-left">
+      <button id="hamburger-btn" class="hamburger-btn" type="button" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <span class="app-title">Dashboard admin</span>
+    </div>
+    <div class="app-header-right">
+      <span id="user-email" class="muted"></span>
+      <button id="logout-btn" class="btn btn-ghost">Déconnexion</button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+    <aside id="sidebar" class="sidebar">
+      <nav class="group-nav" id="group-nav"></nav>
+    </aside>
+
+    <div class="main-wrap">
+      <nav class="tabs" id="site-tabs"></nav>
+
+      <main class="app-main">
+
+        <section class="panel" data-group="accueil">
+          <h2>Vue d'ensemble</h2>
+          <p class="muted">Un coup d'œil sur les principaux chiffres — clique une carte pour ouvrir la section correspondante.</p>
+          <div class="home-grid" id="home-grid"></div>
+        </section>
+
+        <section class="panel" data-group="reservations">
+      <h2>Réservations / inscriptions</h2>
+      <div class="stats-row" id="stats-row"></div>
+
+      <div class="comm-filters">
+        <div class="field">
+          <label for="bookings-name-filter">Nom</label>
+          <input type="text" id="bookings-name-filter" placeholder="Rechercher un nom...">
+        </div>
+        <div class="field">
+          <label for="bookings-type-filter">Programme / type</label>
+          <select id="bookings-type-filter"><option value="">Tous les programmes</option></select>
+        </div>
+        <div class="field">
+          <label for="bookings-date-from">Reçu à partir du</label>
+          <input type="date" id="bookings-date-from">
+        </div>
+        <div class="field">
+          <label for="bookings-date-to">Reçu jusqu'au</label>
+          <input type="date" id="bookings-date-to">
+        </div>
+        <div class="field" style="flex:0 0 auto; align-self:flex-end;">
+          <button type="button" id="bookings-filter-reset" class="btn btn-ghost">Réinitialiser</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table" id="bookings-table">
+          <thead>
+            <tr>
+              <th>Site</th>
+              <th>Nom</th>
+              <th>Contact</th>
+              <th>Type</th>
+              <th>Détails</th>
+              <th>Statut</th>
+              <th>Reçu le</th>
+            </tr>
+          </thead>
+          <tbody id="bookings-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" data-group="programmes">
+      <h2>Programmes</h2>
+      <p class="muted">Gère les programmes (Ligue 3v3, Ligue Maison, Championnat, forfaits...) sans toucher au code. Pour l'instant, ceci ne modifie PAS encore les sites publics — ils continuent d'afficher leur contenu codé en dur (prochaine étape à venir).</p>
+
+      <div class="table-wrap">
+        <table class="data-table" id="programs-table">
+          <thead>
+            <tr>
+              <th>Site</th>
+              <th>Programme</th>
+              <th>Ordre</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="programs-tbody"></tbody>
+        </table>
+      </div>
+      <button type="button" id="program-new-btn" class="btn btn-ghost" style="margin-top:12px;">+ Nouveau programme</button>
+
+      <form id="program-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <input type="hidden" id="program-id">
+
+        <div class="field">
+          <label for="program-site">Site</label>
+          <select id="program-site" required></select>
+        </div>
+        <div class="field">
+          <label for="program-slug">Identifiant (slug — lettres minuscules, chiffres, tirets, ex. "ligue-3v3")</label>
+          <input type="text" id="program-slug" required pattern="[a-z0-9-]+">
+        </div>
+        <div class="field">
+          <label for="program-name">Nom du programme</label>
+          <input type="text" id="program-name" required>
+        </div>
+        <div class="field">
+          <label for="program-description">Description</label>
+          <textarea id="program-description" rows="3"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Détails (âge, horaire, secteur, format...)</label>
+          <div id="program-details-rows" class="repeater-rows"></div>
+          <button type="button" id="program-details-add" class="btn btn-ghost repeater-add-btn">+ Ajouter une ligne</button>
+        </div>
+
+        <div class="field">
+          <label>Tarifs</label>
+          <div id="program-pricing-rows" class="repeater-rows"></div>
+          <button type="button" id="program-pricing-add" class="btn btn-ghost repeater-add-btn">+ Ajouter un tarif</button>
+        </div>
+
+        <div class="field">
+          <label for="program-schedule">Horaire (résumé, ex. "Tous les samedis, 10h-13h")</label>
+          <input type="text" id="program-schedule">
+        </div>
+        <div class="field">
+          <label for="program-location">Lieu / secteur</label>
+          <input type="text" id="program-location">
+        </div>
+        <div class="field">
+          <label for="program-zeffy">Lien de paiement Zeffy (optionnel)</label>
+          <input type="url" id="program-zeffy" placeholder="https://www.zeffy.com/...">
+        </div>
+        <div class="field">
+          <label for="program-order">Ordre d'affichage (0 = premier)</label>
+          <input type="number" id="program-order" value="0">
+        </div>
+        <label class="checkbox-field">
+          <input type="checkbox" id="program-active" checked>
+          <span>Programme actif</span>
+        </label>
+
+        <div class="comm-actions">
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="button" id="program-cancel-btn" class="btn btn-ghost">Annuler</button>
+          <button type="button" id="program-delete-btn" class="btn btn-ghost" hidden>Supprimer ce programme</button>
+        </div>
+        <p class="save-note" id="program-save-note" hidden>Enregistré !</p>
+      </form>
+    </section>
+
+    <section class="panel slots-only" data-group="disponibilites">
+      <h2>Disponibilités</h2>
+      <p class="muted">Ouvre les créneaux (date + heure précise) où Gravity Coaching et Gravity Pickup sont disponibles. Les clients ne pourront réserver que parmi ces créneaux ouverts, une fois les formulaires publics branchés dessus.</p>
+
+      <div id="site-suspend-list" class="site-suspend-list"></div>
+
+      <div class="table-wrap">
+        <table class="data-table" id="slots-table">
+          <thead>
+            <tr>
+              <th>Site</th>
+              <th>Date</th>
+              <th>Heure</th>
+              <th>Lieu</th>
+              <th>Places (info)</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="slots-tbody"></tbody>
+        </table>
+      </div>
+
+      <form id="slot-form" class="product-form" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <div class="field">
+          <label for="slot-site">Site</label>
+          <select id="slot-site" required></select>
+        </div>
+        <div class="field">
+          <label for="slot-date">Date</label>
+          <input type="date" id="slot-date" required>
+        </div>
+        <div class="field">
+          <label for="slot-start">Heure de début</label>
+          <input type="time" id="slot-start" required>
+        </div>
+        <div class="field">
+          <label for="slot-end">Heure de fin (optionnel)</label>
+          <input type="time" id="slot-end">
+        </div>
+        <div class="field">
+          <label for="slot-location">Lieu (optionnel)</label>
+          <input type="text" id="slot-location" placeholder="Ex. Collège André-Grasset, Montréal">
+        </div>
+        <div class="field">
+          <label for="slot-capacity">Capacité (optionnel — laisse vide si illimité, utile pour Gravity Pickup)</label>
+          <input type="number" id="slot-capacity" min="1" placeholder="Ex. 12">
+        </div>
+        <button type="submit" class="btn btn-primary">+ Ajouter ce créneau</button>
+        <p class="save-note" id="slot-save-note" hidden>Créneau ajouté !</p>
+      </form>
+
+      <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--border);">
+        <h3 style="margin-bottom:8px; font-size:1rem;">Activer plusieurs semaines d'un coup</h3>
+        <p class="muted">Ex. pour Gravity Pickup : ouvre les 4 prochains mercredis 20h30-22h00 à André-Grasset en une seule opération.</p>
+        <form id="slot-bulk-form" class="product-form">
+          <div class="field">
+            <label for="bulk-site">Site</label>
+            <select id="bulk-site" required></select>
+          </div>
+          <div class="field">
+            <label for="bulk-weekday">Jour de la semaine</label>
+            <select id="bulk-weekday" required>
+              <option value="1">Lundi</option>
+              <option value="2">Mardi</option>
+              <option value="3">Mercredi</option>
+              <option value="4">Jeudi</option>
+              <option value="5">Vendredi</option>
+              <option value="6">Samedi</option>
+              <option value="0">Dimanche</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="bulk-start">Heure de début</label>
+            <input type="time" id="bulk-start" required>
+          </div>
+          <div class="field">
+            <label for="bulk-end">Heure de fin (optionnel)</label>
+            <input type="time" id="bulk-end">
+          </div>
+          <div class="field">
+            <label for="bulk-location">Lieu (optionnel)</label>
+            <input type="text" id="bulk-location">
+          </div>
+          <div class="field">
+            <label for="bulk-capacity">Capacité par créneau (optionnel — laisse vide si illimité)</label>
+            <input type="number" id="bulk-capacity" min="1" placeholder="Ex. 12">
+          </div>
+          <div class="field">
+            <label for="bulk-weeks">Nombre de semaines à activer</label>
+            <input type="number" id="bulk-weeks" min="1" max="12" value="4" required>
+          </div>
+          <button type="submit" class="btn btn-ghost">Activer ces semaines</button>
+          <p class="save-note" id="bulk-save-note" hidden>Créneaux ajoutés !</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="panel" data-group="partenaires">
+      <h2>Partenaires</h2>
+      <p class="muted">Logos et liens des partenaires affichés dans une section "Nos partenaires" sur les sites publics. Choisis "Tous les sites" pour un partenaire affiché partout.</p>
+
+      <div class="table-wrap">
+        <table class="data-table" id="partners-table">
+          <thead>
+            <tr>
+              <th>Logo</th>
+              <th>Nom</th>
+              <th>Site</th>
+              <th>Ordre</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="partners-tbody"></tbody>
+        </table>
+      </div>
+      <button type="button" id="partner-new-btn" class="btn btn-ghost" style="margin-top:12px;">+ Nouveau partenaire</button>
+
+      <form id="partner-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <input type="hidden" id="partner-id">
+
+        <div class="field">
+          <label for="partner-site">Site</label>
+          <select id="partner-site">
+            <option value="">Tous les sites</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="partner-name">Nom du partenaire</label>
+          <input type="text" id="partner-name" required>
+        </div>
+
+        <div class="field">
+          <label for="partner-logo-file">Logo (image — remplace le logo actuel si un fichier est choisi)</label>
+          <input type="file" id="partner-logo-file" accept="image/*">
+          <div id="partner-logo-preview" style="margin-top:8px;"></div>
+        </div>
+
+        <div class="field">
+          <label for="partner-website">Lien vers le site du partenaire (optionnel)</label>
+          <input type="url" id="partner-website" placeholder="https://...">
+        </div>
+
+        <div class="field">
+          <label for="partner-order">Ordre d'affichage</label>
+          <input type="number" id="partner-order" value="0">
+        </div>
+
+        <label class="checkbox-field">
+          <input type="checkbox" id="partner-active" checked>
+          <span>Partenaire actif (visible sur le site)</span>
+        </label>
+
+        <div class="comm-actions">
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="button" id="partner-cancel-btn" class="btn btn-ghost">Annuler</button>
+          <button type="button" id="partner-delete-btn" class="btn btn-ghost" hidden>Supprimer ce partenaire</button>
+        </div>
+        <p class="save-note" id="partner-save-note" hidden>Enregistré !</p>
+      </form>
+    </section>
+
+    <section class="panel" data-group="videos">
+      <h2>Galerie vidéo</h2>
+      <p class="muted">Grille de vidéos affichée dans la section "Vidéos" de gravity-basketball-mtl.netlify.app. Upload directement le fichier vidéo (mp4) depuis ton téléphone ou ordi — recadrage parfait garanti, plus de bandes noires/blanches. L'ancien système par lien Instagram reste supporté pour les posts déjà en ligne mais n'est plus recommandé pour les nouveaux ajouts.</p>
+
+      <div class="table-wrap">
+        <table class="data-table" id="ig-carousel-table">
+          <thead>
+            <tr>
+              <th>Aperçu</th>
+              <th>Site</th>
+              <th>Ordre</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="ig-carousel-tbody"></tbody>
+        </table>
+      </div>
+      <button type="button" id="ig-carousel-new-btn" class="btn btn-ghost" style="margin-top:12px;">+ Nouvelle vidéo</button>
+
+      <form id="ig-carousel-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <input type="hidden" id="ig-carousel-id">
+
+        <div class="field">
+          <label for="ig-carousel-site">Site</label>
+          <select id="ig-carousel-site">
+            <option value="gravity-basketball-mtl">Gravity Basketball MTL</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="ig-carousel-video-file">Fichier vidéo (mp4 — méthode recommandée)</label>
+          <input type="file" id="ig-carousel-video-file" accept="video/*">
+          <div id="ig-carousel-video-preview" style="margin-top:8px;"></div>
+        </div>
+
+        <div class="field">
+          <label for="ig-carousel-url">OU lien du post/reel Instagram (ancien système)</label>
+          <input type="url" id="ig-carousel-url" placeholder="https://www.instagram.com/reel/XXXXXXX/">
+        </div>
+
+        <div class="field">
+          <label for="ig-carousel-order">Ordre d'affichage</label>
+          <input type="number" id="ig-carousel-order" value="0">
+        </div>
+
+        <label class="checkbox-field">
+          <input type="checkbox" id="ig-carousel-active" checked>
+          <span>Vidéo active (visible dans la galerie)</span>
+        </label>
+
+        <div class="comm-actions">
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="button" id="ig-carousel-cancel-btn" class="btn btn-ghost">Annuler</button>
+          <button type="button" id="ig-carousel-delete-btn" class="btn btn-ghost" hidden>Supprimer cette vidéo</button>
+        </div>
+        <p class="save-note" id="ig-carousel-save-note" hidden>Enregistré !</p>
+      </form>
+    </section>
+
+    <section class="panel" data-group="videos">
+      <h2>Galerie photos</h2>
+      <p class="muted">Grille de photos affichée dans la nouvelle section "Photos" de gravity-basketball-mtl.netlify.app. Upload directement l'image depuis ton téléphone ou ordi.</p>
+
+      <div class="table-wrap">
+        <table class="data-table" id="photo-gallery-table">
+          <thead>
+            <tr>
+              <th>Aperçu</th>
+              <th>Site</th>
+              <th>Ordre</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="photo-gallery-tbody"></tbody>
+        </table>
+      </div>
+      <button type="button" id="photo-gallery-new-btn" class="btn btn-ghost" style="margin-top:12px;">+ Nouvelle photo</button>
+
+      <form id="photo-gallery-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <input type="hidden" id="photo-gallery-id">
+
+        <div class="field">
+          <label for="photo-gallery-site">Site</label>
+          <select id="photo-gallery-site">
+            <option value="gravity-basketball-mtl">Gravity Basketball MTL</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="photo-gallery-file">Fichier image</label>
+          <input type="file" id="photo-gallery-file" accept="image/*">
+          <div id="photo-gallery-preview" style="margin-top:8px;"></div>
+        </div>
+
+        <div class="field">
+          <label for="photo-gallery-caption">Légende (optionnel)</label>
+          <input type="text" id="photo-gallery-caption" placeholder="Ex : Finale de la Ligue 3v3, été 2026">
+        </div>
+
+        <div class="field">
+          <label for="photo-gallery-order">Ordre d'affichage</label>
+          <input type="number" id="photo-gallery-order" value="0">
+        </div>
+
+        <label class="checkbox-field">
+          <input type="checkbox" id="photo-gallery-active" checked>
+          <span>Photo active (visible dans la galerie)</span>
+        </label>
+
+        <div class="comm-actions">
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="button" id="photo-gallery-cancel-btn" class="btn btn-ghost">Annuler</button>
+          <button type="button" id="photo-gallery-delete-btn" class="btn btn-ghost" hidden>Supprimer cette photo</button>
+        </div>
+        <p class="save-note" id="photo-gallery-save-note" hidden>Enregistré !</p>
+      </form>
+    </section>
+
+    <section class="panel" data-group="communication">
+      <h2>Communication</h2>
+      <p class="muted">Génère un message pré-rempli dans Gmail (Cci) à partir des inscrits ci-dessus — rien n'est envoyé automatiquement, tu relis et cliques Envoyer toi-même depuis ta boîte. Un seul message pour tout le groupe sélectionné (pas de personnalisation par destinataire).</p>
+
+      <div class="comm-filters">
+        <div class="field">
+          <label for="comm-type-filter">Programme / type</label>
+          <select id="comm-type-filter"><option value="">Tous les types</option></select>
+        </div>
+        <div class="field">
+          <label for="comm-status-filter">Statut</label>
+          <select id="comm-status-filter">
+            <option value="">Tous les statuts</option>
+            <option value="nouveau">nouveau</option>
+            <option value="contacté">contacté</option>
+            <option value="confirmé">confirmé</option>
+            <option value="annulé">annulé</option>
+            <option value="archivé">archivé</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table" id="comm-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="comm-select-all" title="Tout sélectionner"></th>
+              <th>Nom</th>
+              <th>Courriel</th>
+              <th>Type</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody id="comm-tbody"></tbody>
+        </table>
+      </div>
+      <p class="muted" id="comm-selected-count">0 sélectionné(s) — 0 avec courriel valide.</p>
+
+      <div class="field">
+        <label for="comm-subject">Sujet</label>
+        <input type="text" id="comm-subject" placeholder="Ex. Gravity Basketball — Rappel">
+      </div>
+      <div class="field">
+        <label for="comm-body">Message</label>
+        <textarea id="comm-body" rows="6" placeholder="Bonjour,">Bonjour,
+
+
+Merci,
+Gravity Basketball</textarea>
+      </div>
+
+      <div class="comm-actions" id="comm-actions">
+        <p class="muted">Sélectionne au moins un contact avec un courriel.</p>
+      </div>
+    </section>
+
+    <section class="panel" data-group="avis">
+      <h2>Ajouter un avis manuellement</h2>
+      <p class="muted">Pour un avis reçu par téléphone, en personne ou par message texte. Publié immédiatement (pas besoin de modération).</p>
+      <form id="review-add-form" class="product-form">
+        <div class="field">
+          <label for="review-add-site">Site</label>
+          <select id="review-add-site" required></select>
+        </div>
+        <div class="field">
+          <label for="review-add-name">Nom du client</label>
+          <input type="text" id="review-add-name" required>
+        </div>
+        <div class="field">
+          <label for="review-add-rating">Note</label>
+          <select id="review-add-rating" required>
+            <option value="5">★★★★★ (5)</option>
+            <option value="4">★★★★☆ (4)</option>
+            <option value="3">★★★☆☆ (3)</option>
+            <option value="2">★★☆☆☆ (2)</option>
+            <option value="1">★☆☆☆☆ (1)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="review-add-comment">Commentaire (optionnel)</label>
+          <textarea id="review-add-comment" rows="3"></textarea>
+        </div>
+        <div class="comm-actions">
+          <button type="submit" class="btn btn-primary">Publier l'avis</button>
+        </div>
+        <p class="save-note" id="review-add-save-note" hidden>Avis publié !</p>
+      </form>
+    </section>
+
+    <section class="panel" data-group="avis">
+      <h2>Avis à modérer</h2>
+      <div id="pending-reviews" class="reviews-mod-list"></div>
+    </section>
+
+    <section class="panel" data-group="avis">
+      <h2>Avis publiés</h2>
+      <div id="approved-reviews" class="reviews-mod-list"></div>
+    </section>
+
+    <section class="panel championship-only" data-group="championnat">
+      <h2>Championnat — inscriptions</h2>
+      <p class="muted">Confirme un paiement une fois l'Interac ou le Zeffy reçu. Les tailles d'uniforme apparaissent une fois saisies par l'inscrit.</p>
+      <div class="table-wrap">
+        <table class="data-table" id="championship-reg-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Nom</th>
+              <th>Contact</th>
+              <th>Montant</th>
+              <th>Statut</th>
+              <th>Tailles</th>
+              <th>Reçu le</th>
+            </tr>
+          </thead>
+          <tbody id="championship-reg-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel championship-only" data-group="championnat">
+      <h2>Championnat — classement</h2>
+      <div class="table-wrap">
+        <table class="data-table" id="standings-table">
+          <thead>
+            <tr>
+              <th>Équipe</th>
+              <th>V</th>
+              <th>D</th>
+              <th>Matchs</th>
+              <th>Points</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="standings-tbody"></tbody>
+        </table>
+      </div>
+      <form id="standings-add-form" class="inline-field" style="margin-top:12px;">
+        <input type="text" id="standings-new-team" placeholder="Nom de la nouvelle équipe" required>
+        <button type="submit" class="btn btn-ghost">Ajouter l'équipe</button>
+      </form>
+    </section>
+
+    <section class="panel championship-only" data-group="championnat">
+      <h2>Championnat — Reconnaissance des joueurs (MVP)</h2>
+      <p class="muted">Le joueur choisi reçoit une couronne permanente sur son profil et apparaît sur le Mur des légendes du site.</p>
+      <form id="award-form" class="product-form">
+        <div class="field">
+          <label for="award-type">Type de titre</label>
+          <select id="award-type">
+            <option value="semaine">MVP de la semaine</option>
+            <option value="saison">MVP de la saison</option>
+          </select>
+        </div>
+        <div class="field" id="award-week-field">
+          <label for="award-week">Semaine (ex. "Semaine 3")</label>
+          <input type="text" id="award-week">
+        </div>
+        <div class="field">
+          <label for="award-season">Saison</label>
+          <input type="text" id="award-season" value="Saison 2026" required>
+        </div>
+        <div class="field">
+          <label for="award-mvp-player">MVP — joueur</label>
+          <select id="award-mvp-player"></select>
+        </div>
+        <div class="field">
+          <label for="award-defenders">Meilleurs défenseurs (séparés par des virgules)</label>
+          <input type="text" id="award-defenders" placeholder="Nom 1, Nom 2">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Publier</button>
+        <p class="save-note" id="award-save-note" hidden>Publié !</p>
+      </form>
+    </section>
+
+    <section class="panel championship-only" data-group="championnat">
+      <h2>Championnat — ajouter une statistique</h2>
+      <form id="stat-form" class="product-form">
+        <div class="field">
+          <label for="stat-player">Joueur</label>
+          <select id="stat-player"></select>
+        </div>
+        <div class="field">
+          <label for="stat-date">Date du match</label>
+          <input type="date" id="stat-date" required>
+        </div>
+        <div class="field">
+          <label for="stat-points">Points</label>
+          <input type="number" id="stat-points" min="0" value="0">
+        </div>
+        <div class="field">
+          <label for="stat-assists">Passes décisives</label>
+          <input type="number" id="stat-assists" min="0" value="0">
+        </div>
+        <div class="field">
+          <label for="stat-steals">Interceptions</label>
+          <input type="number" id="stat-steals" min="0" value="0">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Ajouter la statistique</button>
+        <p class="save-note" id="stat-save-note" hidden>Ajouté !</p>
+      </form>
+    </section>
+
+    <section class="panel championship-only" data-group="recrutement">
+      <h2>Championnat — Recrutement : arbitres</h2>
+      <p class="muted">Candidatures reçues via la page /arbitres du site du championnat. Approuve une candidature (avec une photo) pour qu'elle apparaisse sur la page publique "Notre équipe".</p>
+      <div class="table-wrap">
+        <table class="data-table" id="referees-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Contact</th>
+              <th>Disponibilités</th>
+              <th>Expérience</th>
+              <th>Statut</th>
+              <th>Approuvé</th>
+              <th>Photo (URL)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="referees-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel championship-only" data-group="recrutement">
+      <h2>Championnat — Recrutement : coachs</h2>
+      <p class="muted">Candidatures reçues via la page /coachs du site du championnat. Approuve une candidature (avec une photo) pour qu'elle apparaisse sur la page publique "Notre équipe".</p>
+      <div class="table-wrap">
+        <table class="data-table" id="coaches-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Contact</th>
+              <th>Disponibilités</th>
+              <th>Expérience</th>
+              <th>Statut</th>
+              <th>Approuvé</th>
+              <th>Photo (URL)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="coaches-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel championship-only" data-group="partenariats">
+      <h2>Championnat — Partenariats</h2>
+      <p class="muted">Demandes reçues via la page /partenariat du site du championnat — entreprises et organismes proposant une commandite ou un partenariat. Séparé du panneau Recrutement pour éviter la confusion avec les candidatures arbitres/coachs.</p>
+      <div class="table-wrap">
+        <table class="data-table" id="partnerships-table">
+          <thead>
+            <tr>
+              <th>Entreprise</th>
+              <th>Contact</th>
+              <th>Coordonnées</th>
+              <th>Type</th>
+              <th>Message</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="partnerships-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel championship-only" data-group="mes-equipes">
+      <h2>Mes équipes — Affiches et inscription</h2>
+      <p class="muted">Les 11 équipes (Novice/Mini/Atome/Cadet/Juvénile en Garçons+Filles, plus Prép) sont déjà créées — pas d'ajout/suppression ici, seulement l'affiche du programme, le lien Zeffy propre à l'équipe (optionnel, remplace le lien Zeffy global si rempli) et l'ordre d'affichage.</p>
+      <div class="table-wrap">
+        <table class="data-table" id="teams-table">
+          <thead>
+            <tr>
+              <th>Catégorie</th>
+              <th>Genre</th>
+              <th>Équipe</th>
+              <th>Affiche</th>
+              <th>Zeffy</th>
+              <th>Ordre</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="teams-tbody"></tbody>
+        </table>
+      </div>
+
+      <form id="team-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <input type="hidden" id="team-id">
+        <p class="muted" id="team-form-title" style="margin-top:0;"></p>
+
+        <div class="field">
+          <label for="team-affiche-file">Affiche du programme (image — remplace l'affiche actuelle si un fichier est choisi)</label>
+          <input type="file" id="team-affiche-file" accept="image/*">
+          <div id="team-affiche-preview" style="margin-top:8px;"></div>
+        </div>
+
+        <div class="field">
+          <label for="team-zeffy">Lien Zeffy propre à cette équipe (optionnel)</label>
+          <input type="url" id="team-zeffy" placeholder="https://www.zeffy.com/...">
+        </div>
+
+        <div class="field">
+          <label for="team-order">Ordre d'affichage</label>
+          <input type="number" id="team-order" value="0">
+        </div>
+
+        <label class="checkbox-field">
+          <input type="checkbox" id="team-active" checked>
+          <span>Équipe active (visible sur le site)</span>
+        </label>
+
+        <div class="comm-actions">
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="button" id="team-cancel-btn" class="btn btn-ghost">Annuler</button>
+        </div>
+        <p class="save-note" id="team-save-note" hidden>Enregistré !</p>
+      </form>
+    </section>
+
+    <section class="panel championship-only" data-group="mes-equipes">
+      <h2>Mes équipes — Joueurs</h2>
+      <p class="muted">Photo, numéro, poste et statistiques de saison affichés sur la fiche de chaque équipe (gravity-basketball-mtl.netlify.app/#mes-equipes).</p>
+      <div class="table-wrap">
+        <table class="data-table" id="team-players-table">
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Nom</th>
+              <th>Équipe</th>
+              <th>#</th>
+              <th>Poste</th>
+              <th>Pts / Reb / Pas / M</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="team-players-tbody"></tbody>
+        </table>
+      </div>
+      <button type="button" id="team-player-new-btn" class="btn btn-ghost" style="margin-top:12px;">+ Nouveau joueur</button>
+
+      <form id="team-player-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <input type="hidden" id="team-player-id">
+
+        <div class="field">
+          <label for="team-player-team">Équipe</label>
+          <select id="team-player-team" required></select>
+        </div>
+
+        <div class="field">
+          <label for="team-player-name">Nom complet</label>
+          <input type="text" id="team-player-name" required>
+        </div>
+
+        <div class="field">
+          <label for="team-player-numero">Numéro</label>
+          <input type="text" id="team-player-numero" placeholder="Ex. 23">
+        </div>
+
+        <div class="field">
+          <label for="team-player-poste">Poste</label>
+          <input type="text" id="team-player-poste" placeholder="Ex. Meneur, Ailier, Pivot...">
+        </div>
+
+        <div class="field">
+          <label for="team-player-photo-file">Photo (remplace la photo actuelle si un fichier est choisi)</label>
+          <input type="file" id="team-player-photo-file" accept="image/*">
+          <div id="team-player-photo-preview" style="margin-top:8px;"></div>
+        </div>
+
+        <div class="field">
+          <label for="team-player-instagram">Lien Instagram (optionnel)</label>
+          <input type="url" id="team-player-instagram" placeholder="https://instagram.com/...">
+        </div>
+
+        <div class="field">
+          <label for="team-player-points">Points (saison)</label>
+          <input type="number" id="team-player-points" value="0" min="0">
+        </div>
+
+        <div class="field">
+          <label for="team-player-rebonds">Rebonds (saison)</label>
+          <input type="number" id="team-player-rebonds" value="0" min="0">
+        </div>
+
+        <div class="field">
+          <label for="team-player-passes">Passes décisives (saison)</label>
+          <input type="number" id="team-player-passes" value="0" min="0">
+        </div>
+
+        <div class="field">
+          <label for="team-player-matchs">Matchs joués (saison)</label>
+          <input type="number" id="team-player-matchs" value="0" min="0">
+        </div>
+
+        <div class="field">
+          <label for="team-player-order">Ordre d'affichage</label>
+          <input type="number" id="team-player-order" value="0">
+        </div>
+
+        <label class="checkbox-field">
+          <input type="checkbox" id="team-player-active" checked>
+          <span>Joueur actif (visible sur le site)</span>
+        </label>
+
+        <div class="comm-actions">
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="button" id="team-player-cancel-btn" class="btn btn-ghost">Annuler</button>
+          <button type="button" id="team-player-delete-btn" class="btn btn-ghost" hidden>Supprimer ce joueur</button>
+        </div>
+        <p class="save-note" id="team-player-save-note" hidden>Enregistré !</p>
+      </form>
+    </section>
+
+    <section class="panel" data-group="comptabilite">
+      <h2>Comptabilité</h2>
+      <p class="muted">Vue d'ensemble des revenus et dépenses de toutes les activités. Les inscriptions au championnat marquées "payé" comptent automatiquement comme revenu. Passer une inscription à "remboursé" (ici ou dans le panneau Championnat) enregistre automatiquement la dépense correspondante.</p>
+      <div class="stats-row" id="finance-stats-row"></div>
+
+      <h3 style="margin-top:24px;">Ajouter une transaction</h3>
+      <form id="finance-form" class="product-form">
+        <div class="field">
+          <label for="finance-type">Type</label>
+          <select id="finance-type" required>
+            <option value="depense">Dépense</option>
+            <option value="revenu">Revenu</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="finance-site">Site (optionnel)</label>
+          <select id="finance-site">
+            <option value="">Global / non spécifique</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="finance-category">Catégorie</label>
+          <input type="text" id="finance-category" placeholder="ex. location de gymnase, équipement, arbitres...">
+        </div>
+        <div class="field">
+          <label for="finance-amount">Montant ($)</label>
+          <input type="number" id="finance-amount" step="0.01" min="0" required>
+        </div>
+        <div class="field">
+          <label for="finance-date">Date</label>
+          <input type="date" id="finance-date" required>
+        </div>
+        <div class="field">
+          <label for="finance-description">Note (optionnel)</label>
+          <textarea id="finance-description" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Ajouter</button>
+        <p class="save-note" id="finance-save-note" hidden>Ajouté !</p>
+      </form>
+
+      <h3 style="margin-top:24px;">Transactions</h3>
+      <div class="table-wrap">
+        <table class="data-table" id="finance-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Catégorie</th>
+              <th>Site</th>
+              <th>Montant</th>
+              <th>Note</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="finance-tbody"></tbody>
+        </table>
+      </div>
+
+      <h3 style="margin-top:24px;">Remboursements — championnat</h3>
+      <p class="muted">Inscriptions payées éligibles à un remboursement, et historique des remboursements déjà traités.</p>
+      <div class="table-wrap">
+        <table class="data-table" id="refunds-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Contact</th>
+              <th>Montant dû</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="refunds-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" data-group="produit">
+      <h2>Produit vedette (bandeau du site)</h2>
+      <p class="muted">Colle un lien Amazon (idéalement ton lien d'affilié) — le titre, l'image et le prix sont extraits automatiquement. Corrige les champs si l'extraction échoue.</p>
+      <form id="product-form" class="product-form">
+        <div class="field">
+          <label for="product-site">Site</label>
+          <select id="product-site"></select>
+        </div>
+        <div class="field">
+          <label for="product-url">Lien du produit (Amazon)</label>
+          <div class="inline-field">
+            <input type="url" id="product-url" placeholder="https://www.amazon.ca/...">
+            <button type="button" id="product-extract-btn" class="btn btn-ghost">Extraire</button>
+          </div>
+        </div>
+        <div id="product-extract-status" class="muted" hidden></div>
+        <div class="field">
+          <label for="product-title">Titre</label>
+          <input type="text" id="product-title">
+        </div>
+        <div class="field">
+          <label for="product-price">Prix (affiché tel quel)</label>
+          <input type="text" id="product-price" placeholder="ex. 49,99 $">
+        </div>
+        <div class="field">
+          <label for="product-image">URL de l'image</label>
+          <input type="url" id="product-image">
+        </div>
+        <label class="checkbox-field">
+          <input type="checkbox" id="product-active" checked>
+          <span>Bandeau actif sur le site</span>
+        </label>
+        <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
+        <p class="save-note" id="product-save-note" hidden>Enregistré !</p>
+      </form>
+
+      <div class="product-stats" style="margin-top:24px; padding-top:20px; border-top:1px solid var(--border);">
+        <h3 style="margin-bottom:12px;">Clics sur le bandeau</h3>
+        <div class="stats-row" id="click-stats-row"></div>
+        <div class="table-wrap" style="margin-top:16px;">
+          <table class="data-table" id="click-stats-table">
+            <thead>
+              <tr>
+                <th>Site</th>
+                <th>Total</th>
+                <th>7 derniers jours</th>
+                <th>7 jours précédents</th>
+              </tr>
+            </thead>
+            <tbody id="click-stats-tbody"></tbody>
+          </table>
+        </div>
+        <p class="muted" id="click-stats-empty" hidden>Aucun clic enregistré pour l'instant.</p>
+      </div>
+    </section>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

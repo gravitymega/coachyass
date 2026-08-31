@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gravity-basketball-mtl.netlify.app/sitemap.xml
