@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // inscription à la Ligue 3v3 par défaut.
   const programmeRadios = form.querySelectorAll('input[name="programme"]');
   const fieldTypeInscription = document.getElementById('field-type-inscription');
+  const fieldPrepDetails = document.getElementById('field-prep-details');
   const ageCategorieSelect = document.getElementById('age_categorie');
   const inscriptionTitle = document.getElementById('inscription-title');
   const programmeToggles = document.querySelectorAll('#field-programme .type-toggle');
@@ -55,19 +56,25 @@ document.addEventListener('DOMContentLoaded', () => {
   function syncProgrammeUI() {
     const selected = form.querySelector('input[name="programme"]:checked').value;
     const isLigueMaison = selected === 'Ligue Maison';
+    const isPrep = selected === 'Gravity Prep';
 
-    // La Ligue Maison n'a pas de formule "équipe" — c'est un programme individuel.
-    fieldTypeInscription.style.display = isLigueMaison ? 'none' : 'flex';
-    if (isLigueMaison) {
+    // La Ligue Maison et Gravity Prep n'ont pas de formule "équipe" — ce sont
+    // des programmes individuels.
+    fieldTypeInscription.style.display = (isLigueMaison || isPrep) ? 'none' : 'flex';
+    if (isLigueMaison || isPrep) {
       fieldEquipe.style.display = 'none';
     } else {
       syncTypeUI();
     }
 
-    ageCategorieSelect.value = isLigueMaison ? '9-10 ans' : '13-14 ans';
+    if (fieldPrepDetails) fieldPrepDetails.style.display = isPrep ? 'block' : 'none';
+
+    ageCategorieSelect.value = isLigueMaison ? '9-10 ans' : (isPrep ? 'Prep' : '13-14 ans');
     inscriptionTitle.textContent = isLigueMaison
       ? 'Réserve ta place — Ligue Maison'
-      : 'Réserve ta place — Gravity Basketball Ligue 3v3';
+      : isPrep
+        ? 'Réserve ta place — Gravity Prep'
+        : 'Réserve ta place — Gravity Basketball Ligue 3v3';
 
     programmeToggles.forEach(t => {
       const input = t.querySelector('input');
@@ -104,20 +111,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const get = (name) => (data.get(name) || '').toString().trim();
 
     const programme = get('programme') || 'Ligue 3v3';
+    const isPrep = programme === 'Gravity Prep';
+    const isIndividuelSeulement = programme === 'Ligue Maison' || isPrep;
     const payload = {
       site: 'gravity-basketball',
-      type: programme === 'Ligue Maison' ? 'inscription_ligue_maison' : 'inscription_ligue_3v3',
+      type: programme === 'Ligue Maison'
+        ? 'inscription_ligue_maison'
+        : isPrep
+          ? 'inscription_gravity_prep'
+          : 'inscription_ligue_3v3',
       contact_name: get('nom_complet'),
       contact_email: get('email'),
       contact_phone: get('telephone'),
       details: {
         programme,
-        type_inscription: programme === 'Ligue Maison' ? 'Individuel' : get('type_inscription'),
-        nom_equipe: programme === 'Ligue Maison' ? '' : get('nom_equipe'),
+        type_inscription: isIndividuelSeulement ? 'Individuel' : get('type_inscription'),
+        nom_equipe: isIndividuelSeulement ? '' : get('nom_equipe'),
         age_categorie: get('age_categorie'),
         remarque: get('remarque'),
         reference: get('reference'),
         consentement_medias: data.get('consentement_medias') === 'Oui',
+        ...(isPrep ? {
+          adresse: get('adresse'),
+          niveau: get('niveau'),
+          poste_de_jeu: get('poste_de_jeu'),
+          taille_vetement: get('taille_vetement'),
+          grandeur: get('grandeur'),
+          poids: get('poids'),
+          occupation: get('occupation'),
+          objectif_saison: get('objectif_saison'),
+        } : {}),
       },
     };
 
