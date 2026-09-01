@@ -394,7 +394,7 @@
      4) Reporte les identifiants ci-dessous. Rien d'autre à changer.
      Si adminTemplateId est vide, seul le parent reçoit une confirmation —
      Karim ne serait alors averti d'aucune inscription. */
-  var TP_EMAIL={ publicKey:"", serviceId:"", templateId:"", adminTemplateId:"" };
+  var TP_EMAIL={ publicKey:"[PUBLIC_KEY]", serviceId:"[SERVICE_ID]", templateId:"[TEMPLATE_ID]", adminTemplateId:"[ADMIN_TEMPLATE_ID]" };
   if(window.emailjs && TP_EMAIL.publicKey){ emailjs.init({publicKey:TP_EMAIL.publicKey}); }
 </script>
 <script>
