@@ -115,6 +115,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   programmeRadios.forEach(r => r.addEventListener('change', syncProgrammeUI));
 
+  // Lien direct vers un programme précis (ex. pour une pub Gravity Prep) :
+  // ?programme=Gravity%20Prep pré-sélectionne le bon programme au chargement.
+  const programmeFromUrl = new URLSearchParams(window.location.search).get('programme');
+  if (programmeFromUrl) {
+    const radio = form.querySelector(`input[name="programme"][value="${programmeFromUrl}"]`);
+    if (radio) {
+      radio.checked = true;
+      syncProgrammeUI();
+    }
+  }
+
   // Boutons "Réserver ma place" des cartes-programmes : pré-sélectionnent le
   // bon programme avant que l'ancre #inscription ne fasse défiler la page.
   document.querySelectorAll('a[data-programme]').forEach((btn) => {
