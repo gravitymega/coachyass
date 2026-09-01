@@ -2158,7 +2158,7 @@ async function sendCommCampaign(emails, subject, body) {
     const res = await fetch('/.netlify/functions/send-campaign', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ subject, body, emails }),
+      body: JSON.stringify({ subject, body, emails, site: activeSite }),
     });
     const result = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(result.error || 'Échec de l\'envoi');

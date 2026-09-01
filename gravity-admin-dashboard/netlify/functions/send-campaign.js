@@ -17,18 +17,33 @@ const FROM_EMAIL = process.env.MAILER_FROM_EMAIL || 'Gravity <onboarding@resend.
 const MAX_RECIPIENTS = 1000;
 const BATCH_SIZE = 45; // marge sous la limite Resend (50 destinataires/appel, to+bcc compris)
 
-const SIGNATURE = `
-  <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #e5e5e5;">
-    <tr>
-      <td style="vertical-align: middle; padding-right: 12px;">
-        <img src="https://gravity.osmm-mtl.site/assets/logo.png" alt="Gravity" width="44" height="44" style="display: block; border-radius: 8px;">
-      </td>
-      <td style="vertical-align: middle; font-family: system-ui, -apple-system, Arial, sans-serif; font-size: 14px; color: #333;">
-        <strong>L'équipe Gravity</strong>
-      </td>
-    </tr>
-  </table>
-`;
+// Un lien de site par slug Supabase (voir SITE_LABELS dans app.js) — pointe
+// vers le bon site plutôt qu'un lien générique. 'all' / inconnu retombe sur
+// le site principal Gravity Basketball.
+const SITE_URLS = {
+  coachyass: 'https://coaching.osmm-mtl.site',
+  basketlibre: 'https://pickup.osmm-mtl.site',
+  'gravity-basketball': 'https://gravity.osmm-mtl.site',
+  'gravity-basketball-mtl': 'https://gravity.osmm-mtl.site',
+  osmm: 'https://osmm-mtl.site',
+};
+const DEFAULT_SITE_URL = 'https://gravity.osmm-mtl.site';
+
+function buildSignature(siteUrl) {
+  const url = siteUrl || DEFAULT_SITE_URL;
+  return `
+    <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #e5e5e5;">
+      <tr>
+        <td style="vertical-align: middle; padding-right: 12px;">
+          <img src="https://gravity.osmm-mtl.site/assets/logo.png" alt="Gravity" width="44" height="44" style="display: block; border-radius: 8px;">
+        </td>
+        <td style="vertical-align: middle; font-family: system-ui, -apple-system, Arial, sans-serif; font-size: 14px; color: #333;">
+          <strong>L'équipe Gravity</strong><br><a href="${url}" style="color: #e8672e; text-decoration: none;">${url.replace(/^https?:\/\//, '')}</a>
+        </td>
+      </tr>
+    </table>
+  `;
+}
 
 function escapeHtml(str) {
   return String(str == null ? '' : str).replace(/[&<>"']/g, (c) => (
@@ -101,7 +116,7 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: `Trop de destinataires (max ${MAX_RECIPIENTS} par envoi)` }) };
   }
 
-  const html = textToHtml(bodyText) + SIGNATURE;
+  const html = textToHtml(bodyText) + buildSignature(SITE_URLS[String(d.site || '')]);
   const batches = [];
   for (let i = 0; i < emails.length; i += BATCH_SIZE) batches.push(emails.slice(i, i + BATCH_SIZE));
 

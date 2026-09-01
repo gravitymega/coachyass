@@ -28,20 +28,36 @@ function escapeHtml(str) {
   ));
 }
 
+// Lien du site à afficher dans la signature — un par type de courriel, pour
+// pointer vers le bon site plutôt qu'un lien générique.
+const SITE_URLS = {
+  coaching: 'https://coaching.osmm-mtl.site',
+  pickup: 'https://pickup.osmm-mtl.site',
+  'basketball-mtl': 'https://gravity.osmm-mtl.site',
+  'osmm-membre': 'https://osmm-mtl.site',
+  'osmm-contact': 'https://osmm-mtl.site',
+};
+
 // Signature ajoutée en bas de chaque courriel — même logo pour tous les
-// sites (hébergé sur gravity.osmm-mtl.site, accessible publiquement).
-const SIGNATURE = `
-  <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #e5e5e5;">
-    <tr>
-      <td style="vertical-align: middle; padding-right: 12px;">
-        <img src="https://gravity.osmm-mtl.site/assets/logo.png" alt="Gravity" width="44" height="44" style="display: block; border-radius: 8px;">
-      </td>
-      <td style="vertical-align: middle; font-family: system-ui, -apple-system, Arial, sans-serif; font-size: 14px; color: #333;">
-        <strong>L'équipe Gravity</strong>
-      </td>
-    </tr>
-  </table>
-`;
+// sites (hébergé sur gravity.osmm-mtl.site, accessible publiquement), avec
+// un lien vers le site concerné.
+function buildSignature(siteUrl) {
+  const siteLink = siteUrl
+    ? `<br><a href="${siteUrl}" style="color: #e8672e; text-decoration: none;">${siteUrl.replace(/^https?:\/\//, '')}</a>`
+    : '';
+  return `
+    <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #e5e5e5;">
+      <tr>
+        <td style="vertical-align: middle; padding-right: 12px;">
+          <img src="https://gravity.osmm-mtl.site/assets/logo.png" alt="Gravity" width="44" height="44" style="display: block; border-radius: 8px;">
+        </td>
+        <td style="vertical-align: middle; font-family: system-ui, -apple-system, Arial, sans-serif; font-size: 14px; color: #333;">
+          <strong>L'équipe Gravity</strong>${siteLink}
+        </td>
+      </tr>
+    </table>
+  `;
+}
 
 // Gabarits — un par type de confirmation, un par site. `f` = les champs
 // fournis par le site appelant (déjà validés/tronqués avant d'arriver ici).
@@ -163,7 +179,7 @@ exports.handler = async (event) => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html: html + SIGNATURE }),
+      body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html: html + buildSignature(SITE_URLS[type]) }),
     });
 
     if (!res.ok) {
