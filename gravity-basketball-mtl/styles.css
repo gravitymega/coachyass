@@ -437,11 +437,12 @@ a { color: inherit; }
 
 .form-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
 .type-toggle {
-  flex: 1;
+  flex: 1 1 140px;
   position: relative;
   text-align: center;
   padding: 12px;
