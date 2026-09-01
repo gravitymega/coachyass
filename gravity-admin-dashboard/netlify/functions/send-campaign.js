@@ -12,7 +12,7 @@ const SUPABASE_URL = 'https://aevoulzotvmnrnclfuek.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_NAj99iQim_odAYNwR-qucg_2KKHYf7Z';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const FROM_EMAIL = process.env.MAILER_FROM_EMAIL || 'Gravity <onboarding@resend.dev>';
+const FROM_EMAIL = process.env.MAILER_FROM_EMAIL || 'Gravity Basketball <onboarding@resend.dev>';
 
 const MAX_RECIPIENTS = 1000;
 const BATCH_SIZE = 45; // marge sous la limite Resend (50 destinataires/appel, to+bcc compris)

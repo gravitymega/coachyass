@@ -9,7 +9,7 @@
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const MAILER_SHARED_KEY = process.env.MAILER_SHARED_KEY;
-const FROM_EMAIL = process.env.MAILER_FROM_EMAIL || 'Gravity <onboarding@resend.dev>';
+const FROM_EMAIL = process.env.MAILER_FROM_EMAIL || 'Gravity Basketball <onboarding@resend.dev>';
 
 const ALLOWED_ORIGIN_PATTERNS = [
   /^https:\/\/([a-z0-9-]+\.)?osmm-mtl\.site$/,
