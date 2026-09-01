@@ -841,7 +841,10 @@
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 
   // Formulaires -> FormSubmit AJAX (Devenir membre + Contact)
-  function wireForm(formId, successId, errorId, subject, fields){
+  var MAILER_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/send-confirmation';
+  var MAILER_KEY = '11c58c7548b0ed0666742f1e44a9cec1777bddee1c9fcbe5';
+
+  function wireForm(formId, successId, errorId, subject, fields, mailerType){
     var form = document.getElementById(formId);
     if(!form) return;
     var successBox = document.getElementById(successId);
@@ -864,6 +867,19 @@
         body: JSON.stringify(data)
       }).then(function(res){
         if(!res.ok) throw new Error('network');
+        var email = data['Courriel'];
+        var nom = (data['Prénom'] ? data['Prénom'] + ' ' + (data['Nom'] || '') : data['Nom complet']) || '';
+        if (email && mailerType) {
+          fetch(MAILER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-mailer-key': MAILER_KEY },
+            body: JSON.stringify({
+              type: mailerType,
+              to: email,
+              fields: { nom: nom.trim(), activite: data['Activité d\'intérêt'] || '' }
+            })
+          }).catch(function(){});
+        }
         form.style.display = 'none';
         successBox.style.display = 'block';
         successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -882,13 +898,13 @@
     { id: 'mPhone', label: 'Téléphone' },
     { id: 'mActivity', label: 'Activité d\'intérêt' },
     { id: 'mMessage', label: 'Message' }
-  ]);
+  ], 'osmm-membre');
 
   wireForm('contactForm', 'contactSuccess', 'contactError', 'Nouveau message — Contact OSMM', [
     { id: 'cName', label: 'Nom complet' },
     { id: 'cEmail', label: 'Courriel' },
     { id: 'cMessage', label: 'Message' }
-  ]);
+  ], 'osmm-contact');
 </script>
 
 <!-- Dashboard OSMM (Supabase) : lit en direct les partenaires et les photos

@@ -6,6 +6,9 @@
 const SUPABASE_URL = 'https://aevoulzotvmnrnclfuek.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_NAj99iQim_odAYNwR-qucg_2KKHYf7Z';
 
+const MAILER_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/send-confirmation';
+const MAILER_KEY = '11c58c7548b0ed0666742f1e44a9cec1777bddee1c9fcbe5';
+
 // Liens de paiement Zeffy par programme (comme pour le Championnat et Basket Libre).
 // Note : "Ligue 3v3" (13-14 ans) et le Championnat partagent le même événement
 // Zeffy — confirmé par Yassine que le tarif est bien le même pour les deux
@@ -173,6 +176,15 @@ document.addEventListener('DOMContentLoaded', () => {
     })
       .then((res) => {
         if (!res.ok) throw new Error('supabase insert failed: ' + res.status);
+        fetch(MAILER_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-mailer-key': MAILER_KEY },
+          body: JSON.stringify({
+            type: 'basketball-mtl',
+            to: payload.contact_email,
+            fields: { nom: payload.contact_name, programme, modePaiement: payload.details.mode_paiement },
+          }),
+        }).catch(() => {});
         form.hidden = true;
         success.hidden = false;
         const interacCta = document.getElementById('interac-payment-cta');

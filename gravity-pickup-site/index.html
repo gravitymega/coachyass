@@ -495,6 +495,8 @@
 <script>
   const FORMSUBMIT_EMAIL = 'moqtad6@gmail.com';
   const ENDPOINT = '/.netlify/functions/reservation-gravity-pickup';
+  const MAILER_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/send-confirmation';
+  const MAILER_KEY = '11c58c7548b0ed0666742f1e44a9cec1777bddee1c9fcbe5';
   const SUBJECT = 'Nouvelle réservation — Gravity Pickups';
 
   const root = document;
@@ -743,6 +745,21 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(notionData)
+        }),
+        fetch(MAILER_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-mailer-key': MAILER_KEY },
+          body: JSON.stringify({
+            type: 'pickup',
+            to: email,
+            fields: {
+              nom: name,
+              forfait: forfait.value,
+              creneau: selectedCreneau.label,
+              dates: seances.map((s) => formatDateFr(s.date)).join(', '),
+              modePaiement: modePaiement.value
+            }
+          })
         })
       ]);
 
