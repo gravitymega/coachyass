@@ -382,11 +382,19 @@
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
   /* ====== CONFIRMATION AUTOMATIQUE PAR COURRIEL (EmailJS — gratuit) ======
-     Laisser vide = repli sur courriel manuel. Pour activer :
+     Laisser vide = repli sur courriel manuel (mailto: vers Karim). Pour activer :
      1) Crée un compte gratuit sur emailjs.com
-     2) Ajoute un service (Gmail) + un template (colle courriel-confirmation.html)
-     3) Reporte tes 3 identifiants ci-dessous. Rien d'autre à changer. */
-  var TP_EMAIL={ publicKey:"", serviceId:"", templateId:"" };
+     2) Ajoute un service (Gmail) contact.talent.perle@gmail.com
+     3) Ajoute DEUX templates :
+        - templateId : colle courriel-confirmation.html (envoyé au PARENT,
+          "To email" = {{to_email}})
+        - adminTemplateId : colle courriel-notification-admin.html (envoyé
+          à KARIM, "To email" = contact.talent.perle@gmail.com fixe,
+          "Reply To" = {{reply_to}} pour répondre direct au parent)
+     4) Reporte les identifiants ci-dessous. Rien d'autre à changer.
+     Si adminTemplateId est vide, seul le parent reçoit une confirmation —
+     Karim ne serait alors averti d'aucune inscription. */
+  var TP_EMAIL={ publicKey:"", serviceId:"", templateId:"", adminTemplateId:"" };
   if(window.emailjs && TP_EMAIL.publicKey){ emailjs.init({publicKey:TP_EMAIL.publicKey}); }
 </script>
 <script>
@@ -416,13 +424,16 @@
     var params={parent:parent||'',nom:nom,activite:act,age:age,dispo:dispo||'—',
                 equipe:eq,telephone:tel,to_email:mail,reply_to:mail};
 
-    // Si EmailJS est configuré → envoi automatique du courriel de confirmation (avec logo).
+    // Si EmailJS est configuré → confirmation au parent + notification à Karim.
     if(window.emailjs && TP_EMAIL.publicKey && TP_EMAIL.serviceId && TP_EMAIL.templateId){
       emailjs.send(TP_EMAIL.serviceId, TP_EMAIL.templateId, params).then(function(){
         document.getElementById('okmsg').innerText='Un courriel de confirmation vient d’être envoyé à '+(mail||'votre adresse')+'.';
       }).catch(function(){
         document.getElementById('okmsg').innerText='Demande enregistrée pour « '+act+' ».';
       });
+      if(TP_EMAIL.adminTemplateId){
+        emailjs.send(TP_EMAIL.serviceId, TP_EMAIL.adminTemplateId, params);
+      }
       document.getElementById('insForm').style.display='none';
       document.getElementById('insOk').style.display='block';
       return;
