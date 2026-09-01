@@ -2120,8 +2120,10 @@ function renderCommActions() {
     .join('');
 
   commActionsEl.innerHTML =
+    `<button type="button" class="btn btn-primary" id="comm-send-btn">📤 Envoyer via Gravity Mailer (${emails.length})</button>` +
     gmailButtons +
-    `<button type="button" class="btn btn-ghost" id="comm-copy-btn">Copier la liste des courriels (${emails.length})</button>`;
+    `<button type="button" class="btn btn-ghost" id="comm-copy-btn">Copier la liste des courriels (${emails.length})</button>` +
+    `<p class="muted" id="comm-send-note" hidden></p>`;
 
   document.getElementById('comm-copy-btn').addEventListener('click', () => {
     navigator.clipboard.writeText(emails.join(', ')).then(() => {
@@ -2131,6 +2133,47 @@ function renderCommActions() {
       setTimeout(() => { btn.textContent = original; }, 2000);
     });
   });
+
+  document.getElementById('comm-send-btn').addEventListener('click', () => sendCommCampaign(emails, subject, body));
+}
+
+// Envoi réel de la campagne (un seul message, en Cci) via la fonction Netlify
+// send-campaign, protégée par le jeton de session Supabase de l'admin connecté.
+async function sendCommCampaign(emails, subject, body) {
+  const btn = document.getElementById('comm-send-btn');
+  const note = document.getElementById('comm-send-note');
+  if (!confirm(`Envoyer ce message à ${emails.length} destinataire${emails.length > 1 ? 's' : ''} maintenant ? Cette action est irréversible.`)) {
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours...';
+  note.hidden = true;
+
+  try {
+    const { data } = await supabase.auth.getSession();
+    const token = data && data.session && data.session.access_token;
+    if (!token) throw new Error('Session expirée, reconnecte-toi.');
+
+    const res = await fetch('/.netlify/functions/send-campaign', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ subject, body, emails, site: activeSite }),
+    });
+    const result = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(result.error || 'Échec de l\'envoi');
+
+    note.textContent = `✅ Envoyé à ${result.sent} destinataire(s).`;
+    note.style.color = 'var(--accent-light, #4caf50)';
+    note.hidden = false;
+  } catch (err) {
+    note.textContent = `Erreur : ${err.message}`;
+    note.style.color = '#ff6b6b';
+    note.hidden = false;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = `📤 Envoyer via Gravity Mailer (${emails.length})`;
+  }
 }
 
 commSelectAllEl.addEventListener('change', () => {

@@ -9,7 +9,25 @@
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const MAILER_SHARED_KEY = process.env.MAILER_SHARED_KEY;
-const FROM_EMAIL = process.env.MAILER_FROM_EMAIL || 'Gravity <onboarding@resend.dev>';
+
+// Adresse d'envoi commune — extraite de MAILER_FROM_EMAIL si défini (accepte
+// "Nom <adresse>" ou juste "adresse"), sinon repli sur le domaine de test
+// Resend. Le nom affiché, lui, varie par site (voir FROM_NAMES ci-dessous).
+const FROM_ADDRESS_MATCH = /<([^>]+)>/.exec(process.env.MAILER_FROM_EMAIL || '');
+const FROM_ADDRESS = FROM_ADDRESS_MATCH ? FROM_ADDRESS_MATCH[1] : (process.env.MAILER_FROM_EMAIL || 'onboarding@resend.dev');
+
+// Nom d'expéditeur affiché aux destinataires — différent par site.
+const FROM_NAMES = {
+  coaching: 'Coach Yass',
+  pickup: 'Gravity Pickup',
+  'basketball-mtl': 'Gravity Basketball',
+  'osmm-membre': 'Gravity Basketball',
+  'osmm-contact': 'Gravity Basketball',
+};
+
+function buildFrom(type) {
+  return `${FROM_NAMES[type] || 'Gravity Basketball'} <${FROM_ADDRESS}>`;
+}
 
 const ALLOWED_ORIGIN_PATTERNS = [
   /^https:\/\/([a-z0-9-]+\.)?osmm-mtl\.site$/,
@@ -26,6 +44,37 @@ function escapeHtml(str) {
   return String(str == null ? '' : str).replace(/[&<>"']/g, (c) => (
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
   ));
+}
+
+// Lien du site à afficher dans la signature — un par type de courriel, pour
+// pointer vers le bon site plutôt qu'un lien générique.
+const SITE_URLS = {
+  coaching: 'https://coaching.osmm-mtl.site',
+  pickup: 'https://pickup.osmm-mtl.site',
+  'basketball-mtl': 'https://gravity.osmm-mtl.site',
+  'osmm-membre': 'https://osmm-mtl.site',
+  'osmm-contact': 'https://osmm-mtl.site',
+};
+
+// Signature ajoutée en bas de chaque courriel — même logo pour tous les
+// sites (hébergé sur gravity.osmm-mtl.site, accessible publiquement), avec
+// un lien vers le site concerné.
+function buildSignature(siteUrl) {
+  const siteLink = siteUrl
+    ? `<br><a href="${siteUrl}" style="color: #e8672e; text-decoration: none;">${siteUrl.replace(/^https?:\/\//, '')}</a>`
+    : '';
+  return `
+    <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #e5e5e5;">
+      <tr>
+        <td style="vertical-align: middle; padding-right: 12px;">
+          <img src="https://gravity.osmm-mtl.site/assets/logo.png" alt="Gravity" width="44" height="44" style="display: block; border-radius: 8px;">
+        </td>
+        <td style="vertical-align: middle; font-family: system-ui, -apple-system, Arial, sans-serif; font-size: 14px; color: #333;">
+          <strong>L'équipe Gravity</strong>${siteLink}
+        </td>
+      </tr>
+    </table>
+  `;
 }
 
 // Gabarits — un par type de confirmation, un par site. `f` = les champs
@@ -148,7 +197,7 @@ exports.handler = async (event) => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html }),
+      body: JSON.stringify({ from: buildFrom(type), to: [to], subject, html: html + buildSignature(SITE_URLS[type]) }),
     });
 
     if (!res.ok) {
