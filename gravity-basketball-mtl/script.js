@@ -57,6 +57,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const inscriptionTitle = document.getElementById('inscription-title');
   const programmeToggles = document.querySelectorAll('#field-programme .type-toggle');
 
+  // "Plus de détails" repliable — les champs avancés de Gravity Prep (adresse,
+  // niveau, mensurations, etc.) restent masqués tant qu'on ne clique pas dessus,
+  // pour ne pas surcharger le formulaire dès la sélection du programme.
+  const prepDetailsToggle = document.getElementById('prep-details-toggle');
+  const prepDetailsFields = document.getElementById('prep-details-fields');
+  if (prepDetailsToggle && prepDetailsFields) {
+    prepDetailsToggle.addEventListener('click', () => {
+      const expanded = prepDetailsToggle.getAttribute('aria-expanded') === 'true';
+      prepDetailsToggle.setAttribute('aria-expanded', String(!expanded));
+      prepDetailsFields.hidden = expanded;
+      prepDetailsToggle.lastChild.textContent = expanded ? ' Plus de détails (optionnel)' : ' Moins de détails';
+    });
+  }
+
   function syncProgrammeUI() {
     const selected = form.querySelector('input[name="programme"]:checked').value;
     const isLigueMaison = selected === 'Ligue Maison';
@@ -72,7 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
       syncTypeUI();
     }
 
-    if (fieldPrepDetails) fieldPrepDetails.style.display = isPrep ? 'block' : 'none';
+    if (fieldPrepDetails) fieldPrepDetails.style.display = isPrep ? 'grid' : 'none';
+    if (!isPrep && prepDetailsToggle && prepDetailsFields) {
+      prepDetailsToggle.setAttribute('aria-expanded', 'false');
+      prepDetailsFields.hidden = true;
+      prepDetailsToggle.lastChild.textContent = ' Plus de détails (optionnel)';
+    }
     // La décharge n'est exigée (et interactible) que pour Gravity Prep — un
     // champ requis mais caché bloquerait la soumission des autres programmes.
     if (dechargePrepCheckbox) {
