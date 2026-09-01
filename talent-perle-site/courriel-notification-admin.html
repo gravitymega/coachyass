@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Nouvelle inscription — Talent Perlé</title>
+</head>
+<!-- ============================================================
+     COURRIEL DE NOTIFICATION INTERNE — TALENT PERLÉ
+     Destiné à Karim (contact.talent.perle@gmail.com), pas au parent.
+     Variables (style EmailJS) : {{parent}}, {{nom}}, {{activite}},
+     {{age}}, {{dispo}}, {{equipe}}, {{telephone}}, {{reply_to}}
+     Le champ "To email" du template EmailJS doit être fixé à
+     contact.talent.perle@gmail.com (adresse fixe, pas une variable) ;
+     "Reply To" peut être réglé sur {{reply_to}} pour répondre
+     directement au parent.
+     ============================================================ -->
+<body style="margin:0;padding:0;background:#EEE9DE;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">Nouvelle inscription reçue sur le site de Talent Perlé — détails à l'intérieur.</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#EEE9DE;padding:24px 12px;">
+    <tr><td align="center">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:#FCF8F1;border-radius:16px;overflow:hidden;font-family:Helvetica,Arial,sans-serif;box-shadow:0 8px 30px rgba(30,50,38,.12);">
+
+        <!-- HEADER -->
+        <tr><td style="background:#2E7150;padding:22px 30px;" align="center">
+          <div style="color:#ffffff;font-size:18px;font-weight:bold;letter-spacing:2px;">TALENT&nbsp;PERLÉ</div>
+          <div style="color:#C9E4D5;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-top:4px;">Nouvelle inscription</div>
+        </td></tr>
+
+        <!-- BANDE OR -->
+        <tr><td style="height:5px;background:#C6982F;line-height:5px;font-size:0;">&nbsp;</td></tr>
+
+        <!-- TITRE -->
+        <tr><td style="padding:28px 34px 6px;">
+          <h1 style="margin:0;color:#233028;font-size:20px;font-weight:bold;">Une inscription vient d'être soumise</h1>
+          <p style="margin:8px 0 0;color:#3f4d44;font-size:14px;line-height:1.55;">Activité : <strong style="color:#2E7150;">{{activite}}</strong></p>
+        </td></tr>
+
+        <!-- JEUNE -->
+        <tr><td style="padding:14px 34px 4px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F4EFE3;border-radius:12px;">
+            <tr><td style="padding:16px 20px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;color:#3f4d44;">
+                <tr><td style="padding:6px 0;color:#8a978f;">Jeune</td><td align="right" style="padding:6px 0;font-weight:bold;color:#233028;">{{nom}}</td></tr>
+                <tr><td style="padding:6px 0;color:#8a978f;border-top:1px solid #E4DCCC;">Âge</td><td align="right" style="padding:6px 0;font-weight:bold;color:#233028;border-top:1px solid #E4DCCC;">{{age}}</td></tr>
+                <tr><td style="padding:6px 0;color:#8a978f;border-top:1px solid #E4DCCC;">Joue déjà en équipe</td><td align="right" style="padding:6px 0;font-weight:bold;color:#233028;border-top:1px solid #E4DCCC;">{{equipe}}</td></tr>
+                <tr><td style="padding:6px 0;color:#8a978f;border-top:1px solid #E4DCCC;">Disponibilités</td><td align="right" style="padding:6px 0;font-weight:bold;color:#233028;border-top:1px solid #E4DCCC;">{{dispo}}</td></tr>
+              </table>
+            </td></tr>
+          </table>
+        </td></tr>
+
+        <!-- CONTACT PARENT -->
+        <tr><td style="padding:20px 34px 6px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FBF1DA;border-radius:12px;">
+            <tr><td style="padding:16px 20px;color:#5f4a0f;font-size:14px;line-height:1.75;">
+              <strong style="color:#233028;">Parent/tuteur</strong><br>
+              {{parent}}<br>
+              Téléphone : {{telephone}}<br>
+              Courriel : {{reply_to}}
+            </td></tr>
+          </table>
+        </td></tr>
+
+        <tr><td style="padding:14px 34px 30px;color:#3f4d44;font-size:13px;line-height:1.6;">
+          <p style="margin:0;">Répondez directement à ce courriel pour rejoindre le parent — l'adresse « Répondre à » est déjà réglée sur la sienne.</p>
+        </td></tr>
+
+        <!-- FOOTER -->
+        <tr><td style="background:#233028;padding:20px 34px;color:#c7d2ca;font-size:12px;line-height:1.6;" align="center">
+          <div>Notification automatique du site talentperle.ca</div>
+        </td></tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
