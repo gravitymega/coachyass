@@ -28,6 +28,21 @@ function escapeHtml(str) {
   ));
 }
 
+// Signature ajoutée en bas de chaque courriel — même logo pour tous les
+// sites (hébergé sur gravity.osmm-mtl.site, accessible publiquement).
+const SIGNATURE = `
+  <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #e5e5e5;">
+    <tr>
+      <td style="vertical-align: middle; padding-right: 12px;">
+        <img src="https://gravity.osmm-mtl.site/assets/logo.png" alt="Gravity" width="44" height="44" style="display: block; border-radius: 8px;">
+      </td>
+      <td style="vertical-align: middle; font-family: system-ui, -apple-system, Arial, sans-serif; font-size: 14px; color: #333;">
+        <strong>L'équipe Gravity</strong>
+      </td>
+    </tr>
+  </table>
+`;
+
 // Gabarits — un par type de confirmation, un par site. `f` = les champs
 // fournis par le site appelant (déjà validés/tronqués avant d'arriver ici).
 const TEMPLATES = {
@@ -148,7 +163,7 @@ exports.handler = async (event) => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html }),
+      body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html: html + SIGNATURE }),
     });
 
     if (!res.ok) {
