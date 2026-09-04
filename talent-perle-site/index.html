@@ -381,18 +381,20 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-  /* ====== NOTIFICATION PAR COURRIEL À KARIM (EmailJS — gratuit) ======
+  /* ====== CONFIRMATION AUTOMATIQUE PAR COURRIEL (EmailJS — gratuit) ======
      Laisser vide = repli sur courriel manuel (mailto: vers Karim). Pour activer :
      1) Crée un compte gratuit sur emailjs.com
      2) Ajoute un service (Gmail) contact.talent.perle@gmail.com
-     3) Ajoute UN template : colle courriel-notification-admin.html
-        - "To email" = contact.talent.perle@gmail.com (adresse fixe)
-        - "Reply To" = {{reply_to}} (le parent) pour que Karim puisse
-          répondre directement au parent pour confirmer l'inscription
+     3) Ajoute DEUX templates :
+        - templateId : colle courriel-confirmation.html (envoyé au PARENT,
+          "To email" = {{to_email}})
+        - adminTemplateId : colle courriel-notification-admin.html (envoyé
+          à KARIM, "To email" = contact.talent.perle@gmail.com fixe,
+          "Reply To" = {{reply_to}} pour répondre direct au parent)
      4) Reporte les identifiants ci-dessous. Rien d'autre à changer.
-     Le parent ne reçoit PAS de courriel automatique : Karim confirme
-     lui-même en répondant au courriel reçu. */
-  var TP_EMAIL={ publicKey:"", serviceId:"", templateId:"" };
+     Si adminTemplateId est vide, seul le parent reçoit une confirmation —
+     Karim ne serait alors averti d'aucune inscription. */
+  var TP_EMAIL={ publicKey:"", serviceId:"", templateId:"", adminTemplateId:"" };
   if(window.emailjs && TP_EMAIL.publicKey){ emailjs.init({publicKey:TP_EMAIL.publicKey}); }
 </script>
 <script>
@@ -422,10 +424,16 @@
     var params={parent:parent||'',nom:nom,activite:act,age:age,dispo:dispo||'—',
                 equipe:eq,telephone:tel,to_email:mail,reply_to:mail};
 
-    // Si EmailJS est configuré → notification à Karim, qui répond lui-même au parent.
+    // Si EmailJS est configuré → confirmation au parent + notification à Karim.
     if(window.emailjs && TP_EMAIL.publicKey && TP_EMAIL.serviceId && TP_EMAIL.templateId){
-      emailjs.send(TP_EMAIL.serviceId, TP_EMAIL.templateId, params);
-      document.getElementById('okmsg').innerText='Demande envoyée pour « '+act+' ». Vous recevrez une confirmation par courriel sous peu.';
+      emailjs.send(TP_EMAIL.serviceId, TP_EMAIL.templateId, params).then(function(){
+        document.getElementById('okmsg').innerText='Un courriel de confirmation vient d’être envoyé à '+(mail||'votre adresse')+'.';
+      }).catch(function(){
+        document.getElementById('okmsg').innerText='Demande enregistrée pour « '+act+' ».';
+      });
+      if(TP_EMAIL.adminTemplateId){
+        emailjs.send(TP_EMAIL.serviceId, TP_EMAIL.adminTemplateId, params);
+      }
       document.getElementById('insForm').style.display='none';
       document.getElementById('insOk').style.display='block';
       return;
