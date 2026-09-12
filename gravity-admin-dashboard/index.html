@@ -953,13 +953,15 @@ Gravity Basketball</textarea>
       <button type="button" id="player-document-new-btn" class="btn btn-ghost" style="margin-top:12px;">+ Nouveau document</button>
 
       <form id="player-document-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <input type="hidden" id="player-document-id">
         <div class="field">
           <label for="player-document-player">Joueur</label>
           <select id="player-document-player" required></select>
         </div>
         <div class="field">
-          <label for="player-document-titre">Titre</label>
-          <input type="text" id="player-document-titre" required placeholder="Ex. Décharge de responsabilité signée">
+          <label for="player-document-titre">Titre (optionnel si plusieurs fichiers)</label>
+          <input type="text" id="player-document-titre" placeholder="Ex. Décharge de responsabilité signée">
+          <p class="muted" id="player-document-titre-hint">Si tu téléverses plusieurs fichiers à la fois, laisse vide pour utiliser le nom de chaque fichier comme titre.</p>
         </div>
         <div class="field">
           <label for="player-document-categorie">Catégorie (optionnel)</label>
@@ -971,11 +973,11 @@ Gravity Basketball</textarea>
           </select>
         </div>
         <div class="field">
-          <label for="player-document-file">Fichier (PDF, image...)</label>
-          <input type="file" id="player-document-file" required>
+          <label for="player-document-file" id="player-document-file-label">Fichiers (PDF, image... — plusieurs à la fois possible)</label>
+          <input type="file" id="player-document-file" multiple>
         </div>
         <div class="comm-actions">
-          <button type="submit" class="btn btn-primary">Téléverser</button>
+          <button type="submit" class="btn btn-primary" id="player-document-submit-btn">Téléverser</button>
           <button type="button" id="player-document-cancel-btn" class="btn btn-ghost">Annuler</button>
         </div>
         <p class="save-note" id="player-document-save-note" hidden>Enregistré !</p>
