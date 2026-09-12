@@ -208,9 +208,11 @@ const teamPlayerTeamSelect = document.getElementById('team-player-team');
 const teamPlayerNameInput = document.getElementById('team-player-name');
 const teamPlayerNumeroInput = document.getElementById('team-player-numero');
 const teamPlayerPosteInput = document.getElementById('team-player-poste');
+const teamPlayerAgeInput = document.getElementById('team-player-age');
 const teamPlayerPhotoFileInput = document.getElementById('team-player-photo-file');
 const teamPlayerPhotoPreviewEl = document.getElementById('team-player-photo-preview');
 const teamPlayerInstagramInput = document.getElementById('team-player-instagram');
+const teamPlayerEmailInput = document.getElementById('team-player-email');
 const teamPlayerPointsInput = document.getElementById('team-player-points');
 const teamPlayerReboundsInput = document.getElementById('team-player-rebonds');
 const teamPlayerAssistsInput = document.getElementById('team-player-passes');
@@ -727,6 +729,7 @@ function renderBookings() {
           <td>${escapeHtml(r.contact_name || '')}</td>
           <td class="wrap">${escapeHtml(r.contact_email || '')}<br>${escapeHtml(r.contact_phone || '')}
             ${r.contact_email ? `<br><button type="button" class="btn btn-ghost comm-write-btn" data-email="${escapeHtml(r.contact_email)}">✉️ Écrire</button>` : ''}
+            ${r.site === 'gravity-basketball' ? `<br><button type="button" class="btn btn-ghost booking-create-player-btn" data-id="${r.id}">Créer la fiche joueur</button>` : ''}
           </td>
           <td>${escapeHtml(r.type || '')}</td>
           <td class="wrap">${escapeHtml(details)}</td>
@@ -761,6 +764,20 @@ function renderBookings() {
       const subject = commSubjectInput.value.trim() || 'Gravity Basketball';
       const body = commBodyInput.value || '';
       window.open(buildGmailComposeUrl([email], subject, body), '_blank', 'noopener');
+    });
+  });
+  bookingsTbody.querySelectorAll('.booking-create-player-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const booking = allBookings.find((b) => b.id === btn.dataset.id);
+      if (!booking) return;
+      const details = booking.details || {};
+      setActiveGroup('mes-equipes');
+      openTeamPlayerForm(null, {
+        full_name: booking.contact_name || '',
+        age_category: details.age_categorie || '',
+        poste: details.poste_de_jeu || '',
+        email: booking.contact_email || '',
+      });
     });
   });
 }
@@ -1168,17 +1185,19 @@ function renderTeamPlayersTable() {
           <td>${escapeHtml(teamLabel(p.team_id))}</td>
           <td>${p.numero ? escapeHtml(p.numero) : '—'}</td>
           <td>${p.poste ? escapeHtml(p.poste) : '—'}</td>
+          <td>${p.age_category ? escapeHtml(p.age_category) : '—'}</td>
           <td>${p.saison_points ?? 0} / ${p.saison_rebonds ?? 0} / ${p.saison_passes ?? 0} / ${p.saison_matchs ?? 0}</td>
           <td><span class="program-status-pill ${p.active ? 'active' : 'inactive'}">${p.active ? 'Actif' : 'Inactif'}</span></td>
           <td>
             <div class="program-row-actions">
               <button type="button" class="btn btn-ghost team-player-edit-btn" data-id="${p.id}">Éditer</button>
               <button type="button" class="btn btn-ghost team-player-toggle-btn" data-id="${p.id}">${p.active ? 'Désactiver' : 'Activer'}</button>
+              <button type="button" class="btn btn-ghost team-player-share-btn" data-id="${p.id}">Partager la fiche</button>
             </div>
           </td>
         </tr>
       `)
-      .join('') || '<tr><td colspan="8" class="empty-note">Aucun joueur pour l\'instant — clique "+ Nouveau joueur" pour en ajouter un.</td></tr>';
+      .join('') || '<tr><td colspan="9" class="empty-note">Aucun joueur pour l\'instant — clique "+ Nouveau joueur" pour en ajouter un.</td></tr>';
 
   teamPlayersTbody.querySelectorAll('.team-player-edit-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -1196,17 +1215,30 @@ function renderTeamPlayersTable() {
       await loadTeamPlayers();
     });
   });
+  teamPlayersTbody.querySelectorAll('.team-player-share-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const player = allTeamPlayers.find((p) => p.id === btn.dataset.id);
+      if (player) sharePlayerCard(player, btn);
+    });
+  });
 }
 
-function openTeamPlayerForm(player) {
+// player: ligne de la table players. prefill (optionnel, uniquement pour un
+// nouveau joueur) : { full_name, age_category, poste, email } — permet de
+// créer la fiche joueur en un clic à partir d'une réservation, sans que
+// personne n'ait à retaper l'information déjà fournie par le joueur/parent
+// dans le formulaire d'inscription public (un seul formulaire pour tout).
+function openTeamPlayerForm(player, prefill) {
   populateTeamPlayerTeamSelect();
   teamPlayerForm.hidden = false;
   teamPlayerIdInput.value = player ? player.id : '';
   teamPlayerTeamSelect.value = player ? player.team_id : (allTeams[0]?.id || '');
-  teamPlayerNameInput.value = player ? player.full_name : '';
+  teamPlayerNameInput.value = player ? player.full_name : (prefill?.full_name || '');
   teamPlayerNumeroInput.value = player ? (player.numero || '') : '';
-  teamPlayerPosteInput.value = player ? (player.poste || '') : '';
+  teamPlayerPosteInput.value = player ? (player.poste || '') : (prefill?.poste || '');
+  teamPlayerAgeInput.value = player ? (player.age_category || '') : (prefill?.age_category || '');
   teamPlayerInstagramInput.value = player ? (player.instagram_url || '') : '';
+  teamPlayerEmailInput.value = player ? (player.email || '') : (prefill?.email || '');
   teamPlayerPointsInput.value = player ? (player.saison_points ?? 0) : 0;
   teamPlayerReboundsInput.value = player ? (player.saison_rebonds ?? 0) : 0;
   teamPlayerAssistsInput.value = player ? (player.saison_passes ?? 0) : 0;
@@ -1281,8 +1313,10 @@ teamPlayerForm?.addEventListener('submit', async (e) => {
     full_name: teamPlayerNameInput.value.trim(),
     numero: teamPlayerNumeroInput.value.trim() || null,
     poste: teamPlayerPosteInput.value.trim() || null,
+    age_category: teamPlayerAgeInput.value.trim() || null,
     photo_url: photoUrl,
     instagram_url: teamPlayerInstagramInput.value.trim() || null,
+    email: teamPlayerEmailInput.value.trim() || null,
     saison_points: parseInt(teamPlayerPointsInput.value, 10) || 0,
     saison_rebonds: parseInt(teamPlayerReboundsInput.value, 10) || 0,
     saison_passes: parseInt(teamPlayerAssistsInput.value, 10) || 0,
@@ -1312,6 +1346,195 @@ teamPlayerForm?.addEventListener('submit', async (e) => {
     teamPlayerSaveNote.hidden = true;
   }, 1200);
 });
+
+// ---------- Fiche joueur partageable (image générée, même principe que la
+// génération "Partage Instagram" du site public gravity-basketball-mtl) ----------
+const SHARE_LOGO_URL = 'https://gravity.osmm-mtl.site/assets/logo.png';
+
+function shareLoadImage(src, crossOrigin) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    if (crossOrigin) img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+function shareDrawRoundedRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function shareInitials(name) {
+  return String(name || '')
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join('')
+    .toUpperCase() || '?';
+}
+
+function shareSlugify(str) {
+  const noAccents = String(str || 'joueur')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '');
+  return noAccents
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '') || 'joueur';
+}
+
+async function buildPlayerCardImage(player, teamName) {
+  const W = 1080, H = 1350;
+  const canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  try {
+    if (document.fonts && document.fonts.load) {
+      await Promise.all([
+        document.fonts.load('700 64px Oswald'),
+        document.fonts.load('600 36px Inter'),
+      ]);
+    }
+  } catch (e) { /* tant pis, on dessine avec la police de secours */ }
+
+  ctx.fillStyle = '#0a0a0a';
+  ctx.fillRect(0, 0, W, H);
+  const grad = ctx.createRadialGradient(W / 2, 0, 0, W / 2, 0, W);
+  grad.addColorStop(0, 'rgba(232,103,46,0.22)');
+  grad.addColorStop(1, 'rgba(232,103,46,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  const pad = 60;
+  shareDrawRoundedRect(ctx, pad, pad, W - pad * 2, H - pad * 2, 36);
+  ctx.fillStyle = '#171717';
+  ctx.fill();
+  ctx.strokeStyle = '#2a2a2a';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  const logo = await shareLoadImage(SHARE_LOGO_URL, true);
+  if (logo) {
+    const logoH = 70;
+    const logoW = logoH * (logo.width / logo.height);
+    ctx.drawImage(logo, pad + 40, pad + 40, logoW, logoH);
+  }
+  ctx.fillStyle = '#a8a8a8';
+  ctx.font = '600 26px Inter, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('GRAVITY BASKETBALL', W - pad - 40, pad + 82);
+
+  const photoCx = W / 2;
+  const photoCy = pad + 300;
+  const photoR = 190;
+  const photoImg = player.photo_url ? await shareLoadImage(player.photo_url, true) : null;
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(photoCx, photoCy, photoR, 0, Math.PI * 2);
+  ctx.closePath();
+  if (photoImg) {
+    ctx.clip();
+    const scale = Math.max((photoR * 2) / photoImg.width, (photoR * 2) / photoImg.height);
+    const dw = photoImg.width * scale;
+    const dh = photoImg.height * scale;
+    ctx.drawImage(photoImg, photoCx - dw / 2, photoCy - dh / 2, dw, dh);
+  } else {
+    ctx.fillStyle = 'rgba(232,103,46,0.15)';
+    ctx.fill();
+    ctx.clip();
+    ctx.fillStyle = '#ff8a4c';
+    ctx.font = '700 140px Oswald, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(shareInitials(player.full_name), photoCx, photoCy + 10);
+  }
+  ctx.restore();
+  ctx.strokeStyle = '#e8672e';
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.arc(photoCx, photoCy, photoR, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = '#f5f5f5';
+  ctx.font = '700 60px Oswald, sans-serif';
+  ctx.fillText((player.full_name || '').toUpperCase(), W / 2, photoCy + photoR + 90);
+
+  const metaParts = [
+    player.numero ? '#' + player.numero : '',
+    player.poste || '',
+    player.age_category || '',
+    teamName || '',
+  ].filter(Boolean);
+  if (metaParts.length) {
+    ctx.fillStyle = '#ff8a4c';
+    ctx.font = '600 34px Inter, sans-serif';
+    ctx.fillText(metaParts.join('  ·  '), W / 2, photoCy + photoR + 140);
+  }
+
+  const stats = [
+    ['Points', player.saison_points ?? 0],
+    ['Rebonds', player.saison_rebonds ?? 0],
+    ['Passes', player.saison_passes ?? 0],
+    ['Matchs', player.saison_matchs ?? 0],
+  ];
+  const statsY = photoCy + photoR + 220;
+  const statsW = W - pad * 2 - 80;
+  const boxW = statsW / stats.length;
+  stats.forEach(([label, value], i) => {
+    const cx = pad + 40 + boxW * i + boxW / 2;
+    ctx.fillStyle = '#f5f5f5';
+    ctx.font = '700 56px Oswald, sans-serif';
+    ctx.fillText(String(value), cx, statsY);
+    ctx.fillStyle = '#a8a8a8';
+    ctx.font = '600 24px Inter, sans-serif';
+    ctx.fillText(label.toUpperCase(), cx, statsY + 40);
+  });
+
+  return new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 0.95));
+}
+
+async function sharePlayerCard(player, btn) {
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Génération...';
+  try {
+    const blob = await buildPlayerCardImage(player, teamLabel(player.team_id));
+    if (!blob) throw new Error('canvas vide');
+    const file = new File([blob], `gravity-${shareSlugify(player.full_name)}.png`, { type: 'image/png' });
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], title: player.full_name, text: `${player.full_name} — Gravity Basketball` });
+    } else {
+      const url = URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = file.name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+    }
+  } catch (err) {
+    if (err && err.name === 'AbortError') return; // partage annulé par l'utilisateur
+    console.error('Fiche joueur — échec génération image', err);
+    alert("Impossible de générer la fiche pour le moment. Réessaie plus tard.");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalLabel;
+  }
+}
 
 // ---------- Espace Joueurs : comptes joueurs ----------
 function renderPlayerAccountsTable() {
