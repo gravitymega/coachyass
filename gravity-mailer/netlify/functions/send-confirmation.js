@@ -24,6 +24,7 @@ const FROM_NAMES = {
   'osmm-membre': 'Gravity Basketball',
   'osmm-contact': 'Gravity Basketball',
   'basketball-mtl-prep-admin': 'Gravity Basketball',
+  'espace-joueurs-access': 'Gravity Basketball',
 };
 
 function buildFrom(type) {
@@ -63,6 +64,7 @@ const SITE_URLS = {
   'osmm-membre': 'https://osmm-mtl.site',
   'osmm-contact': 'https://osmm-mtl.site',
   'basketball-mtl-prep-admin': 'https://gravity.osmm-mtl.site',
+  'espace-joueurs-access': 'https://gravity.osmm-mtl.site',
 };
 
 // Signature ajoutée en bas de chaque courriel — même logo pour tous les
@@ -185,6 +187,21 @@ const TEMPLATES = {
       `,
     };
   },
+  'espace-joueurs-access'(f) {
+    return {
+      subject: 'Ton accès à l\'Espace Joueurs — Gravity Basketball',
+      html: `
+        <p>Bonjour ${escapeHtml(f.nom)},</p>
+        <p>Ton accès à l'<strong>Espace Joueurs</strong> est prêt ! Tu peux dès maintenant consulter tes documents, tes statistiques, le calendrier des matchs et des entraînements, et les communiqués de ton équipe.</p>
+        <p>
+          <strong>Courriel :</strong> ${escapeHtml(f.courriel)}<br>
+          <strong>Mot de passe temporaire :</strong> ${escapeHtml(f.motDePasse)}
+        </p>
+        <p><a href="https://gravity.osmm-mtl.site/#espace-joueurs" style="display:inline-block; padding:10px 20px; background:#e8672e; color:#fff; border-radius:8px; text-decoration:none; font-weight:600;">Accéder à mon Espace Joueurs</a></p>
+        <p>Une fois connecté, pense à changer ton mot de passe dans l'onglet "Mon compte".</p>
+      `,
+    };
+  },
 };
 
 exports.handler = async (event) => {
@@ -241,7 +258,7 @@ exports.handler = async (event) => {
     'nom', 'forfait', 'date', 'heure', 'dates', 'creneau', 'programme', 'modePaiement', 'activite',
     'telephone', 'courriel', 'ageCategorie', 'typeInscription', 'adresse', 'niveau', 'posteDeJeu',
     'tailleVetement', 'grandeur', 'poids', 'occupation', 'objectifSaison', 'reseauxSociaux',
-    'disponibilites', 'reference', 'remarque',
+    'disponibilites', 'reference', 'remarque', 'motDePasse',
   ].forEach((k) => {
     if (d.fields && d.fields[k] != null) fields[k] = String(d.fields[k]).slice(0, 300);
   });

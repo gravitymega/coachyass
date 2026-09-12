@@ -1584,8 +1584,11 @@ async function createPlayerAccount(player, btn) {
     if (!res.ok) throw new Error(result.error || 'Échec de la création du compte');
 
     alert(
-      `Accès créé pour ${player.full_name}.\n\nCourriel : ${result.email}\nMot de passe temporaire : ${result.password}\n\n` +
-      `Communique ces informations au joueur — il pourra se connecter sur gravity.osmm-mtl.site (Espace Joueurs) et changer son mot de passe une fois connecté.`
+      result.email_sent
+        ? `Accès créé pour ${player.full_name}.\n\nUn courriel avec ses identifiants (${result.email}) vient de lui être envoyé automatiquement.\n\n` +
+          `Au cas où il ne le reçoit pas (vérifie les Spam) — mot de passe temporaire : ${result.password}`
+        : `Accès créé pour ${player.full_name}, mais l'envoi automatique du courriel a échoué.\n\nCourriel : ${result.email}\nMot de passe temporaire : ${result.password}\n\n` +
+          `Communique ces informations au joueur toi-même — il pourra se connecter sur gravity.osmm-mtl.site (Espace Joueurs) et changer son mot de passe une fois connecté.`
     );
     await loadTeamPlayers();
   } catch (err) {
