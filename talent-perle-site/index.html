@@ -379,24 +379,23 @@
     </div>
   </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>
-  /* ====== CONFIRMATION AUTOMATIQUE PAR COURRIEL (EmailJS — gratuit) ======
-     Laisser vide = repli sur courriel manuel (mailto: vers Karim). Pour activer :
-     1) Crée un compte gratuit sur emailjs.com
-     2) Ajoute un service (Gmail) contact.talent.perle@gmail.com
-     3) Ajoute DEUX templates :
-        - templateId : colle courriel-confirmation.html (envoyé au PARENT,
-          "To email" = {{to_email}})
-        - adminTemplateId : colle courriel-notification-admin.html (envoyé
-          à KARIM, "To email" = contact.talent.perle@gmail.com fixe,
-          "Reply To" = {{reply_to}} pour répondre direct au parent)
-     4) Reporte les identifiants ci-dessous. Rien d'autre à changer.
-     Si adminTemplateId est vide, seul le parent reçoit une confirmation —
-     Karim ne serait alors averti d'aucune inscription. */
-  var TP_EMAIL={ publicKey:"", serviceId:"", templateId:"", adminTemplateId:"" };
-  if(window.emailjs && TP_EMAIL.publicKey){ emailjs.init({publicKey:TP_EMAIL.publicKey}); }
-</script>
+  <!-- Formulaire statique caché : sert uniquement à ce que Netlify détecte les
+       champs à la publication (Netlify Forms). L'inscription réelle est
+       envoyée en JS via fetch() dans submitIns(). Notification par courriel
+       à configurer une seule fois dans Netlify : Site settings → Forms →
+       Form notifications → Add notification → Email → contact.talent.perle@gmail.com -->
+  <form name="inscription-talent-perle" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="text" name="nom">
+    <input type="text" name="age">
+    <input type="text" name="activite">
+    <input type="text" name="equipe">
+    <input type="text" name="dispo">
+    <input type="text" name="parent">
+    <input type="text" name="telephone">
+    <input type="email" name="courriel">
+    <input type="text" name="bot-field">
+  </form>
+
 <script>
   function closeM(){document.getElementById('mnav').classList.remove('open');}
   function openIns(act){
@@ -421,36 +420,33 @@
     var mail=document.getElementById('i_mail').value.trim();
     if(!nom||!age){alert('Merci d’indiquer au moins le nom et l’âge du jeune.');return;}
 
-    var params={parent:parent||'',nom:nom,activite:act,age:age,dispo:dispo||'—',
-                equipe:eq,telephone:tel,to_email:mail,reply_to:mail};
-
-    // Si EmailJS est configuré → confirmation au parent + notification à Karim.
-    if(window.emailjs && TP_EMAIL.publicKey && TP_EMAIL.serviceId && TP_EMAIL.templateId){
-      emailjs.send(TP_EMAIL.serviceId, TP_EMAIL.templateId, params).then(function(){
-        document.getElementById('okmsg').innerText='Un courriel de confirmation vient d’être envoyé à '+(mail||'votre adresse')+'.';
-      }).catch(function(){
-        document.getElementById('okmsg').innerText='Demande enregistrée pour « '+act+' ».';
-      });
-      if(TP_EMAIL.adminTemplateId){
-        emailjs.send(TP_EMAIL.serviceId, TP_EMAIL.adminTemplateId, params);
-      }
-      document.getElementById('insForm').style.display='none';
-      document.getElementById('insOk').style.display='block';
-      return;
-    }
-
-    // Sinon (clés pas encore mises) → repli gratuit : courriel pré-rempli vers l'organisme.
-    var body=encodeURIComponent(
-      'INSCRIPTION — '+act+'\n\n'+
-      'Jeune : '+nom+'\nÂge : '+age+'\nJoue déjà en équipe : '+eq+'\nDisponibilités : '+dispo+'\n\n'+
-      'Parent/tuteur : '+parent+'\nTéléphone : '+tel+'\nCourriel : '+mail+'\n\n'+
-      'Paiement : Interac à contact.talent.perle@gmail.com'
-    );
-    var subject=encodeURIComponent('Inscription '+act+' — '+nom);
-    window.location.href='mailto:contact.talent.perle@gmail.com?subject='+subject+'&body='+body;
-    document.getElementById('okmsg').innerText='Demande pour « '+act+' » préparée. Envoyez le courriel qui vient de s’ouvrir pour finaliser.';
     document.getElementById('insForm').style.display='none';
     document.getElementById('insOk').style.display='block';
+    document.getElementById('okmsg').innerText='Demande envoyée pour « '+act+' ». Karim vous contactera bientôt par courriel pour confirmer.';
+
+    // Envoi via Netlify Forms (aucun compte externe requis) — Karim est
+    // notifié par courriel dès qu'un notification email est configuré dans
+    // Netlify : Site settings → Forms → Form notifications.
+    fetch('/', {
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:new URLSearchParams({
+        'form-name':'inscription-talent-perle',
+        nom:nom, age:age, activite:act, equipe:eq, dispo:dispo||'—',
+        parent:parent||'', telephone:tel, courriel:mail
+      }).toString()
+    }).catch(function(){
+      // Repli si le site n'est pas (encore) servi par Netlify : courriel pré-rempli.
+      var body=encodeURIComponent(
+        'INSCRIPTION — '+act+'\n\n'+
+        'Jeune : '+nom+'\nÂge : '+age+'\nJoue déjà en équipe : '+eq+'\nDisponibilités : '+dispo+'\n\n'+
+        'Parent/tuteur : '+parent+'\nTéléphone : '+tel+'\nCourriel : '+mail+'\n\n'+
+        'Paiement : Interac à contact.talent.perle@gmail.com'
+      );
+      var subject=encodeURIComponent('Inscription '+act+' — '+nom);
+      window.location.href='mailto:contact.talent.perle@gmail.com?subject='+subject+'&body='+body;
+      document.getElementById('okmsg').innerText='Demande pour « '+act+' » préparée. Envoyez le courriel qui vient de s’ouvrir pour finaliser.';
+    });
   }
 </script>
 </body>
