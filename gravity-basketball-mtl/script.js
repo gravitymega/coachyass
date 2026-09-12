@@ -9,6 +9,12 @@ const SUPABASE_ANON_KEY = 'sb_publishable_NAj99iQim_odAYNwR-qucg_2KKHYf7Z';
 const MAILER_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/send-confirmation';
 const MAILER_KEY = '11c58c7548b0ed0666742f1e44a9cec1777bddee1c9fcbe5';
 
+// Gravity Prep a sa propre adresse de contact/paiement — tout ce qui concerne
+// les inscrits Gravity Prep (affichage + notification admin) passe par cette
+// adresse ; les autres programmes gardent l'adresse habituelle.
+const GRAVITY_PREP_EMAIL = 'Gravitybasketball@gmail.com';
+const DEFAULT_INTERAC_EMAIL = 'mqtad9@hotmail.com';
+
 // Liens de paiement Zeffy par programme (comme pour le Championnat et Basket Libre).
 // Note : "Ligue 3v3" (13-14 ans) et le Championnat partagent le même événement
 // Zeffy — confirmé par Yassine que le tarif est bien le même pour les deux
@@ -100,6 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     ageCategorieSelect.value = isLigueMaison ? '9-10 ans' : isPrep ? 'Prep' : isU15Masculin ? 'U15' : '13-14 ans';
+
+    const interacEmailFormEl = document.getElementById('interac-email-form');
+    if (interacEmailFormEl) interacEmailFormEl.textContent = isPrep ? GRAVITY_PREP_EMAIL : DEFAULT_INTERAC_EMAIL;
     inscriptionTitle.textContent = isLigueMaison
       ? 'Réserve ta place — Ligue Maison'
       : isPrep
@@ -215,6 +224,39 @@ document.addEventListener('DOMContentLoaded', () => {
             fields: { nom: payload.contact_name, programme, modePaiement: payload.details.mode_paiement },
           }),
         }).catch(() => {});
+        // Gravity Prep : l'admin reçoit une notification détaillée (tous les
+        // champs soumis) sur Gravitybasketball@gmail.com — le destinataire est
+        // fixé côté fonction, pas ici, donc `to` n'a pas besoin d'être exact.
+        if (isPrep) {
+          fetch(MAILER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-mailer-key': MAILER_KEY },
+            body: JSON.stringify({
+              type: 'basketball-mtl-prep-admin',
+              to: GRAVITY_PREP_EMAIL,
+              fields: {
+                nom: payload.contact_name,
+                telephone: payload.contact_phone,
+                courriel: payload.contact_email,
+                ageCategorie: payload.details.age_categorie,
+                typeInscription: payload.details.type_inscription,
+                adresse: payload.details.adresse,
+                niveau: payload.details.niveau,
+                posteDeJeu: payload.details.poste_de_jeu,
+                tailleVetement: payload.details.taille_vetement,
+                grandeur: payload.details.grandeur,
+                poids: payload.details.poids,
+                occupation: payload.details.occupation,
+                objectifSaison: payload.details.objectif_saison,
+                reseauxSociaux: payload.details.reseaux_sociaux,
+                disponibilites: payload.details.disponibilites,
+                modePaiement: payload.details.mode_paiement,
+                reference: payload.details.reference,
+                remarque: payload.details.remarque,
+              },
+            }),
+          }).catch(() => {});
+        }
         form.hidden = true;
         success.hidden = false;
         const interacCta = document.getElementById('interac-payment-cta');
@@ -223,6 +265,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const paymentPendingCta = document.getElementById('payment-pending-cta');
         const modePaiement = get('mode_paiement') || 'Interac';
         const link = ZEFFY_LINKS[programme];
+        const interacEmailSuccessEl = document.getElementById('interac-email-success');
+        if (interacEmailSuccessEl) interacEmailSuccessEl.textContent = isPrep ? GRAVITY_PREP_EMAIL : DEFAULT_INTERAC_EMAIL;
 
         interacCta.hidden = true;
         zeffyCta.hidden = true;
