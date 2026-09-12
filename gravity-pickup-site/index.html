@@ -496,6 +496,7 @@
   const FORMSUBMIT_EMAIL = 'moqtad6@gmail.com';
   const ENDPOINT = '/.netlify/functions/reservation-gravity-pickup';
   const MAILER_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/send-confirmation';
+  const SAVE_INSCRIPTION_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/save-inscription';
   const MAILER_KEY = '11c58c7548b0ed0666742f1e44a9cec1777bddee1c9fcbe5';
   const SUBJECT = 'Nouvelle réservation — Gravity Pickups';
 
@@ -759,6 +760,25 @@
               dates: seances.map((s) => formatDateFr(s.date)).join(', '),
               modePaiement: modePaiement.value
             }
+          })
+        }),
+        // Copie regroupée dans la base Notion "Inscription GRAV" (tous sites confondus).
+        fetch(SAVE_INSCRIPTION_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-mailer-key': MAILER_KEY },
+          body: JSON.stringify({
+            programme: 'Gravity Pickup',
+            nom: name,
+            email,
+            telephone: phone,
+            dateSeance: seances[0] ? seances[0].date : '',
+            forfait: forfait.value,
+            modePaiement: modePaiement.value,
+            photosAutorisees: consent,
+            details: `Créneau : ${selectedCreneau.label}` +
+              (seances.length > 1 ? ` — Dates : ${seances.map((s) => formatDateFr(s.date)).join(', ')}` : '') +
+              ` — Niveau : ${niveau.value}` +
+              (root.querySelector('[data-role="attentes"]').value.trim() ? ` — Attentes : ${root.querySelector('[data-role="attentes"]').value.trim()}` : '')
           })
         })
       ]);

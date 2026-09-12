@@ -842,6 +842,7 @@
 
   // Formulaires -> FormSubmit AJAX (Devenir membre + Contact)
   var MAILER_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/send-confirmation';
+  var SAVE_INSCRIPTION_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/save-inscription';
   var MAILER_KEY = '11c58c7548b0ed0666742f1e44a9cec1777bddee1c9fcbe5';
 
   function wireForm(formId, successId, errorId, subject, fields, mailerType){
@@ -877,6 +878,22 @@
               type: mailerType,
               to: email,
               fields: { nom: nom.trim(), activite: data['Activité d\'intérêt'] || '' }
+            })
+          }).catch(function(){});
+        }
+        // Copie regroupée dans la base Notion "Inscription GRAV" — seulement pour
+        // une demande d'adhésion, pas pour un simple message de contact.
+        if (mailerType === 'osmm-membre') {
+          fetch(SAVE_INSCRIPTION_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-mailer-key': MAILER_KEY },
+            body: JSON.stringify({
+              programme: 'OSMM',
+              nom: nom.trim() || 'Sans nom',
+              email: email || '',
+              telephone: data['Téléphone'] || '',
+              forfait: data['Activité d\'intérêt'] || '',
+              remarque: data['Message'] || ''
             })
           }).catch(function(){});
         }

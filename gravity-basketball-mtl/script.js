@@ -7,6 +7,7 @@ const SUPABASE_URL = 'https://aevoulzotvmnrnclfuek.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_NAj99iQim_odAYNwR-qucg_2KKHYf7Z';
 
 const MAILER_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/send-confirmation';
+const SAVE_INSCRIPTION_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/save-inscription';
 const MAILER_KEY = '11c58c7548b0ed0666742f1e44a9cec1777bddee1c9fcbe5';
 
 // Gravity Prep a sa propre adresse de contact/paiement — tout ce qui concerne
@@ -257,6 +258,36 @@ document.addEventListener('DOMContentLoaded', () => {
             }),
           }).catch(() => {});
         }
+        // Copie regroupée dans la base Notion "Inscription GRAV" (tous sites confondus).
+        fetch(SAVE_INSCRIPTION_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-mailer-key': MAILER_KEY },
+          body: JSON.stringify({
+            programme,
+            nom: payload.contact_name,
+            email: payload.contact_email,
+            telephone: payload.contact_phone,
+            equipe: payload.details.nom_equipe,
+            forfait: payload.details.type_inscription,
+            modePaiement: payload.details.mode_paiement,
+            remarque: payload.details.remarque,
+            photosAutorisees: payload.details.consentement_medias,
+            details: [
+              `Catégorie d'âge : ${payload.details.age_categorie}`,
+              payload.details.reference ? `Référence : ${payload.details.reference}` : '',
+              isPrep ? `Adresse : ${payload.details.adresse}` : '',
+              isPrep ? `Niveau : ${payload.details.niveau}` : '',
+              isPrep ? `Poste de jeu : ${payload.details.poste_de_jeu}` : '',
+              isPrep ? `Taille vêtement : ${payload.details.taille_vetement}` : '',
+              isPrep ? `Grandeur : ${payload.details.grandeur}` : '',
+              isPrep ? `Poids : ${payload.details.poids}` : '',
+              isPrep ? `Occupation : ${payload.details.occupation}` : '',
+              isPrep ? `Objectif de la saison : ${payload.details.objectif_saison}` : '',
+              isPrep ? `Réseaux sociaux : ${payload.details.reseaux_sociaux}` : '',
+              isPrep ? `Disponibilités : ${payload.details.disponibilites}` : '',
+            ].filter(Boolean).join('\n'),
+          }),
+        }).catch(() => {});
         form.hidden = true;
         success.hidden = false;
         const interacCta = document.getElementById('interac-payment-cta');
