@@ -1288,6 +1288,7 @@ teamPlayerDeleteBtn?.addEventListener('click', async () => {
 teamPlayerForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const id = teamPlayerIdInput.value || null;
+  const existingPlayer = id ? allTeamPlayers.find((p) => p.id === id) : null;
   const saveBtn = teamPlayerForm.querySelector('button[type="submit"]');
   saveBtn.disabled = true;
 
@@ -1340,6 +1341,9 @@ teamPlayerForm?.addEventListener('submit', async (e) => {
   teamPlayerSaveNote.textContent = 'Enregistré !';
   teamPlayerSaveNote.style.color = '';
   teamPlayerSaveNote.hidden = false;
+  if (existingPlayer && existingPlayer.auth_user_id) {
+    notifyEspaceJoueurs({ kind: 'stat', action: 'updated', site: 'gravity-basketball', player_id: id });
+  }
   await loadTeamPlayers();
   setTimeout(() => {
     closeTeamPlayerForm();
@@ -1687,6 +1691,23 @@ async function createPlayerAccount(player, btn) {
   }
 }
 
+// Avertit par courriel les joueurs concernés (Espace Joueurs) d'un ajout ou
+// d'une modification — fire-and-forget, ne bloque jamais la sauvegarde.
+async function notifyEspaceJoueurs(payload) {
+  try {
+    const { data } = await supabase.auth.getSession();
+    const token = data && data.session && data.session.access_token;
+    if (!token) return;
+    await fetch('/.netlify/functions/notify-espace-joueurs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    console.error('notifyEspaceJoueurs', err);
+  }
+}
+
 // ---------- Espace Joueurs : documents ----------
 function populatePlayerDocumentPlayerSelect() {
   if (!playerDocumentPlayerSelect) return;
@@ -1797,6 +1818,13 @@ playerDocumentForm?.addEventListener('submit', async (e) => {
   playerDocumentSaveNote.textContent = 'Enregistré !';
   playerDocumentSaveNote.style.color = '';
   playerDocumentSaveNote.hidden = false;
+  notifyEspaceJoueurs({
+    kind: 'document',
+    action: 'created',
+    site: 'gravity-basketball',
+    player_id: playerId,
+    details: { titre: playerDocumentTitreInput.value.trim() },
+  });
   await loadPlayerDocuments();
   setTimeout(() => {
     playerDocumentForm.hidden = true;
@@ -1935,6 +1963,18 @@ teamGameForm?.addEventListener('submit', async (e) => {
   teamGameSaveNote.textContent = 'Enregistré !';
   teamGameSaveNote.style.color = '';
   teamGameSaveNote.hidden = false;
+  notifyEspaceJoueurs({
+    kind: 'game',
+    action: id ? 'updated' : 'created',
+    site: 'gravity-basketball',
+    team_id: teamGameTeamSelect.value,
+    details: {
+      adversaire: teamGameAdversaireInput.value.trim(),
+      date_match: teamGameDateInput.value,
+      heure_match: teamGameHeureInput.value,
+      lieu_nom: teamGameLieuNomInput.value.trim(),
+    },
+  });
   await loadTeamGames();
   setTimeout(() => {
     closeTeamGameForm();
@@ -2059,6 +2099,18 @@ teamTrainingForm?.addEventListener('submit', async (e) => {
   teamTrainingSaveNote.textContent = 'Enregistré !';
   teamTrainingSaveNote.style.color = '';
   teamTrainingSaveNote.hidden = false;
+  notifyEspaceJoueurs({
+    kind: 'training',
+    action: id ? 'updated' : 'created',
+    site: 'gravity-basketball',
+    team_id: teamTrainingTeamSelect.value,
+    details: {
+      date_entrainement: teamTrainingDateInput.value,
+      heure_debut: teamTrainingHeureDebutInput.value,
+      heure_fin: teamTrainingHeureFinInput.value,
+      lieu_nom: teamTrainingLieuNomInput.value.trim(),
+    },
+  });
   await loadTeamTrainings();
   setTimeout(() => {
     closeTeamTrainingForm();
@@ -2174,6 +2226,13 @@ announcementForm?.addEventListener('submit', async (e) => {
   announcementSaveNote.textContent = 'Publié !';
   announcementSaveNote.style.color = '';
   announcementSaveNote.hidden = false;
+  notifyEspaceJoueurs({
+    kind: 'announcement',
+    action: id ? 'updated' : 'created',
+    site: 'gravity-basketball',
+    team_id: announcementTeamSelect.value || null,
+    details: { titre: announcementTitreInput.value.trim() },
+  });
   await loadAnnouncements();
   setTimeout(() => {
     closeAnnouncementForm();
