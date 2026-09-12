@@ -8,13 +8,37 @@
 // (jamais exposée au client) car la création d'un utilisateur Auth n'est pas
 // permise avec la clé anon.
 //
-// Le mot de passe temporaire généré ici est renvoyé UNE SEULE FOIS dans la
-// réponse — l'admin le communique au joueur (courriel/texto), qui pourra le
-// changer depuis l'Espace Joueurs.
+// Le mot de passe temporaire est envoyé automatiquement au joueur par
+// courriel (via gravity-mailer) une fois le compte créé, et renvoyé UNE
+// SEULE FOIS dans la réponse ici aussi — en secours, si l'envoi échoue ou
+// atterrit dans le spam, l'admin peut quand même le communiquer lui-même.
 
 const SUPABASE_URL = 'https://aevoulzotvmnrnclfuek.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_NAj99iQim_odAYNwR-qucg_2KKHYf7Z';
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+// Même service et même clé partagée que gravity-basketball-mtl/script.js —
+// cette clé n'est pas un vrai secret (déjà expédiée au navigateur ailleurs),
+// juste un frein contre l'abus ouvert de la fonction gravity-mailer.
+const MAILER_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/send-confirmation';
+const MAILER_KEY = '11c58c7548b0ed0666742f1e44a9cec1777bddee1c9fcbe5';
+// gravity-mailer exige une origine autorisée (*.netlify.app ou
+// *.osmm-mtl.site) — un appel serveur-à-serveur n'a naturellement pas
+// d'en-tête Origin, donc on en fournit un qui correspond à ce site.
+const MAILER_ORIGIN = 'https://gravity-admin-dashboard.netlify.app';
+
+async function sendAccessEmail(email, fullName, password) {
+  const res = await fetch(MAILER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-mailer-key': MAILER_KEY, Origin: MAILER_ORIGIN },
+    body: JSON.stringify({
+      type: 'espace-joueurs-access',
+      to: email,
+      fields: { nom: fullName, courriel: email, motDePasse: password },
+    }),
+  });
+  return res.ok;
+}
 
 function randomPassword() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
@@ -112,7 +136,9 @@ exports.handler = async (event) => {
       return { statusCode: 500, headers, body: JSON.stringify({ error: "Compte créé mais liaison au profil joueur échouée — contacte le support." }) };
     }
 
-    return { statusCode: 200, headers, body: JSON.stringify({ ok: true, email, password }) };
+    const emailSent = await sendAccessEmail(email, player.full_name, password).catch(() => false);
+
+    return { statusCode: 200, headers, body: JSON.stringify({ ok: true, email, password, email_sent: emailSent }) };
   } catch (err) {
     console.error(err);
     return { statusCode: 500, headers, body: JSON.stringify({ error: 'Erreur serveur' }) };
