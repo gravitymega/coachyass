@@ -1407,12 +1407,16 @@ async function buildPlayerCardImage(player, teamName) {
     }
   } catch (e) { /* tant pis, on dessine avec la police de secours */ }
 
+  // Fond sombre + lavis diagonal orange -> magenta (même diagonale que
+  // --gradient-brand sur le site), pour que la fiche partage le même signal
+  // visuel que l'Espace Joueurs plutôt qu'un simple halo orange.
   ctx.fillStyle = '#0a0a0a';
   ctx.fillRect(0, 0, W, H);
-  const grad = ctx.createRadialGradient(W / 2, 0, 0, W / 2, 0, W);
-  grad.addColorStop(0, 'rgba(232,103,46,0.22)');
-  grad.addColorStop(1, 'rgba(232,103,46,0)');
-  ctx.fillStyle = grad;
+  const wash = ctx.createLinearGradient(0, 0, W, H);
+  wash.addColorStop(0, 'rgba(232,103,46,0.22)');
+  wash.addColorStop(0.55, 'rgba(232,103,46,0.05)');
+  wash.addColorStop(1, 'rgba(216,30,91,0.16)');
+  ctx.fillStyle = wash;
   ctx.fillRect(0, 0, W, H);
 
   const pad = 60;
@@ -1423,21 +1427,52 @@ async function buildPlayerCardImage(player, teamName) {
   ctx.lineWidth = 2;
   ctx.stroke();
 
+  // Liseré de marque en haut de la carte (écho du bandeau dégradé utilisé
+  // partout sur le site : profil Espace Joueurs, tuiles de stats, onglets).
+  ctx.save();
+  shareDrawRoundedRect(ctx, pad, pad, W - pad * 2, H - pad * 2, 36);
+  ctx.clip();
+  const topBar = ctx.createLinearGradient(pad, 0, W - pad, 0);
+  topBar.addColorStop(0, '#e8672e');
+  topBar.addColorStop(1, '#d81e5b');
+  ctx.fillStyle = topBar;
+  ctx.fillRect(pad, pad, W - pad * 2, 6);
+  ctx.restore();
+
   const logo = await shareLoadImage(SHARE_LOGO_URL, true);
   if (logo) {
-    const logoH = 70;
+    const logoH = 64;
     const logoW = logoH * (logo.width / logo.height);
-    ctx.drawImage(logo, pad + 40, pad + 40, logoW, logoH);
+    ctx.drawImage(logo, pad + 40, pad + 54, logoW, logoH);
   }
   ctx.fillStyle = '#a8a8a8';
-  ctx.font = '600 26px Inter, sans-serif';
+  ctx.font = '600 24px Inter, sans-serif';
   ctx.textAlign = 'right';
-  ctx.fillText('GRAVITY BASKETBALL', W - pad - 40, pad + 82);
+  ctx.fillText('GRAVITY BASKETBALL', W - pad - 40, pad + 78);
+  ctx.fillStyle = '#6f6f6f';
+  ctx.font = '600 18px Inter, sans-serif';
+  ctx.fillText('FICHE JOUEUR', W - pad - 40, pad + 104);
 
   const photoCx = W / 2;
   const photoCy = pad + 300;
   const photoR = 190;
   const photoImg = player.photo_url ? await shareLoadImage(player.photo_url, true) : null;
+
+  // Anneau à deux tons (orange -> magenta) autour de la photo — même duo que
+  // le halo --glow-orange / --glow-magenta utilisé sur l'avatar web.
+  const ringGrad = ctx.createLinearGradient(photoCx - photoR, photoCy - photoR, photoCx + photoR, photoCy + photoR);
+  ringGrad.addColorStop(0, '#e8672e');
+  ringGrad.addColorStop(1, '#d81e5b');
+  ctx.save();
+  ctx.shadowColor = 'rgba(232,103,46,0.45)';
+  ctx.shadowBlur = 40;
+  ctx.beginPath();
+  ctx.arc(photoCx, photoCy, photoR + 8, 0, Math.PI * 2);
+  ctx.strokeStyle = ringGrad;
+  ctx.lineWidth = 8;
+  ctx.stroke();
+  ctx.restore();
+
   ctx.save();
   ctx.beginPath();
   ctx.arc(photoCx, photoCy, photoR, 0, Math.PI * 2);
@@ -1459,48 +1494,102 @@ async function buildPlayerCardImage(player, teamName) {
     ctx.fillText(shareInitials(player.full_name), photoCx, photoCy + 10);
   }
   ctx.restore();
-  ctx.strokeStyle = '#e8672e';
-  ctx.lineWidth = 6;
-  ctx.beginPath();
-  ctx.arc(photoCx, photoCy, photoR, 0, Math.PI * 2);
-  ctx.stroke();
 
+  // Nom du joueur en dégradé de marque plutôt qu'en blanc plat — même
+  // traitement que le titre du site (--gradient-brand-text).
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
-  ctx.fillStyle = '#f5f5f5';
+  const nameText = (player.full_name || '').toUpperCase();
   ctx.font = '700 60px Oswald, sans-serif';
-  ctx.fillText((player.full_name || '').toUpperCase(), W / 2, photoCy + photoR + 90);
+  const nameWidth = ctx.measureText(nameText).width;
+  const nameGrad = ctx.createLinearGradient(W / 2 - nameWidth / 2, 0, W / 2 + nameWidth / 2, 0);
+  nameGrad.addColorStop(0, '#ff8a4c');
+  nameGrad.addColorStop(1, '#f0425f');
+  ctx.fillStyle = nameGrad;
+  ctx.fillText(nameText, W / 2, photoCy + photoR + 90);
 
+  // Métadonnées en pastilles (équipe / poste / numéro / catégorie) plutôt
+  // qu'une ligne de texte séparée par des points — même langage que les
+  // pastilles ".ej-pill" de l'Espace Joueurs.
   const metaParts = [
-    player.numero ? '#' + player.numero : '',
-    player.poste || '',
-    player.age_category || '',
     teamName || '',
+    player.poste || '',
+    player.numero ? '#' + player.numero : '',
+    player.age_category || '',
   ].filter(Boolean);
   if (metaParts.length) {
-    ctx.fillStyle = '#ff8a4c';
-    ctx.font = '600 34px Inter, sans-serif';
-    ctx.fillText(metaParts.join('  ·  '), W / 2, photoCy + photoR + 140);
+    const pillFont = '600 26px Inter, sans-serif';
+    ctx.font = pillFont;
+    const pillPadX = 22;
+    const pillGap = 14;
+    const pillH = 44;
+    const widths = metaParts.map((p) => ctx.measureText(p).width + pillPadX * 2);
+    const totalW = widths.reduce((a, b) => a + b, 0) + pillGap * (metaParts.length - 1);
+    let cx = W / 2 - totalW / 2;
+    const pillY = photoCy + photoR + 120;
+    metaParts.forEach((text, i) => {
+      const w = widths[i];
+      shareDrawRoundedRect(ctx, cx, pillY, w, pillH, pillH / 2);
+      ctx.fillStyle = 'rgba(232,103,46,0.16)';
+      ctx.fill();
+      ctx.fillStyle = '#ff8a4c';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = pillFont;
+      ctx.fillText(text, cx + w / 2, pillY + pillH / 2 + 1);
+      cx += w + pillGap;
+    });
+    ctx.textBaseline = 'alphabetic';
   }
 
+  // Statistiques — colonnes séparées par un filet vertical fin, valeur en
+  // dégradé de marque et libellé en casse de titre (jamais tout en capitales,
+  // plus lisible et cohérent avec le reste de la fiche).
   const stats = [
     ['Points', player.saison_points ?? 0],
     ['Rebonds', player.saison_rebonds ?? 0],
     ['Passes', player.saison_passes ?? 0],
     ['Matchs', player.saison_matchs ?? 0],
   ];
-  const statsY = photoCy + photoR + 220;
+  const statsY = photoCy + photoR + 250;
   const statsW = W - pad * 2 - 80;
   const boxW = statsW / stats.length;
+  const statsTop = statsY - 56;
+  const statsBottom = statsY + 30;
   stats.forEach(([label, value], i) => {
     const cx = pad + 40 + boxW * i + boxW / 2;
-    ctx.fillStyle = '#f5f5f5';
+    if (i > 0) {
+      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(pad + 40 + boxW * i, statsTop);
+      ctx.lineTo(pad + 40 + boxW * i, statsBottom);
+      ctx.stroke();
+    }
+    const valueText = String(value);
     ctx.font = '700 56px Oswald, sans-serif';
-    ctx.fillText(String(value), cx, statsY);
+    const valueWidth = ctx.measureText(valueText).width;
+    const valueGrad = ctx.createLinearGradient(cx - valueWidth / 2, 0, cx + valueWidth / 2, 0);
+    valueGrad.addColorStop(0, '#f5f5f5');
+    valueGrad.addColorStop(1, '#ffe4d6');
+    ctx.textAlign = 'center';
+    ctx.fillStyle = valueGrad;
+    ctx.fillText(valueText, cx, statsY);
     ctx.fillStyle = '#a8a8a8';
-    ctx.font = '600 24px Inter, sans-serif';
-    ctx.fillText(label.toUpperCase(), cx, statsY + 40);
+    ctx.font = '600 23px Inter, sans-serif';
+    ctx.fillText(label, cx, statsY + 38);
   });
+
+  // Liseré de marque en bas de la carte, en écho à celui du haut.
+  ctx.save();
+  shareDrawRoundedRect(ctx, pad, pad, W - pad * 2, H - pad * 2, 36);
+  ctx.clip();
+  const bottomBar = ctx.createLinearGradient(pad, 0, W - pad, 0);
+  bottomBar.addColorStop(0, '#d81e5b');
+  bottomBar.addColorStop(1, '#e8672e');
+  ctx.fillStyle = bottomBar;
+  ctx.fillRect(pad, H - pad - 6, W - pad * 2, 6);
+  ctx.restore();
 
   return new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 0.95));
 }

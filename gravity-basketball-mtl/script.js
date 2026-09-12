@@ -1080,7 +1080,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // (RLS "public read championship players"), donc "select=*&limit=1"
         // sans filtre pourrait retourner la fiche d'un AUTRE joueur si elle
         // trie avant la nôtre — jamais fiable pour retrouver "son propre" profil.
-        const res = await ejAuthedFetch(`${REST_URL}/players?select=*&auth_user_id=eq.${session.user_id}&limit=1`);
+        const res = await ejAuthedFetch(`${REST_URL}/players?select=*,teams(nom_equipe,categorie,genre)&auth_user_id=eq.${session.user_id}&limit=1`);
         const rows = await res.json();
         player = Array.isArray(rows) ? rows[0] : null;
       } catch (err) {
@@ -1099,15 +1099,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
       ejNameEl.textContent = player.full_name;
       const metaParts = [];
-      if (player.numero) metaParts.push(`#${player.numero}`);
+      if (player.teams) metaParts.push(`${player.teams.categorie} ${player.teams.genre}`.trim());
       if (player.poste) metaParts.push(player.poste);
-      ejMetaEl.textContent = metaParts.join(' · ');
+      if (player.numero) metaParts.push(`#${player.numero}`);
+      if (player.age_category) metaParts.push(player.age_category);
+      ejMetaEl.innerHTML = metaParts.map((p) => `<span class="ej-pill">${ejEscapeHtml(p)}</span>`).join('');
+      const ejInitialsEl = document.getElementById('ej-player-initials');
       if (player.photo_url) {
         ejPhotoEl.src = player.photo_url;
         ejPhotoEl.alt = player.full_name;
         ejPhotoEl.hidden = false;
+        if (ejInitialsEl) ejInitialsEl.hidden = true;
       } else {
         ejPhotoEl.hidden = true;
+        if (ejInitialsEl) {
+          ejInitialsEl.textContent = initials(player.full_name);
+          ejInitialsEl.hidden = false;
+        }
       }
 
       await Promise.all([
@@ -1131,6 +1139,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       ejCommuniquesEl.innerHTML = rows.map((a) => `
         <div class="ej-card">
+          ${a.team_id ? '' : '<span class="ej-card-badge">Général</span>'}
           <p class="ej-card-title">${ejEscapeHtml(a.titre)}</p>
           <p class="ej-card-meta">${new Date(a.created_at).toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
           <p>${ejEscapeHtml(a.contenu).replace(/\n/g, '<br>')}</p>
@@ -1150,7 +1159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       ejMatchsEl.innerHTML = rows.map((g) => `
-        <div class="ej-card">
+        <div class="ej-card${g.type === 'playoff' ? ' ej-card-playoff' : ''}">
           <span class="ej-card-badge${g.type === 'playoff' ? ' ej-badge-playoff' : ''}">${g.type === 'playoff' ? 'Playoffs' : 'Saison régulière'}</span>
           <p class="ej-card-title">${g.adversaire ? `Vs ${ejEscapeHtml(g.adversaire)}` : 'Match'} ${g.domicile ? '(Domicile)' : '(Extérieur)'}</p>
           <p class="ej-card-meta">${ejFormatDateLabel(g.date_match, g.heure_match)}</p>
@@ -1176,7 +1185,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ejEntrainementsEl.innerHTML = rows.map((t) => {
         const heure = t.heure_debut ? `${t.heure_debut}${t.heure_fin ? '–' + t.heure_fin : ''}` : '';
         return `
-        <div class="ej-card">
+        <div class="ej-card ej-card-neutral">
           <p class="ej-card-title">Entraînement</p>
           <p class="ej-card-meta">${ejFormatDateLabel(t.date_entrainement, heure)}</p>
           ${t.lieu_nom ? `<p class="ej-card-meta">${ejEscapeHtml(t.lieu_nom)}</p>` : ''}
@@ -1189,9 +1198,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function ejLoadStats(player) {
       const statBoxes = [
-        { label: 'Points/match', num: player.saison_points ?? 0 },
-        { label: 'Rebonds/match', num: player.saison_rebonds ?? 0 },
-        { label: 'Passes/match', num: player.saison_passes ?? 0 },
+        { label: 'Points par match', num: player.saison_points ?? 0 },
+        { label: 'Rebonds par match', num: player.saison_rebonds ?? 0 },
+        { label: 'Passes par match', num: player.saison_passes ?? 0 },
         { label: 'Matchs joués', num: player.saison_matchs ?? 0 },
       ];
       let html = `<div class="ej-stats-grid">${statBoxes.map((r) => `
@@ -1231,7 +1240,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="ej-card">
             <p class="ej-card-title">${ejEscapeHtml(doc.titre)}</p>
             <p class="ej-card-meta">${doc.categorie ? ejEscapeHtml(CATEGORIES[doc.categorie] || doc.categorie) + ' — ' : ''}${new Date(doc.created_at).toLocaleDateString('fr-CA')}</p>
-            <a class="ej-doc-link" href="${href}" target="_blank" rel="noopener noreferrer">Ouvrir / télécharger</a>
+            <a class="ej-doc-link" href="${href}" target="_blank" rel="noopener noreferrer">Ouvrir le document</a>
           </div>
         `;
       }));
