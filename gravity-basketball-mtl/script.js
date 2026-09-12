@@ -860,4 +860,332 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.textContent = originalLabel;
       });
   });
+
+  // ---------- Espace Joueurs (compte joueur — Supabase Auth via REST, sans SDK) ----------
+  (function initEspaceJoueurs() {
+    const AUTH_URL = `${SUPABASE_URL}/auth/v1`;
+    const REST_URL = `${SUPABASE_URL}/rest/v1`;
+    const STORAGE_URL = `${SUPABASE_URL}/storage/v1`;
+    const SESSION_KEY = 'gravity_espace_joueurs_session';
+
+    const ejLoginForm = document.getElementById('ej-login-form');
+    if (!ejLoginForm) return;
+
+    const ejLoginError = document.getElementById('ej-login-error');
+    const ejProfileEl = document.getElementById('ej-profile');
+    const ejPhotoEl = document.getElementById('ej-player-photo');
+    const ejNameEl = document.getElementById('ej-player-name');
+    const ejMetaEl = document.getElementById('ej-player-meta');
+    const ejLogoutBtn = document.getElementById('ej-logout-btn');
+    const ejTabsEl = document.getElementById('ej-tabs');
+    const ejCommuniquesEl = document.getElementById('ej-communiques');
+    const ejMatchsEl = document.getElementById('ej-matchs');
+    const ejEntrainementsEl = document.getElementById('ej-entrainements');
+    const ejStatsEl = document.getElementById('ej-stats');
+    const ejDocumentsEl = document.getElementById('ej-documents');
+    const ejPasswordForm = document.getElementById('ej-password-form');
+    const ejPasswordNote = document.getElementById('ej-password-note');
+
+    function ejEscapeHtml(str) {
+      return String(str == null ? '' : str).replace(/[&<>"']/g, (c) => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+      ));
+    }
+
+    function ejGetSession() {
+      try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch (e) { return null; }
+    }
+    function ejSetSession(session) {
+      try { localStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch (e) { /* stockage indisponible */ }
+    }
+    function ejClearSession() {
+      try { localStorage.removeItem(SESSION_KEY); } catch (e) { /* stockage indisponible */ }
+    }
+
+    async function ejRefreshSession(session) {
+      const res = await fetch(`${AUTH_URL}/token?grant_type=refresh_token`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refresh_token: session.refresh_token }),
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      const newSession = {
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        expires_at: Date.now() + (data.expires_in - 60) * 1000,
+      };
+      ejSetSession(newSession);
+      return newSession;
+    }
+
+    async function ejGetValidSession() {
+      let session = ejGetSession();
+      if (!session) return null;
+      if (Date.now() >= session.expires_at) {
+        session = await ejRefreshSession(session);
+        if (!session) { ejClearSession(); return null; }
+      }
+      return session;
+    }
+
+    async function ejAuthedFetch(url, opts) {
+      const session = await ejGetValidSession();
+      if (!session) throw new Error('not_authenticated');
+      const headers = Object.assign({}, (opts && opts.headers) || {}, {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${session.access_token}`,
+      });
+      return fetch(url, Object.assign({}, opts, { headers }));
+    }
+
+    function ejMapEmbedSrc(address) {
+      return `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+    }
+
+    function ejFormatDateLabel(dateStr, timeStr) {
+      const label = new Date(dateStr + 'T00:00:00').toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      return timeStr ? `${label} — ${timeStr}` : label;
+    }
+
+    // ---------- Connexion / déconnexion ----------
+    ejLoginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      ejLoginError.hidden = true;
+      const email = document.getElementById('ej-login-email').value.trim();
+      const password = document.getElementById('ej-login-password').value;
+      const submitBtn = ejLoginForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      try {
+        const res = await fetch(`${AUTH_URL}/token?grant_type=password`, {
+          method: 'POST',
+          headers: { apikey: SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error_description || data.msg || 'Courriel ou mot de passe incorrect.');
+        ejSetSession({
+          access_token: data.access_token,
+          refresh_token: data.refresh_token,
+          expires_at: Date.now() + (data.expires_in - 60) * 1000,
+        });
+        await ejShowProfile();
+      } catch (err) {
+        ejLoginError.textContent = err.message;
+        ejLoginError.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    ejLogoutBtn?.addEventListener('click', () => {
+      ejClearSession();
+      ejProfileEl.hidden = true;
+      ejLoginForm.hidden = false;
+      ejLoginForm.reset();
+    });
+
+    // ---------- Onglets ----------
+    ejTabsEl?.addEventListener('click', (e) => {
+      const btn = e.target.closest('.ej-tab-btn');
+      if (!btn) return;
+      ejTabsEl.querySelectorAll('.ej-tab-btn').forEach((b) => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.ej-tab-panel').forEach((panel) => {
+        panel.hidden = panel.dataset.tab !== btn.dataset.tab;
+      });
+    });
+
+    // ---------- Changement de mot de passe ----------
+    ejPasswordForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      ejPasswordNote.hidden = true;
+      const newPassword = document.getElementById('ej-new-password').value;
+      const submitBtn = ejPasswordForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      try {
+        const res = await ejAuthedFetch(`${AUTH_URL}/user`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: newPassword }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.msg || data.error_description || 'Échec de la mise à jour.');
+        ejPasswordNote.textContent = 'Mot de passe mis à jour !';
+        ejPasswordNote.style.color = '';
+        ejPasswordNote.hidden = false;
+        ejPasswordForm.reset();
+      } catch (err) {
+        ejPasswordNote.textContent = 'Erreur : ' + err.message;
+        ejPasswordNote.style.color = '#ff6b6b';
+        ejPasswordNote.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    // ---------- Chargement du profil ----------
+    async function ejShowProfile() {
+      let player;
+      try {
+        const res = await ejAuthedFetch(`${REST_URL}/players?select=*&limit=1`);
+        const rows = await res.json();
+        player = Array.isArray(rows) ? rows[0] : null;
+      } catch (err) {
+        ejClearSession();
+        return;
+      }
+      if (!player) {
+        ejLoginError.textContent = "Aucun profil joueur n'est encore relié à ce compte. Contacte Gravity Basketball.";
+        ejLoginError.hidden = false;
+        ejClearSession();
+        return;
+      }
+
+      ejLoginForm.hidden = true;
+      ejProfileEl.hidden = false;
+
+      ejNameEl.textContent = player.full_name;
+      const metaParts = [];
+      if (player.numero) metaParts.push(`#${player.numero}`);
+      if (player.poste) metaParts.push(player.poste);
+      ejMetaEl.textContent = metaParts.join(' · ');
+      if (player.photo_url) {
+        ejPhotoEl.src = player.photo_url;
+        ejPhotoEl.alt = player.full_name;
+        ejPhotoEl.hidden = false;
+      } else {
+        ejPhotoEl.hidden = true;
+      }
+
+      await Promise.all([
+        ejLoadCommuniques(player).catch(() => { ejCommuniquesEl.innerHTML = '<p class="ej-empty">Impossible de charger les communiqués pour l\'instant.</p>'; }),
+        ejLoadMatchs(player).catch(() => { ejMatchsEl.innerHTML = '<p class="ej-empty">Impossible de charger le calendrier des matchs pour l\'instant.</p>'; }),
+        ejLoadEntrainements(player).catch(() => { ejEntrainementsEl.innerHTML = '<p class="ej-empty">Impossible de charger le calendrier des entraînements pour l\'instant.</p>'; }),
+        ejLoadStats(player).catch(() => { ejStatsEl.innerHTML = '<p class="ej-empty">Impossible de charger les statistiques pour l\'instant.</p>'; }),
+        ejLoadDocuments(player).catch(() => { ejDocumentsEl.innerHTML = '<p class="ej-empty">Impossible de charger les documents pour l\'instant.</p>'; }),
+      ]);
+    }
+
+    async function ejLoadCommuniques(player) {
+      const filter = player.team_id
+        ? `or=(team_id.is.null,team_id.eq.${player.team_id})`
+        : 'team_id=is.null';
+      const res = await ejAuthedFetch(`${REST_URL}/announcements?select=*&${filter}&order=created_at.desc`);
+      const rows = res.ok ? await res.json() : [];
+      if (!rows.length) {
+        ejCommuniquesEl.innerHTML = '<p class="ej-empty">Aucun communiqué pour l\'instant.</p>';
+        return;
+      }
+      ejCommuniquesEl.innerHTML = rows.map((a) => `
+        <div class="ej-card">
+          <p class="ej-card-title">${ejEscapeHtml(a.titre)}</p>
+          <p class="ej-card-meta">${new Date(a.created_at).toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+          <p>${ejEscapeHtml(a.contenu).replace(/\n/g, '<br>')}</p>
+        </div>
+      `).join('');
+    }
+
+    async function ejLoadMatchs(player) {
+      if (!player.team_id) {
+        ejMatchsEl.innerHTML = '<p class="ej-empty">Tu n\'es pas encore assigné à une équipe.</p>';
+        return;
+      }
+      const res = await ejAuthedFetch(`${REST_URL}/team_games?select=*&team_id=eq.${player.team_id}&order=date_match.asc`);
+      const rows = res.ok ? await res.json() : [];
+      if (!rows.length) {
+        ejMatchsEl.innerHTML = '<p class="ej-empty">Aucun match programmé pour l\'instant.</p>';
+        return;
+      }
+      ejMatchsEl.innerHTML = rows.map((g) => `
+        <div class="ej-card">
+          <span class="ej-card-badge${g.type === 'playoff' ? ' ej-badge-playoff' : ''}">${g.type === 'playoff' ? 'Playoffs' : 'Saison régulière'}</span>
+          <p class="ej-card-title">${g.adversaire ? `Vs ${ejEscapeHtml(g.adversaire)}` : 'Match'} ${g.domicile ? '(Domicile)' : '(Extérieur)'}</p>
+          <p class="ej-card-meta">${ejFormatDateLabel(g.date_match, g.heure_match)}</p>
+          ${g.lieu_nom ? `<p class="ej-card-meta">${ejEscapeHtml(g.lieu_nom)}</p>` : ''}
+          ${g.resultat ? `<p><strong>Résultat :</strong> ${ejEscapeHtml(g.resultat)}</p>` : ''}
+          ${g.notes ? `<p>${ejEscapeHtml(g.notes)}</p>` : ''}
+          ${g.adresse ? `<div class="ej-map-wrap"><iframe src="${ejMapEmbedSrc(g.adresse)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Carte — ${ejEscapeHtml(g.lieu_nom || g.adresse)}"></iframe></div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    async function ejLoadEntrainements(player) {
+      if (!player.team_id) {
+        ejEntrainementsEl.innerHTML = '<p class="ej-empty">Tu n\'es pas encore assigné à une équipe.</p>';
+        return;
+      }
+      const res = await ejAuthedFetch(`${REST_URL}/team_trainings?select=*&team_id=eq.${player.team_id}&order=date_entrainement.asc`);
+      const rows = res.ok ? await res.json() : [];
+      if (!rows.length) {
+        ejEntrainementsEl.innerHTML = '<p class="ej-empty">Aucun entraînement programmé pour l\'instant.</p>';
+        return;
+      }
+      ejEntrainementsEl.innerHTML = rows.map((t) => {
+        const heure = t.heure_debut ? `${t.heure_debut}${t.heure_fin ? '–' + t.heure_fin : ''}` : '';
+        return `
+        <div class="ej-card">
+          <p class="ej-card-title">Entraînement</p>
+          <p class="ej-card-meta">${ejFormatDateLabel(t.date_entrainement, heure)}</p>
+          ${t.lieu_nom ? `<p class="ej-card-meta">${ejEscapeHtml(t.lieu_nom)}</p>` : ''}
+          ${t.notes ? `<p>${ejEscapeHtml(t.notes)}</p>` : ''}
+          ${t.adresse ? `<div class="ej-map-wrap"><iframe src="${ejMapEmbedSrc(t.adresse)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Carte — ${ejEscapeHtml(t.lieu_nom || t.adresse)}"></iframe></div>` : ''}
+        </div>
+      `;
+      }).join('');
+    }
+
+    async function ejLoadStats(player) {
+      const statBoxes = [
+        { label: 'Points/match', num: player.saison_points ?? 0 },
+        { label: 'Rebonds/match', num: player.saison_rebonds ?? 0 },
+        { label: 'Passes/match', num: player.saison_passes ?? 0 },
+        { label: 'Matchs joués', num: player.saison_matchs ?? 0 },
+      ];
+      let html = `<div class="ej-stats-grid">${statBoxes.map((r) => `
+        <div class="ej-stat-box"><span class="num">${ejEscapeHtml(String(r.num))}</span><span class="label">${r.label}</span></div>
+      `).join('')}</div>`;
+
+      const res = await ejAuthedFetch(`${REST_URL}/player_stats?select=*&player_id=eq.${player.id}&order=game_date.desc`);
+      const gameRows = res.ok ? await res.json() : [];
+      if (gameRows.length) {
+        html += '<div class="table-wrap"><table class="data-table"><thead><tr><th>Date</th><th>Pts</th><th>Reb</th><th>Pas</th><th>Interceptions</th></tr></thead><tbody>' +
+          gameRows.map((s) => `<tr><td>${s.game_date ? new Date(s.game_date + 'T00:00:00').toLocaleDateString('fr-CA') : '—'}</td><td>${s.points ?? 0}</td><td>${s.rebounds ?? 0}</td><td>${s.assists ?? 0}</td><td>${s.steals ?? 0}</td></tr>`).join('') +
+          '</tbody></table></div>';
+      }
+      ejStatsEl.innerHTML = html;
+    }
+
+    async function ejLoadDocuments(player) {
+      const res = await ejAuthedFetch(`${REST_URL}/player_documents?select=*&player_id=eq.${player.id}&order=created_at.desc`);
+      const rows = res.ok ? await res.json() : [];
+      if (!rows.length) {
+        ejDocumentsEl.innerHTML = '<p class="ej-empty">Aucun document pour l\'instant.</p>';
+        return;
+      }
+      const CATEGORIES = { contrat: 'Contrat / inscription', medical: 'Médical', autre: 'Autre' };
+      const cards = await Promise.all(rows.map(async (doc) => {
+        let href = '#';
+        try {
+          const signRes = await ejAuthedFetch(`${STORAGE_URL}/object/sign/player-documents/${doc.file_path}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ expiresIn: 3600 }),
+          });
+          const signData = await signRes.json();
+          if (signRes.ok && signData.signedURL) href = `${STORAGE_URL}${signData.signedURL}`;
+        } catch (e) { /* lien indisponible */ }
+        return `
+          <div class="ej-card">
+            <p class="ej-card-title">${ejEscapeHtml(doc.titre)}</p>
+            <p class="ej-card-meta">${doc.categorie ? ejEscapeHtml(CATEGORIES[doc.categorie] || doc.categorie) + ' — ' : ''}${new Date(doc.created_at).toLocaleDateString('fr-CA')}</p>
+            <a class="ej-doc-link" href="${href}" target="_blank" rel="noopener noreferrer">Ouvrir / télécharger</a>
+          </div>
+        `;
+      }));
+      ejDocumentsEl.innerHTML = cards.join('');
+    }
+
+    // Restaure la session si déjà connecté (refresh de page)
+    ejGetValidSession().then((session) => { if (session) ejShowProfile(); });
+  })();
 });
