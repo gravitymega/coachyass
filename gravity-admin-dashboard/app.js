@@ -229,10 +229,14 @@ const playerAccountsTbody = document.getElementById('player-accounts-tbody');
 const playerDocumentsTbody = document.getElementById('player-documents-tbody');
 const playerDocumentNewBtn = document.getElementById('player-document-new-btn');
 const playerDocumentForm = document.getElementById('player-document-form');
+const playerDocumentIdInput = document.getElementById('player-document-id');
 const playerDocumentPlayerSelect = document.getElementById('player-document-player');
 const playerDocumentTitreInput = document.getElementById('player-document-titre');
+const playerDocumentTitreHint = document.getElementById('player-document-titre-hint');
 const playerDocumentCategorieSelect = document.getElementById('player-document-categorie');
 const playerDocumentFileInput = document.getElementById('player-document-file');
+const playerDocumentFileLabel = document.getElementById('player-document-file-label');
+const playerDocumentSubmitBtn = document.getElementById('player-document-submit-btn');
 const playerDocumentSaveNote = document.getElementById('player-document-save-note');
 const playerDocumentCancelBtn = document.getElementById('player-document-cancel-btn');
 
@@ -1746,12 +1750,20 @@ function renderPlayerDocumentsTable() {
           <td>${new Date(doc.created_at).toLocaleDateString('fr-CA')}</td>
           <td>
             <div class="program-row-actions">
+              <button type="button" class="btn btn-ghost player-document-edit-btn" data-id="${doc.id}">Éditer</button>
               <button type="button" class="btn btn-ghost player-document-delete-btn" data-id="${doc.id}">Supprimer</button>
             </div>
           </td>
         </tr>
       `)
       .join('') || '<tr><td colspan="5" class="empty-note">Aucun document pour l\'instant.</td></tr>';
+
+  playerDocumentsTbody.querySelectorAll('.player-document-edit-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const doc = allPlayerDocuments.find((d) => d.id === btn.dataset.id);
+      if (doc) openPlayerDocumentForm(doc);
+    });
+  });
 
   playerDocumentsTbody.querySelectorAll('.player-document-delete-btn').forEach((btn) => {
     btn.addEventListener('click', async () => {
@@ -1770,16 +1782,39 @@ function renderPlayerDocumentsTable() {
   });
 }
 
-playerDocumentNewBtn?.addEventListener('click', () => {
+// doc: optionnel — ligne de player_documents à éditer. Sans argument, ouvre
+// le formulaire vide pour un nouvel ajout (multi-fichiers).
+function openPlayerDocumentForm(doc) {
   populatePlayerDocumentPlayerSelect();
-  playerDocumentForm.hidden = false;
   playerDocumentForm.reset();
+  playerDocumentIdInput.value = doc ? doc.id : '';
+  playerDocumentForm.hidden = false;
+
+  if (doc) {
+    playerDocumentPlayerSelect.value = doc.player_id;
+    playerDocumentTitreInput.value = doc.titre || '';
+    playerDocumentCategorieSelect.value = doc.categorie || '';
+    playerDocumentFileInput.multiple = false;
+    playerDocumentFileLabel.textContent = 'Remplacer le fichier (optionnel)';
+    playerDocumentTitreHint.textContent = 'Laisse vide pour garder le titre actuel.';
+    playerDocumentSubmitBtn.textContent = 'Enregistrer les modifications';
+  } else {
+    playerDocumentFileInput.multiple = true;
+    playerDocumentFileLabel.textContent = 'Fichiers (PDF, image... — plusieurs à la fois possible)';
+    playerDocumentTitreHint.textContent = 'Si tu téléverses plusieurs fichiers à la fois, laisse vide pour utiliser le nom de chaque fichier comme titre.';
+    playerDocumentSubmitBtn.textContent = 'Téléverser';
+  }
   playerDocumentForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-});
-playerDocumentCancelBtn?.addEventListener('click', () => {
+}
+
+function closePlayerDocumentForm() {
   playerDocumentForm.hidden = true;
   playerDocumentForm.reset();
-});
+  playerDocumentIdInput.value = '';
+}
+
+playerDocumentNewBtn?.addEventListener('click', () => openPlayerDocumentForm(null));
+playerDocumentCancelBtn?.addEventListener('click', () => closePlayerDocumentForm());
 
 function playerDocumentDefaultTitre(file) {
   return file.name.replace(/\.[^.]+$/, '');
@@ -1787,14 +1822,73 @@ function playerDocumentDefaultTitre(file) {
 
 playerDocumentForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
+  const editId = playerDocumentIdInput.value || null;
   const playerId = playerDocumentPlayerSelect.value;
   const files = Array.from(playerDocumentFileInput.files || []);
-  if (!playerId || !files.length) return;
-  const saveBtn = playerDocumentForm.querySelector('button[type="submit"]');
+  if (!playerId) return;
+  if (!editId && !files.length) return;
+  const saveBtn = playerDocumentSubmitBtn;
   saveBtn.disabled = true;
 
   const titreInput = playerDocumentTitreInput.value.trim();
   const categorie = playerDocumentCategorieSelect.value || null;
+
+  if (editId) {
+    const existing = allPlayerDocuments.find((d) => d.id === editId);
+    const newFile = files[0] || null;
+    let filePath = existing ? existing.file_path : null;
+
+    if (newFile) {
+      const path = `${playerId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${newFile.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+      const { error: uploadErr } = await supabase.storage.from('player-documents').upload(path, newFile, { upsert: false });
+      if (uploadErr) {
+        saveBtn.disabled = false;
+        playerDocumentSaveNote.textContent = 'Erreur upload : ' + uploadErr.message;
+        playerDocumentSaveNote.style.color = '#ff6b6b';
+        playerDocumentSaveNote.hidden = false;
+        return;
+      }
+      filePath = path;
+    }
+
+    const titre = titreInput || (newFile ? playerDocumentDefaultTitre(newFile) : (existing ? existing.titre : ''));
+    const { error } = await supabase.from('player_documents').update({
+      player_id: playerId,
+      titre,
+      categorie,
+      file_path: filePath,
+    }).eq('id', editId);
+
+    saveBtn.disabled = false;
+    if (error) {
+      playerDocumentSaveNote.textContent = 'Erreur : ' + error.message;
+      playerDocumentSaveNote.style.color = '#ff6b6b';
+      playerDocumentSaveNote.hidden = false;
+      return;
+    }
+
+    if (newFile && existing && existing.file_path && existing.file_path !== filePath) {
+      await supabase.storage.from('player-documents').remove([existing.file_path]);
+    }
+
+    playerDocumentSaveNote.textContent = 'Enregistré !';
+    playerDocumentSaveNote.style.color = '';
+    playerDocumentSaveNote.hidden = false;
+    notifyEspaceJoueurs({
+      kind: 'document',
+      action: 'updated',
+      site: 'gravity-basketball',
+      player_id: playerId,
+      details: { titre, count: 1 },
+    });
+    await loadPlayerDocuments();
+    setTimeout(() => {
+      closePlayerDocumentForm();
+      playerDocumentSaveNote.hidden = true;
+    }, 1200);
+    return;
+  }
+
   const titres = [];
   let uploadError = null;
 
@@ -1844,8 +1938,7 @@ playerDocumentForm?.addEventListener('submit', async (e) => {
   });
   await loadPlayerDocuments();
   setTimeout(() => {
-    playerDocumentForm.hidden = true;
-    playerDocumentForm.reset();
+    closePlayerDocumentForm();
     playerDocumentSaveNote.hidden = true;
   }, 1200);
 });
