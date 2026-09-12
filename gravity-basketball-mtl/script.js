@@ -914,6 +914,7 @@ document.addEventListener('DOMContentLoaded', () => {
         access_token: data.access_token,
         refresh_token: data.refresh_token,
         expires_at: Date.now() + (data.expires_in - 60) * 1000,
+        user_id: data.user && data.user.id,
       };
       ejSetSession(newSession);
       return newSession;
@@ -968,6 +969,7 @@ document.addEventListener('DOMContentLoaded', () => {
           access_token: data.access_token,
           refresh_token: data.refresh_token,
           expires_at: Date.now() + (data.expires_in - 60) * 1000,
+          user_id: data.user && data.user.id,
         });
         await ejShowProfile();
       } catch (err) {
@@ -1027,7 +1029,14 @@ document.addEventListener('DOMContentLoaded', () => {
     async function ejShowProfile() {
       let player;
       try {
-        const res = await ejAuthedFetch(`${REST_URL}/players?select=*&limit=1`);
+        const session = await ejGetValidSession();
+        if (!session || !session.user_id) throw new Error('not_authenticated');
+        // Filtre explicite par auth_user_id : certaines lignes players (ex.
+        // programme "championship") sont lisibles publiquement par ailleurs
+        // (RLS "public read championship players"), donc "select=*&limit=1"
+        // sans filtre pourrait retourner la fiche d'un AUTRE joueur si elle
+        // trie avant la nôtre — jamais fiable pour retrouver "son propre" profil.
+        const res = await ejAuthedFetch(`${REST_URL}/players?select=*&auth_user_id=eq.${session.user_id}&limit=1`);
         const rows = await res.json();
         player = Array.isArray(rows) ? rows[0] : null;
       } catch (err) {
