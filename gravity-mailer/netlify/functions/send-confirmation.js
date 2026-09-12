@@ -23,11 +23,19 @@ const FROM_NAMES = {
   'basketball-mtl': 'Gravity Basketball',
   'osmm-membre': 'Gravity Basketball',
   'osmm-contact': 'Gravity Basketball',
+  'basketball-mtl-prep-admin': 'Gravity Basketball',
 };
 
 function buildFrom(type) {
   return `${FROM_NAMES[type] || 'Gravity Basketball'} <${FROM_ADDRESS}>`;
 }
+
+// Notifications internes : le destinataire n'est jamais fourni par le client
+// (contrairement aux confirmations, où `to` est l'adresse du visiteur) — il
+// est fixé ici pour empêcher que la fonction serve à envoyer ailleurs.
+const ADMIN_NOTIFICATION_RECIPIENTS = {
+  'basketball-mtl-prep-admin': 'Gravitybasketball@gmail.com',
+};
 
 const ALLOWED_ORIGIN_PATTERNS = [
   /^https:\/\/([a-z0-9-]+\.)?osmm-mtl\.site$/,
@@ -54,6 +62,7 @@ const SITE_URLS = {
   'basketball-mtl': 'https://gravity.osmm-mtl.site',
   'osmm-membre': 'https://osmm-mtl.site',
   'osmm-contact': 'https://osmm-mtl.site',
+  'basketball-mtl-prep-admin': 'https://gravity.osmm-mtl.site',
 };
 
 // Signature ajoutée en bas de chaque courriel — même logo pour tous les
@@ -106,6 +115,10 @@ const TEMPLATES = {
     };
   },
   'basketball-mtl'(f) {
+    // Gravity Prep a sa propre adresse de contact/paiement — le reste des
+    // programmes (Ligue 3v3, Ligue Maison, U15 Masculin) garde l'adresse
+    // habituelle.
+    const interacEmail = f.programme === 'Gravity Prep' ? 'Gravitybasketball@gmail.com' : 'mqtad9@hotmail.com';
     return {
       subject: `Confirmation de votre inscription — ${f.programme || 'Gravity Basketball'}`,
       html: `
@@ -114,7 +127,42 @@ const TEMPLATES = {
         <p>On vous recontacte par téléphone, courriel ou Instagram pour confirmer.</p>
         ${f.modePaiement === 'Zeffy'
           ? '<p>Complétez votre paiement en ligne par carte (lien envoyé séparément) pour confirmer votre place.</p>'
-          : '<p>Dernière étape : envoyez le montant d\'inscription par virement Interac au <strong>438-341-2051</strong> ou à <strong>mqtad9@hotmail.com</strong> pour confirmer votre place.</p>'}
+          : `<p>Dernière étape : envoyez le montant d'inscription par virement Interac au <strong>438-341-2051</strong> ou à <strong>${interacEmail}</strong> pour confirmer votre place.</p>`}
+      `,
+    };
+  },
+  'basketball-mtl-prep-admin'(f) {
+    const rows = [
+      ['Nom complet', f.nom],
+      ['Téléphone', f.telephone],
+      ['Courriel', f.courriel],
+      ['Catégorie d\'âge', f.ageCategorie],
+      ['Type d\'inscription', f.typeInscription],
+      ['Adresse', f.adresse],
+      ['Niveau de jeu', f.niveau],
+      ['Poste de jeu', f.posteDeJeu],
+      ['Taille de vêtement', f.tailleVetement],
+      ['Grandeur', f.grandeur],
+      ['Poids', f.poids],
+      ['Occupation', f.occupation],
+      ['Objectif de la saison', f.objectifSaison],
+      ['Réseaux sociaux', f.reseauxSociaux],
+      ['Disponibilités', f.disponibilites],
+      ['Mode de paiement', f.modePaiement],
+      ['Référence', f.reference],
+      ['Remarque', f.remarque],
+    ].filter(([, v]) => v);
+    return {
+      subject: `Nouvelle inscription Gravity Prep — ${f.nom || 'sans nom'}`,
+      html: `
+        <p>Nouvelle demande d'inscription <strong>Gravity Prep</strong> :</p>
+        <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%; border-collapse:collapse;">
+          ${rows.map(([label, v]) => `
+            <tr>
+              <td style="padding:4px 12px 4px 0; color:#666; white-space:nowrap; vertical-align:top;"><strong>${escapeHtml(label)}</strong></td>
+              <td style="padding:4px 0;">${escapeHtml(v)}</td>
+            </tr>`).join('')}
+        </table>
       `,
     };
   },
@@ -176,17 +224,31 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: `Type de courriel inconnu : ${type}` }) };
   }
 
-  const to = String(d.to || '').trim().slice(0, 200);
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
-    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Adresse courriel invalide' }) };
+  // Pour une notification interne, le destinataire est fixé côté serveur
+  // (ADMIN_NOTIFICATION_RECIPIENTS) — jamais celui fourni par l'appelant.
+  let to = ADMIN_NOTIFICATION_RECIPIENTS[type];
+  if (!to) {
+    to = String(d.to || '').trim().slice(0, 200);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+      return { statusCode: 400, headers, body: JSON.stringify({ error: 'Adresse courriel invalide' }) };
+    }
   }
 
   // Champs libres acceptés — toujours tronqués, jamais interprétés comme
   // sujet/corps : ils ne font qu'être injectés (échappés) dans le gabarit.
   const fields = {};
-  ['nom', 'forfait', 'date', 'heure', 'dates', 'creneau', 'programme', 'modePaiement', 'activite'].forEach((k) => {
+  [
+    'nom', 'forfait', 'date', 'heure', 'dates', 'creneau', 'programme', 'modePaiement', 'activite',
+    'telephone', 'courriel', 'ageCategorie', 'typeInscription', 'adresse', 'niveau', 'posteDeJeu',
+    'tailleVetement', 'grandeur', 'poids', 'occupation', 'objectifSaison', 'reseauxSociaux',
+    'disponibilites', 'reference', 'remarque',
+  ].forEach((k) => {
     if (d.fields && d.fields[k] != null) fields[k] = String(d.fields[k]).slice(0, 300);
   });
+
+  // Reply-To : quand une notification interne référence le courriel d'un
+  // visiteur, permet à l'admin de répondre directement depuis sa boîte.
+  const replyTo = type in ADMIN_NOTIFICATION_RECIPIENTS && fields.courriel ? fields.courriel : undefined;
 
   const { subject, html } = buildTemplate(fields);
 
@@ -197,7 +259,13 @@ exports.handler = async (event) => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ from: buildFrom(type), to: [to], subject, html: html + buildSignature(SITE_URLS[type]) }),
+      body: JSON.stringify({
+        from: buildFrom(type),
+        to: [to],
+        subject,
+        html: html + buildSignature(SITE_URLS[type]),
+        ...(replyTo ? { reply_to: replyTo } : {}),
+      }),
     });
 
     if (!res.ok) {
