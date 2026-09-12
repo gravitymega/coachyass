@@ -820,6 +820,7 @@ Gravity Basketball</textarea>
               <th>Équipe</th>
               <th>#</th>
               <th>Poste</th>
+              <th>Âge</th>
               <th>Pts / Reb / Pas / M</th>
               <th>Statut</th>
               <th></th>
@@ -854,6 +855,11 @@ Gravity Basketball</textarea>
         </div>
 
         <div class="field">
+          <label for="team-player-age">Âge / catégorie d'âge</label>
+          <input type="text" id="team-player-age" placeholder="Ex. 15 ans, ou 13-14 ans">
+        </div>
+
+        <div class="field">
           <label for="team-player-photo-file">Photo (remplace la photo actuelle si un fichier est choisi)</label>
           <input type="file" id="team-player-photo-file" accept="image/*">
           <div id="team-player-photo-preview" style="margin-top:8px;"></div>
@@ -862,6 +868,11 @@ Gravity Basketball</textarea>
         <div class="field">
           <label for="team-player-instagram">Lien Instagram (optionnel)</label>
           <input type="url" id="team-player-instagram" placeholder="https://instagram.com/...">
+        </div>
+
+        <div class="field">
+          <label for="team-player-email">Courriel (pour l'accès Espace Joueurs, optionnel)</label>
+          <input type="email" id="team-player-email" placeholder="courriel@exemple.com">
         </div>
 
         <div class="field">
@@ -900,6 +911,256 @@ Gravity Basketball</textarea>
           <button type="button" id="team-player-delete-btn" class="btn btn-ghost" hidden>Supprimer ce joueur</button>
         </div>
         <p class="save-note" id="team-player-save-note" hidden>Enregistré !</p>
+      </form>
+    </section>
+
+    <section class="panel championship-only" data-group="espace-joueurs">
+      <h2>Espace Joueurs — Comptes joueurs</h2>
+      <p class="muted">Crée l'accès à l'Espace Joueurs (gravity.osmm-mtl.site/#espace-joueurs) pour un joueur déjà ajouté dans "Mes équipes — Joueurs". Le mot de passe temporaire ne s'affiche qu'une fois : communique-le au joueur, il pourra le changer une fois connecté.</p>
+      <div class="table-wrap">
+        <table class="data-table" id="player-accounts-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Équipe</th>
+              <th>Courriel</th>
+              <th>Accès Espace Joueurs</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="player-accounts-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel championship-only" data-group="espace-joueurs">
+      <h2>Espace Joueurs — Documents</h2>
+      <p class="muted">Fichiers privés visibles uniquement par le joueur concerné dans son Espace Joueurs (contrat, décharge, billet médical...).</p>
+      <div class="table-wrap">
+        <table class="data-table" id="player-documents-table">
+          <thead>
+            <tr>
+              <th>Joueur</th>
+              <th>Titre</th>
+              <th>Catégorie</th>
+              <th>Ajouté le</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="player-documents-tbody"></tbody>
+        </table>
+      </div>
+      <button type="button" id="player-document-new-btn" class="btn btn-ghost" style="margin-top:12px;">+ Nouveau document</button>
+
+      <form id="player-document-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <div class="field">
+          <label for="player-document-player">Joueur</label>
+          <select id="player-document-player" required></select>
+        </div>
+        <div class="field">
+          <label for="player-document-titre">Titre</label>
+          <input type="text" id="player-document-titre" required placeholder="Ex. Décharge de responsabilité signée">
+        </div>
+        <div class="field">
+          <label for="player-document-categorie">Catégorie (optionnel)</label>
+          <select id="player-document-categorie">
+            <option value="">—</option>
+            <option value="contrat">Contrat / inscription</option>
+            <option value="medical">Médical</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="player-document-file">Fichier (PDF, image...)</label>
+          <input type="file" id="player-document-file" required>
+        </div>
+        <div class="comm-actions">
+          <button type="submit" class="btn btn-primary">Téléverser</button>
+          <button type="button" id="player-document-cancel-btn" class="btn btn-ghost">Annuler</button>
+        </div>
+        <p class="save-note" id="player-document-save-note" hidden>Enregistré !</p>
+      </form>
+    </section>
+
+    <section class="panel championship-only" data-group="espace-joueurs">
+      <h2>Espace Joueurs — Calendrier des matchs</h2>
+      <p class="muted">Matchs de saison et de playoffs par équipe — date, heure et adresse (avec carte) visibles par les joueurs de cette équipe dans leur Espace Joueurs.</p>
+      <div class="table-wrap">
+        <table class="data-table" id="team-games-table">
+          <thead>
+            <tr>
+              <th>Équipe</th>
+              <th>Type</th>
+              <th>Adversaire</th>
+              <th>Date</th>
+              <th>Heure</th>
+              <th>Lieu</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="team-games-tbody"></tbody>
+        </table>
+      </div>
+      <button type="button" id="team-game-new-btn" class="btn btn-ghost" style="margin-top:12px;">+ Nouveau match</button>
+
+      <form id="team-game-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <input type="hidden" id="team-game-id">
+        <div class="field">
+          <label for="team-game-team">Équipe</label>
+          <select id="team-game-team" required></select>
+        </div>
+        <div class="field">
+          <label for="team-game-type">Type</label>
+          <select id="team-game-type">
+            <option value="saison">Saison régulière</option>
+            <option value="playoff">Playoffs</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="team-game-adversaire">Adversaire (optionnel)</label>
+          <input type="text" id="team-game-adversaire">
+        </div>
+        <div class="field">
+          <label for="team-game-date">Date</label>
+          <input type="date" id="team-game-date" required>
+        </div>
+        <div class="field">
+          <label for="team-game-heure">Heure</label>
+          <input type="time" id="team-game-heure">
+        </div>
+        <div class="field">
+          <label for="team-game-lieu-nom">Nom du lieu (optionnel)</label>
+          <input type="text" id="team-game-lieu-nom" placeholder="Ex. Centre sportif Père-Marquette">
+        </div>
+        <div class="field">
+          <label for="team-game-adresse">Adresse (pour la carte)</label>
+          <input type="text" id="team-game-adresse" placeholder="Ex. 500 rue Rachel E, Montréal, QC">
+        </div>
+        <label class="checkbox-field">
+          <input type="checkbox" id="team-game-domicile" checked>
+          <span>Match à domicile</span>
+        </label>
+        <div class="field">
+          <label for="team-game-resultat">Résultat (optionnel, une fois joué)</label>
+          <input type="text" id="team-game-resultat" placeholder="Ex. Gagné 62–58">
+        </div>
+        <div class="field">
+          <label for="team-game-notes">Notes (optionnel)</label>
+          <textarea id="team-game-notes" rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label for="team-game-order">Ordre d'affichage</label>
+          <input type="number" id="team-game-order" value="0">
+        </div>
+        <div class="comm-actions">
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="button" id="team-game-cancel-btn" class="btn btn-ghost">Annuler</button>
+          <button type="button" id="team-game-delete-btn" class="btn btn-ghost" hidden>Supprimer ce match</button>
+        </div>
+        <p class="save-note" id="team-game-save-note" hidden>Enregistré !</p>
+      </form>
+    </section>
+
+    <section class="panel championship-only" data-group="espace-joueurs">
+      <h2>Espace Joueurs — Calendrier des entraînements</h2>
+      <p class="muted">Entraînements par équipe — date, heure et adresse (avec carte) visibles par les joueurs de cette équipe dans leur Espace Joueurs.</p>
+      <div class="table-wrap">
+        <table class="data-table" id="team-trainings-table">
+          <thead>
+            <tr>
+              <th>Équipe</th>
+              <th>Date</th>
+              <th>Heure</th>
+              <th>Lieu</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="team-trainings-tbody"></tbody>
+        </table>
+      </div>
+      <button type="button" id="team-training-new-btn" class="btn btn-ghost" style="margin-top:12px;">+ Nouvel entraînement</button>
+
+      <form id="team-training-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <input type="hidden" id="team-training-id">
+        <div class="field">
+          <label for="team-training-team">Équipe</label>
+          <select id="team-training-team" required></select>
+        </div>
+        <div class="field">
+          <label for="team-training-date">Date</label>
+          <input type="date" id="team-training-date" required>
+        </div>
+        <div class="field">
+          <label for="team-training-heure-debut">Heure de début</label>
+          <input type="time" id="team-training-heure-debut">
+        </div>
+        <div class="field">
+          <label for="team-training-heure-fin">Heure de fin (optionnel)</label>
+          <input type="time" id="team-training-heure-fin">
+        </div>
+        <div class="field">
+          <label for="team-training-lieu-nom">Nom du lieu (optionnel)</label>
+          <input type="text" id="team-training-lieu-nom">
+        </div>
+        <div class="field">
+          <label for="team-training-adresse">Adresse (pour la carte)</label>
+          <input type="text" id="team-training-adresse" placeholder="Ex. 500 rue Rachel E, Montréal, QC">
+        </div>
+        <div class="field">
+          <label for="team-training-notes">Notes (optionnel)</label>
+          <textarea id="team-training-notes" rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label for="team-training-order">Ordre d'affichage</label>
+          <input type="number" id="team-training-order" value="0">
+        </div>
+        <div class="comm-actions">
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="button" id="team-training-cancel-btn" class="btn btn-ghost">Annuler</button>
+          <button type="button" id="team-training-delete-btn" class="btn btn-ghost" hidden>Supprimer cet entraînement</button>
+        </div>
+        <p class="save-note" id="team-training-save-note" hidden>Enregistré !</p>
+      </form>
+    </section>
+
+    <section class="panel championship-only" data-group="espace-joueurs">
+      <h2>Espace Joueurs — Communiqués</h2>
+      <p class="muted">Message affiché dans l'Espace Joueurs — laisse "Toutes les équipes" pour un communiqué général, ou cible une équipe précise.</p>
+      <div class="table-wrap">
+        <table class="data-table" id="announcements-table">
+          <thead>
+            <tr>
+              <th>Titre</th>
+              <th>Équipe</th>
+              <th>Publié le</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="announcements-tbody"></tbody>
+        </table>
+      </div>
+      <button type="button" id="announcement-new-btn" class="btn btn-ghost" style="margin-top:12px;">+ Nouveau communiqué</button>
+
+      <form id="announcement-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <input type="hidden" id="announcement-id">
+        <div class="field">
+          <label for="announcement-team">Équipe</label>
+          <select id="announcement-team"><option value="">Toutes les équipes</option></select>
+        </div>
+        <div class="field">
+          <label for="announcement-titre">Titre</label>
+          <input type="text" id="announcement-titre" required>
+        </div>
+        <div class="field">
+          <label for="announcement-contenu">Contenu</label>
+          <textarea id="announcement-contenu" rows="4" required></textarea>
+        </div>
+        <div class="comm-actions">
+          <button type="submit" class="btn btn-primary">Publier</button>
+          <button type="button" id="announcement-cancel-btn" class="btn btn-ghost">Annuler</button>
+          <button type="button" id="announcement-delete-btn" class="btn btn-ghost" hidden>Supprimer ce communiqué</button>
+        </div>
+        <p class="save-note" id="announcement-save-note" hidden>Publié !</p>
       </form>
     </section>
 

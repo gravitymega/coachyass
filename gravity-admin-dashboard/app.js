@@ -43,6 +43,10 @@ let allPartnershipApplications = [];
 let allFinanceEntries = [];
 let allTeams = [];
 let allTeamPlayers = [];
+let allTeamGames = [];
+let allTeamTrainings = [];
+let allAnnouncements = [];
+let allPlayerDocuments = [];
 
 // Regroupement des panneaux sous un menu latéral (au lieu de tout afficher
 // à plat) — chaque section du HTML porte un attribut data-group="<id>"
@@ -56,6 +60,7 @@ const GROUPS = [
   { id: 'avis', label: 'Avis' },
   { id: 'championnat', label: 'Championnat', champOnly: true },
   { id: 'mes-equipes', label: 'Mes équipes', champOnly: true },
+  { id: 'espace-joueurs', label: 'Espace Joueurs', champOnly: true },
   { id: 'recrutement', label: 'Recrutement', champOnly: true },
   { id: 'partenariats', label: 'Partenariats', champOnly: true },
   { id: 'communication', label: 'Communication' },
@@ -203,9 +208,11 @@ const teamPlayerTeamSelect = document.getElementById('team-player-team');
 const teamPlayerNameInput = document.getElementById('team-player-name');
 const teamPlayerNumeroInput = document.getElementById('team-player-numero');
 const teamPlayerPosteInput = document.getElementById('team-player-poste');
+const teamPlayerAgeInput = document.getElementById('team-player-age');
 const teamPlayerPhotoFileInput = document.getElementById('team-player-photo-file');
 const teamPlayerPhotoPreviewEl = document.getElementById('team-player-photo-preview');
 const teamPlayerInstagramInput = document.getElementById('team-player-instagram');
+const teamPlayerEmailInput = document.getElementById('team-player-email');
 const teamPlayerPointsInput = document.getElementById('team-player-points');
 const teamPlayerReboundsInput = document.getElementById('team-player-rebonds');
 const teamPlayerAssistsInput = document.getElementById('team-player-passes');
@@ -215,6 +222,65 @@ const teamPlayerActiveCheckbox = document.getElementById('team-player-active');
 const teamPlayerSaveNote = document.getElementById('team-player-save-note');
 const teamPlayerCancelBtn = document.getElementById('team-player-cancel-btn');
 const teamPlayerDeleteBtn = document.getElementById('team-player-delete-btn');
+
+// ---------- Espace Joueurs (comptes / documents / matchs / entraînements / communiqués) ----------
+const playerAccountsTbody = document.getElementById('player-accounts-tbody');
+
+const playerDocumentsTbody = document.getElementById('player-documents-tbody');
+const playerDocumentNewBtn = document.getElementById('player-document-new-btn');
+const playerDocumentForm = document.getElementById('player-document-form');
+const playerDocumentPlayerSelect = document.getElementById('player-document-player');
+const playerDocumentTitreInput = document.getElementById('player-document-titre');
+const playerDocumentCategorieSelect = document.getElementById('player-document-categorie');
+const playerDocumentFileInput = document.getElementById('player-document-file');
+const playerDocumentSaveNote = document.getElementById('player-document-save-note');
+const playerDocumentCancelBtn = document.getElementById('player-document-cancel-btn');
+
+const teamGamesTbody = document.getElementById('team-games-tbody');
+const teamGameNewBtn = document.getElementById('team-game-new-btn');
+const teamGameForm = document.getElementById('team-game-form');
+const teamGameIdInput = document.getElementById('team-game-id');
+const teamGameTeamSelect = document.getElementById('team-game-team');
+const teamGameTypeSelect = document.getElementById('team-game-type');
+const teamGameAdversaireInput = document.getElementById('team-game-adversaire');
+const teamGameDateInput = document.getElementById('team-game-date');
+const teamGameHeureInput = document.getElementById('team-game-heure');
+const teamGameLieuNomInput = document.getElementById('team-game-lieu-nom');
+const teamGameAdresseInput = document.getElementById('team-game-adresse');
+const teamGameDomicileCheckbox = document.getElementById('team-game-domicile');
+const teamGameResultatInput = document.getElementById('team-game-resultat');
+const teamGameNotesInput = document.getElementById('team-game-notes');
+const teamGameOrderInput = document.getElementById('team-game-order');
+const teamGameSaveNote = document.getElementById('team-game-save-note');
+const teamGameCancelBtn = document.getElementById('team-game-cancel-btn');
+const teamGameDeleteBtn = document.getElementById('team-game-delete-btn');
+
+const teamTrainingsTbody = document.getElementById('team-trainings-tbody');
+const teamTrainingNewBtn = document.getElementById('team-training-new-btn');
+const teamTrainingForm = document.getElementById('team-training-form');
+const teamTrainingIdInput = document.getElementById('team-training-id');
+const teamTrainingTeamSelect = document.getElementById('team-training-team');
+const teamTrainingDateInput = document.getElementById('team-training-date');
+const teamTrainingHeureDebutInput = document.getElementById('team-training-heure-debut');
+const teamTrainingHeureFinInput = document.getElementById('team-training-heure-fin');
+const teamTrainingLieuNomInput = document.getElementById('team-training-lieu-nom');
+const teamTrainingAdresseInput = document.getElementById('team-training-adresse');
+const teamTrainingNotesInput = document.getElementById('team-training-notes');
+const teamTrainingOrderInput = document.getElementById('team-training-order');
+const teamTrainingSaveNote = document.getElementById('team-training-save-note');
+const teamTrainingCancelBtn = document.getElementById('team-training-cancel-btn');
+const teamTrainingDeleteBtn = document.getElementById('team-training-delete-btn');
+
+const announcementsTbody = document.getElementById('announcements-tbody');
+const announcementNewBtn = document.getElementById('announcement-new-btn');
+const announcementForm = document.getElementById('announcement-form');
+const announcementIdInput = document.getElementById('announcement-id');
+const announcementTeamSelect = document.getElementById('announcement-team');
+const announcementTitreInput = document.getElementById('announcement-titre');
+const announcementContenuInput = document.getElementById('announcement-contenu');
+const announcementSaveNote = document.getElementById('announcement-save-note');
+const announcementCancelBtn = document.getElementById('announcement-cancel-btn');
+const announcementDeleteBtn = document.getElementById('announcement-delete-btn');
 
 const igCarouselTbody = document.getElementById('ig-carousel-tbody');
 const igCarouselNewBtn = document.getElementById('ig-carousel-new-btn');
@@ -565,10 +631,21 @@ async function loadAll() {
       loadCoachApplications(),
       loadPartnershipApplications(),
       loadTeams(),
-      loadTeamPlayers()
+      loadTeamPlayers(),
+      loadTeamGames(),
+      loadTeamTrainings(),
+      loadAnnouncements(),
+      loadPlayerDocuments()
     );
   }
   await Promise.all(tasks);
+  // Re-rendu final : ces tables croisent des données chargées en parallèle
+  // (nom d'équipe, nom de joueur) qui peuvent arriver dans n'importe quel ordre.
+  renderTeamGamesTable();
+  renderTeamTrainingsTable();
+  renderAnnouncementsTable();
+  renderPlayerDocumentsTable();
+  renderPlayerAccountsTable();
   renderSidebar();
   renderHome();
 }
@@ -652,6 +729,7 @@ function renderBookings() {
           <td>${escapeHtml(r.contact_name || '')}</td>
           <td class="wrap">${escapeHtml(r.contact_email || '')}<br>${escapeHtml(r.contact_phone || '')}
             ${r.contact_email ? `<br><button type="button" class="btn btn-ghost comm-write-btn" data-email="${escapeHtml(r.contact_email)}">✉️ Écrire</button>` : ''}
+            ${r.site === 'gravity-basketball' ? `<br><button type="button" class="btn btn-ghost booking-create-player-btn" data-id="${r.id}">Créer la fiche joueur</button>` : ''}
           </td>
           <td>${escapeHtml(r.type || '')}</td>
           <td class="wrap">${escapeHtml(details)}</td>
@@ -686,6 +764,20 @@ function renderBookings() {
       const subject = commSubjectInput.value.trim() || 'Gravity Basketball';
       const body = commBodyInput.value || '';
       window.open(buildGmailComposeUrl([email], subject, body), '_blank', 'noopener');
+    });
+  });
+  bookingsTbody.querySelectorAll('.booking-create-player-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const booking = allBookings.find((b) => b.id === btn.dataset.id);
+      if (!booking) return;
+      const details = booking.details || {};
+      setActiveGroup('mes-equipes');
+      openTeamPlayerForm(null, {
+        full_name: booking.contact_name || '',
+        age_category: details.age_categorie || '',
+        poste: details.poste_de_jeu || '',
+        email: booking.contact_email || '',
+      });
     });
   });
 }
@@ -921,6 +1013,12 @@ async function loadTeams() {
   if (!error) allTeams = data || [];
   renderTeamsTable();
   populateTeamPlayerTeamSelect();
+  populateTeamGameTeamSelect();
+  populateTeamTrainingTeamSelect();
+  populateAnnouncementTeamSelect();
+  renderTeamGamesTable();
+  renderTeamTrainingsTable();
+  renderAnnouncementsTable();
 }
 
 function renderTeamsTable() {
@@ -1071,6 +1169,9 @@ async function loadTeamPlayers() {
     .order('display_order', { ascending: true });
   if (!error) allTeamPlayers = data || [];
   renderTeamPlayersTable();
+  renderPlayerAccountsTable();
+  populatePlayerDocumentPlayerSelect();
+  renderPlayerDocumentsTable();
 }
 
 function renderTeamPlayersTable() {
@@ -1084,17 +1185,19 @@ function renderTeamPlayersTable() {
           <td>${escapeHtml(teamLabel(p.team_id))}</td>
           <td>${p.numero ? escapeHtml(p.numero) : '—'}</td>
           <td>${p.poste ? escapeHtml(p.poste) : '—'}</td>
+          <td>${p.age_category ? escapeHtml(p.age_category) : '—'}</td>
           <td>${p.saison_points ?? 0} / ${p.saison_rebonds ?? 0} / ${p.saison_passes ?? 0} / ${p.saison_matchs ?? 0}</td>
           <td><span class="program-status-pill ${p.active ? 'active' : 'inactive'}">${p.active ? 'Actif' : 'Inactif'}</span></td>
           <td>
             <div class="program-row-actions">
               <button type="button" class="btn btn-ghost team-player-edit-btn" data-id="${p.id}">Éditer</button>
               <button type="button" class="btn btn-ghost team-player-toggle-btn" data-id="${p.id}">${p.active ? 'Désactiver' : 'Activer'}</button>
+              <button type="button" class="btn btn-ghost team-player-share-btn" data-id="${p.id}">Partager la fiche</button>
             </div>
           </td>
         </tr>
       `)
-      .join('') || '<tr><td colspan="8" class="empty-note">Aucun joueur pour l\'instant — clique "+ Nouveau joueur" pour en ajouter un.</td></tr>';
+      .join('') || '<tr><td colspan="9" class="empty-note">Aucun joueur pour l\'instant — clique "+ Nouveau joueur" pour en ajouter un.</td></tr>';
 
   teamPlayersTbody.querySelectorAll('.team-player-edit-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -1112,17 +1215,30 @@ function renderTeamPlayersTable() {
       await loadTeamPlayers();
     });
   });
+  teamPlayersTbody.querySelectorAll('.team-player-share-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const player = allTeamPlayers.find((p) => p.id === btn.dataset.id);
+      if (player) sharePlayerCard(player, btn);
+    });
+  });
 }
 
-function openTeamPlayerForm(player) {
+// player: ligne de la table players. prefill (optionnel, uniquement pour un
+// nouveau joueur) : { full_name, age_category, poste, email } — permet de
+// créer la fiche joueur en un clic à partir d'une réservation, sans que
+// personne n'ait à retaper l'information déjà fournie par le joueur/parent
+// dans le formulaire d'inscription public (un seul formulaire pour tout).
+function openTeamPlayerForm(player, prefill) {
   populateTeamPlayerTeamSelect();
   teamPlayerForm.hidden = false;
   teamPlayerIdInput.value = player ? player.id : '';
   teamPlayerTeamSelect.value = player ? player.team_id : (allTeams[0]?.id || '');
-  teamPlayerNameInput.value = player ? player.full_name : '';
+  teamPlayerNameInput.value = player ? player.full_name : (prefill?.full_name || '');
   teamPlayerNumeroInput.value = player ? (player.numero || '') : '';
-  teamPlayerPosteInput.value = player ? (player.poste || '') : '';
+  teamPlayerPosteInput.value = player ? (player.poste || '') : (prefill?.poste || '');
+  teamPlayerAgeInput.value = player ? (player.age_category || '') : (prefill?.age_category || '');
   teamPlayerInstagramInput.value = player ? (player.instagram_url || '') : '';
+  teamPlayerEmailInput.value = player ? (player.email || '') : (prefill?.email || '');
   teamPlayerPointsInput.value = player ? (player.saison_points ?? 0) : 0;
   teamPlayerReboundsInput.value = player ? (player.saison_rebonds ?? 0) : 0;
   teamPlayerAssistsInput.value = player ? (player.saison_passes ?? 0) : 0;
@@ -1197,8 +1313,10 @@ teamPlayerForm?.addEventListener('submit', async (e) => {
     full_name: teamPlayerNameInput.value.trim(),
     numero: teamPlayerNumeroInput.value.trim() || null,
     poste: teamPlayerPosteInput.value.trim() || null,
+    age_category: teamPlayerAgeInput.value.trim() || null,
     photo_url: photoUrl,
     instagram_url: teamPlayerInstagramInput.value.trim() || null,
+    email: teamPlayerEmailInput.value.trim() || null,
     saison_points: parseInt(teamPlayerPointsInput.value, 10) || 0,
     saison_rebonds: parseInt(teamPlayerReboundsInput.value, 10) || 0,
     saison_passes: parseInt(teamPlayerAssistsInput.value, 10) || 0,
@@ -1226,6 +1344,748 @@ teamPlayerForm?.addEventListener('submit', async (e) => {
   setTimeout(() => {
     closeTeamPlayerForm();
     teamPlayerSaveNote.hidden = true;
+  }, 1200);
+});
+
+// ---------- Fiche joueur partageable (image générée, même principe que la
+// génération "Partage Instagram" du site public gravity-basketball-mtl) ----------
+const SHARE_LOGO_URL = 'https://gravity.osmm-mtl.site/assets/logo.png';
+
+function shareLoadImage(src, crossOrigin) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    if (crossOrigin) img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+function shareDrawRoundedRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function shareInitials(name) {
+  return String(name || '')
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join('')
+    .toUpperCase() || '?';
+}
+
+function shareSlugify(str) {
+  const noAccents = String(str || 'joueur')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '');
+  return noAccents
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '') || 'joueur';
+}
+
+async function buildPlayerCardImage(player, teamName) {
+  const W = 1080, H = 1350;
+  const canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  try {
+    if (document.fonts && document.fonts.load) {
+      await Promise.all([
+        document.fonts.load('700 64px Oswald'),
+        document.fonts.load('600 36px Inter'),
+      ]);
+    }
+  } catch (e) { /* tant pis, on dessine avec la police de secours */ }
+
+  ctx.fillStyle = '#0a0a0a';
+  ctx.fillRect(0, 0, W, H);
+  const grad = ctx.createRadialGradient(W / 2, 0, 0, W / 2, 0, W);
+  grad.addColorStop(0, 'rgba(232,103,46,0.22)');
+  grad.addColorStop(1, 'rgba(232,103,46,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  const pad = 60;
+  shareDrawRoundedRect(ctx, pad, pad, W - pad * 2, H - pad * 2, 36);
+  ctx.fillStyle = '#171717';
+  ctx.fill();
+  ctx.strokeStyle = '#2a2a2a';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  const logo = await shareLoadImage(SHARE_LOGO_URL, true);
+  if (logo) {
+    const logoH = 70;
+    const logoW = logoH * (logo.width / logo.height);
+    ctx.drawImage(logo, pad + 40, pad + 40, logoW, logoH);
+  }
+  ctx.fillStyle = '#a8a8a8';
+  ctx.font = '600 26px Inter, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('GRAVITY BASKETBALL', W - pad - 40, pad + 82);
+
+  const photoCx = W / 2;
+  const photoCy = pad + 300;
+  const photoR = 190;
+  const photoImg = player.photo_url ? await shareLoadImage(player.photo_url, true) : null;
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(photoCx, photoCy, photoR, 0, Math.PI * 2);
+  ctx.closePath();
+  if (photoImg) {
+    ctx.clip();
+    const scale = Math.max((photoR * 2) / photoImg.width, (photoR * 2) / photoImg.height);
+    const dw = photoImg.width * scale;
+    const dh = photoImg.height * scale;
+    ctx.drawImage(photoImg, photoCx - dw / 2, photoCy - dh / 2, dw, dh);
+  } else {
+    ctx.fillStyle = 'rgba(232,103,46,0.15)';
+    ctx.fill();
+    ctx.clip();
+    ctx.fillStyle = '#ff8a4c';
+    ctx.font = '700 140px Oswald, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(shareInitials(player.full_name), photoCx, photoCy + 10);
+  }
+  ctx.restore();
+  ctx.strokeStyle = '#e8672e';
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.arc(photoCx, photoCy, photoR, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = '#f5f5f5';
+  ctx.font = '700 60px Oswald, sans-serif';
+  ctx.fillText((player.full_name || '').toUpperCase(), W / 2, photoCy + photoR + 90);
+
+  const metaParts = [
+    player.numero ? '#' + player.numero : '',
+    player.poste || '',
+    player.age_category || '',
+    teamName || '',
+  ].filter(Boolean);
+  if (metaParts.length) {
+    ctx.fillStyle = '#ff8a4c';
+    ctx.font = '600 34px Inter, sans-serif';
+    ctx.fillText(metaParts.join('  ·  '), W / 2, photoCy + photoR + 140);
+  }
+
+  const stats = [
+    ['Points', player.saison_points ?? 0],
+    ['Rebonds', player.saison_rebonds ?? 0],
+    ['Passes', player.saison_passes ?? 0],
+    ['Matchs', player.saison_matchs ?? 0],
+  ];
+  const statsY = photoCy + photoR + 220;
+  const statsW = W - pad * 2 - 80;
+  const boxW = statsW / stats.length;
+  stats.forEach(([label, value], i) => {
+    const cx = pad + 40 + boxW * i + boxW / 2;
+    ctx.fillStyle = '#f5f5f5';
+    ctx.font = '700 56px Oswald, sans-serif';
+    ctx.fillText(String(value), cx, statsY);
+    ctx.fillStyle = '#a8a8a8';
+    ctx.font = '600 24px Inter, sans-serif';
+    ctx.fillText(label.toUpperCase(), cx, statsY + 40);
+  });
+
+  return new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 0.95));
+}
+
+async function sharePlayerCard(player, btn) {
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Génération...';
+  try {
+    const blob = await buildPlayerCardImage(player, teamLabel(player.team_id));
+    if (!blob) throw new Error('canvas vide');
+    const file = new File([blob], `gravity-${shareSlugify(player.full_name)}.png`, { type: 'image/png' });
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], title: player.full_name, text: `${player.full_name} — Gravity Basketball` });
+    } else {
+      const url = URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = file.name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+    }
+  } catch (err) {
+    if (err && err.name === 'AbortError') return; // partage annulé par l'utilisateur
+    console.error('Fiche joueur — échec génération image', err);
+    alert("Impossible de générer la fiche pour le moment. Réessaie plus tard.");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalLabel;
+  }
+}
+
+// ---------- Espace Joueurs : comptes joueurs ----------
+function renderPlayerAccountsTable() {
+  if (!playerAccountsTbody) return;
+  playerAccountsTbody.innerHTML =
+    allTeamPlayers
+      .map((p) => `
+        <tr>
+          <td>${escapeHtml(p.full_name)}</td>
+          <td>${escapeHtml(teamLabel(p.team_id))}</td>
+          <td>${p.email ? escapeHtml(p.email) : '<span class="muted">—</span>'}</td>
+          <td><span class="program-status-pill ${p.auth_user_id ? 'active' : 'inactive'}">${p.auth_user_id ? 'Accès créé' : 'Aucun accès'}</span></td>
+          <td>
+            ${p.auth_user_id
+              ? ''
+              : `<button type="button" class="btn btn-ghost player-account-create-btn" data-id="${p.id}">Créer un accès</button>`}
+          </td>
+        </tr>
+      `)
+      .join('') || '<tr><td colspan="5" class="empty-note">Aucun joueur pour l\'instant — ajoute-en un dans "Mes équipes — Joueurs".</td></tr>';
+
+  playerAccountsTbody.querySelectorAll('.player-account-create-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const player = allTeamPlayers.find((p) => p.id === btn.dataset.id);
+      if (player) createPlayerAccount(player, btn);
+    });
+  });
+}
+
+async function createPlayerAccount(player, btn) {
+  const email = (player.email || window.prompt(`Courriel du joueur "${player.full_name}" pour son accès Espace Joueurs :`, '') || '').trim();
+  if (!email) return;
+
+  btn.disabled = true;
+  btn.textContent = 'Création...';
+  try {
+    const { data } = await supabase.auth.getSession();
+    const token = data && data.session && data.session.access_token;
+    if (!token) throw new Error('Session expirée, reconnecte-toi.');
+
+    const res = await fetch('/.netlify/functions/create-player-account', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ player_id: player.id, email }),
+    });
+    const result = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(result.error || 'Échec de la création du compte');
+
+    alert(
+      `Accès créé pour ${player.full_name}.\n\nCourriel : ${result.email}\nMot de passe temporaire : ${result.password}\n\n` +
+      `Communique ces informations au joueur — il pourra se connecter sur gravity.osmm-mtl.site (Espace Joueurs) et changer son mot de passe une fois connecté.`
+    );
+    await loadTeamPlayers();
+  } catch (err) {
+    alert('Erreur : ' + err.message);
+    btn.disabled = false;
+    btn.textContent = 'Créer un accès';
+  }
+}
+
+// ---------- Espace Joueurs : documents ----------
+function populatePlayerDocumentPlayerSelect() {
+  if (!playerDocumentPlayerSelect) return;
+  const current = playerDocumentPlayerSelect.value;
+  playerDocumentPlayerSelect.innerHTML = allTeamPlayers
+    .map((p) => `<option value="${p.id}">${escapeHtml(p.full_name)} — ${escapeHtml(teamLabel(p.team_id))}</option>`)
+    .join('');
+  if (current) playerDocumentPlayerSelect.value = current;
+}
+
+async function loadPlayerDocuments() {
+  const { data, error } = await supabase
+    .from('player_documents')
+    .select('*')
+    .eq('site', 'gravity-basketball')
+    .order('created_at', { ascending: false });
+  if (!error) allPlayerDocuments = data || [];
+  renderPlayerDocumentsTable();
+}
+
+function playerNameForDocument(playerId) {
+  const p = allTeamPlayers.find((x) => x.id === playerId);
+  return p ? p.full_name : '—';
+}
+
+function renderPlayerDocumentsTable() {
+  if (!playerDocumentsTbody) return;
+  const CATEGORIES = { contrat: 'Contrat / inscription', medical: 'Médical', autre: 'Autre' };
+  playerDocumentsTbody.innerHTML =
+    allPlayerDocuments
+      .map((doc) => `
+        <tr>
+          <td>${escapeHtml(playerNameForDocument(doc.player_id))}</td>
+          <td>${escapeHtml(doc.titre)}</td>
+          <td>${doc.categorie ? escapeHtml(CATEGORIES[doc.categorie] || doc.categorie) : '<span class="muted">—</span>'}</td>
+          <td>${new Date(doc.created_at).toLocaleDateString('fr-CA')}</td>
+          <td>
+            <div class="program-row-actions">
+              <button type="button" class="btn btn-ghost player-document-delete-btn" data-id="${doc.id}">Supprimer</button>
+            </div>
+          </td>
+        </tr>
+      `)
+      .join('') || '<tr><td colspan="5" class="empty-note">Aucun document pour l\'instant.</td></tr>';
+
+  playerDocumentsTbody.querySelectorAll('.player-document-delete-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('Supprimer définitivement ce document ?')) return;
+      const doc = allPlayerDocuments.find((d) => d.id === btn.dataset.id);
+      btn.disabled = true;
+      const { error } = await supabase.from('player_documents').delete().eq('id', btn.dataset.id);
+      if (error) {
+        alert('Erreur : ' + error.message);
+        btn.disabled = false;
+        return;
+      }
+      if (doc) await supabase.storage.from('player-documents').remove([doc.file_path]);
+      await loadPlayerDocuments();
+    });
+  });
+}
+
+playerDocumentNewBtn?.addEventListener('click', () => {
+  populatePlayerDocumentPlayerSelect();
+  playerDocumentForm.hidden = false;
+  playerDocumentForm.reset();
+  playerDocumentForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+playerDocumentCancelBtn?.addEventListener('click', () => {
+  playerDocumentForm.hidden = true;
+  playerDocumentForm.reset();
+});
+
+playerDocumentForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const playerId = playerDocumentPlayerSelect.value;
+  const file = playerDocumentFileInput.files[0];
+  if (!playerId || !file) return;
+  const saveBtn = playerDocumentForm.querySelector('button[type="submit"]');
+  saveBtn.disabled = true;
+
+  const path = `${playerId}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+  const { error: uploadError } = await supabase.storage.from('player-documents').upload(path, file, { upsert: false });
+  if (uploadError) {
+    playerDocumentSaveNote.textContent = 'Erreur upload : ' + uploadError.message;
+    playerDocumentSaveNote.style.color = '#ff6b6b';
+    playerDocumentSaveNote.hidden = false;
+    saveBtn.disabled = false;
+    return;
+  }
+
+  const { error } = await supabase.from('player_documents').insert({
+    site: 'gravity-basketball',
+    player_id: playerId,
+    titre: playerDocumentTitreInput.value.trim(),
+    categorie: playerDocumentCategorieSelect.value || null,
+    file_path: path,
+  });
+
+  saveBtn.disabled = false;
+  if (error) {
+    playerDocumentSaveNote.textContent = 'Erreur : ' + error.message;
+    playerDocumentSaveNote.style.color = '#ff6b6b';
+    playerDocumentSaveNote.hidden = false;
+    return;
+  }
+
+  playerDocumentSaveNote.textContent = 'Enregistré !';
+  playerDocumentSaveNote.style.color = '';
+  playerDocumentSaveNote.hidden = false;
+  await loadPlayerDocuments();
+  setTimeout(() => {
+    playerDocumentForm.hidden = true;
+    playerDocumentForm.reset();
+    playerDocumentSaveNote.hidden = true;
+  }, 1200);
+});
+
+// ---------- Espace Joueurs : calendrier des matchs (saison + playoffs) ----------
+function populateTeamGameTeamSelect() {
+  if (!teamGameTeamSelect) return;
+  const current = teamGameTeamSelect.value;
+  teamGameTeamSelect.innerHTML = allTeams
+    .map((t) => `<option value="${t.id}">${escapeHtml(t.categorie)} — ${escapeHtml(t.genre)} (${escapeHtml(t.nom_equipe)})</option>`)
+    .join('');
+  if (current) teamGameTeamSelect.value = current;
+}
+
+async function loadTeamGames() {
+  const { data, error } = await supabase
+    .from('team_games')
+    .select('*')
+    .eq('site', 'gravity-basketball')
+    .order('date_match', { ascending: true });
+  if (!error) allTeamGames = data || [];
+  renderTeamGamesTable();
+}
+
+function formatGameDateTime(dateStr, timeStr) {
+  const label = new Date(dateStr + 'T00:00:00').toLocaleDateString('fr-CA', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  return timeStr ? `${label}, ${timeStr}` : label;
+}
+
+function renderTeamGamesTable() {
+  if (!teamGamesTbody) return;
+  teamGamesTbody.innerHTML =
+    allTeamGames
+      .map((g) => `
+        <tr>
+          <td>${escapeHtml(teamLabel(g.team_id))}</td>
+          <td><span class="program-status-pill ${g.type === 'playoff' ? 'active' : ''}">${g.type === 'playoff' ? 'Playoffs' : 'Saison'}</span></td>
+          <td>${g.adversaire ? escapeHtml(g.adversaire) : '<span class="muted">—</span>'}</td>
+          <td colspan="2">${formatGameDateTime(g.date_match, g.heure_match)}</td>
+          <td>${g.lieu_nom || g.adresse ? escapeHtml(g.lieu_nom || g.adresse) : '<span class="muted">—</span>'}</td>
+          <td>
+            <div class="program-row-actions">
+              <button type="button" class="btn btn-ghost team-game-edit-btn" data-id="${g.id}">Éditer</button>
+            </div>
+          </td>
+        </tr>
+      `)
+      .join('') || '<tr><td colspan="7" class="empty-note">Aucun match pour l\'instant.</td></tr>';
+
+  teamGamesTbody.querySelectorAll('.team-game-edit-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const game = allTeamGames.find((g) => g.id === btn.dataset.id);
+      if (game) openTeamGameForm(game);
+    });
+  });
+}
+
+function openTeamGameForm(game) {
+  populateTeamGameTeamSelect();
+  teamGameForm.hidden = false;
+  teamGameIdInput.value = game ? game.id : '';
+  teamGameTeamSelect.value = game ? game.team_id : (allTeams[0]?.id || '');
+  teamGameTypeSelect.value = game ? game.type : 'saison';
+  teamGameAdversaireInput.value = game ? (game.adversaire || '') : '';
+  teamGameDateInput.value = game ? game.date_match : '';
+  teamGameHeureInput.value = game ? (game.heure_match || '') : '';
+  teamGameLieuNomInput.value = game ? (game.lieu_nom || '') : '';
+  teamGameAdresseInput.value = game ? (game.adresse || '') : '';
+  teamGameDomicileCheckbox.checked = game ? game.domicile : true;
+  teamGameResultatInput.value = game ? (game.resultat || '') : '';
+  teamGameNotesInput.value = game ? (game.notes || '') : '';
+  teamGameOrderInput.value = game ? game.display_order : 0;
+  teamGameDeleteBtn.hidden = !game;
+  teamGameForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeTeamGameForm() {
+  teamGameForm.hidden = true;
+  teamGameForm.reset();
+  teamGameIdInput.value = '';
+}
+
+teamGameNewBtn?.addEventListener('click', () => openTeamGameForm(null));
+teamGameCancelBtn?.addEventListener('click', () => closeTeamGameForm());
+
+teamGameDeleteBtn?.addEventListener('click', async () => {
+  const id = teamGameIdInput.value;
+  if (!id) return;
+  if (!confirm('Supprimer définitivement ce match ?')) return;
+  const { error } = await supabase.from('team_games').delete().eq('id', id);
+  if (error) {
+    alert('Erreur : ' + error.message);
+    return;
+  }
+  closeTeamGameForm();
+  await loadTeamGames();
+});
+
+teamGameForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = teamGameIdInput.value || null;
+  const saveBtn = teamGameForm.querySelector('button[type="submit"]');
+  saveBtn.disabled = true;
+
+  const payload = {
+    site: 'gravity-basketball',
+    team_id: teamGameTeamSelect.value,
+    type: teamGameTypeSelect.value,
+    adversaire: teamGameAdversaireInput.value.trim() || null,
+    date_match: teamGameDateInput.value,
+    heure_match: teamGameHeureInput.value || null,
+    lieu_nom: teamGameLieuNomInput.value.trim() || null,
+    adresse: teamGameAdresseInput.value.trim() || null,
+    domicile: teamGameDomicileCheckbox.checked,
+    resultat: teamGameResultatInput.value.trim() || null,
+    notes: teamGameNotesInput.value.trim() || null,
+    display_order: parseInt(teamGameOrderInput.value, 10) || 0,
+  };
+
+  const { error } = id
+    ? await supabase.from('team_games').update(payload).eq('id', id)
+    : await supabase.from('team_games').insert(payload);
+
+  saveBtn.disabled = false;
+  if (error) {
+    teamGameSaveNote.textContent = 'Erreur : ' + error.message;
+    teamGameSaveNote.style.color = '#ff6b6b';
+    teamGameSaveNote.hidden = false;
+    return;
+  }
+
+  teamGameSaveNote.textContent = 'Enregistré !';
+  teamGameSaveNote.style.color = '';
+  teamGameSaveNote.hidden = false;
+  await loadTeamGames();
+  setTimeout(() => {
+    closeTeamGameForm();
+    teamGameSaveNote.hidden = true;
+  }, 1200);
+});
+
+// ---------- Espace Joueurs : calendrier des entraînements ----------
+function populateTeamTrainingTeamSelect() {
+  if (!teamTrainingTeamSelect) return;
+  const current = teamTrainingTeamSelect.value;
+  teamTrainingTeamSelect.innerHTML = allTeams
+    .map((t) => `<option value="${t.id}">${escapeHtml(t.categorie)} — ${escapeHtml(t.genre)} (${escapeHtml(t.nom_equipe)})</option>`)
+    .join('');
+  if (current) teamTrainingTeamSelect.value = current;
+}
+
+async function loadTeamTrainings() {
+  const { data, error } = await supabase
+    .from('team_trainings')
+    .select('*')
+    .eq('site', 'gravity-basketball')
+    .order('date_entrainement', { ascending: true });
+  if (!error) allTeamTrainings = data || [];
+  renderTeamTrainingsTable();
+}
+
+function renderTeamTrainingsTable() {
+  if (!teamTrainingsTbody) return;
+  teamTrainingsTbody.innerHTML =
+    allTeamTrainings
+      .map((tr) => `
+        <tr>
+          <td>${escapeHtml(teamLabel(tr.team_id))}</td>
+          <td colspan="2">${formatGameDateTime(tr.date_entrainement, tr.heure_debut ? `${tr.heure_debut}${tr.heure_fin ? '–' + tr.heure_fin : ''}` : '')}</td>
+          <td>${tr.lieu_nom || tr.adresse ? escapeHtml(tr.lieu_nom || tr.adresse) : '<span class="muted">—</span>'}</td>
+          <td>
+            <div class="program-row-actions">
+              <button type="button" class="btn btn-ghost team-training-edit-btn" data-id="${tr.id}">Éditer</button>
+            </div>
+          </td>
+        </tr>
+      `)
+      .join('') || '<tr><td colspan="5" class="empty-note">Aucun entraînement pour l\'instant.</td></tr>';
+
+  teamTrainingsTbody.querySelectorAll('.team-training-edit-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const training = allTeamTrainings.find((tr) => tr.id === btn.dataset.id);
+      if (training) openTeamTrainingForm(training);
+    });
+  });
+}
+
+function openTeamTrainingForm(training) {
+  populateTeamTrainingTeamSelect();
+  teamTrainingForm.hidden = false;
+  teamTrainingIdInput.value = training ? training.id : '';
+  teamTrainingTeamSelect.value = training ? training.team_id : (allTeams[0]?.id || '');
+  teamTrainingDateInput.value = training ? training.date_entrainement : '';
+  teamTrainingHeureDebutInput.value = training ? (training.heure_debut || '') : '';
+  teamTrainingHeureFinInput.value = training ? (training.heure_fin || '') : '';
+  teamTrainingLieuNomInput.value = training ? (training.lieu_nom || '') : '';
+  teamTrainingAdresseInput.value = training ? (training.adresse || '') : '';
+  teamTrainingNotesInput.value = training ? (training.notes || '') : '';
+  teamTrainingOrderInput.value = training ? training.display_order : 0;
+  teamTrainingDeleteBtn.hidden = !training;
+  teamTrainingForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeTeamTrainingForm() {
+  teamTrainingForm.hidden = true;
+  teamTrainingForm.reset();
+  teamTrainingIdInput.value = '';
+}
+
+teamTrainingNewBtn?.addEventListener('click', () => openTeamTrainingForm(null));
+teamTrainingCancelBtn?.addEventListener('click', () => closeTeamTrainingForm());
+
+teamTrainingDeleteBtn?.addEventListener('click', async () => {
+  const id = teamTrainingIdInput.value;
+  if (!id) return;
+  if (!confirm('Supprimer définitivement cet entraînement ?')) return;
+  const { error } = await supabase.from('team_trainings').delete().eq('id', id);
+  if (error) {
+    alert('Erreur : ' + error.message);
+    return;
+  }
+  closeTeamTrainingForm();
+  await loadTeamTrainings();
+});
+
+teamTrainingForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = teamTrainingIdInput.value || null;
+  const saveBtn = teamTrainingForm.querySelector('button[type="submit"]');
+  saveBtn.disabled = true;
+
+  const payload = {
+    site: 'gravity-basketball',
+    team_id: teamTrainingTeamSelect.value,
+    date_entrainement: teamTrainingDateInput.value,
+    heure_debut: teamTrainingHeureDebutInput.value || null,
+    heure_fin: teamTrainingHeureFinInput.value || null,
+    lieu_nom: teamTrainingLieuNomInput.value.trim() || null,
+    adresse: teamTrainingAdresseInput.value.trim() || null,
+    notes: teamTrainingNotesInput.value.trim() || null,
+    display_order: parseInt(teamTrainingOrderInput.value, 10) || 0,
+  };
+
+  const { error } = id
+    ? await supabase.from('team_trainings').update(payload).eq('id', id)
+    : await supabase.from('team_trainings').insert(payload);
+
+  saveBtn.disabled = false;
+  if (error) {
+    teamTrainingSaveNote.textContent = 'Erreur : ' + error.message;
+    teamTrainingSaveNote.style.color = '#ff6b6b';
+    teamTrainingSaveNote.hidden = false;
+    return;
+  }
+
+  teamTrainingSaveNote.textContent = 'Enregistré !';
+  teamTrainingSaveNote.style.color = '';
+  teamTrainingSaveNote.hidden = false;
+  await loadTeamTrainings();
+  setTimeout(() => {
+    closeTeamTrainingForm();
+    teamTrainingSaveNote.hidden = true;
+  }, 1200);
+});
+
+// ---------- Espace Joueurs : communiqués ----------
+function populateAnnouncementTeamSelect() {
+  if (!announcementTeamSelect) return;
+  const current = announcementTeamSelect.value;
+  announcementTeamSelect.innerHTML = '<option value="">Toutes les équipes</option>' + allTeams
+    .map((t) => `<option value="${t.id}">${escapeHtml(t.categorie)} — ${escapeHtml(t.genre)} (${escapeHtml(t.nom_equipe)})</option>`)
+    .join('');
+  if (current) announcementTeamSelect.value = current;
+}
+
+async function loadAnnouncements() {
+  const { data, error } = await supabase
+    .from('announcements')
+    .select('*')
+    .eq('site', 'gravity-basketball')
+    .order('created_at', { ascending: false });
+  if (!error) allAnnouncements = data || [];
+  renderAnnouncementsTable();
+}
+
+function renderAnnouncementsTable() {
+  if (!announcementsTbody) return;
+  announcementsTbody.innerHTML =
+    allAnnouncements
+      .map((a) => `
+        <tr>
+          <td>${escapeHtml(a.titre)}</td>
+          <td>${a.team_id ? escapeHtml(teamLabel(a.team_id)) : '<span class="muted">Toutes les équipes</span>'}</td>
+          <td>${new Date(a.created_at).toLocaleDateString('fr-CA')}</td>
+          <td>
+            <div class="program-row-actions">
+              <button type="button" class="btn btn-ghost announcement-edit-btn" data-id="${a.id}">Éditer</button>
+            </div>
+          </td>
+        </tr>
+      `)
+      .join('') || '<tr><td colspan="4" class="empty-note">Aucun communiqué pour l\'instant.</td></tr>';
+
+  announcementsTbody.querySelectorAll('.announcement-edit-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const a = allAnnouncements.find((x) => x.id === btn.dataset.id);
+      if (a) openAnnouncementForm(a);
+    });
+  });
+}
+
+function openAnnouncementForm(a) {
+  populateAnnouncementTeamSelect();
+  announcementForm.hidden = false;
+  announcementIdInput.value = a ? a.id : '';
+  announcementTeamSelect.value = a ? (a.team_id || '') : '';
+  announcementTitreInput.value = a ? a.titre : '';
+  announcementContenuInput.value = a ? a.contenu : '';
+  announcementDeleteBtn.hidden = !a;
+  announcementForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeAnnouncementForm() {
+  announcementForm.hidden = true;
+  announcementForm.reset();
+  announcementIdInput.value = '';
+}
+
+announcementNewBtn?.addEventListener('click', () => openAnnouncementForm(null));
+announcementCancelBtn?.addEventListener('click', () => closeAnnouncementForm());
+
+announcementDeleteBtn?.addEventListener('click', async () => {
+  const id = announcementIdInput.value;
+  if (!id) return;
+  if (!confirm('Supprimer définitivement ce communiqué ?')) return;
+  const { error } = await supabase.from('announcements').delete().eq('id', id);
+  if (error) {
+    alert('Erreur : ' + error.message);
+    return;
+  }
+  closeAnnouncementForm();
+  await loadAnnouncements();
+});
+
+announcementForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = announcementIdInput.value || null;
+  const saveBtn = announcementForm.querySelector('button[type="submit"]');
+  saveBtn.disabled = true;
+
+  const payload = {
+    site: 'gravity-basketball',
+    team_id: announcementTeamSelect.value || null,
+    titre: announcementTitreInput.value.trim(),
+    contenu: announcementContenuInput.value.trim(),
+    created_by: currentAdmin.id,
+  };
+
+  const { error } = id
+    ? await supabase.from('announcements').update(payload).eq('id', id)
+    : await supabase.from('announcements').insert(payload);
+
+  saveBtn.disabled = false;
+  if (error) {
+    announcementSaveNote.textContent = 'Erreur : ' + error.message;
+    announcementSaveNote.style.color = '#ff6b6b';
+    announcementSaveNote.hidden = false;
+    return;
+  }
+
+  announcementSaveNote.textContent = 'Publié !';
+  announcementSaveNote.style.color = '';
+  announcementSaveNote.hidden = false;
+  await loadAnnouncements();
+  setTimeout(() => {
+    closeAnnouncementForm();
+    announcementSaveNote.hidden = true;
   }, 1200);
 });
 

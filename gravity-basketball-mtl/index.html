@@ -116,6 +116,7 @@
       <a href="https://gravity-championnat.netlify.app" target="_blank" rel="noopener">Championnat</a>
       <a href="#videos">Vidéos</a>
       <a href="#inscription">Inscription</a>
+      <a href="#espace-joueurs">Espace Joueurs</a>
       <a href="#avis">Avis</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -630,6 +631,67 @@
         </div>
         <div class="zeffy-payment-cta" id="payment-pending-cta" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border, #2a2536);" hidden>
           <p class="section-lead">On te contacte très bientôt par téléphone, courriel ou Instagram pour finaliser le paiement de ton inscription.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESPACE JOUEURS -->
+  <section id="espace-joueurs" class="section">
+    <div class="container">
+      <p class="section-kicker">Espace Joueurs</p>
+      <h2 class="section-title">Espace Joueurs</h2>
+      <p class="section-lead">Ton profil joueur : documents, statistiques, calendrier des matchs (saison et playoffs), entraînements et communiqués de l'équipe. L'accès est créé par Gravity Basketball une fois ton inscription traitée — tu reçois un courriel et un mot de passe temporaire.</p>
+
+      <!-- Connexion -->
+      <form id="ej-login-form" class="form-card" style="max-width:420px; margin:0 auto;">
+        <div class="field">
+          <label for="ej-login-email">Courriel</label>
+          <input type="email" id="ej-login-email" required autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="ej-login-password">Mot de passe</label>
+          <input type="password" id="ej-login-password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+        <p class="ej-error" id="ej-login-error" hidden></p>
+      </form>
+
+      <!-- Profil joueur (affiché après connexion) -->
+      <div id="ej-profile" hidden>
+        <div class="ej-profile-header">
+          <img id="ej-player-photo" class="ej-player-photo" src="" alt="" hidden>
+          <div>
+            <h3 id="ej-player-name" class="ej-player-name"></h3>
+            <p id="ej-player-meta" class="ej-player-meta"></p>
+          </div>
+          <button type="button" id="ej-logout-btn" class="btn btn-ghost ej-logout-btn">Déconnexion</button>
+        </div>
+
+        <div class="ej-tabs" id="ej-tabs">
+          <button type="button" class="ej-tab-btn active" data-tab="communiques">Communiqués</button>
+          <button type="button" class="ej-tab-btn" data-tab="matchs">Matchs</button>
+          <button type="button" class="ej-tab-btn" data-tab="entrainements">Entraînements</button>
+          <button type="button" class="ej-tab-btn" data-tab="stats">Statistiques</button>
+          <button type="button" class="ej-tab-btn" data-tab="documents">Documents</button>
+          <button type="button" class="ej-tab-btn" data-tab="compte">Mon compte</button>
+        </div>
+
+        <div class="ej-tab-panel" data-tab="communiques" id="ej-communiques"></div>
+        <div class="ej-tab-panel" data-tab="matchs" id="ej-matchs" hidden></div>
+        <div class="ej-tab-panel" data-tab="entrainements" id="ej-entrainements" hidden></div>
+        <div class="ej-tab-panel" data-tab="stats" id="ej-stats" hidden></div>
+        <div class="ej-tab-panel" data-tab="documents" id="ej-documents" hidden></div>
+        <div class="ej-tab-panel" data-tab="compte" id="ej-compte" hidden>
+          <form id="ej-password-form" class="form-card" style="max-width:420px;">
+            <p class="form-section-title" style="margin-top:0;">Changer mon mot de passe</p>
+            <div class="field">
+              <label for="ej-new-password">Nouveau mot de passe</label>
+              <input type="password" id="ej-new-password" minlength="6" required autocomplete="new-password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Mettre à jour</button>
+            <p class="ej-error" id="ej-password-note" hidden></p>
+          </form>
         </div>
       </div>
     </div>
