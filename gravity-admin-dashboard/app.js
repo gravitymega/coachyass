@@ -1781,41 +1781,58 @@ playerDocumentCancelBtn?.addEventListener('click', () => {
   playerDocumentForm.reset();
 });
 
+function playerDocumentDefaultTitre(file) {
+  return file.name.replace(/\.[^.]+$/, '');
+}
+
 playerDocumentForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const playerId = playerDocumentPlayerSelect.value;
-  const file = playerDocumentFileInput.files[0];
-  if (!playerId || !file) return;
+  const files = Array.from(playerDocumentFileInput.files || []);
+  if (!playerId || !files.length) return;
   const saveBtn = playerDocumentForm.querySelector('button[type="submit"]');
   saveBtn.disabled = true;
 
-  const path = `${playerId}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
-  const { error: uploadError } = await supabase.storage.from('player-documents').upload(path, file, { upsert: false });
-  if (uploadError) {
-    playerDocumentSaveNote.textContent = 'Erreur upload : ' + uploadError.message;
-    playerDocumentSaveNote.style.color = '#ff6b6b';
-    playerDocumentSaveNote.hidden = false;
-    saveBtn.disabled = false;
-    return;
-  }
+  const titreInput = playerDocumentTitreInput.value.trim();
+  const categorie = playerDocumentCategorieSelect.value || null;
+  const titres = [];
+  let uploadError = null;
 
-  const { error } = await supabase.from('player_documents').insert({
-    site: 'gravity-basketball',
-    player_id: playerId,
-    titre: playerDocumentTitreInput.value.trim(),
-    categorie: playerDocumentCategorieSelect.value || null,
-    file_path: path,
-  });
+  for (const file of files) {
+    const path = `${playerId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+    const { error: uploadErr } = await supabase.storage.from('player-documents').upload(path, file, { upsert: false });
+    if (uploadErr) {
+      uploadError = uploadErr;
+      break;
+    }
+    const titre = files.length > 1
+      ? (titreInput ? `${titreInput} — ${playerDocumentDefaultTitre(file)}` : playerDocumentDefaultTitre(file))
+      : (titreInput || playerDocumentDefaultTitre(file));
+    const { error } = await supabase.from('player_documents').insert({
+      site: 'gravity-basketball',
+      player_id: playerId,
+      titre,
+      categorie,
+      file_path: path,
+    });
+    if (error) {
+      uploadError = error;
+      break;
+    }
+    titres.push(titre);
+  }
 
   saveBtn.disabled = false;
-  if (error) {
-    playerDocumentSaveNote.textContent = 'Erreur : ' + error.message;
+  if (uploadError) {
+    playerDocumentSaveNote.textContent = 'Erreur : ' + uploadError.message
+      + (titres.length ? ` (${titres.length} document(s) déjà enregistré(s) avant l'erreur)` : '');
     playerDocumentSaveNote.style.color = '#ff6b6b';
     playerDocumentSaveNote.hidden = false;
+    if (titres.length) await loadPlayerDocuments();
     return;
   }
 
-  playerDocumentSaveNote.textContent = 'Enregistré !';
+  playerDocumentSaveNote.textContent = titres.length > 1 ? `${titres.length} documents enregistrés !` : 'Enregistré !';
   playerDocumentSaveNote.style.color = '';
   playerDocumentSaveNote.hidden = false;
   notifyEspaceJoueurs({
@@ -1823,7 +1840,7 @@ playerDocumentForm?.addEventListener('submit', async (e) => {
     action: 'created',
     site: 'gravity-basketball',
     player_id: playerId,
-    details: { titre: playerDocumentTitreInput.value.trim() },
+    details: { titre: titres.join(', '), count: titres.length },
   });
   await loadPlayerDocuments();
   setTimeout(() => {

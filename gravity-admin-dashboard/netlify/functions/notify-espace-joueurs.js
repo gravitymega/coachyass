@@ -47,9 +47,16 @@ function ctaButton() {
 // toujours échappés avant injection, jamais interprétés comme sujet/corps.
 const TEMPLATES = {
   document(d, action) {
+    const multiple = d.count > 1;
+    const subject = multiple
+      ? `${d.count} nouveaux documents dans ton Espace Joueurs`
+      : 'Nouveau document dans ton Espace Joueurs';
+    const intro = multiple
+      ? `${d.count} nouveaux documents${action === 'updated' ? ' ont été mis à jour' : ' viennent d\'être ajoutés'} dans ton Espace Joueurs`
+      : `Un document${action === 'updated' ? ' a été mis à jour' : ' vient d\'être ajouté'} dans ton Espace Joueurs${d.titre ? ` : <strong>${escapeHtml(d.titre)}</strong>` : ''}`;
     return {
-      subject: 'Nouveau document dans ton Espace Joueurs',
-      html: `<p>Bonjour,</p><p>Un document${action === 'updated' ? ' a été mis à jour' : ' vient d\'être ajouté'} dans ton Espace Joueurs${d.titre ? ` : <strong>${escapeHtml(d.titre)}</strong>` : ''}.</p>${ctaButton()}`,
+      subject,
+      html: `<p>Bonjour,</p><p>${intro}.</p>${ctaButton()}`,
     };
   },
   stat() {
@@ -163,6 +170,7 @@ exports.handler = async (event) => {
   ['titre', 'adversaire', 'date_match', 'heure_match', 'lieu_nom', 'date_entrainement', 'heure_debut', 'heure_fin'].forEach((k) => {
     if (details[k] != null) safeDetails[k] = String(details[k]).slice(0, 200);
   });
+  if (Number.isInteger(details.count) && details.count > 0) safeDetails.count = details.count;
 
   try {
     const recipients = await findRecipients(token, {

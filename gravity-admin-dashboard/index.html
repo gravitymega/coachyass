@@ -958,8 +958,9 @@ Gravity Basketball</textarea>
           <select id="player-document-player" required></select>
         </div>
         <div class="field">
-          <label for="player-document-titre">Titre</label>
-          <input type="text" id="player-document-titre" required placeholder="Ex. Décharge de responsabilité signée">
+          <label for="player-document-titre">Titre (optionnel si plusieurs fichiers)</label>
+          <input type="text" id="player-document-titre" placeholder="Ex. Décharge de responsabilité signée">
+          <p class="muted">Si tu téléverses plusieurs fichiers à la fois, laisse vide pour utiliser le nom de chaque fichier comme titre.</p>
         </div>
         <div class="field">
           <label for="player-document-categorie">Catégorie (optionnel)</label>
@@ -971,8 +972,8 @@ Gravity Basketball</textarea>
           </select>
         </div>
         <div class="field">
-          <label for="player-document-file">Fichier (PDF, image...)</label>
-          <input type="file" id="player-document-file" required>
+          <label for="player-document-file">Fichiers (PDF, image... — plusieurs à la fois possible)</label>
+          <input type="file" id="player-document-file" multiple required>
         </div>
         <div class="comm-actions">
           <button type="submit" class="btn btn-primary">Téléverser</button>

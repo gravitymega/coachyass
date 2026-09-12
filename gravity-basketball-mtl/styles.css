@@ -34,6 +34,12 @@
 
 * { box-sizing: border-box; }
 
+/* Certaines classes (ex. .form-card, .ej-player-photo-placeholder) fixent
+   leur propre `display` ; sans ce garde-fou, l'attribut `hidden` posé en JS
+   ne suffit pas à les masquer (le style d'auteur l'emporte sur la feuille
+   par défaut du navigateur à spécificité égale). */
+[hidden] { display: none !important; }
+
 html { scroll-behavior: smooth; }
 
 body {
