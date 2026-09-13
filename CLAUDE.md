@@ -88,3 +88,18 @@ Avant cet ajout, les inscriptions étaient éparpillées : Coaching et Pickup da
 **Correctif définitif (en cours, nécessite l'utilisateur)** : vérifier un sous-domaine d'envoi dans Resend (ex. `mail.osmm-mtl.site`), ajouter les enregistrements DNS générés par Resend chez le registrar du domaine (pas accessible par Claude), puis configurer `MAILER_FROM_EMAIL` sur `gravity-mailer` une fois le domaine vérifié.
 
 **Correctif immédiat déployé (13 septembre 2026)** : ajout d'un canal FormSubmit (même pattern que Coaching/Pickup/OSMM) dans `gravity-basketball-mtl/script.js`, vers `Gravitybasketball@gmail.com`, pour Ligue 3v3 / Ligue Maison / U15 Masculin uniquement — **pas pour Gravity Prep**, qui garde sa notification dédiée existante (`basketball-mtl-prep-admin`) pour éviter un doublon une fois Resend réparé.
+
+## Suspension de sécurité Resend (13 septembre 2026, état actuel)
+
+En poursuivant la vérification du domaine `mail.osmm-mtl.site` sur Resend (PR #41), une anomalie a été détectée : les enregistrements SPF affichés par Resend pour ce domaine — **et pour un domaine de test flambant neuf, sans lien avec ce projet** — pointaient vers `forge.rmta.net`, l'infrastructure d'un service tiers appelé **« SendBeam »** (`sendbeam.io`), au lieu de l'infrastructure Resend habituelle (`amazonses.com`, confirmé par la documentation officielle Resend). SendBeam est un service réel, pas un logiciel malveillant connu, mais il n'a **aucun lien légitime avec Resend** — sa présence dans les enregistrements DNS suggérés par Resend est inexpliquée (hypothèses non tranchées : extension de navigateur altérant l'affichage de la page Resend, compte Resend compromis, ou autre anomalie côté compte).
+
+**Mesure de précaution appliquée (PR #42, mergée)** : `RESEND_SUSPENDED = true` en tête de `gravity-mailer/netlify/functions/send-confirmation.js` — court-circuite toute requête avant l'appel à `api.resend.com`, retourne un 503 explicite. **Aucun appel à l'API Resend n'est effectué tant que ce flag est actif.** Ne repasser à `false` qu'une fois l'anomalie éclaircie et confirmée réglée par l'utilisateur.
+
+**Conséquence couverte (PR #43, mergée)** : Gravity Prep a maintenant lui aussi un filet FormSubmit (`Gravitybasketball@gmail.com`), en plus de sa notification Resend existante (actuellement muette à cause de la suspension) — il n'y a donc plus de programme sans notification admin pendant la suspension. Doublon assumé une fois Resend réactivé.
+
+**Reste à faire côté utilisateur avant de réactiver Resend** :
+1. Vérifier la sécurité du compte Resend (mot de passe, connexions récentes, clés API) — envisager de régénérer `RESEND_API_KEY`.
+2. Revérifier la page de vérification de domaine Resend depuis un appareil/navigateur de confiance (sans extensions), idéalement en navigation privée, pour confirmer si les valeurs `forge.rmta.net` réapparaissent.
+3. Vérifier dans la zone DNS Netlify (`osmm-mtl.site`) qu'aucun enregistrement pointant vers `rmta.net` n'a été ajouté par erreur — supprimer si c'est le cas.
+4. Contacter le support Resend si l'anomalie persiste.
+5. Une fois confirmé sain : repasser `RESEND_SUSPENDED` à `false` dans `send-confirmation.js` et redéployer.
