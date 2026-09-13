@@ -11,13 +11,15 @@
 const SUPABASE_URL = 'https://aevoulzotvmnrnclfuek.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_NAj99iQim_odAYNwR-qucg_2KKHYf7Z';
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
+// PASSÉ DE RESEND À BREVO (13 septembre 2026) — voir CLAUDE.md, section
+// « Suspension de sécurité Resend ».
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
 
-// Adresse d'envoi commune — extraite de MAILER_FROM_EMAIL si défini (accepte
-// "Nom <adresse>" ou juste "adresse"), sinon repli sur le domaine de test
-// Resend. Le nom affiché, lui, varie par site (voir FROM_NAMES ci-dessous).
+// Adresse d'envoi commune — extraite de MAILER_FROM_EMAIL (accepte "Nom
+// <adresse>" ou juste "adresse"). Doit être un expéditeur vérifié dans Brevo.
+// Le nom affiché, lui, varie par site (voir FROM_NAMES ci-dessous).
 const FROM_ADDRESS_MATCH = /<([^>]+)>/.exec(process.env.MAILER_FROM_EMAIL || '');
-const FROM_ADDRESS = FROM_ADDRESS_MATCH ? FROM_ADDRESS_MATCH[1] : (process.env.MAILER_FROM_EMAIL || 'onboarding@resend.dev');
+const FROM_ADDRESS = FROM_ADDRESS_MATCH ? FROM_ADDRESS_MATCH[1] : (process.env.MAILER_FROM_EMAIL || '');
 
 // Nom d'expéditeur affiché aux destinataires — différent par site (même
 // slugs Supabase que SITE_URLS ci-dessous).
@@ -30,11 +32,11 @@ const FROM_NAMES = {
 };
 
 function buildFrom(site) {
-  return `${FROM_NAMES[site] || 'Gravity Basketball'} <${FROM_ADDRESS}>`;
+  return { name: FROM_NAMES[site] || 'Gravity Basketball', email: FROM_ADDRESS };
 }
 
 const MAX_RECIPIENTS = 1000;
-const BATCH_SIZE = 45; // marge sous la limite Resend (50 destinataires/appel, to+bcc compris)
+const BATCH_SIZE = 45; // marge sous la limite Brevo (50 destinataires/appel, to+bcc compris)
 
 // Un lien de site par slug Supabase (voir SITE_LABELS dans app.js) — pointe
 // vers le bon site plutôt qu'un lien générique. 'all' / inconnu retombe sur
@@ -101,8 +103,11 @@ exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Méthode non permise' }) };
   }
-  if (!RESEND_API_KEY) {
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'RESEND_API_KEY manquant dans les variables Netlify' }) };
+  if (!BREVO_API_KEY) {
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'BREVO_API_KEY manquant dans les variables Netlify' }) };
+  }
+  if (!FROM_ADDRESS) {
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'MAILER_FROM_EMAIL manquant (doit être un expéditeur vérifié dans Brevo)' }) };
   }
 
   const authHeader = event.headers.authorization || event.headers.Authorization || '';
@@ -143,18 +148,25 @@ exports.handler = async (event) => {
 
   try {
     for (const batch of batches) {
-      const res = await fetch('https://api.resend.com/emails', {
+      const res = await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${RESEND_API_KEY}`,
+          'api-key': BREVO_API_KEY,
           'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
-        body: JSON.stringify({ from, to: [from], bcc: batch, subject, html }),
+        body: JSON.stringify({
+          sender: from,
+          to: [{ email: FROM_ADDRESS }],
+          bcc: batch.map((email) => ({ email })),
+          subject,
+          htmlContent: html,
+        }),
       });
       if (!res.ok) {
         const detail = await res.text();
-        console.error('Erreur Resend :', detail);
-        return { statusCode: 502, headers, body: JSON.stringify({ error: 'Envoi refusé par Resend', detail }) };
+        console.error('Erreur Brevo :', detail);
+        return { statusCode: 502, headers, body: JSON.stringify({ error: 'Envoi refusé par Brevo', detail }) };
       }
     }
     return { statusCode: 200, headers, body: JSON.stringify({ ok: true, sent: emails.length, batches: batches.length }) };
