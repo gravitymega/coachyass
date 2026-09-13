@@ -18,8 +18,8 @@ const DEFAULT_INTERAC_EMAIL = 'mqtad9@hotmail.com';
 
 // Canal de secours fiable (FormSubmit, comme Coaching/Pickup/OSMM) — gravity-mailer
 // (Resend) échoue silencieusement tant que son domaine d'envoi n'est pas vérifié.
-// Uniquement pour les programmes autres que Gravity Prep, qui a déjà sa propre
-// notification admin dédiée ci-dessous (pour éviter un doublon une fois Resend réparé).
+// Gravity Prep a aussi son propre filet FormSubmit (voir plus bas), en plus de
+// sa notification admin dédiée Resend — doublon assumé une fois Resend réparé.
 const FORMSUBMIT_EMAIL = 'Gravitybasketball@gmail.com';
 
 // Liens de paiement Zeffy par programme (comme pour le Championnat et Basket Libre).
@@ -261,6 +261,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 reference: payload.details.reference,
                 remarque: payload.details.remarque,
               },
+            }),
+          }).catch(() => {});
+          // Filet FormSubmit — indépendant de Resend (actuellement suspendu),
+          // même modèle que le canal de secours des autres programmes ci-dessous.
+          fetch(`https://formsubmit.co/ajax/${GRAVITY_PREP_EMAIL}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+              _subject: `Nouvelle inscription — ${programme}`,
+              _template: 'table',
+              _captcha: 'false',
+              'Programme': programme,
+              'Nom': payload.contact_name,
+              'Téléphone': payload.contact_phone,
+              'Email': payload.contact_email,
+              'Catégorie d\'âge': payload.details.age_categorie,
+              'Type d\'inscription': payload.details.type_inscription,
+              'Adresse': payload.details.adresse || '—',
+              'Niveau de jeu': payload.details.niveau || '—',
+              'Poste de jeu': payload.details.poste_de_jeu || '—',
+              'Taille de vêtement': payload.details.taille_vetement || '—',
+              'Grandeur': payload.details.grandeur || '—',
+              'Poids': payload.details.poids || '—',
+              'Occupation': payload.details.occupation || '—',
+              'Objectif de la saison': payload.details.objectif_saison || '—',
+              'Réseaux sociaux': payload.details.reseaux_sociaux || '—',
+              'Disponibilités': payload.details.disponibilites || '—',
+              'Mode de paiement': payload.details.mode_paiement,
+              'Référence': payload.details.reference || '—',
+              'Remarque': payload.details.remarque || '—',
             }),
           }).catch(() => {});
         } else {
