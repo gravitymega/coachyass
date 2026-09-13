@@ -86,10 +86,15 @@ const SITE_URLS = {
   'espace-joueurs-access': 'https://gravity.osmm-mtl.site',
 };
 
-// Signature ajoutée en bas de chaque courriel — même logo pour tous les
-// sites (hébergé sur gravity.osmm-mtl.site, accessible publiquement), avec
-// un lien vers le site concerné.
-function buildSignature(siteUrl) {
+// Signature ajoutée en bas de chaque courriel — logo et nom d'équipe suivent
+// le même découpage Gravity / OSMM que l'expéditeur (voir buildFrom), avec un
+// lien vers le site concerné.
+function buildSignature(siteUrl, type) {
+  const isOsmm = OSMM_TYPES.has(type);
+  const logoUrl = isOsmm
+    ? 'https://osmm-mtl.site/logo.png'
+    : 'https://gravity.osmm-mtl.site/assets/logo.png';
+  const teamName = isOsmm ? "L'équipe OSMM" : "L'équipe Gravity";
   const siteLink = siteUrl
     ? `<br><a href="${siteUrl}" style="color: #e8672e; text-decoration: none;">${siteUrl.replace(/^https?:\/\//, '')}</a>`
     : '';
@@ -97,10 +102,10 @@ function buildSignature(siteUrl) {
     <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #e5e5e5;">
       <tr>
         <td style="vertical-align: middle; padding-right: 12px;">
-          <img src="https://gravity.osmm-mtl.site/assets/logo.png" alt="Gravity" width="44" height="44" style="display: block; border-radius: 8px;">
+          <img src="${logoUrl}" alt="${isOsmm ? 'OSMM' : 'Gravity'}" width="44" height="44" style="display: block; border-radius: 8px;">
         </td>
         <td style="vertical-align: middle; font-family: system-ui, -apple-system, Arial, sans-serif; font-size: 14px; color: #333;">
-          <strong>L'équipe Gravity</strong>${siteLink}
+          <strong>${teamName}</strong>${siteLink}
         </td>
       </tr>
     </table>
@@ -303,7 +308,7 @@ exports.handler = async (event) => {
         sender: buildFrom(type),
         to: [{ email: to }],
         subject,
-        htmlContent: html + buildSignature(SITE_URLS[type]),
+        htmlContent: html + buildSignature(SITE_URLS[type], type),
         ...(replyTo ? { replyTo: { email: replyTo } } : {}),
       }),
     });
