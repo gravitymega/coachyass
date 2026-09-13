@@ -16,6 +16,12 @@ const MAILER_KEY = '11c58c7548b0ed0666742f1e44a9cec1777bddee1c9fcbe5';
 const GRAVITY_PREP_EMAIL = 'Gravitybasketball@gmail.com';
 const DEFAULT_INTERAC_EMAIL = 'mqtad9@hotmail.com';
 
+// Canal de secours fiable (FormSubmit, comme Coaching/Pickup/OSMM) — gravity-mailer
+// (Resend) échoue silencieusement tant que son domaine d'envoi n'est pas vérifié.
+// Uniquement pour les programmes autres que Gravity Prep, qui a déjà sa propre
+// notification admin dédiée ci-dessous (pour éviter un doublon une fois Resend réparé).
+const FORMSUBMIT_EMAIL = 'Gravitybasketball@gmail.com';
+
 // Liens de paiement Zeffy par programme (comme pour le Championnat et Basket Libre).
 // Note : "Ligue 3v3" (13-14 ans) et le Championnat partagent le même événement
 // Zeffy — confirmé par Yassine que le tarif est bien le même pour les deux
@@ -255,6 +261,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 reference: payload.details.reference,
                 remarque: payload.details.remarque,
               },
+            }),
+          }).catch(() => {});
+        } else {
+          // Canal de secours FormSubmit pour tous les autres programmes (Ligue 3v3,
+          // Ligue Maison, U15 Masculin) — Gravity Prep a déjà sa notification dédiée
+          // ci-dessus, donc pas besoin de la dupliquer ici.
+          fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+              _subject: `Nouvelle inscription — ${programme}`,
+              _template: 'table',
+              _captcha: 'false',
+              'Programme': programme,
+              'Nom': payload.contact_name,
+              'Téléphone': payload.contact_phone,
+              'Email': payload.contact_email,
+              'Équipe': payload.details.nom_equipe || '—',
+              'Catégorie d\'âge': payload.details.age_categorie,
+              'Type d\'inscription': payload.details.type_inscription,
+              'Mode de paiement': payload.details.mode_paiement,
+              'Remarque': payload.details.remarque || '—',
+              'Référence': payload.details.reference || '—',
             }),
           }).catch(() => {});
         }
