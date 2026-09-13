@@ -23,13 +23,22 @@ const MAILER_SHARED_KEY = process.env.MAILER_SHARED_KEY;
 const FROM_ADDRESS_MATCH = /<([^>]+)>/.exec(process.env.MAILER_FROM_EMAIL || '');
 const FROM_ADDRESS = FROM_ADDRESS_MATCH ? FROM_ADDRESS_MATCH[1] : (process.env.MAILER_FROM_EMAIL || '');
 
+// OSMM est un organisme distinct de Gravity Basketball (même infra de courriel,
+// identité d'expéditeur différente) — adresse dédiée optionnelle via
+// MAILER_FROM_EMAIL_OSMM, sinon on retombe sur l'adresse Gravity par défaut.
+const FROM_ADDRESS_OSMM_MATCH = /<([^>]+)>/.exec(process.env.MAILER_FROM_EMAIL_OSMM || '');
+const FROM_ADDRESS_OSMM = FROM_ADDRESS_OSMM_MATCH
+  ? FROM_ADDRESS_OSMM_MATCH[1]
+  : (process.env.MAILER_FROM_EMAIL_OSMM || FROM_ADDRESS);
+const OSMM_TYPES = new Set(['osmm-membre', 'osmm-contact']);
+
 // Nom d'expéditeur affiché aux destinataires — différent par site.
 const FROM_NAMES = {
   coaching: 'Coach Yass',
   pickup: 'Gravity Pickup',
   'basketball-mtl': 'Gravity Basketball',
-  'osmm-membre': 'Gravity Basketball',
-  'osmm-contact': 'Gravity Basketball',
+  'osmm-membre': 'OSMM',
+  'osmm-contact': 'OSMM',
   'basketball-mtl-prep-admin': 'Gravity Basketball',
   'espace-joueurs-access': 'Gravity Basketball',
 };
@@ -37,7 +46,8 @@ const FROM_NAMES = {
 // Brevo attend le champ `sender` sous forme d'objet {name, email}, contrairement
 // à Resend qui prenait une chaîne "Nom <adresse>".
 function buildFrom(type) {
-  return { name: FROM_NAMES[type] || 'Gravity Basketball', email: FROM_ADDRESS };
+  const email = OSMM_TYPES.has(type) ? FROM_ADDRESS_OSMM : FROM_ADDRESS;
+  return { name: FROM_NAMES[type] || 'Gravity Basketball', email };
 }
 
 // Notifications internes : le destinataire n'est jamais fourni par le client
