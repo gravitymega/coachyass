@@ -7,6 +7,11 @@
 // Chaque site continue par ailleurs d'écrire dans son propre système
 // existant (bases Notion dédiées pour Coaching/Pickup, Supabase pour
 // Gravity Basketball) — cet appel est additif, jamais bloquant.
+//
+// NOTION_TOKEN et NOTION_DB_INSCRIPTION_GRAV sont ajoutées via l'API Netlify
+// (pas dans netlify.toml) : elles ne prennent effet qu'au prochain déploiement
+// du site, jamais sur une fonction déjà chaude — un changement de ces
+// variables doit toujours être suivi d'un redéploiement de ce site.
 
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const NOTION_DB_INSCRIPTION_GRAV = process.env.NOTION_DB_INSCRIPTION_GRAV;
