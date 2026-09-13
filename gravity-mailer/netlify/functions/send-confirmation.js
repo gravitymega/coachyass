@@ -13,6 +13,9 @@ const MAILER_SHARED_KEY = process.env.MAILER_SHARED_KEY;
 // Adresse d'envoi commune — extraite de MAILER_FROM_EMAIL si défini (accepte
 // "Nom <adresse>" ou juste "adresse"), sinon repli sur le domaine de test
 // Resend. Le nom affiché, lui, varie par site (voir FROM_NAMES ci-dessous).
+// MAILER_FROM_EMAIL configurée le 13 septembre 2026 sur mail.osmm-mtl.site,
+// une fois le domaine vérifié dans Resend (commit forçant le redéploiement
+// nécessaire pour charger cette variable — voir CLAUDE.md).
 const FROM_ADDRESS_MATCH = /<([^>]+)>/.exec(process.env.MAILER_FROM_EMAIL || '');
 const FROM_ADDRESS = FROM_ADDRESS_MATCH ? FROM_ADDRESS_MATCH[1] : (process.env.MAILER_FROM_EMAIL || 'onboarding@resend.dev');
 
