@@ -10,6 +10,15 @@
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const MAILER_SHARED_KEY = process.env.MAILER_SHARED_KEY;
 
+// SUSPENSION TEMPORAIRE (13 sept. 2026) — le compte Resend utilisé ici affiche,
+// pour mail.osmm-mtl.site ET pour tout nouveau domaine testé, des enregistrements
+// SPF pointant vers forge.rmta.net ("SendBeam", un tiers sans lien connu avec
+// Resend) au lieu de l'infra Resend habituelle (amazonses.com / resend-dns.com).
+// Tant que cette anomalie n'est pas éclaircie côté sécurité (compte Resend et/ou
+// navigateur compromis), on n'effectue plus aucun appel à l'API Resend. Repasser
+// à `false` seulement une fois le problème résolu et confirmé par Yassine.
+const RESEND_SUSPENDED = true;
+
 // Adresse d'envoi commune — extraite de MAILER_FROM_EMAIL si défini (accepte
 // "Nom <adresse>" ou juste "adresse"), sinon repli sur le domaine de test
 // Resend. Le nom affiché, lui, varie par site (voir FROM_NAMES ci-dessous).
@@ -227,6 +236,16 @@ exports.handler = async (event) => {
   if (!MAILER_SHARED_KEY || event.headers['x-mailer-key'] !== MAILER_SHARED_KEY) {
     return { statusCode: 401, headers, body: JSON.stringify({ error: 'Non autorisé' }) };
   }
+
+  if (RESEND_SUSPENDED) {
+    console.warn('Gravity Mailer — envoi suspendu (investigation sécurité Resend/forge.rmta.net en cours) : requête ignorée, aucun appel à l\'API Resend effectué.');
+    return {
+      statusCode: 503,
+      headers,
+      body: JSON.stringify({ error: 'Envoi de courriels temporairement suspendu (maintenance sécurité) — réessayez plus tard.' }),
+    };
+  }
+
   if (!RESEND_API_KEY) {
     return { statusCode: 500, headers, body: JSON.stringify({ error: 'RESEND_API_KEY manquant dans les variables Netlify' }) };
   }
