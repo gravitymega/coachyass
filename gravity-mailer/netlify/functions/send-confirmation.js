@@ -6,27 +6,22 @@
 // contenu libre (sujet/corps arbitraire), pour empêcher que cette fonction
 // serve de relais de courriel/spam ouvert. Seules quelques valeurs
 // (nom, forfait, date...) sont injectées dans le gabarit.
+//
+// PASSÉ DE RESEND À BREVO (13 septembre 2026) — Resend a été abandonné après
+// la détection d'enregistrements SPF anormaux jamais éclaircie (voir CLAUDE.md,
+// section « Suspension de sécurité Resend »). Brevo (ex-Sendinblue) utilisé ici
+// à la place, via son API transactionnelle https://api.brevo.com/v3/smtp/email.
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
 const MAILER_SHARED_KEY = process.env.MAILER_SHARED_KEY;
 
-// SUSPENSION TEMPORAIRE (13 sept. 2026) — le compte Resend utilisé ici affiche,
-// pour mail.osmm-mtl.site ET pour tout nouveau domaine testé, des enregistrements
-// SPF pointant vers forge.rmta.net ("SendBeam", un tiers sans lien connu avec
-// Resend) au lieu de l'infra Resend habituelle (amazonses.com / resend-dns.com).
-// Tant que cette anomalie n'est pas éclaircie côté sécurité (compte Resend et/ou
-// navigateur compromis), on n'effectue plus aucun appel à l'API Resend. Repasser
-// à `false` seulement une fois le problème résolu et confirmé par Yassine.
-const RESEND_SUSPENDED = true;
-
-// Adresse d'envoi commune — extraite de MAILER_FROM_EMAIL si défini (accepte
-// "Nom <adresse>" ou juste "adresse"), sinon repli sur le domaine de test
-// Resend. Le nom affiché, lui, varie par site (voir FROM_NAMES ci-dessous).
-// MAILER_FROM_EMAIL configurée le 13 septembre 2026 sur mail.osmm-mtl.site,
-// une fois le domaine vérifié dans Resend (commit forçant le redéploiement
-// nécessaire pour charger cette variable — voir CLAUDE.md).
+// Expéditeur — extrait de MAILER_FROM_EMAIL (accepte "Nom <adresse>" ou juste
+// "adresse"). Doit être une adresse vérifiée dans Brevo (expéditeur simple
+// confirmé par courriel, ou domaine complet vérifié par DNS) : contrairement à
+// Resend, Brevo n'offre aucun domaine de test permettant d'envoyer sans
+// vérification préalable — sans ça, l'API refuse la requête.
 const FROM_ADDRESS_MATCH = /<([^>]+)>/.exec(process.env.MAILER_FROM_EMAIL || '');
-const FROM_ADDRESS = FROM_ADDRESS_MATCH ? FROM_ADDRESS_MATCH[1] : (process.env.MAILER_FROM_EMAIL || 'onboarding@resend.dev');
+const FROM_ADDRESS = FROM_ADDRESS_MATCH ? FROM_ADDRESS_MATCH[1] : (process.env.MAILER_FROM_EMAIL || '');
 
 // Nom d'expéditeur affiché aux destinataires — différent par site.
 const FROM_NAMES = {
@@ -39,8 +34,10 @@ const FROM_NAMES = {
   'espace-joueurs-access': 'Gravity Basketball',
 };
 
+// Brevo attend le champ `sender` sous forme d'objet {name, email}, contrairement
+// à Resend qui prenait une chaîne "Nom <adresse>".
 function buildFrom(type) {
-  return `${FROM_NAMES[type] || 'Gravity Basketball'} <${FROM_ADDRESS}>`;
+  return { name: FROM_NAMES[type] || 'Gravity Basketball', email: FROM_ADDRESS };
 }
 
 // Notifications internes : le destinataire n'est jamais fourni par le client
@@ -236,18 +233,11 @@ exports.handler = async (event) => {
   if (!MAILER_SHARED_KEY || event.headers['x-mailer-key'] !== MAILER_SHARED_KEY) {
     return { statusCode: 401, headers, body: JSON.stringify({ error: 'Non autorisé' }) };
   }
-
-  if (RESEND_SUSPENDED) {
-    console.warn('Gravity Mailer — envoi suspendu (investigation sécurité Resend/forge.rmta.net en cours) : requête ignorée, aucun appel à l\'API Resend effectué.');
-    return {
-      statusCode: 503,
-      headers,
-      body: JSON.stringify({ error: 'Envoi de courriels temporairement suspendu (maintenance sécurité) — réessayez plus tard.' }),
-    };
+  if (!BREVO_API_KEY) {
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'BREVO_API_KEY manquant dans les variables Netlify' }) };
   }
-
-  if (!RESEND_API_KEY) {
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'RESEND_API_KEY manquant dans les variables Netlify' }) };
+  if (!FROM_ADDRESS) {
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'MAILER_FROM_EMAIL manquant (doit être un expéditeur vérifié dans Brevo)' }) };
   }
 
   let d;
@@ -292,24 +282,25 @@ exports.handler = async (event) => {
   const { subject, html } = buildTemplate(fields);
 
   try {
-    const res = await fetch('https://api.resend.com/emails', {
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${RESEND_API_KEY}`,
+        'api-key': BREVO_API_KEY,
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify({
-        from: buildFrom(type),
-        to: [to],
+        sender: buildFrom(type),
+        to: [{ email: to }],
         subject,
-        html: html + buildSignature(SITE_URLS[type]),
-        ...(replyTo ? { reply_to: replyTo } : {}),
+        htmlContent: html + buildSignature(SITE_URLS[type]),
+        ...(replyTo ? { replyTo: { email: replyTo } } : {}),
       }),
     });
 
     if (!res.ok) {
       const detail = await res.text();
-      console.error('Erreur Resend :', detail);
+      console.error('Erreur Brevo :', detail);
       return { statusCode: 502, headers, body: JSON.stringify({ error: 'Envoi du courriel refusé' }) };
     }
 

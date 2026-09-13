@@ -97,9 +97,30 @@ En poursuivant la vérification du domaine `mail.osmm-mtl.site` sur Resend (PR #
 
 **Conséquence couverte (PR #43, mergée)** : Gravity Prep a maintenant lui aussi un filet FormSubmit (`Gravitybasketball@gmail.com`), en plus de sa notification Resend existante (actuellement muette à cause de la suspension) — il n'y a donc plus de programme sans notification admin pendant la suspension. Doublon assumé une fois Resend réactivé.
 
-**Reste à faire côté utilisateur avant de réactiver Resend** :
+**Reste à faire côté utilisateur si on veut un jour élucider l'anomalie Resend** (non bloquant, Resend est abandonné — voir section suivante) :
 1. Vérifier la sécurité du compte Resend (mot de passe, connexions récentes, clés API) — envisager de régénérer `RESEND_API_KEY`.
 2. Revérifier la page de vérification de domaine Resend depuis un appareil/navigateur de confiance (sans extensions), idéalement en navigation privée, pour confirmer si les valeurs `forge.rmta.net` réapparaissent.
 3. Vérifier dans la zone DNS Netlify (`osmm-mtl.site`) qu'aucun enregistrement pointant vers `rmta.net` n'a été ajouté par erreur — supprimer si c'est le cas.
 4. Contacter le support Resend si l'anomalie persiste.
-5. Une fois confirmé sain : repasser `RESEND_SUSPENDED` à `false` dans `send-confirmation.js` et redéployer.
+
+## Migration Resend → Brevo (13 septembre 2026)
+
+Plutôt que d'attendre l'élucidation de l'anomalie Resend ci-dessus, l'utilisateur a choisi d'**abandonner Resend et de passer à Brevo** (ex-Sendinblue) pour l'envoi de tous les courriels transactionnels. `RESEND_SUSPENDED` est retiré (devenu inutile, Resend n'est plus appelé nulle part).
+
+**Trois fonctions Netlify migrées** (toutes appelaient directement `api.resend.com`, remplacé par `api.brevo.com/v3/smtp/email`) :
+- `gravity-mailer/netlify/functions/send-confirmation.js` — confirmations clients + notification admin Gravity Prep.
+- `gravity-admin-dashboard/netlify/functions/notify-espace-joueurs.js` — alertes courriel Espace Joueurs.
+- `gravity-admin-dashboard/netlify/functions/send-campaign.js` — envoi de campagnes depuis le Dashboard.
+
+**Différences d'API à retenir** (si une nouvelle fonction envoie un courriel un jour) :
+- Header d'authentification : `api-key: <clé>` (pas `Authorization: Bearer`).
+- Champ expéditeur : objet `sender: { name, email }` (pas une chaîne `"Nom <adresse>"`).
+- Destinataires : `to` / `bcc` sont des tableaux d'objets `{ email }` (pas des chaînes).
+- Corps HTML : champ `htmlContent` (pas `html`).
+- **Pas de domaine de test** : contrairement à Resend (`onboarding@resend.dev`), Brevo n'autorise aucun envoi sans expéditeur vérifié au préalable (soit une adresse simple confirmée par courriel, soit un domaine complet vérifié par DNS) — sans ça, l'API rejette la requête (pas d'envoi silencieusement dégradé comme avec le domaine de test Resend).
+
+**Variables d'environnement Netlify à configurer par l'utilisateur** (sur les sites `gravity-mailer` ET `gravity-admin-dashboard`, chacun a ses propres variables d'environnement) :
+- **`BREVO_API_KEY`** — Brevo → icône profil → SMTP & API → onglet Clés API → générer une nouvelle clé.
+- **`MAILER_FROM_EMAIL`** (déjà existante pour `gravity-mailer` depuis l'époque Resend, réutilisée telle quelle) — doit être un expéditeur **vérifié dans Brevo**. Deux options : (1) expéditeur simple (rapide : ajouter l'adresse dans Brevo → Expéditeurs, Domaines & IP dédiées → cliquer le lien de confirmation reçu par courriel → envoi possible vers n'importe quel destinataire, aucun DNS à toucher) ou (2) domaine complet vérifié par DNS (`mail.osmm-mtl.site`, meilleure délivrabilité à terme, même démarche que Resend en son temps).
+
+Tant que `BREVO_API_KEY` ou `MAILER_FROM_EMAIL` (adresse vérifiée) manque, les trois fonctions renvoient une erreur 500 explicite plutôt que d'échouer silencieusement.

@@ -10,13 +10,15 @@
 
 const SUPABASE_URL = 'https://aevoulzotvmnrnclfuek.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_NAj99iQim_odAYNwR-qucg_2KKHYf7Z';
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
+// PASSÉ DE RESEND À BREVO (13 septembre 2026) — voir CLAUDE.md, section
+// « Suspension de sécurité Resend ».
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
 
 const FROM_ADDRESS_MATCH = /<([^>]+)>/.exec(process.env.MAILER_FROM_EMAIL || '');
-const FROM_ADDRESS = FROM_ADDRESS_MATCH ? FROM_ADDRESS_MATCH[1] : (process.env.MAILER_FROM_EMAIL || 'onboarding@resend.dev');
-const FROM = `Gravity Basketball <${FROM_ADDRESS}>`;
+const FROM_ADDRESS = FROM_ADDRESS_MATCH ? FROM_ADDRESS_MATCH[1] : (process.env.MAILER_FROM_EMAIL || '');
+const FROM = { name: 'Gravity Basketball', email: FROM_ADDRESS };
 const ESPACE_JOUEURS_URL = 'https://gravity.osmm-mtl.site/#espace-joueurs';
-const BATCH_SIZE = 45; // marge sous la limite Resend (50 destinataires/appel, to+bcc compris)
+const BATCH_SIZE = 45; // marge sous la limite Brevo (50 destinataires/appel, to+bcc compris)
 
 function escapeHtml(str) {
   return String(str == null ? '' : str).replace(/[&<>"']/g, (c) => (
@@ -139,8 +141,11 @@ exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Méthode non permise' }) };
   }
-  if (!RESEND_API_KEY) {
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'RESEND_API_KEY manquant dans les variables Netlify' }) };
+  if (!BREVO_API_KEY) {
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'BREVO_API_KEY manquant dans les variables Netlify' }) };
+  }
+  if (!FROM_ADDRESS) {
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'MAILER_FROM_EMAIL manquant (doit être un expéditeur vérifié dans Brevo)' }) };
   }
 
   const authHeader = event.headers.authorization || event.headers.Authorization || '';
@@ -189,15 +194,21 @@ exports.handler = async (event) => {
     for (let i = 0; i < recipients.length; i += BATCH_SIZE) batches.push(recipients.slice(i, i + BATCH_SIZE));
 
     for (const batch of batches) {
-      const res = await fetch('https://api.resend.com/emails', {
+      const res = await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ from: FROM, to: [FROM_ADDRESS], bcc: batch, subject, html: fullHtml }),
+        headers: { 'api-key': BREVO_API_KEY, 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          sender: FROM,
+          to: [{ email: FROM_ADDRESS }],
+          bcc: batch.map((email) => ({ email })),
+          subject,
+          htmlContent: fullHtml,
+        }),
       });
       if (!res.ok) {
         const detail = await res.text();
-        console.error('Erreur Resend :', detail);
-        return { statusCode: 502, headers, body: JSON.stringify({ error: 'Envoi refusé par Resend' }) };
+        console.error('Erreur Brevo :', detail);
+        return { statusCode: 502, headers, body: JSON.stringify({ error: 'Envoi refusé par Brevo' }) };
       }
     }
 
