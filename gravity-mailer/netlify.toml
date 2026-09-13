@@ -1,2 +1,6 @@
 [build]
   functions = "netlify/functions"
+
+# Ce commit force un redéploiement via Git (nécessaire : un déploiement API/CLI
+# brut sans commit associé ignore netlify.toml et ne bundle aucune fonction —
+# incident du 13 septembre 2026, corrigé en revenant à un déploiement Git normal).
