@@ -29,6 +29,7 @@ const FORMSUBMIT_EMAIL = 'Gravitybasketball@gmail.com';
 const ZEFFY_LINKS = {
   'Ligue 3v3': 'https://www.zeffy.com/en-CA/ticketing/gravity-basketball-league-3v3-inscription',
   'Ligue Maison': 'https://www.zeffy.com/en-CA/ticketing/gravity-ligue-maison-inscription',
+  'Gravity Prep': 'https://www.zeffy.com/en-CA/ticketing/gravity-prep-saison-2026--2027',
 };
 
 // Formulaire Zeffy unique pour "Mes équipes" — un seul événement avec choix de
