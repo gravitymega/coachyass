@@ -501,19 +501,15 @@
         <div class="form-section" id="field-prep-details" style="display:none;">
           <p class="form-section-title">Détails Gravity Prep</p>
 
-          <button type="button" class="prep-details-toggle" id="prep-details-toggle" aria-expanded="false" aria-controls="prep-details-fields">
-            <span class="prep-details-toggle-icon">+</span> Plus de détails (optionnel)
-          </button>
-
-          <div class="prep-details-fields" id="prep-details-fields" hidden>
+          <div class="prep-details-fields" id="prep-details-fields">
             <div class="field">
               <label for="adresse">Adresse</label>
-              <input type="text" id="adresse" name="adresse">
+              <input type="text" id="adresse" name="adresse" required>
             </div>
 
             <div class="field">
               <label for="niveau">Niveau de jeu</label>
-              <select id="niveau" name="niveau">
+              <select id="niveau" name="niveau" required>
                 <option value="">Sélectionner...</option>
                 <option value="Débutant">Débutant</option>
                 <option value="Intermédiaire">Intermédiaire</option>
@@ -524,7 +520,7 @@
 
             <div class="field">
               <label for="poste_de_jeu">Poste de jeu</label>
-              <select id="poste_de_jeu" name="poste_de_jeu">
+              <select id="poste_de_jeu" name="poste_de_jeu" required>
                 <option value="">Sélectionner...</option>
                 <option value="Meneur">Meneur (PG)</option>
                 <option value="Arrière">Arrière (SG)</option>
@@ -537,7 +533,7 @@
 
             <div class="field">
               <label for="taille_vetement">Taille pour jersey et vêtement</label>
-              <select id="taille_vetement" name="taille_vetement">
+              <select id="taille_vetement" name="taille_vetement" required>
                 <option value="">Sélectionner...</option>
                 <option value="XS">XS</option>
                 <option value="S">S</option>
@@ -550,32 +546,32 @@
 
             <div class="field">
               <label for="grandeur">Grandeur</label>
-              <input type="text" id="grandeur" name="grandeur" placeholder="Ex. 5'10 / 178 cm">
+              <input type="text" id="grandeur" name="grandeur" placeholder="Ex. 5'10 / 178 cm" required>
             </div>
 
             <div class="field">
               <label for="poids">Poids</label>
-              <input type="text" id="poids" name="poids" placeholder="Ex. 150 lb / 68 kg">
+              <input type="text" id="poids" name="poids" placeholder="Ex. 150 lb / 68 kg" required>
             </div>
 
             <div class="field">
               <label for="occupation">Occupation</label>
-              <input type="text" id="occupation" name="occupation" placeholder="Ex. Étudiant, travailleur...">
+              <input type="text" id="occupation" name="occupation" placeholder="Ex. Étudiant, travailleur..." required>
             </div>
 
             <div class="field">
               <label for="objectif_saison">Objectif durant la saison</label>
-              <textarea id="objectif_saison" name="objectif_saison" rows="3"></textarea>
+              <textarea id="objectif_saison" name="objectif_saison" rows="3" required></textarea>
             </div>
 
             <div class="field">
               <label for="reseaux_sociaux">Réseaux sociaux (Instagram, etc.)</label>
-              <input type="text" id="reseaux_sociaux" name="reseaux_sociaux" placeholder="@tonpseudo">
+              <input type="text" id="reseaux_sociaux" name="reseaux_sociaux" placeholder="@tonpseudo" required>
             </div>
 
             <div class="field">
               <label for="disponibilites">Disponibilités (jours et heures)</label>
-              <textarea id="disponibilites" name="disponibilites" rows="2" placeholder="Ex. Lundi et mercredi soir, samedi matin"></textarea>
+              <textarea id="disponibilites" name="disponibilites" rows="2" placeholder="Ex. Lundi et mercredi soir, samedi matin" required></textarea>
             </div>
           </div>
 
