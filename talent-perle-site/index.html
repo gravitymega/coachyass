@@ -397,6 +397,17 @@
   </form>
 
 <script>
+  /* ====== COPIE DES INSCRIPTIONS DANS UN GOOGLE SHEET (Drive de Karim) ======
+     Optionnel — laisser vide si non utilisé. Pour activer, une seule fois :
+     1) Karim crée un Google Sheet dans son Drive (ex. "Inscriptions Talent Perlé").
+     2) Extensions → Apps Script → coller le contenu de
+        talent-perle-site/google-apps-script-inscriptions.gs (fourni dans ce
+        dossier), puis Déployer → Nouveau déploiement → type "Application Web" →
+        Exécuter en tant que "Moi", Accès "Tout le monde" → Déployer.
+     3) Copier l'URL du déploiement (se termine par /exec) et la coller ci-dessous. */
+  var TP_SHEET_URL = "";
+</script>
+<script>
   function closeM(){document.getElementById('mnav').classList.remove('open');}
   function openIns(act){
     var m=document.getElementById('insModal');
@@ -447,6 +458,18 @@
       window.location.href='mailto:contact.talent.perle@gmail.com?subject='+subject+'&body='+body;
       document.getElementById('okmsg').innerText='Demande pour « '+act+' » préparée. Envoyez le courriel qui vient de s’ouvrir pour finaliser.';
     });
+
+    // Copie dans le Google Sheet de Karim, si configuré (voir TP_SHEET_URL
+    // plus haut) — en parallèle, sans bloquer l'inscription si ça échoue.
+    if(TP_SHEET_URL){
+      fetch(TP_SHEET_URL, {
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({nom:nom, age:age, activite:act, equipe:eq, dispo:dispo||'—',
+                              parent:parent||'', telephone:tel, courriel:mail})
+      }).catch(function(){});
+    }
   }
 </script>
 </body>
