@@ -461,37 +461,6 @@ a { color: inherit; }
   font-weight: 700;
 }
 
-.prep-details-toggle {
-  justify-self: start;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: none;
-  border: 1px dashed var(--border);
-  border-radius: 8px;
-  padding: 10px 14px;
-  color: var(--accent-light);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.prep-details-toggle:hover { border-color: var(--accent); }
-
-.prep-details-toggle-icon {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  line-height: 16px;
-  text-align: center;
-  border-radius: 50%;
-  border: 1px solid currentColor;
-  transition: transform 0.15s ease;
-}
-
-.prep-details-toggle[aria-expanded="true"] .prep-details-toggle-icon { transform: rotate(45deg); }
-
 .prep-details-fields {
   display: grid;
   gap: 16px;
