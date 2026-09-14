@@ -21,9 +21,11 @@ Ce repo (`gravitymega/coachyass`) héberge plusieurs sites statiques déployés 
 
 Compromis assumé (choisi explicitement par l'utilisateur après lui avoir présenté l'alternative) : **il n'y a plus de confirmation automatique envoyée au parent** — Karim reçoit seulement la notification de Netlify et doit répondre lui-même au parent pour confirmer. C'est le même compromis qu'un essai de simplification EmailJS du 4 septembre qui avait été annulé sur le moment — cette fois-ci le choix est délibéré (fait pour simplifier l'infrastructure, pas juste le flux de courriel), donc ne pas revenir en arrière sans redemander confirmation.
 
-**Reste à faire côté utilisateur (une seule étape manuelle, dans Netlify)** : Site settings → Forms → Form notifications → Add notification → Email notification → mettre `contact.talent.perle@gmail.com`. Sans ça, les soumissions sont bien reçues et visibles dans Netlify (Forms → inscription-talent-perle) mais Karim ne reçoit rien par courriel.
+**Notification courriel configurée le 13 septembre 2026** (fait par l'utilisateur dans Netlify : Site settings → Forms → Form notifications → Add notification → Email → `contact.talent.perle@gmail.com`, formulaire "Any form"). Le site a aussi eu un blocage temporaire de déploiement le même jour (compte Netlify "coach yass" à court de crédits opérationnels, déploiements de production en pause) — résolu depuis, le site sert bien la version Netlify Forms.
 
-**Pas de dashboard pour Talent Perlé (décision assumée)** : contrairement aux autres sites, il n'y a pas de backend (Notion/Supabase) derrière les inscriptions. Les soumissions sont stockées dans Netlify Forms (onglet Forms du site `talent-perle`, consultable/exportable depuis le tableau de bord Netlify), mais rien n'est branché à une interface interrogeable côté produit — Karim gère les inscriptions depuis sa boîte courriel. C'est un choix confirmé par l'utilisateur (pas un manque). Si un dashboard devient nécessaire un jour, il faudra d'abord choisir un backend (Supabase dédié, Google Sheets ou Airtable ont été proposés).
+**14 septembre 2026 : copie optionnelle des inscriptions dans un Google Sheet du Drive de Karim.** En plus de Netlify Forms (qui reste la source de vérité + la notification courriel), le formulaire peut aussi envoyer chaque inscription dans un Google Sheet, via un petit script Google Apps Script (`talent-perle-site/google-apps-script-inscriptions.gs`, à coller une fois par Karim dans un Sheet de son Drive puis déployer comme application web). L'URL du déploiement va dans `TP_SHEET_URL` en haut du deuxième `<script>` de `talent-perle-site/index.html` (vide par défaut = fonctionnalité désactivée, aucun impact si non configurée). Choisi plutôt que Zapier pour rester sans compte tiers, cohérent avec le choix Netlify Forms du 12 septembre.
+
+**Pas de dashboard pour Talent Perlé (décision assumée)** : contrairement aux autres sites, il n'y a pas de backend (Notion/Supabase) derrière les inscriptions. Les soumissions sont stockées dans Netlify Forms (onglet Forms du site `talent-perle`, consultable/exportable depuis le tableau de bord Netlify) et, si `TP_SHEET_URL` est configuré, dupliquées dans un Google Sheet du Drive de Karim — mais rien n'est branché à une interface interrogeable côté produit. C'est un choix confirmé par l'utilisateur (pas un manque). Si un dashboard devient nécessaire un jour, il faudra d'abord choisir un backend (Supabase dédié ou Airtable ont aussi été proposés).
 
 **`gravity-admin-dashboard/` et `gravity-basketball-mtl/` ont été importés le 31 août 2026** (PR #16) : ils étaient déployés en drag & drop sur Netlify, sans dépôt Git, donc impossibles à modifier par PR. Le contenu a été rapatrié tel quel depuis les sites en ligne. **Ils ne se déploient pas encore automatiquement** — il faut que l'utilisateur relie chaque site Netlify au repo (Site settings → Build & deploy → Link site to Git → repo `gravitymega/coachyass`, base directory = nom du dossier, publish directory = `.`). Une fois relié, ça fonctionne comme les 3 autres sites.
 
@@ -92,3 +94,62 @@ Avant cet ajout, les inscriptions étaient éparpillées : Coaching et Pickup da
 ## Revue de sites (osmm-mtl.site, gravity.osmm-mtl.site) : logos en base64 inline (13 septembre 2026)
 
 Revue des sites publics : `osmm-montreal/index.html` embarquait le logo OSMM en base64 inline **4 fois** (nav, hero, section "Qui sommes-nous", footer) — même image répétée, alors qu'un fichier `logo.png` existait déjà à la racine du dossier. `talent-perle-site/index.html` faisait pareil pour son logo (2 fois), sans fichier image du tout dans le dossier. Dans les deux cas ça alourdissait la page HTML (~1,5 Mo de texte base64 pour OSMM, ~180 Ko pour Talent Perlé) sans bénéficier du cache navigateur (contrairement à une image servie comme fichier séparé). Corrigé en remplaçant les data URIs par `<img src="logo.png">` (OSMM, fichier déjà présent) et `<img src="logo.jpg">` (Talent Perlé, image extraite du base64 et ajoutée comme nouveau fichier `talent-perle-site/logo.jpg`). `osmm-montreal/index.html` passe de ~1,5 Mo à 49 Ko, `talent-perle-site/index.html` de 210 Ko à 29 Ko. Rien d'autre trouvé de similaire ailleurs dans le repo (Coaching, Pickup, Gravity Basketball, Dashboard).
+
+## Suspension de sécurité Resend (13 septembre 2026, état actuel)
+
+En poursuivant la vérification du domaine `mail.osmm-mtl.site` sur Resend (PR #41), une anomalie a été détectée : les enregistrements SPF affichés par Resend pour ce domaine — **et pour un domaine de test flambant neuf, sans lien avec ce projet** — pointaient vers `forge.rmta.net`, l'infrastructure d'un service tiers appelé **« SendBeam »** (`sendbeam.io`), au lieu de l'infrastructure Resend habituelle (`amazonses.com`, confirmé par la documentation officielle Resend). SendBeam est un service réel, pas un logiciel malveillant connu, mais il n'a **aucun lien légitime avec Resend** — sa présence dans les enregistrements DNS suggérés par Resend est inexpliquée (hypothèses non tranchées : extension de navigateur altérant l'affichage de la page Resend, compte Resend compromis, ou autre anomalie côté compte).
+
+**Mesure de précaution appliquée (PR #42, mergée)** : `RESEND_SUSPENDED = true` en tête de `gravity-mailer/netlify/functions/send-confirmation.js` — court-circuite toute requête avant l'appel à `api.resend.com`, retourne un 503 explicite. **Aucun appel à l'API Resend n'est effectué tant que ce flag est actif.** Ne repasser à `false` qu'une fois l'anomalie éclaircie et confirmée réglée par l'utilisateur.
+
+**Conséquence couverte (PR #43, mergée)** : Gravity Prep a maintenant lui aussi un filet FormSubmit (`Gravitybasketball@gmail.com`), en plus de sa notification Resend existante (actuellement muette à cause de la suspension) — il n'y a donc plus de programme sans notification admin pendant la suspension. Doublon assumé une fois Resend réactivé.
+
+**Reste à faire côté utilisateur si on veut un jour élucider l'anomalie Resend** (non bloquant, Resend est abandonné — voir section suivante) :
+1. Vérifier la sécurité du compte Resend (mot de passe, connexions récentes, clés API) — envisager de régénérer `RESEND_API_KEY`.
+2. Revérifier la page de vérification de domaine Resend depuis un appareil/navigateur de confiance (sans extensions), idéalement en navigation privée, pour confirmer si les valeurs `forge.rmta.net` réapparaissent.
+3. Vérifier dans la zone DNS Netlify (`osmm-mtl.site`) qu'aucun enregistrement pointant vers `rmta.net` n'a été ajouté par erreur — supprimer si c'est le cas.
+4. Contacter le support Resend si l'anomalie persiste.
+
+## Migration Resend → Brevo (13 septembre 2026)
+
+Plutôt que d'attendre l'élucidation de l'anomalie Resend ci-dessus, l'utilisateur a choisi d'**abandonner Resend et de passer à Brevo** (ex-Sendinblue) pour l'envoi de tous les courriels transactionnels. `RESEND_SUSPENDED` est retiré (devenu inutile, Resend n'est plus appelé nulle part).
+
+**Trois fonctions Netlify migrées** (toutes appelaient directement `api.resend.com`, remplacé par `api.brevo.com/v3/smtp/email`) :
+- `gravity-mailer/netlify/functions/send-confirmation.js` — confirmations clients + notification admin Gravity Prep.
+- `gravity-admin-dashboard/netlify/functions/notify-espace-joueurs.js` — alertes courriel Espace Joueurs.
+- `gravity-admin-dashboard/netlify/functions/send-campaign.js` — envoi de campagnes depuis le Dashboard.
+
+**Différences d'API à retenir** (si une nouvelle fonction envoie un courriel un jour) :
+- Header d'authentification : `api-key: <clé>` (pas `Authorization: Bearer`).
+- Champ expéditeur : objet `sender: { name, email }` (pas une chaîne `"Nom <adresse>"`).
+- Destinataires : `to` / `bcc` sont des tableaux d'objets `{ email }` (pas des chaînes).
+- Corps HTML : champ `htmlContent` (pas `html`).
+- **Pas de domaine de test** : contrairement à Resend (`onboarding@resend.dev`), Brevo n'autorise aucun envoi sans expéditeur vérifié au préalable (soit une adresse simple confirmée par courriel, soit un domaine complet vérifié par DNS) — sans ça, l'API rejette la requête (pas d'envoi silencieusement dégradé comme avec le domaine de test Resend).
+
+**Variables d'environnement Netlify à configurer par l'utilisateur** (sur les sites `gravity-mailer` ET `gravity-admin-dashboard`, chacun a ses propres variables d'environnement) :
+- **`BREVO_API_KEY`** — Brevo → icône profil → SMTP & API → onglet Clés API → générer une nouvelle clé.
+- **`MAILER_FROM_EMAIL`** (déjà existante pour `gravity-mailer` depuis l'époque Resend, réutilisée telle quelle) — doit être un expéditeur **vérifié dans Brevo**. Deux options : (1) expéditeur simple (rapide : ajouter l'adresse dans Brevo → Expéditeurs, Domaines & IP dédiées → cliquer le lien de confirmation reçu par courriel → envoi possible vers n'importe quel destinataire, aucun DNS à toucher) ou (2) domaine complet vérifié par DNS (`mail.osmm-mtl.site`, meilleure délivrabilité à terme, même démarche que Resend en son temps).
+
+Tant que `BREVO_API_KEY` ou `MAILER_FROM_EMAIL` (adresse vérifiée) manque, les trois fonctions renvoient une erreur 500 explicite plutôt que d'échouer silencieusement.
+
+## Billet Zeffy Gravity Prep + création automatique de l'accès Espace Joueurs (13 septembre 2026)
+
+Contexte tiré des documents fournis par l'utilisateur (contrat joueur Post-Grad, description de saison, présentation du Circuit Prep U) : Gravity Prep = le programme "Post-Grad" (saison du 1er octobre 2026 au 28 mars 2027, 850 $, payable en un seul versement sur Zeffy — le contrat prévoit un échéancier en 3 versements mais l'utilisateur a choisi un billet Zeffy unique plein tarif plutôt que 3 billets par versement).
+
+**Ce qui a été fait dans ce repo :**
+- `gravity-basketball-mtl/documents/contrat-joueur-postgrad-2026-2027.pdf` : le contrat joueur, hébergé publiquement pour pouvoir être lié depuis le billet Zeffy (case à cocher "j'ai lu et j'accepte" au moment du paiement — pas de vraie signature électronique, même logique que la case décharge déjà existante sur le formulaire d'inscription).
+- `gravity-admin-dashboard/netlify/functions/zeffy-webhook-prep.js` : nouvelle fonction Netlify qui reçoit les paiements complétés Zeffy (webhook), et **crée directement l'accès Espace Joueurs du joueur dès son premier paiement**, sans attendre que l'admin clique "Créer un accès" dans le Dashboard :
+  - Cherche une fiche joueur existante (`players`, `site = 'gravity-basketball'`, `age_category = 'Prep'`) dont le courriel correspond à celui du paiement.
+  - Si aucune fiche n'existe encore, en crée une minimale (nom + courriel seulement, tirés du paiement Zeffy — `program: 'equipe'`, `age_category: 'Prep'`) ; l'admin complète ensuite équipe/numéro/photo dans "Mes équipes — Joueurs" comme d'habitude, ça ne bloque pas l'accès du joueur.
+  - Crée le compte Supabase Auth + envoie le courriel d'accès (même gabarit `espace-joueurs-access` que la création manuelle) + alerte Gravitybasketball@gmail.com (filet FormSubmit) pour signaler qu'une fiche a été créée automatiquement et reste à compléter.
+  - Idempotent : si la fiche a déjà un `auth_user_id`, ne fait rien (évite les doublons sur un retry du webhook ou un paiement répété).
+  - **Le format exact du payload envoyé par Zeffy n'a pas pu être vérifié** (accès à `support.zeffy.com` bloqué depuis cet environnement) — l'extraction du courriel/nom fouille le JSON reçu plutôt que de viser des chemins fixes, et un filtre sur le mot "prep" dans le payload ignore les paiements des autres programmes si jamais le webhook Zeffy est réglé au niveau du compte plutôt que par événement. Si un vrai paiement de test ne déclenche pas l'invitation, les logs Netlify de cette fonction affichent le payload brut reçu — à consulter en premier pour ajuster l'extraction.
+
+**Billet créé le 14 septembre 2026** : `https://www.zeffy.com/en-CA/ticketing/gravity-prep-saison-2026--2027`, branché dans `ZEFFY_LINKS['Gravity Prep']` (`gravity-basketball-mtl/script.js`) — un joueur qui choisit "Zeffy" comme mode de paiement pour Gravity Prep est maintenant redirigé vers ce billet au lieu du message "paiement bientôt disponible".
+
+**Reste à faire côté utilisateur :**
+1. Vérifier que la case à cocher obligatoire du contrat a bien été ajoutée sur le billet ci-dessus, avec le lien `https://gravity.osmm-mtl.site/documents/contrat-joueur-postgrad-2026-2027.pdf` (disponible une fois le PR #48 mergé/déployé).
+2. Dans Zeffy → Settings → Notifications (sur ce billet) : activer une notification par courriel vers `Gravitybasketball@gmail.com`, comme pour Talent Perlé.
+3. Dans Zeffy → Settings → Integrations → Webhooks : ajouter un webhook pointant vers `https://gravity-admin-dashboard.netlify.app/.netlify/functions/zeffy-webhook-prep?key=<secret>`.
+4. Sur Netlify, site `gravity-admin-dashboard` → variables d'environnement : ajouter **`ZEFFY_PREP_WEBHOOK_SECRET`** (choisir une valeur, la mettre aussi dans l'URL du webhook Zeffy ci-dessus) — `SUPABASE_SERVICE_ROLE_KEY` est déjà requise pour `create-player-account.js`, réutilisée ici.
+5. Une fois le billet créé, donner l'URL Zeffy (`zeffy.com/en-CA/ticketing/...`) pour qu'elle soit ajoutée à `ZEFFY_LINKS['Gravity Prep']` dans `gravity-basketball-mtl/script.js` (actuellement absent — un joueur qui choisit "Zeffy" comme mode de paiement pour Gravity Prep voit un message "paiement bientôt disponible").
+6. Faire un vrai paiement de test une fois tout branché, et transmettre le contenu des logs Netlify de `zeffy-webhook-prep` si l'invitation ne part pas automatiquement.
