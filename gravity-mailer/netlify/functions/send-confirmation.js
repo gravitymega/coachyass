@@ -54,7 +54,7 @@ function buildFrom(type) {
 // (contrairement aux confirmations, où `to` est l'adresse du visiteur) — il
 // est fixé ici pour empêcher que la fonction serve à envoyer ailleurs.
 const ADMIN_NOTIFICATION_RECIPIENTS = {
-  'basketball-mtl-prep-admin': 'Gravitybasketball@gmail.com',
+  'basketball-mtl-prep-admin': 'Gavitybasketball@gmail.com',
 };
 
 const ALLOWED_ORIGIN_PATTERNS = [
@@ -144,7 +144,7 @@ const TEMPLATES = {
     // Gravity Prep a sa propre adresse de contact/paiement — le reste des
     // programmes (Ligue 3v3, Ligue Maison, U15 Masculin) garde l'adresse
     // habituelle.
-    const interacEmail = f.programme === 'Gravity Prep' ? 'Gravitybasketball@gmail.com' : 'mqtad9@hotmail.com';
+    const interacEmail = f.programme === 'Gravity Prep' ? 'Gavitybasketball@gmail.com' : 'mqtad9@hotmail.com';
     return {
       subject: `Confirmation de votre inscription — ${f.programme || 'Gravity Basketball'}`,
       html: `

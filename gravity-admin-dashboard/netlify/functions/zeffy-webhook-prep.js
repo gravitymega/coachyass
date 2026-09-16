@@ -21,7 +21,7 @@ const SUPABASE_URL = 'https://aevoulzotvmnrnclfuek.supabase.co';
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const WEBHOOK_SECRET = process.env.ZEFFY_PREP_WEBHOOK_SECRET;
 
-const GRAVITY_PREP_EMAIL = 'Gravitybasketball@gmail.com';
+const GRAVITY_PREP_EMAIL = 'Gavitybasketball@gmail.com';
 
 // Même service et même clé partagée que create-player-account.js.
 const MAILER_URL = 'https://gravity-mailer.netlify.app/.netlify/functions/send-confirmation';

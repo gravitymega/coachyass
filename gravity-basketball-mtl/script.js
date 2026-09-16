@@ -13,14 +13,14 @@ const MAILER_KEY = '11c58c7548b0ed0666742f1e44a9cec1777bddee1c9fcbe5';
 // Gravity Prep a sa propre adresse de contact/paiement — tout ce qui concerne
 // les inscrits Gravity Prep (affichage + notification admin) passe par cette
 // adresse ; les autres programmes gardent l'adresse habituelle.
-const GRAVITY_PREP_EMAIL = 'Gravitybasketball@gmail.com';
+const GRAVITY_PREP_EMAIL = 'Gavitybasketball@gmail.com';
 const DEFAULT_INTERAC_EMAIL = 'mqtad9@hotmail.com';
 
 // Canal de secours fiable (FormSubmit, comme Coaching/Pickup/OSMM) — gravity-mailer
 // (Resend) échoue silencieusement tant que son domaine d'envoi n'est pas vérifié.
 // Gravity Prep a aussi son propre filet FormSubmit (voir plus bas), en plus de
 // sa notification admin dédiée Resend — doublon assumé une fois Resend réparé.
-const FORMSUBMIT_EMAIL = 'Gravitybasketball@gmail.com';
+const FORMSUBMIT_EMAIL = 'Gavitybasketball@gmail.com';
 
 // Liens de paiement Zeffy par programme (comme pour le Championnat et Basket Libre).
 // Note : "Ligue 3v3" (13-14 ans) et le Championnat partagent le même événement
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }),
         }).catch(() => {});
         // Gravity Prep : l'admin reçoit une notification détaillée (tous les
-        // champs soumis) sur Gravitybasketball@gmail.com — le destinataire est
+        // champs soumis) sur Gavitybasketball@gmail.com — le destinataire est
         // fixé côté fonction, pas ici, donc `to` n'a pas besoin d'être exact.
         if (isPrep) {
           fetch(MAILER_URL, {
