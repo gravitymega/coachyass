@@ -81,15 +81,15 @@ Avant cet ajout, les inscriptions étaient éparpillées : Coaching et Pickup da
 
 ## Bug découvert : gravity-mailer (Resend) ne livre qu'à un seul destinataire (13 septembre 2026)
 
-**Symptôme** : l'utilisateur ne recevait jamais la notification admin Gravity Prep (`type: 'basketball-mtl-prep-admin'`, envoyée à `Gravitybasketball@gmail.com`), alors que le code existait déjà (PR #32).
+**Symptôme** : l'utilisateur ne recevait jamais la notification admin Gravity Prep (`type: 'basketball-mtl-prep-admin'`, envoyée à `Gavitybasketball@gmail.com`), alors que le code existait déjà (PR #32).
 
-**Cause confirmée par test direct** (`curl` sur la fonction en production) : `gravity-mailer` n'a pas de variable `MAILER_FROM_EMAIL` configurée, donc `send-confirmation.js` envoie depuis le domaine de test Resend `onboarding@resend.dev`. **Resend restreint ce domaine à un seul destinataire : l'adresse du compte Resend lui-même** (`moqtad6@gmail.com`) — tout envoi vers une autre adresse échoue silencieusement (502, jamais vu par le visiteur grâce au `.catch(() => {})`). Confirmé par test comparatif : envoi vers `moqtad6@gmail.com` → succès ; envoi vers `Gravitybasketball@gmail.com` → échec.
+**Cause confirmée par test direct** (`curl` sur la fonction en production) : `gravity-mailer` n'a pas de variable `MAILER_FROM_EMAIL` configurée, donc `send-confirmation.js` envoie depuis le domaine de test Resend `onboarding@resend.dev`. **Resend restreint ce domaine à un seul destinataire : l'adresse du compte Resend lui-même** (`moqtad6@gmail.com`) — tout envoi vers une autre adresse échoue silencieusement (502, jamais vu par le visiteur grâce au `.catch(() => {})`). Confirmé par test comparatif : envoi vers `moqtad6@gmail.com` → succès ; envoi vers `Gavitybasketball@gmail.com` → échec.
 
 **Portée réelle du bug** : ça ne touche pas que la notification Prep — **toutes les confirmations clients envoyées par `gravity-mailer`** (Coaching, Pickup, Basketball, OSMM), qui vont vers l'adresse du visiteur, échouent probablement aussi silencieusement pour n'importe quel vrai client. Personne ne l'avait remarqué puisque rien ne bloque le visiteur.
 
 **Correctif définitif (en cours, nécessite l'utilisateur)** : vérifier un sous-domaine d'envoi dans Resend (ex. `mail.osmm-mtl.site`), ajouter les enregistrements DNS générés par Resend chez le registrar du domaine (pas accessible par Claude), puis configurer `MAILER_FROM_EMAIL` sur `gravity-mailer` une fois le domaine vérifié.
 
-**Correctif immédiat déployé (13 septembre 2026)** : ajout d'un canal FormSubmit (même pattern que Coaching/Pickup/OSMM) dans `gravity-basketball-mtl/script.js`, vers `Gravitybasketball@gmail.com`, pour Ligue 3v3 / Ligue Maison / U15 Masculin uniquement — **pas pour Gravity Prep**, qui garde sa notification dédiée existante (`basketball-mtl-prep-admin`) pour éviter un doublon une fois Resend réparé.
+**Correctif immédiat déployé (13 septembre 2026)** : ajout d'un canal FormSubmit (même pattern que Coaching/Pickup/OSMM) dans `gravity-basketball-mtl/script.js`, vers `Gavitybasketball@gmail.com`, pour Ligue 3v3 / Ligue Maison / U15 Masculin uniquement — **pas pour Gravity Prep**, qui garde sa notification dédiée existante (`basketball-mtl-prep-admin`) pour éviter un doublon une fois Resend réparé.
 
 ## Suspension de sécurité Resend (13 septembre 2026, état actuel)
 
@@ -97,7 +97,7 @@ En poursuivant la vérification du domaine `mail.osmm-mtl.site` sur Resend (PR #
 
 **Mesure de précaution appliquée (PR #42, mergée)** : `RESEND_SUSPENDED = true` en tête de `gravity-mailer/netlify/functions/send-confirmation.js` — court-circuite toute requête avant l'appel à `api.resend.com`, retourne un 503 explicite. **Aucun appel à l'API Resend n'est effectué tant que ce flag est actif.** Ne repasser à `false` qu'une fois l'anomalie éclaircie et confirmée réglée par l'utilisateur.
 
-**Conséquence couverte (PR #43, mergée)** : Gravity Prep a maintenant lui aussi un filet FormSubmit (`Gravitybasketball@gmail.com`), en plus de sa notification Resend existante (actuellement muette à cause de la suspension) — il n'y a donc plus de programme sans notification admin pendant la suspension. Doublon assumé une fois Resend réactivé.
+**Conséquence couverte (PR #43, mergée)** : Gravity Prep a maintenant lui aussi un filet FormSubmit (`Gavitybasketball@gmail.com`), en plus de sa notification Resend existante (actuellement muette à cause de la suspension) — il n'y a donc plus de programme sans notification admin pendant la suspension. Doublon assumé une fois Resend réactivé.
 
 **Reste à faire côté utilisateur si on veut un jour élucider l'anomalie Resend** (non bloquant, Resend est abandonné — voir section suivante) :
 1. Vérifier la sécurité du compte Resend (mot de passe, connexions récentes, clés API) — envisager de régénérer `RESEND_API_KEY`.
@@ -136,7 +136,7 @@ Contexte tiré des documents fournis par l'utilisateur (contrat joueur Post-Grad
 - `gravity-admin-dashboard/netlify/functions/zeffy-webhook-prep.js` : nouvelle fonction Netlify qui reçoit les paiements complétés Zeffy (webhook), et **crée directement l'accès Espace Joueurs du joueur dès son premier paiement**, sans attendre que l'admin clique "Créer un accès" dans le Dashboard :
   - Cherche une fiche joueur existante (`players`, `site = 'gravity-basketball'`, `age_category = 'Prep'`) dont le courriel correspond à celui du paiement.
   - Si aucune fiche n'existe encore, en crée une minimale (nom + courriel seulement, tirés du paiement Zeffy — `program: 'equipe'`, `age_category: 'Prep'`) ; l'admin complète ensuite équipe/numéro/photo dans "Mes équipes — Joueurs" comme d'habitude, ça ne bloque pas l'accès du joueur.
-  - Crée le compte Supabase Auth + envoie le courriel d'accès (même gabarit `espace-joueurs-access` que la création manuelle) + alerte Gravitybasketball@gmail.com (filet FormSubmit) pour signaler qu'une fiche a été créée automatiquement et reste à compléter.
+  - Crée le compte Supabase Auth + envoie le courriel d'accès (même gabarit `espace-joueurs-access` que la création manuelle) + alerte Gavitybasketball@gmail.com (filet FormSubmit) pour signaler qu'une fiche a été créée automatiquement et reste à compléter.
   - Idempotent : si la fiche a déjà un `auth_user_id`, ne fait rien (évite les doublons sur un retry du webhook ou un paiement répété).
   - **Le format exact du payload envoyé par Zeffy n'a pas pu être vérifié** (accès à `support.zeffy.com` bloqué depuis cet environnement) — l'extraction du courriel/nom fouille le JSON reçu plutôt que de viser des chemins fixes, et un filtre sur le mot "prep" dans le payload ignore les paiements des autres programmes si jamais le webhook Zeffy est réglé au niveau du compte plutôt que par événement. Si un vrai paiement de test ne déclenche pas l'invitation, les logs Netlify de cette fonction affichent le payload brut reçu — à consulter en premier pour ajuster l'extraction.
 
@@ -144,7 +144,7 @@ Contexte tiré des documents fournis par l'utilisateur (contrat joueur Post-Grad
 
 **Reste à faire côté utilisateur :**
 1. Vérifier que la case à cocher obligatoire du contrat a bien été ajoutée sur le billet ci-dessus, avec le lien `https://gravity.osmm-mtl.site/documents/contrat-joueur-postgrad-2026-2027.pdf` (disponible une fois le PR #48 mergé/déployé).
-2. Dans Zeffy → Settings → Notifications (sur ce billet) : activer une notification par courriel vers `Gravitybasketball@gmail.com`, comme pour Talent Perlé.
+2. Dans Zeffy → Settings → Notifications (sur ce billet) : activer une notification par courriel vers `Gavitybasketball@gmail.com`, comme pour Talent Perlé.
 3. Dans Zeffy → Settings → Integrations → Webhooks : ajouter un webhook pointant vers `https://gravity-admin-dashboard.netlify.app/.netlify/functions/zeffy-webhook-prep?key=<secret>`.
 4. Sur Netlify, site `gravity-admin-dashboard` → variables d'environnement : ajouter **`ZEFFY_PREP_WEBHOOK_SECRET`** (choisir une valeur, la mettre aussi dans l'URL du webhook Zeffy ci-dessus) — `SUPABASE_SERVICE_ROLE_KEY` est déjà requise pour `create-player-account.js`, réutilisée ici.
 5. Une fois le billet créé, donner l'URL Zeffy (`zeffy.com/en-CA/ticketing/...`) pour qu'elle soit ajoutée à `ZEFFY_LINKS['Gravity Prep']` dans `gravity-basketball-mtl/script.js` (actuellement absent — un joueur qui choisit "Zeffy" comme mode de paiement pour Gravity Prep voit un message "paiement bientôt disponible").
