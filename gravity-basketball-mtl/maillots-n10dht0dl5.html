@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infos maillot | Gravity Basketball</title>
+<meta name="description" content="Formulaire joueurs Gravity Basketball : nom, numéro, poids et taille pour la commande des maillots.">
+<!-- Lien privé partagé aux joueurs seulement : nom de fichier non devinable,
+     jamais lié depuis le site, pas d'indexation (voir aussi netlify.toml). -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0d0b12">
+<meta property="og:title" content="Infos maillot — Gravity Basketball">
+<meta property="og:description" content="Remplis ton nom, numéro, poids et taille pour ton maillot.">
+<meta property="og:image" content="https://gravity.osmm-mtl.site/assets/logo.png">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0b12;
+    --card: #17141d;
+    --border: #2a2536;
+    --text: #f5f5f5;
+    --text-muted: #a8a8a8;
+    --accent: #e8672e;
+    --accent-light: #ff8a4c;
+    --accent-2: #d81e5b;
+    --accent-2-light: #f0425f;
+    --error: #ff6b6b;
+    --gradient-brand: linear-gradient(135deg, #c04d1c, var(--accent-2));
+    --gradient-brand-text: linear-gradient(135deg, var(--accent-light), var(--accent-2-light));
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse 900px 600px at 50% -10%, rgba(232, 103, 46, 0.10), transparent 60%),
+      radial-gradient(ellipse 800px 600px at 100% 100%, rgba(216, 30, 91, 0.08), transparent 55%),
+      var(--bg);
+    color: var(--text);
+    font-family: "Inter", sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 32px 16px 48px; }
+  header { text-align: center; margin-bottom: 24px; }
+  header img { width: 76px; height: 76px; margin: 0 auto 12px; display: block; }
+  h1 {
+    font-family: "Oswald", sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin: 0 0 6px;
+    background: var(--gradient-brand-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  header p { margin: 0; color: var(--text-muted); font-size: 0.95rem; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 20px;
+  }
+  .field { margin-bottom: 18px; }
+  label, .label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  .hint { font-weight: 400; color: var(--text-muted); font-size: 0.8rem; }
+  input, select {
+    width: 100%;
+    font: inherit;
+    font-size: 16px; /* évite le zoom automatique sur iPhone */
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  select {
+    background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%), linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+    background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 36px;
+  }
+  input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  input.invalid, select.invalid { border-color: var(--error); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .input-unit { position: relative; }
+  .input-unit span {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); font-size: 0.9rem; pointer-events: none;
+  }
+  .input-unit input { padding-right: 44px; }
+  .error-msg { color: var(--error); font-size: 0.85rem; margin: 0 0 14px; }
+  button {
+    width: 100%;
+    font-family: "Oswald", sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--gradient-brand);
+    border: 0;
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+  }
+  button:disabled { opacity: 0.6; cursor: wait; }
+  button.secondary { background: transparent; border: 1px solid var(--border); margin-top: 12px; }
+  .done { text-align: center; }
+  .done .jersey {
+    width: 160px; margin: 4px auto 18px; padding: 22px 0 18px;
+    border-radius: 18px 18px 12px 12px;
+    background: var(--gradient-brand);
+    font-family: "Oswald", sans-serif; text-transform: uppercase;
+  }
+  .done .jersey .name { font-size: 0.95rem; letter-spacing: 0.08em; padding: 0 8px; overflow-wrap: anywhere; }
+  .done .jersey .num { font-size: 3.4rem; line-height: 1; font-weight: 700; }
+  .done h2 { font-family: "Oswald", sans-serif; text-transform: uppercase; margin: 0 0 6px; }
+  .done p { color: var(--text-muted); margin: 0 0 4px; }
+  footer { text-align: center; margin-top: 20px; color: var(--text-muted); font-size: 0.8rem; }
+  footer a { color: var(--accent-light); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="assets/logo.png" alt="Gravity Basketball">
+    <h1>Infos maillot</h1>
+    <p>Remplis ce formulaire pour la commande de ton maillot. Ça prend 1 minute.</p>
+  </header>
+
+  <!-- Formulaire statique caché pour que Netlify Forms le détecte à la
+       publication (même principe que talent-perle-site). Les champs doivent
+       correspondre à ceux envoyés en JS plus bas. -->
+  <form name="maillots-gravity" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input name="nom"><input name="nom_maillot"><input name="equipe"><input name="numero">
+    <input name="numero_2"><input name="poids_lb"><input name="taille"><input name="courriel"><input name="bot-field">
+  </form>
+
+  <main class="card" id="form-card">
+    <form id="jersey-form" novalidate>
+      <p hidden><label>Ne pas remplir <input name="bot-field"></label></p>
+
+      <div class="field">
+        <label for="nom">Prénom et nom</label>
+        <input id="nom" name="nom" autocomplete="name" required maxlength="80">
+      </div>
+
+      <div class="field">
+        <label for="nom_maillot">Nom à imprimer sur le maillot <span class="hint">(si différent de ton nom de famille)</span></label>
+        <input id="nom_maillot" name="nom_maillot" maxlength="20" placeholder="Ex. : TREMBLAY">
+      </div>
+
+      <div class="field">
+        <label for="equipe">Équipe</label>
+        <select id="equipe" name="equipe" required>
+          <option value="">Choisis ton équipe</option>
+          <option>Gravity Prep</option>
+          <option>Gravity U15 Masculin</option>
+          <option>Ligue 3v3</option>
+          <option>Ligue Maison</option>
+          <option>Autre</option>
+        </select>
+      </div>
+
+      <div class="row field">
+        <div>
+          <label for="numero">Numéro</label>
+          <input id="numero" name="numero" inputmode="numeric" pattern="\d{1,2}" maxlength="2" required placeholder="0 à 99">
+        </div>
+        <div>
+          <label for="numero_2">2e choix <span class="hint">(si pris)</span></label>
+          <input id="numero_2" name="numero_2" inputmode="numeric" pattern="\d{1,2}" maxlength="2" placeholder="0 à 99">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="poids">Poids</label>
+        <div class="input-unit">
+          <input id="poids" name="poids_lb" inputmode="numeric" pattern="\d{2,3}" maxlength="3" required placeholder="Ex. : 165">
+          <span>lb</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="label" id="taille-label">Taille</span>
+        <div class="row" role="group" aria-labelledby="taille-label">
+          <select id="taille_pi" name="taille_pi" required aria-label="Pieds">
+            <option value="">Pieds</option>
+            <option value="4">4 pi</option>
+            <option value="5">5 pi</option>
+            <option value="6">6 pi</option>
+            <option value="7">7 pi</option>
+          </select>
+          <select id="taille_po" name="taille_po" required aria-label="Pouces">
+            <option value="">Pouces</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="courriel">Courriel <span class="hint">(facultatif — au cas où on doit te rejoindre)</span></label>
+        <input id="courriel" name="courriel" type="email" autocomplete="email" maxlength="120">
+      </div>
+
+      <p class="error-msg" id="error-msg" role="alert" hidden></p>
+      <button type="submit" id="submit-btn">Envoyer</button>
+    </form>
+  </main>
+
+  <main class="card done" id="done-card" hidden>
+    <div class="jersey" aria-hidden="true">
+      <div class="name" id="done-name"></div>
+      <div class="num" id="done-num"></div>
+    </div>
+    <h2>C'est reçu !</h2>
+    <p id="done-summary"></p>
+    <p>Merci, le coach a bien tes infos.</p>
+    <button type="button" class="secondary" id="again-btn">Remplir pour un autre joueur</button>
+  </main>
+
+  <footer>Gravity Basketball Montréal · <a href="/">gravity.osmm-mtl.site</a></footer>
+</div>
+
+<script>
+(() => {
+  // Même canal que les inscriptions (voir FORMSUBMIT_EMAIL dans script.js) :
+  // un courriel par joueur, présenté en tableau.
+  const FORMSUBMIT_EMAIL = 'Gavitybasketball@gmail.com';
+  const NETLIFY_FORM_NAME = 'maillots-gravity';
+
+  const form = document.getElementById('jersey-form');
+  const errorMsg = document.getElementById('error-msg');
+  const submitBtn = document.getElementById('submit-btn');
+  const pouces = document.getElementById('taille_po');
+
+  for (let i = 0; i <= 11; i++) {
+    const opt = document.createElement('option');
+    opt.value = String(i);
+    opt.textContent = `${i} po`;
+    pouces.appendChild(opt);
+  }
+
+  const val = (name) => (form.elements[name].value || '').trim();
+
+  function validate() {
+    const errors = [];
+    const mark = (name, bad) => form.elements[name].classList.toggle('invalid', bad);
+
+    mark('nom', !val('nom'));
+    if (!val('nom')) errors.push('ton nom');
+
+    mark('equipe', !val('equipe'));
+    if (!val('equipe')) errors.push('ton équipe');
+
+    const numOk = /^\d{1,2}$/.test(val('numero'));
+    mark('numero', !numOk);
+    if (!numOk) errors.push('un numéro entre 0 et 99');
+
+    const num2Ok = !val('numero_2') || /^\d{1,2}$/.test(val('numero_2'));
+    mark('numero_2', !num2Ok);
+    if (!num2Ok) errors.push('un 2e choix entre 0 et 99');
+
+    const poids = Number(val('poids_lb'));
+    const poidsOk = /^\d{2,3}$/.test(val('poids_lb')) && poids >= 50 && poids <= 400;
+    mark('poids_lb', !poidsOk);
+    if (!poidsOk) errors.push('ton poids en livres');
+
+    mark('taille_pi', !val('taille_pi'));
+    mark('taille_po', !val('taille_po'));
+    if (!val('taille_pi') || !val('taille_po')) errors.push('ta taille (pieds et pouces)');
+
+    const mailOk = !val('courriel') || form.elements.courriel.checkValidity();
+    mark('courriel', !mailOk);
+    if (!mailOk) errors.push('un courriel valide');
+
+    return errors;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (val('bot-field')) return;
+
+    const errors = validate();
+    if (errors.length) {
+      errorMsg.textContent = `Il manque : ${errors.join(', ')}.`;
+      errorMsg.hidden = false;
+      return;
+    }
+    errorMsg.hidden = true;
+
+    const data = {
+      nom: val('nom'),
+      nom_maillot: (val('nom_maillot') || val('nom').split(/\s+/).slice(-1)[0]).toUpperCase(),
+      equipe: val('equipe'),
+      numero: val('numero'),
+      numero_2: val('numero_2') || '—',
+      poids_lb: val('poids_lb'),
+      taille: `${val('taille_pi')}'${val('taille_po')}"`,
+      courriel: val('courriel') || '—',
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Envoi…';
+
+    // Deux canaux en parallèle : Netlify Forms (liste exportable en CSV depuis
+    // Netlify, si la détection des formulaires est activée sur le site) et
+    // FormSubmit (courriel au coach). Un seul qui passe suffit.
+    const netlify = fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ 'form-name': NETLIFY_FORM_NAME, ...data }).toString(),
+    }).then((r) => { if (!r.ok) throw new Error(r.status); });
+
+    const formsubmit = fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: `Maillot — ${data.nom} #${data.numero} (${data.equipe})`,
+        _template: 'table',
+        _captcha: 'false',
+        'Nom': data.nom,
+        'Nom sur le maillot': data.nom_maillot,
+        'Équipe': data.equipe,
+        'Numéro': data.numero,
+        '2e choix': data.numero_2,
+        'Poids (lb)': data.poids_lb,
+        'Taille': data.taille,
+        'Courriel': data.courriel,
+      }),
+    }).then((r) => { if (!r.ok) throw new Error(r.status); });
+
+    const results = await Promise.allSettled([netlify, formsubmit]);
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Envoyer';
+
+    if (results.every((r) => r.status === 'rejected')) {
+      errorMsg.textContent = "L'envoi n'a pas fonctionné. Vérifie ta connexion et réessaie, ou envoie tes infos directement au coach.";
+      errorMsg.hidden = false;
+      return;
+    }
+
+    document.getElementById('done-name').textContent = data.nom_maillot;
+    document.getElementById('done-num').textContent = data.numero;
+    document.getElementById('done-summary').textContent =
+      `${data.equipe} · ${data.poids_lb} lb · ${data.taille}`;
+    document.getElementById('form-card').hidden = true;
+    document.getElementById('done-card').hidden = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.getElementById('again-btn').addEventListener('click', () => {
+    form.reset();
+    form.querySelectorAll('.invalid').forEach((el) => el.classList.remove('invalid'));
+    document.getElementById('done-card').hidden = true;
+    document.getElementById('form-card').hidden = false;
+  });
+})();
+</script>
+</body>
+</html>

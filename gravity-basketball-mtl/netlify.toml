@@ -1,2 +1,11 @@
 [build]
   publish = "."
+
+# Page « Infos maillot » : lien privé partagé aux joueurs seulement (nom de
+# fichier non devinable, jamais lié depuis le site). Volontairement absente de
+# robots.txt et du sitemap, qui sont publics et révéleraient l'adresse.
+[[headers]]
+  for = "/maillots-*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Referrer-Policy = "no-referrer"
