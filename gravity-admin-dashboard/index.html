@@ -481,6 +481,84 @@
       </form>
     </section>
 
+    <!-- INSTAGRAM (API Meta — compte @gravitybasketball_mtl) -->
+    <section class="panel championship-only ig-panel" data-group="instagram">
+      <h2>Instagram — Statistiques</h2>
+      <p class="muted">Chiffres du compte Instagram Gravity Basketball, lus en direct via l'API Meta. Portée, interactions et visites du profil portent sur les 28 derniers jours.</p>
+      <p class="muted" id="ig-api-error" hidden style="color:#ff6b6b;"></p>
+      <div class="stats-row" id="ig-stats-row"></div>
+      <div class="table-wrap">
+        <table class="data-table" id="ig-media-table">
+          <thead>
+            <tr>
+              <th>Publication</th>
+              <th>Date</th>
+              <th>J'aime</th>
+              <th>Commentaires</th>
+              <th>Portée</th>
+              <th>Vues</th>
+              <th>Enreg.</th>
+              <th>Partages</th>
+            </tr>
+          </thead>
+          <tbody id="ig-media-tbody"></tbody>
+        </table>
+      </div>
+      <button type="button" id="ig-refresh-btn" class="btn btn-ghost" style="margin-top:12px;">Actualiser</button>
+    </section>
+
+    <section class="panel championship-only ig-panel" data-group="instagram">
+      <h2>Instagram — Publier</h2>
+      <p class="muted">Publie une photo (JPEG, convertie automatiquement) ou un reel (mp4) directement sur le compte. Le fichier est d'abord déposé sur Supabase (gravity-media/instagram/) pour que Meta puisse le récupérer. Astuce : le bouton "Publier sur Instagram" dans "Mes équipes — Joueurs" pré-remplit ce formulaire avec la fiche du joueur.</p>
+      <form id="ig-publish-form" class="product-form">
+        <div class="field">
+          <label for="ig-publish-kind">Type</label>
+          <select id="ig-publish-kind">
+            <option value="image">Photo</option>
+            <option value="reel">Reel (vidéo)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="ig-publish-file">Fichier</label>
+          <input type="file" id="ig-publish-file" accept="image/*">
+          <div id="ig-publish-preview" style="margin-top:8px;"></div>
+        </div>
+        <div class="field">
+          <label for="ig-publish-caption">Légende</label>
+          <textarea id="ig-publish-caption" rows="5" maxlength="2200" placeholder="Texte, #hashtags, @mentions..."></textarea>
+        </div>
+        <div class="comm-actions">
+          <button type="submit" id="ig-publish-btn" class="btn btn-primary">Publier sur Instagram</button>
+        </div>
+        <p class="muted" id="ig-publish-status" hidden style="margin-top:10px;"></p>
+      </form>
+    </section>
+
+    <section class="panel championship-only ig-panel" data-group="instagram">
+      <h2>Instagram — Commentaires</h2>
+      <p class="muted">Lis, réponds ou masque les commentaires d'une publication récente.</p>
+      <div class="field">
+        <label for="ig-comments-media">Publication</label>
+        <select id="ig-comments-media"></select>
+      </div>
+      <div id="ig-comments-list" class="ig-thread"></div>
+    </section>
+
+    <section class="panel championship-only ig-panel" data-group="instagram">
+      <h2>Instagram — Messages privés</h2>
+      <p class="muted">Conversations reçues sur Instagram. Meta ne permet de répondre que dans les 24 h qui suivent le dernier message de la personne.</p>
+      <div class="ig-dm-layout">
+        <div id="ig-conversations-list" class="ig-conversations"></div>
+        <div class="ig-dm-thread">
+          <div id="ig-messages-list" class="ig-thread"><p class="muted">Choisis une conversation.</p></div>
+          <form id="ig-dm-form" class="inline-field" hidden style="margin-top:10px;">
+            <input type="text" id="ig-dm-input" placeholder="Répondre..." maxlength="1000" required>
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
     <section class="panel" data-group="communication">
       <h2>Communication</h2>
       <p class="muted">Envoie un message directement à partir des inscrits ci-dessus via Gravity Mailer (un seul message pour tout le groupe, en Cci, pas de personnalisation par destinataire), ou génère un brouillon Gmail pré-rempli si tu préfères relire avant d'envoyer toi-même.</p>

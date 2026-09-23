@@ -582,9 +582,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ---------- Carrousel Instagram (section Vidéos) ----------
-  // Liste de publications gérée depuis le dashboard admin (table
-  // instagram_carousel) — embed officiel Instagram, aucune connexion de
-  // compte requise côté site.
+  // Source principale : fil automatique des derniers reels/vidéos du compte
+  // Instagram, lu via l'API Meta par la fonction Netlify "instagram" du
+  // Dashboard (le jeton Meta reste côté serveur). Si ce fil est indisponible
+  // (jeton pas encore configuré, API en panne) ou vide, on retombe sur la
+  // liste gérée à la main dans le Dashboard (table instagram_carousel).
+  const IG_FEED_URL = 'https://gravity-admin-dashboard.netlify.app/.netlify/functions/instagram?action=feed';
+  const IG_FEED_MAX = 12;
   const igCarousel = document.getElementById('ig-carousel');
   const igTrack = document.getElementById('ig-carousel-track');
   const igEmpty = document.getElementById('ig-carousel-empty');
@@ -600,20 +604,48 @@ document.addEventListener('DOMContentLoaded', () => {
     return base + 'embed/';
   }
 
-  if (igCarousel && igTrack) {
-    fetch(
+  function igEmbedSlide(postUrl) {
+    return `<div class="ig-slide"><iframe src="${escapeHtml(toEmbedUrl(postUrl))}" width="340" height="560" frameborder="0" scrolling="no" allowtransparency="true" loading="lazy" title="Publication Instagram Gravity Basketball"></iframe></div>`;
+  }
+
+  function loadIgFeedSlides() {
+    return fetch(IG_FEED_URL)
+      .then((res) => (res.ok ? res.json() : { items: [] }))
+      .then((data) =>
+        (data.items || [])
+          .filter((m) => m.media_type === 'VIDEO' && m.permalink)
+          .slice(0, IG_FEED_MAX)
+          .map((m) => igEmbedSlide(m.permalink))
+      )
+      .catch(() => []);
+  }
+
+  function loadManualIgSlides() {
+    return fetch(
       `${SUPABASE_URL}/rest/v1/instagram_carousel?select=*&site=eq.gravity-basketball-mtl&active=eq.true&order=position.asc`,
       { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } }
     )
       .then((res) => (res.ok ? res.json() : []))
-      .then((rows) => {
-        if (!rows || rows.length === 0) return;
-        igTrack.innerHTML = rows
-          .map(
-            (r) =>
-              `<div class="ig-slide"><iframe src="${toEmbedUrl(r.post_url)}" width="340" height="560" frameborder="0" scrolling="no" allowtransparency="true" loading="lazy" title="Publication Instagram Gravity Basketball"></iframe></div>`
-          )
-          .join('');
+      .then((rows) =>
+        (rows || [])
+          .map((r) => {
+            if (r.post_url) return igEmbedSlide(r.post_url);
+            if (r.video_url) {
+              return `<div class="ig-slide"><video src="${escapeHtml(r.video_url)}" controls playsinline preload="metadata" width="340" height="560"></video></div>`;
+            }
+            return '';
+          })
+          .filter(Boolean)
+      )
+      .catch(() => []);
+  }
+
+  if (igCarousel && igTrack) {
+    loadIgFeedSlides()
+      .then((slides) => (slides.length ? slides : loadManualIgSlides()))
+      .then((slides) => {
+        if (!slides || slides.length === 0) return;
+        igTrack.innerHTML = slides.join('');
         if (igEmpty) igEmpty.hidden = true;
         igCarousel.hidden = false;
 

@@ -195,3 +195,30 @@ h1, h2 { font-family: var(--font-head); text-transform: uppercase; letter-spacin
 #comm-body { resize: vertical; }
 .comm-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
 .comm-write-btn { padding: 4px 8px !important; font-size: 0.75rem !important; margin-top: 4px; }
+
+/* INSTAGRAM (API Meta) */
+.ig-panel textarea, .ig-panel .inline-field input {
+  background: #0f0f0f; border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px; color: var(--text); font-family: var(--font-body); font-size: 0.9rem;
+  resize: vertical;
+}
+.ig-panel textarea:focus, .ig-panel .inline-field input:focus { outline: none; border-color: var(--accent); }
+.ig-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; vertical-align: middle; margin-right: 8px; }
+.ig-thread { display: grid; gap: 10px; }
+.ig-comment { background: #0f0f0f; border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+.ig-comment.is-hidden { opacity: 0.5; }
+.ig-comment-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
+.ig-comment-meta strong { color: var(--text); }
+.ig-comment-text { font-size: 0.9rem; white-space: pre-wrap; word-break: break-word; }
+.ig-replies { margin: 8px 0 0 14px; display: grid; gap: 6px; }
+.ig-comment .inline-field { margin-top: 8px; }
+.ig-dm-layout { display: grid; grid-template-columns: minmax(180px, 260px) 1fr; gap: 16px; }
+.ig-conversations { display: grid; gap: 6px; align-content: start; max-height: 520px; overflow-y: auto; }
+.ig-conv-btn { text-align: left; background: #0f0f0f; border: 1px solid var(--border); border-radius: 10px; padding: 10px; color: var(--text); cursor: pointer; font-family: var(--font-body); }
+.ig-conv-btn.active, .ig-conv-btn:hover { border-color: var(--accent); }
+.ig-conv-btn .muted { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ig-dm-thread .ig-thread { max-height: 460px; overflow-y: auto; }
+.ig-msg { max-width: 80%; padding: 8px 12px; border-radius: 12px; background: #0f0f0f; border: 1px solid var(--border); font-size: 0.9rem; white-space: pre-wrap; word-break: break-word; }
+.ig-msg.mine { justify-self: end; background: rgba(232,103,46,0.15); border-color: var(--accent); }
+.ig-msg time { display: block; font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+@media (max-width: 700px) { .ig-dm-layout { grid-template-columns: 1fr; } }
