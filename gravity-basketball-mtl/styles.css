@@ -668,6 +668,13 @@ a { color: inherit; }
   display: block;
   border: none;
 }
+.ig-carousel-track > .ig-slide video {
+  width: 100%;
+  height: 560px;
+  display: block;
+  object-fit: cover;
+  background: #000;
+}
 
 .ig-carousel-nav {
   flex: 0 0 auto;

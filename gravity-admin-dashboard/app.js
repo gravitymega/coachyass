@@ -67,6 +67,7 @@ const GROUPS = [
   { id: 'comptabilite', label: 'Comptabilité' },
   { id: 'produit', label: 'Produit vedette' },
   { id: 'videos', label: 'Vidéos Instagram' },
+  { id: 'instagram', label: 'Instagram', champOnly: true },
 ];
 
 // ---------- Éléments DOM ----------
@@ -514,6 +515,9 @@ function setActiveGroup(id) {
     renderSiteTabs();
   }
   if (id === 'accueil') renderHome();
+  // Chargé à la demande seulement : chaque ouverture interroge l'API Meta,
+  // inutile de le faire à chaque connexion au Dashboard.
+  if (id === 'instagram') loadInstagramOnce();
   renderSidebar();
   applyPanelVisibility();
   closeSidebarMobile();
@@ -1197,6 +1201,7 @@ function renderTeamPlayersTable() {
               <button type="button" class="btn btn-ghost team-player-edit-btn" data-id="${p.id}">Éditer</button>
               <button type="button" class="btn btn-ghost team-player-toggle-btn" data-id="${p.id}">${p.active ? 'Désactiver' : 'Activer'}</button>
               <button type="button" class="btn btn-ghost team-player-share-btn" data-id="${p.id}">Partager la fiche</button>
+              <button type="button" class="btn btn-ghost team-player-ig-btn" data-id="${p.id}">Publier sur Instagram</button>
             </div>
           </td>
         </tr>
@@ -1223,6 +1228,12 @@ function renderTeamPlayersTable() {
     btn.addEventListener('click', () => {
       const player = allTeamPlayers.find((p) => p.id === btn.dataset.id);
       if (player) sharePlayerCard(player, btn);
+    });
+  });
+  teamPlayersTbody.querySelectorAll('.team-player-ig-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const player = allTeamPlayers.find((p) => p.id === btn.dataset.id);
+      if (player) preparePlayerCardForInstagram(player, btn);
     });
   });
 }
@@ -1399,7 +1410,7 @@ function shareSlugify(str) {
     .replace(/(^-|-$)/g, '') || 'joueur';
 }
 
-async function buildPlayerCardImage(player, teamName) {
+async function buildPlayerCardImage(player, teamName, mimeType = 'image/png') {
   const W = 1080, H = 1350;
   const canvas = document.createElement('canvas');
   canvas.width = W;
@@ -1599,7 +1610,7 @@ async function buildPlayerCardImage(player, teamName) {
   ctx.fillRect(pad, H - pad - 6, W - pad * 2, 6);
   ctx.restore();
 
-  return new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 0.95));
+  return new Promise((resolve) => canvas.toBlob(resolve, mimeType, 0.95));
 }
 
 async function sharePlayerCard(player, btn) {
@@ -1626,6 +1637,411 @@ async function sharePlayerCard(player, btn) {
   } catch (err) {
     if (err && err.name === 'AbortError') return; // partage annulé par l'utilisateur
     console.error('Fiche joueur — échec génération image', err);
+    alert("Impossible de générer la fiche pour le moment. Réessaie plus tard.");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalLabel;
+  }
+}
+
+// ---------- Instagram (API Meta, via la fonction Netlify "instagram") ----------
+// Le jeton Meta ne quitte jamais le serveur : le Dashboard envoie seulement le
+// jeton Supabase de l'admin connecté, la fonction vérifie qu'il gère bien
+// gravity-basketball avant de relayer l'appel à Meta.
+const igApiErrorEl = document.getElementById('ig-api-error');
+const igStatsRowEl = document.getElementById('ig-stats-row');
+const igMediaTbody = document.getElementById('ig-media-tbody');
+const igRefreshBtn = document.getElementById('ig-refresh-btn');
+const igPublishForm = document.getElementById('ig-publish-form');
+const igPublishKindSelect = document.getElementById('ig-publish-kind');
+const igPublishFileInput = document.getElementById('ig-publish-file');
+const igPublishPreviewEl = document.getElementById('ig-publish-preview');
+const igPublishCaptionInput = document.getElementById('ig-publish-caption');
+const igPublishBtn = document.getElementById('ig-publish-btn');
+const igPublishStatusEl = document.getElementById('ig-publish-status');
+const igCommentsMediaSelect = document.getElementById('ig-comments-media');
+const igCommentsListEl = document.getElementById('ig-comments-list');
+const igConversationsListEl = document.getElementById('ig-conversations-list');
+const igMessagesListEl = document.getElementById('ig-messages-list');
+const igDmForm = document.getElementById('ig-dm-form');
+const igDmInput = document.getElementById('ig-dm-input');
+
+let igLoaded = false;
+let igMedia = [];
+let igConversations = [];
+let igActiveConversation = null; // { id, recipientId }
+let igPreparedFile = null; // fichier préparé par "Publier sur Instagram" (fiche joueur)
+
+async function igApi(action, payload = {}) {
+  const { data } = await supabase.auth.getSession();
+  const token = data && data.session && data.session.access_token;
+  const res = await fetch('/.netlify/functions/instagram', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token || ''}` },
+    body: JSON.stringify({ action, ...payload }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.error || `Erreur ${res.status}`);
+  return body;
+}
+
+function igFormatDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleString('fr-CA', { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+function igNum(v) {
+  return v == null ? '—' : Number(v).toLocaleString('fr-CA');
+}
+
+function igShowError(err) {
+  if (!igApiErrorEl) return;
+  igApiErrorEl.textContent = err ? `API Instagram : ${err.message || err}` : '';
+  igApiErrorEl.hidden = !err;
+}
+
+function loadInstagramOnce() {
+  if (igLoaded) return;
+  igLoaded = true;
+  loadInstagramOverview();
+  loadInstagramConversations();
+}
+
+async function loadInstagramOverview() {
+  if (!igStatsRowEl) return;
+  igStatsRowEl.innerHTML = '<p class="muted">Chargement...</p>';
+  igMediaTbody.innerHTML = '';
+  try {
+    const { account, totals_28d: t, media } = await igApi('overview');
+    igShowError(null);
+    igMedia = media || [];
+    igStatsRowEl.innerHTML = `
+      <div class="stat-card"><div class="num">${igNum(account.followers_count)}</div><div class="label">Abonnés</div></div>
+      <div class="stat-card"><div class="num">${igNum(account.media_count)}</div><div class="label">Publications</div></div>
+      <div class="stat-card"><div class="num">${igNum(t.reach)}</div><div class="label">Portée (28 j)</div></div>
+      <div class="stat-card"><div class="num">${igNum(t.total_interactions)}</div><div class="label">Interactions (28 j)</div></div>
+      <div class="stat-card"><div class="num">${igNum(t.accounts_engaged)}</div><div class="label">Comptes engagés (28 j)</div></div>
+      <div class="stat-card"><div class="num">${igNum(t.profile_views)}</div><div class="label">Visites du profil (28 j)</div></div>
+    `;
+    igMediaTbody.innerHTML = igMedia
+      .map((m) => {
+        const thumb = m.thumbnail_url || m.media_url;
+        const caption = (m.caption || '').split('\n')[0].slice(0, 60) || '(sans légende)';
+        const ins = m.insights || {};
+        return `
+        <tr>
+          <td class="wrap"><a href="${escapeHtml(m.permalink)}" target="_blank" rel="noopener">${thumb ? `<img class="ig-thumb" src="${escapeHtml(thumb)}" alt="">` : ''}${escapeHtml(caption)}</a></td>
+          <td>${escapeHtml(igFormatDate(m.timestamp))}</td>
+          <td>${igNum(m.like_count)}</td>
+          <td>${igNum(m.comments_count)}</td>
+          <td>${igNum(ins.reach)}</td>
+          <td>${igNum(ins.views)}</td>
+          <td>${igNum(ins.saved)}</td>
+          <td>${igNum(ins.shares)}</td>
+        </tr>`;
+      })
+      .join('');
+    renderIgCommentsMediaOptions();
+  } catch (err) {
+    igStatsRowEl.innerHTML = '';
+    igShowError(err);
+  }
+}
+
+igRefreshBtn?.addEventListener('click', () => {
+  loadInstagramOverview();
+  loadInstagramConversations();
+});
+
+// ----- Commentaires -----
+function renderIgCommentsMediaOptions() {
+  if (!igCommentsMediaSelect) return;
+  const previous = igCommentsMediaSelect.value;
+  igCommentsMediaSelect.innerHTML =
+    '<option value="">— Choisir une publication —</option>' +
+    igMedia
+      .map((m) => {
+        const caption = (m.caption || '').split('\n')[0].slice(0, 50) || '(sans légende)';
+        const date = m.timestamp ? new Date(m.timestamp).toLocaleDateString('fr-CA') : '';
+        return `<option value="${escapeHtml(m.id)}">${escapeHtml(`${date} — ${caption} (${m.comments_count || 0} comm.)`)}</option>`;
+      })
+      .join('');
+  if (previous && igMedia.some((m) => m.id === previous)) igCommentsMediaSelect.value = previous;
+}
+
+function igCommentHtml(c, isReply) {
+  return `
+    <div class="ig-comment${c.hidden ? ' is-hidden' : ''}">
+      <div class="ig-comment-meta"><strong>@${escapeHtml(c.username || '?')}</strong> · ${escapeHtml(igFormatDate(c.timestamp))}${c.hidden ? ' · masqué' : ''}</div>
+      <div class="ig-comment-text">${escapeHtml(c.text)}</div>
+      ${isReply ? '' : `
+      ${c.replies && c.replies.data && c.replies.data.length ? `<div class="ig-replies">${c.replies.data.map((r) => igCommentHtml(r, true)).join('')}</div>` : ''}
+      <form class="inline-field ig-reply-form" data-id="${escapeHtml(c.id)}">
+        <input type="text" placeholder="Répondre à @${escapeHtml(c.username || '')}..." maxlength="1000" required>
+        <button type="submit" class="btn btn-ghost">Répondre</button>
+        <button type="button" class="btn btn-ghost ig-hide-btn" data-id="${escapeHtml(c.id)}" data-hidden="${c.hidden ? '1' : ''}">${c.hidden ? 'Réafficher' : 'Masquer'}</button>
+      </form>`}
+    </div>`;
+}
+
+async function loadIgComments(mediaId) {
+  if (!mediaId) {
+    igCommentsListEl.innerHTML = '';
+    return;
+  }
+  igCommentsListEl.innerHTML = '<p class="muted">Chargement...</p>';
+  try {
+    const { comments } = await igApi('comments', { media_id: mediaId });
+    igCommentsListEl.innerHTML = comments.length
+      ? comments.map((c) => igCommentHtml(c, false)).join('')
+      : '<p class="muted">Aucun commentaire sur cette publication.</p>';
+    igCommentsListEl.querySelectorAll('.ig-reply-form').forEach((form) => {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = form.querySelector('input');
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        try {
+          await igApi('reply_comment', { comment_id: form.dataset.id, message: input.value });
+          await loadIgComments(mediaId);
+        } catch (err) {
+          alert(`Réponse non envoyée : ${err.message}`);
+          btn.disabled = false;
+        }
+      });
+    });
+    igCommentsListEl.querySelectorAll('.ig-hide-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        try {
+          await igApi('hide_comment', { comment_id: btn.dataset.id, hide: !btn.dataset.hidden });
+          await loadIgComments(mediaId);
+        } catch (err) {
+          alert(`Action impossible : ${err.message}`);
+          btn.disabled = false;
+        }
+      });
+    });
+  } catch (err) {
+    igCommentsListEl.innerHTML = `<p class="muted" style="color:#ff6b6b;">${escapeHtml(err.message)}</p>`;
+  }
+}
+
+igCommentsMediaSelect?.addEventListener('change', () => loadIgComments(igCommentsMediaSelect.value));
+
+// ----- Messages privés -----
+function igOtherParticipant(conv, igUserId) {
+  const people = (conv.participants && conv.participants.data) || [];
+  return people.find((p) => p.id !== igUserId) || people[0] || {};
+}
+
+async function loadInstagramConversations() {
+  if (!igConversationsListEl) return;
+  igConversationsListEl.innerHTML = '<p class="muted">Chargement...</p>';
+  try {
+    const { ig_user_id: igUserId, conversations } = await igApi('conversations');
+    igConversations = conversations.map((c) => {
+      const other = igOtherParticipant(c, igUserId);
+      const last = c.messages && c.messages.data && c.messages.data[0];
+      return { id: c.id, recipientId: other.id, username: other.username || other.name || 'Utilisateur', last, updated: c.updated_time };
+    });
+    renderIgConversations();
+  } catch (err) {
+    igConversationsListEl.innerHTML = `<p class="muted" style="color:#ff6b6b;">${escapeHtml(err.message)}</p>`;
+  }
+}
+
+function renderIgConversations() {
+  igConversationsListEl.innerHTML = igConversations.length
+    ? igConversations
+        .map(
+          (c) => `
+      <button type="button" class="ig-conv-btn${igActiveConversation && igActiveConversation.id === c.id ? ' active' : ''}" data-id="${escapeHtml(c.id)}">
+        <strong>@${escapeHtml(c.username)}</strong>
+        <span class="muted">${escapeHtml((c.last && c.last.message) || '(pièce jointe)')}</span>
+        <span class="muted">${escapeHtml(igFormatDate(c.updated))}</span>
+      </button>`
+        )
+        .join('')
+    : '<p class="muted">Aucune conversation.</p>';
+  igConversationsListEl.querySelectorAll('.ig-conv-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const conv = igConversations.find((c) => c.id === btn.dataset.id);
+      if (!conv) return;
+      igActiveConversation = conv;
+      renderIgConversations();
+      loadIgMessages();
+    });
+  });
+}
+
+async function loadIgMessages() {
+  if (!igActiveConversation) return;
+  igMessagesListEl.innerHTML = '<p class="muted">Chargement...</p>';
+  igDmForm.hidden = false;
+  try {
+    const { ig_user_id: igUserId, messages } = await igApi('messages', { conversation_id: igActiveConversation.id });
+    // L'API renvoie du plus récent au plus ancien : on remet dans l'ordre de lecture.
+    igMessagesListEl.innerHTML = messages.length
+      ? messages
+          .slice()
+          .reverse()
+          .map((m) => {
+            const mine = m.from && m.from.id === igUserId;
+            return `<div class="ig-msg${mine ? ' mine' : ''}">${escapeHtml(m.message || '(pièce jointe)')}<time>${escapeHtml(igFormatDate(m.created_time))}</time></div>`;
+          })
+          .join('')
+      : '<p class="muted">Aucun message.</p>';
+    igMessagesListEl.scrollTop = igMessagesListEl.scrollHeight;
+  } catch (err) {
+    igMessagesListEl.innerHTML = `<p class="muted" style="color:#ff6b6b;">${escapeHtml(err.message)}</p>`;
+  }
+}
+
+igDmForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!igActiveConversation) return;
+  const btn = igDmForm.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  try {
+    await igApi('send_message', { recipient_id: igActiveConversation.recipientId, message: igDmInput.value });
+    igDmInput.value = '';
+    await loadIgMessages();
+  } catch (err) {
+    alert(`Message non envoyé : ${err.message}`);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+// ----- Publication -----
+function igSetPublishStatus(text, isError) {
+  igPublishStatusEl.textContent = text || '';
+  igPublishStatusEl.style.color = isError ? '#ff6b6b' : '';
+  igPublishStatusEl.hidden = !text;
+}
+
+function igShowPreview(file) {
+  if (!file) {
+    igPublishPreviewEl.innerHTML = '';
+    return;
+  }
+  const url = URL.createObjectURL(file);
+  igPublishPreviewEl.innerHTML = file.type.startsWith('video/')
+    ? `<video src="${url}" style="height:160px; width:auto; border-radius:6px;" controls muted></video>`
+    : `<img src="${url}" alt="" style="height:160px; width:auto; border-radius:6px;">`;
+}
+
+igPublishKindSelect?.addEventListener('change', () => {
+  igPublishFileInput.accept = igPublishKindSelect.value === 'reel' ? 'video/mp4,video/quicktime' : 'image/*';
+  igPublishFileInput.value = '';
+  igPreparedFile = null;
+  igShowPreview(null);
+});
+
+igPublishFileInput?.addEventListener('change', () => {
+  igPreparedFile = null;
+  igShowPreview(igPublishFileInput.files[0] || null);
+});
+
+// Instagram n'accepte que du JPEG pour les photos : toute autre image (PNG,
+// HEIC converti par le navigateur, WebP...) est ré-encodée via un canvas.
+async function igEnsureJpeg(file) {
+  if (file.type === 'image/jpeg') return file;
+  const bitmap = await createImageBitmap(file);
+  const canvas = document.createElement('canvas');
+  canvas.width = bitmap.width;
+  canvas.height = bitmap.height;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(bitmap, 0, 0);
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.92));
+  if (!blob) throw new Error("Conversion de l'image en JPEG impossible");
+  return new File([blob], file.name.replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' });
+}
+
+const igSleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+igPublishForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const kind = igPublishKindSelect.value;
+  let file = igPreparedFile || igPublishFileInput.files[0];
+  if (!file) {
+    igSetPublishStatus('Choisis un fichier à publier.', true);
+    return;
+  }
+  if (!confirm('Publier maintenant sur le compte Instagram Gravity Basketball ? La publication sera visible par tous tes abonnés.')) return;
+
+  igPublishBtn.disabled = true;
+  try {
+    if (kind === 'image') file = await igEnsureJpeg(file);
+
+    igSetPublishStatus('Envoi du fichier...');
+    const ext = kind === 'image' ? 'jpg' : (file.name.split('.').pop() || 'mp4').toLowerCase();
+    const path = `instagram/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const { error: uploadError } = await supabase.storage.from('gravity-media').upload(path, file, { upsert: false, contentType: file.type });
+    if (uploadError) throw new Error(`Upload échoué : ${uploadError.message}`);
+    const publicUrl = supabase.storage.from('gravity-media').getPublicUrl(path).data.publicUrl;
+
+    igSetPublishStatus('Envoi à Instagram...');
+    const container = await igApi('create_container', {
+      kind,
+      caption: igPublishCaptionInput.value,
+      [kind === 'reel' ? 'video_url' : 'image_url']: publicUrl,
+    });
+
+    // Meta traite le média de son côté (quelques secondes pour une photo,
+    // parfois plus d'une minute pour un reel) : on attend qu'il soit prêt.
+    const deadline = Date.now() + 5 * 60 * 1000;
+    for (;;) {
+      const { status_code: code, status } = await igApi('container_status', { container_id: container.id });
+      if (code === 'FINISHED') break;
+      if (code === 'ERROR' || code === 'EXPIRED') throw new Error(`Instagram a refusé le média (${status || code})`);
+      if (Date.now() > deadline) throw new Error('Traitement trop long côté Instagram — réessaie plus tard.');
+      igSetPublishStatus(kind === 'reel' ? 'Instagram traite la vidéo...' : 'Instagram traite la photo...');
+      await igSleep(4000);
+    }
+
+    igSetPublishStatus('Publication...');
+    const published = await igApi('publish_container', { container_id: container.id });
+    igSetPublishStatus(published.permalink ? `Publié ! ${published.permalink}` : 'Publié !');
+    igPublishForm.reset();
+    igPreparedFile = null;
+    igShowPreview(null);
+    loadInstagramOverview();
+  } catch (err) {
+    igSetPublishStatus(err.message, true);
+  } finally {
+    igPublishBtn.disabled = false;
+  }
+});
+
+// Depuis "Mes équipes — Joueurs" : génère la fiche en JPEG et pré-remplit le
+// formulaire de publication. Rien n'est publié tant que l'admin n'a pas
+// relu la légende et cliqué "Publier sur Instagram".
+async function preparePlayerCardForInstagram(player, btn) {
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Génération...';
+  try {
+    const team = teamLabel(player.team_id);
+    const blob = await buildPlayerCardImage(player, team, 'image/jpeg');
+    if (!blob) throw new Error('canvas vide');
+    igPreparedFile = new File([blob], `gravity-${shareSlugify(player.full_name)}.jpg`, { type: 'image/jpeg' });
+    igPublishKindSelect.value = 'image';
+    igPublishFileInput.accept = 'image/*';
+    igPublishFileInput.value = '';
+    igShowPreview(igPreparedFile);
+    const details = [player.poste, player.numero ? `#${player.numero}` : '', team !== '—' ? team : '']
+      .filter(Boolean)
+      .join(' · ');
+    igPublishCaptionInput.value = `${player.full_name}${details ? `\n${details}` : ''}\n\n#GravityBasketball #BasketballMTL #Montreal`;
+    igSetPublishStatus('Fiche prête — relis la légende puis clique "Publier sur Instagram".');
+    setActiveGroup('instagram');
+    igPublishForm.scrollIntoView({ behavior: 'smooth' });
+  } catch (err) {
+    console.error('Fiche joueur — préparation Instagram', err);
     alert("Impossible de générer la fiche pour le moment. Réessaie plus tard.");
   } finally {
     btn.disabled = false;
