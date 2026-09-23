@@ -8,4 +8,6 @@
   for = "/maillots-*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
-    Referrer-Policy = "no-referrer"
+    # strict-origin : envoie seulement le domaine (jamais le chemin secret de la
+    # page) — FormSubmit refuse les requêtes sans en-tête Referer.
+    Referrer-Policy = "strict-origin"

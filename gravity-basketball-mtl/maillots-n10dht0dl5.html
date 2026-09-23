@@ -103,6 +103,7 @@
   }
   .input-unit input { padding-right: 44px; }
   .error-msg { color: var(--error); font-size: 0.85rem; margin: 0 0 14px; }
+  .error-msg a { color: var(--accent-light); }
   button {
     width: 100%;
     font-family: "Oswald", sans-serif;
@@ -253,6 +254,9 @@
     pouces.appendChild(opt);
   }
 
+  // Ne jamais laisser le bouton bloqué sur « Envoi… » si un service ne répond pas.
+  const timeoutSignal = () => (typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(20000) : undefined);
+
   const val = (name) => (form.elements[name].value || '').trim();
 
   function validate() {
@@ -322,6 +326,7 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({ 'form-name': NETLIFY_FORM_NAME, ...data }).toString(),
+      signal: timeoutSignal(),
     }).then((r) => { if (!r.ok) throw new Error(r.status); });
 
     const formsubmit = fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_EMAIL}`, {
@@ -340,14 +345,22 @@
         'Taille': data.taille,
         'Courriel': data.courriel,
       }),
-    }).then((r) => { if (!r.ok) throw new Error(r.status); });
+      signal: timeoutSignal(),
+    })
+      // FormSubmit répond 200 même quand il refuse l'envoi (ex. requête sans
+      // en-tête Referer) : il faut lire `success` dans la réponse JSON.
+      .then((r) => r.json())
+      .then((json) => { if (String(json.success) !== 'true') throw new Error(json.message); });
 
     const results = await Promise.allSettled([netlify, formsubmit]);
     submitBtn.disabled = false;
     submitBtn.textContent = 'Envoyer';
 
     if (results.every((r) => r.status === 'rejected')) {
-      errorMsg.textContent = "L'envoi n'a pas fonctionné. Vérifie ta connexion et réessaie, ou envoie tes infos directement au coach.";
+      const body = Object.entries(data).map(([k, v]) => `${k} : ${v}`).join('\n');
+      const mailto = `mailto:${FORMSUBMIT_EMAIL}?subject=${encodeURIComponent(`Maillot — ${data.nom}`)}&body=${encodeURIComponent(body)}`;
+      errorMsg.innerHTML = "L'envoi n'a pas fonctionné. Réessaie, ou <a href=\"\">envoie tes infos par courriel</a>.";
+      errorMsg.querySelector('a').href = mailto;
       errorMsg.hidden = false;
       return;
     }
