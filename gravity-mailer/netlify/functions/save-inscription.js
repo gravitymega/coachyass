@@ -114,6 +114,23 @@ exports.handler = async (event) => {
   const details = richText(d.details, 1900);
   if (details) properties['Détails'] = details;
 
+  // Formulaire « Infos maillot » (gravity-basketball-mtl/maillots-*.html) :
+  // ces lignes ont Forfait / Type = « Maillot » et apparaissent dans la vue
+  // Notion « 👕 Maillots ».
+  const maillot = d.maillot && typeof d.maillot === 'object' ? d.maillot : null;
+  if (maillot) {
+    const nomMaillot = richText(maillot.nom, 100);
+    if (nomMaillot) properties['Nom sur le maillot'] = nomMaillot;
+    const numero = richText(maillot.numero, 10);
+    if (numero) properties['Numéro maillot'] = numero;
+    const numero2 = richText(maillot.numero2, 10);
+    if (numero2) properties['2e choix numéro'] = numero2;
+    const poids = Number(maillot.poidsLb);
+    if (Number.isFinite(poids) && poids > 0) properties['Poids (lb)'] = { number: poids };
+    const taille = richText(maillot.taille, 20);
+    if (taille) properties['Taille'] = taille;
+  }
+
   if (d.photosAutorisees != null) {
     properties['Photos autorisées'] = { checkbox: !!d.photosAutorisees };
   }

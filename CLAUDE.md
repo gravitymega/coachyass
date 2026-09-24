@@ -79,6 +79,12 @@ Avant cet ajout, les inscriptions étaient éparpillées : Coaching et Pickup da
 - **Chaque site continue d'écrire dans son système existant** (Notion dédié pour Coaching/Pickup, Supabase pour Gravity Basketball) — l'appel à `save-inscription` est **additif**, en parallèle, jamais remplaçant : aucun risque de régression sur les flux de réservation/paiement existants.
 - **Sites branchés** : `index.html` (Coaching), `gravity-pickup-site/index.html` (Pickup), `gravity-basketball-mtl/script.js` (tous les programmes), `osmm-montreal/index.html` (uniquement le formulaire « Devenir membre », pas le formulaire Contact — ce n'est pas une inscription). Talent Perlé n'est délibérément pas branché.
 
+**Règle (24 septembre 2026, demandée explicitement par l'utilisateur) : tout formulaire qui concerne Gravity Basketball doit être enregistré dans Notion** (base « 🏀 Inscription GRAV », via `save-inscription`), en plus des éventuels courriels FormSubmit. Un courriel seul ne suffit pas : l'utilisateur veut une liste consultable. Tout nouveau formulaire Gravity doit être branché sur Notion dès sa création.
+
+**Formulaire « Infos maillot »** (`gravity-basketball-mtl/maillots-n10dht0dl5.html`, lien privé non indexé, partagé aux joueurs) : nom, nom sur le maillot, équipe (= `Programme`), numéro + 2e choix, poids, taille. Enregistré dans « Inscription GRAV » avec `Forfait / Type = Maillot` et les colonnes dédiées `Nom sur le maillot`, `Numéro maillot`, `2e choix numéro`, `Poids (lb)`, `Taille` (champ `maillot` de `save-inscription`) ; vue Notion « 👕 Maillots » (filtrée, groupée par Programme). Aussi un courriel FormSubmit à `Gavitybasketball@gmail.com`. Les réponses envoyées avant le 24 septembre 2026 ne sont que dans ces courriels.
+
+**Service worker (24 septembre 2026)** : `gravity-basketball-mtl/sw.js` est un « kill switch » qui désinstalle l'ancien worker de l'époque drag & drop (il servait des pages périmées, visibles seulement hors navigation privée). Ne pas réenregistrer de service worker sans raison.
+
 ## Bug découvert : gravity-mailer (Resend) ne livre qu'à un seul destinataire (13 septembre 2026)
 
 **Symptôme** : l'utilisateur ne recevait jamais la notification admin Gravity Prep (`type: 'basketball-mtl-prep-admin'`, envoyée à `Gavitybasketball@gmail.com`), alors que le code existait déjà (PR #32).
