@@ -11,3 +11,9 @@
     # strict-origin : envoie seulement le domaine (jamais le chemin secret de la
     # page) — FormSubmit refuse les requêtes sans en-tête Referer.
     Referrer-Policy = "strict-origin"
+
+# /sw.js doit toujours être revérifié par le navigateur (voir sw.js).
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"

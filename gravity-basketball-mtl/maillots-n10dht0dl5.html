@@ -236,6 +236,10 @@
 </div>
 
 <script>
+// Désinstalle un éventuel ancien service worker du site (voir sw.js).
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then((rs) => rs.forEach((r) => r.unregister())).catch(() => {});
+}
 (() => {
   // Même canal que les inscriptions (voir FORMSUBMIT_EMAIL dans script.js) :
   // un courriel par joueur, présenté en tableau.
