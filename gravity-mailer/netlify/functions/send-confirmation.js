@@ -162,6 +162,7 @@ const TEMPLATES = {
       ['Nom complet', f.nom],
       ['Téléphone', f.telephone],
       ['Courriel', f.courriel],
+      ['Date de naissance', f.dateNaissance],
       ['Catégorie d\'âge', f.ageCategorie],
       ['Type d\'inscription', f.typeInscription],
       ['Adresse', f.adresse],
@@ -283,7 +284,7 @@ exports.handler = async (event) => {
   const fields = {};
   [
     'nom', 'forfait', 'date', 'heure', 'dates', 'creneau', 'programme', 'modePaiement', 'activite',
-    'telephone', 'courriel', 'ageCategorie', 'typeInscription', 'adresse', 'niveau', 'posteDeJeu',
+    'telephone', 'courriel', 'ageCategorie', 'dateNaissance', 'typeInscription', 'adresse', 'niveau', 'posteDeJeu',
     'tailleVetement', 'grandeur', 'poids', 'occupation', 'objectifSaison', 'reseauxSociaux',
     'disponibilites', 'reference', 'remarque', 'motDePasse',
   ].forEach((k) => {
