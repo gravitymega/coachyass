@@ -88,6 +88,9 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Méthode non permise' }) };
   }
 
+  // Programme Gravity Pickup terminé (30 septembre 2026) : plus aucune réservation acceptée.
+  return { statusCode: 410, headers, body: JSON.stringify({ error: 'Le programme Gravity Pickup est terminé — réservations fermées.' }) };
+
   let d;
   try {
     d = JSON.parse(event.body || '{}');

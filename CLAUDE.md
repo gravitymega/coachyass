@@ -7,7 +7,7 @@ Ce repo (`gravitymega/coachyass`) héberge plusieurs sites statiques déployés 
 | Dossier | Site Netlify | URL publique | Rôle |
 |---|---|---|---|
 | `/` (racine) | `gravity-coaching` | coaching.osmm-mtl.site | Réservation Gravity Coaching (privé) |
-| `gravity-pickup-site/` | `gravity-pickup` | pickup.osmm-mtl.site | Réservation Gravity Pickup (places limitées à 15/date) |
+| `gravity-pickup-site/` | `gravity-pickup` | pickup.osmm-mtl.site | **Fermé le 30 septembre 2026** — ancienne réservation Gravity Pickup, remplacée par une page « Programme terminé » |
 | `osmm-montreal/` | `osmm-montreal` | osmm-mtl.site | Site vitrine OSMM (organisme communautaire) |
 | `gravity-admin-dashboard/` | `gravity-admin-dashboard` | gravity-admin-dashboard.netlify.app | Dashboard admin (Supabase) — gère équipes, partenaires, galerie, réservations, championnat, etc. |
 | `gravity-basketball-mtl/` | `gravity-basketball-mtl` | gravity.osmm-mtl.site | Site public "Gravity Basketball Montréal" — hub avec Mes équipes, Championnat, Vidéos, Partenaires, Programmes |
@@ -28,6 +28,8 @@ Compromis assumé (choisi explicitement par l'utilisateur après lui avoir prés
 **Pas de dashboard pour Talent Perlé (décision assumée)** : contrairement aux autres sites, il n'y a pas de backend (Notion/Supabase) derrière les inscriptions. Les soumissions sont stockées dans Netlify Forms (onglet Forms du site `talent-perle`, consultable/exportable depuis le tableau de bord Netlify) et, si `TP_SHEET_URL` est configuré, dupliquées dans un Google Sheet du Drive de Karim — mais rien n'est branché à une interface interrogeable côté produit. C'est un choix confirmé par l'utilisateur (pas un manque). Si un dashboard devient nécessaire un jour, il faudra d'abord choisir un backend (Supabase dédié ou Airtable ont aussi été proposés).
 
 **`gravity-admin-dashboard/` et `gravity-basketball-mtl/` ont été importés le 31 août 2026** (PR #16) : ils étaient déployés en drag & drop sur Netlify, sans dépôt Git, donc impossibles à modifier par PR. Le contenu a été rapatrié tel quel depuis les sites en ligne. **Ils ne se déploient pas encore automatiquement** — il faut que l'utilisateur relie chaque site Netlify au repo (Site settings → Build & deploy → Link site to Git → repo `gravitymega/coachyass`, base directory = nom du dossier, publish directory = `.`). Une fois relié, ça fonctionne comme les 3 autres sites.
+
+**30 septembre 2026 : fin de Gravity Pickup + nouveaux prix Coaching.** Le Pickup est retiré de tous les sites (carte « Gravity Pickup » et mentions SEO de `gravity-basketball-mtl` enlevées). `gravity-pickup-site/index.html` est remplacé par une page « Programme terminé » (liens vers Coaching et Gravity Basketball, `noindex`, `robots.txt` en `Disallow: /`) et la fonction `reservation-gravity-pickup.js` renvoie 410 à tout POST. L'ancienne page reste récupérable dans l'historique Git si le programme revient. Les billets Zeffy Pickup sont à désactiver par l'utilisateur. Coaching : forfaits 1 séance 30 $, 3 séances 80 $, 6 séances 150 $ (forfait 12 séances supprimé, `MONTANTS` de `netlify/functions/reservation.js` aligné).
 
 ## Backends
 
