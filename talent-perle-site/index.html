@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <title>Talent Perlé — Sport &amp; Culture · Saint-Léonard</title>
-<meta name="description" content="Talent Perlé accompagne les jeunes de 10 à 16 ans à Saint-Léonard par le sport, la culture et la vie communautaire. Soccer, volleyball, tennis, basketball et activités culturelles.">
+<meta name="description" content="Talent Perlé accompagne les jeunes de 10 à 16 ans à Saint-Léonard par le sport, la culture et la vie communautaire. Soccer, volleyball, tennis, basketball et jeu d'échecs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -111,7 +111,11 @@
 
   /* PARTENAIRES */
   .part{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
-  .part div{flex:1 1 150px;max-width:210px;height:86px;background:#fff;border-radius:16px;box-shadow:0 6px 18px rgba(35,48,40,.06);display:flex;align-items:center;justify-content:center;color:#9aa79e;font-size:13px;font-weight:600;text-align:center;padding:10px;}
+  .part div,.part a{flex:1 1 150px;max-width:210px;height:86px;background:#fff;border-radius:16px;box-shadow:0 6px 18px rgba(35,48,40,.06);display:flex;align-items:center;justify-content:center;color:#9aa79e;font-size:13px;font-weight:600;text-align:center;padding:10px;}
+  .part img{max-height:56px;max-width:80%;width:auto;height:auto;}
+  .gal a,.gal div{display:block;}
+  .gal img{width:100%;height:100%;aspect-ratio:1;object-fit:cover;border-radius:18px;}
+  .ev img{width:100%;height:130px;object-fit:cover;border-radius:12px;margin-bottom:14px;}
 
   /* MEMBRE */
   .member{background:linear-gradient(135deg,var(--forest),var(--forest-d));color:#fff;border-radius:28px;padding:46px 34px;text-align:center;}
@@ -244,13 +248,7 @@
   <section class="sec" id="activites">
     <div class="wrap">
       <div class="head"><span class="tag">Nos activités</span><h2>Cinq façons de s'épanouir</h2><p>Du premier essai au perfectionnement — une place pour chaque jeune.</p></div>
-      <div class="acts">
-        <div class="act"><div class="ic">⚽</div><h3>Soccer</h3><div class="lv">Perfectionnement</div><p>Technique, tactique et jeu collectif pour progresser durablement.</p><a class="a-btn btn" href="#" onclick="openIns('Soccer');return false;">S'inscrire</a></div>
-        <div class="act"><div class="ic">🏐</div><h3>Volleyball</h3><div class="lv">Initiation</div><p>Les bases du jeu, la coordination et le plaisir de l'équipe.</p><a class="a-btn btn" href="#" onclick="openIns('Volleyball');return false;">S'inscrire</a></div>
-        <div class="act"><div class="ic">🎾</div><h3>Tennis</h3><div class="lv">Initiation</div><p>Gestes fondamentaux, précision et esprit sportif, pas à pas.</p><a class="a-btn btn" href="#" onclick="openIns('Tennis');return false;">S'inscrire</a></div>
-        <div class="act"><div class="ic">🏀</div><h3>Basketball</h3><div class="lv">Initiation</div><p>Maniement de balle, déplacements et lecture du jeu en douceur.</p><a class="a-btn btn" href="#" onclick="openIns('Basketball');return false;">S'inscrire</a></div>
-        <div class="act"><div class="ic">🎨</div><h3>Activités culturelles</h3><div class="lv">Culture &amp; communauté</div><p>Ateliers, sorties et projets qui nourrissent la richesse d'esprit.</p><a class="a-btn btn" href="#" onclick="openIns('Activités culturelles');return false;">S'inscrire</a></div>
-      </div>
+      <div class="acts" id="actsGrid"><!-- généré par JS, voir renderActivities() --></div>
     </div>
   </section>
 
@@ -258,7 +256,7 @@
   <section class="sec" id="galerie" style="background:#fff;">
     <div class="wrap">
       <div class="head"><span class="tag">Galerie</span><h2>Nos beaux moments</h2><p>Les photos et vidéos de la saison viendront ici.</p></div>
-      <div class="gal"><div>Photo</div><div>Photo</div><div>Photo</div><div>Photo</div><div>Photo</div><div>Photo</div><div>Photo</div><div>Photo</div></div>
+      <div class="gal" id="galGrid"><div>Photo</div><div>Photo</div><div>Photo</div><div>Photo</div><div>Photo</div><div>Photo</div><div>Photo</div><div>Photo</div></div>
     </div>
   </section>
 
@@ -266,7 +264,7 @@
   <section class="sec" id="calendrier">
     <div class="wrap">
       <div class="head"><span class="tag">Calendrier</span><h2>Ce qui s'en vient</h2><p>Les dates à venir de l'organisme.</p></div>
-      <div class="cal">
+      <div class="cal" id="calGrid">
         <div class="ev"><span class="d">14 sept</span><h4>Journée portes ouvertes</h4><p>Essais gratuits · toutes les activités.</p></div>
         <div class="ev"><span class="d">21 sept</span><h4>Début des séances</h4><p>Soccer &amp; basketball.</p></div>
         <div class="ev"><span class="d">5 oct</span><h4>Tournoi amical</h4><p>Volleyball · gymnase Saint-Léonard.</p></div>
@@ -278,7 +276,7 @@
   <section class="sec" id="partenaires" style="background:#fff;">
     <div class="wrap">
       <div class="head"><span class="tag">Partenaires</span><h2>Merci à ceux qui nous soutiennent</h2><p>Les logos de vos partenaires prendront place ici.</p></div>
-      <div class="part"><div>Logo partenaire</div><div>Logo partenaire</div><div>Logo partenaire</div><div>Logo partenaire</div></div>
+      <div class="part" id="partGrid"><div>Logo partenaire</div><div>Logo partenaire</div><div>Logo partenaire</div><div>Logo partenaire</div></div>
     </div>
   </section>
 
@@ -304,7 +302,7 @@
         <p>Un accès privé pour chaque famille inscrite : messages de l'organisme, factures et agenda des séances, réunis au même endroit.</p>
         <div class="feat"><span>💬 Communication</span><span>🧾 Facturation</span><span>📅 Agenda</span></div>
         <a class="b-gold btn" href="#" onclick="alert('Espace membre — à venir en Phase 2 (connexion sécurisée).');return false;">Se connecter</a>
-        <a class="adminlink" href="#" onclick="alert('Tableau de bord admin — à venir en Phase 2.');return false;">Accès administrateur →</a>
+        <a class="adminlink" href="https://talent-perle-dashboard.netlify.app" target="_blank" rel="noopener">Accès administrateur →</a>
       </div>
     </div>
   </section>
@@ -344,13 +342,7 @@
         <h3>Formulaire d'inscription</h3>
         <p class="sub">Jeunes de 10 à 16 ans · Saint-Léonard</p>
         <div class="fld"><label>Activité souhaitée</label>
-          <select id="i_act">
-            <option value="Soccer">Soccer — Perfectionnement</option>
-            <option value="Volleyball">Volleyball — Initiation</option>
-            <option value="Tennis">Tennis — Initiation</option>
-            <option value="Basketball">Basketball — Initiation</option>
-            <option value="Activités culturelles">Activités culturelles</option>
-          </select></div>
+          <select id="i_act"><!-- généré par JS, voir renderActivities() --></select></div>
         <div class="row2">
           <div class="fld"><label>Nom du jeune</label><input id="i_nom" type="text" placeholder="Prénom et nom"></div>
           <div class="fld"><label>Âge</label><input id="i_age" type="number" min="8" max="18" placeholder="Ex. 12"></div>
@@ -406,6 +398,95 @@
         Exécuter en tant que "Moi", Accès "Tout le monde" → Déployer.
      3) Copier l'URL du déploiement (se termine par /exec) et la coller ci-dessous. */
   var TP_SHEET_URL = "";
+</script>
+<script>
+  /* ====== CONTENU DYNAMIQUE (Dashboard Talent Perlé — Supabase) ======
+     Laisser vide = le site utilise les activités par défaut ci-dessous et
+     les sections Galerie/Calendrier/Partenaires restent des exemples
+     statiques. Une fois le Dashboard configuré (voir talent-perle-dashboard/),
+     coller ici l'URL du projet Supabase et sa clé publique "anon" (Project
+     Settings → API) — ce sont des valeurs publiques, sans risque à exposer
+     côté client, la base est protégée en écriture par ailleurs. */
+  var TP_SUPABASE = { url: "", anonKey: "" };
+
+  // Activités par défaut, utilisées tant que le Dashboard n'a rien envoyé
+  // (ou si TP_SUPABASE n'est pas configuré) — garde le site fonctionnel dès
+  // le départ, avec les mêmes 5 activités que le Dashboard pré-remplit.
+  var FALLBACK_ACTIVITIES = [
+    { name:'Soccer', icon:'⚽', level:'Perfectionnement', description:"Technique, tactique et jeu collectif pour progresser durablement." },
+    { name:'Volleyball', icon:'🏐', level:'Initiation', description:"Les bases du jeu, la coordination et le plaisir de l'équipe." },
+    { name:'Tennis', icon:'🎾', level:'Initiation', description:'Gestes fondamentaux, précision et esprit sportif, pas à pas.' },
+    { name:'Basketball', icon:'🏀', level:'Initiation', description:'Maniement de balle, déplacements et lecture du jeu en douceur.' },
+    { name:"Jeu d'échecs", icon:'♟️', level:'Initiation', description:'Stratégie, concentration et patience, un coup à la fois.' }
+  ];
+
+  function renderActivities(list){
+    var grid = document.getElementById('actsGrid');
+    var select = document.getElementById('i_act');
+    if(!list.length) list = FALLBACK_ACTIVITIES;
+    grid.innerHTML = list.map(function(a){
+      return '<div class="act"><div class="ic">' + (a.icon||'⭐') + '</div><h3>' + escHtml(a.name) + '</h3>' +
+        '<div class="lv">' + escHtml(a.level||'') + '</div><p>' + escHtml(a.description||'') + '</p>' +
+        '<a class="a-btn btn" href="#" onclick="openIns(\'' + escJsAttr(a.name) + '\');return false;">S\'inscrire</a></div>';
+    }).join('');
+    select.innerHTML = list.map(function(a){
+      return '<option value="' + escAttr(a.name) + '">' + escHtml(a.name) + (a.level ? ' — ' + escHtml(a.level) : '') + '</option>';
+    }).join('');
+  }
+
+  function escHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function escAttr(s){ return escHtml(s).replace(/"/g,'&quot;'); }
+  // Pour une valeur insérée dans un onclick="...('VALEUR')" : échappe d'abord
+  // l'apostrophe pour la chaîne JS (sinon "Jeu d'échecs" casse le onclick),
+  // puis échappe & < > " pour l'attribut HTML — sans re-toucher l'apostrophe,
+  // qui doit rester littérale (précédée d'un antislash) pour le parseur JS.
+  function escJsAttr(s){
+    return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")
+      .replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  renderActivities(FALLBACK_ACTIVITIES);
+
+  if(TP_SUPABASE.url && TP_SUPABASE.anonKey){
+    var sbHeaders = { apikey: TP_SUPABASE.anonKey, Authorization: 'Bearer ' + TP_SUPABASE.anonKey };
+    fetch(TP_SUPABASE.url + '/rest/v1/activities?select=*&active=eq.true&order=sort_order.asc', { headers: sbHeaders })
+      .then(function(r){ return r.ok ? r.json() : []; })
+      .then(function(rows){ if(rows && rows.length) renderActivities(rows); })
+      .catch(function(){});
+
+    fetch(TP_SUPABASE.url + '/rest/v1/photos?select=*&order=sort_order.asc', { headers: sbHeaders })
+      .then(function(r){ return r.ok ? r.json() : []; })
+      .then(function(rows){
+        if(rows && rows.length){
+          document.getElementById('galGrid').innerHTML = rows.map(function(p){
+            return '<div><img src="' + escAttr(p.url) + '" alt="' + escAttr(p.caption||'') + '"></div>';
+          }).join('');
+        }
+      }).catch(function(){});
+
+    fetch(TP_SUPABASE.url + '/rest/v1/events?select=*&order=sort_order.asc', { headers: sbHeaders })
+      .then(function(r){ return r.ok ? r.json() : []; })
+      .then(function(rows){
+        if(rows && rows.length){
+          document.getElementById('calGrid').innerHTML = rows.map(function(e){
+            return '<div class="ev">' + (e.poster_url ? '<img src="' + escAttr(e.poster_url) + '">' : '') +
+              (e.date_label ? '<span class="d">' + escHtml(e.date_label) + '</span>' : '') +
+              '<h4>' + escHtml(e.title) + '</h4><p>' + escHtml(e.description||'') + '</p></div>';
+          }).join('');
+        }
+      }).catch(function(){});
+
+    fetch(TP_SUPABASE.url + '/rest/v1/partners?select=*&order=sort_order.asc', { headers: sbHeaders })
+      .then(function(r){ return r.ok ? r.json() : []; })
+      .then(function(rows){
+        if(rows && rows.length){
+          document.getElementById('partGrid').innerHTML = rows.map(function(p){
+            var inner = p.logo_url ? '<img src="' + escAttr(p.logo_url) + '" alt="' + escAttr(p.name) + '">' : escHtml(p.name);
+            return p.link ? '<a href="' + escAttr(p.link) + '" target="_blank" rel="noopener">' + inner + '</a>' : '<div>' + inner + '</div>';
+          }).join('');
+        }
+      }).catch(function(){});
+  }
 </script>
 <script>
   function closeM(){document.getElementById('mnav').classList.remove('open');}

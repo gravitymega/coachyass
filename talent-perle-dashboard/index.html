@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Talent Perlé — Tableau de bord</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FCF8F1;--card:#fff;--ink:#233028;--forest:#2E7150;--forest-d:#215239;
+    --gold:#C6982F;--gold-s:#FBF1DA;--line:#ECE7DB;--mut:#63726A;--bord:#8A2B38;--bord-s:#FBEAEC;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Outfit',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5;padding:20px;}
+  .wrap{max-width:900px;margin:0 auto;}
+  h1{font-size:22px;font-weight:800;color:var(--forest);margin-bottom:4px;}
+  .sub{color:var(--mut);font-size:14px;margin-bottom:24px;}
+  .btn{cursor:pointer;border:none;font-family:inherit;font-weight:700;border-radius:10px;padding:10px 16px;font-size:14px;}
+  .b-forest{background:var(--forest);color:#fff;}
+  .b-forest:hover{background:var(--forest-d);}
+  .b-line{background:#fff;border:1px solid var(--line);color:var(--ink);}
+  .b-danger{background:var(--bord-s);color:var(--bord);}
+  .b-danger:hover{background:var(--bord);color:#fff;}
+  input,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:14px;background:#fff;}
+  label{font-size:12.5px;font-weight:700;color:var(--mut);display:block;margin-bottom:4px;}
+  .fld{margin-bottom:12px;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:600px){.row2{grid-template-columns:1fr;}}
+
+  #gate{max-width:340px;margin:80px auto;text-align:center;}
+  #gate input{margin-bottom:12px;}
+  #app{display:none;}
+
+  .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+  .tab{padding:9px 16px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:700;font-size:13.5px;cursor:pointer;color:var(--mut);}
+  .tab.active{background:var(--forest);color:#fff;border-color:var(--forest);}
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .card{background:var(--card);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 6px 18px rgba(35,48,40,.06);}
+  .item{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);}
+  .item:last-child{border-bottom:none;}
+  .item img{width:52px;height:52px;object-fit:cover;border-radius:10px;flex-shrink:0;background:var(--paper);}
+  .item .ic{width:52px;height:52px;border-radius:10px;flex-shrink:0;background:var(--paper);display:flex;align-items:center;justify-content:center;font-size:24px;}
+  .item .meta{flex:1;min-width:0;}
+  .item .meta h4{font-size:14.5px;font-weight:800;}
+  .item .meta p{font-size:12.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .item .acts{display:flex;gap:6px;flex-shrink:0;}
+  .item .acts .btn{padding:7px 11px;font-size:12.5px;}
+  .msg{font-size:13px;margin-top:8px;}
+  .msg.err{color:var(--bord);}
+  .msg.ok{color:var(--forest);}
+  .formtitle{font-weight:800;margin-bottom:10px;font-size:15px;}
+  .empty{color:var(--mut);font-size:13.5px;text-align:center;padding:20px 0;}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <h1>Talent Perlé</h1>
+  <div class="sub">Tableau de bord — accès protégé</div>
+  <input type="password" id="pw" placeholder="Mot de passe">
+  <button class="btn b-forest" style="width:100%;" onclick="tryLogin()">Entrer</button>
+  <div id="gateMsg" class="msg err"></div>
+</div>
+
+<div id="app" class="wrap">
+  <h1>Tableau de bord Talent Perlé</h1>
+  <div class="sub">Gère les activités, photos, événements et partenaires du site — tout se met à jour automatiquement sur talent-perle.netlify.app.</div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="activities" onclick="switchTab('activities')">🏅 Activités</div>
+    <div class="tab" data-tab="photos" onclick="switchTab('photos')">🖼️ Photos</div>
+    <div class="tab" data-tab="events" onclick="switchTab('events')">📅 Événements</div>
+    <div class="tab" data-tab="partners" onclick="switchTab('partners')">🤝 Partenaires</div>
+  </div>
+
+  <!-- ACTIVITÉS -->
+  <div class="panel active" id="panel-activities">
+    <div class="card">
+      <div class="formtitle">Ajouter une activité</div>
+      <div class="row2">
+        <div class="fld"><label>Nom</label><input id="act_name" placeholder="Ex. Jeu d'échecs"></div>
+        <div class="fld"><label>Icône (emoji)</label><input id="act_icon" placeholder="Ex. ♟️" value="⭐"></div>
+      </div>
+      <div class="row2">
+        <div class="fld"><label>Niveau</label><input id="act_level" placeholder="Ex. Initiation"></div>
+        <div class="fld"><label>Ordre d'affichage</label><input id="act_sort" type="number" value="0"></div>
+      </div>
+      <div class="fld"><label>Description</label><textarea id="act_desc" rows="2" placeholder="Une phrase qui présente l'activité"></textarea></div>
+      <button class="btn b-forest" onclick="createActivity()">Ajouter</button>
+      <div id="act_msg" class="msg"></div>
+    </div>
+    <div class="card"><div id="act_list"></div></div>
+  </div>
+
+  <!-- PHOTOS -->
+  <div class="panel" id="panel-photos">
+    <div class="card">
+      <div class="formtitle">Ajouter une photo</div>
+      <div class="fld"><label>Fichier image</label><input id="pho_file" type="file" accept="image/*"></div>
+      <div class="fld"><label>Légende (optionnel)</label><input id="pho_caption" placeholder="Ex. Tournoi de soccer, juin 2026"></div>
+      <button class="btn b-forest" onclick="createPhoto()">Téléverser</button>
+      <div id="pho_msg" class="msg"></div>
+    </div>
+    <div class="card"><div id="pho_list"></div></div>
+  </div>
+
+  <!-- ÉVÉNEMENTS -->
+  <div class="panel" id="panel-events">
+    <div class="card">
+      <div class="formtitle">Ajouter un événement</div>
+      <div class="row2">
+        <div class="fld"><label>Titre</label><input id="ev_title" placeholder="Ex. Journée portes ouvertes"></div>
+        <div class="fld"><label>Date (texte court)</label><input id="ev_date" placeholder="Ex. 14 sept"></div>
+      </div>
+      <div class="fld"><label>Description</label><textarea id="ev_desc" rows="2" placeholder="Détails de l'événement"></textarea></div>
+      <div class="fld"><label>Affiche (image, optionnel)</label><input id="ev_file" type="file" accept="image/*"></div>
+      <button class="btn b-forest" onclick="createEvent()">Ajouter</button>
+      <div id="ev_msg" class="msg"></div>
+    </div>
+    <div class="card"><div id="ev_list"></div></div>
+  </div>
+
+  <!-- PARTENAIRES -->
+  <div class="panel" id="panel-partners">
+    <div class="card">
+      <div class="formtitle">Ajouter un partenaire</div>
+      <div class="fld"><label>Nom</label><input id="par_name" placeholder="Ex. Épicerie du coin"></div>
+      <div class="fld"><label>Logo (image)</label><input id="par_file" type="file" accept="image/*"></div>
+      <div class="fld"><label>Lien (optionnel)</label><input id="par_link" placeholder="https://..."></div>
+      <button class="btn b-forest" onclick="createPartner()">Ajouter</button>
+      <div id="par_msg" class="msg"></div>
+    </div>
+    <div class="card"><div id="par_list"></div></div>
+  </div>
+</div>
+
+<script>
+  var PW_KEY = 'tp_admin_pw';
+
+  function api(body){
+    return fetch('/.netlify/functions/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-password': localStorage.getItem(PW_KEY) || '' },
+      body: JSON.stringify(body)
+    }).then(function(r){ return r.json().then(function(j){ return { ok: r.ok, status: r.status, data: j }; }); });
+  }
+
+  function tryLogin(){
+    localStorage.setItem(PW_KEY, document.getElementById('pw').value);
+    document.getElementById('gateMsg').textContent = 'Vérification…';
+    api({ action: 'list', entity: 'activities' }).then(function(res){
+      if(res.status === 401){
+        document.getElementById('gateMsg').textContent = 'Mot de passe incorrect.';
+        localStorage.removeItem(PW_KEY);
+        return;
+      }
+      if(!res.ok){
+        document.getElementById('gateMsg').textContent = (res.data && res.data.error) || 'Erreur de connexion.';
+        return;
+      }
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      loadAll();
+    }).catch(function(){
+      document.getElementById('gateMsg').textContent = 'Erreur réseau — réessaie.';
+    });
+  }
+
+  // Reconnexion automatique si le mot de passe est déjà mémorisé.
+  if(localStorage.getItem(PW_KEY)){
+    document.getElementById('pw').value = localStorage.getItem(PW_KEY);
+    tryLogin();
+  }
+
+  function switchTab(name){
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.tab === name); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id === 'panel-' + name); });
+  }
+
+  function fileToBase64(file){
+    return new Promise(function(resolve, reject){
+      var reader = new FileReader();
+      reader.onload = function(){ resolve(reader.result.split(',')[1]); };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function uploadFile(inputEl){
+    var file = inputEl.files && inputEl.files[0];
+    if(!file) return Promise.resolve('');
+    return fileToBase64(file).then(function(b64){
+      return api({ action: 'upload', filename: file.name, contentType: file.type, contentBase64: b64 });
+    }).then(function(res){
+      if(!res.ok) throw new Error((res.data && res.data.error) || 'Téléversement échoué');
+      return res.data.url;
+    });
+  }
+
+  function setMsg(id, text, ok){
+    var el = document.getElementById(id);
+    el.textContent = text;
+    el.className = 'msg ' + (ok ? 'ok' : 'err');
+  }
+
+  function loadAll(){ loadList('activities'); loadList('photos'); loadList('events'); loadList('partners'); }
+
+  function loadList(entity){
+    api({ action: 'list', entity: entity }).then(function(res){
+      if(!res.ok) return;
+      renderList(entity, res.data.rows || []);
+    });
+  }
+
+  function removeItem(entity, id){
+    if(!confirm('Supprimer définitivement ?')) return;
+    api({ action: 'delete', entity: entity, id: id }).then(function(res){
+      if(res.ok) loadList(entity);
+      else alert((res.data && res.data.error) || 'Suppression échouée');
+    });
+  }
+
+  function toggleActive(id, current){
+    api({ action: 'update', entity: 'activities', id: id, data: { active: !current } }).then(function(res){
+      if(res.ok) loadList('activities');
+    });
+  }
+
+  function renderList(entity, rows){
+    var container = document.getElementById(
+      entity === 'activities' ? 'act_list' :
+      entity === 'photos' ? 'pho_list' :
+      entity === 'events' ? 'ev_list' : 'par_list'
+    );
+    if(!rows.length){ container.innerHTML = '<div class="empty">Rien pour l’instant.</div>'; return; }
+
+    container.innerHTML = rows.map(function(r){
+      if(entity === 'activities'){
+        return '<div class="item">' +
+          '<div class="ic">' + (r.icon || '⭐') + '</div>' +
+          '<div class="meta"><h4>' + esc(r.name) + (r.active ? '' : ' (masquée)') + '</h4><p>' + esc(r.level || '') + '</p></div>' +
+          '<div class="acts">' +
+            '<button class="btn b-line" onclick="toggleActive(\'' + r.id + '\',' + !!r.active + ')">' + (r.active ? 'Masquer' : 'Afficher') + '</button>' +
+            '<button class="btn b-danger" onclick="removeItem(\'activities\',\'' + r.id + '\')">Suppr.</button>' +
+          '</div></div>';
+      }
+      if(entity === 'photos'){
+        return '<div class="item">' +
+          '<img src="' + esc(r.url) + '">' +
+          '<div class="meta"><h4>' + esc(r.caption || 'Sans légende') + '</h4></div>' +
+          '<div class="acts"><button class="btn b-danger" onclick="removeItem(\'photos\',\'' + r.id + '\')">Suppr.</button></div>' +
+        '</div>';
+      }
+      if(entity === 'events'){
+        return '<div class="item">' +
+          (r.poster_url ? '<img src="' + esc(r.poster_url) + '">' : '<div class="ic">📅</div>') +
+          '<div class="meta"><h4>' + esc(r.title) + '</h4><p>' + esc(r.date_label || '') + ' — ' + esc(r.description || '') + '</p></div>' +
+          '<div class="acts"><button class="btn b-danger" onclick="removeItem(\'events\',\'' + r.id + '\')">Suppr.</button></div>' +
+        '</div>';
+      }
+      return '<div class="item">' +
+        (r.logo_url ? '<img src="' + esc(r.logo_url) + '">' : '<div class="ic">🤝</div>') +
+        '<div class="meta"><h4>' + esc(r.name) + '</h4><p>' + esc(r.link || '') + '</p></div>' +
+        '<div class="acts"><button class="btn b-danger" onclick="removeItem(\'partners\',\'' + r.id + '\')">Suppr.</button></div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+
+  function createActivity(){
+    var name = document.getElementById('act_name').value.trim();
+    if(!name){ setMsg('act_msg', 'Le nom est requis.', false); return; }
+    api({ action: 'create', entity: 'activities', data: {
+      name: name,
+      icon: document.getElementById('act_icon').value.trim() || '⭐',
+      level: document.getElementById('act_level').value.trim(),
+      description: document.getElementById('act_desc').value.trim(),
+      sort_order: Number(document.getElementById('act_sort').value) || 0,
+      active: true
+    }}).then(function(res){
+      if(!res.ok){ setMsg('act_msg', (res.data && res.data.error) || 'Échec', false); return; }
+      setMsg('act_msg', 'Activité ajoutée.', true);
+      document.getElementById('act_name').value = '';
+      document.getElementById('act_desc').value = '';
+      loadList('activities');
+    });
+  }
+
+  function createPhoto(){
+    var input = document.getElementById('pho_file');
+    if(!input.files.length){ setMsg('pho_msg', 'Choisis une image.', false); return; }
+    setMsg('pho_msg', 'Téléversement…', true);
+    uploadFile(input).then(function(url){
+      return api({ action: 'create', entity: 'photos', data: {
+        url: url, caption: document.getElementById('pho_caption').value.trim(), sort_order: 0
+      }});
+    }).then(function(res){
+      if(!res.ok){ setMsg('pho_msg', (res.data && res.data.error) || 'Échec', false); return; }
+      setMsg('pho_msg', 'Photo ajoutée.', true);
+      input.value = ''; document.getElementById('pho_caption').value = '';
+      loadList('photos');
+    }).catch(function(e){ setMsg('pho_msg', e.message, false); });
+  }
+
+  function createEvent(){
+    var title = document.getElementById('ev_title').value.trim();
+    if(!title){ setMsg('ev_msg', 'Le titre est requis.', false); return; }
+    setMsg('ev_msg', 'Ajout…', true);
+    uploadFile(document.getElementById('ev_file')).then(function(url){
+      return api({ action: 'create', entity: 'events', data: {
+        title: title,
+        date_label: document.getElementById('ev_date').value.trim(),
+        description: document.getElementById('ev_desc').value.trim(),
+        poster_url: url,
+        sort_order: 0
+      }});
+    }).then(function(res){
+      if(!res.ok){ setMsg('ev_msg', (res.data && res.data.error) || 'Échec', false); return; }
+      setMsg('ev_msg', 'Événement ajouté.', true);
+      document.getElementById('ev_title').value = '';
+      document.getElementById('ev_date').value = '';
+      document.getElementById('ev_desc').value = '';
+      document.getElementById('ev_file').value = '';
+      loadList('events');
+    }).catch(function(e){ setMsg('ev_msg', e.message, false); });
+  }
+
+  function createPartner(){
+    var name = document.getElementById('par_name').value.trim();
+    if(!name){ setMsg('par_msg', 'Le nom est requis.', false); return; }
+    setMsg('par_msg', 'Ajout…', true);
+    uploadFile(document.getElementById('par_file')).then(function(url){
+      return api({ action: 'create', entity: 'partners', data: {
+        name: name, logo_url: url, link: document.getElementById('par_link').value.trim(), sort_order: 0
+      }});
+    }).then(function(res){
+      if(!res.ok){ setMsg('par_msg', (res.data && res.data.error) || 'Échec', false); return; }
+      setMsg('par_msg', 'Partenaire ajouté.', true);
+      document.getElementById('par_name').value = '';
+      document.getElementById('par_link').value = '';
+      document.getElementById('par_file').value = '';
+      loadList('partners');
+    }).catch(function(e){ setMsg('par_msg', e.message, false); });
+  }
+</script>
+</body>
+</html>
