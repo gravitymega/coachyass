@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gravity Coaching — Coach de basketball privé à Montréal</title>
-<meta name="description" content="Coaching basketball privé à Montréal : séances individuelles sur mesure avec un coach dédié. Forfaits dès 15,83 $/séance. Réserve ta séance sur le terrain en 1 minute.">
+<meta name="description" content="Coaching basketball privé à Montréal : séances individuelles sur mesure avec un coach dédié. Forfaits dès 25 $/séance. Réserve ta séance sur le terrain en 1 minute.">
 <meta name="keywords" content="coach basketball privé Montréal, entraînement basketball individuel Montréal, cours particulier basketball Montréal, coaching basketball jeunes Montréal, séance basketball 1 à 1 Montréal, Gravity Coaching">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Gravity Coaching">
 <link rel="canonical" href="https://coaching.osmm-mtl.site/">
 <meta property="og:title" content="Gravity Coaching — Réserve ta séance de basket 🏀">
-<meta property="og:description" content="Coaching basketball privé à Montréal. Forfaits dès 15,83 $/séance. Réserve ta séance sur le terrain en 1 minute.">
+<meta property="og:description" content="Coaching basketball privé à Montréal. Forfaits dès 25 $/séance. Réserve ta séance sur le terrain en 1 minute.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://coaching.osmm-mtl.site/gravity-logo.png">
 <meta property="og:url" content="https://coaching.osmm-mtl.site/">
@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="Gravity Coaching">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gravity Coaching — Réserve ta séance de basket 🏀">
-<meta name="twitter:description" content="Coaching basketball privé à Montréal. Forfaits dès 15,83 $/séance.">
+<meta name="twitter:description" content="Coaching basketball privé à Montréal. Forfaits dès 25 $/séance.">
 <meta name="twitter:image" content="https://coaching.osmm-mtl.site/gravity-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -141,7 +141,7 @@
   }
   textarea{resize:vertical;min-height:60px;}
   .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .packages{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .packages{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
   .pkg{
     border:2px solid var(--border);
     border-radius:10px;
@@ -322,6 +322,7 @@
 
   @media (max-width:400px){
     .row{grid-template-columns:1fr;}
+    .packages{grid-template-columns:1fr;}
   }
   @media (prefers-reduced-motion: reduce){
     *{transition:none !important;animation:none !important;}
@@ -350,22 +351,16 @@
           <div class="unit">à l'unité</div>
         </label>
         <label class="pkg" data-key="3">
-          <input type="radio" name="Forfait" value="3 séances — 65 $">
+          <input type="radio" name="Forfait" value="3 séances — 80 $">
           <div class="label">3 séances</div>
-          <div class="price">65 $</div>
-          <div class="unit">≈ 21,67 $ / séance</div>
+          <div class="price">80 $</div>
+          <div class="unit">≈ 26,67 $ / séance</div>
         </label>
         <label class="pkg" data-key="6">
-          <input type="radio" name="Forfait" value="6 séances — 110 $">
+          <input type="radio" name="Forfait" value="6 séances — 150 $">
           <div class="label">6 séances</div>
-          <div class="price">110 $</div>
-          <div class="unit">≈ 18,33 $ / séance</div>
-        </label>
-        <label class="pkg" data-key="12">
-          <input type="radio" name="Forfait" value="12 séances — 190 $">
-          <div class="label">12 séances</div>
-          <div class="price">190 $</div>
-          <div class="unit">≈ 15,83 $ / séance</div>
+          <div class="price">150 $</div>
+          <div class="unit">25 $ / séance</div>
         </label>
       </div>
     </div>
