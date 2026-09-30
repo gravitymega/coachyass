@@ -172,6 +172,10 @@
     font-weight:800;
   }
   .hint{font-size:14px;color:var(--gray);margin:0 0 14px;line-height:1.5;}
+  .zeffy-btn{display:block;text-align:center;background:var(--orange);color:#0A0A0A;font-weight:700;text-decoration:none;padding:12px 16px;border-radius:10px;margin-top:14px;}
+  .zeffy-btn:hover{background:var(--orange-deep);}
+  .vendredi-card p{margin:0 0 6px;}
+  .vendredi-card .muted{color:var(--gray);font-size:13px;}
   .tel-link{color:var(--orange);font-weight:600;text-decoration:none;}
   .tel-link:visited{color:var(--orange);}
   .tel-link:hover{text-decoration:underline;}
@@ -338,6 +342,14 @@
 </header>
 
 <div class="wrap">
+
+  <div class="card vendredi-card">
+    <h2>📅 Vendredi Coaching</h2>
+    <p><strong>Tous les vendredis, 19h30 – 21h30</strong></p>
+    <p>📍 Complexe sportif Regina Assumpta</p>
+    <p class="muted">Réserve et paie ta place par carte directement sur Zeffy — ou choisis une séance privée ci-dessous.</p>
+    <a class="zeffy-btn" href="https://www.zeffy.com/en-CA/ticketing/saison-coaching" target="_blank" rel="noopener">🎟️ Réserver le vendredi (carte)</a>
+  </div>
 
   <form id="bookingForm" novalidate>
 
@@ -542,6 +554,7 @@
     successPayment.innerHTML = `
       <div class="pay-title">💳 Paiement — Interac</div>
       <p>Envoyez ${price ? `<strong>${price} $</strong>` : 'le montant du forfait'} par virement Interac au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou à mqtad9@hotmail.com pour confirmer votre place.</p>
+      <a class="zeffy-btn" href="https://www.zeffy.com/en-CA/ticketing/saison-coaching" target="_blank" rel="noopener">💳 Ou payer par carte avec Zeffy</a>
     `;
     successPayment.classList.add('visible');
   }
