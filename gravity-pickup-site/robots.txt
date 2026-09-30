@@ -1,4 +1,2 @@
 User-agent: *
-Allow: /
-
-Sitemap: https://pickup.osmm-mtl.site/sitemap.xml
+Disallow: /
