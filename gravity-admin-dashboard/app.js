@@ -65,6 +65,7 @@ const GROUPS = [
   { id: 'partenariats', label: 'Partenariats', champOnly: true },
   { id: 'communication', label: 'Communication' },
   { id: 'comptabilite', label: 'Comptabilité' },
+  { id: 'boutique', label: 'Boutique', champOnly: true },
   { id: 'produit', label: 'Produit vedette' },
   { id: 'videos', label: 'Vidéos Instagram' },
   { id: 'instagram', label: 'Instagram', champOnly: true },
@@ -518,6 +519,7 @@ function setActiveGroup(id) {
   // Chargé à la demande seulement : chaque ouverture interroge l'API Meta,
   // inutile de le faire à chaque connexion au Dashboard.
   if (id === 'instagram') loadInstagramOnce();
+  if (id === 'boutique') loadShopProducts();
   renderSidebar();
   applyPanelVisibility();
   closeSidebarMobile();
@@ -4439,6 +4441,195 @@ if (financeForm) {
 }
 
 // ---------- Utilitaire ----------
+// ---------- Boutique (gravity-basketball-mtl/boutique.html) ----------
+// Produits lus en direct par la page Boutique (table shop_products, lecture
+// publique des produits actifs). Photos dans le bucket public gravity-media,
+// dossier boutique/. Chargé seulement à l'ouverture du groupe « Boutique ».
+let allShopProducts = [];
+const shopProductsTbody = document.getElementById('shop-products-tbody');
+const shopProductForm = document.getElementById('shop-product-form');
+const shopProductIdInput = document.getElementById('shop-product-id');
+const shopProductNameInput = document.getElementById('shop-product-name');
+const shopProductDescriptionInput = document.getElementById('shop-product-description');
+const shopProductPriceInput = document.getElementById('shop-product-price');
+const shopProductImageFileInput = document.getElementById('shop-product-image-file');
+const shopProductImagePreviewEl = document.getElementById('shop-product-image-preview');
+const shopProductImageRemoveWrap = document.getElementById('shop-product-image-remove-wrap');
+const shopProductImageRemoveCheckbox = document.getElementById('shop-product-image-remove');
+const shopProductSizesInput = document.getElementById('shop-product-sizes');
+const shopProductColorsInput = document.getElementById('shop-product-colors');
+const shopProductTagInput = document.getElementById('shop-product-tag');
+const shopProductOrderInput = document.getElementById('shop-product-order');
+const shopProductActiveCheckbox = document.getElementById('shop-product-active');
+const shopProductSaveNote = document.getElementById('shop-product-save-note');
+const shopProductDeleteBtn = document.getElementById('shop-product-delete-btn');
+
+const splitList = (value) => value.split(',').map((v) => v.trim()).filter(Boolean);
+const shopImagePreviewHtml = (url) => `<img src="${escapeHtml(url)}" alt="" style="height:80px; width:80px; object-fit:cover; border-radius:8px;">`;
+
+async function loadShopProducts() {
+  const { data, error } = await supabase
+    .from('shop_products')
+    .select('*')
+    .order('display_order', { ascending: true });
+  if (!error) allShopProducts = data || [];
+  renderShopProductsTable();
+}
+
+function renderShopProductsTable() {
+  if (!shopProductsTbody) return;
+  shopProductsTbody.innerHTML =
+    allShopProducts
+      .map((p) => `
+        <tr>
+          <td>${p.image_url ? `<img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}" style="height:44px; width:44px; object-fit:cover; border-radius:6px;">` : '<span class="muted">Illustration</span>'}</td>
+          <td>${escapeHtml(p.name)}${p.tag ? ` <span class="muted">(${escapeHtml(p.tag)})</span>` : ''}</td>
+          <td>${Number(p.price).toFixed(2)} $</td>
+          <td>${escapeHtml((p.sizes || []).join(', ') || '—')}</td>
+          <td>${escapeHtml((p.colors || []).join(', ') || '—')}</td>
+          <td>${p.display_order}</td>
+          <td><span class="program-status-pill ${p.active ? 'active' : 'inactive'}">${p.active ? 'En vente' : 'Masqué'}</span></td>
+          <td>
+            <div class="program-row-actions">
+              <button type="button" class="btn btn-ghost shop-product-edit-btn" data-id="${p.id}">Éditer</button>
+              <button type="button" class="btn btn-ghost shop-product-toggle-btn" data-id="${p.id}">${p.active ? 'Masquer' : 'Remettre en vente'}</button>
+            </div>
+          </td>
+        </tr>
+      `)
+      .join('') || '<tr><td colspan="8" class="empty-note">Aucun produit pour l\'instant — clique "+ Nouveau produit" pour en ajouter un.</td></tr>';
+
+  shopProductsTbody.querySelectorAll('.shop-product-edit-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const product = allShopProducts.find((p) => p.id === btn.dataset.id);
+      if (product) openShopProductForm(product);
+    });
+  });
+  shopProductsTbody.querySelectorAll('.shop-product-toggle-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const product = allShopProducts.find((p) => p.id === btn.dataset.id);
+      if (!product) return;
+      btn.disabled = true;
+      const { error } = await supabase.from('shop_products').update({ active: !product.active }).eq('id', product.id);
+      if (error) alert('Erreur : ' + error.message);
+      await loadShopProducts();
+    });
+  });
+}
+
+function openShopProductForm(product) {
+  shopProductForm.hidden = false;
+  shopProductIdInput.value = product ? product.id : '';
+  shopProductNameInput.value = product ? product.name : '';
+  shopProductDescriptionInput.value = product ? (product.description || '') : '';
+  shopProductPriceInput.value = product ? product.price : '';
+  shopProductSizesInput.value = product ? (product.sizes || []).join(', ') : 'S, M, L, XL';
+  shopProductColorsInput.value = product ? (product.colors || []).join(', ') : 'Noir';
+  shopProductTagInput.value = product ? (product.tag || '') : '';
+  shopProductOrderInput.value = product ? product.display_order : allShopProducts.length + 1;
+  shopProductActiveCheckbox.checked = product ? product.active : true;
+  shopProductDeleteBtn.hidden = !product;
+  shopProductImageFileInput.value = '';
+  shopProductImageRemoveCheckbox.checked = false;
+  shopProductImageRemoveWrap.hidden = !product?.image_url;
+  shopProductImagePreviewEl.innerHTML = product?.image_url ? shopImagePreviewHtml(product.image_url) : '';
+  shopProductForm.dataset.currentImageUrl = product?.image_url || '';
+  shopProductSaveNote.hidden = true;
+  shopProductForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeShopProductForm() {
+  shopProductForm.hidden = true;
+  shopProductForm.reset();
+  shopProductIdInput.value = '';
+  shopProductImagePreviewEl.innerHTML = '';
+  shopProductForm.dataset.currentImageUrl = '';
+}
+
+function showShopProductNote(text, isError) {
+  shopProductSaveNote.textContent = text;
+  shopProductSaveNote.style.color = isError ? '#ff6b6b' : '';
+  shopProductSaveNote.hidden = false;
+}
+
+document.getElementById('shop-product-new-btn').addEventListener('click', () => openShopProductForm(null));
+document.getElementById('shop-product-cancel-btn').addEventListener('click', () => closeShopProductForm());
+
+shopProductImageFileInput.addEventListener('change', () => {
+  const file = shopProductImageFileInput.files[0];
+  if (!file) return;
+  shopProductImagePreviewEl.innerHTML = shopImagePreviewHtml(URL.createObjectURL(file));
+});
+
+shopProductDeleteBtn.addEventListener('click', async () => {
+  const id = shopProductIdInput.value;
+  if (!id || !confirm('Supprimer ce produit de la boutique ? (Pour le retirer temporairement, utilise plutôt « Masquer ».)')) return;
+  const { error } = await supabase.from('shop_products').delete().eq('id', id);
+  if (error) {
+    alert('Erreur : ' + error.message);
+    return;
+  }
+  closeShopProductForm();
+  await loadShopProducts();
+});
+
+shopProductForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = shopProductIdInput.value || null;
+  const saveBtn = shopProductForm.querySelector('button[type="submit"]');
+
+  const sizes = splitList(shopProductSizesInput.value);
+  const colors = splitList(shopProductColorsInput.value);
+  if (!sizes.length || !colors.length) {
+    showShopProductNote('Indique au moins une taille et une couleur (ex. « Taille unique », « Noir »).', true);
+    return;
+  }
+
+  saveBtn.disabled = true;
+  let imageUrl = shopProductImageRemoveCheckbox.checked ? null : (shopProductForm.dataset.currentImageUrl || null);
+  const file = shopProductImageFileInput.files[0];
+  if (file) {
+    const path = `boutique/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+    const { error: uploadError } = await supabase.storage.from('gravity-media').upload(path, file, { upsert: false });
+    if (uploadError) {
+      showShopProductNote('Erreur upload photo : ' + uploadError.message, true);
+      saveBtn.disabled = false;
+      return;
+    }
+    imageUrl = supabase.storage.from('gravity-media').getPublicUrl(path).data.publicUrl;
+  }
+
+  const payload = {
+    site: 'gravity-basketball',
+    name: shopProductNameInput.value.trim(),
+    description: shopProductDescriptionInput.value.trim() || null,
+    price: Number(shopProductPriceInput.value) || 0,
+    sizes,
+    colors,
+    image_url: imageUrl,
+    tag: shopProductTagInput.value.trim() || null,
+    display_order: parseInt(shopProductOrderInput.value, 10) || 0,
+    active: shopProductActiveCheckbox.checked,
+  };
+
+  const { error } = id
+    ? await supabase.from('shop_products').update(payload).eq('id', id)
+    : await supabase.from('shop_products').insert(payload);
+
+  saveBtn.disabled = false;
+  if (error) {
+    showShopProductNote('Erreur : ' + error.message, true);
+    return;
+  }
+
+  showShopProductNote('Enregistré ! Visible sur la boutique.', false);
+  await loadShopProducts();
+  setTimeout(() => {
+    closeShopProductForm();
+    shopProductSaveNote.hidden = true;
+  }, 900);
+});
+
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')
