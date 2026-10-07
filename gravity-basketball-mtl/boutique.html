@@ -283,8 +283,8 @@ if ('serviceWorker' in navigator) {
   // ============================================================
   const PRODUITS = [
     {
-      id: 'hoodie', nom: 'Hoodie', prix: 60, tag: 'Populaire', actif: true, photo: '',
-      description: 'Coton ouaté à capuchon, poche kangourou, logo Gravity brodé.',
+      id: 'hoodie', nom: 'Hoodie à capuche', prix: 60, tag: 'Populaire', actif: true, photo: '',
+      description: 'Coton ouaté avec capuche et cordons, poche kangourou, logo Gravity brodé.',
       tailles: ['Jeunesse S', 'Jeunesse M', 'Jeunesse L', 'S', 'M', 'L', 'XL', '2XL'],
       couleurs: ['Noir', 'Gris'],
     },
@@ -320,13 +320,13 @@ if ('serviceWorker' in navigator) {
 
   // Silhouettes génériques (remplacées par `photo` quand elle est fournie).
   const SILHOUETTES = {
-    hoodie: '<path d="M70 40 Q100 14 130 40 L172 56 L194 170 L170 176 L156 100 L156 182 L44 182 L44 100 L30 176 L6 170 L28 56 Z" /><path d="M78 40 Q100 76 122 40" fill="none" stroke="rgba(0,0,0,.35)" stroke-width="4"/><path d="M72 140 H128 L120 166 H80 Z" fill="rgba(0,0,0,.2)"/>',
+    hoodie: '<path d="M62 62 Q58 10 100 8 Q142 10 138 62 Z" /><path d="M74 60 Q74 24 100 22 Q126 24 126 60 Z" fill="rgba(0,0,0,.45)" stroke="none"/><path d="M62 56 L172 66 L194 172 L170 178 L156 104 L156 184 L44 184 L44 104 L30 178 L6 172 L28 66 Z" /><path d="M76 58 Q100 86 124 58" fill="none" stroke="rgba(0,0,0,.35)" stroke-width="4"/><path d="M92 74 V102 M108 74 V102" stroke="#e9e6ee" stroke-width="2.5" stroke-linecap="round"/><path d="M70 144 H130 L122 170 H78 Z" fill="rgba(0,0,0,.2)"/>',
     tshirt: '<path d="M74 30 Q100 50 126 30 L172 50 L192 96 L162 108 L156 92 L156 182 L44 182 L44 92 L38 108 L8 96 L28 50 Z" />',
     tuque: '<path d="M40 150 Q40 50 100 46 Q160 50 160 150 Z" /><rect x="34" y="138" width="132" height="34" rx="8" fill="rgba(0,0,0,.25)"/><circle cx="100" cy="40" r="16"/>',
     'sweat-oversize': '<path d="M64 36 Q100 50 136 36 L176 56 L196 132 L170 140 L158 100 L160 182 L40 182 L42 100 L30 140 L4 132 L24 56 Z" /><rect x="40" y="170" width="120" height="12" fill="rgba(0,0,0,.25)"/>',
   };
   const COULEURS_SVG = { Noir: '#26222e', Gris: '#6d6878', Blanc: '#e9e6ee', Orange: '#e8672e' };
-  const LOGO_TOP = { hoodie: '44%', tshirt: '38%', tuque: '52%', 'sweat-oversize': '40%' };
+  const LOGO_TOP = { hoodie: '52%', tshirt: '38%', tuque: '52%', 'sweat-oversize': '40%' };
 
   const fmt = (n) => `${n.toFixed(2).replace('.', ',').replace(',00', '')} $`;
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
