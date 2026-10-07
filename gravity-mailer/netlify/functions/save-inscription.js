@@ -30,7 +30,7 @@ function corsOrigin(event) {
 
 // Seuls ces programmes sont acceptés — évite qu'un appel mal formé crée une
 // valeur de select imprévue dans Notion.
-const PROGRAMMES = ['Coach Yass', 'Gravity Pickup', 'Ligue 3v3', 'Ligue Maison', 'Gravity U15 Masculin', 'Gravity Prep', 'OSMM'];
+const PROGRAMMES = ['Coach Yass', 'Gravity Pickup', 'Ligue 3v3', 'Ligue Maison', 'Gravity U15 Masculin', 'Gravity Prep', 'OSMM', 'Boutique'];
 
 function truncate(v, max) {
   return v == null ? '' : String(v).slice(0, max);

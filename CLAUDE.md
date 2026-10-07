@@ -199,3 +199,12 @@ Compte branché : **@gravitybasketball_mtl** (compte Instagram professionnel dé
 5. Netlify, site `gravity-admin-dashboard` → variables d'environnement : **`META_PAGE_ACCESS_TOKEN`** = ce jeton de Page. (Optionnel : `META_IG_USER_ID`, sinon déduit automatiquement.)
 6. Pour les messages privés : dans l'app Instagram → Paramètres → Messages et appels → Outils connectés → activer "Autoriser l'accès aux messages".
 L'app peut rester en mode développement tant que seuls des comptes ayant un rôle sur l'app (l'utilisateur) s'en servent — pas besoin de revue d'app Meta.
+
+## Boutique Gravity Basketball (7 octobre 2026)
+
+Page `gravity-basketball-mtl/boutique.html` (lien « Boutique » dans le menu et le pied de page de `index.html`, ajoutée au sitemap) : hoodie, t-shirt, tuque, sweat oversize. Panier côté navigateur (`localStorage`), formulaire de commande (nom, courriel, téléphone, joueur/équipe, paiement Interac ou carte).
+
+- **Catalogue** : tableau `PRODUITS` en haut du `<script>` de `boutique.html` (nom, prix taxes incluses, tailles, couleurs, `photo`, `actif`). **Prix et couleurs mis par défaut (60/30/25/55 $) — à confirmer par l'utilisateur.** Sans `photo`, une silhouette SVG avec le logo s'affiche.
+- **Commandes** : enregistrées dans Notion « 🏀 Inscription GRAV » (`Programme = Boutique`, `Montant`, articles dans `Détails`) via `save-inscription` (`'Boutique'` ajouté à `PROGRAMMES` — nécessite un redéploiement de `gravity-mailer`), + courriel FormSubmit à `Gavitybasketball@gmail.com`. Repli `mailto:` si les deux échouent.
+- **Paiement carte** : `ZEFFY_BOUTIQUE_URL` vide pour l'instant → message « on t'envoie le lien bientôt ». À remplir quand l'utilisateur aura créé une boutique/billet Zeffy.
+- Remise en main propre (entraînement/match), pas de livraison.
