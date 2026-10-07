@@ -1320,6 +1320,91 @@ Gravity Basketball</textarea>
       </div>
     </section>
 
+    <section class="panel championship-only" data-group="boutique">
+      <h2>Boutique — Produits</h2>
+      <p class="muted">Articles affichés sur la page Boutique du site Gravity Basketball (gravity.osmm-mtl.site/boutique.html). Les commandes arrivent dans Notion « 🏀 Inscription GRAV » (Programme = Boutique) et par courriel.</p>
+
+      <div class="table-wrap">
+        <table class="data-table" id="shop-products-table">
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Produit</th>
+              <th>Prix</th>
+              <th>Tailles</th>
+              <th>Couleurs</th>
+              <th>Ordre</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="shop-products-tbody"></tbody>
+        </table>
+      </div>
+      <button type="button" id="shop-product-new-btn" class="btn btn-ghost" style="margin-top:12px;">+ Nouveau produit</button>
+
+      <form id="shop-product-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
+        <input type="hidden" id="shop-product-id">
+
+        <div class="field">
+          <label for="shop-product-name">Nom du produit</label>
+          <input type="text" id="shop-product-name" required maxlength="80" placeholder="Ex. : Hoodie à capuche">
+        </div>
+
+        <div class="field">
+          <label for="shop-product-description">Description</label>
+          <textarea id="shop-product-description" rows="3" maxlength="500" placeholder="Matière, coupe, détails du logo…"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="shop-product-price">Prix ($, taxes incluses)</label>
+          <input type="number" id="shop-product-price" min="0" step="0.01" required>
+        </div>
+
+        <div class="field">
+          <label for="shop-product-image-file">Photo (remplace la photo actuelle si un fichier est choisi)</label>
+          <input type="file" id="shop-product-image-file" accept="image/*">
+          <div id="shop-product-image-preview" style="margin-top:8px;"></div>
+          <label class="checkbox-field" id="shop-product-image-remove-wrap" hidden style="margin-top:6px;">
+            <input type="checkbox" id="shop-product-image-remove">
+            <span>Retirer la photo (afficher l'illustration par défaut)</span>
+          </label>
+        </div>
+
+        <div class="field">
+          <label for="shop-product-sizes">Tailles (séparées par des virgules)</label>
+          <input type="text" id="shop-product-sizes" placeholder="Ex. : S, M, L, XL, 2XL — ou : Taille unique">
+        </div>
+
+        <div class="field">
+          <label for="shop-product-colors">Couleurs (séparées par des virgules)</label>
+          <input type="text" id="shop-product-colors" placeholder="Ex. : Noir, Gris">
+        </div>
+
+        <div class="field">
+          <label for="shop-product-tag">Étiquette (optionnel)</label>
+          <input type="text" id="shop-product-tag" maxlength="20" placeholder="Ex. : Nouveau, Populaire, Édition limitée">
+        </div>
+
+        <div class="field">
+          <label for="shop-product-order">Ordre d'affichage</label>
+          <input type="number" id="shop-product-order" value="0">
+        </div>
+
+        <label class="checkbox-field">
+          <input type="checkbox" id="shop-product-active" checked>
+          <span>Produit en vente (visible sur la boutique)</span>
+        </label>
+
+        <div class="comm-actions">
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="button" id="shop-product-cancel-btn" class="btn btn-ghost">Annuler</button>
+          <button type="button" id="shop-product-delete-btn" class="btn btn-ghost" hidden>Supprimer ce produit</button>
+        </div>
+        <p class="save-note" id="shop-product-save-note" hidden>Enregistré !</p>
+      </form>
+    </section>
+
     <section class="panel" data-group="produit">
       <h2>Produit vedette (bandeau du site)</h2>
       <p class="muted">Colle un lien Amazon (idéalement ton lien d'affilié) — le titre, l'image et le prix sont extraits automatiquement. Corrige les champs si l'extraction échoue.</p>

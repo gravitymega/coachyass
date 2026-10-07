@@ -179,7 +179,7 @@
 
   <section id="produits" class="section">
     <div class="container">
-      <div class="products-grid" id="products-grid"></div>
+      <div class="products-grid" id="products-grid"><p class="cart-empty">Chargement des produits…</p></div>
     </div>
   </section>
 
@@ -273,35 +273,38 @@
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then((rs) => rs.forEach((r) => r.unregister())).catch(() => {});
 }
-(() => {
+(async () => {
   // ============================================================
-  // CATALOGUE — c'est ici qu'on modifie les produits.
-  //  - prix : en dollars, taxes incluses
-  //  - photo : chemin d'une vraie photo (ex. 'assets/boutique/hoodie.jpg') ;
-  //    vide = illustration générique avec le logo
-  //  - actif : false pour retirer un produit sans le supprimer
+  // CATALOGUE — géré depuis le Dashboard admin (groupe « Boutique »,
+  // table Supabase shop_products : nom, description, prix, tailles,
+  // couleurs, photo, étiquette, ordre, en vente ou masqué).
+  // FALLBACK_PRODUITS ne sert que si Supabase est injoignable.
   // ============================================================
-  const PRODUITS = [
+  const SUPABASE_URL = 'https://aevoulzotvmnrnclfuek.supabase.co';
+  // Clé publique "anon" — protégée par RLS (lecture des produits actifs seulement).
+  const SUPABASE_ANON_KEY = 'sb_publishable_NAj99iQim_odAYNwR-qucg_2KKHYf7Z';
+
+  const FALLBACK_PRODUITS = [
     {
-      id: 'hoodie', nom: 'Hoodie à capuche', prix: 60, tag: 'Populaire', actif: true, photo: '',
+      id: 'hoodie', type: 'hoodie', nom: 'Hoodie à capuche', prix: 60, tag: 'Populaire', actif: true, photo: '',
       description: 'Coton ouaté avec capuche et cordons, poche kangourou, logo Gravity brodé.',
       tailles: ['Jeunesse S', 'Jeunesse M', 'Jeunesse L', 'S', 'M', 'L', 'XL', '2XL'],
       couleurs: ['Noir', 'Gris'],
     },
     {
-      id: 'tshirt', nom: 'T-shirt', prix: 30, tag: '', actif: true, photo: '',
+      id: 'tshirt', type: 'tshirt', nom: 'T-shirt', prix: 30, tag: '', actif: true, photo: '',
       description: 'T-shirt en coton doux, logo Gravity sur la poitrine.',
       tailles: ['Jeunesse S', 'Jeunesse M', 'Jeunesse L', 'S', 'M', 'L', 'XL', '2XL'],
       couleurs: ['Noir', 'Blanc'],
     },
     {
-      id: 'tuque', nom: 'Tuque', prix: 25, tag: '', actif: true, photo: '',
+      id: 'tuque', type: 'tuque', nom: 'Tuque', prix: 25, tag: '', actif: true, photo: '',
       description: 'Tuque tricotée à revers avec logo Gravity. Parfaite pour l\'hiver.',
       tailles: ['Taille unique'],
       couleurs: ['Noir', 'Orange'],
     },
     {
-      id: 'sweat-oversize', nom: 'Sweat oversize', prix: 55, tag: 'Nouveau', actif: true, photo: '',
+      id: 'sweat-oversize', type: 'sweat-oversize', nom: 'Sweat oversize', prix: 55, tag: 'Nouveau', actif: true, photo: '',
       description: 'Crewneck coupe ample (oversize), molleton épais, logo Gravity.',
       tailles: ['S', 'M', 'L', 'XL', '2XL'],
       couleurs: ['Noir', 'Gris'],
@@ -328,16 +331,49 @@ if ('serviceWorker' in navigator) {
   const COULEURS_SVG = { Noir: '#26222e', Gris: '#6d6878', Blanc: '#e9e6ee', Orange: '#e8672e' };
   const LOGO_TOP = { hoodie: '52%', tshirt: '38%', tuque: '52%', 'sweat-oversize': '40%' };
 
-  const fmt = (n) => `${n.toFixed(2).replace('.', ',').replace(',00', '')} $`;
+  const fmt = (n) => `${Number(n).toFixed(2).replace('.', ',').replace(',00', '')} $`;
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const produits = PRODUITS.filter((p) => p.actif);
+  // Illustration choisie d'après le nom quand le produit n'a pas de photo.
+  function typeFromName(name) {
+    const n = name.toLowerCase();
+    if (/hood|capuch/.test(n)) return 'hoodie';
+    if (/tuque|bonnet|beanie/.test(n)) return 'tuque';
+    if (/sweat|crew|chandail|pull/.test(n)) return 'sweat-oversize';
+    return 'tshirt';
+  }
+
+  async function loadProduits() {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/shop_products?select=*&active=eq.true&site=eq.gravity-basketball&order=display_order.asc`, {
+        headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
+      });
+      if (!res.ok) throw new Error(res.status);
+      const rows = await res.json();
+      return rows.map((r) => ({
+        id: r.id,
+        type: typeFromName(r.name),
+        nom: r.name,
+        prix: Number(r.price) || 0,
+        tag: r.tag || '',
+        actif: true,
+        photo: r.image_url || '',
+        description: r.description || '',
+        tailles: r.sizes && r.sizes.length ? r.sizes : ['Taille unique'],
+        couleurs: r.colors && r.colors.length ? r.colors : ['Noir'],
+      }));
+    } catch (e) {
+      return FALLBACK_PRODUITS;
+    }
+  }
+
+  const produits = (await loadProduits()).filter((p) => p.actif);
   const byId = Object.fromEntries(produits.map((p) => [p.id, p]));
 
   function visualHtml(p, couleur) {
     if (p.photo) return `<img class="product-photo" src="${esc(p.photo)}" alt="${esc(p.nom)} Gravity Basketball" loading="lazy">`;
     const fill = COULEURS_SVG[couleur] || '#26222e';
-    return `<svg viewBox="0 0 200 200" fill="${fill}" stroke="rgba(255,255,255,.08)" stroke-width="2" aria-hidden="true">${SILHOUETTES[p.id] || SILHOUETTES.tshirt}</svg>`
-      + `<img class="logo-overlay" src="assets/logo.png" alt="" style="top:${LOGO_TOP[p.id] || '40%'}">`;
+    return `<svg viewBox="0 0 200 200" fill="${fill}" stroke="rgba(255,255,255,.08)" stroke-width="2" aria-hidden="true">${SILHOUETTES[p.type] || SILHOUETTES.tshirt}</svg>`
+      + `<img class="logo-overlay" src="assets/logo.png" alt="" style="top:${LOGO_TOP[p.type] || '40%'}">`;
   }
 
   // ---------- Catalogue ----------
@@ -373,7 +409,7 @@ if ('serviceWorker' in navigator) {
         </div>
         <p class="added-flash" data-role="flash" aria-live="polite"></p>
       </div>
-    </article>`).join('');
+    </article>`).join('') || '<p class="cart-empty">Aucun produit en vente pour le moment — reviens bientôt !</p>';
 
   grid.addEventListener('change', (e) => {
     if (e.target.dataset.role !== 'couleur') return;
