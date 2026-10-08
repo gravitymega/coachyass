@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tableau tactique — Gravity Basketball</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  [hidden] { display: none !important; }
+  .tt-wrap { max-width: 1320px; margin: 0 auto; padding: 16px; }
+  .tt-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  .tt-header h1 { margin: 0; font-size: 1.4rem; }
+  .tt-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  @media (max-width: 900px) { .tt-grid { grid-template-columns: 1fr; } }
+  .tt-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; min-width: 0; }
+  .tt-card h2 { font-size: 1rem; margin: 0 0 10px; }
+  .tt-step { display: flex; gap: 8px; align-items: baseline; margin: 14px 0 6px; font-weight: 600; }
+  .tt-step span { background: var(--accent); color: #fff; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; flex: none; }
+  .tt-video { position: relative; width: 100%; background: #000; border-radius: 10px; overflow: hidden; }
+  .tt-video video { display: block; width: 100%; height: auto; }
+  .tt-video canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .tt-video canvas { pointer-events: none; }
+  .tt-video.calibrating canvas { pointer-events: auto; cursor: crosshair; }
+  .tt-empty { padding: 40px 16px; text-align: center; color: var(--text-muted); }
+  .tt-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
+  .tt-row label { font-size: 0.85rem; color: var(--text-muted); }
+  .tt-row select, .tt-row input[type="text"], .tt-row input[type="number"] { background: #0f0f0f; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font: inherit; font-size: 0.9rem; }
+  .tt-row input[type="range"] { accent-color: var(--accent); }
+  .btn-sm { padding: 7px 11px; font-size: 0.82rem; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .tt-progress { height: 8px; background: #262626; border-radius: 99px; overflow: hidden; margin: 8px 0; }
+  .tt-progress div { height: 100%; width: 0; background: var(--accent); transition: width 0.15s; }
+  .tt-status { font-size: 0.85rem; color: var(--text-muted); min-height: 1.2em; }
+  .tt-status.error { color: #ff6b6b; }
+  .tt-calib-hint { background: #2a1a10; border: 1px solid var(--accent); color: #ffd9c4; border-radius: 8px; padding: 8px 10px; font-size: 0.88rem; margin: 8px 0; }
+  .tt-board canvas { display: block; width: 100%; height: auto; border-radius: 10px; touch-action: none; background: #fdfdfb; }
+  .tt-tools { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .tt-tools .btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .tt-selected { border: 1px dashed var(--border); border-radius: 10px; padding: 10px; margin-top: 10px; }
+  .tt-legend { color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; }
+  .tt-legend svg { vertical-align: middle; margin-right: 4px; }
+  .tt-tips { font-size: 0.82rem; color: var(--text-muted); margin: 6px 0 0; padding-left: 18px; }
+  .tt-tips li { margin: 3px 0; }
+</style>
+</head>
+<body>
+<div class="tt-wrap">
+  <header class="tt-header">
+    <div>
+      <h1>Tableau tactique</h1>
+      <p class="muted" style="margin:4px 0 0">Donne un clip : l'outil repère les joueurs et dessine le jeu sur le tableau du coach. La vidéo reste sur ton appareil, rien n'est envoyé en ligne.</p>
+    </div>
+    <a class="btn btn-ghost" href="index.html">← Dashboard</a>
+  </header>
+
+  <div class="tt-grid">
+    <!-- VIDÉO -->
+    <section class="tt-card">
+      <h2>Clip vidéo</h2>
+
+      <div class="tt-step"><span>1</span> Choisir le clip</div>
+      <div class="tt-row">
+        <input type="file" id="tt-file" accept="video/*">
+      </div>
+      <ul class="tt-tips">
+        <li>Caméra <strong>fixe</strong> (trépied), en hauteur, demi-terrain bien visible : c'est ce qui donne les meilleurs résultats.</li>
+        <li>Un clip court (5 à 30 s) = une action.</li>
+      </ul>
+
+      <div class="tt-video" id="tt-video-box" hidden>
+        <video id="tt-video" controls playsinline muted preload="auto"></video>
+        <canvas id="tt-overlay"></canvas>
+      </div>
+      <div class="tt-empty" id="tt-video-empty">Aucun clip chargé.</div>
+
+      <div class="tt-step"><span>2</span> Repérer le terrain</div>
+      <div class="tt-row">
+        <label for="tt-ref">Repères :</label>
+        <select id="tt-ref">
+          <option value="paint">Les 4 coins de la raquette</option>
+          <option value="half">Les 4 coins du demi-terrain</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" id="tt-calib-btn" disabled>Placer les repères</button>
+      </div>
+      <div class="tt-calib-hint" id="tt-calib-hint" hidden></div>
+      <p class="muted" style="margin:4px 0 0">Mets la vidéo sur une image où les repères sont bien visibles, puis clique-les dans l'ordre indiqué (le point à cliquer clignote aussi sur le tableau). Les lignes du terrain se superposent ensuite au clip pour vérifier.</p>
+
+      <div class="tt-step"><span>3</span> Analyser</div>
+      <div class="tt-row">
+        <button class="btn btn-ghost btn-sm" id="tt-start-btn" disabled>Début = ici</button>
+        <button class="btn btn-ghost btn-sm" id="tt-end-btn" disabled>Fin = ici</button>
+        <span class="muted" id="tt-range"></span>
+      </div>
+      <div class="tt-row">
+        <label for="tt-fps">Précision :</label>
+        <select id="tt-fps">
+          <option value="4">Rapide (4 images/s)</option>
+          <option value="6" selected>Normale (6 images/s)</option>
+          <option value="10">Fine (10 images/s)</option>
+        </select>
+        <button class="btn btn-primary" id="tt-analyze-btn" disabled>Analyser le clip</button>
+        <button class="btn btn-ghost btn-sm" id="tt-cancel-btn" hidden>Arrêter l'analyse</button>
+      </div>
+      <div class="tt-progress"><div id="tt-progress-bar"></div></div>
+      <p class="tt-status" id="tt-status"></p>
+    </section>
+
+    <!-- TABLEAU -->
+    <section class="tt-card tt-board">
+      <h2>Tableau du coach</h2>
+      <div class="tt-row">
+        <input type="text" id="tt-title" placeholder="Nom du jeu (ex. : Horns — pick and roll)" style="flex:1;min-width:180px">
+      </div>
+      <canvas id="tt-board"></canvas>
+
+      <div class="tt-tools" id="tt-tools">
+        <button class="btn btn-ghost btn-sm active" data-tool="select">✋ Déplacer / choisir</button>
+        <button class="btn btn-ghost btn-sm" data-tool="addA">+ Attaquant</button>
+        <button class="btn btn-ghost btn-sm" data-tool="addB">+ Défenseur</button>
+        <button class="btn btn-ghost btn-sm" data-tool="cut">Coupe</button>
+        <button class="btn btn-ghost btn-sm" data-tool="dribble">Dribble</button>
+        <button class="btn btn-ghost btn-sm" data-tool="pass">Passe</button>
+        <button class="btn btn-ghost btn-sm" data-tool="screen">Écran</button>
+        <button class="btn btn-ghost btn-sm" data-tool="erase">Gomme</button>
+      </div>
+
+      <div class="tt-row">
+        <label for="tt-simplify">Tracés :</label>
+        <span class="muted">détaillés</span>
+        <input type="range" id="tt-simplify" min="0.2" max="2" step="0.1" value="0.8">
+        <span class="muted">épurés</span>
+        <label><input type="checkbox" id="tt-def-paths"> Déplacements défense</label>
+      </div>
+      <div class="tt-row">
+        <button class="btn btn-ghost btn-sm" id="tt-play-btn" disabled>▶ Rejouer l'action</button>
+        <button class="btn btn-ghost btn-sm" id="tt-swap-btn" disabled>⇄ Inverser attaque / défense</button>
+        <button class="btn btn-ghost btn-sm" id="tt-undo-btn">↶ Annuler</button>
+        <button class="btn btn-ghost btn-sm" id="tt-clear-btn">Tout effacer</button>
+        <button class="btn btn-primary btn-sm" id="tt-export-btn">Télécharger l'image</button>
+      </div>
+
+      <div class="tt-selected" id="tt-selected" hidden>
+        <div class="tt-row">
+          <strong id="tt-sel-name"></strong>
+          <label for="tt-sel-label">Numéro :</label>
+          <input type="text" id="tt-sel-label" maxlength="3" style="width:60px">
+          <button class="btn btn-ghost btn-sm" id="tt-sel-team">Changer d'équipe</button>
+          <button class="btn btn-ghost btn-sm" id="tt-sel-delete">Retirer</button>
+        </div>
+      </div>
+
+      <div class="tt-legend">
+        <span><svg width="34" height="10"><line x1="2" y1="5" x2="26" y2="5" stroke="currentColor" stroke-width="2"/><path d="M26 1 L33 5 L26 9 Z" fill="currentColor"/></svg>Coupe</span>
+        <span><svg width="34" height="10"><path d="M2 5 L5 2 L9 8 L13 2 L17 8 L21 2 L25 5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M26 1 L33 5 L26 9 Z" fill="currentColor"/></svg>Dribble</span>
+        <span><svg width="34" height="10"><line x1="2" y1="5" x2="26" y2="5" stroke="currentColor" stroke-width="2" stroke-dasharray="4 3"/><path d="M26 1 L33 5 L26 9 Z" fill="currentColor"/></svg>Passe</span>
+        <span><svg width="34" height="12"><line x1="2" y1="6" x2="30" y2="6" stroke="currentColor" stroke-width="2"/><line x1="30" y1="1" x2="30" y2="11" stroke="currentColor" stroke-width="2.5"/></svg>Écran</span>
+      </div>
+      <p class="muted" style="margin:10px 0 0">L'analyse automatique donne une première version : corrige ensuite à la main (numéros, équipes, joueurs en trop comme les arbitres, tracés manquants).</p>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
+<script src="tableau-tactique.js"></script>
+</body>
+</html>

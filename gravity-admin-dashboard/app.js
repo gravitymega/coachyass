@@ -61,6 +61,7 @@ const GROUPS = [
   { id: 'championnat', label: 'Championnat', champOnly: true },
   { id: 'mes-equipes', label: 'Mes équipes', champOnly: true },
   { id: 'espace-joueurs', label: 'Espace Joueurs', champOnly: true },
+  { id: 'tactique', label: 'Tableau tactique', champOnly: true },
   { id: 'recrutement', label: 'Recrutement', champOnly: true },
   { id: 'partenariats', label: 'Partenariats', champOnly: true },
   { id: 'communication', label: 'Communication' },
