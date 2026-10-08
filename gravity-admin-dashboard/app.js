@@ -4645,7 +4645,7 @@ const shopPrintifyNote = document.getElementById('shop-product-printify-note');
 const shopPrintifyProductsEl = document.getElementById('shop-product-printify-products');
 const shopPrintifyMapEl = document.getElementById('shop-product-printify-map');
 
-const PRINTFUL_COLOR_HINTS = {
+const PRINTIFY_COLOR_HINTS = {
   noir: ['black'], blanc: ['white'], gris: ['grey', 'gray', 'heather', 'ash', 'charcoal'],
   orange: ['orange'], rouge: ['red'], bleu: ['blue', 'navy', 'royal'], marine: ['navy'],
   vert: ['green', 'forest'], rose: ['pink'], beige: ['sand', 'beige', 'natural', 'cream'],
@@ -4676,7 +4676,7 @@ function guessPrintifyVariant(combo, candidates) {
   const [couleur, taille] = combo.split('|');
   const youth = /^jeunesse\s+/i.test(taille);
   const size = taille.replace(/^jeunesse\s+/i, '').trim().toLowerCase();
-  const hints = PRINTFUL_COLOR_HINTS[couleur.toLowerCase()] || [couleur.toLowerCase()];
+  const hints = PRINTIFY_COLOR_HINTS[couleur.toLowerCase()] || [couleur.toLowerCase()];
   const matches = candidates.filter((v) => {
     const vSize = (v.size || '').toLowerCase();
     const sizeOk = size === 'taille unique' ? true : vSize === size || vSize === `y${size}`;
