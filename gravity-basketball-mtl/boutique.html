@@ -359,11 +359,12 @@ if ('serviceWorker' in navigator) {
   const ZEFFY_BOUTIQUE_URL = 'https://www.zeffy.com/en-CA/ticketing/boutique-gravity-basketball';
 
   // Frais de livraison à domicile (taxes incluses), ajoutés au total. Les
-  // commandes livrées partent chez Printful en brouillon (voir PRINTFUL_ORDER_URL).
+  // commandes livrées partent chez Printify (voir PRINTIFY_ORDER_URL).
   const FRAIS_LIVRAISON = 12;
-  // Fonction Netlify du Dashboard : crée la commande Printful en brouillon
-  // (l'admin la confirme dans Printful une fois le paiement reçu).
-  const PRINTFUL_ORDER_URL = 'https://gravity-admin-dashboard.netlify.app/.netlify/functions/printful?action=order';
+  // Fonction Netlify du Dashboard : crée la commande dans Printify (Print Geek),
+  // sans l'envoyer en production — l'admin clique « Send to production » dans
+  // Printify une fois le paiement reçu.
+  const PRINTIFY_ORDER_URL = 'https://gravity-admin-dashboard.netlify.app/.netlify/functions/printify?action=order';
 
   // Même canaux que les inscriptions (voir script.js) : Notion (base
   // « 🏀 Inscription GRAV », Programme = Boutique) + courriel FormSubmit.
@@ -605,10 +606,10 @@ if ('serviceWorker' in navigator) {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Envoi…';
 
-    // Printful d'abord (commande en brouillon, rien n'est imprimé avant
-    // confirmation par l'admin) pour noter son numéro dans Notion/courriel.
-    // Jamais bloquant : la commande est enregistrée même si Printful échoue.
-    const printful = await fetch(PRINTFUL_ORDER_URL, {
+    // Printify d'abord (commande en attente, rien n'est imprimé avant
+    // l'envoi en production par l'admin) pour noter son numéro dans Notion/courriel.
+    // Jamais bloquant : la commande est enregistrée même si Printify échoue.
+    const printify = await fetch(PRINTIFY_ORDER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -623,10 +624,10 @@ if ('serviceWorker' in navigator) {
       }),
       signal: timeoutSignal(),
     }).then((r) => r.json()).catch(() => null);
-    const printfulInfo = printful && printful.created
-      ? `Printful : brouillon n° ${printful.printfulOrderId} (à confirmer après paiement)${printful.missing && printful.missing.length ? ` — non reliés : ${printful.missing.join(', ')}` : ''}`
-      : `Printful : non envoyé${printful ? ` (${printful.reason || printful.error || 'erreur'}${printful.missing && printful.missing.length ? ` — non reliés : ${printful.missing.join(', ')}` : ''})` : ' (service injoignable)'}`;
-    const resume = [`Réf. ${reference}`, ...lignes, livraison ? `Adresse : ${adresse}` : 'Remise en main propre', printfulInfo].join('\n');
+    const printifyInfo = printify && printify.created
+      ? `Printify : commande n° ${printify.printifyOrderId} (« Send to production » après paiement)${printify.missing && printify.missing.length ? ` — non reliés : ${printify.missing.join(', ')}` : ''}`
+      : `Printify : non envoyé${printify ? ` (${printify.reason || printify.error || 'erreur'}${printify.missing && printify.missing.length ? ` — non reliés : ${printify.missing.join(', ')}` : ''})` : ' (service injoignable)'}`;
+    const resume = [`Réf. ${reference}`, ...lignes, livraison ? `Adresse : ${adresse}` : 'Remise en main propre', printifyInfo].join('\n');
 
     // Notion = la liste de référence des commandes ; FormSubmit = courriel au
     // coach. Un seul des deux qui passe suffit (même logique que les maillots).
