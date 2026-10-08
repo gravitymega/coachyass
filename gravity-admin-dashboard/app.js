@@ -4534,6 +4534,9 @@ function openShopProductForm(product) {
   shopProductImageRemoveWrap.hidden = !product?.image_url;
   shopProductImagePreviewEl.innerHTML = product?.image_url ? shopImagePreviewHtml(product.image_url) : '';
   shopProductForm.dataset.currentImageUrl = product?.image_url || '';
+  shopPrintfulMap = { ...(product?.printful_variants || {}) };
+  shopPrintfulSelectedProducts = null;
+  renderShopPrintful();
   shopProductSaveNote.hidden = true;
   shopProductForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
@@ -4607,6 +4610,7 @@ shopProductForm.addEventListener('submit', async (e) => {
     sizes,
     colors,
     image_url: imageUrl,
+    printful_variants: collectShopPrintfulMap(),
     tag: shopProductTagInput.value.trim() || null,
     display_order: parseInt(shopProductOrderInput.value, 10) || 0,
     active: shopProductActiveCheckbox.checked,
@@ -4629,6 +4633,144 @@ shopProductForm.addEventListener('submit', async (e) => {
     shopProductSaveNote.hidden = true;
   }, 900);
 });
+
+// ---------- Boutique → Printful ----------
+// Chaque combinaison "Couleur|Taille" d'un produit est reliée à une variante
+// synchronisée Printful (colonne shop_products.printful_variants). La fonction
+// Netlify printful.js s'en sert pour créer les commandes en brouillon.
+let shopPrintfulVariants = null; // variantes de la boutique Printful (chargées à la demande)
+let shopPrintfulMap = {};
+let shopPrintfulSelectedProducts = null; // noms de produits Printful cochés
+const shopPrintfulNote = document.getElementById('shop-product-printful-note');
+const shopPrintfulProductsEl = document.getElementById('shop-product-printful-products');
+const shopPrintfulMapEl = document.getElementById('shop-product-printful-map');
+
+const PRINTFUL_COLOR_HINTS = {
+  noir: ['black'], blanc: ['white'], gris: ['grey', 'gray', 'heather', 'ash', 'charcoal'],
+  orange: ['orange'], rouge: ['red'], bleu: ['blue', 'navy', 'royal'], marine: ['navy'],
+  vert: ['green', 'forest'], rose: ['pink'], beige: ['sand', 'beige', 'natural', 'cream'],
+};
+
+function shopPrintfulCombos() {
+  const colors = splitList(shopProductColorsInput.value);
+  const sizes = splitList(shopProductSizesInput.value);
+  return colors.flatMap((c) => sizes.map((t) => `${c}|${t}`));
+}
+
+function collectShopPrintfulMap() {
+  const out = {};
+  shopPrintfulCombos().forEach((k) => { if (shopPrintfulMap[k]) out[k] = Number(shopPrintfulMap[k]); });
+  return out;
+}
+
+function showShopPrintfulNote(text, isError) {
+  shopPrintfulNote.textContent = text;
+  shopPrintfulNote.style.color = isError ? '#ff6b6b' : '';
+  shopPrintfulNote.hidden = !text;
+}
+
+// Variante Printful la plus probable pour une couleur/taille, parmi les
+// produits cochés : même taille (« Jeunesse M » → produit jeunesse, taille M)
+// et couleur correspondante. Seulement si un seul candidat ressort.
+function guessPrintfulVariant(combo, candidates) {
+  const [couleur, taille] = combo.split('|');
+  const youth = /^jeunesse\s+/i.test(taille);
+  const size = taille.replace(/^jeunesse\s+/i, '').trim().toLowerCase();
+  const hints = PRINTFUL_COLOR_HINTS[couleur.toLowerCase()] || [couleur.toLowerCase()];
+  const matches = candidates.filter((v) => {
+    const vSize = (v.size || '').toLowerCase();
+    const sizeOk = size === 'taille unique' ? true : vSize === size || vSize === `y${size}`;
+    const isYouth = /youth|kid|enfant|jeunesse/i.test(v.product) || /^y/i.test(v.size || '');
+    const colorOk = hints.some((h) => (v.color || '').toLowerCase().includes(h));
+    return sizeOk && colorOk && isYouth === youth;
+  });
+  return matches.length === 1 ? matches[0].id : null;
+}
+
+function renderShopPrintful() {
+  const combos = shopPrintfulCombos();
+  const linked = combos.filter((k) => shopPrintfulMap[k]).length;
+
+  if (!shopPrintfulVariants) {
+    shopPrintfulProductsEl.innerHTML = '';
+    shopPrintfulMapEl.innerHTML = combos.length
+      ? `<p class="muted" style="margin:0;">${linked}/${combos.length} combinaisons couleur/taille reliées à Printful.</p>`
+      : '';
+    return;
+  }
+
+  const productNames = [...new Set(shopPrintfulVariants.map((v) => v.product))];
+  if (shopPrintfulSelectedProducts === null) {
+    const used = new Set(Object.values(shopPrintfulMap).map(Number));
+    shopPrintfulSelectedProducts = new Set(shopPrintfulVariants.filter((v) => used.has(v.id)).map((v) => v.product));
+  }
+  shopPrintfulProductsEl.innerHTML = productNames.length
+    ? `<p class="muted" style="margin:0 0 6px;">Coche le ou les produits Printful qui correspondent (ex. la version adulte et la version jeunesse) :</p>`
+      + productNames.map((n, i) => `<label class="checkbox-field"><input type="checkbox" data-pf-product="${i}" ${shopPrintfulSelectedProducts.has(n) ? 'checked' : ''}><span>${escapeHtml(n)}</span></label>`).join('')
+      + `<button type="button" class="btn btn-ghost" id="shop-printful-auto" style="margin-top:8px;">Associer automatiquement</button>`
+    : '<p class="muted">Aucun produit dans ta boutique Printful pour l\'instant — crée-les d\'abord dans Printful.</p>';
+
+  shopPrintfulProductsEl.querySelectorAll('[data-pf-product]').forEach((cb) => {
+    cb.addEventListener('change', () => {
+      const name = productNames[Number(cb.dataset.pfProduct)];
+      if (cb.checked) shopPrintfulSelectedProducts.add(name);
+      else shopPrintfulSelectedProducts.delete(name);
+      renderShopPrintful();
+    });
+  });
+
+  const candidates = shopPrintfulVariants.filter((v) => shopPrintfulSelectedProducts.has(v.product));
+  document.getElementById('shop-printful-auto')?.addEventListener('click', () => {
+    let n = 0;
+    combos.forEach((k) => {
+      const id = guessPrintfulVariant(k, candidates);
+      if (id) { shopPrintfulMap[k] = id; n += 1; }
+    });
+    showShopPrintfulNote(`${n}/${combos.length} combinaisons associées automatiquement — vérifie et complète les autres à la main, puis Enregistrer.`, false);
+    renderShopPrintful();
+  });
+
+  const pool = candidates.length ? candidates : shopPrintfulVariants;
+  shopPrintfulMapEl.innerHTML = combos.length
+    ? `<table class="data-table"><thead><tr><th>Couleur / taille</th><th>Variante Printful</th></tr></thead><tbody>${combos.map((k) => {
+        const current = Number(shopPrintfulMap[k]) || '';
+        const opts = pool.map((v) => `<option value="${v.id}" ${v.id === current ? 'selected' : ''}>${escapeHtml(`${v.product} — ${v.color || '?'} / ${v.size || '?'}`)}${v.available ? '' : ' (indisponible)'}</option>`).join('');
+        const orphan = current && !pool.some((v) => v.id === current) ? `<option value="${current}" selected>Variante #${current}</option>` : '';
+        return `<tr><td>${escapeHtml(k.replace('|', ' / '))}</td><td><select data-pf-combo="${escapeHtml(k)}" style="width:100%;"><option value="">— non relié —</option>${orphan}${opts}</select></td></tr>`;
+      }).join('')}</tbody></table>`
+    : '<p class="muted">Indique d\'abord les tailles et les couleurs du produit.</p>';
+
+  shopPrintfulMapEl.querySelectorAll('[data-pf-combo]').forEach((sel) => {
+    sel.addEventListener('change', () => {
+      if (sel.value) shopPrintfulMap[sel.dataset.pfCombo] = Number(sel.value);
+      else delete shopPrintfulMap[sel.dataset.pfCombo];
+    });
+  });
+}
+
+document.getElementById('shop-product-printful-load').addEventListener('click', async (e) => {
+  const btn = e.currentTarget;
+  btn.disabled = true;
+  showShopPrintfulNote('Chargement des produits Printful…', false);
+  try {
+    const { data } = await supabase.auth.getSession();
+    const res = await fetch('/.netlify/functions/printful?action=variants', {
+      headers: { Authorization: `Bearer ${data.session?.access_token || ''}` },
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(json.error || `Erreur ${res.status}`);
+    shopPrintfulVariants = json.variants || [];
+    showShopPrintfulNote(`${shopPrintfulVariants.length} variantes Printful chargées.`, false);
+    renderShopPrintful();
+  } catch (err) {
+    showShopPrintfulNote('Printful : ' + err.message, true);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+shopProductSizesInput.addEventListener('input', () => renderShopPrintful());
+shopProductColorsInput.addEventListener('input', () => renderShopPrintful());
 
 function escapeHtml(str) {
   return String(str)
