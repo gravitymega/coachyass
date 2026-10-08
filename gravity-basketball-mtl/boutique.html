@@ -130,6 +130,10 @@
   }
   .cart-total span:last-child { color: var(--accent-light); }
   .cart-note { color: var(--text-muted); font-size: 0.8rem; margin: 8px 0 0; }
+  .cart-shipping { display: flex; justify-content: space-between; padding-top: 12px; color: var(--text-muted); }
+  .address-fields { display: grid; gap: 14px; }
+  .address-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .order-form .field select { width: 100%; }
 
   .order-form { display: grid; gap: 14px; }
   .order-form .field input:not([type=radio]), .order-form .field textarea { width: 100%; }
@@ -190,8 +194,9 @@
           <h2>Ton panier</h2>
           <p class="cart-empty" id="cart-empty">Ton panier est vide. Ajoute un article ci-dessus.</p>
           <ul class="cart-list" id="cart-list"></ul>
+          <div class="cart-shipping" id="cart-shipping-row" hidden><span>Livraison</span><span id="cart-shipping"></span></div>
           <div class="cart-total" id="cart-total-row" hidden><span>Total</span><span id="cart-total"></span></div>
-          <p class="cart-note">Taxes incluses. Remise en main propre lors d'un entraînement ou d'un match (secteur Dorval-Lachine) — on te contacte pour fixer le moment.</p>
+          <p class="cart-note">Taxes incluses. Remise en main propre gratuite lors d'un entraînement ou d'un match (secteur Dorval-Lachine), ou livraison à domicile partout au Canada.</p>
         </div>
 
         <div class="cart-box">
@@ -217,6 +222,45 @@
             <div class="field">
               <label for="o-remarque">Remarque <span style="opacity:.7">(facultatif)</span></label>
               <textarea id="o-remarque" name="remarque" rows="2" maxlength="500"></textarea>
+            </div>
+
+            <div class="field">
+              <label>Réception de la commande</label>
+              <label class="checkbox-field">
+                <input type="radio" name="livraison" value="main-propre" checked>
+                <span>Remise en main propre (gratuit) — entraînement ou match, secteur Dorval-Lachine</span>
+              </label>
+              <label class="checkbox-field">
+                <input type="radio" name="livraison" value="domicile">
+                <span>Livraison à domicile au Canada (+<span id="frais-livraison-label"></span>)</span>
+              </label>
+            </div>
+
+            <div class="address-fields" id="address-fields" hidden>
+              <div class="field">
+                <label for="o-adresse">Adresse *</label>
+                <input id="o-adresse" name="adresse" autocomplete="address-line1" maxlength="200" placeholder="Numéro et rue">
+              </div>
+              <div class="field">
+                <label for="o-adresse2">Appartement, bureau <span style="opacity:.7">(facultatif)</span></label>
+                <input id="o-adresse2" name="adresse2" autocomplete="address-line2" maxlength="200">
+              </div>
+              <div class="address-row">
+                <div class="field">
+                  <label for="o-ville">Ville *</label>
+                  <input id="o-ville" name="ville" autocomplete="address-level2" maxlength="100">
+                </div>
+                <div class="field">
+                  <label for="o-province">Province *</label>
+                  <select id="o-province" name="province" autocomplete="address-level1">
+                    <option value="QC" selected>Québec</option><option value="ON">Ontario</option><option value="AB">Alberta</option><option value="BC">Colombie-Britannique</option><option value="MB">Manitoba</option><option value="NB">Nouveau-Brunswick</option><option value="NL">Terre-Neuve-et-Labrador</option><option value="NS">Nouvelle-Écosse</option><option value="NT">Territoires du Nord-Ouest</option><option value="NU">Nunavut</option><option value="PE">Île-du-Prince-Édouard</option><option value="SK">Saskatchewan</option><option value="YT">Yukon</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="o-cp">Code postal *</label>
+                <input id="o-cp" name="code_postal" autocomplete="postal-code" maxlength="7" placeholder="H8S 1A1">
+              </div>
             </div>
 
             <div class="field">
@@ -312,7 +356,14 @@ if ('serviceWorker' in navigator) {
   ];
 
   // Lien Zeffy de la boutique (à créer). Vide = message « lien envoyé bientôt ».
-  const ZEFFY_BOUTIQUE_URL = '';
+  const ZEFFY_BOUTIQUE_URL = 'https://www.zeffy.com/en-CA/ticketing/boutique-gravity-basketball';
+
+  // Frais de livraison à domicile (taxes incluses), ajoutés au total. Les
+  // commandes livrées partent chez Printful en brouillon (voir PRINTFUL_ORDER_URL).
+  const FRAIS_LIVRAISON = 12;
+  // Fonction Netlify du Dashboard : crée la commande Printful en brouillon
+  // (l'admin la confirme dans Printful une fois le paiement reçu).
+  const PRINTFUL_ORDER_URL = 'https://gravity-admin-dashboard.netlify.app/.netlify/functions/printful?action=order';
 
   // Même canaux que les inscriptions (voir script.js) : Notion (base
   // « 🏀 Inscription GRAV », Programme = Boutique) + courriel FormSubmit.
@@ -456,7 +507,10 @@ if ('serviceWorker' in navigator) {
     renderCart();
   }
 
-  const cartTotal = () => cart.reduce((sum, l) => sum + byId[l.id].prix * l.qte, 0);
+  const cartSubtotal = () => cart.reduce((sum, l) => sum + byId[l.id].prix * l.qte, 0);
+  const isLivraison = () => document.querySelector('input[name="livraison"]:checked')?.value === 'domicile';
+  const shippingFee = () => (isLivraison() && cart.length ? FRAIS_LIVRAISON : 0);
+  const cartTotal = () => cartSubtotal() + shippingFee();
   const lineLabel = (l) => `${byId[l.id].nom} — ${l.couleur}, ${l.taille}`;
 
   function renderCart() {
@@ -476,6 +530,8 @@ if ('serviceWorker' in navigator) {
     document.getElementById('cart-empty').hidden = cart.length > 0;
     document.getElementById('cart-total-row').hidden = cart.length === 0;
     document.getElementById('cart-total').textContent = fmt(cartTotal());
+    document.getElementById('cart-shipping-row').hidden = shippingFee() === 0;
+    document.getElementById('cart-shipping').textContent = fmt(shippingFee());
     document.getElementById('cart-count').textContent = count;
     document.getElementById('cart-fab').hidden = count === 0;
   }
@@ -502,6 +558,12 @@ if ('serviceWorker' in navigator) {
   const val = (name) => (form.elements[name].value || '').trim();
   const timeoutSignal = () => (typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(20000) : undefined);
 
+  document.getElementById('frais-livraison-label').textContent = fmt(FRAIS_LIVRAISON);
+  form.querySelectorAll('input[name="livraison"]').forEach((r) => r.addEventListener('change', () => {
+    document.getElementById('address-fields').hidden = !isLivraison();
+    renderCart();
+  }));
+
   function showError(html) {
     errorEl.innerHTML = html;
     errorEl.hidden = false;
@@ -516,6 +578,10 @@ if ('serviceWorker' in navigator) {
     if (!val('nom')) missing.push('ton nom');
     if (!val('email') || !form.elements.email.checkValidity()) missing.push('un courriel valide');
     if (val('telephone').replace(/\D/g, '').length < 10) missing.push('un numéro de téléphone');
+    if (isLivraison()) {
+      if (!val('adresse') || !val('ville')) missing.push('ton adresse de livraison');
+      if (!/^[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d$/.test(val('code_postal'))) missing.push('un code postal valide');
+    }
     if (missing.length) {
       showError(`Il manque : ${esc(missing.join(', '))}.`);
       return;
@@ -525,7 +591,12 @@ if ('serviceWorker' in navigator) {
     const total = cartTotal();
     const modePaiement = form.elements.mode_paiement.value;
     const lignes = cart.map((l) => `${l.qte} × ${lineLabel(l)} (${fmt(byId[l.id].prix * l.qte)})`);
-    const resume = lignes.join('\n');
+    const livraison = isLivraison();
+    const reference = `GB${Date.now().toString(36).toUpperCase()}`;
+    const adresse = livraison
+      ? `${val('adresse')}${val('adresse2') ? `, ${val('adresse2')}` : ''}, ${val('ville')}, ${val('province')} ${val('code_postal').toUpperCase()}`
+      : '';
+    if (livraison) lignes.push(`Livraison à domicile (${fmt(FRAIS_LIVRAISON)})`);
     const data = {
       nom: val('nom'), email: val('email'), telephone: val('telephone'),
       equipe: val('equipe'), remarque: val('remarque'),
@@ -533,6 +604,29 @@ if ('serviceWorker' in navigator) {
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Envoi…';
+
+    // Printful d'abord (commande en brouillon, rien n'est imprimé avant
+    // confirmation par l'admin) pour noter son numéro dans Notion/courriel.
+    // Jamais bloquant : la commande est enregistrée même si Printful échoue.
+    const printful = await fetch(PRINTFUL_ORDER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        reference,
+        livraison: livraison ? 'domicile' : 'main-propre',
+        items: cart.map((l) => ({ productId: l.id, couleur: l.couleur, taille: l.taille, qte: l.qte })),
+        recipient: livraison ? {
+          name: data.nom, email: data.email, phone: data.telephone,
+          address1: val('adresse'), address2: val('adresse2'), city: val('ville'),
+          state_code: val('province'), zip: val('code_postal'),
+        } : undefined,
+      }),
+      signal: timeoutSignal(),
+    }).then((r) => r.json()).catch(() => null);
+    const printfulInfo = printful && printful.created
+      ? `Printful : brouillon n° ${printful.printfulOrderId} (à confirmer après paiement)${printful.missing && printful.missing.length ? ` — non reliés : ${printful.missing.join(', ')}` : ''}`
+      : `Printful : non envoyé${printful ? ` (${printful.reason || printful.error || 'erreur'}${printful.missing && printful.missing.length ? ` — non reliés : ${printful.missing.join(', ')}` : ''})` : ' (service injoignable)'}`;
+    const resume = [`Réf. ${reference}`, ...lignes, livraison ? `Adresse : ${adresse}` : 'Remise en main propre', printfulInfo].join('\n');
 
     // Notion = la liste de référence des commandes ; FormSubmit = courriel au
     // coach. Un seul des deux qui passe suffit (même logique que les maillots).
@@ -565,7 +659,9 @@ if ('serviceWorker' in navigator) {
         'Courriel': data.email,
         'Téléphone': data.telephone,
         'Joueur / équipe': data.equipe || '—',
+        'Référence': reference,
         'Articles': resume,
+        'Réception': livraison ? `Livraison : ${adresse}` : 'Remise en main propre',
         'Total': fmt(total),
         'Mode de paiement': modePaiement,
         'Remarque': data.remarque || '—',
@@ -604,6 +700,8 @@ if ('serviceWorker' in navigator) {
 
   document.getElementById('order-again').addEventListener('click', () => {
     form.reset();
+    document.getElementById('address-fields').hidden = true;
+    renderCart();
     form.hidden = false;
     document.getElementById('order-success').hidden = true;
     document.getElementById('produits').scrollIntoView({ behavior: 'smooth' });
