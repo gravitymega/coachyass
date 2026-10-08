@@ -218,3 +218,13 @@ Page `gravity-basketball-mtl/boutique.html` (lien « Boutique » dans le menu et
 - Commandes « remise en main propre » : envoyées à Printify seulement si `GRAVITY_PICKUP_ADDRESS` (JSON au format `address_to` Printify) est configurée, sinon notification seulement.
 - **À faire par l'utilisateur** : boutique Printify de type **API** (My Stores → Add a new store → API), approbation des commandes en Manuel, produits créés avec Print Geek, variable Netlify **`PRINTIFY_API_TOKEN`** sur `gravity-admin-dashboard` (+ `PRINTIFY_SHOP_ID` seulement s'il y a plusieurs boutiques Printify, `GRAVITY_PICKUP_ADDRESS` optionnelle).
 - **Déploiement** : le 8 octobre 2026, la mise en production Netlify ne s'est pas déclenchée après le merge de la PR #67 (production encore sur le commit de la PR #66) — à vérifier par l'utilisateur dans l'onglet Deploys (crédits du compte gratuit ?).
+
+## Tableau tactique (8 octobre 2026)
+
+Page `gravity-admin-dashboard/tableau-tactique.html` (+ `tableau-tactique.js`), ouverte depuis le groupe de menu « Tableau tactique » du Dashboard (visible comme « Mes équipes »). Demande de l'utilisateur : donner un clip vidéo et obtenir le jeu dessiné sur un tableau de coach.
+
+- **100 % dans le navigateur, sans backend ni clé** : la vidéo ne quitte jamais l'appareil (joueurs mineurs). Détection avec TensorFlow.js + COCO-SSD (jsdelivr, poids du modèle sur storage.googleapis.com, ~20 Mo chargés à la première analyse). La page elle-même n'exige pas de connexion au Dashboard (aucune donnée lue ni écrite).
+- **Fonctionnement** : le coach clique 4 repères (coins de la raquette ou du demi-terrain) sur une image du clip → homographie image → terrain (mètres, demi-terrain FIBA 15 × 14), lignes du terrain superposées au clip pour vérifier. Analyse d'images échantillonnées (4/6/10 par seconde) : point au sol de chaque joueur projeté sur le terrain, suivi par proximité, équipes séparées par la couleur du maillot (k-moyennes), porteur du ballon = joueur le plus proche du ballon détecté → dribbles (zigzag) et passes (pointillés) ; l'équipe qui a le plus le ballon = attaque (O numérotés), défense en X.
+- **Corrections à la main** : déplacer, renuméroter, changer d'équipe, retirer (arbitres…), inverser attaque/défense, ajouter joueurs, coupes, dribbles, passes, écrans, gomme, annuler. Rejouer l'action animée, export PNG.
+- **Limites connues** : caméra fixe obligatoire (un panoramique fausse la projection) ; la détection du ballon est peu fiable avec COCO-SSD (passes/dribbles parfois manquants → tracés manuels) ; joueurs qui se chevauchent = trajectoires parfois mélangées.
+
