@@ -4776,7 +4776,8 @@ shopProductColorsInput.addEventListener('input', () => renderShopPrintify());
 // Crée ou met à jour un produit du site par produit Printify (nom,
 // description, couleurs + photo par couleur, tailles, correspondance des
 // variantes) et calcule le prix : coût Printify le plus élevé des variantes ×
-// taux de change × (1 + marge), arrondi au dollar supérieur. Les produits du
+// taux de change × (1 + marge) × 1,14975 (TPS + TVQ, si coché), arrondi au
+// dollar supérieur. Les produits du
 // site absents de Printify peuvent être masqués (jamais supprimés).
 const SHOP_COLOR_FR = {
   black: 'Noir', white: 'Blanc', 'sport grey': 'Gris', 'athletic heather': 'Gris chiné', 'dark heather': 'Gris foncé chiné',
@@ -4801,7 +4802,8 @@ function showShopImportNote(text, isError) {
 function shopImportPrice(costCents) {
   const margin = Number(document.getElementById('shop-import-margin').value) || 0;
   const rate = Number(document.getElementById('shop-import-rate').value) || 1;
-  return Math.ceil((costCents / 100) * rate * (1 + margin / 100));
+  const taxes = document.getElementById('shop-import-taxes').checked ? 1.14975 : 1; // TPS 5 % + TVQ 9,975 %
+  return Math.ceil((costCents / 100) * rate * (1 + margin / 100) * taxes);
 }
 
 function shopImportExisting(p) {
@@ -4915,7 +4917,7 @@ document.getElementById('shop-import-load').addEventListener('click', async (e) 
     btn.disabled = false;
   }
 });
-['shop-import-margin', 'shop-import-rate'].forEach((id) => document.getElementById(id).addEventListener('input', () => {
+['shop-import-margin', 'shop-import-rate', 'shop-import-taxes'].forEach((id) => document.getElementById(id).addEventListener('input', () => {
   if (shopImportCatalog.length) renderShopImportPreview();
 }));
 

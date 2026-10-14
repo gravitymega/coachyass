@@ -1345,7 +1345,7 @@ Gravity Basketball</textarea>
 
       <div id="shop-import" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">
         <h3 style="margin:0 0 6px;">Importer depuis Printify</h3>
-        <p class="muted" style="margin:0 0 10px;">Reprend tes produits Printify tels quels (nom, description, couleurs avec leur photo, tailles) et calcule le prix de vente à partir du coût Printify + ta marge. Le coût Printify n'inclut pas la livraison (le client paie la livraison à domicile à part).</p>
+        <p class="muted" style="margin:0 0 10px;">Reprend tes produits Printify tels quels (nom, description, couleurs avec leur photo, tailles) et calcule le prix de vente à partir du coût Printify + ta marge (+ TPS/TVQ si coché : la marge reste entière une fois les taxes remises). Le coût Printify n'inclut pas la livraison (le client paie la livraison à domicile à part).</p>
         <div class="comm-actions" style="flex-wrap:wrap; align-items:flex-end; gap:12px;">
           <div class="field" style="margin:0;">
             <label for="shop-import-margin">Marge (%)</label>
@@ -1355,6 +1355,7 @@ Gravity Basketball</textarea>
             <label for="shop-import-rate">Taux USD → CAD</label>
             <input type="number" id="shop-import-rate" value="1.38" min="0.5" step="0.01" style="width:90px;">
           </div>
+          <label class="checkbox-field" style="margin:0 0 10px;"><input type="checkbox" id="shop-import-taxes" checked><span>Prix taxes incluses (TPS 5 % + TVQ 9,975 %)</span></label>
           <button type="button" id="shop-import-load" class="btn btn-ghost">Charger le catalogue Printify</button>
         </div>
         <p class="save-note" id="shop-import-note" hidden></p>
