@@ -7,6 +7,9 @@
 //                              Printify (pour relier chaque taille/couleur d'un
 //                              produit du Dashboard — colonne
 //                              shop_products.printify_variants)
+//   - import   (admin, GET)    catalogue complet (couleurs + photo par couleur,
+//                              tailles, coût de chaque variante) pour le bouton
+//                              « Importer depuis Printify » du Dashboard
 //   - order    (PUBLIC, POST)  crée la commande dans Printify. Elle n'est PAS
 //                              envoyée en production : l'admin clique « Send to
 //                              production » dans Printify une fois le paiement
@@ -135,6 +138,60 @@ async function listVariants() {
   });
 }
 
+// Catalogue complet pour l'import dans le Dashboard (« Importer depuis
+// Printify ») : pour chaque produit publié, ses couleurs (avec la photo de
+// chaque couleur), ses tailles, ses variantes actives et leur coût Printify
+// (en cents, dans la devise du compte Printify — généralement USD).
+async function importCatalog() {
+  const shop = await getShopId();
+  const products = [];
+  for (let page = 1; page <= 20; page += 1) {
+    const res = await printify(`/shops/${shop}/products.json?limit=50&page=${page}`);
+    products.push(...(res.data || []));
+    if (!res.last_page || page >= res.last_page) break;
+  }
+  return products.map((p) => {
+    const valueOf = {};
+    const order = {};
+    (p.options || []).forEach((o) => (o.values || []).forEach((v, i) => {
+      valueOf[v.id] = { type: o.type, title: v.title };
+      order[v.title] = i;
+    }));
+    const variants = (p.variants || []).filter((v) => v.is_enabled).map((v) => {
+      const opts = (v.options || []).map((id) => valueOf[id]).filter(Boolean);
+      return {
+        id: v.id,
+        color: (opts.find((o) => o.type === 'color') || {}).title || '',
+        size: (opts.find((o) => o.type === 'size') || {}).title || '',
+        cost: Number(v.cost) || 0,
+        available: v.is_available !== false,
+      };
+    });
+    const colors = [...new Set(variants.map((v) => v.color))].sort((a, b) => (order[a] ?? 0) - (order[b] ?? 0));
+    const sizes = [...new Set(variants.map((v) => v.size))].sort((a, b) => (order[a] ?? 0) - (order[b] ?? 0));
+    const images = p.images || [];
+    const colorImages = {};
+    colors.forEach((c) => {
+      const ids = new Set(variants.filter((v) => v.color === c).map((v) => v.id));
+      const forColor = images.filter((i) => (i.variant_ids || []).some((id) => ids.has(id)));
+      const img = forColor.find((i) => i.is_default) || forColor.find((i) => i.position === 'front') || forColor[0];
+      if (img) colorImages[c] = img.src;
+    });
+    const defaultImage = (images.find((i) => i.is_default) || images[0] || {}).src || '';
+    return {
+      id: p.id,
+      title: p.title,
+      description: String(p.description || '').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ' ').replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n').trim().slice(0, 1500),
+      colors,
+      sizes,
+      variants,
+      colorImages,
+      image: defaultImage,
+      visible: p.visible !== false,
+    };
+  });
+}
+
 const text = (v, max) => String(v == null ? '' : v).trim().slice(0, max);
 
 async function createOrder(body) {
@@ -238,6 +295,14 @@ exports.handler = async (event) => {
         return reply(401, { error: 'Non autorisé — connecte-toi au Dashboard avec un compte qui gère Gravity Basketball.' });
       }
       return reply(200, { variants: await listVariants() });
+    }
+
+    if (action === 'import') {
+      const token = (event.headers.authorization || event.headers.Authorization || '').replace(/^Bearer\s+/i, '');
+      if (!(await isGravityAdmin(token).catch(() => false))) {
+        return reply(401, { error: 'Non autorisé — connecte-toi au Dashboard avec un compte qui gère Gravity Basketball.' });
+      }
+      return reply(200, { products: await importCatalog() });
     }
 
     return reply(400, { error: 'Action inconnue' });

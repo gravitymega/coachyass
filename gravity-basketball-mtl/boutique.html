@@ -196,7 +196,8 @@
           <ul class="cart-list" id="cart-list"></ul>
           <div class="cart-shipping" id="cart-shipping-row" hidden><span>Livraison</span><span id="cart-shipping"></span></div>
           <div class="cart-total" id="cart-total-row" hidden><span>Total</span><span id="cart-total"></span></div>
-          <p class="cart-note">Taxes incluses. Remise en main propre gratuite lors d'un entraînement ou d'un match (secteur Dorval-Lachine), ou livraison à domicile partout au Canada.</p>
+          <p class="cart-note" id="cart-taxes" hidden></p>
+          <p class="cart-note">Prix taxes incluses (TPS et TVQ). Remise en main propre gratuite lors d'un entraînement ou d'un match (secteur Dorval-Lachine), ou livraison à domicile partout au Canada.</p>
         </div>
 
         <div class="cart-box">
@@ -409,6 +410,7 @@ if ('serviceWorker' in navigator) {
         tag: r.tag || '',
         actif: true,
         photo: r.image_url || '',
+        photosCouleur: r.color_images || {},
         description: r.description || '',
         tailles: r.sizes && r.sizes.length ? r.sizes : ['Taille unique'],
         couleurs: r.colors && r.colors.length ? r.colors : ['Noir'],
@@ -422,7 +424,8 @@ if ('serviceWorker' in navigator) {
   const byId = Object.fromEntries(produits.map((p) => [p.id, p]));
 
   function visualHtml(p, couleur) {
-    if (p.photo) return `<img class="product-photo" src="${esc(p.photo)}" alt="${esc(p.nom)} Gravity Basketball" loading="lazy">`;
+    const photo = (p.photosCouleur && p.photosCouleur[couleur]) || p.photo;
+    if (photo) return `<img class="product-photo" src="${esc(photo)}" alt="${esc(p.nom)} Gravity Basketball" loading="lazy">`;
     const fill = COULEURS_SVG[couleur] || '#26222e';
     return `<svg viewBox="0 0 200 200" fill="${fill}" stroke="rgba(255,255,255,.08)" stroke-width="2" aria-hidden="true">${SILHOUETTES[p.type] || SILHOUETTES.tshirt}</svg>`
       + `<img class="logo-overlay" src="assets/logo.png" alt="" style="top:${LOGO_TOP[p.type] || '40%'}">`;
@@ -467,7 +470,7 @@ if ('serviceWorker' in navigator) {
     if (e.target.dataset.role !== 'couleur') return;
     const card = e.target.closest('.product-card');
     const p = byId[card.dataset.id];
-    if (!p.photo) card.querySelector('.visual-inner').innerHTML = visualHtml(p, e.target.value);
+    card.querySelector('.visual-inner').innerHTML = visualHtml(p, e.target.value);
   });
 
   grid.addEventListener('click', (e) => {
@@ -512,6 +515,12 @@ if ('serviceWorker' in navigator) {
   const isLivraison = () => document.querySelector('input[name="livraison"]:checked')?.value === 'domicile';
   const shippingFee = () => (isLivraison() && cart.length ? FRAIS_LIVRAISON : 0);
   const cartTotal = () => cartSubtotal() + shippingFee();
+  // Les prix sont taxes incluses : on retrouve la part de TPS (5 %) et de TVQ
+  // (9,975 %) contenue dans le total, pour le reçu et la comptabilité.
+  function taxesIncluses(total) {
+    const avantTaxes = total / 1.14975;
+    return { avantTaxes, tps: avantTaxes * 0.05, tvq: avantTaxes * 0.09975 };
+  }
   const lineLabel = (l) => `${byId[l.id].nom} — ${l.couleur}, ${l.taille}`;
 
   function renderCart() {
@@ -531,6 +540,9 @@ if ('serviceWorker' in navigator) {
     document.getElementById('cart-empty').hidden = cart.length > 0;
     document.getElementById('cart-total-row').hidden = cart.length === 0;
     document.getElementById('cart-total').textContent = fmt(cartTotal());
+    const tx = taxesIncluses(cartTotal());
+    document.getElementById('cart-taxes').hidden = cart.length === 0;
+    document.getElementById('cart-taxes').textContent = `Dont TPS (5 %) : ${fmt(tx.tps)} · TVQ (9,975 %) : ${fmt(tx.tvq)}`;
     document.getElementById('cart-shipping-row').hidden = shippingFee() === 0;
     document.getElementById('cart-shipping').textContent = fmt(shippingFee());
     document.getElementById('cart-count').textContent = count;
@@ -627,7 +639,9 @@ if ('serviceWorker' in navigator) {
     const printifyInfo = printify && printify.created
       ? `Printify : commande n° ${printify.printifyOrderId} (« Send to production » après paiement)${printify.missing && printify.missing.length ? ` — non reliés : ${printify.missing.join(', ')}` : ''}`
       : `Printify : non envoyé${printify ? ` (${printify.reason || printify.error || 'erreur'}${printify.missing && printify.missing.length ? ` — non reliés : ${printify.missing.join(', ')}` : ''})` : ' (service injoignable)'}`;
-    const resume = [`Réf. ${reference}`, ...lignes, livraison ? `Adresse : ${adresse}` : 'Remise en main propre', printifyInfo].join('\n');
+    const tx = taxesIncluses(total);
+    const taxesInfo = `Total ${fmt(total)} taxes incluses — avant taxes ${fmt(tx.avantTaxes)}, TPS ${fmt(tx.tps)}, TVQ ${fmt(tx.tvq)}`;
+    const resume = [`Réf. ${reference}`, ...lignes, taxesInfo, livraison ? `Adresse : ${adresse}` : 'Remise en main propre', printifyInfo].join('\n');
 
     // Notion = la liste de référence des commandes ; FormSubmit = courriel au
     // coach. Un seul des deux qui passe suffit (même logique que les maillots).
@@ -663,7 +677,7 @@ if ('serviceWorker' in navigator) {
         'Référence': reference,
         'Articles': resume,
         'Réception': livraison ? `Livraison : ${adresse}` : 'Remise en main propre',
-        'Total': fmt(total),
+        'Total': `${fmt(total)} (TPS ${fmt(tx.tps)}, TVQ ${fmt(tx.tvq)} incluses)`,
         'Mode de paiement': modePaiement,
         'Remarque': data.remarque || '—',
       }),
