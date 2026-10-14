@@ -4772,6 +4772,153 @@ document.getElementById('shop-product-printify-load').addEventListener('click', 
 shopProductSizesInput.addEventListener('input', () => renderShopPrintify());
 shopProductColorsInput.addEventListener('input', () => renderShopPrintify());
 
+// ---------- Boutique → import du catalogue Printify ----------
+// Crée ou met à jour un produit du site par produit Printify (nom,
+// description, couleurs + photo par couleur, tailles, correspondance des
+// variantes) et calcule le prix : coût Printify le plus élevé des variantes ×
+// taux de change × (1 + marge), arrondi au dollar supérieur. Les produits du
+// site absents de Printify peuvent être masqués (jamais supprimés).
+const SHOP_COLOR_FR = {
+  black: 'Noir', white: 'Blanc', 'sport grey': 'Gris', 'athletic heather': 'Gris chiné', 'dark heather': 'Gris foncé chiné',
+  'heather grey': 'Gris chiné', grey: 'Gris', gray: 'Gris', charcoal: 'Charbon', ash: 'Cendre', navy: 'Marine',
+  'royal blue': 'Bleu royal', royal: 'Bleu royal', red: 'Rouge', maroon: 'Bordeaux', orange: 'Orange', 'safety orange': 'Orange',
+  'forest green': 'Vert forêt', 'military green': 'Vert militaire', green: 'Vert', pink: 'Rose', 'light pink': 'Rose pâle',
+  purple: 'Violet', sand: 'Sable', natural: 'Naturel', cream: 'Crème', 'light blue': 'Bleu pâle', 'carolina blue': 'Bleu Caroline',
+  'gold': 'Or', 'brown': 'Brun', 'olive': 'Olive', 'beige': 'Beige', 'yellow': 'Jaune',
+};
+const shopColorFr = (c) => SHOP_COLOR_FR[String(c).toLowerCase().trim()] || c;
+let shopImportCatalog = [];
+const shopImportNote = document.getElementById('shop-import-note');
+const shopImportPreview = document.getElementById('shop-import-preview');
+const shopImportZeffy = document.getElementById('shop-import-zeffy');
+
+function showShopImportNote(text, isError) {
+  shopImportNote.textContent = text;
+  shopImportNote.style.color = isError ? '#ff6b6b' : '';
+  shopImportNote.hidden = !text;
+}
+
+function shopImportPrice(costCents) {
+  const margin = Number(document.getElementById('shop-import-margin').value) || 0;
+  const rate = Number(document.getElementById('shop-import-rate').value) || 1;
+  return Math.ceil((costCents / 100) * rate * (1 + margin / 100));
+}
+
+function shopImportExisting(p) {
+  return allShopProducts.find((row) => row.printify_product_id === p.id
+    || Object.values(row.printify_variants || {}).some((v) => String(v).startsWith(`${p.id}:`)));
+}
+
+function renderShopImportPreview() {
+  if (!shopImportCatalog.length) {
+    shopImportPreview.innerHTML = '<p class="muted">Aucun produit dans ta boutique Printify.</p>';
+    return;
+  }
+  const rate = Number(document.getElementById('shop-import-rate').value) || 1;
+  shopImportPreview.innerHTML = `
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th></th><th>Photo</th><th>Nom sur le site</th><th>Couleurs</th><th>Tailles</th><th>Coût Printify max</th><th>Prix de vente</th><th>Site</th></tr></thead>
+      <tbody>${shopImportCatalog.map((p, i) => {
+        const costMax = Math.max(0, ...p.variants.map((v) => v.cost));
+        const existing = shopImportExisting(p);
+        return `<tr>
+          <td><input type="checkbox" data-import-check="${i}" checked></td>
+          <td>${p.image ? `<img src="${escapeHtml(p.image)}" alt="" style="height:44px;width:44px;object-fit:cover;border-radius:6px;">` : '—'}</td>
+          <td><input type="text" data-import-name="${i}" value="${escapeHtml(existing ? existing.name : p.title)}" style="min-width:160px;"></td>
+          <td>${escapeHtml(p.colors.map(shopColorFr).join(', ') || '—')}</td>
+          <td>${escapeHtml(p.sizes.join(', ') || '—')}</td>
+          <td>${(costMax / 100).toFixed(2)} US$ ≈ ${((costMax / 100) * rate).toFixed(2)} $</td>
+          <td><input type="number" data-import-price="${i}" value="${shopImportPrice(costMax)}" min="0" step="1" style="width:80px;"> $</td>
+          <td>${existing ? `Met à jour « ${escapeHtml(existing.name)} »` : 'Nouveau'}</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>
+    <label class="checkbox-field" style="margin-top:8px;"><input type="checkbox" id="shop-import-hide-others" checked><span>Masquer les produits du site qui ne sont pas dans Printify (ils ne sont pas supprimés)</span></label>
+    <div class="comm-actions"><button type="button" class="btn btn-primary" id="shop-import-apply">Importer / mettre à jour les produits cochés</button></div>`;
+  document.getElementById('shop-import-apply').addEventListener('click', applyShopImport);
+}
+
+async function applyShopImport(e) {
+  const btn = e.currentTarget;
+  btn.disabled = true;
+  showShopImportNote('Import en cours…', false);
+  const done = [];
+  const keptIds = new Set();
+  try {
+    for (const [i, p] of shopImportCatalog.entries()) {
+      if (!shopImportPreview.querySelector(`[data-import-check="${i}"]`).checked) continue;
+      const costMax = Math.max(0, ...p.variants.map((v) => v.cost));
+      const price = Number(shopImportPreview.querySelector(`[data-import-price="${i}"]`).value) || shopImportPrice(costMax);
+      const name = shopImportPreview.querySelector(`[data-import-name="${i}"]`).value.trim() || p.title;
+      const colorImages = {};
+      Object.entries(p.colorImages).forEach(([c, url]) => { colorImages[shopColorFr(c)] = url; });
+      const variants = {};
+      p.variants.forEach((v) => { variants[`${shopColorFr(v.color)}|${v.size}`] = `${p.id}:${v.id}`; });
+      const existing = shopImportExisting(p);
+      const payload = {
+        site: 'gravity-basketball',
+        name,
+        description: p.description || null,
+        price,
+        sizes: p.sizes.length ? p.sizes : ['Taille unique'],
+        colors: p.colors.length ? p.colors.map(shopColorFr) : ['Unique'],
+        image_url: p.image || null,
+        color_images: colorImages,
+        printify_variants: variants,
+        printify_product_id: p.id,
+        printify_cost_max: Number(((costMax / 100) * (Number(document.getElementById('shop-import-rate').value) || 1)).toFixed(2)),
+        active: true,
+      };
+      const res = existing
+        ? await supabase.from('shop_products').update(payload).eq('id', existing.id).select('id').single()
+        : await supabase.from('shop_products').insert({ ...payload, display_order: allShopProducts.length + done.length + 1 }).select('id').single();
+      if (res.error) throw new Error(`${name} : ${res.error.message}`);
+      keptIds.add(res.data.id);
+      done.push({ name, price, colors: payload.colors, sizes: payload.sizes });
+    }
+    if (document.getElementById('shop-import-hide-others')?.checked) {
+      const others = allShopProducts.filter((row) => row.active && !keptIds.has(row.id)).map((row) => row.id);
+      if (others.length) {
+        const { error } = await supabase.from('shop_products').update({ active: false }).in('id', others);
+        if (error) throw new Error('Masquage : ' + error.message);
+      }
+    }
+    await loadShopProducts();
+    showShopImportNote(`${done.length} produit(s) importé(s). Les prix sont en ligne sur la boutique.`, false);
+    shopImportZeffy.innerHTML = `<p style="margin:0 0 6px;"><strong>À reporter dans ta boutique Zeffy</strong> (mêmes noms et prix) :</p>
+      <textarea readonly rows="${done.length + 1}" style="width:100%;">${escapeHtml(done.map((d) => `${d.name} — ${d.price} $ — couleurs : ${d.colors.join(', ')} — tailles : ${d.sizes.join(', ')}`).join('\n'))}</textarea>`;
+    renderShopImportPreview();
+  } catch (err) {
+    showShopImportNote('Erreur : ' + err.message, true);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+document.getElementById('shop-import-load').addEventListener('click', async (e) => {
+  const btn = e.currentTarget;
+  btn.disabled = true;
+  showShopImportNote('Chargement du catalogue Printify…', false);
+  try {
+    const { data } = await supabase.auth.getSession();
+    const res = await fetch('/.netlify/functions/printify?action=import', {
+      headers: { Authorization: `Bearer ${data.session?.access_token || ''}` },
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(json.error || `Erreur ${res.status}`);
+    shopImportCatalog = (json.products || []).filter((p) => p.variants.length);
+    showShopImportNote(`${shopImportCatalog.length} produit(s) trouvé(s) dans Printify. Vérifie les noms et les prix, puis importe.`, false);
+    renderShopImportPreview();
+  } catch (err) {
+    showShopImportNote('Printify : ' + err.message, true);
+  } finally {
+    btn.disabled = false;
+  }
+});
+['shop-import-margin', 'shop-import-rate'].forEach((id) => document.getElementById(id).addEventListener('input', () => {
+  if (shopImportCatalog.length) renderShopImportPreview();
+}));
+
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')

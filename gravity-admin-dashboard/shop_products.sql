@@ -21,3 +21,9 @@ create policy shop_products_admin_all on public.shop_products for all to authent
   with check (exists (select 1 from admin_users au where au.id = auth.uid() and shop_products.site = any (au.sites)));
 create policy shop_products_public_select on public.shop_products for select to anon
   using (active = true);
+
+-- Ajouts ultérieurs (appliqués par migrations) :
+-- alter table public.shop_products add column printify_variants jsonb not null default '{}'::jsonb;
+-- alter table public.shop_products add column printify_product_id text;
+-- alter table public.shop_products add column color_images jsonb not null default '{}'::jsonb;
+-- alter table public.shop_products add column printify_cost_max numeric(10,2);

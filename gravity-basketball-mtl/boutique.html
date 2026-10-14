@@ -409,6 +409,7 @@ if ('serviceWorker' in navigator) {
         tag: r.tag || '',
         actif: true,
         photo: r.image_url || '',
+        photosCouleur: r.color_images || {},
         description: r.description || '',
         tailles: r.sizes && r.sizes.length ? r.sizes : ['Taille unique'],
         couleurs: r.colors && r.colors.length ? r.colors : ['Noir'],
@@ -422,7 +423,8 @@ if ('serviceWorker' in navigator) {
   const byId = Object.fromEntries(produits.map((p) => [p.id, p]));
 
   function visualHtml(p, couleur) {
-    if (p.photo) return `<img class="product-photo" src="${esc(p.photo)}" alt="${esc(p.nom)} Gravity Basketball" loading="lazy">`;
+    const photo = (p.photosCouleur && p.photosCouleur[couleur]) || p.photo;
+    if (photo) return `<img class="product-photo" src="${esc(photo)}" alt="${esc(p.nom)} Gravity Basketball" loading="lazy">`;
     const fill = COULEURS_SVG[couleur] || '#26222e';
     return `<svg viewBox="0 0 200 200" fill="${fill}" stroke="rgba(255,255,255,.08)" stroke-width="2" aria-hidden="true">${SILHOUETTES[p.type] || SILHOUETTES.tshirt}</svg>`
       + `<img class="logo-overlay" src="assets/logo.png" alt="" style="top:${LOGO_TOP[p.type] || '40%'}">`;
@@ -467,7 +469,7 @@ if ('serviceWorker' in navigator) {
     if (e.target.dataset.role !== 'couleur') return;
     const card = e.target.closest('.product-card');
     const p = byId[card.dataset.id];
-    if (!p.photo) card.querySelector('.visual-inner').innerHTML = visualHtml(p, e.target.value);
+    card.querySelector('.visual-inner').innerHTML = visualHtml(p, e.target.value);
   });
 
   grid.addEventListener('click', (e) => {
