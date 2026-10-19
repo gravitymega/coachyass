@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+
+# Outil interne Gravity : jamais indexé.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
