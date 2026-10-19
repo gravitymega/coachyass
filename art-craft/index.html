@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Art craft — Highlight Agent</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="" class="top-logo">
+  <div>
+    <h1>Art craft <span>Highlight Agent</span></h1>
+    <p>Une game complète → un short de 60 s, prêt pour Instagram et TikTok. Tout se passe dans ton navigateur : la vidéo n'est envoyée nulle part.</p>
+  </div>
+</header>
+<nav class="tabs">
+  <a href="index.html" aria-current="page">Highlights</a>
+  <a href="editeur.html">Éditeur</a>
+  <a href="son.html">Studio son</a>
+  <a href="beat.html">Studio beat</a>
+  <a href="voix.html">Studio voix</a>
+  <a href="image.html">Studio image</a>
+</nav>
+
+<main>
+  <!-- 1. Import -->
+  <section class="card" id="step-import">
+    <h2><b>1</b> La vidéo de la game</h2>
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept="video/*,.mov,.mkv">
+      <strong>Dépose la vidéo ici</strong>
+      <span>ou touche pour la choisir (MP4, MOV… même une game entière)</span>
+    </label>
+    <div id="player-wrap" hidden>
+      <video id="video" controls playsinline preload="metadata"></video>
+      <p class="muted" id="file-info"></p>
+      <p class="warn" id="no-preview" hidden>Ton navigateur ne peut pas afficher ce format (souvent un MOV iPhone en HEVC). L'analyse et le montage fonctionnent quand même ; seul l'aperçu est indisponible.</p>
+    </div>
+  </section>
+
+  <!-- 2. Analyse -->
+  <section class="card" id="step-analyse" hidden>
+    <h2><b>2</b> Repérer les temps forts</h2>
+    <p class="muted">L'agent écoute toute la game et repère les moments où la salle explose (paniers, contres, buzzers). Compte environ 1 minute par 20 minutes de vidéo.</p>
+    <div class="row">
+      <button class="btn" id="btn-analyse">Analyser la game</button>
+      <label class="inline">Durée du short
+        <select id="target">
+          <option value="30">30 s</option>
+          <option value="45">45 s</option>
+          <option value="60" selected>60 s</option>
+        </select>
+      </label>
+    </div>
+    <div class="progress" id="analyse-progress" hidden><div></div><span></span></div>
+  </section>
+
+  <!-- 3. Extraits -->
+  <section class="card" id="step-clips" hidden>
+    <h2><b>3</b> Les extraits</h2>
+    <canvas id="energy" height="90" aria-label="Niveau d'excitation de la salle pendant la game"></canvas>
+    <p class="legend"><i class="dot on"></i> retenu <i class="dot"></i> autre moment fort · touche le graphique pour aller à ce moment</p>
+    <div class="row">
+      <button class="btn ghost" id="btn-add-here">+ Ajouter le moment affiché dans la vidéo</button>
+      <input id="manual-times" placeholder="ou des minutes : 3:12, 15:40, 1:02:05">
+      <button class="btn ghost" id="btn-add-times">Ajouter</button>
+    </div>
+    <div class="total" id="total"></div>
+    <ol id="clips"></ol>
+    <div class="row">
+      <button class="btn ghost" id="btn-auto">Resélectionner automatiquement</button>
+      <button class="btn ghost" id="btn-preview">▶ Aperçu enchaîné</button>
+    </div>
+  </section>
+
+  <!-- 4. Habillage -->
+  <section class="card" id="step-style" hidden>
+    <h2><b>4</b> Habillage</h2>
+    <div class="style-grid">
+      <div class="fields">
+        <label>Format vertical
+          <select id="layout">
+            <option value="blur">Plein cadre + fond flou (on voit tout le terrain)</option>
+            <option value="crop">Recadré plein écran (plus immersif, réglable par extrait)</option>
+          </select>
+        </label>
+        <label>Qualité
+          <select id="quality">
+            <option value="1080">1080 × 1920 (Instagram, plus lent)</option>
+            <option value="720">720 × 1280 (rapide)</option>
+          </select>
+        </label>
+        <label>Titre <input id="title" maxlength="40" placeholder="GRAVITY PREP vs ..." value="GRAVITY HIGHLIGHTS"></label>
+        <label>Sous-titre / score <input id="subtitle" maxlength="40" placeholder="Victoire 78-64"></label>
+        <label class="check"><input type="checkbox" id="show-logo" checked> Logo Gravity</label>
+        <label class="check"><input type="checkbox" id="brand-outro" checked> Modèle Gravity : outro « Suis-nous @gravitybasketball_mtl » (3 s)</label>
+      </div>
+      <canvas id="preview" width="270" height="480" aria-label="Aperçu de l'habillage"></canvas>
+    </div>
+  </section>
+
+  <!-- 5. Export -->
+  <section class="card" id="step-export" hidden>
+    <h2><b>5</b> Créer le short</h2>
+    <button class="btn big" id="btn-render">Créer le short</button>
+    <div class="progress" id="render-progress" hidden><div></div><span></span></div>
+    <div id="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="row">
+        <a class="btn" id="btn-download" download="gravity-highlights.mp4">Télécharger le MP4</a>
+        <button class="btn ghost" id="btn-share" hidden>Partager…</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="error" id="error" role="alert" hidden></p>
+</main>
+
+<footer class="foot">Art craft · Gravity Basketball Montréal · moteur vidéo <a href="https://ffmpegwasm.netlify.app/" target="_blank" rel="noopener">ffmpeg.wasm</a> (open source)</footer>
+
+<script src="vendor/ffmpeg/ffmpeg.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
