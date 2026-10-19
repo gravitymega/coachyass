@@ -86,7 +86,8 @@ export function formatTime(s) {
 }
 
 // Arguments ffmpeg du rendu final : un seul encodage pour tous les extraits.
-export function buildRenderArgs({ input, clips, hasAudio, layout, width, height, overlay, outro = null, output }) {
+// zoom = taille de travail (zoomSize) ; chaque extrait peut avoir c.zoom = { max, hx, hy, t0, t1 }.
+export function buildRenderArgs({ input, clips, hasAudio, layout, width, height, overlay, outro = null, zoom = null, output }) {
   const args = [];
   clips.forEach(c => args.push('-ss', c.start.toFixed(2), '-t', c.dur.toFixed(2), '-i', input));
   if (overlay) args.push('-i', overlay);
@@ -98,12 +99,17 @@ export function buildRenderArgs({ input, clips, hasAudio, layout, width, height,
   const concatIn = [];
   clips.forEach((c, i) => {
     const fadeOut = Math.max(0, c.dur - 0.2).toFixed(2);
+    let src = `${i}:v`;
+    if (c.zoom && zoom) {
+      parts.push(`[${src}]${zoomFilter(c.zoom, zoom)}[z${i}]`);
+      src = `z${i}`;
+    }
     if (layout === 'crop') {
       const x = Math.min(1, Math.max(0, c.cropX ?? 0.5)).toFixed(3);
-      parts.push(`[${i}:v]scale=-2:${H},crop=${W}:${H}:(iw-ow)*${x}:0,setsar=1,fps=30,format=yuv420p,fade=t=in:d=0.15[v${i}]`);
+      parts.push(`[${src}]scale=-2:${H},crop=${W}:${H}:(iw-ow)*${x}:0,setsar=1,fps=30,format=yuv420p,fade=t=in:d=0.15[v${i}]`);
     } else {
       // Plein cadre : la vidéo entière au centre, fond flou de la même image.
-      parts.push(`[${i}:v]split[b${i}][f${i}]`);
+      parts.push(`[${src}]split[b${i}][f${i}]`);
       parts.push(`[b${i}]scale=${W / 8}:${H / 8}:force_original_aspect_ratio=increase,crop=${W / 8}:${H / 8},boxblur=6:2,scale=${W}:${H},eq=brightness=-0.12[bg${i}]`);
       parts.push(`[f${i}]scale=${W}:-2[fg${i}]`);
       parts.push(`[bg${i}][fg${i}]overlay=(W-w)/2:(H-h)/2,setsar=1,fps=30,format=yuv420p,fade=t=in:d=0.15[v${i}]`);
@@ -134,4 +140,124 @@ export function buildRenderArgs({ input, clips, hasAudio, layout, width, height,
   if (hasAudio) args.push('-map', `[${audioOut}]`, '-c:a', 'aac', '-b:a', '128k');
   args.push('-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', output);
   return args;
+}
+
+// ---------- Paniers marqués (caméra fixe) ----------
+// L'utilisateur montre le cercle sur une image. Autour de chaque moment fort repéré
+// au son, on mesure le mouvement dans une petite zone autour du cercle et du filet :
+// un ballon qui traverse le filet y crée un pic de mouvement bref et net.
+
+export const NET_FPS = 15;
+export const NET_SIZE = 16;
+
+// Zone d'analyse (coordonnées 0 à 1) : le cercle et le filet qui pend dessous.
+export function hoopBox(hoop, size = 1) {
+  const w = 0.06 * size, h = 0.09 * size;
+  const x = Math.min(1 - w, Math.max(0, hoop.x - w / 2));
+  const y = Math.min(1 - h, Math.max(0, hoop.y - 0.015 * size));
+  return { x, y, w, h };
+}
+
+// Arguments ffmpeg : zones des paniers réduites à 16×16 en gris, côte à côte.
+export function netMotionArgs({ input, start, dur, hoops, size = 1, output }) {
+  const crops = hoops.map(hp => {
+    const b = hoopBox(hp, size);
+    return `crop=iw*${b.w.toFixed(4)}:ih*${b.h.toFixed(4)}:iw*${b.x.toFixed(4)}:ih*${b.y.toFixed(4)},scale=${NET_SIZE}:${NET_SIZE}:flags=area,format=gray`;
+  });
+  let graph;
+  if (crops.length === 1) {
+    graph = `[0:v]fps=${NET_FPS},${crops[0]}[o]`;
+  } else {
+    const labels = crops.map((_, k) => `[s${k}]`).join('');
+    graph = [`[0:v]fps=${NET_FPS},split=${crops.length}${labels}`,
+      ...crops.map((c, k) => `[s${k}]${c}[c${k}]`),
+      `${crops.map((_, k) => `[c${k}]`).join('')}hstack=inputs=${crops.length}[o]`].join(';');
+  }
+  return ['-ss', Math.max(0, start).toFixed(2), '-t', dur.toFixed(2), '-i', input,
+    '-filter_complex', graph, '-map', '[o]', '-f', 'rawvideo', output];
+}
+
+// Mouvement image par image (différence moyenne, 0 à 255) pour chaque panier.
+export function netMotion(raw, hoopCount) {
+  const rowLen = NET_SIZE * hoopCount;
+  const frameLen = rowLen * NET_SIZE;
+  const frames = Math.floor(raw.length / frameLen);
+  const out = Array.from({ length: hoopCount }, () => new Float32Array(Math.max(0, frames - 1)));
+  for (let f = 1; f < frames; f++) {
+    const a = (f - 1) * frameLen, b = f * frameLen;
+    for (let k = 0; k < hoopCount; k++) {
+      let sum = 0;
+      for (let r = 0; r < NET_SIZE; r++) {
+        const o = r * rowLen + k * NET_SIZE;
+        for (let c = 0; c < NET_SIZE; c++) sum += Math.abs(raw[b + o + c] - raw[a + o + c]);
+      }
+      out[k][f - 1] = sum / (NET_SIZE * NET_SIZE);
+    }
+  }
+  return out;
+}
+
+function median(arr) {
+  const s = Array.from(arr).sort((x, y) => x - y);
+  return s.length ? s[Math.floor(s.length / 2)] : 0;
+}
+
+// Pic de mouvement le plus net dans [from, to] secondes (relatif au début de l'analyse).
+// z = écart au mouvement habituel de la zone, en « écarts types robustes ».
+export function basketPeak(diff, fps = NET_FPS, { from = 0, to = Infinity } = {}) {
+  if (!diff.length) return { t: 0, z: 0 };
+  const m = median(diff);
+  const mad = median(Array.from(diff, v => Math.abs(v - m)));
+  const scale = 1.4826 * mad + 0.5;
+  let best = { t: 0, z: -Infinity };
+  for (let i = 0; i < diff.length; i++) {
+    const t = (i + 1) / fps;
+    if (t < from || t > to) continue;
+    const z = (diff[i] - m) / scale;
+    if (z > best.z) best = { t, z };
+  }
+  return best.z === -Infinity ? { t: 0, z: 0 } : best;
+}
+
+export const BASKET_Z = 6;
+
+// Extraits à partir des moments forts (avec ou sans vérification des paniers).
+// pick = 'baskets' : seuls les paniers marqués sont présélectionnés.
+export function candidatesToClips(cands, { duration, targetS = 60, pick = 'baskets' } = {}) {
+  const baskets = cands.filter(c => c.basket).sort((a, b) => (b.netZ + b.score) - (a.netZ + a.score));
+  const others = cands.filter(c => !c.basket).sort((a, b) => b.score - a.score);
+  let total = 0;
+  const clips = [...baskets, ...others].map((c, rank) => {
+    const anchor = c.basket ? c.tb : c.t;
+    const before = c.basket ? 5.5 : 6, after = 2;
+    const start = Math.max(0, anchor - before);
+    const end = duration ? Math.min(duration, anchor + after) : anchor + after;
+    const dur = Math.max(1, end - start);
+    const eligible = pick === 'all' || c.basket || !baskets.length;
+    const on = eligible && total + dur <= targetS + 1;
+    if (on) total += dur;
+    return { ...c, rank, start, dur, on };
+  });
+  return clips.sort((a, b) => a.start - b.start);
+}
+
+// Zoom progressif (filtre zoompan) : vers le panier juste avant que le ballon rentre,
+// ou zoom avant doux au centre pour les autres moments.
+export function zoomFilter({ max, hx = 0.5, hy = 0.5, t0, t1 }, size, fps = 30) {
+  const span = Math.max(0.1, t1 - t0);
+  const p = `clip((on/${fps}-${t0.toFixed(2)})/${span.toFixed(2)},0,1)`;
+  const s = `(${p}*${p}*(3-2*${p}))`;
+  const z = `1+${(max - 1).toFixed(3)}*${s}`;
+  const cx = `(0.5+(${(hx - 0.5).toFixed(4)})*${s})`;
+  const cy = `(0.5+(${(hy - 0.5).toFixed(4)})*${s})`;
+  return `fps=${fps},zoompan=z='${z}':x='clip(${cx}*iw-iw/zoom/2,0,iw-iw/zoom)'` +
+    `:y='clip(${cy}*ih-ih/zoom/2,0,ih-ih/zoom)':d=1:s=${size.w}x${size.h}:fps=${fps}`;
+}
+
+// Taille de travail du zoom : celle de la vidéo, limitée à 1280 px de large (ou de haut).
+export function zoomSize(w, h) {
+  if (!w || !h) return { w: 1280, h: 720 };
+  const k = Math.min(1, 1280 / Math.max(w, h));
+  const even = n => Math.max(2, Math.round(n * k / 2) * 2);
+  return { w: even(w), h: even(h) };
 }
