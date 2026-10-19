@@ -3,6 +3,7 @@ import {
 } from './common.js';
 import { FORMATS, clipOutDuration, timelineDuration, buildEditorArgs } from './editor-core.js';
 import { formatTime } from './highlights.js';
+import { BRAND, OUTRO, brandCardPNG } from './brand.js';
 
 const MOUNT = '/m';
 const state = {
@@ -376,6 +377,19 @@ $('btn-render').onclick = async () => {
         written.push(overlay);
       }
       clips.push({ kind: m.kind, path: pathOf(m), start: c.start, dur: c.dur, speed: c.speed, hasAudio: !!audioCache.get(m.id), overlay });
+    }
+    // Modèle Gravity : cartes d'intro et d'outro ajoutées autour du montage.
+    if ($('brand-intro').checked) {
+      await ff.writeFile('/brand-intro.png', await brandCardPNG(W, H, state.logo, {
+        kicker: BRAND.name, title: $('brand-title').value.trim(), sub: $('brand-sub').value.trim(), footer: BRAND.site,
+      }));
+      written.push('/brand-intro.png');
+      clips.unshift({ kind: 'image', path: '/brand-intro.png', start: 0, dur: 2.5, speed: 1, hasAudio: false, overlay: null });
+    }
+    if ($('brand-outro').checked) {
+      await ff.writeFile('/brand-outro.png', await brandCardPNG(W, H, state.logo, OUTRO));
+      written.push('/brand-outro.png');
+      clips.push({ kind: 'image', path: '/brand-outro.png', start: 0, dur: 3, speed: 1, hasAudio: false, overlay: null });
     }
     const musicMedia = mediaById(+$('music').value);
     const total = timelineDuration(clips, $('transition').value);

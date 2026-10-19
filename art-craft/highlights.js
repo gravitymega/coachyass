@@ -86,10 +86,13 @@ export function formatTime(s) {
 }
 
 // Arguments ffmpeg du rendu final : un seul encodage pour tous les extraits.
-export function buildRenderArgs({ input, clips, hasAudio, layout, width, height, overlay, output }) {
+export function buildRenderArgs({ input, clips, hasAudio, layout, width, height, overlay, outro = null, output }) {
   const args = [];
   clips.forEach(c => args.push('-ss', c.start.toFixed(2), '-t', c.dur.toFixed(2), '-i', input));
   if (overlay) args.push('-i', overlay);
+  // Carte de fin (modèle Gravity) : image fixe ajoutée après les extraits.
+  const outroIn = clips.length + (overlay ? 1 : 0);
+  if (outro) args.push('-loop', '1', '-framerate', '30', '-t', outro.dur.toFixed(2), '-i', outro.path);
   const W = width, H = height;
   const parts = [];
   const concatIn = [];
@@ -113,10 +116,22 @@ export function buildRenderArgs({ input, clips, hasAudio, layout, width, height,
   });
   const n = clips.length;
   parts.push(`${concatIn.join('')}concat=n=${n}:v=1:a=${hasAudio ? 1 : 0}[cv]${hasAudio ? '[ca]' : ''}`);
-  if (overlay) parts.push(`[cv][${n}:v]overlay=0:0,format=yuv420p[outv]`);
-  else parts.push('[cv]null[outv]');
+  const main = outro ? 'mv' : 'outv';
+  if (overlay) parts.push(`[cv][${n}:v]overlay=0:0,format=yuv420p[${main}]`);
+  else parts.push(`[cv]null[${main}]`);
+  let audioOut = 'ca';
+  if (outro) {
+    parts.push(`[${outroIn}:v]scale=${W}:${H},setsar=1,fps=30,format=yuv420p,fade=t=in:d=0.3[ov]`);
+    if (hasAudio) {
+      parts.push(`anullsrc=r=44100:cl=stereo,atrim=duration=${outro.dur.toFixed(2)},aformat=sample_fmts=fltp:channel_layouts=stereo[oa]`);
+      parts.push('[mv][ca][ov][oa]concat=n=2:v=1:a=1[outv][outa]');
+      audioOut = 'outa';
+    } else {
+      parts.push('[mv][ov]concat=n=2:v=1:a=0[outv]');
+    }
+  }
   args.push('-filter_complex', parts.join(';'), '-map', '[outv]');
-  if (hasAudio) args.push('-map', '[ca]', '-c:a', 'aac', '-b:a', '128k');
+  if (hasAudio) args.push('-map', `[${audioOut}]`, '-c:a', 'aac', '-b:a', '128k');
   args.push('-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', output);
   return args;
 }

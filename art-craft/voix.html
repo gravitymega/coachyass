@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Art craft — Studio voix</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="" class="top-logo">
+  <div>
+    <h1>Art craft <span>Studio voix</span></h1>
+    <p>Clone ta voix une fois, puis fais-lui lire n'importe quel texte : voix off de highlights, annonces, pubs d'inscription. Moteur ElevenLabs (Eleven v4).</p>
+  </div>
+</header>
+<nav class="tabs">
+  <a href="index.html">Highlights</a>
+  <a href="editeur.html">Éditeur</a>
+  <a href="son.html">Studio son</a>
+  <a href="beat.html">Studio beat</a>
+  <a href="voix.html" aria-current="page">Studio voix</a>
+  <a href="image.html">Studio image</a>
+</nav>
+
+<main>
+  <section class="card" id="step-login">
+    <h2><b>🔒</b> Accès</h2>
+    <p class="muted">Le Studio voix utilise les crédits du compte ElevenLabs de Gravity : il est protégé par un mot de passe.</p>
+    <form class="row" id="login-form">
+      <input type="password" id="password" placeholder="Mot de passe Art craft" autocomplete="current-password">
+      <button class="btn" type="submit">Entrer</button>
+    </form>
+  </section>
+
+  <section class="card" id="step-clone" hidden>
+    <h2><b>1</b> Cloner une voix</h2>
+    <p class="muted">Pour un clone fidèle : 1 à 3 minutes de parole au total, dans un endroit calme, micro proche, en parlant naturellement. Tu peux lire le texte ci-dessous.</p>
+    <details>
+      <summary>Texte à lire (environ 1 minute)</summary>
+      <p class="script">Salut, ici Gravity Basketball Montréal. Chaque semaine, on s'entraîne fort, on joue avec cœur et on progresse ensemble. Que tu sois en U15, en Prep ou dans la ligue maison, l'objectif est le même : devenir meilleur que la veille. Ce soir, on présente les meilleurs moments du dernier match : des paniers à trois points, des contres spectaculaires, et une fin de match serrée jusqu'au buzzer. Merci aux parents, aux coachs et à tous ceux qui nous suivent. Abonnez-vous, partagez la vidéo, et on se voit au prochain match. Gravity, on monte !</p>
+    </details>
+    <div class="row">
+      <button class="btn rec" id="btn-rec" type="button">● Enregistrer</button>
+      <span class="clock" id="rec-clock">0:00</span>
+      <label class="btn ghost">+ Importer des fichiers audio
+        <input type="file" id="sample-files" accept="audio/*,video/*" multiple hidden>
+      </label>
+    </div>
+    <ul class="bin" id="samples"></ul>
+    <p class="total" id="samples-total"></p>
+    <div class="fields">
+      <label>Nom de la voix <input id="voice-name" maxlength="60" placeholder="ex. Coach Yass"></label>
+      <label class="check"><input type="checkbox" id="remove-noise"> Retirer le bruit de fond (seulement si l'enregistrement est bruyant)</label>
+      <label class="check consent"><input type="checkbox" id="consent"> <span>Je confirme que <b>c'est ma propre voix</b>, ou que la personne enregistrée m'a donné son <b>accord explicite</b> pour cloner sa voix et l'utiliser pour Gravity. Je n'utiliserai pas cette voix pour me faire passer pour quelqu'un ni pour tromper qui que ce soit.</span></label>
+    </div>
+    <button class="btn big" id="btn-clone" type="button" disabled>Créer la voix</button>
+    <div class="progress" id="clone-progress" hidden><div></div><span></span></div>
+  </section>
+
+  <section class="card" id="step-speak" hidden>
+    <h2><b>2</b> Faire parler</h2>
+    <div class="fields two">
+      <label>Voix <select id="voice"></select></label>
+      <label>Moteur
+        <select id="model">
+          <option value="eleven_v4">Eleven v4 (le plus naturel et expressif)</option>
+          <option value="eleven_multilingual_v2">Multilingual v2 (très stable)</option>
+          <option value="eleven_flash_v2_5">Flash v2.5 (le plus rapide, moins cher)</option>
+        </select>
+      </label>
+    </div>
+    <div class="row">
+      <span class="muted">Modèles Gravity :</span>
+      <button class="tool" data-tpl="intro" type="button">Intro highlights</button>
+      <button class="tool" data-tpl="match" type="button">Annonce de match</button>
+      <button class="tool" data-tpl="inscription" type="button">Pub inscriptions</button>
+      <button class="tool" data-tpl="merci" type="button">Remerciements</button>
+    </div>
+    <label class="fields"><textarea id="text" rows="7" maxlength="5000" placeholder="Écris ce que la voix doit dire…"></textarea></label>
+    <p class="muted" id="chars">0 / 5000 caractères</p>
+    <div class="fields two">
+      <label>Stabilité (bas = plus d'émotion) <input type="range" id="stability" min="0" max="1" step="0.05" value="0.45"></label>
+      <label>Ressemblance à la voix d'origine <input type="range" id="similarity" min="0" max="1" step="0.05" value="0.85"></label>
+      <label>Intensité du style <input type="range" id="style" min="0" max="1" step="0.05" value="0.25"></label>
+      <label>Débit <input type="range" id="speed" min="0.7" max="1.2" step="0.05" value="1"></label>
+    </div>
+    <div class="row">
+      <button class="btn big" id="btn-speak" type="button">Générer la voix</button>
+      <button class="btn ghost danger" id="btn-delete" type="button">Supprimer cette voix clonée</button>
+    </div>
+    <div class="progress" id="speak-progress" hidden><div></div><span></span></div>
+    <div id="result" hidden>
+      <audio id="result-audio" controls></audio>
+      <div class="row">
+        <a class="btn" id="btn-download">Télécharger le MP3</a>
+        <button class="btn ghost" id="btn-share" hidden>Partager…</button>
+      </div>
+      <p class="muted">Importe ce MP3 dans le Studio son (voix off sur un beat) ou directement comme musique dans l'Éditeur.</p>
+    </div>
+  </section>
+
+  <p class="error" id="error" role="alert" hidden></p>
+</main>
+
+<footer class="foot">Art craft · Gravity Basketball Montréal · voix par <a href="https://elevenlabs.io" target="_blank" rel="noopener">ElevenLabs</a></footer>
+<script type="module" src="voix.js"></script>
+</body>
+</html>

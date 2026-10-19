@@ -1,4 +1,5 @@
 import { $, showError, loadImage, slugify } from './common.js';
+import { drawBrandCard } from './brand.js';
 
 const FORMATS = {
   youtube: { label: 'Miniature YouTube 1280 × 720', w: 1280, h: 720 },
@@ -151,6 +152,13 @@ function draw() {
   const detail = $('t-detail').value.trim();
   const pad = base * 0.07;
   const landscape = W > H;
+
+  if (tpl === 'brand') {
+    // Modèle de marque Gravity : fond, halos et logo officiels (la photo n'est pas utilisée).
+    drawBrandCard(ctx, W, H, $('show-logo').checked ? state.logo : null, { kicker: badge, title, sub, footer: detail })
+      .then(updateLinks);
+    return;
+  }
 
   drawPhoto(ctx, W, H);
 

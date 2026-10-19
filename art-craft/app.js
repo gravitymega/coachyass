@@ -7,6 +7,7 @@ import {
   $, showError, setProgress, parseLogTime, parseLogDuration, getFFmpeg, mountFiles,
   runWithLog, slugify, offerFile,
 } from './common.js';
+import { OUTRO, brandCardPNG } from './brand.js';
 
 const AUDIO_RATE = 8000;
 const MOUNT = '/in';
@@ -388,17 +389,19 @@ async function render() {
   $('btn-render').disabled = true;
   $('result').hidden = true;
   showError('');
-  const total = clips.reduce((s, c) => s + c.dur, 0);
+  const total = clips.reduce((s, c) => s + c.dur, 0) + ($('brand-outro').checked ? 3 : 0);
   try {
     const ff = await getFFmpeg('render-progress');
     await mountInput(ff);
     const [W, H] = $('quality').value === '720' ? [720, 1280] : [1080, 1920];
     const hasOverlay = $('title').value.trim() || $('subtitle').value.trim() || $('show-logo').checked;
     if (hasOverlay) await ff.writeFile('/overlay.png', await overlayPNG(W, H));
+    const outro = $('brand-outro').checked ? { path: '/outro.png', dur: 3 } : null;
+    if (outro) await ff.writeFile(outro.path, await brandCardPNG(W, H, state.logo, OUTRO));
     setProgress('render-progress', 0, 'Montage du short…');
     const args = buildRenderArgs({
       input: state.inputPath, clips, hasAudio: state.hasAudio, layout: $('layout').value,
-      width: W, height: H, overlay: hasOverlay ? '/overlay.png' : null, output: '/short.mp4',
+      width: W, height: H, overlay: hasOverlay ? '/overlay.png' : null, outro, output: '/short.mp4',
     });
     const errors = [];
     const code = await runWithLog(ff, args, line => {
@@ -410,6 +413,7 @@ async function render() {
     const data = await ff.readFile('/short.mp4');
     await ff.deleteFile('/short.mp4');
     if (hasOverlay) await ff.deleteFile('/overlay.png');
+    if (outro) await ff.deleteFile(outro.path);
     const blob = new Blob([data], { type: 'video/mp4' });
     showResult(blob);
     setProgress('render-progress', 1, `Short prêt · ${Math.round(total)} s · ${(blob.size / 1e6).toFixed(1)} Mo`);
