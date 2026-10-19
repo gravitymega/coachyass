@@ -15,7 +15,7 @@
   <img src="assets/logo.png" alt="" class="top-logo">
   <div>
     <h1>Art craft <span>Highlight Agent</span></h1>
-    <p>Une game complète → un short de 60 s, prêt pour Instagram et TikTok. Tout se passe dans ton navigateur : la vidéo n'est envoyée nulle part.</p>
+    <p>Une game complète → un highlight de 20 s à 3 min, prêt pour Instagram et TikTok. Tout se passe dans ton navigateur : la vidéo n'est envoyée nulle part.</p>
   </div>
 </header>
 <nav class="tabs">
@@ -49,11 +49,16 @@
     <p class="muted">L'agent écoute toute la game et repère les moments où la salle explose (paniers, contres, buzzers). Compte environ 1 minute par 20 minutes de vidéo.</p>
     <div class="row">
       <button class="btn" id="btn-analyse">Analyser la game</button>
-      <label class="inline">Durée du short
+      <label class="inline">Durée du highlight
         <select id="target">
+          <option value="20">20 s</option>
           <option value="30">30 s</option>
           <option value="45">45 s</option>
-          <option value="60" selected>60 s</option>
+          <option value="60" selected>1 min</option>
+          <option value="90">1 min 30</option>
+          <option value="120">2 min</option>
+          <option value="150">2 min 30</option>
+          <option value="180">3 min</option>
         </select>
       </label>
     </div>
