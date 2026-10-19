@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Art craft — Studio image</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="" class="top-logo">
+  <div>
+    <h1>Art craft <span>Studio image</span></h1>
+    <p>Miniatures YouTube, affiches de match, posts et stories aux couleurs Gravity, à partir d'une photo ou d'une image de vidéo.</p>
+  </div>
+</header>
+<nav class="tabs">
+  <a href="index.html">Highlights</a>
+  <a href="editeur.html">Éditeur</a>
+  <a href="son.html">Studio son</a>
+  <a href="image.html" aria-current="page">Studio image</a>
+</nav>
+
+<main>
+  <section class="card">
+    <div class="design">
+      <div class="fields">
+        <fieldset>
+          <legend>Format et modèle</legend>
+          <label>Format <select id="format"></select></label>
+          <label>Modèle
+            <select id="template">
+              <option value="match">Affiche de match (GAME DAY)</option>
+              <option value="highlight">Miniature highlight (texte géant)</option>
+              <option value="player">Mise en avant joueur</option>
+              <option value="announce">Annonce / communiqué</option>
+            </select>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Photo</legend>
+          <label class="btn ghost">Choisir une photo ou une vidéo
+            <input type="file" id="photo" accept="image/*,video/*,.mov" hidden>
+          </label>
+          <div id="frame-picker" hidden>
+            <video id="frame-video" muted playsinline preload="auto"></video>
+            <label>Moment de la vidéo <input type="range" id="frame-time" min="0" max="1" step="0.01" value="0"></label>
+            <button class="btn ghost" id="btn-frame">Utiliser cette image</button>
+          </div>
+          <label>Zoom <input type="range" id="zoom" min="1" max="3" step="0.01" value="1"></label>
+          <label>Luminosité <input type="range" id="bright" min="0.4" max="1.6" step="0.02" value="1"></label>
+          <label>Contraste <input type="range" id="contrast" min="0.5" max="1.8" step="0.02" value="1.1"></label>
+          <label>Saturation <input type="range" id="sat" min="0" max="2" step="0.02" value="1.1"></label>
+          <label>Assombrir pour le texte <input type="range" id="shade" min="0" max="0.9" step="0.02" value="0.45"></label>
+          <p class="muted">Glisse l'image dans l'aperçu pour la recadrer.</p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Textes</legend>
+          <label>Étiquette <input id="t-badge" maxlength="24" value="GAME DAY"></label>
+          <label>Titre <input id="t-title" maxlength="50" value="GRAVITY PREP vs ADVERSAIRE"></label>
+          <label>Sous-titre <input id="t-sub" maxlength="60" value="Samedi 25 octobre · 19 h"></label>
+          <label>Détail <input id="t-detail" maxlength="80" value="Complexe sportif Regina Assumpta"></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Couleurs et logo</legend>
+          <div class="swatches" id="swatches"></div>
+          <label class="check"><input type="checkbox" id="show-logo" checked> Logo Gravity</label>
+        </fieldset>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="design" width="1280" height="720" aria-label="Aperçu du visuel"></canvas>
+        <div class="row">
+          <a class="btn" id="btn-png">Télécharger PNG</a>
+          <a class="btn ghost" id="btn-jpg">JPEG (plus léger)</a>
+          <button class="btn ghost" id="btn-share" hidden>Partager…</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <p class="error" id="error" role="alert" hidden></p>
+</main>
+
+<footer class="foot">Art craft · Gravity Basketball Montréal</footer>
+<script type="module" src="image.js"></script>
+</body>
+</html>

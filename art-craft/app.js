@@ -3,13 +3,14 @@ import {
   parseTimestamp, formatTime, buildRenderArgs,
 } from './highlights.js';
 
-// Moteur ffmpeg.wasm : l'enveloppe (petite) est servie par le site, le cœur
-// (32 Mo) vient du CDN et reste ensuite dans le cache du navigateur.
-const CORE_BASE = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+import {
+  $, showError, setProgress, parseLogTime, parseLogDuration, getFFmpeg, mountFiles,
+  runWithLog, slugify, offerFile,
+} from './common.js';
+
 const AUDIO_RATE = 8000;
 const MOUNT = '/in';
 
-const $ = id => document.getElementById(id);
 const state = {
   file: null,
   inputPath: null,
@@ -17,95 +18,19 @@ const state = {
   hasAudio: true,
   score: null,
   clips: [],
-  ffmpeg: null,
-  mounted: false,
   logo: null,
   busy: false,
 };
 let nextId = 1;
 
-// ---------- Utilitaires ----------
-function showError(msg) {
-  const el = $('error');
-  el.textContent = msg;
-  el.hidden = !msg;
-}
-
-function setProgress(id, ratio, label) {
-  const box = $(id);
-  box.hidden = false;
-  box.querySelector('div').style.width = Math.round(Math.min(1, Math.max(0, ratio)) * 100) + '%';
-  box.querySelector('span').textContent = label;
-}
-
-function parseLogTime(message) {
-  const m = /time=(\d+):(\d+):(\d+(?:\.\d+)?)/.exec(message);
-  return m ? (+m[1]) * 3600 + (+m[2]) * 60 + (+m[3]) : null;
-}
-
-function parseLogDuration(message) {
-  const m = /Duration: (\d+):(\d+):(\d+(?:\.\d+)?)/.exec(message);
-  return m ? (+m[1]) * 3600 + (+m[2]) * 60 + (+m[3]) : null;
-}
-
-async function fetchBlobURL(url, type, onProgress) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Téléchargement impossible (${res.status}) : ${url}`);
-  const total = +res.headers.get('content-length') || 0;
-  const reader = res.body.getReader();
-  const chunks = [];
-  let received = 0;
-  for (;;) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    chunks.push(value);
-    received += value.length;
-    if (onProgress && total) onProgress(received / total);
-  }
-  return URL.createObjectURL(new Blob(chunks, { type }));
-}
-
-async function getFFmpeg(progressId) {
-  if (state.ffmpeg) return state.ffmpeg;
-  if (!window.FFmpegWASM) throw new Error('Le moteur vidéo n\'a pas pu être chargé.');
-  setProgress(progressId, 0, 'Chargement du moteur vidéo (1re fois seulement)…');
-  const coreURL = await fetchBlobURL(`${CORE_BASE}/ffmpeg-core.js`, 'text/javascript');
-  const wasmURL = await fetchBlobURL(`${CORE_BASE}/ffmpeg-core.wasm`, 'application/wasm',
-    r => setProgress(progressId, r, `Chargement du moteur vidéo… ${Math.round(r * 100)} %`));
-  const ff = new window.FFmpegWASM.FFmpeg();
-  await ff.load({ coreURL, wasmURL });
-  state.ffmpeg = ff;
-  return ff;
-}
-
-// La vidéo n'est jamais copiée en mémoire : WORKERFS la lit morceau par morceau,
-// ce qui permet de traiter une game entière de plusieurs Go.
 async function mountInput(ff) {
-  if (state.mounted) return;
-  try { await ff.createDir(MOUNT); } catch { /* déjà créé */ }
-  await ff.mount('WORKERFS', { files: [state.file] }, MOUNT);
-  state.mounted = true;
-  state.inputPath = `${MOUNT}/${state.file.name}`;
-}
-
-async function runWithLog(ff, args, onLine) {
-  const handler = ({ message }) => onLine(message);
-  ff.on('log', handler);
-  try {
-    return await ff.exec(args);
-  } finally {
-    ff.off('log', handler);
-  }
+  [state.inputPath] = await mountFiles(ff, MOUNT, [state.file]);
 }
 
 // ---------- 1. Import ----------
 async function selectFile(file) {
   if (!file || state.busy) return;
   showError('');
-  if (state.ffmpeg && state.mounted) {
-    try { await state.ffmpeg.unmount(MOUNT); } catch { /* rien */ }
-    state.mounted = false;
-  }
   state.file = file;
   state.clips = [];
   state.score = null;
@@ -498,19 +423,10 @@ async function render() {
 }
 
 function showResult(blob) {
-  const url = URL.createObjectURL(blob);
+  const name = `${slugify($('title').value, 'gravity-highlights')}.mp4`;
+  const url = offerFile(blob, name, { download: 'btn-download', share: 'btn-share', title: $('title').value || 'Gravity Basketball' });
   const out = $('result-video');
   if (out.src) URL.revokeObjectURL(out.src);
   out.src = url;
-  const base = ($('title').value.trim() || 'gravity-highlights').toLowerCase()
-    .normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const name = `${base || 'gravity-highlights'}.mp4`;
-  const dl = $('btn-download');
-  dl.href = url;
-  dl.download = name;
-  const share = $('btn-share');
-  const file = new File([blob], name, { type: 'video/mp4' });
-  share.hidden = !(navigator.canShare && navigator.canShare({ files: [file] }));
-  share.onclick = () => navigator.share({ files: [file], title: $('title').value || 'Gravity Basketball' }).catch(() => {});
   $('result').hidden = false;
 }

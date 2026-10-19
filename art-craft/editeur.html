@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Art craft — Éditeur</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="" class="top-logo">
+  <div>
+    <h1>Art craft <span>Éditeur</span></h1>
+    <p>Assemble tes vidéos et photos, ajoute du texte, de la musique et des transitions, puis exporte au bon format.</p>
+  </div>
+</header>
+<nav class="tabs">
+  <a href="index.html">Highlights</a>
+  <a href="editeur.html" aria-current="page">Éditeur</a>
+  <a href="son.html">Studio son</a>
+  <a href="image.html">Studio image</a>
+</nav>
+
+<main>
+  <section class="card">
+    <h2><b>1</b> Médias</h2>
+    <label class="drop" id="drop">
+      <input type="file" id="files" accept="video/*,image/*,audio/*,.mov,.mkv" multiple>
+      <strong>Dépose tes vidéos, photos et musiques</strong>
+      <span>plusieurs fichiers à la fois · tout reste sur ton appareil</span>
+    </label>
+    <ul class="bin" id="bin"></ul>
+  </section>
+
+  <section class="card" id="step-timeline" hidden>
+    <h2><b>2</b> Timeline</h2>
+    <div class="stage" id="stage">
+      <video id="stage-video" playsinline></video>
+      <img id="stage-img" alt="">
+      <div class="stage-text" id="stage-text"></div>
+    </div>
+    <div class="row">
+      <button class="btn ghost" id="btn-play">▶ Lire tout</button>
+      <span class="total" id="total"></span>
+    </div>
+    <ol class="timeline" id="timeline"></ol>
+    <p class="muted">Glisse les blocs pour changer l'ordre. Touche un bloc pour le régler.</p>
+
+    <div class="inspector" id="inspector" hidden>
+      <h3 id="insp-name"></h3>
+      <div class="fields two">
+        <label id="lbl-start">Début dans la vidéo (s) <input type="number" id="insp-start" min="0" step="0.1"></label>
+        <label>Durée (s) <input type="number" id="insp-dur" min="0.5" step="0.1"></label>
+        <label id="lbl-speed">Vitesse
+          <select id="insp-speed">
+            <option value="0.5">Ralenti × 0,5</option>
+            <option value="0.75">Ralenti × 0,75</option>
+            <option value="1" selected>Normale</option>
+            <option value="1.5">Accéléré × 1,5</option>
+            <option value="2">Accéléré × 2</option>
+          </select>
+        </label>
+        <label>Position du texte
+          <select id="insp-pos">
+            <option value="top">En haut</option>
+            <option value="middle">Au centre</option>
+            <option value="bottom">En bas</option>
+          </select>
+        </label>
+        <label class="wide">Texte sur cet extrait <input id="insp-text" maxlength="60" placeholder="ex. TROIS POINTS AU BUZZER"></label>
+      </div>
+      <div class="row">
+        <button class="btn ghost" id="insp-preview">▶ Voir l'extrait</button>
+        <button class="btn ghost" id="insp-left">← Avant</button>
+        <button class="btn ghost" id="insp-right">Après →</button>
+        <button class="btn ghost" id="insp-dup">Dupliquer</button>
+        <button class="btn ghost danger" id="insp-del">Retirer</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="step-export" hidden>
+    <h2><b>3</b> Réglages et export</h2>
+    <div class="fields two">
+      <label>Format <select id="format"></select></label>
+      <label>Cadrage
+        <select id="fit">
+          <option value="blur">Image entière + fond flou</option>
+          <option value="crop">Remplir l'écran (recadré)</option>
+          <option value="contain">Image entière + bandes noires</option>
+        </select>
+      </label>
+      <label>Transitions
+        <select id="transition">
+          <option value="cut">Coupe sèche</option>
+          <option value="fade">Fondu au noir</option>
+          <option value="crossfade">Fondu enchaîné</option>
+        </select>
+      </label>
+      <label>Qualité
+        <select id="quality">
+          <option value="1">Haute (1080p)</option>
+          <option value="0.6667" selected>Rapide (720p)</option>
+        </select>
+      </label>
+      <label>Musique <select id="music"><option value="">Aucune</option></select></label>
+      <label>Volume musique <input type="range" id="music-vol" min="0" max="1" step="0.05" value="0.5"></label>
+      <label>Volume du son des vidéos <input type="range" id="orig-vol" min="0" max="1.5" step="0.05" value="1"></label>
+      <label class="check"><input type="checkbox" id="show-logo" checked> Logo Gravity en filigrane</label>
+    </div>
+    <button class="btn big" id="btn-render">Exporter la vidéo</button>
+    <div class="progress" id="render-progress" hidden><div></div><span></span></div>
+    <div id="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="row">
+        <a class="btn" id="btn-download">Télécharger le MP4</a>
+        <button class="btn ghost" id="btn-share" hidden>Partager…</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="error" id="error" role="alert" hidden></p>
+</main>
+
+<footer class="foot">Art craft · Gravity Basketball Montréal · moteur vidéo <a href="https://ffmpegwasm.netlify.app/" target="_blank" rel="noopener">ffmpeg.wasm</a> (open source)</footer>
+<script src="vendor/ffmpeg/ffmpeg.js"></script>
+<script type="module" src="editeur.js"></script>
+</body>
+</html>

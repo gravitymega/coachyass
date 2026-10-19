@@ -44,6 +44,8 @@ video { width: 100%; max-height: 420px; background: #000; border-radius: 12px; m
 .btn.big { padding: 14px 28px; font-size: 17px; }
 input, select { background: #0f0d15; color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; font: inherit; min-width: 0; }
 #manual-times { flex: 1 1 220px; }
+input[type=range] { padding: 0; border: 0; background: transparent; accent-color: var(--accent); min-width: 80px; }
+input[type=checkbox] { accent-color: var(--accent); }
 
 .progress { position: relative; height: 26px; border-radius: 999px; background: #0f0d15; border: 1px solid var(--border); overflow: hidden; margin-top: 12px; }
 .progress div { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--grad); transition: width .2s; }
@@ -83,4 +85,68 @@ input, select { background: #0f0d15; color: var(--text); border: 1px solid var(-
   .fields { width: 100%; }
   #clips li { grid-template-columns: auto 1fr; }
   #clips .ctl { grid-column: 1 / -1; justify-content: flex-start; }
+}
+
+/* ---------- Navigation entre les modules ---------- */
+.tabs { max-width: 920px; margin: 4px auto 0; padding: 0 16px; display: flex; gap: 6px; overflow-x: auto; }
+.tabs a { flex: 0 0 auto; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); text-decoration: none; font-weight: 600; font-size: 14px; }
+.tabs a:hover { color: var(--text); border-color: var(--accent); }
+.tabs a[aria-current="page"] { color: #fff; background: var(--grad); border-color: transparent; }
+
+.fields.two { grid-template-columns: 1fr 1fr; margin-bottom: 14px; }
+.fields .wide { grid-column: 1 / -1; }
+.btn.danger:hover { border-color: var(--accent-2); color: #ffd0dc; }
+h3 { margin: 0 0 10px; font-size: 16px; }
+
+/* ---------- Éditeur ---------- */
+.bin { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 6px; }
+.bin li { display: flex; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--border); border-radius: 10px; background: #120f18; }
+.bin .name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bin small { color: var(--muted); }
+.bin button, .tool { background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; cursor: pointer; font: inherit; font-size: 13px; }
+.stage { position: relative; max-height: 460px; max-width: 100%; margin: 0 auto; background: #000; border-radius: 12px; overflow: hidden; aspect-ratio: 9 / 16; }
+.stage video, .stage img { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; border-radius: 0; max-height: none; }
+.stage-text { position: absolute; left: 6%; right: 6%; text-align: center; font: 700 clamp(14px, 4vw, 26px) Oswald, Impact, sans-serif; text-transform: uppercase; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.8); top: 80%; transform: translateY(-80%); pointer-events: none; }
+.stage-text[data-pos="top"] { top: 14%; transform: translateY(-50%); }
+.stage-text[data-pos="middle"] { top: 50%; transform: translateY(-50%); }
+.stage-text:empty { display: none; }
+.timeline { list-style: none; padding: 8px; margin: 10px 0 4px; display: flex; gap: 6px; overflow-x: auto; background: #0f0d15; border-radius: 12px; min-height: 76px; }
+.timeline li { flex: 1 0 84px; min-width: 84px; display: grid; gap: 2px; align-content: start; padding: 8px; border-radius: 10px; background: linear-gradient(135deg, rgba(232,103,46,.25), rgba(216,30,91,.25)); border: 1px solid var(--border); cursor: grab; }
+.timeline li.sel { border-color: var(--accent); box-shadow: var(--glow, 0 0 0 1px var(--accent)); }
+.timeline li b { font-size: 12px; color: var(--accent); }
+.timeline .name { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.timeline small { color: var(--muted); font-size: 12px; }
+.inspector { margin-top: 14px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: #120f18; }
+.inspector label[hidden] { display: none !important; }
+
+/* ---------- Studio son ---------- */
+.transport { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0; }
+.clock { font: 600 20px/1 ui-monospace, monospace; min-width: 110px; }
+.rec { background: #3a1020; border: 1px solid var(--accent-2); }
+.rec.on { background: var(--accent-2); animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: .6; } }
+.tracks { display: grid; gap: 8px; }
+.track { display: grid; grid-template-columns: 210px 1fr; gap: 10px; padding: 10px; border: 1px solid var(--border); border-radius: 12px; background: #120f18; }
+.track .head { display: grid; gap: 4px; align-content: start; font-size: 13px; color: var(--muted); }
+.track .head .tname { color: var(--text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.track .head label { display: grid; grid-template-columns: 62px 1fr; align-items: center; gap: 6px; }
+.track .btns { display: flex; flex-wrap: wrap; gap: 4px; }
+.track .btns button.on { background: var(--accent); border-color: var(--accent); }
+.track canvas { width: 100%; height: 96px; background: #0f0d15; border-radius: 8px; cursor: ew-resize; touch-action: none; }
+
+/* ---------- Studio image ---------- */
+.design { display: grid; grid-template-columns: 1fr 1.1fr; gap: 18px; align-items: start; }
+.canvas-wrap { position: sticky; top: 12px; }
+#design { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); background: #000; cursor: grab; touch-action: none; display: block; }
+.swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+.swatches button { width: 34px; height: 34px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; }
+.swatches button.on { border-color: #fff; }
+fieldset { border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px 12px; margin: 0; display: grid; gap: 10px; }
+legend { color: var(--text); font-weight: 600; padding: 0 6px; }
+
+@media (max-width: 680px) {
+  .fields.two { grid-template-columns: 1fr; }
+  .track { grid-template-columns: 1fr; }
+  .design { grid-template-columns: 1fr; }
+  .canvas-wrap { position: static; }
 }
