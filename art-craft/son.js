@@ -55,10 +55,12 @@ function buildGraph(ac, destination, when, from) {
       comp.ratio.value = 4;
       comp.attack.value = 0.005;
       comp.release.value = 0.2;
-      const makeup = ac.createGain();
-      makeup.gain.value = 1.6;
-      node.connect(hp).connect(presence).connect(comp).connect(makeup);
-      node = makeup;
+      // Le compresseur Web Audio compense déjà le volume (gain de rattrapage automatique) :
+      // on le ramène à un niveau proche de l'original.
+      const trim = ac.createGain();
+      trim.gain.value = 0.5;
+      node.connect(hp).connect(presence).connect(comp).connect(trim);
+      node = trim;
     }
     const fade = ac.createGain();
     const gain = ac.createGain();
