@@ -1,6 +1,7 @@
 import {
-  WINDOW_S, energyEnvelope, excitementScore, findPeaks, buildClips,
+  WINDOW_S, energyEnvelope, excitementScore, findPeaks, candidatesToClips,
   parseTimestamp, formatTime, buildRenderArgs,
+  hoopBox, netMotionArgs, netMotion, basketPeak, BASKET_Z, NET_FPS, zoomSize,
 } from './highlights.js';
 
 import {
@@ -18,10 +19,16 @@ const state = {
   duration: 0,
   hasAudio: true,
   score: null,
+  cands: [],     // moments forts repérés au son (+ résultat de la vérification panier)
   clips: [],
+  hoops: [],     // paniers montrés par l'utilisateur, coordonnées 0 à 1
+  srcW: 0,
+  srcH: 0,
+  frameT: 0,
   logo: null,
   busy: false,
 };
+const MAX_CHECKED = 30;
 let nextId = 1;
 
 async function mountInput(ff) {
@@ -34,8 +41,11 @@ async function selectFile(file) {
   showError('');
   state.file = file;
   state.clips = [];
+  state.cands = [];
+  state.hoops = [];
   state.score = null;
   state.duration = 0;
+  state.srcW = state.srcH = 0;
   const video = $('video');
   if (video.src) URL.revokeObjectURL(video.src);
   video.src = URL.createObjectURL(file);
@@ -43,7 +53,7 @@ async function selectFile(file) {
   $('no-preview').hidden = true;
   $('file-info').textContent = `${file.name} · ${(file.size / 1e6).toFixed(0)} Mo`;
   $('step-analyse').hidden = false;
-  ['step-clips', 'step-style', 'step-export', 'result', 'analyse-progress', 'render-progress']
+  ['step-clips', 'step-style', 'step-export', 'result', 'analyse-progress', 'render-progress', 'hoop-step', 'basket-progress']
     .forEach(id => { $(id).hidden = true; });
 }
 
@@ -82,6 +92,7 @@ async function analyse() {
     ], line => {
       const d = parseLogDuration(line);
       if (d && !state.duration) state.duration = d;
+      readVideoSize(line);
       const t = parseLogTime(line);
       if (t != null && state.duration) {
         setProgress('analyse-progress', t / state.duration, `Écoute de la game… ${formatTime(t)} / ${formatTime(state.duration)}`);
@@ -97,8 +108,11 @@ async function analyse() {
     if (state.hasAudio) {
       if (!state.duration) state.duration = samples.length / AUDIO_RATE;
       state.score = excitementScore(energyEnvelope(samples, AUDIO_RATE));
+      state.cands = findPeaks(state.score, WINDOW_S, { maxCount: 40 }).map(p => ({ t: p.t, score: p.score }));
       autoSelect();
-      setProgress('analyse-progress', 1, `${state.clips.length} moments forts trouvés`);
+      setProgress('analyse-progress', 1, `${state.cands.length} moments forts trouvés au son`);
+      $('hoop-step').hidden = false;
+      loadFrame(state.duration * 0.3);
     } else {
       state.score = null;
       state.clips = [];
@@ -116,16 +130,136 @@ async function analyse() {
   }
 }
 
+// Taille réelle de la vidéo (après rotation éventuelle d'un téléphone), lue dans le journal ffmpeg.
+function readVideoSize(line) {
+  const m = /Video: .*?(\d{2,5})x(\d{2,5})/.exec(line);
+  if (m && !state.srcW) { state.srcW = +m[1]; state.srcH = +m[2]; }
+  if (/rotation of -?90/.test(line) && state.srcW > state.srcH) [state.srcW, state.srcH] = [state.srcH, state.srcW];
+}
+
 function autoSelect() {
   if (!state.score) return;
   const target = +$('target').value;
-  const peaks = findPeaks(state.score, WINDOW_S);
   const manual = state.clips.filter(c => c.manual);
   const manualTotal = manual.reduce((s, c) => s + (c.on ? c.dur : 0), 0);
-  const auto = buildClips(peaks, { duration: state.duration, targetS: Math.max(0, target - manualTotal) })
+  const auto = candidatesToClips(state.cands, { duration: state.duration, targetS: Math.max(0, target - manualTotal), pick: $('pick').value })
     .filter(c => !manual.some(m => Math.abs(m.t - c.t) < 8))
-    .map(c => ({ ...c, id: nextId++, cropX: 0.5 }));
+    .map(c => ({ ...c, id: nextId++, cropX: c.basket && c.hoop ? c.hoop.x : 0.5 }));
   state.clips = [...manual, ...auto].sort((a, b) => a.start - b.start);
+}
+
+// ---------- 2 bis. Paniers marqués ----------
+const hoopCanvas = $('hoop-canvas');
+let frameImg = null;
+
+async function loadFrame(t) {
+  try {
+    const ff = await getFFmpeg('analyse-progress');
+    await mountInput(ff);
+    state.frameT = Math.max(0, Math.min(t, (state.duration || 1) - 1));
+    const code = await ff.exec(['-ss', state.frameT.toFixed(2), '-i', state.inputPath, '-frames:v', '1', '-vf', 'scale=960:-2', '/frame.png']);
+    if (code !== 0) throw new Error('image illisible');
+    const data = await ff.readFile('/frame.png');
+    await ff.deleteFile('/frame.png');
+    frameImg = await createImageBitmap(new Blob([data], { type: 'image/png' }));
+    drawHoops();
+  } catch (err) {
+    console.error(err);
+    showError('Impossible d\'afficher une image de la vidéo : ' + (err.message || err));
+  }
+}
+
+function drawHoops() {
+  if (!frameImg) return;
+  hoopCanvas.width = frameImg.width;
+  hoopCanvas.height = frameImg.height;
+  const ctx = hoopCanvas.getContext('2d');
+  const W = hoopCanvas.width, H = hoopCanvas.height;
+  ctx.drawImage(frameImg, 0, 0);
+  state.hoops.forEach((hp, i) => {
+    const b = hoopBox(hp, +$('hoop-size').value);
+    ctx.lineWidth = Math.max(2, W / 320);
+    ctx.strokeStyle = '#e8672e';
+    ctx.strokeRect(b.x * W, b.y * H, b.w * W, b.h * H);
+    ctx.fillStyle = '#e8672e';
+    ctx.beginPath();
+    ctx.arc(hp.x * W, hp.y * H, Math.max(3, W / 200), 0, Math.PI * 2);
+    ctx.fill();
+    ctx.font = `700 ${Math.round(W / 40)}px Inter, sans-serif`;
+    ctx.fillText(`Panier ${i + 1}`, b.x * W, b.y * H - 6);
+  });
+  $('btn-baskets').disabled = !state.hoops.length || state.busy;
+}
+
+hoopCanvas.addEventListener('click', e => {
+  const r = hoopCanvas.getBoundingClientRect();
+  const hp = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
+  if (state.hoops.length >= 2) {
+    // Deux paniers maximum : le clic remplace le plus proche.
+    const d = h => (h.x - hp.x) ** 2 + (h.y - hp.y) ** 2;
+    state.hoops[d(state.hoops[0]) < d(state.hoops[1]) ? 0 : 1] = hp;
+  } else {
+    state.hoops.push(hp);
+  }
+  drawHoops();
+});
+$('hoop-size').addEventListener('input', drawHoops);
+$('btn-hoop-clear').addEventListener('click', () => { state.hoops = []; drawHoops(); });
+$('btn-other-frame').addEventListener('click', () => {
+  if (!state.busy) loadFrame((state.frameT + (state.duration || 60) * 0.17) % Math.max(1, state.duration || 60));
+});
+$('btn-baskets').addEventListener('click', detectBaskets);
+
+// Pour chaque moment fort (les plus forts d'abord), regarde le filet dans les 8 s qui précèdent la réaction.
+async function detectBaskets() {
+  if (state.busy || !state.hoops.length || !state.cands.length) return;
+  state.busy = true;
+  $('btn-baskets').disabled = true;
+  showError('');
+  try {
+    const ff = await getFFmpeg('basket-progress');
+    await mountInput(ff);
+    const size = +$('hoop-size').value;
+    const todo = [...state.cands].sort((a, b) => b.score - a.score).slice(0, MAX_CHECKED);
+    let found = 0;
+    for (let i = 0; i < todo.length; i++) {
+      const c = todo[i];
+      setProgress('basket-progress', i / todo.length, `Vérification du filet… ${i + 1} / ${todo.length} (${found} panier${found > 1 ? 's' : ''})`);
+      const start = Math.max(0, c.t - 8);
+      const code = await ff.exec(netMotionArgs({ input: state.inputPath, start, dur: 9.5, hoops: state.hoops, size, output: '/net.raw' }));
+      if (code !== 0) continue;
+      const raw = await ff.readFile('/net.raw');
+      await ff.deleteFile('/net.raw');
+      const diffs = netMotion(raw, state.hoops.length);
+      // Le ballon traverse le filet avant la réaction de la salle (jusqu'à ~7 s avant).
+      const from = Math.max(0.5, c.t - start - 7.5), to = c.t - start + 0.8;
+      let best = { z: 0, t: 0, k: 0 };
+      diffs.forEach((d, k) => {
+        const pk = basketPeak(d, NET_FPS, { from, to });
+        if (pk.z > best.z) best = { ...pk, k };
+      });
+      c.checked = true;
+      c.netZ = best.z;
+      c.basket = best.z >= BASKET_Z;
+      if (c.basket) {
+        c.tb = start + best.t;
+        c.hoop = state.hoops[best.k];
+        found++;
+      }
+    }
+    $('pick').value = found ? 'baskets' : 'all';
+    autoSelect();
+    renderClips();
+    setProgress('basket-progress', 1, found
+      ? `${found} panier${found > 1 ? 's' : ''} marqué${found > 1 ? 's' : ''} trouvé${found > 1 ? 's' : ''} sur ${todo.length} moments forts vérifiés`
+      : `Aucun panier vu dans le filet : vérifie la position et la taille de la zone, ou garde la sélection au son`);
+  } catch (err) {
+    console.error(err);
+    showError('Détection des paniers impossible : ' + (err.message || err));
+  } finally {
+    state.busy = false;
+    drawHoops();
+  }
 }
 
 // ---------- 3. Extraits ----------
@@ -153,6 +287,7 @@ $('btn-add-times').addEventListener('click', () => {
 });
 $('btn-auto').addEventListener('click', () => { autoSelect(); renderClips(); });
 $('target').addEventListener('change', () => { if (state.score) { autoSelect(); renderClips(); } });
+$('pick').addEventListener('change', () => { if (state.score) { autoSelect(); renderClips(); } });
 
 function totalSelected() {
   return state.clips.filter(c => c.on).reduce((s, c) => s + c.dur, 0);
@@ -167,10 +302,11 @@ function renderClips() {
     const li = document.createElement('li');
     li.className = c.on ? '' : 'off';
     const label = c.manual ? 'ajouté à la main' : `salle +${c.score.toFixed(1)} dB`;
+    const tag = c.basket ? '<span class="tag">🏀 Panier</span>' : c.checked ? '<span class="tag no">pas de panier vu</span>' : '';
     li.innerHTML = `
       <input type="checkbox" ${c.on ? 'checked' : ''} aria-label="Garder cet extrait">
       <div>
-        <div class="when">${formatTime(c.start)} → ${formatTime(c.start + c.dur)}<small>${label}</small></div>
+        <div class="when">${formatTime(c.start)} → ${formatTime(c.start + c.dur)}${tag}<small>${label}</small></div>
         ${c.manual ? '' : `<div class="bar" style="width:${Math.round((c.score / maxScore) * 100)}%"></div>`}
       </div>
       <div class="ctl">
@@ -399,9 +535,12 @@ async function render() {
     const outro = $('brand-outro').checked ? { path: '/outro.png', dur: 3 } : null;
     if (outro) await ff.writeFile(outro.path, await brandCardPNG(W, H, state.logo, OUTRO));
     setProgress('render-progress', 0, 'Montage du short…');
+    const strength = +$('zoom').value;
+    const zoomed = clips.map(c => ({ ...c, zoom: strength > 1 ? clipZoom(c, strength) : null }));
     const args = buildRenderArgs({
-      input: state.inputPath, clips, hasAudio: state.hasAudio, layout: $('layout').value,
-      width: W, height: H, overlay: hasOverlay ? '/overlay.png' : null, outro, output: '/short.mp4',
+      input: state.inputPath, clips: zoomed, hasAudio: state.hasAudio, layout: $('layout').value,
+      width: W, height: H, overlay: hasOverlay ? '/overlay.png' : null, outro,
+      zoom: strength > 1 ? zoomSize(state.srcW, state.srcH) : null, output: '/short.mp4',
     });
     const errors = [];
     const code = await runWithLog(ff, args, line => {
@@ -424,6 +563,17 @@ async function render() {
     state.busy = false;
     $('btn-render').disabled = false;
   }
+}
+
+// Panier : zoom progressif vers le filet pendant les ~2 s avant que le ballon rentre.
+// Autre moment : léger zoom avant au centre sur toute la durée.
+function clipZoom(c, strength) {
+  if (c.basket && c.hoop && Number.isFinite(c.tb)) {
+    const tb = c.tb - c.start;
+    const t0 = Math.max(0, tb - 2.2);
+    return { max: strength, hx: c.hoop.x, hy: Math.min(0.95, c.hoop.y + 0.03), t0, t1: Math.max(t0 + 0.4, tb - 0.3) };
+  }
+  return { max: 1 + (strength - 1) * 0.35, hx: 0.5, hy: 0.5, t0: 0, t1: c.dur };
 }
 
 function showResult(blob) {

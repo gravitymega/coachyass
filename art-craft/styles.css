@@ -177,3 +177,10 @@ textarea { width: 100%; background: #0f0d15; color: var(--text); border: 1px sol
 .tool { background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; cursor: pointer; font: inherit; font-size: 13px; }
 .tool:hover { border-color: var(--accent); }
 .brand-kit { margin: 4px 0 14px; }
+
+/* ---------- Paniers (Highlights) ---------- */
+.hoop-wrap { position: relative; margin-top: 8px; }
+#hoop-canvas { width: 100%; height: auto; display: block; border-radius: 12px; background: #000; cursor: crosshair; }
+#clips .when .tag { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; background: var(--grad); color: #fff; }
+#clips .when .tag.no { background: #2e2839; color: var(--muted); font-weight: 500; }
+#hoop-step h3 { margin: 18px 0 6px; }
