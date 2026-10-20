@@ -15,7 +15,7 @@
   <img src="assets/logo.png" alt="" class="top-logo">
   <div>
     <h1>Art craft <span>Studio beat</span></h1>
-    <p>Génère des beats rap originaux dans les styles du moment : trap, drill, boom bap, afro. Libres de droits, puisque c'est toi qui les crées.</p>
+    <p>Génère des beats rap originaux dans les styles du moment (trap, drill, boom bap, afro), des rythmes africains et gnawa, ou pars d'une musique libre de droits et transforme-la.</p>
   </div>
 </header>
 <nav class="tabs">
@@ -48,15 +48,62 @@
     </div>
   </section>
 
-  <section class="card">
-    <h2><b>2</b> Ajuster</h2>
-    <div class="layers" id="layers"></div>
-    <div class="grid" id="grid"></div>
-    <p class="muted">Touche une case pour ajouter ou retirer un coup. Sur la ligne Charleston, retoucher une case allumée crée un roulement (×2, ×3, ×4). La 808 suit le kick.</p>
+  <section class="card" id="lib">
+    <h2><b>2</b> Musique libre de droits</h2>
+    <p class="muted">Des milliers de morceaux libres (Freesound, Jamendo, ccMixter, Wikimedia… via Openverse). Choisis un thème ou cherche un mot, écoute, puis « Utiliser » : tu peux découper le morceau, changer sa vitesse, le filtrer et poser ta batterie par-dessus.</p>
+    <div class="chips" id="themes"></div>
+    <div class="row">
+      <input id="q" placeholder="ou cherche : piano, basket, guitare…" maxlength="80">
+      <select id="lic" aria-label="Licences">
+        <option value="credit">CC0 + CC BY (crédit à citer)</option>
+        <option value="free">Seulement sans condition (CC0)</option>
+      </select>
+      <button class="btn" id="btn-search">Chercher</button>
+    </div>
+    <p class="muted" id="lib-status"></p>
+    <ul class="bin lib-list" id="tracks"></ul>
+    <div class="row"><button class="btn ghost" id="btn-more" hidden>Plus de résultats</button></div>
+
+    <div id="music-edit" hidden>
+      <h3 class="m-title">🎵 <span id="m-title"></span></h3>
+      <p class="muted" id="m-lic"></p>
+      <div class="row">
+        <label class="inline">Début <input type="range" id="m-start" min="0" max="1" step="0.01" value="0"> <b id="m-start-v"></b></label>
+        <button class="tool" data-nudge="-0.02" title="Reculer de 20 ms">−</button><button class="tool" data-nudge="0.02" title="Avancer de 20 ms">+</button>
+        <label class="inline">Longueur <input type="range" id="m-len" min="1" max="2" step="0.01" value="1"> <b id="m-len-v"></b></label>
+      </div>
+      <div class="row">
+        <label class="inline">Vitesse <input type="range" id="m-speed" min="0.5" max="1.5" step="0.01" value="1"> <b id="m-speed-v">×1</b></label>
+        <label class="inline">Filtre <select id="m-filter"></select></label>
+        <label class="inline check"><input type="checkbox" id="m-loop" checked> Boucler la partie choisie</label>
+      </div>
+      <p class="muted">La vitesse change aussi la hauteur, comme sur un vinyle : plus lent = plus grave (effet « slowed »).</p>
+      <div class="row">
+        <span>Tempo de la musique : <b id="m-bpm">—</b></span>
+        <button class="tool" id="m-half">÷2</button><button class="tool" id="m-double">×2</button>
+        <button class="btn ghost" id="m-sync">Caler la batterie et une boucle de 4 mesures</button>
+        <button class="btn ghost" id="m-drums">Garder seulement ma batterie</button>
+      </div>
+      <label>Crédit à mettre dans la description de ta vidéo
+        <textarea id="m-credit" rows="3" readonly></textarea>
+      </label>
+      <div class="row">
+        <button class="tool" id="m-copy">Copier le crédit</button>
+        <button class="btn ghost danger" id="m-remove">Retirer la musique</button>
+      </div>
+    </div>
+    <audio id="lib-preview" preload="none"></audio>
   </section>
 
   <section class="card">
-    <h2><b>3</b> Exporter</h2>
+    <h2><b>3</b> Ajuster</h2>
+    <div class="layers" id="layers"></div>
+    <div class="grid" id="grid"></div>
+    <p class="muted">Touche une case pour ajouter ou retirer un coup. Sur la ligne Charleston, retoucher une case allumée crée un roulement (×2, ×3, ×4). La 808 suit le kick (en gnawa, le riff de guembri reste le même).</p>
+  </section>
+
+  <section class="card">
+    <h2><b>4</b> Exporter</h2>
     <div class="row">
       <label class="inline">Durée
         <select id="length">
@@ -65,6 +112,8 @@
           <option value="30">30 s</option>
           <option value="60" selected>60 s (short)</option>
           <option value="120">2 min</option>
+          <option value="180">3 min</option>
+          <option value="music" hidden>Toute la partie choisie de la musique</option>
         </select>
       </label>
       <button class="btn big" id="btn-export">Exporter en WAV</button>
@@ -77,13 +126,14 @@
         <button class="btn ghost" id="btn-share" hidden>Partager…</button>
       </div>
       <p class="muted">Dans l'Éditeur, importe ce fichier : il devient la musique de ton montage.</p>
+      <p class="warn" id="credit-reminder" hidden></p>
     </div>
   </section>
 
   <p class="error" id="error" role="alert" hidden></p>
 </main>
 
-<footer class="foot">Art craft · Gravity Basketball Montréal · sons 100 % synthétisés (Web Audio)</footer>
+<footer class="foot">Art craft · Gravity Basketball Montréal · sons synthétisés (Web Audio) · bibliothèque libre de droits <a href="https://openverse.org/" target="_blank" rel="noopener">Openverse</a></footer>
 <script type="module" src="beat.js"></script>
 </body>
 </html>
