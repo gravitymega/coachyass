@@ -199,3 +199,17 @@ textarea { width: 100%; background: #0f0d15; color: var(--text); border: 1px sol
 .badge.free { background: rgba(60,180,110,.25); }
 .m-title { margin: 18px 0 2px; overflow-wrap: anywhere; }
 #music-edit { border-top: 1px solid var(--border); margin-top: 14px; }
+
+/* ---------- Publication Instagram / Facebook (Highlights) ---------- */
+.publish { border-top: 1px solid var(--border); margin-top: 16px; padding-top: 4px; }
+.publish h3 { margin: 14px 0 4px; }
+.publish label { display: block; margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+.publish label.check { display: inline-flex; color: var(--text); }
+.publish label input:not([type=checkbox]), .publish label textarea { display: block; width: 100%; margin-top: 4px; }
+.pub-login { background: rgba(232,103,46,.08); border: 1px solid rgba(232,103,46,.4); border-radius: 12px; padding: 10px 12px; margin-top: 12px; }
+.pub-login input { flex: 1 1 180px; min-width: 0; }
+#pub-links p { margin: 6px 0; }
+#pub-count.over { color: #ff8aa6; }
+
+/* Une zone d'erreur vide ne s'affiche pas. */
+.error:empty { display: none; }

@@ -150,6 +150,59 @@
         <button class="btn ghost" id="btn-share" hidden>Partager…</button>
       </div>
     </div>
+
+    <div id="drive" class="publish" hidden>
+      <h3>☁️ Enregistrer dans Google Drive</h3>
+      <p class="muted">Le short est rangé dans ton Drive, dossier « Art craft — Gravity ». L'outil n'a accès qu'aux fichiers qu'il crée lui-même, pas au reste de ton Drive.</p>
+      <div class="row">
+        <button class="btn" id="btn-drive" type="button">Enregistrer dans Google Drive</button>
+        <label class="inline check"><input type="checkbox" id="drive-auto"> Enregistrer automatiquement les prochains shorts</label>
+      </div>
+      <p class="warn" id="drive-setup" hidden>Google Drive n'est pas encore branché : il manque l'identifiant client Google de l'outil (à créer une fois dans la console Google Cloud).</p>
+      <div class="progress" id="drive-progress" hidden><div></div><span></span></div>
+      <p id="drive-result"></p>
+      <p class="error" id="drive-error"></p>
+    </div>
+
+    <div id="publish" class="publish" hidden>
+      <h3>📣 Publier sur Instagram et Facebook</h3>
+      <p class="muted">Le titre et le score de l'habillage ouvrent la légende. Ajoute un texte et tes hashtags, relis, puis publie.</p>
+      <label>Texte (facultatif)
+        <textarea id="pub-text" rows="2" maxlength="1500" placeholder="Grosse victoire ce soir ! Merci aux parents et aux fans 🙌"></textarea>
+      </label>
+      <label>Hashtags
+        <input id="pub-tags" placeholder="#GravityBasketball #basketball">
+      </label>
+      <label>Légende qui sera publiée
+        <textarea id="pub-caption" rows="5"></textarea>
+      </label>
+      <div class="row">
+        <span class="total" id="pub-count"></span>
+        <button class="tool" id="btn-reset-caption" type="button">Recalculer la légende</button>
+      </div>
+      <div class="row">
+        <label class="inline check"><input type="checkbox" id="pub-ig" checked> Instagram (reel)</label>
+        <label class="inline check"><input type="checkbox" id="pub-fb" checked> Page Facebook</label>
+      </div>
+      <div class="row">
+        <button class="btn" id="btn-publish" type="button">Publier maintenant</button>
+        <button class="btn ghost" id="btn-copy-caption" type="button">Copier la légende</button>
+      </div>
+      <form id="pub-login" class="pub-login" hidden>
+        <p>Connecte-toi avec ton compte du <b>Dashboard Gravity</b> (le même que pour gérer Instagram) :</p>
+        <div class="row">
+          <input id="pub-email" type="email" autocomplete="username" placeholder="Courriel" required>
+          <input id="pub-password" type="password" autocomplete="current-password" placeholder="Mot de passe" required>
+          <button class="btn" type="submit">Se connecter</button>
+          <button class="btn ghost" id="pub-login-cancel" type="button">Annuler</button>
+        </div>
+        <p class="error" id="pub-login-error"></p>
+      </form>
+      <div class="progress" id="publish-progress" hidden><div></div><span></span></div>
+      <div id="pub-links"></div>
+      <p class="muted"><span id="pub-account"></span> <button class="tool" id="btn-logout" type="button" hidden>Se déconnecter</button></p>
+      <p class="muted">Sur téléphone, « Partager… » ouvre aussi Instagram ou Facebook avec la vidéo : la légende est copiée automatiquement, il suffit de la coller.</p>
+    </div>
   </section>
 
   <p class="error" id="error" role="alert" hidden></p>

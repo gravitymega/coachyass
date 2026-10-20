@@ -9,6 +9,9 @@ import {
   runWithLog, slugify, offerFile,
 } from './common.js';
 import { OUTRO, brandCardPNG } from './brand.js';
+import { setVideo, currentCaption } from './social.js';
+import { offerDrive } from './drive.js';
+import { uploadKbps } from './social-core.js';
 
 const AUDIO_RATE = 8000;
 const AUDIO_CHUNK_S = 600;
@@ -552,7 +555,8 @@ async function render() {
     const args = buildRenderArgs({
       input: state.inputPath, clips: zoomed, hasAudio: state.hasAudio, layout: $('layout').value,
       width: W, height: H, overlay: hasOverlay ? '/overlay.png' : null, outro,
-      zoom: strength > 1 ? zoomSize(state.srcW, state.srcH) : null, output: '/short.mp4',
+      zoom: strength > 1 ? zoomSize(state.srcW, state.srcH) : null,
+      maxKbps: uploadKbps(total, W), output: '/short.mp4',
     });
     const errors = [];
     const code = await runWithLog(ff, args, line => {
@@ -590,9 +594,11 @@ function clipZoom(c, strength) {
 
 function showResult(blob) {
   const name = `${slugify($('title').value, 'gravity-highlights')}.mp4`;
-  const url = offerFile(blob, name, { download: 'btn-download', share: 'btn-share', title: $('title').value || 'Gravity Basketball' });
+  const url = offerFile(blob, name, { download: 'btn-download', share: 'btn-share', title: $('title').value || 'Gravity Basketball', text: currentCaption });
   const out = $('result-video');
   if (out.src) URL.revokeObjectURL(out.src);
   out.src = url;
   $('result').hidden = false;
+  setVideo(blob);
+  offerDrive(blob, name, currentCaption);
 }
