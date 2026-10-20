@@ -28,7 +28,9 @@ const state = {
   logo: null,
   busy: false,
 };
-const MAX_CHECKED = 30;
+// Nombre de moments forts vérifiés au filet : assez pour remplir la durée visée
+// (un extrait fait ~7,5 s et environ un moment fort sur deux est un panier).
+const checkedFor = target => Math.min(80, Math.max(30, Math.ceil((target / 7.5) * 2.5)));
 let nextId = 1;
 
 async function mountInput(ff) {
@@ -108,7 +110,7 @@ async function analyse() {
     if (state.hasAudio) {
       if (!state.duration) state.duration = samples.length / AUDIO_RATE;
       state.score = excitementScore(energyEnvelope(samples, AUDIO_RATE));
-      state.cands = findPeaks(state.score, WINDOW_S, { maxCount: 40 }).map(p => ({ t: p.t, score: p.score }));
+      state.cands = findPeaks(state.score, WINDOW_S, { maxCount: 80 }).map(p => ({ t: p.t, score: p.score }));
       autoSelect();
       setProgress('analyse-progress', 1, `${state.cands.length} moments forts trouvés au son`);
       $('hoop-step').hidden = false;
@@ -220,7 +222,7 @@ async function detectBaskets() {
     const ff = await getFFmpeg('basket-progress');
     await mountInput(ff);
     const size = +$('hoop-size').value;
-    const todo = [...state.cands].sort((a, b) => b.score - a.score).slice(0, MAX_CHECKED);
+    const todo = [...state.cands].sort((a, b) => b.score - a.score).slice(0, checkedFor(+$('target').value));
     let found = 0;
     for (let i = 0; i < todo.length; i++) {
       const c = todo[i];
