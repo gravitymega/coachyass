@@ -1,8 +1,11 @@
-import { $, showError, setProgress, offerFile } from './common.js';
+import { $, showError, setProgress, offerFile, slugify } from './common.js';
 import { encodeWav } from './son-core.js';
 import {
   STYLES, STEPS, NOTE_NAMES, generateBeat, stepTime, stepDuration, loopDuration, midiToFreq,
 } from './beat-core.js';
+import {
+  OPENVERSE, THEMES, FILTERS, searchParams, normalizeResults, creditLine, detectBpm, syncTempo,
+} from './music-core.js';
 
 // Tous les sons sont synthétisés (aucun échantillon) : le beat est 100 % original et libre de droits.
 const ROWS = [
@@ -17,13 +20,16 @@ const LAYERS = [
   { key: 'bass', label: '808 / basse' },
   { key: 'chords', label: 'Accords' },
   { key: 'melody', label: 'Mélodie' },
+  { key: 'music', label: 'Musique' },
 ];
 
 const state = {
   beat: null,
-  mute: { drums: false, bass: false, chords: false, melody: false },
-  volume: { drums: 0.9, bass: 0.9, chords: 0.35, melody: 0.45 },
+  mute: { drums: false, bass: false, chords: false, melody: false, music: false },
+  volume: { drums: 0.9, bass: 0.9, chords: 0.35, melody: 0.45, music: 1 },
   playing: false,
+  // Musique libre de droits : { track, buffer, start, len, speed, filter, loop, bpm }
+  music: null,
 };
 
 const styleSel = $('style');
@@ -218,6 +224,55 @@ function scheduleLoop(ac, mix, beat, t0, from = 0, to = STEPS) {
   }
 }
 
+// Musique libre de droits : partie choisie, vitesse, filtre, en boucle ou non.
+const driveCurve = (() => {
+  const c = new Float32Array(1024);
+  for (let i = 0; i < c.length; i++) { const x = i / 512 - 1; c[i] = Math.tanh(1.6 * x) / Math.tanh(1.6); }
+  return c;
+})();
+
+function startMusic(ctx, mix, t0, maxDur) {
+  const m = state.music;
+  if (!m) return;
+  const src = ctx.createBufferSource();
+  src.buffer = m.buffer;
+  src.playbackRate.value = m.speed;
+  let node = src;
+  const preset = FILTERS[m.filter] || FILTERS.none;
+  preset.nodes.forEach(spec => {
+    const f = ctx.createBiquadFilter();
+    f.type = spec.type;
+    f.frequency.value = spec.f;
+    if (spec.Q) f.Q.value = spec.Q;
+    if (spec.gain) f.gain.value = spec.gain;
+    node.connect(f);
+    node = f;
+  });
+  if (preset.drive) {
+    const sh = ctx.createWaveShaper();
+    sh.curve = driveCurve;
+    node.connect(sh);
+    node = sh;
+  }
+  // Petits fondus pour éviter les clics au début et à la fin.
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0, t0);
+  g.gain.linearRampToValueAtTime(1, t0 + 0.03);
+  node.connect(g).connect(mix.layers.music);
+  if (m.loop) {
+    src.loop = true;
+    src.loopStart = m.start;
+    src.loopEnd = m.start + m.len;
+    src.start(t0, m.start);
+    if (maxDur) src.stop(t0 + maxDur);
+  } else {
+    const end = t0 + m.len / m.speed;
+    g.gain.setValueAtTime(1, Math.max(t0 + 0.03, end - 0.06));
+    g.gain.linearRampToValueAtTime(0, end);
+    src.start(t0, m.start, m.len);
+  }
+}
+
 // ---------- Lecture en direct ----------
 let ac = null;
 let live = null; // { mix, start, nextStep, timer }
@@ -234,6 +289,7 @@ function play() {
   const mix = buildMixer(ctx, ctx.destination);
   const start = ctx.currentTime + 0.08;
   live = { mix, start, scheduled: 0 };
+  startMusic(ctx, mix, start);
   // Programmation par petits morceaux, quelques dixièmes de seconde à l'avance.
   const pump = () => {
     const beat = state.beat;
@@ -349,9 +405,12 @@ function renderLayers() {
   LAYERS.forEach(({ key, label }) => {
     const el = document.createElement('label');
     el.className = 'layer';
+    el.dataset.layer = key;
+    el.hidden = key === 'music' && !state.music;
     el.innerHTML = `<input type="checkbox" checked> ${label} <input type="range" min="0" max="1.5" step="0.05" value="${state.volume[key]}">`;
     const [cb, vol] = el.querySelectorAll('input');
     cb.onchange = () => { state.mute[key] = !cb.checked; applyLayer(key); };
+    el.sync = () => { cb.checked = !state.mute[key]; };
     vol.oninput = () => { state.volume[key] = +vol.value; applyLayer(key); };
     box.appendChild(el);
   });
@@ -386,12 +445,14 @@ $('btn-export').onclick = async () => {
     const beat = state.beat;
     const loop = loopDuration(beat.bpm);
     const want = $('length').value;
-    const dur = want === 'loop' ? loop : +want;
+    const m = state.music;
+    const dur = want === 'loop' ? loop : want === 'music' ? (m ? m.len / m.speed : loop) : +want;
     const rate = 44100;
     setProgress('export-progress', 0.1, 'Mixage du beat…');
     const off = new OfflineAudioContext(2, Math.ceil((dur + 0.05) * rate), rate);
     const mix = buildMixer(off, off.destination);
     for (let k = 0; k * loop < dur; k++) scheduleLoop(off, mix, beat, k * loop);
+    startMusic(off, mix, 0, dur);
     if (want !== 'loop') {
       mix.master.gain.setValueAtTime(+$('master').value, Math.max(0, dur - 1.5));
       mix.master.gain.linearRampToValueAtTime(0, dur);
@@ -399,7 +460,13 @@ $('btn-export').onclick = async () => {
     const rendered = await off.startRendering();
     setProgress('export-progress', 0.85, 'Encodage WAV…');
     const blob = encodeWav(rendered);
-    const name = `beat-${beat.style}-${beat.bpm}bpm-${beat.seed}.wav`;
+    const name = m
+      ? `mix-${slugify(m.track.title, 'musique').slice(0, 40)}-${Math.round(beat.bpm)}bpm.wav`
+      : `beat-${beat.style}-${beat.bpm}bpm-${beat.seed}.wav`;
+    $('credit-reminder').hidden = !(m && m.track.needsCredit);
+    $('credit-reminder').textContent = m && m.track.needsCredit
+      ? `Ce morceau est sous ${m.track.licenseLabel} : colle le crédit (étape 2) dans la description de ta vidéo.`
+      : '';
     const url = offerFile(blob, name, { download: 'btn-download', share: 'btn-share', title: 'Beat Art craft' });
     $('result-audio').src = url;
     $('result').hidden = false;
@@ -411,6 +478,237 @@ $('btn-export').onclick = async () => {
     $('btn-export').disabled = false;
   }
 };
+
+// ---------- Bibliothèque libre de droits ----------
+const FUNC = '/.netlify/functions/music';
+const lib = { q: '', page: 1, pages: 1, results: [], previewId: null };
+const preview = $('lib-preview');
+const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+
+THEMES.forEach(t => {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.textContent = t.label;
+  b.onclick = () => {
+    document.querySelectorAll('#themes button').forEach(x => x.classList.toggle('on', x === b));
+    $('q').value = t.q;
+    search(t.q);
+  };
+  $('themes').appendChild(b);
+});
+Object.entries(FILTERS).forEach(([k, f]) => $('m-filter').add(new Option(f.label, k)));
+
+// Openverse d'abord en direct ; si le navigateur est bloqué (CORS, réseau), via la fonction Netlify.
+async function fetchJSON(direct, relay) {
+  try {
+    const r = await fetch(direct);
+    if (r.ok) return await r.json();
+    if (r.status === 429) throw Object.assign(new Error('Trop de recherches : réessaie dans une minute.'), { final: true });
+  } catch (err) {
+    if (err.final) throw err;
+  }
+  const r = await fetch(relay);
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || `Recherche impossible (${r.status})`);
+  return j;
+}
+
+async function search(q, page = 1) {
+  q = String(q || '').trim();
+  if (!q) return;
+  const license = $('lic').value;
+  lib.q = q;
+  lib.page = page;
+  $('lib-status').textContent = 'Recherche…';
+  $('btn-more').hidden = true;
+  try {
+    const qs = searchParams({ q, license, page });
+    const relay = `${FUNC}?action=search&${new URLSearchParams({ q, license, page: String(page) })}`;
+    const json = await fetchJSON(`${OPENVERSE}?${qs}`, relay);
+    const found = normalizeResults(json, license);
+    lib.results = page === 1 ? found : lib.results.concat(found);
+    lib.pages = json.page_count || 1;
+    renderResults();
+    $('lib-status').textContent = lib.results.length
+      ? `${json.result_count || lib.results.length} morceaux trouvés pour « ${q} »`
+      : `Rien trouvé pour « ${q} » : essaie un autre mot (en anglais, ça marche mieux).`;
+    $('btn-more').hidden = !(lib.page < lib.pages && found.length);
+  } catch (err) {
+    $('lib-status').textContent = '';
+    showError(err.message || String(err));
+  }
+}
+
+function renderResults() {
+  const ul = $('tracks');
+  ul.innerHTML = '';
+  lib.results.forEach(t => {
+    const li = document.createElement('li');
+    li.classList.toggle('sel', !!(state.music && state.music.track.id === t.id));
+    const play = document.createElement('button');
+    play.textContent = lib.previewId === t.id && !preview.paused ? '■' : '▶';
+    play.title = 'Écouter';
+    play.onclick = () => togglePreview(t);
+    const name = document.createElement('span');
+    name.className = 'name';
+    name.innerHTML = '<b></b><small></small>';
+    name.querySelector('b').textContent = t.title;
+    name.querySelector('small').textContent = `${t.creator}${t.duration ? ' · ' + fmt(t.duration) : ''} · ${t.source}`;
+    const badge = document.createElement('span');
+    badge.className = 'badge' + (t.needsCredit ? '' : ' free');
+    badge.textContent = t.licenseLabel;
+    badge.title = t.needsCredit ? 'Libre, à condition de citer l\'auteur' : 'Aucune condition';
+    const use = document.createElement('button');
+    use.textContent = state.music && state.music.track.id === t.id ? 'Choisi ✔' : 'Utiliser';
+    use.onclick = () => useTrack(t, use);
+    li.append(play, name, badge, use);
+    ul.appendChild(li);
+  });
+}
+
+function togglePreview(t) {
+  if (lib.previewId === t.id && !preview.paused) {
+    preview.pause();
+  } else {
+    if (state.playing) stop();
+    lib.previewId = t.id;
+    preview.src = t.url;
+    preview.play().catch(() => showError('Écoute impossible pour ce morceau.'));
+  }
+  renderResults();
+}
+preview.onended = preview.onpause = () => renderResults();
+
+async function fetchAudio(url) {
+  try {
+    const r = await fetch(url);
+    if (r.ok) return await r.arrayBuffer();
+  } catch { /* CORS : on passe par la fonction */ }
+  const r = await fetch(`${FUNC}?action=file&url=${encodeURIComponent(url)}`);
+  if (!r.ok) {
+    const j = await r.json().catch(() => ({}));
+    throw new Error(j.error || `Téléchargement impossible (${r.status})`);
+  }
+  return r.arrayBuffer();
+}
+
+async function useTrack(t, btn) {
+  showError('');
+  btn.disabled = true;
+  btn.textContent = 'Chargement…';
+  try {
+    const data = await fetchAudio(t.url);
+    const buffer = await liveCtx().decodeAudioData(data);
+    // Tempo estimé sur les 90 premières secondes (mono).
+    const n = Math.min(buffer.length, Math.floor(buffer.sampleRate * 90));
+    const mono = new Float32Array(n);
+    for (let c = 0; c < buffer.numberOfChannels; c++) {
+      const d = buffer.getChannelData(c);
+      for (let i = 0; i < n; i++) mono[i] += d[i] / buffer.numberOfChannels;
+    }
+    const bpm = detectBpm(mono, buffer.sampleRate);
+    preview.pause();
+    state.music = {
+      track: t, buffer, bpm,
+      start: 0, len: Math.min(buffer.duration, 180), speed: 1, filter: 'none', loop: false,
+    };
+    state.mute.music = false;
+    musicUI();
+    document.querySelectorAll('#layers .layer').forEach(el => { if (el.dataset.layer === 'music') { el.hidden = false; el.sync(); } });
+    $('length').querySelector('option[value="music"]').hidden = false;
+    $('length').value = 'music';
+    renderResults();
+    $('music-edit').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    restartIfPlaying();
+  } catch (err) {
+    console.error(err);
+    showError('Ce morceau ne peut pas être chargé : ' + (err.message || err) + '. Essaie-en un autre.');
+    renderResults();
+  }
+}
+
+function musicUI() {
+  const m = state.music;
+  $('music-edit').hidden = !m;
+  if (!m) return;
+  const total = m.buffer.duration;
+  m.start = Math.max(0, Math.min(m.start, total - 1));
+  m.len = Math.max(0.5, Math.min(m.len, total - m.start));
+  $('m-title').textContent = `${m.track.title} — ${m.track.creator}`;
+  $('m-lic').textContent = `${m.track.licenseLabel} · ${m.track.needsCredit ? 'libre, à condition de citer l\'auteur' : 'domaine public, aucune condition'} · ${fmt(total)}`;
+  $('m-start').max = Math.max(0, total - 0.5).toFixed(2);
+  $('m-start').value = m.start;
+  $('m-start-v').textContent = m.start.toFixed(2) + ' s';
+  $('m-len').max = Math.max(0.5, total - m.start).toFixed(2);
+  $('m-len').min = 0.5;
+  $('m-len').value = m.len;
+  $('m-len-v').textContent = m.len.toFixed(2) + ' s' + (m.speed !== 1 ? ` (${(m.len / m.speed).toFixed(1)} s joués)` : '');
+  $('m-speed').value = m.speed;
+  $('m-speed-v').textContent = '×' + m.speed.toFixed(2);
+  $('m-filter').value = m.filter;
+  $('m-loop').checked = m.loop;
+  $('m-bpm').textContent = m.bpm ? `${m.bpm} BPM${m.speed !== 1 ? ` (${(m.bpm * m.speed).toFixed(1)} à cette vitesse)` : ''}` : 'non détecté';
+  $('m-credit').value = creditLine(m.track);
+}
+
+const musicInput = (id, key, parse = Number) => {
+  $(id).addEventListener('input', () => { if (state.music) { state.music[key] = parse($(id).value); musicUI(); } });
+  $(id).addEventListener('change', restartIfPlaying);
+};
+musicInput('m-start', 'start');
+musicInput('m-len', 'len');
+musicInput('m-speed', 'speed');
+musicInput('m-filter', 'filter', String);
+$('m-loop').onchange = () => { if (state.music) { state.music.loop = $('m-loop').checked; musicUI(); restartIfPlaying(); } };
+document.querySelectorAll('[data-nudge]').forEach(b => b.addEventListener('click', () => {
+  if (!state.music) return;
+  state.music.start = Math.max(0, state.music.start + +b.dataset.nudge);
+  musicUI();
+  restartIfPlaying();
+}));
+$('m-half').onclick = () => { if (state.music && state.music.bpm) { state.music.bpm = Math.round(state.music.bpm * 5) / 10; musicUI(); } };
+$('m-double').onclick = () => { if (state.music && state.music.bpm) { state.music.bpm = Math.round(state.music.bpm * 20) / 10; musicUI(); } };
+$('m-sync').onclick = () => {
+  const m = state.music;
+  const s = m && syncTempo(m.bpm, m.speed);
+  if (!s) { showError('Tempo de la musique non détecté : règle le tempo de la batterie à l\'oreille.'); return; }
+  showError('');
+  state.beat.bpm = s.bpm;
+  $('bpm').value = s.bpm;
+  $('bpm-val').textContent = s.bpm;
+  $('bpm-lock').checked = true;
+  $('info').textContent = `${STYLES[state.beat.style].label} · ${s.bpm} BPM · ${NOTE_NAMES[state.beat.key]} mineur`;
+  m.loop = true;
+  m.len = Math.min(s.loopSource, m.buffer.duration - m.start);
+  musicUI();
+  restartIfPlaying();
+};
+$('m-drums').onclick = () => {
+  ['bass', 'chords', 'melody'].forEach(k => { state.mute[k] = true; applyLayer(k); });
+  state.mute.drums = false;
+  applyLayer('drums');
+  document.querySelectorAll('#layers .layer').forEach(el => el.sync && el.sync());
+};
+$('m-copy').onclick = async () => {
+  try { await navigator.clipboard.writeText($('m-credit').value); $('m-copy').textContent = 'Copié ✔'; } catch { $('m-credit').select(); }
+  setTimeout(() => { $('m-copy').textContent = 'Copier le crédit'; }, 1500);
+};
+$('m-remove').onclick = () => {
+  state.music = null;
+  musicUI();
+  document.querySelectorAll('#layers .layer').forEach(el => { if (el.dataset.layer === 'music') el.hidden = true; });
+  $('length').querySelector('option[value="music"]').hidden = true;
+  if ($('length').value === 'music') $('length').value = '60';
+  renderResults();
+  restartIfPlaying();
+};
+$('btn-search').onclick = () => {
+  document.querySelectorAll('#themes button').forEach(x => x.classList.remove('on'));
+  search($('q').value);
+};
+$('q').addEventListener('keydown', e => { if (e.key === 'Enter') $('btn-search').click(); });
+$('lic').onchange = () => { if (lib.q) search(lib.q); };
+$('btn-more').onclick = () => search(lib.q, lib.page + 1);
 
 renderLayers();
 generate();
