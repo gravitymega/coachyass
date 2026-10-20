@@ -11,6 +11,8 @@
 //   - create_container   (admin)        étape 1 de publication (photo ou reel)
 //   - container_status   (admin)        étape 2 : attendre que Meta ait traité le média
 //   - publish_container  (admin)        étape 3 : publier sur le compte
+//   - facebook_video     (admin)        publier une vidéo sur la Page Facebook (file_url)
+//   - facebook_video_status (admin)      état de traitement de cette vidéo + lien
 //   - conversations      (admin)        messages privés (DM) — liste
 //   - messages           (admin)        messages privés — fil d'une conversation
 //   - send_message       (admin)        messages privés — répondre
@@ -213,6 +215,42 @@ async function publishContainer(p) {
   return media;
 }
 
+// Page Facebook : Meta télécharge lui-même la vidéo depuis son URL publique et
+// la publie une fois traitée (asynchrone). Le jeton est un jeton de Page,
+// donc « me » désigne la Page. Les envois de vidéos passent par graph-video.
+async function facebookVideo(p) {
+  if (!p.file_url) throw new GraphError('file_url requis', 400);
+  const qs = new URLSearchParams({
+    file_url: p.file_url,
+    description: String(p.description || ''),
+    published: 'true',
+    access_token: PAGE_TOKEN,
+  });
+  if (p.title) qs.set('title', String(p.title).slice(0, 250));
+  const res = await fetch(`https://graph-video.facebook.com/${GRAPH_VERSION}/me/videos`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: qs.toString(),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || data.error) {
+    const msg = (data.error && (data.error.error_user_msg || data.error.message)) || `Erreur API Meta (${res.status})`;
+    throw new GraphError(msg, res.status >= 400 && res.status < 500 ? 400 : 502);
+  }
+  return { id: data.id };
+}
+
+async function facebookVideoStatus(p) {
+  if (!p.video_id) throw new GraphError('video_id requis', 400);
+  const data = await graph(p.video_id, { fields: 'status,permalink_url' });
+  const st = data.status || {};
+  return {
+    video_status: st.video_status || null,
+    error: st.processing_phase && st.processing_phase.error ? st.processing_phase.error.message : null,
+    permalink: data.permalink_url ? `https://www.facebook.com${data.permalink_url}` : null,
+  };
+}
+
 async function conversations() {
   const [igId, data] = await Promise.all([
     igUserId(),
@@ -255,6 +293,8 @@ const ADMIN_ACTIONS = {
   create_container: createContainer,
   container_status: containerStatus,
   publish_container: publishContainer,
+  facebook_video: facebookVideo,
+  facebook_video_status: facebookVideoStatus,
   conversations,
   messages,
   send_message: sendMessage,

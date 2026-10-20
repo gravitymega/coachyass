@@ -97,7 +97,8 @@ export function slugify(text, fallback) {
 }
 
 // Bouton « Télécharger » + bouton « Partager » (Web Share API, surtout mobile).
-export function offerFile(blob, name, { download, share, title }) {
+// text : légende partagée avec le fichier (et copiée, car Instagram l'ignore au partage).
+export function offerFile(blob, name, { download, share, title, text }) {
   const url = URL.createObjectURL(blob);
   const dl = $(download);
   if (dl.href && dl.href.startsWith('blob:')) URL.revokeObjectURL(dl.href);
@@ -107,7 +108,11 @@ export function offerFile(blob, name, { download, share, title }) {
   if (btn) {
     const file = new File([blob], name, { type: blob.type });
     btn.hidden = !(navigator.canShare && navigator.canShare({ files: [file] }));
-    btn.onclick = () => navigator.share({ files: [file], title }).catch(() => {});
+    btn.onclick = async () => {
+      const t = typeof text === 'function' ? text() : text;
+      if (t) { try { await navigator.clipboard.writeText(t); } catch { /* presse-papiers refusé */ } }
+      navigator.share(t ? { files: [file], title, text: t } : { files: [file], title }).catch(() => {});
+    };
   }
   return url;
 }

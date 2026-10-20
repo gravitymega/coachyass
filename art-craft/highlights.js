@@ -87,7 +87,8 @@ export function formatTime(s) {
 
 // Arguments ffmpeg du rendu final : un seul encodage pour tous les extraits.
 // zoom = taille de travail (zoomSize) ; chaque extrait peut avoir c.zoom = { max, hx, hy, t0, t1 }.
-export function buildRenderArgs({ input, clips, hasAudio, layout, width, height, overlay, outro = null, zoom = null, output }) {
+// maxKbps : plafond de débit vidéo (garde le fichier publiable : stockage et réseaux sociaux).
+export function buildRenderArgs({ input, clips, hasAudio, layout, width, height, overlay, outro = null, zoom = null, maxKbps = null, output }) {
   const args = [];
   clips.forEach(c => args.push('-ss', c.start.toFixed(2), '-t', c.dur.toFixed(2), '-i', input));
   if (overlay) args.push('-i', overlay);
@@ -138,7 +139,9 @@ export function buildRenderArgs({ input, clips, hasAudio, layout, width, height,
   }
   args.push('-filter_complex', parts.join(';'), '-map', '[outv]');
   if (hasAudio) args.push('-map', `[${audioOut}]`, '-c:a', 'aac', '-b:a', '128k');
-  args.push('-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '23', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', output);
+  args.push('-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '23');
+  if (maxKbps) args.push('-maxrate', `${Math.round(maxKbps)}k`, '-bufsize', `${Math.round(maxKbps * 2)}k`);
+  args.push('-pix_fmt', 'yuv420p', '-movflags', '+faststart', output);
   return args;
 }
 
