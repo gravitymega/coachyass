@@ -11,6 +11,7 @@ import {
 import { OUTRO, brandCardPNG } from './brand.js';
 
 const AUDIO_RATE = 8000;
+const AUDIO_CHUNK_S = 600;
 const MOUNT = '/in';
 
 const state = {
@@ -88,28 +89,37 @@ async function analyse() {
     const ff = await getFFmpeg('analyse-progress');
     await mountInput(ff);
     setProgress('analyse-progress', 0, 'Écoute de la game…');
-    const code = await runWithLog(ff, [
-      '-i', state.inputPath, '-map', '0:a:0', '-vn', '-ac', '1', '-ar', String(AUDIO_RATE),
-      '-f', 's16le', '/audio.raw',
-    ], line => {
-      const d = parseLogDuration(line);
-      if (d && !state.duration) state.duration = d;
-      readVideoSize(line);
-      const t = parseLogTime(line);
-      if (t != null && state.duration) {
-        setProgress('analyse-progress', t / state.duration, `Écoute de la game… ${formatTime(t)} / ${formatTime(state.duration)}`);
-      }
-    });
-    let samples = null;
-    if (code === 0) {
+    // Le son est lu par tranches de AUDIO_CHUNK_S : la mémoire reste la même
+    // pour une game de 20 min ou de 2 h (important sur téléphone).
+    const envs = [];
+    let heard = 0;
+    for (let start = 0; ; start += AUDIO_CHUNK_S) {
+      const code = await runWithLog(ff, [
+        '-ss', String(start), '-t', String(AUDIO_CHUNK_S), '-i', state.inputPath,
+        '-map', '0:a:0', '-vn', '-ac', '1', '-ar', String(AUDIO_RATE), '-f', 's16le', '/audio.raw',
+      ], line => {
+        const d = parseLogDuration(line);
+        if (d && !state.duration) state.duration = d;
+        readVideoSize(line);
+        const t = parseLogTime(line);
+        if (t != null && state.duration) {
+          setProgress('analyse-progress', (start + t) / state.duration, `Écoute de la game… ${formatTime(start + t)} / ${formatTime(state.duration)}`);
+        }
+      });
+      if (code !== 0) break;
       const raw = await ff.readFile('/audio.raw');
       await ff.deleteFile('/audio.raw');
-      samples = new Int16Array(raw.buffer, raw.byteOffset, Math.floor(raw.byteLength / 2));
+      const samples = new Int16Array(raw.buffer, raw.byteOffset, Math.floor(raw.byteLength / 2));
+      envs.push(energyEnvelope(samples, AUDIO_RATE));
+      heard += samples.length / AUDIO_RATE;
+      if (samples.length < (AUDIO_CHUNK_S - 1) * AUDIO_RATE || (state.duration && start + AUDIO_CHUNK_S >= state.duration)) break;
     }
-    state.hasAudio = !!(samples && samples.length > AUDIO_RATE);
+    state.hasAudio = heard > 1;
     if (state.hasAudio) {
-      if (!state.duration) state.duration = samples.length / AUDIO_RATE;
-      state.score = excitementScore(energyEnvelope(samples, AUDIO_RATE));
+      if (!state.duration) state.duration = heard;
+      const env = new Float32Array(envs.reduce((n, e) => n + e.length, 0));
+      envs.reduce((off, e) => { env.set(e, off); return off + e.length; }, 0);
+      state.score = excitementScore(env);
       state.cands = findPeaks(state.score, WINDOW_S, { maxCount: 80 }).map(p => ({ t: p.t, score: p.score }));
       autoSelect();
       setProgress('analyse-progress', 1, `${state.cands.length} moments forts trouvés au son`);
