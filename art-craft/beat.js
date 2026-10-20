@@ -4,7 +4,7 @@ import {
   STYLES, STEPS, NOTE_NAMES, generateBeat, stepTime, stepDuration, loopDuration, midiToFreq,
 } from './beat-core.js';
 import {
-  OPENVERSE, THEMES, FILTERS, searchParams, normalizeResults, creditLine, detectBpm, syncTempo,
+  OPENVERSE, THEMES, FILTERS, searchParams, normalizeResults, mergeResults, creditLine, detectBpm, syncTempo,
 } from './music-core.js';
 
 // Tous les sons sont synthétisés (aucun échantillon) : le beat est 100 % original et libre de droits.
@@ -15,6 +15,15 @@ const ROWS = [
   { key: 'ohat', label: 'Charl. ouvert' },
   { key: 'perc', label: 'Percussion' },
 ];
+// Noms des lignes selon le style (mêmes lignes, autres instruments).
+const ROW_LABELS = {
+  gnawa: { kick: 'Tbel', snare: 'Claps', hat: 'Qraqeb', ohat: 'Qraqeb long' },
+  afrotrad: { kick: 'Dundun', snare: 'Djembé slap', hat: 'Shaker', ohat: 'Shaker long', perc: 'Djembé ton' },
+};
+const LAYER_LABELS = {
+  gnawa: { bass: 'Guembri', melody: 'Chant (anche)', chords: 'Bourdon' },
+  afrotrad: { bass: 'Basse pincée', melody: 'Kalimba' },
+};
 const LAYERS = [
   { key: 'drums', label: 'Batterie' },
   { key: 'bass', label: '808 / basse' },
@@ -108,6 +117,88 @@ const DRUMS = {
   },
 };
 
+// Sons des styles africains : mêmes lignes de la grille, autres instruments.
+const KITS = {
+  gnawa: {
+    // Tbel : gros tambour grave, peau frappée.
+    kick(ac, dest, t) {
+      const o = ac.createOscillator();
+      o.frequency.setValueAtTime(110, t);
+      o.frequency.exponentialRampToValueAtTime(58, t + 0.18);
+      o.connect(env(ac, dest, t, 0.002, 0.45, 1));
+      o.start(t);
+      o.stop(t + 0.5);
+      const f = ac.createBiquadFilter();
+      f.type = 'lowpass';
+      f.frequency.value = 900;
+      noise(ac, t, 0.08).connect(f);
+      f.connect(env(ac, dest, t, 0.001, 0.05, 0.5));
+    },
+    // Qraqeb : paires de crotales en fer, chaque coup est un léger « fla ».
+    hat(ac, dest, t, style, open = false) {
+      [0, 0.011].forEach((d, i) => {
+        const f = ac.createBiquadFilter();
+        f.type = 'bandpass';
+        f.frequency.value = i ? 5200 : 3900;
+        f.Q.value = 5;
+        noise(ac, t + d, 0.2).connect(f);
+        f.connect(env(ac, dest, t + d, 0.001, open ? 0.22 : 0.07, i ? 0.55 : 0.75));
+        [2870, 4130].forEach(fr => {
+          const o = ac.createOscillator();
+          o.type = 'square';
+          o.frequency.value = fr * (i ? 1.02 : 1);
+          o.connect(env(ac, dest, t + d, 0.001, open ? 0.15 : 0.04, 0.05));
+          o.start(t + d);
+          o.stop(t + d + 0.25);
+        });
+      });
+    },
+  },
+  afrotrad: {
+    // Dundun : tambour basse joué à la baguette.
+    kick(ac, dest, t) {
+      const o = ac.createOscillator();
+      o.frequency.setValueAtTime(140, t);
+      o.frequency.exponentialRampToValueAtTime(72, t + 0.1);
+      o.connect(env(ac, dest, t, 0.002, 0.3, 0.95));
+      o.start(t);
+      o.stop(t + 0.35);
+    },
+    // Slap de djembé : claquant, aigu.
+    snare(ac, dest, t) {
+      const f = ac.createBiquadFilter();
+      f.type = 'bandpass';
+      f.frequency.value = 1100;
+      f.Q.value = 1.2;
+      noise(ac, t, 0.12).connect(f);
+      f.connect(env(ac, dest, t, 0.001, 0.09, 0.9));
+      const o = ac.createOscillator();
+      o.frequency.setValueAtTime(420, t);
+      o.frequency.exponentialRampToValueAtTime(330, t + 0.06);
+      o.connect(env(ac, dest, t, 0.001, 0.07, 0.4));
+      o.start(t);
+      o.stop(t + 0.1);
+    },
+    // Ton de djembé : rond, médium.
+    perc(ac, dest, t) {
+      const o = ac.createOscillator();
+      o.frequency.setValueAtTime(240, t);
+      o.frequency.exponentialRampToValueAtTime(190, t + 0.12);
+      o.connect(env(ac, dest, t, 0.002, 0.18, 0.7));
+      o.start(t);
+      o.stop(t + 0.22);
+    },
+    // Shaker (graines).
+    hat(ac, dest, t, style, open = false) {
+      const f = ac.createBiquadFilter();
+      f.type = 'highpass';
+      f.frequency.value = 5000;
+      noise(ac, t, open ? 0.2 : 0.08).connect(f);
+      f.connect(env(ac, dest, t, 0.012, open ? 0.14 : 0.05, 0.25));
+    },
+  },
+};
+
 const shaperCurve = (() => {
   const c = new Float32Array(1024);
   for (let i = 0; i < c.length; i++) { const x = i / 512 - 1; c[i] = Math.tanh(2.2 * x); }
@@ -129,6 +220,71 @@ function play808(ac, dest, t, note, nextNote, dur) {
   o.connect(sh).connect(g).connect(dest);
   o.start(t);
   o.stop(t + dur + 0.02);
+}
+
+// Guembri (luth basse gnawa) : corde pincée grave, un peu de « buzz » métallique.
+function playPluckBass(ac, dest, t, midi, dur, buzz = true) {
+  const f = ac.createBiquadFilter();
+  f.type = 'lowpass';
+  f.frequency.setValueAtTime(1600, t);
+  f.frequency.exponentialRampToValueAtTime(220, t + Math.min(0.35, dur));
+  f.Q.value = 2;
+  const g = ac.createGain();
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.8, t + 0.004);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + Math.max(0.15, dur * 1.3));
+  let out = f;
+  if (buzz) {
+    const sh = ac.createWaveShaper();
+    sh.curve = shaperCurve;
+    f.connect(sh);
+    out = sh;
+  }
+  out.connect(g).connect(dest);
+  ['sawtooth', 'square'].forEach((type, i) => {
+    const o = ac.createOscillator();
+    o.type = type;
+    o.frequency.value = midiToFreq(midi);
+    o.detune.value = i ? 6 : 0;
+    o.connect(f);
+    o.start(t);
+    o.stop(t + dur * 1.3 + 0.2);
+  });
+}
+
+// Kalimba / balafon : note pincée et brève, avec un partiel aigu qui s'éteint vite.
+function playKalimba(ac, dest, t, midi, dur) {
+  [[1, 0.35, Math.min(1.2, dur * 2)], [5.4, 0.08, 0.08]].forEach(([mult, peak, dec]) => {
+    const o = ac.createOscillator();
+    o.frequency.value = midiToFreq(midi) * mult;
+    o.connect(env(ac, dest, t, 0.002, dec, peak));
+    o.start(t);
+    o.stop(t + dec + 0.05);
+  });
+}
+
+// Voix lead façon chant gnawa (anche, vibrato) pour les réponses mélodiques.
+function playReed(ac, dest, t, midi, dur) {
+  const o = ac.createOscillator();
+  o.type = 'sawtooth';
+  o.frequency.value = midiToFreq(midi);
+  const lfo = ac.createOscillator();
+  lfo.frequency.value = 5.5;
+  const depth = ac.createGain();
+  depth.gain.setValueAtTime(0, t);
+  depth.gain.linearRampToValueAtTime(18, t + Math.min(0.3, dur));
+  lfo.connect(depth).connect(o.detune);
+  const f = ac.createBiquadFilter();
+  f.type = 'bandpass';
+  f.frequency.value = 1300;
+  f.Q.value = 0.9;
+  const g = ac.createGain();
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.35, t + 0.04);
+  g.gain.setValueAtTime(0.35, t + Math.max(0.05, dur - 0.08));
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(f).connect(g).connect(dest);
+  [o, lfo].forEach(n => { n.start(t); n.stop(t + dur + 0.05); });
 }
 
 function playTone(ac, dest, t, midi, dur, { type = 'triangle', attack = 0.005, peak = 0.3, cutoff = 3500, detune = 0 }) {
@@ -196,24 +352,32 @@ function buildMixer(ac, destination) {
 function scheduleLoop(ac, mix, beat, t0, from = 0, to = STEPS) {
   const { bpm, swing } = beat;
   const sd = stepDuration(bpm);
+  const kit = KITS[beat.style] || {};
+  const drum = key => kit[key] || DRUMS[key];
   for (let step = from; step < to; step++) {
     const t = t0 + stepTime(step, bpm, swing);
     ROWS.forEach(({ key }) => {
       const v = beat.grid[key][step];
       if (!v) return;
       if (key === 'hat' && v > 1) {
-        for (let k = 0; k < v; k++) DRUMS.hat(ac, mix.layers.drums, t + (k * sd) / v, beat.style);
+        for (let k = 0; k < v; k++) drum('hat')(ac, mix.layers.drums, t + (k * sd) / v, beat.style);
       } else if (key === 'ohat') {
-        DRUMS.hat(ac, mix.layers.drums, t, beat.style, true);
+        drum('hat')(ac, mix.layers.drums, t, beat.style, true);
       } else {
-        DRUMS[key](ac, mix.layers.drums, t, beat.style);
+        drum(key)(ac, mix.layers.drums, t, beat.style);
       }
     });
     beat.bass.forEach((n, i) => {
-      if (n.step === step) play808(ac, mix.layers.bass, t, n, beat.bass[i + 1], n.len * sd);
+      if (n.step !== step) return;
+      if (beat.style === 'gnawa') playPluckBass(ac, mix.layers.bass, t, n.midi, n.len * sd);
+      else if (beat.style === 'afrotrad') playPluckBass(ac, mix.layers.bass, t, n.midi + 12, n.len * sd, false);
+      else play808(ac, mix.layers.bass, t, n, beat.bass[i + 1], n.len * sd);
     });
     beat.melody.forEach(n => {
-      if (n.step === step) {
+      if (n.step !== step) return;
+      if (beat.style === 'gnawa') playReed(ac, mix.layers.melody, t, n.midi - 12, Math.max(0.2, n.len * sd * 1.4));
+      else if (beat.style === 'afrotrad') playKalimba(ac, mix.layers.melody, t, n.midi, n.len * sd);
+      else {
         const pluck = beat.style === 'boombap' ? { type: 'sine', peak: 0.35, cutoff: 2500 } : { type: 'triangle', peak: 0.3, cutoff: 5000, detune: 7 };
         playTone(ac, mix.layers.melody, t, n.midi, Math.max(0.2, n.len * sd * 1.6), pluck);
       }
@@ -337,6 +501,10 @@ function drawPlayhead() {
 }
 
 // ---------- Interface ----------
+function beatInfo(b) {
+  return `${STYLES[b.style].label} · ${b.bpm} BPM · ${NOTE_NAMES[b.key]} ${STYLES[b.style].mode || 'mineur'}`;
+}
+
 function newSeed() {
   return Math.floor(Math.random() * 1e9);
 }
@@ -348,7 +516,11 @@ function generate(seed = newSeed()) {
   $('bpm').value = beat.bpm;
   $('bpm-val').textContent = beat.bpm;
   $('seed').value = seed;
-  $('info').textContent = `${STYLES[beat.style].label} · ${beat.bpm} BPM · ${NOTE_NAMES[beat.key]} mineur`;
+  $('info').textContent = beatInfo(beat);
+  document.querySelectorAll('#layers .layer').forEach(el => {
+    const def = LAYERS.find(l => l.key === el.dataset.layer).label;
+    el.querySelector('.lname').textContent = (LAYER_LABELS[beat.style] || {})[el.dataset.layer] || def;
+  });
   renderGrid();
   restartIfPlaying();
 }
@@ -359,7 +531,7 @@ function renderGrid() {
   ROWS.forEach(({ key, label }) => {
     const row = document.createElement('div');
     row.className = 'grow';
-    row.innerHTML = `<span class="glabel">${label}</span>`;
+    row.innerHTML = `<span class="glabel">${(ROW_LABELS[state.beat.style] || {})[key] || label}</span>`;
     const cells = document.createElement('div');
     cells.className = 'cells';
     for (let s = 0; s < STEPS; s++) {
@@ -385,6 +557,8 @@ function renderGrid() {
 // Quand on modifie le kick, la 808 suit (même graine → mêmes notes autant que possible).
 function rebuildBass() {
   const b = state.beat;
+  // Le riff de guembri ne suit pas le tambour : il reste tel quel.
+  if (b.style === 'gnawa') return b.bass;
   const fresh = generateBeat(b.style, b.seed);
   fresh.grid = b.grid;
   const notes = [];
@@ -407,7 +581,7 @@ function renderLayers() {
     el.className = 'layer';
     el.dataset.layer = key;
     el.hidden = key === 'music' && !state.music;
-    el.innerHTML = `<input type="checkbox" checked> ${label} <input type="range" min="0" max="1.5" step="0.05" value="${state.volume[key]}">`;
+    el.innerHTML = `<input type="checkbox" checked> <span class="lname">${label}</span> <input type="range" min="0" max="1.5" step="0.05" value="${state.volume[key]}">`;
     const [cb, vol] = el.querySelectorAll('input');
     cb.onchange = () => { state.mute[key] = !cb.checked; applyLayer(key); };
     el.sync = () => { cb.checked = !state.mute[key]; };
@@ -427,7 +601,7 @@ $('bpm').oninput = e => {
   state.beat.bpm = +e.target.value;
   $('bpm-val').textContent = state.beat.bpm;
   $('bpm-lock').checked = true;
-  $('info').textContent = `${STYLES[state.beat.style].label} · ${state.beat.bpm} BPM · ${NOTE_NAMES[state.beat.key]} mineur`;
+  $('info').textContent = beatInfo(state.beat);
 };
 $('bpm').onchange = restartIfPlaying;
 $('btn-seed').onclick = () => {
@@ -481,7 +655,7 @@ $('btn-export').onclick = async () => {
 
 // ---------- Bibliothèque libre de droits ----------
 const FUNC = '/.netlify/functions/music';
-const lib = { q: '', page: 1, pages: 1, results: [], previewId: null };
+const lib = { q: [], page: 1, pages: 1, results: [], previewId: null };
 const preview = $('lib-preview');
 const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 
@@ -491,8 +665,9 @@ THEMES.forEach(t => {
   b.textContent = t.label;
   b.onclick = () => {
     document.querySelectorAll('#themes button').forEach(x => x.classList.toggle('on', x === b));
-    $('q').value = t.q;
-    search(t.q);
+    const qs = [].concat(t.q);
+    $('q').value = qs[0];
+    search(qs);
   };
   $('themes').appendChild(b);
 });
@@ -513,25 +688,30 @@ async function fetchJSON(direct, relay) {
   return j;
 }
 
+// q : un mot-clé, ou une liste (thème) dont les résultats sont fusionnés.
 async function search(q, page = 1) {
-  q = String(q || '').trim();
-  if (!q) return;
+  const list = [].concat(q).map(x => String(x || '').trim()).filter(Boolean);
+  if (!list.length) return;
   const license = $('lic').value;
-  lib.q = q;
+  lib.q = list;
   lib.page = page;
   $('lib-status').textContent = 'Recherche…';
   $('btn-more').hidden = true;
   try {
-    const qs = searchParams({ q, license, page });
-    const relay = `${FUNC}?action=search&${new URLSearchParams({ q, license, page: String(page) })}`;
-    const json = await fetchJSON(`${OPENVERSE}?${qs}`, relay);
-    const found = normalizeResults(json, license);
-    lib.results = page === 1 ? found : lib.results.concat(found);
-    lib.pages = json.page_count || 1;
+    const jsons = await Promise.all(list.map(one => fetchJSON(
+      `${OPENVERSE}?${searchParams({ q: one, license, page })}`,
+      `${FUNC}?action=search&${new URLSearchParams({ q: one, license, page: String(page) })}`,
+    )));
+    const found = mergeResults(jsons.map(j => normalizeResults(j, license)));
+    const known = new Set(page === 1 ? [] : lib.results.map(t => t.id));
+    lib.results = (page === 1 ? [] : lib.results).concat(found.filter(t => !known.has(t.id)));
+    lib.pages = Math.max(...jsons.map(j => j.page_count || 1));
     renderResults();
+    const total = jsons.reduce((n, j) => n + (j.result_count || 0), 0);
+    const label = list.length > 1 ? list.join(', ') : list[0];
     $('lib-status').textContent = lib.results.length
-      ? `${json.result_count || lib.results.length} morceaux trouvés pour « ${q} »`
-      : `Rien trouvé pour « ${q} » : essaie un autre mot (en anglais, ça marche mieux).`;
+      ? `${total || lib.results.length} morceaux trouvés pour « ${label} »`
+      : `Rien trouvé pour « ${label} » : essaie un autre mot (en anglais, ça marche mieux).`;
     $('btn-more').hidden = !(lib.page < lib.pages && found.length);
   } catch (err) {
     $('lib-status').textContent = '';
@@ -677,7 +857,7 @@ $('m-sync').onclick = () => {
   $('bpm').value = s.bpm;
   $('bpm-val').textContent = s.bpm;
   $('bpm-lock').checked = true;
-  $('info').textContent = `${STYLES[state.beat.style].label} · ${s.bpm} BPM · ${NOTE_NAMES[state.beat.key]} mineur`;
+  $('info').textContent = beatInfo(state.beat);
   m.loop = true;
   m.len = Math.min(s.loopSource, m.buffer.duration - m.start);
   musicUI();
@@ -707,7 +887,7 @@ $('btn-search').onclick = () => {
   search($('q').value);
 };
 $('q').addEventListener('keydown', e => { if (e.key === 'Enter') $('btn-search').click(); });
-$('lic').onchange = () => { if (lib.q) search(lib.q); };
+$('lic').onchange = () => { if (lib.q.length) search(lib.q); };
 $('btn-more').onclick = () => search(lib.q, lib.page + 1);
 
 renderLayers();

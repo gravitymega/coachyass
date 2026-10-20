@@ -6,12 +6,17 @@ export const STEPS = 64;
 export const NOTE_NAMES = ['Do', 'Do#', 'Ré', 'Mib', 'Mi', 'Fa', 'Fa#', 'Sol', 'Lab', 'La', 'Sib', 'Si'];
 
 const MINOR = [0, 2, 3, 5, 7, 8, 10];
+// Pentatonique mineure : la couleur du gnawa (guembri) et de nombreuses musiques d'Afrique de l'Ouest.
+const PENTA = [0, 3, 5, 7, 10];
 
 export const STYLES = {
   trap: { label: 'Trap', bpm: [132, 150], swing: 0 },
   drill: { label: 'Drill', bpm: [140, 145], swing: 0 },
   boombap: { label: 'Boom bap', bpm: [86, 94], swing: 0.18 },
   afro: { label: 'Afro / amapiano', bpm: [108, 116], swing: 0.08 },
+  // Swing de 1/3 de double-croche : les doubles-croches tombent sur un ternaire (12/8).
+  gnawa: { label: 'Gnawa (Maroc)', bpm: [96, 118], swing: 0.33, penta: true, mode: 'pentatonique mineure' },
+  afrotrad: { label: 'Percussions africaines (djembé)', bpm: [100, 122], swing: 0.2, penta: true, mode: 'pentatonique mineure' },
 };
 
 // Suites d'accords en mineur (degrés de la gamme) qui sonnent « rap actuel ».
@@ -43,6 +48,12 @@ export function scaleNote(root, degree) {
   const oct = Math.floor(degree / 7);
   const d = ((degree % 7) + 7) % 7;
   return root + MINOR[d] + 12 * oct;
+}
+
+export function pentaNote(root, degree) {
+  const oct = Math.floor(degree / 5);
+  const d = ((degree % 5) + 5) % 5;
+  return root + PENTA[d] + 12 * oct;
 }
 
 export function chordNotes(root, degree) {
@@ -86,6 +97,31 @@ function drums(style, r) {
       for (let s = 0; s < 16; s += 2) hat[o + s] = 1;
       if (chance(r, 0.5)) ohat[o + 14] = 1;
       if (chance(r, 0.4)) perc[o + 15] = 1;
+    } else if (style === 'gnawa') {
+      // Gnawa : qraqeb (crotales) en « tak-a-tak » ternaire, grosse caisse tbel,
+      // claps sur les contretemps comme dans une lila.
+      kick[o] = 1;
+      kick[o + 8] = 1;
+      if (chance(r, 0.5)) kick[o + 6] = 1;
+      if (chance(r, 0.4)) kick[o + 14] = 1;
+      for (let b = 0; b < 4; b++) {
+        hat[o + b * 4] = 1;
+        hat[o + b * 4 + 2] = 1;
+        hat[o + b * 4 + 3] = 1;
+      }
+      [4, 12].forEach(s => { snare[o + s] = 1; });
+      if (last && chance(r, 0.7)) [13, 14, 15].forEach(s => { snare[o + s] = 1; });
+      if (chance(r, 0.5)) perc[o + 10] = 1;
+    } else if (style === 'afrotrad') {
+      // Ensemble djembé : dundun (grave), slaps et tons du djembé, shaker.
+      [0, 6, 10].forEach(s => { kick[o + s] = 1; });
+      if (chance(r, 0.4)) kick[o + 13] = 1;
+      [4, 12].forEach(s => { snare[o + s] = 1; });
+      [7, 15].forEach(s => { if (chance(r, 0.5)) snare[o + s] = 1; });
+      [2, 3, 8, 11, 14].forEach(s => { perc[o + s] = 1; });
+      if (last) [9, 13].forEach(s => { perc[o + s] = 1; });
+      for (let s = 0; s < 16; s += 2) hat[o + s] = 1;
+      if (chance(r, 0.4)) ohat[o + 10] = 1;
     } else {
       // Afro / amapiano : kick régulier, percussions en 3-3-2, shaker en doubles-croches.
       [0, 8].forEach(s => { kick[o + s] = 1; });
@@ -99,20 +135,41 @@ function drums(style, r) {
   return { kick, snare, hat, ohat, perc };
 }
 
+// Gnawa : riff de guembri d'une mesure, répété (variation sur la 4e mesure).
+function guembriRiff(r, root) {
+  const rhythm = [0, 3, 4, 6, 8, 11, 12, 14].filter((s, i) => i === 0 || chance(r, 0.75));
+  const riff = rhythm.map((s, i) => ({ s, deg: i === 0 ? 0 : pick(r, [0, 0, 1, 2, 3, 4, -1]) }));
+  const notes = [];
+  for (let bar = 0; bar < 4; bar++) {
+    riff.forEach(({ s, deg }, i) => {
+      const vary = bar === 3 && i >= riff.length - 2;
+      notes.push({ step: bar * 16 + s, midi: pentaNote(root, vary ? deg + 2 : deg), glide: false });
+    });
+  }
+  notes.forEach((n, i) => {
+    const next = notes[i + 1] ? notes[i + 1].step : STEPS;
+    n.len = Math.max(1, Math.min(next - n.step, 3));
+  });
+  return notes;
+}
+
 function bassline(style, r, root, prog, kick) {
+  if (style === 'gnawa') return guembriRiff(r, root);
   const notes = [];
   for (let step = 0; step < STEPS; step++) {
     if (!kick[step]) continue;
     const bar = Math.floor(step / 16);
     const degree = prog[bar];
     const options = [degree, degree, degree, degree + 4, degree + 7];
-    const midi = scaleNote(root - 12, pick(r, options));
+    const midi = STYLES[style].penta
+      ? pentaNote(root - 12, pick(r, [0, 0, 0, 3, 5]))
+      : scaleNote(root - 12, pick(r, options));
     notes.push({ step, midi, glide: style === 'drill' && chance(r, 0.35) });
   }
   // Longueur : jusqu'à la note suivante (808 tenue).
   notes.forEach((n, i) => {
     const next = notes[i + 1] ? notes[i + 1].step : STEPS;
-    n.len = Math.max(1, Math.min(next - n.step, style === 'boombap' ? 4 : 16));
+    n.len = Math.max(1, Math.min(next - n.step, style === 'boombap' || style === 'afrotrad' ? 4 : 16));
   });
   return notes;
 }
@@ -120,7 +177,8 @@ function bassline(style, r, root, prog, kick) {
 // Mélodie : un motif de 2 mesures répété, avec une variation sur la dernière.
 function melody(style, r, root, prog) {
   const rhythm = [];
-  const density = style === 'boombap' ? 0.3 : style === 'afro' ? 0.45 : 0.4;
+  const density = style === 'boombap' ? 0.3 : style === 'afro' || style === 'afrotrad' ? 0.45 : 0.4;
+  const penta = STYLES[style].penta;
   for (let s = 0; s < 32; s++) if ((s % 2 === 0 && chance(r, density)) || s === 0) rhythm.push(s);
   const notes = [];
   for (let rep = 0; rep < 2; rep++) {
@@ -128,8 +186,12 @@ function melody(style, r, root, prog) {
       const step = rep * 32 + s;
       const bar = Math.floor(step / 16);
       const chord = chordNotes(root + 24, prog[bar]);
-      let midi = chord[(i + Math.floor(r() * 2)) % 3];
-      if (rep === 1 && s >= 16 && chance(r, 0.4)) midi = scaleNote(root + 24, pick(r, [4, 6, 7]));
+      let midi = penta
+        ? pentaNote(root + 24, pick(r, [0, 1, 2, 3, 4, 5]))
+        : chord[(i + Math.floor(r() * 2)) % 3];
+      if (rep === 1 && s >= 16 && chance(r, 0.4)) {
+        midi = penta ? pentaNote(root + 24, pick(r, [2, 4, 5])) : scaleNote(root + 24, pick(r, [4, 6, 7]));
+      }
       const next = rhythm[i + 1] ?? 32;
       notes.push({ step, midi, len: Math.max(1, Math.min(next - s, 6)) });
     });
@@ -143,7 +205,8 @@ export function generateBeat(style, seed) {
   const bpm = Math.round(cfg.bpm[0] + r() * (cfg.bpm[1] - cfg.bpm[0]));
   const key = Math.floor(r() * 12);
   const root = 48 + key; // tonique autour du Do3
-  const prog = pick(r, PROGRESSIONS);
+  // Le gnawa est modal : pas de suite d'accords, un bourdon sur la tonique.
+  const prog = style === 'gnawa' ? [0, 0, 0, 0] : pick(r, PROGRESSIONS);
   const d = drums(style, r);
   return {
     style, seed, bpm, key, root, prog,
@@ -151,7 +214,7 @@ export function generateBeat(style, seed) {
     grid: d,
     bass: bassline(style, r, root - 12, prog, d.kick),
     melody: melody(style, r, root, prog),
-    chords: prog.map(deg => chordNotes(root, deg)),
+    chords: style === 'gnawa' ? prog.map(() => [root - 12, root - 5, root]) : prog.map(deg => chordNotes(root, deg)),
   };
 }
 

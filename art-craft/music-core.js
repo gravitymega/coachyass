@@ -19,12 +19,17 @@ export const LICENSE_FILTERS = {
   free: 'cc0,pdm',
 };
 
-// Thèmes proposés : un clic = une recherche prête.
+// Thèmes proposés : un clic = une recherche prête. Plusieurs mots-clés =
+// plusieurs recherches dont les résultats sont fusionnés (utile pour les
+// musiques rares, comme le gnawa : peu de morceaux libres par mot-clé).
 export const THEMES = [
   { key: 'trap', label: 'Trap', q: 'trap beat' },
   { key: 'drill', label: 'Drill', q: 'drill beat' },
   { key: 'hiphop', label: 'Hip-hop / boom bap', q: 'hip hop beat' },
-  { key: 'afro', label: 'Afro / amapiano', q: 'afrobeat' },
+  { key: 'afro', label: 'Afro / amapiano', q: ['afrobeat', 'amapiano'] },
+  { key: 'africa', label: 'Musique africaine', q: ['african music', 'african drums', 'djembe'] },
+  { key: 'kora', label: 'Kora / mbira / kalimba', q: ['kora', 'mbira', 'kalimba'] },
+  { key: 'gnawa', label: 'Gnawa (Maroc)', q: ['gnawa', 'guembri', 'qraqeb', 'moroccan music'] },
   { key: 'lofi', label: 'Lo-fi', q: 'lofi hip hop' },
   { key: 'epic', label: 'Épique / sport', q: 'epic sport' },
   { key: 'motivation', label: 'Motivation', q: 'motivational' },
@@ -68,6 +73,21 @@ export function normalizeResults(json, license = 'credit') {
         attribution: r.attribution || '',
       };
     });
+}
+
+// Fusionne plusieurs listes de résultats sans doublon, en alternant les listes
+// pour que chaque mot-clé ait ses meilleurs résultats en tête.
+export function mergeResults(lists) {
+  const seen = new Set();
+  const out = [];
+  const max = Math.max(0, ...lists.map(l => l.length));
+  for (let i = 0; i < max; i++) {
+    lists.forEach(l => {
+      const t = l[i];
+      if (t && !seen.has(t.id)) { seen.add(t.id); out.push(t); }
+    });
+  }
+  return out;
 }
 
 // Texte de crédit à coller dans la description de la vidéo.
