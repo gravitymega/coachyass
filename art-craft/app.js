@@ -10,6 +10,7 @@ import {
 } from './common.js';
 import { OUTRO, brandCardPNG } from './brand.js';
 import { setVideo, currentCaption } from './social.js';
+import { offerDrive } from './drive.js';
 import { uploadKbps } from './social-core.js';
 
 const AUDIO_RATE = 8000;
@@ -599,4 +600,5 @@ function showResult(blob) {
   out.src = url;
   $('result').hidden = false;
   setVideo(blob);
+  offerDrive(blob, name, currentCaption);
 }

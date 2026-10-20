@@ -210,3 +210,6 @@ textarea { width: 100%; background: #0f0d15; color: var(--text); border: 1px sol
 .pub-login input { flex: 1 1 180px; min-width: 0; }
 #pub-links p { margin: 6px 0; }
 #pub-count.over { color: #ff8aa6; }
+
+/* Une zone d'erreur vide ne s'affiche pas. */
+.error:empty { display: none; }

@@ -151,6 +151,19 @@
       </div>
     </div>
 
+    <div id="drive" class="publish" hidden>
+      <h3>☁️ Enregistrer dans Google Drive</h3>
+      <p class="muted">Le short est rangé dans ton Drive, dossier « Art craft — Gravity ». L'outil n'a accès qu'aux fichiers qu'il crée lui-même, pas au reste de ton Drive.</p>
+      <div class="row">
+        <button class="btn" id="btn-drive" type="button">Enregistrer dans Google Drive</button>
+        <label class="inline check"><input type="checkbox" id="drive-auto"> Enregistrer automatiquement les prochains shorts</label>
+      </div>
+      <p class="warn" id="drive-setup" hidden>Google Drive n'est pas encore branché : il manque l'identifiant client Google de l'outil (à créer une fois dans la console Google Cloud).</p>
+      <div class="progress" id="drive-progress" hidden><div></div><span></span></div>
+      <p id="drive-result"></p>
+      <p class="error" id="drive-error"></p>
+    </div>
+
     <div id="publish" class="publish" hidden>
       <h3>📣 Publier sur Instagram et Facebook</h3>
       <p class="muted">Le titre et le score de l'habillage ouvrent la légende. Ajoute un texte et tes hashtags, relis, puis publie.</p>
