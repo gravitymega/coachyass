@@ -49,7 +49,14 @@ exports.handler = async (event) => {
 
     if (q.action === 'file') {
       if (!allowedAudioUrl(q.url)) return json(400, { error: 'Adresse de fichier non autorisée' });
-      const res = await fetch(q.url, { headers: { 'User-Agent': UA }, redirect: 'follow' });
+      // Certains hébergeurs ne répondent jamais aux serveurs : on abandonne avant
+      // la limite de temps de la fonction pour renvoyer une erreur claire.
+      let res;
+      try {
+        res = await fetch(q.url, { redirect: 'follow', signal: AbortSignal.timeout(8000) });
+      } catch {
+        return json(504, { error: 'Ce site ne laisse pas le relais télécharger le morceau.' });
+      }
       if (!res.ok || !allowedAudioUrl(res.url || q.url)) return json(502, { error: `Fichier inaccessible (${res.status})` });
       const len = +res.headers.get('content-length') || 0;
       if (len > MAX_FILE_BYTES) return json(413, { error: 'Morceau trop lourd pour le relais (plus de 4,4 Mo).' });
