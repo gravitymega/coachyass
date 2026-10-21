@@ -89,14 +89,16 @@ export default async (req: Request) => {
   const apiKey = Netlify.env.get("ANTHROPIC_API_KEY");
   if (!password) return json(500, { error: "ART_CRAFT_PASSWORD manquant dans les variables Netlify du site art-craft." });
   if (!samePassword(req.headers.get("x-art-password") || "", password)) return json(401, { error: "Mot de passe incorrect" });
-  if (!apiKey) return json(500, { error: "ANTHROPIC_API_KEY manquant dans les variables Netlify du site art-craft." });
 
-  let body: { frames?: Frame[]; team?: string; context?: string; start?: number; dur?: number; words?: number };
+  let body: { ping?: boolean; frames?: Frame[]; team?: string; context?: string; start?: number; dur?: number; words?: number };
   try {
     body = await req.json();
   } catch {
     return json(400, { error: "Requête illisible" });
   }
+  // Vérification du mot de passe à la connexion (aucun appel à l'IA).
+  if (body.ping) return json(200, { ok: true, ai: Boolean(apiKey) });
+  if (!apiKey) return json(500, { error: "ANTHROPIC_API_KEY manquant dans les variables Netlify du site art-craft." });
   const frames = Array.isArray(body.frames) ? body.frames : [];
   if (frames.length < 2 || frames.length > MAX_FRAMES) return json(400, { error: `Il faut entre 2 et ${MAX_FRAMES} images.` });
   if (frames.some((f) => !Number.isFinite(f.t) || typeof f.data !== "string" || f.data.length > MAX_FRAME_B64)) {

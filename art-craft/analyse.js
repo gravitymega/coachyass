@@ -1,6 +1,6 @@
 // Module « Analyse tactique » : images clés extraites dans le navigateur (ffmpeg.wasm),
-// analyse par l'IA (fonction coach), rapport écrit, voix off (fonction voice,
-// ElevenLabs) et vidéo commentée rendue dans le navigateur.
+// analyse par l'IA (fonction coach), rapport écrit, voix off (voix gratuites Piper,
+// générées dans le navigateur) et vidéo commentée rendue dans le navigateur.
 import {
   $, showError, setProgress, parseLogDuration, getFFmpeg, mountFiles, runWithLog, offerFile, slugify,
 } from './common.js';
@@ -9,10 +9,11 @@ import {
   SECTIONS, fmtTime,
 } from './analyse-core.js';
 import { parseTimestamp } from './highlights.js';
-import { splitText } from './voice-core.js';
 import { BRAND } from './brand.js';
+import { FREE_VOICES, DEFAULT_FREE_VOICE } from './piper-core.js';
+import { speakFree } from './piper.js';
 
-const STORE_KEY = 'artcraft-voice-password'; // même mot de passe que le Studio voix
+const STORE_KEY = 'artcraft-voice-password'; // nom historique (ancien Studio voix), gardé pour ne pas redemander le mot de passe
 const MOUNT = '/an';
 const state = { password: '', file: null, input: '', duration: 0, hasAudio: false, analysis: null, start: 0, dur: 0, busy: false };
 
@@ -39,29 +40,18 @@ $('login-form').addEventListener('submit', async e => {
   e.preventDefault();
   state.password = $('password').value;
   showError('');
-  // Vérifie le mot de passe sur la fonction voix (gratuit : simple liste des voix).
-  const res = await post('voice', { action: 'list' }).catch(() => null);
-  if (!res || res.status === 401) { showError('Mot de passe incorrect.'); return; }
+  const res = await post('coach', { ping: true }).catch(() => null);
+  if (!res) { showError('Serveur injoignable : vérifie ta connexion.'); return; }
+  if (res.status === 401) { showError('Mot de passe incorrect.'); return; }
+  if (!res.ok) { showError(await errorOf(res)); return; }
   try { localStorage.setItem(STORE_KEY, state.password); } catch { /* stockage indisponible */ }
+  if (!(await res.json()).ai) showError('ANTHROPIC_API_KEY manquant dans les variables Netlify du site art-craft : l\'analyse ne marchera pas.');
   $('step-login').hidden = true;
   $('step-video').hidden = false;
-  if (res.ok) fillVoices(await res.json());
-  else $('voice').add(new Option('Voix indisponibles (ElevenLabs)', ''));
 });
 
-function fillVoices(v) {
-  const sel = $('voice');
-  sel.innerHTML = '';
-  const group = (label, items) => {
-    if (!items || !items.length) return;
-    const g = document.createElement('optgroup');
-    g.label = label;
-    items.forEach(x => g.appendChild(new Option(x.name, x.id)));
-    sel.appendChild(g);
-  };
-  group('Mes voix clonées', v.cloned);
-  group('Voix prêtes ElevenLabs', v.premade);
-}
+FREE_VOICES.forEach(v => $('voice').appendChild(new Option(v.name, v.id)));
+$('voice').value = DEFAULT_FREE_VOICE;
 
 // ---------- 1. Vidéo ----------
 const video = $('video');
@@ -286,23 +276,6 @@ async function captionPNG(W, H, m) {
   return new Uint8Array(await blob.arrayBuffer());
 }
 
-async function speak(text, onProgress) {
-  const chunks = splitText(text, 900);
-  const parts = [];
-  let model = 'eleven_v4';
-  for (let i = 0; i < chunks.length; i++) {
-    onProgress(i / chunks.length, `Voix off… ${i + 1} / ${chunks.length}`);
-    const res = await post('voice', {
-      action: 'speak', voiceId: $('voice').value, model, text: chunks[i],
-      previousText: chunks[i - 1] || '', nextText: chunks[i + 1] || '',
-    });
-    if (!res.ok) throw new Error('Voix off : ' + await errorOf(res));
-    model = res.headers.get('X-Model-Used') || model;
-    parts.push(await res.blob());
-  }
-  return new Blob(parts, { type: 'audio/mpeg' });
-}
-
 async function audioDuration(blob) {
   const ac = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 1, 44100);
   const buf = await ac.decodeAudioData(await blob.arrayBuffer());
@@ -313,25 +286,25 @@ $('btn-render').onclick = async () => {
   if (!state.analysis || state.busy) return;
   const text = $('commentary').value.trim();
   if (!text) { showError('Écris un commentaire pour la voix off.'); return; }
-  if (!$('voice').value) { showError('Aucune voix disponible : vérifie la clé ElevenLabs dans le Studio voix.'); return; }
   state.busy = true;
   $('btn-render').disabled = true;
   showError('');
   $('result').hidden = true;
   try {
-    const mp3 = await speak(text, (r, label) => setProgress('render-progress', r * 0.35, label));
-    const voiceDur = await audioDuration(mp3);
+    const voice = await speakFree(text, $('voice').value, { onProgress: (r, label) => setProgress('render-progress', r * 0.35, label) });
+    const voicePath = '/voice.wav';
+    const voiceDur = await audioDuration(voice);
     const ff = await getFFmpeg('render-progress');
     await mountInput(ff);
     const [W, H] = $('quality').value === '1080' ? [1920, 1080] : [1280, 720];
-    await ff.writeFile('/voice.mp3', new Uint8Array(await mp3.arrayBuffer()));
+    await ff.writeFile(voicePath, new Uint8Array(await voice.arrayBuffer()));
     const caps = $('show-captions').checked ? captionTimes(state.analysis.moments, state.start, state.dur) : [];
     for (let i = 0; i < caps.length; i++) {
       caps[i].path = `/cap${i}.png`;
       await ff.writeFile(caps[i].path, await captionPNG(W, H, caps[i]));
     }
     const { args, total } = buildCommentaryArgs({
-      input: state.input, start: state.start, dur: state.dur, voice: '/voice.mp3', voiceDur,
+      input: state.input, start: state.start, dur: state.dur, voice: voicePath, voiceDur,
       hasAudio: state.hasAudio, captions: caps, width: W, height: H, output: '/commentee.mp4',
     });
     const errors = [];
@@ -346,7 +319,7 @@ $('btn-render').onclick = async () => {
     if (code !== 0) throw new Error(errors.slice(-2).join(' · ') || `ffmpeg a échoué (code ${code})`);
     const data = await ff.readFile('/commentee.mp4');
     await ff.deleteFile('/commentee.mp4');
-    await ff.deleteFile('/voice.mp3');
+    await ff.deleteFile(voicePath);
     for (const c of caps) await ff.deleteFile(c.path);
     const name = `analyse-${slugify($('team').value, 'gravity')}.mp4`;
     const url = offerFile(new Blob([data], { type: 'video/mp4' }), name, {
@@ -355,8 +328,8 @@ $('btn-render').onclick = async () => {
     $('result-video').src = url;
     const vdl = $('btn-voice-dl');
     if (vdl.href) URL.revokeObjectURL(vdl.href);
-    vdl.href = URL.createObjectURL(mp3);
-    vdl.download = name.replace(/\.mp4$/, '-voix.mp3');
+    vdl.href = URL.createObjectURL(voice);
+    vdl.download = name.replace(/\.mp4$/, '-voix.wav');
     $('result').hidden = false;
     setProgress('render-progress', 1, `Vidéo commentée prête · ${Math.round(total)} s · ${(data.length / 1e6).toFixed(1)} Mo`);
   } catch (err) {
