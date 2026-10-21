@@ -14,6 +14,14 @@ Un outil en ligne de commande qui clone **ta voix** à partir d'un enregistremen
 
 ## 2. Installer (une seule fois)
 
+**Le plus simple — double-clic :**
+- **Mac** : double-clique `installer-mac.command` (si le Mac refuse : clic droit → Ouvrir). Il faut d'abord [Homebrew](https://brew.sh).
+- **Windows** : double-clique `installer-windows.bat`.
+
+Ensuite, mets ton enregistrement dans ce dossier sous le nom `ma-voix` (`ma-voix.m4a`, `.wav` ou `.mp3`) et double-clique `cloner-mac.command` ou `cloner-windows.bat` : la voix off arrive dans le dossier `sortie`.
+
+**Ou à la main** (si tu préfères) :
+
 Il faut **Python 3.10 à 3.12** et `ffmpeg`.
 
 **Mac** (Apple Silicon : le modèle utilise la puce graphique) :
