@@ -5,9 +5,8 @@ import { BRAND } from './brand.js';
 const ENDPOINT = '/.netlify/functions/voice';
 const MAX_SAMPLE_BYTES = 4.2e6;
 const MAX_CHUNK = 900;
-const STORE_KEY = 'artcraft-voice-password';
 
-const state = { password: '', samples: [], recording: null, voices: { cloned: [], premade: [] } };
+const state = { samples: [], recording: null, voices: { cloned: [], premade: [] } };
 let nextId = 1;
 
 // Modèles de textes Gravity (point de départ, à adapter).
@@ -22,7 +21,7 @@ const TEMPLATES = {
 async function call(action, payload = {}, { binary = false } = {}) {
   const res = await fetch(ENDPOINT, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-art-password': state.password },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action, ...payload }),
   });
   if (!res.ok) {
@@ -36,25 +35,6 @@ async function call(action, payload = {}, { binary = false } = {}) {
   if (!binary) return res.json();
   return { blob: await res.blob(), model: res.headers.get('X-Model-Used') };
 }
-
-// ---------- Accès ----------
-try { state.password = localStorage.getItem(STORE_KEY) || ''; } catch { /* stockage indisponible */ }
-if (state.password) $('password').value = state.password;
-
-$('login-form').addEventListener('submit', async e => {
-  e.preventDefault();
-  state.password = $('password').value;
-  showError('');
-  try {
-    await loadVoices();
-    try { localStorage.setItem(STORE_KEY, state.password); } catch { /* stockage indisponible */ }
-    $('step-login').hidden = true;
-    $('step-clone').hidden = false;
-    $('step-speak').hidden = false;
-  } catch (err) {
-    showError(err.message);
-  }
-});
 
 async function loadVoices(selectId) {
   state.voices = await call('list');
@@ -239,3 +219,6 @@ $('btn-delete').onclick = async () => {
     showError('Suppression impossible : ' + err.message);
   }
 };
+
+// Plus de mot de passe : on charge les voix dès l'ouverture de la page.
+loadVoices().catch(err => showError(err.message));

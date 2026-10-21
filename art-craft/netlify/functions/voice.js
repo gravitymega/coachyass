@@ -1,13 +1,10 @@
 // Fonction Netlify du Studio voix d'Art craft : porte unique vers ElevenLabs
 // (clonage de voix instantané + synthèse vocale). La clé ELEVENLABS_API_KEY ne
-// quitte jamais le serveur, et chaque appel exige le mot de passe ART_CRAFT_PASSWORD
-// (sinon n'importe qui pourrait consommer les crédits du compte).
-
-const crypto = require('crypto');
+// quitte jamais le serveur. Plus de mot de passe depuis le 21 octobre 2026
+// (demande de l'utilisateur) : l'accès repose sur le seul lien de la page.
 
 const API = 'https://api.elevenlabs.io/v1';
 const API_KEY = process.env.ELEVENLABS_API_KEY;
-const PASSWORD = process.env.ART_CRAFT_PASSWORD;
 
 const MODELS = ['eleven_v4', 'eleven_multilingual_v2', 'eleven_flash_v2_5'];
 const MAX_CHARS = 900;              // par appel : reste sous la limite de temps d'une fonction Netlify
@@ -18,12 +15,6 @@ const json = (statusCode, body) => ({
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(body),
 });
-
-function samePassword(given) {
-  const a = Buffer.from(String(given || ''));
-  const b = Buffer.from(String(PASSWORD));
-  return a.length === b.length && crypto.timingSafeEqual(a, b);
-}
 
 async function eleven(path, init = {}) {
   const res = await fetch(API + path, {
@@ -47,10 +38,9 @@ async function eleven(path, init = {}) {
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return json(405, { error: 'Méthode non permise' });
-  if (!API_KEY || !PASSWORD) {
-    return json(500, { error: 'ELEVENLABS_API_KEY ou ART_CRAFT_PASSWORD manquant dans les variables Netlify du site art-craft' });
+  if (!API_KEY) {
+    return json(500, { error: 'ELEVENLABS_API_KEY manquant dans les variables Netlify du site art-craft' });
   }
-  if (!samePassword(event.headers['x-art-password'])) return json(401, { error: 'Mot de passe incorrect' });
 
   let d;
   try {

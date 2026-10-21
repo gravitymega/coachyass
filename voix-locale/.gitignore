@@ -1,0 +1,8 @@
+# Les enregistrements de voix et les fichiers générés restent sur ta machine.
+*.wav
+*.mp3
+*.m4a
+*.mov
+.venv/
+sortie/
+__pycache__/
