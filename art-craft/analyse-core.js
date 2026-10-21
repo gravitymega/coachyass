@@ -14,14 +14,23 @@ export function sampleTimes(start, dur, { max = MAX_FRAMES, every = 3 } = {}) {
   return Array.from({ length: n }, (_, i) => Math.round((start + step * (i + 0.5)) * 10) / 10);
 }
 
-// Une image JPEG de 640 px de large, assez légère pour en envoyer 32 d'un coup.
+// Instants des images du suivi d'une action (2e passe) : une toutes les 0,5 s de debut à fin,
+// 16 au maximum (l'écart grandit pour les actions longues).
+export function trackTimes(debut, fin, { step = 0.5, max = 16 } = {}) {
+  const len = Math.max(0.5, fin - debut);
+  const n = Math.max(2, Math.min(max, Math.floor(len / step) + 1));
+  return Array.from({ length: n }, (_, i) => Math.round((debut + (len * i) / (n - 1)) * 100) / 100);
+}
+
+// Une image JPEG (640 px de large par défaut), assez légère pour en envoyer 32 d'un coup.
+// Jamais agrandie si la vidéo est plus petite.
 export function frameArgs(input, t, output, width = 640) {
-  return ['-ss', t.toFixed(2), '-i', input, '-frames:v', '1', '-vf', `scale=${width}:-2`, '-q:v', '6', output];
+  return ['-ss', t.toFixed(2), '-i', input, '-frames:v', '1', '-vf', `scale='min(${width},iw)':-2`, '-q:v', '6', output];
 }
 
 // Le serveur répond en NDJSON : {"d": morceau} … puis {"end": …} ou {"error": …}.
 // feed() accepte des morceaux de texte arbitraires (coupés n'importe où).
-export function createStreamReader() {
+export function createStreamReader(normalize = normalizeAnalysis) {
   let buffer = '';
   let text = '';
   let end = null;
@@ -47,7 +56,7 @@ export function createStreamReader() {
       buffer = '';
       if (error) throw new Error(error);
       if (!end) throw new Error('Analyse interrompue avant la fin (réseau ou délai dépassé) : réessaie avec une séquence plus courte.');
-      return normalizeAnalysis(JSON.parse(text));
+      return normalize(JSON.parse(text));
     },
     get length() { return text.length; },
   };

@@ -5,10 +5,10 @@ import {
   $, showError, setProgress, parseLogDuration, getFFmpeg, mountFiles, runWithLog, offerFile, slugify,
 } from './common.js';
 import {
-  sampleTimes, frameArgs, createStreamReader, reportText, SECTIONS, fmtTime,
+  sampleTimes, trackTimes, frameArgs, createStreamReader, reportText, SECTIONS, fmtTime,
   buildBeats, placeVoice, concatList, buildTacticArgs,
 } from './analyse-core.js';
-import { boardFrames } from './board-core.js';
+import { boardFrames, normalizeTrack } from './board-core.js';
 import { drawBoard } from './board.js';
 import { parseTimestamp } from './highlights.js';
 import { BRAND } from './brand.js';
@@ -99,6 +99,61 @@ function toBase64(bytes) {
   return btoa(s);
 }
 
+// Appel à l'IA (réponse en flux) : renvoie le JSON nettoyé par normalize.
+async function askCoach(payload, normalize, onLength) {
+  const res = await post('coach', payload);
+  if (!res.ok) throw new Error(await errorOf(res));
+  const reader = createStreamReader(normalize);
+  const decoder = new TextDecoder();
+  const stream = res.body.getReader();
+  for (;;) {
+    const { value, done } = await stream.read();
+    if (done) break;
+    reader.feed(decoder.decode(value, { stream: true }));
+    if (onLength) onLength(reader.length);
+  }
+  reader.feed(decoder.decode());
+  return reader.finish();
+}
+
+async function grabFrames(ff, times, width, onEach) {
+  const frames = [];
+  for (let i = 0; i < times.length; i++) {
+    if (onEach) onEach(i);
+    const code = await ff.exec(frameArgs(state.input, times[i], '/frame.jpg', width));
+    if (code !== 0) continue;
+    const data = await ff.readFile('/frame.jpg');
+    await ff.deleteFile('/frame.jpg');
+    frames.push({ t: times[i], data: toBase64(data) });
+  }
+  return frames;
+}
+
+// 2e passe : chaque action est suivie image par image (une toutes les 0,5 s), pour que le
+// tableau rejoue les vraies positions des joueurs. Une action qui échoue garde son schéma.
+async function trackMoments(ff, onProgress) {
+  const ms = state.analysis.moments;
+  for (let i = 0; i < ms.length; i++) {
+    const m = ms[i];
+    const label = `Suivi des joueurs · action ${i + 1} / ${ms.length}`;
+    try {
+      const times = trackTimes(Math.max(state.start, m.debut), Math.min(state.start + state.dur, m.fin));
+      const frames = await grabFrames(ff, times, 960, k => onProgress((i + 0.3 * k / times.length) / ms.length, `${label} · image ${k + 1} / ${times.length}`));
+      if (frames.length < 2) continue;
+      const raw = await askCoach({
+        mode: 'track', frames, team: $('team').value.trim(),
+        moment: {
+          titre: m.titre, explication: m.explication, narration: m.narration, ballon: m.board.ball,
+          joueurs: Object.entries(m.board.players).map(([p, [x, y]]) => ({ p, x: +x.toFixed(2), y: +y.toFixed(2) })),
+        },
+      }, a => a, n => onProgress((i + 0.3 + 0.7 * Math.min(1, n / 6000)) / ms.length, `${label} · l'IA place les joueurs… ${n} caractères`));
+      m.track = normalizeTrack(raw, m.board);
+    } catch (err) {
+      console.warn('Suivi impossible pour l\'action', i + 1, err);
+    }
+  }
+}
+
 $('btn-analyse').onclick = async () => {
   if (!state.file || state.busy) return;
   state.busy = true;
@@ -114,37 +169,19 @@ $('btn-analyse').onclick = async () => {
     state.dur = dur;
 
     const times = sampleTimes(start, dur);
-    const frames = [];
-    for (let i = 0; i < times.length; i++) {
-      setProgress('analyse-progress', (i / times.length) * 0.3, `Images clés… ${i + 1} / ${times.length}`);
-      const code = await ff.exec(frameArgs(state.input, times[i], '/frame.jpg'));
-      if (code !== 0) continue;
-      const data = await ff.readFile('/frame.jpg');
-      await ff.deleteFile('/frame.jpg');
-      frames.push({ t: times[i], data: toBase64(data) });
-    }
+    const frames = await grabFrames(ff, times, 640, i => setProgress('analyse-progress', (i / times.length) * 0.3, `Images clés… ${i + 1} / ${times.length}`));
     if (frames.length < 2) throw new Error('Impossible d\'extraire des images de cette vidéo.');
 
-    setProgress('analyse-progress', 0.32, 'Envoi à l\'IA…');
-    const res = await post('coach', {
-      frames, team: $('team').value.trim(), context: $('context').value.trim(),
-      start, dur,
-    });
-    if (!res.ok) throw new Error(await errorOf(res));
-    const reader = createStreamReader();
-    const decoder = new TextDecoder();
-    const stream = res.body.getReader();
-    for (;;) {
-      const { value, done } = await stream.read();
-      if (done) break;
-      reader.feed(decoder.decode(value, { stream: true }));
-      // Le JSON complet fait ~4 000 à 8 000 caractères : progression approximative.
-      setProgress('analyse-progress', 0.35 + Math.min(0.6, reader.length / 9000), `L'IA analyse le jeu… ${reader.length} caractères`);
-    }
-    reader.feed(decoder.decode());
-    state.analysis = reader.finish();
+    setProgress('analyse-progress', 0.3, 'Envoi à l\'IA…');
+    const track = $('track').checked;
+    const end = track ? 0.6 : 0.95;
+    state.analysis = await askCoach({
+      frames, team: $('team').value.trim(), context: $('context').value.trim(), start, dur,
+    }, undefined, n => setProgress('analyse-progress', 0.32 + Math.min(end - 0.33, (n / 9000) * (end - 0.33)), `L'IA analyse le jeu… ${n} caractères`));
+    if (track) await trackMoments(ff, (r, label) => setProgress('analyse-progress', end + (0.99 - end) * r, label));
     renderReport();
-    setProgress('analyse-progress', 1, `Analyse prête · ${frames.length} images étudiées`);
+    const tracked = state.analysis.moments.filter(m => m.track).length;
+    setProgress('analyse-progress', 1, `Analyse prête · ${frames.length} images étudiées${track ? ` · ${tracked} / ${state.analysis.moments.length} actions suivies image par image` : ''}`);
   } catch (err) {
     console.error(err);
     showError('Analyse impossible : ' + (err.message || err));
@@ -267,7 +304,7 @@ function boardInfo(beat, idx, beats, u) {
     return {
       tag: `Analyse tactique · ${BRAND.name}`, badge: 'AVANT L\'ACTION',
       title: $('team').value.trim() || 'Séance vidéo', text: scriptTexts()[0] || a.resume,
-      board: m && m.board, u: 0,
+      board: m && m.board, u: 0, track: m && m.track, s: m && m.track ? m.track[0].t : null,
     };
   }
   if (beat.kind === 'action') {
@@ -275,6 +312,8 @@ function boardInfo(beat, idx, beats, u) {
     return {
       tag: `Action ${beat.moment + 1} / ${n} · ${fmtTime(m.t)}`, badge: frozen ? 'IMAGE FIGÉE' : slowTxt, slow: beat.speed < 0.999,
       title: m.titre, text: m.explication, board: m.board, u,
+      // Suivi réel : l'instant de la vidéo affiché en haut, pour que les pions suivent l'image.
+      track: m.track, s: beat.src[0] + Math.min(1, u) * (beat.src[1] - beat.src[0]),
     };
   }
   if (beat.kind === 'jeu') {
@@ -282,12 +321,13 @@ function boardInfo(beat, idx, beats, u) {
     const nm = next ? a.moments[next.moment] : null;
     return {
       tag: 'Jeu', badge: 'VITESSE NORMALE', title: nm ? 'Prochaine action : ' + nm.titre : 'Le jeu continue',
-      text: m ? m.explication : '', board: m && m.board, u: 1,
+      text: m ? m.explication : '', board: m && m.board, u: 1, track: m && m.track, s: m && m.track ? m.track[m.track.length - 1].t : null,
     };
   }
   return {
     tag: 'À retenir', badge: 'CONCLUSION', title: 'La leçon du coach',
     text: scriptTexts()[scriptTexts().length - 1] || a.conclusion, board: m && m.board, u: 1,
+    track: m && m.track, s: m && m.track ? m.track[m.track.length - 1].t : null,
   };
 }
 

@@ -118,3 +118,98 @@ export function boardFrames(beats, fps = 10) {
   });
   return frames.filter(f => f.dur > 0.001);
 }
+
+// ---------- Suivi réel (2e passe de l'IA : positions image par image) ----------
+
+/**
+ * Nettoie le suivi d'une action : images triées par instant, 5 attaquants à chaque image
+ * (un joueur absent garde sa dernière position connue), défenseurs, porteur du ballon.
+ * Renvoie null s'il n'y a pas au moins 2 images utilisables.
+ */
+export function normalizeTrack(track, board) {
+  const imgs = (track && Array.isArray(track.images) ? track.images : [])
+    .filter(im => im && Number.isFinite(+im.t))
+    .sort((a, b) => a.t - b.t);
+  if (imgs.length < 2) return null;
+  let prev = board ? board.players : DEFAULT_SPOTS;
+  const keys = imgs.map(im => {
+    const players = {};
+    (Array.isArray(im.joueurs) ? im.joueurs : []).forEach(j => {
+      if (j && POSITIONS.includes(j.p) && !players[j.p]) players[j.p] = [clamp01(j.x), clamp01(j.y)];
+    });
+    POSITIONS.forEach(p => { if (!players[p]) players[p] = prev[p].slice(); });
+    prev = players;
+    const defenders = (Array.isArray(im.defenseurs) ? im.defenseurs : []).slice(0, 5).map(d => [clamp01(d && d.x), clamp01(d && d.y)]);
+    return { t: +im.t, players, defenders, holder: POSITIONS.includes(im.ballon) ? im.ballon : '' };
+  });
+  if (!keys.some(k => k.holder)) keys[0].holder = board ? board.ball : 'PG';
+  return keys;
+}
+
+// Défenseurs : appariés au plus proche d'une image à l'autre (leur nombre peut varier).
+function lerpDefenders(a, b, u) {
+  if (!b.length) return a;
+  if (!a.length) return b;
+  const used = new Set();
+  return a.map(d => {
+    let best = -1, bd = Infinity;
+    b.forEach((e, j) => {
+      if (used.has(j)) return;
+      const dd = Math.hypot(d[0] - e[0], d[1] - e[1]);
+      if (dd < bd) { bd = dd; best = j; }
+    });
+    if (best < 0 || bd > 0.35) return d;
+    used.add(best);
+    return lerp(d, b[best], u);
+  });
+}
+
+/**
+ * État du tableau à l'instant s (secondes de la vidéo d'origine) d'après le suivi :
+ * positions interpolées entre les deux images qui l'entourent, ballon chez le porteur
+ * ou en vol entre deux porteurs différents, traces des déplacements et passes déjà faites.
+ */
+export function trackAt(keys, s) {
+  const n = keys.length;
+  let k = 0;
+  while (k < n - 2 && keys[k + 1].t <= s) k++;
+  const a = keys[k], b = keys[k + 1];
+  const u = Math.min(1, Math.max(0, (s - a.t) / Math.max(0.001, b.t - a.t)));
+  const players = {};
+  POSITIONS.forEach(p => { players[p] = s <= a.t ? a.players[p].slice() : lerp(a.players[p], b.players[p], u); });
+  const defenders = lerpDefenders(a.defenders, b.defenders, s <= a.t ? 0 : u);
+  // Porteurs connus avant et après s.
+  let ip = -1, inx = -1;
+  for (let i = 0; i < n; i++) {
+    if (!keys[i].holder) continue;
+    if (keys[i].t <= s) ip = i;
+    else if (inx < 0) inx = i;
+  }
+  let holder = ip >= 0 ? keys[ip].holder : (inx >= 0 ? keys[inx].holder : 'PG');
+  let ball = players[holder];
+  let passing = false;
+  if (ip >= 0 && inx >= 0 && keys[inx].holder !== keys[ip].holder) {
+    // Le ballon change de mains : il voyage entre la dernière image du passeur et la première du receveur.
+    const v = ease((s - keys[ip].t) / Math.max(0.001, keys[inx].t - keys[ip].t));
+    const from = keys[ip].holder, to = keys[inx].holder;
+    if (v > 0.05) {
+      ball = lerp(players[from], players[to], v);
+      passing = true;
+      holder = v > 0.95 ? to : from;
+    }
+  }
+  // Traces : positions déjà parcourues par chaque joueur.
+  const trails = {};
+  POSITIONS.forEach(p => {
+    const pts = keys.filter(kf => kf.t <= s).map(kf => kf.players[p]);
+    trails[p] = pts.length ? [...pts, players[p]] : [players[p]];
+  });
+  const passes = [];
+  let last = null;
+  keys.forEach(kf => {
+    if (!kf.holder || kf.t > s + 0.001) return;
+    if (last && last.holder !== kf.holder) passes.push([last.players[last.holder], kf.players[kf.holder]]);
+    last = kf;
+  });
+  return { players, defenders, holder, ball, passing, trails, passes };
+}
