@@ -12,7 +12,6 @@ export const FREE_VOICES = [
 ];
 export const DEFAULT_FREE_VOICE = FREE_VOICES[0].id;
 
-export const isFreeVoice = id => typeof id === 'string' && id.startsWith('piper:');
 export const freeVoice = id => FREE_VOICES.find(v => v.id === id) || null;
 
 // Modèle hébergé sur Hugging Face (dépôt officiel, puis miroir de secours).

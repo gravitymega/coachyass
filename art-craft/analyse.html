@@ -31,7 +31,7 @@
 <main>
   <section class="card" id="step-login">
     <h2><b>🔒</b> Accès</h2>
-    <p class="muted">L'analyse utilise les crédits IA de Gravity : même mot de passe que le Studio voix.</p>
+    <p class="muted">L'analyse utilise les crédits IA de Gravity : elle est protégée par le mot de passe Art craft.</p>
     <form class="row" id="login-form">
       <input type="password" id="password" placeholder="Mot de passe Art craft" autocomplete="current-password">
       <button class="btn" type="submit">Entrer</button>
@@ -88,7 +88,7 @@
 
   <section class="card" id="step-voice" hidden>
     <h2><b>3</b> Vidéo commentée</h2>
-    <p class="muted">La voix off lit le commentaire ci-dessous (tu peux le modifier), les moments clés s'affichent en encadrés et le son de la salle est baissé. Les <b>voix gratuites</b> sont générées dans ton navigateur, sans compte (la première fois, la voix se télécharge : ~60 Mo).</p>
+    <p class="muted">La voix off lit le commentaire ci-dessous (tu peux le modifier), les moments clés s'affichent en encadrés et le son de la salle est baissé. Les voix, gratuites et open source (Piper), sont générées dans ton navigateur, sans compte (la première fois, la voix se télécharge : ~60 Mo).</p>
     <label>Commentaire (voix off)
       <textarea id="commentary" rows="6"></textarea>
     </label>
@@ -110,7 +110,7 @@
       <div class="row">
         <a class="btn" id="btn-download">Télécharger le MP4</a>
         <button class="btn ghost" id="btn-share" hidden>Partager…</button>
-        <a class="btn ghost" id="btn-voice-dl">Voix off seule (MP3)</a>
+        <a class="btn ghost" id="btn-voice-dl">Voix off seule (WAV)</a>
       </div>
     </div>
   </section>
@@ -118,7 +118,7 @@
   <p class="error" id="error" role="alert" hidden></p>
 </main>
 
-<footer class="foot">Art craft · Gravity Basketball Montréal · analyse par IA (Claude, Anthropic) · voix Piper (gratuite) ou ElevenLabs · moteur vidéo ffmpeg.wasm</footer>
+<footer class="foot">Art craft · Gravity Basketball Montréal · analyse par IA (Claude, Anthropic) · voix Piper (open source) · moteur vidéo ffmpeg.wasm</footer>
 <script src="vendor/ffmpeg/ffmpeg.js"></script>
 <script type="module" src="analyse.js"></script>
 </body>
