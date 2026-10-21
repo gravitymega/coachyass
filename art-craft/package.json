@@ -1,0 +1,8 @@
+{
+  "name": "art-craft",
+  "private": true,
+  "description": "Art craft (Gravity) : dépendances des fonctions Netlify",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.134.0"
+  }
+}
