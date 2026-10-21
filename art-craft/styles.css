@@ -230,3 +230,6 @@ textarea { width: 100%; background: #0f0d15; color: var(--text); border: 1px sol
   .card { border: 0; background: #fff; box-shadow: none; padding: 0; }
   .report h3 { color: #c04d1c; }
 }
+.card h3.sub { font-family: Oswald, Impact, sans-serif; font-size: 17px; letter-spacing: .02em; margin: 14px 0 8px; }
+.card h3.sub .muted { font-family: Inter, system-ui, sans-serif; font-size: 13px; letter-spacing: 0; }
+video.tall { max-height: 640px; }

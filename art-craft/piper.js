@@ -124,10 +124,10 @@ async function loadVoice(key, onBytes) {
 }
 
 /**
- * Synthèse d'un texte avec une voix gratuite. Renvoie un Blob WAV.
+ * Synthèse d'un texte avec une voix gratuite. Renvoie { pcm (Float32Array mono), rate }.
  * onProgress(ratio 0–1, libellé)
  */
-export async function speakFree(text, voiceId, { speed = 1, onProgress = () => {} } = {}) {
+export async function synthFree(text, voiceId, { speed = 1, onProgress = () => {} } = {}) {
   const voice = freeVoice(voiceId);
   if (!voice) throw new Error('Voix gratuite inconnue');
   const chunks = freeChunks(text);
@@ -157,5 +157,11 @@ export async function speakFree(text, voiceId, { speed = 1, onProgress = () => {
   }
   const rate = config.audio.sample_rate;
   onProgress(1, 'Voix prête');
-  return new Blob([pcmToWav(joinPcm(pcms, rate), rate)], { type: 'audio/wav' });
+  return { pcm: joinPcm(pcms, rate), rate };
+}
+
+// Même chose en fichier WAV.
+export async function speakFree(text, voiceId, opts) {
+  const { pcm, rate } = await synthFree(text, voiceId, opts);
+  return new Blob([pcmToWav(pcm, rate)], { type: 'audio/wav' });
 }

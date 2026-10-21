@@ -15,13 +15,22 @@ const MODEL = "claude-opus-5-5";
 const MAX_FRAMES = 40;
 const MAX_FRAME_B64 = 400_000; // ~300 Ko par image JPEG
 
+const POS = ["PG", "SG", "SF", "PF", "C"];
+const point = {
+  type: "object",
+  properties: { p: { type: "string", enum: POS }, x: { type: "number" }, y: { type: "number" } },
+  required: ["p", "x", "y"],
+  additionalProperties: false,
+};
+const strings = { type: "array", items: { type: "string" } };
+
 const ANALYSIS_SCHEMA = {
   type: "object",
   properties: {
     resume: { type: "string" },
-    attaque: { type: "array", items: { type: "string" } },
-    defense: { type: "array", items: { type: "string" } },
-    transitions: { type: "array", items: { type: "string" } },
+    attaque: strings,
+    defense: strings,
+    transitions: strings,
     systemes: {
       type: "array",
       items: {
@@ -31,45 +40,80 @@ const ANALYSIS_SCHEMA = {
         additionalProperties: false,
       },
     },
-    points_forts: { type: "array", items: { type: "string" } },
-    points_faibles: { type: "array", items: { type: "string" } },
-    conseils: { type: "array", items: { type: "string" } },
+    points_forts: strings,
+    points_faibles: strings,
+    conseils: strings,
+    intro: { type: "string" },
     moments: {
       type: "array",
       items: {
         type: "object",
         properties: {
           t: { type: "number" },
+          debut: { type: "number" },
+          fin: { type: "number" },
           titre: { type: "string" },
           explication: { type: "string" },
+          narration: { type: "string" },
+          ballon: { type: "string", enum: POS },
+          joueurs: { type: "array", items: point },
+          defenseurs: {
+            type: "array",
+            items: { type: "object", properties: { x: { type: "number" }, y: { type: "number" } }, required: ["x", "y"], additionalProperties: false },
+          },
+          trajets: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                p: { type: "string", enum: POS },
+                type: { type: "string", enum: ["coupe", "dribble", "ecran", "passe"] },
+                x: { type: "number" },
+                y: { type: "number" },
+                vers: { type: "string", enum: [...POS, ""] },
+              },
+              required: ["p", "type", "x", "y", "vers"],
+              additionalProperties: false,
+            },
+          },
         },
-        required: ["t", "titre", "explication"],
+        required: ["t", "debut", "fin", "titre", "explication", "narration", "ballon", "joueurs", "defenseurs", "trajets"],
         additionalProperties: false,
       },
     },
-    commentaire: { type: "string" },
+    conclusion: { type: "string" },
   },
   required: [
     "resume", "attaque", "defense", "transitions", "systemes",
-    "points_forts", "points_faibles", "conseils", "moments", "commentaire",
+    "points_forts", "points_faibles", "conseils", "intro", "moments", "conclusion",
   ],
   additionalProperties: false,
 };
 
-const SYSTEM = `Tu es un analyste vidéo et entraîneur de basketball expérimenté qui travaille pour Gravity Basketball (Montréal).
+const SYSTEM = `Tu es un entraîneur de basketball expert (niveau élite : 20 ans de coaching, analyse vidéo pour des équipes U15 à universitaires et professionnelles) qui travaille pour Gravity Basketball (Montréal).
 Tu reçois des images fixes tirées d'une séquence de match, dans l'ordre, chacune avec son instant (en secondes depuis le début de la vidéo).
-Ton travail : expliquer le jeu et les tactiques à des joueurs et à leur coach, en français québécois clair et concret.
+Ton travail : décortiquer le jeu comme un coach le ferait en séance vidéo avec ses joueurs, en français québécois clair, concret et précis, avec le vocabulaire du coaching (spacing, pick-and-roll, slip, pop, flare, back-door, aide côté faible, closeout, ice, hedge, switch, box-out…).
 
-Ce que tu regardes : placement et espacement en attaque (spacing, coins, poste haut/bas), écrans et pick-and-roll, coupes, isolations, jeu au poste ;
+Ce que tu regardes : placement et espacement en attaque (coins, ailes, poste haut/bas), écrans et pick-and-roll, coupes, isolations, jeu au poste ;
 défense (homme à homme ou zone, et laquelle : 2-3, 3-2, 1-3-1…), aide, rotations, pression sur le porteur, retour défensif ;
 transitions et contre-attaques, rebonds, organisation après un temps mort ou une remise en jeu.
 
+Le tableau du coach : chaque moment clé est dessiné sur une demi-terrain vue de dessus, panier en haut.
+- Repère : x de 0 (ligne de côté à gauche) à 1 (ligne de côté à droite), vu depuis le milieu du terrain en regardant le panier ; y de 0 (ligne de fond, sous le panier) à 1 (ligne médiane).
+- Points utiles : panier (0.5, 0.11) ; raquette de x 0.34 à 0.66 et de y 0 à 0.41 ; ligne des lancers francs y = 0.41 ; sommet de la ligne à 3 points (0.5, 0.59) ; ailes (0.15, 0.42) et (0.85, 0.42) ; coins (0.05, 0.08) et (0.95, 0.08) ; poste bas (0.3, 0.2) et (0.7, 0.2) ; coudes (0.36, 0.41) et (0.64, 0.41).
+- « joueurs » : les 5 attaquants de l'équipe analysée (ou de l'équipe qui a le ballon), au DÉBUT de l'action, nommés par poste : PG (meneur), SG (arrière), SF (ailier), PF (ailier fort), C (pivot). Exactement 5, un par poste. « ballon » : qui a le ballon au début.
+- « defenseurs » : les 5 défenseurs au début de l'action (liste vide si on ne les distingue pas).
+- « trajets », dans l'ordre où ils se passent : « coupe » (course sans ballon), « dribble » (le porteur avance en dribblant), « ecran » (le joueur va poser un écran : x, y = l'endroit de l'écran), avec x, y = point d'arrivée et vers = "" ; « passe » : p = passeur, vers = receveur, x, y = position du receveur.
+- Les positions se déduisent de ce que tu vois dans les images (perspective de la caméra comprise) : place-les au mieux, c'est un schéma de coach.
+
 Règles :
 - Ce sont des images, pas une vidéo continue : déduis le mouvement en comparant les images successives et dis « on dirait », « probablement » quand tu déduis.
-- N'invente rien qu'on ne peut pas voir : pas de score, pas de noms de joueurs, pas de statistiques. Désigne les joueurs par leur position, leur numéro s'il est lisible ou leur couleur de maillot.
-- Sois utile pour l'entraînement : chaque point faible doit pouvoir mener à un conseil ou à un exercice précis.
-- « moments » : 3 à 8 moments clés. « t » est exactement l'instant d'une des images reçues. « titre » : 40 caractères maximum. « explication » : 140 caractères maximum (elle s'affiche à l'écran).
-- « commentaire » : le texte de la voix off qui accompagne la vidéo, parlé, naturel, sans listes, sans émojis, sans hashtags, sans abréviations. Suis l'ordre chronologique et appuie-toi sur les moments clés.
+- N'invente rien qu'on ne peut pas voir : pas de score, pas de noms de joueurs, pas de statistiques.
+- « moments » : 3 à 6 moments clés, dans l'ordre. « t » = l'instant d'une des images reçues ; « debut » et « fin » = début et fin de l'action (entre 2 et 8 secondes, t compris dedans). « titre » : 40 caractères maximum. « explication » : 160 caractères maximum (elle s'affiche sur le tableau).
+- « narration » : ce que tu dis pendant le ralenti de ce moment, 15 à 40 mots, parlé, au présent, en suivant l'ordre des trajets et en nommant les joueurs EXACTEMENT par leur poste (PG, SG, SF, PF, C) comme sur le tableau, pour que la voix et les pions bougent ensemble.
+- « intro » : 15 à 35 mots, la situation avant la première action. « conclusion » : 20 à 50 mots, la leçon principale et ce qu'on travaille à l'entraînement.
+- Narration, intro et conclusion : texte parlé naturel, sans listes, sans émojis, sans hashtags.
+- Sois utile pour l'entraînement : chaque point faible doit mener à un conseil ou à un exercice précis.
 - Listes : phrases courtes, une idée par élément, 2 à 6 éléments par liste (liste vide si rien n'est visible).`;
 
 function samePassword(given: string, expected: string) {
@@ -90,7 +134,7 @@ export default async (req: Request) => {
   if (!password) return json(500, { error: "ART_CRAFT_PASSWORD manquant dans les variables Netlify du site art-craft." });
   if (!samePassword(req.headers.get("x-art-password") || "", password)) return json(401, { error: "Mot de passe incorrect" });
 
-  let body: { ping?: boolean; frames?: Frame[]; team?: string; context?: string; start?: number; dur?: number; words?: number };
+  let body: { ping?: boolean; frames?: Frame[]; team?: string; context?: string; start?: number; dur?: number };
   try {
     body = await req.json();
   } catch {
@@ -106,7 +150,6 @@ export default async (req: Request) => {
   }
   const team = String(body.team || "").slice(0, 120);
   const context = String(body.context || "").slice(0, 1500);
-  const words = Math.max(60, Math.min(450, Math.round(Number(body.words) || 200)));
 
   const content: Anthropic.Beta.BetaContentBlockParam[] = [];
   frames.forEach((f) => {
@@ -119,8 +162,7 @@ export default async (req: Request) => {
       `Séquence : de ${Number(body.start || 0).toFixed(0)} s à ${(Number(body.start || 0) + Number(body.dur || 0)).toFixed(0)} s de la vidéo, ${frames.length} images.`,
       team ? `Équipe à analyser en priorité : ${team}.` : "Analyse les deux équipes.",
       context ? `Contexte donné par le coach : ${context}` : "",
-      `Le « commentaire » doit faire environ ${words} mots.`,
-      "Fais l'analyse tactique complète.",
+      "Fais l'analyse tactique complète, comme en séance vidéo avec l'équipe.",
     ].filter(Boolean).join("\n"),
   });
 
@@ -133,7 +175,7 @@ export default async (req: Request) => {
       try {
         const run = client.beta.messages.stream({
           model: MODEL,
-          max_tokens: 12000,
+          max_tokens: 16000,
           betas: ["server-side-fallback-2026-07-01"],
           fallbacks: "default",
           output_config: { effort: "low", format: { type: "json_schema", schema: ANALYSIS_SCHEMA } },

@@ -5,13 +5,16 @@ import {
   $, showError, setProgress, parseLogDuration, getFFmpeg, mountFiles, runWithLog, offerFile, slugify,
 } from './common.js';
 import {
-  sampleTimes, frameArgs, targetWords, createStreamReader, reportText, captionTimes, buildCommentaryArgs,
-  SECTIONS, fmtTime,
+  sampleTimes, frameArgs, createStreamReader, reportText, SECTIONS, fmtTime,
+  buildBeats, placeVoice, concatList, buildTacticArgs,
 } from './analyse-core.js';
+import { boardFrames } from './board-core.js';
+import { drawBoard } from './board.js';
 import { parseTimestamp } from './highlights.js';
 import { BRAND } from './brand.js';
 import { FREE_VOICES, DEFAULT_FREE_VOICE } from './piper-core.js';
-import { speakFree } from './piper.js';
+import { synthFree } from './piper.js';
+import { pcmToWav } from './piper-core.js';
 
 const STORE_KEY = 'artcraft-voice-password'; // nom historique (ancien Studio voix), gardé pour ne pas redemander le mot de passe
 const MOUNT = '/an';
@@ -125,7 +128,7 @@ $('btn-analyse').onclick = async () => {
     setProgress('analyse-progress', 0.32, 'Envoi à l\'IA…');
     const res = await post('coach', {
       frames, team: $('team').value.trim(), context: $('context').value.trim(),
-      start, dur, words: targetWords(dur),
+      start, dur,
     });
     if (!res.ok) throw new Error(await errorOf(res));
     const reader = createStreamReader();
@@ -200,14 +203,13 @@ function renderReport() {
   if (dl.href) URL.revokeObjectURL(dl.href);
   dl.href = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
   dl.download = `analyse-${slugify($('team').value, 'gravity')}-${fmtTime(state.start).replace(/:/g, 'h')}.txt`;
-  $('commentary').value = a.commentaire;
-  updateCount();
+  renderScript();
   $('step-report').hidden = false;
   $('step-voice').hidden = false;
   $('step-report').scrollIntoView({ behavior: 'smooth' });
 }
 
-const currentReport = () => reportText({ ...state.analysis, commentaire: $('commentary').value.trim() }, {
+const currentReport = () => reportText({ ...state.analysis, commentaire: scriptTexts().filter(Boolean).join(' ') }, {
   title: 'Analyse tactique — ' + BRAND.name, team: $('team').value.trim(), start: state.start, dur: state.dur,
 });
 
@@ -222,90 +224,150 @@ $('btn-copy').onclick = async () => {
 };
 $('btn-print').onclick = () => window.print();
 
+// Script du coach : intro, une voix off par moment clé, conclusion (modifiables).
+function renderScript() {
+  const a = state.analysis;
+  const box = $('script');
+  box.innerHTML = '';
+  const field = (label, value, rows = 2) => {
+    const l = el('label', '', label);
+    const t = document.createElement('textarea');
+    t.rows = rows;
+    t.value = value;
+    t.addEventListener('input', updateCount);
+    l.append(t);
+    box.append(l);
+  };
+  field('Intro (avant la première action)', a.intro);
+  a.moments.forEach((m, i) => field(`Action ${i + 1} · ${fmtTime(m.t)} · ${m.titre} (au ralenti)`, m.narration, 3));
+  field('Conclusion (la leçon à retenir)', a.conclusion, 3);
+  updateCount();
+}
+
+// [intro, moments…, conclusion], dans l'ordre du script.
+const scriptTexts = () => [...$('script').querySelectorAll('textarea')].map(t => t.value.trim());
+
 function updateCount() {
-  const words = $('commentary').value.trim().split(/\s+/).filter(Boolean).length;
+  const words = scriptTexts().join(' ').split(/\s+/).filter(Boolean).length;
   $('commentary-count').textContent = `${words} mots · environ ${Math.round(words / 2.4)} s de voix off`;
 }
-$('commentary').addEventListener('input', updateCount);
+
+$('audio-mode').addEventListener('change', () => { $('voice-wrap').hidden = $('audio-mode').value === 'original'; });
 
 // ---------- 3. Vidéo commentée ----------
-function wrap(ctx, text, maxW) {
-  const words = text.split(/\s+/);
-  const lines = [];
-  let cur = '';
-  words.forEach(w => {
-    const next = cur ? cur + ' ' + w : w;
-    if (ctx.measureText(next).width > maxW && cur) { lines.push(cur); cur = w; } else cur = next;
-  });
-  if (cur) lines.push(cur);
-  return lines;
+const BOARD_FPS = 10;
+
+// Texte et état du tableau pour chaque passage.
+function boardInfo(beat, idx, beats, u) {
+  const a = state.analysis;
+  const slowTxt = beat.speed < 0.999 ? `RALENTI × ${String(beat.speed).replace('.', ',')}` : 'VITESSE NORMALE';
+  const m = beat.moment >= 0 ? a.moments[beat.moment] : null;
+  const n = a.moments.length;
+  if (beat.kind === 'intro') {
+    return {
+      tag: `Analyse tactique · ${BRAND.name}`, badge: 'AVANT L\'ACTION',
+      title: $('team').value.trim() || 'Séance vidéo', text: scriptTexts()[0] || a.resume,
+      board: m && m.board, u: 0,
+    };
+  }
+  if (beat.kind === 'action') {
+    const frozen = u >= 1 && beat.freeze > 0.01;
+    return {
+      tag: `Action ${beat.moment + 1} / ${n} · ${fmtTime(m.t)}`, badge: frozen ? 'IMAGE FIGÉE' : slowTxt, slow: beat.speed < 0.999,
+      title: m.titre, text: m.explication, board: m.board, u,
+    };
+  }
+  if (beat.kind === 'jeu') {
+    const next = beats.slice(idx + 1).find(b => b.kind === 'action');
+    const nm = next ? a.moments[next.moment] : null;
+    return {
+      tag: 'Jeu', badge: 'VITESSE NORMALE', title: nm ? 'Prochaine action : ' + nm.titre : 'Le jeu continue',
+      text: m ? m.explication : '', board: m && m.board, u: 1,
+    };
+  }
+  return {
+    tag: 'À retenir', badge: 'CONCLUSION', title: 'La leçon du coach',
+    text: scriptTexts()[scriptTexts().length - 1] || a.conclusion, board: m && m.board, u: 1,
+  };
 }
 
-// Encadré « moment clé » en bas à gauche, image transparente plein cadre.
-async function captionPNG(W, H, m) {
-  try { await document.fonts.load(`700 ${Math.round(H * 0.05)}px Oswald`); } catch { /* police de secours */ }
+async function writeBoard(ff, beats, W, H, onProgress) {
+  try {
+    await Promise.all([document.fonts.load(`700 ${Math.round(W * 0.058)}px Oswald`), document.fonts.load(`500 ${Math.round(W * 0.034)}px Inter`)]);
+  } catch { /* polices de secours */ }
+  const frames = boardFrames(beats, BOARD_FPS);
   const c = document.createElement('canvas');
   c.width = W;
   c.height = H;
   const ctx = c.getContext('2d');
-  const pad = Math.round(H * 0.035);
-  const maxW = Math.round(W * 0.62);
-  const tSize = Math.round(H * 0.048), bSize = Math.round(H * 0.032);
-  ctx.font = `600 ${bSize}px Inter, system-ui, sans-serif`;
-  const body = wrap(ctx, m.explication, maxW - pad * 2).slice(0, 3);
-  ctx.font = `700 ${tSize}px Oswald, Impact, sans-serif`;
-  const title = m.titre.toUpperCase();
-  const boxW = Math.min(maxW, Math.max(ctx.measureText(title).width + pad * 3, maxW * 0.6));
-  const boxH = pad * 2 + tSize * 1.15 + body.length * bSize * 1.3;
-  const x = Math.round(W * 0.04), y = Math.round(H - boxH - H * 0.06);
-  ctx.fillStyle = 'rgba(13, 11, 18, 0.82)';
-  ctx.fillRect(x, y, boxW, boxH);
-  const g = ctx.createLinearGradient(x, 0, x + boxW, 0);
-  g.addColorStop(0, BRAND.orange);
-  g.addColorStop(1, BRAND.magenta);
-  ctx.fillStyle = g;
-  ctx.fillRect(x, y, Math.round(H * 0.008), boxH);
-  ctx.fillStyle = '#fff';
-  ctx.textBaseline = 'top';
-  ctx.font = `700 ${tSize}px Oswald, Impact, sans-serif`;
-  ctx.fillText(title, x + pad * 1.4, y + pad);
-  ctx.font = `600 ${bSize}px Inter, system-ui, sans-serif`;
-  ctx.fillStyle = 'rgba(255,255,255,.9)';
-  body.forEach((l, i) => ctx.fillText(l, x + pad * 1.4, y + pad + tSize * 1.15 + i * bSize * 1.3));
-  const blob = await new Promise(r => c.toBlob(r, 'image/png'));
-  return new Uint8Array(await blob.arrayBuffer());
-}
-
-async function audioDuration(blob) {
-  const ac = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 1, 44100);
-  const buf = await ac.decodeAudioData(await blob.arrayBuffer());
-  return buf.duration;
+  try { await ff.createDir('/board'); } catch { /* existe déjà */ }
+  const names = [];
+  for (let i = 0; i < frames.length; i++) {
+    const f = frames[i];
+    drawBoard(ctx, W, H, boardInfo(beats[f.beat], f.beat, beats, f.u));
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.9));
+    const name = `b${String(i).padStart(5, '0')}.jpg`;
+    await ff.writeFile('/board/' + name, new Uint8Array(await blob.arrayBuffer()));
+    names.push(name);
+    if (i % 10 === 0) onProgress(i / frames.length, `Tableau du coach… ${i + 1} / ${frames.length} images`);
+  }
+  await ff.writeFile('/board/list.txt', concatList(frames));
+  return names;
 }
 
 $('btn-render').onclick = async () => {
   if (!state.analysis || state.busy) return;
-  const text = $('commentary').value.trim();
-  if (!text) { showError('Écris un commentaire pour la voix off.'); return; }
+  const audio = $('audio-mode').value;
+  const texts = scriptTexts();
+  if (audio !== 'original' && !texts.some(Boolean)) { showError('Écris au moins une phrase pour la voix off.'); return; }
   state.busy = true;
   $('btn-render').disabled = true;
   showError('');
   $('result').hidden = true;
+  const ff0 = [];
   try {
-    const voice = await speakFree(text, $('voice').value, { onProgress: (r, label) => setProgress('render-progress', r * 0.35, label) });
-    const voicePath = '/voice.wav';
-    const voiceDur = await audioDuration(voice);
+    // 1. Voix off, phrase par phrase : sa durée fixe la longueur de chaque ralenti.
+    const clips = [];
+    let rate = 22050;
+    if (audio !== 'original') {
+      for (let i = 0; i < texts.length; i++) {
+        if (!texts[i]) { clips.push(null); continue; }
+        const r = await synthFree(texts[i], $('voice').value, {
+          onProgress: (x, label) => setProgress('render-progress', 0.3 * (i + x) / texts.length, `Voix du coach ${i + 1} / ${texts.length} · ${label}`),
+        });
+        clips.push(r.pcm);
+        rate = r.rate;
+      }
+    }
+    const narr = clips.map(c => (c ? c.length / rate : 0));
+    const slow = +$('slow').value;
+    // « Aucun ralenti » : si le coach parle plus longtemps que l'action, l'image se fige au lieu de ralentir.
+    const { beats, total } = buildBeats({
+      start: state.start, dur: state.dur, moments: state.analysis.moments, narr, slow, minSlow: slow >= 1 ? 1 : 0.25,
+    });
+    if (!beats.length) throw new Error('Rien à monter : séquence trop courte.');
+
+    // 2. Images du tableau, synchronisées avec les passages.
     const ff = await getFFmpeg('render-progress');
     await mountInput(ff);
-    const [W, H] = $('quality').value === '1080' ? [1920, 1080] : [1280, 720];
-    await ff.writeFile(voicePath, new Uint8Array(await voice.arrayBuffer()));
-    const caps = $('show-captions').checked ? captionTimes(state.analysis.moments, state.start, state.dur) : [];
-    for (let i = 0; i < caps.length; i++) {
-      caps[i].path = `/cap${i}.png`;
-      await ff.writeFile(caps[i].path, await captionPNG(W, H, caps[i]));
+    const [W, H] = $('quality').value === '1080' ? [1080, 1920] : [720, 1280];
+    const videoH = Math.round((W * 9) / 16 / 2) * 2;
+    const boardH = H - videoH;
+    const names = await writeBoard(ff, beats, W, boardH, (r, label) => setProgress('render-progress', 0.3 + 0.1 * r, label));
+    ff0.push(...names.map(n => '/board/' + n), '/board/list.txt');
+
+    // 3. Piste de voix off complète.
+    let voiceBlob = null;
+    if (audio !== 'original') {
+      voiceBlob = new Blob([pcmToWav(placeVoice(beats, clips, rate, total), rate)], { type: 'audio/wav' });
+      await ff.writeFile('/voice.wav', new Uint8Array(await voiceBlob.arrayBuffer()));
+      ff0.push('/voice.wav');
     }
-    const { args, total } = buildCommentaryArgs({
-      input: state.input, start: state.start, dur: state.dur, voice: voicePath, voiceDur,
-      hasAudio: state.hasAudio, captions: caps, width: W, height: H, output: '/commentee.mp4',
+
+    // 4. Montage : passages ralentis en haut, tableau en bas, son choisi.
+    const args = buildTacticArgs({
+      input: state.input, beats, total, hasAudio: state.hasAudio, audio, voice: voiceBlob ? '/voice.wav' : null,
+      board: '/board/list.txt', width: W, videoH, boardH, output: '/commentee.mp4',
     });
     const errors = [];
     const code = await runWithLog(ff, args, line => {
@@ -319,8 +381,6 @@ $('btn-render').onclick = async () => {
     if (code !== 0) throw new Error(errors.slice(-2).join(' · ') || `ffmpeg a échoué (code ${code})`);
     const data = await ff.readFile('/commentee.mp4');
     await ff.deleteFile('/commentee.mp4');
-    await ff.deleteFile(voicePath);
-    for (const c of caps) await ff.deleteFile(c.path);
     const name = `analyse-${slugify($('team').value, 'gravity')}.mp4`;
     const url = offerFile(new Blob([data], { type: 'video/mp4' }), name, {
       download: 'btn-download', share: 'btn-share', title: 'Analyse tactique ' + BRAND.name, text: state.analysis.resume,
@@ -328,14 +388,20 @@ $('btn-render').onclick = async () => {
     $('result-video').src = url;
     const vdl = $('btn-voice-dl');
     if (vdl.href) URL.revokeObjectURL(vdl.href);
-    vdl.href = URL.createObjectURL(voice);
-    vdl.download = name.replace(/\.mp4$/, '-voix.wav');
+    vdl.hidden = !voiceBlob;
+    if (voiceBlob) {
+      vdl.href = URL.createObjectURL(voiceBlob);
+      vdl.download = name.replace(/\.mp4$/, '-voix.wav');
+    }
     $('result').hidden = false;
-    setProgress('render-progress', 1, `Vidéo commentée prête · ${Math.round(total)} s · ${(data.length / 1e6).toFixed(1)} Mo`);
+    const slowCount = beats.filter(b => b.kind === 'action').length;
+    setProgress('render-progress', 1, `Vidéo commentée prête · ${Math.round(total)} s · ${slowCount} action${slowCount > 1 ? "s" : ""} commentée${slowCount > 1 ? "s" : ""} · ${(data.length / 1e6).toFixed(1)} Mo`);
   } catch (err) {
     console.error(err);
     showError('Vidéo commentée impossible : ' + (err.message || err));
   } finally {
+    const ff = await getFFmpeg('render-progress').catch(() => null);
+    if (ff) for (const f of ff0) await ff.deleteFile(f).catch(() => {});
     state.busy = false;
     $('btn-render').disabled = false;
   }
