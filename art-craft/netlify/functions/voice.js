@@ -47,10 +47,10 @@ async function eleven(path, init = {}) {
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return json(405, { error: 'Méthode non permise' });
-  if (!API_KEY || !PASSWORD) {
-    return json(500, { error: 'ELEVENLABS_API_KEY ou ART_CRAFT_PASSWORD manquant dans les variables Netlify du site art-craft' });
-  }
+  if (!PASSWORD) return json(500, { error: 'ART_CRAFT_PASSWORD manquant dans les variables Netlify du site art-craft' });
   if (!samePassword(event.headers['x-art-password'])) return json(401, { error: 'Mot de passe incorrect' });
+  // Mot de passe bon mais pas de compte ElevenLabs : les voix gratuites (Piper) restent utilisables.
+  if (!API_KEY) return json(503, { error: 'ELEVENLABS_API_KEY manquant dans les variables Netlify du site art-craft', code: 'no_elevenlabs' });
 
   let d;
   try {

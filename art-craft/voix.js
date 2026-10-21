@@ -1,6 +1,8 @@
 import { $, showError, setProgress, offerFile } from './common.js';
 import { splitText } from './voice-core.js';
 import { BRAND } from './brand.js';
+import { FREE_VOICES, isFreeVoice } from './piper-core.js';
+import { speakFree } from './piper.js';
 
 const ENDPOINT = '/.netlify/functions/voice';
 const MAX_SAMPLE_BYTES = 4.2e6;
@@ -57,7 +59,16 @@ $('login-form').addEventListener('submit', async e => {
 });
 
 async function loadVoices(selectId) {
-  state.voices = await call('list');
+  try {
+    state.voices = await call('list');
+    state.noEleven = false;
+  } catch (err) {
+    if (err.status !== 503) throw err;
+    // Pas de compte ElevenLabs : seules les voix gratuites sont proposées.
+    state.voices = { cloned: [], premade: [] };
+    state.noEleven = true;
+  }
+  $('clone-note').hidden = !state.noEleven;
   const sel = $('voice');
   sel.innerHTML = '';
   const group = (label, list) => {
@@ -68,15 +79,20 @@ async function loadVoices(selectId) {
     sel.appendChild(g);
   };
   group('Mes voix clonées', state.voices.cloned);
+  group('Voix gratuites (sans compte)', FREE_VOICES);
   group('Voix prêtes ElevenLabs', state.voices.premade);
   if (selectId) sel.value = selectId;
-  updateDeleteButton();
+  updateVoiceUi();
 }
 
-function updateDeleteButton() {
+function updateVoiceUi() {
+  const free = isFreeVoice($('voice').value);
   $('btn-delete').hidden = !state.voices.cloned.some(v => v.id === $('voice').value);
+  $('step-speak').classList.toggle('free-voice', free);
+  $('model-wrap').hidden = free;
+  $('free-note').hidden = !free;
 }
-$('voice').addEventListener('change', updateDeleteButton);
+$('voice').addEventListener('change', updateVoiceUi);
 
 // ---------- Échantillons ----------
 function samplesBytes() {
@@ -112,7 +128,7 @@ function renderSamples() {
 }
 
 function updateCloneButton() {
-  $('btn-clone').disabled = !($('consent').checked && state.samples.length && $('voice-name').value.trim() && samplesBytes() <= MAX_SAMPLE_BYTES);
+  $('btn-clone').disabled = state.noEleven || !($('consent').checked && state.samples.length && $('voice-name').value.trim() && samplesBytes() <= MAX_SAMPLE_BYTES);
 }
 ['consent', 'voice-name'].forEach(id => $(id).addEventListener('input', updateCloneButton));
 
@@ -201,6 +217,13 @@ $('btn-speak').onclick = async () => {
   $('result').hidden = true;
   $('btn-speak').disabled = true;
   try {
+    if (isFreeVoice(voiceId)) {
+      const wav = await speakFree($('text').value, voiceId, {
+        speed: +$('speed').value, onProgress: (r, label) => setProgress('speak-progress', r, label),
+      });
+      showVoice(wav, 'wav');
+      return;
+    }
     const parts = [];
     let model = $('model').value;
     for (let i = 0; i < chunks.length; i++) {
@@ -216,18 +239,22 @@ $('btn-speak').onclick = async () => {
       if (used) model = used;
     }
     // Les trames MP3 se mettent bout à bout sans réencodage.
-    const mp3 = new Blob(parts, { type: 'audio/mpeg' });
-    const name = `voix-${($('voice').selectedOptions[0]?.text || 'gravity').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.mp3`;
-    const url = offerFile(mp3, name, { download: 'btn-download', share: 'btn-share', title: 'Voix off Gravity' });
-    $('result-audio').src = url;
-    $('result').hidden = false;
-    setProgress('speak-progress', 1, `Voix prête · ${(mp3.size / 1e6).toFixed(1)} Mo`);
+    showVoice(new Blob(parts, { type: 'audio/mpeg' }), 'mp3');
   } catch (err) {
     showError('Génération impossible : ' + err.message);
   } finally {
     $('btn-speak').disabled = false;
   }
 };
+
+function showVoice(blob, ext) {
+  const label = ($('voice').selectedOptions[0]?.text || 'gravity').toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const url = offerFile(blob, `voix-${label}.${ext}`, { download: 'btn-download', share: 'btn-share', title: 'Voix off Gravity' });
+  $('btn-download').textContent = `Télécharger le ${ext.toUpperCase()}`;
+  $('result-audio').src = url;
+  $('result').hidden = false;
+  setProgress('speak-progress', 1, `Voix prête · ${(blob.size / 1e6).toFixed(1)} Mo`);
+}
 
 $('btn-delete').onclick = async () => {
   const opt = $('voice').selectedOptions[0];

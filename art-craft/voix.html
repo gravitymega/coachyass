@@ -15,7 +15,7 @@
   <img src="assets/logo.png" alt="" class="top-logo">
   <div>
     <h1>Art craft <span>Studio voix</span></h1>
-    <p>Clone ta voix une fois, puis fais-lui lire n'importe quel texte : voix off de highlights, annonces, pubs d'inscription. Moteur ElevenLabs (Eleven v4).</p>
+    <p>Clone ta voix une fois, puis fais-lui lire n'importe quel texte : voix off de highlights, annonces, pubs d'inscription. Voix gratuites open source (Piper, dans ton navigateur) ou clonage avec ElevenLabs (Eleven v4).</p>
   </div>
 </header>
 <nav class="tabs">
@@ -31,7 +31,7 @@
 <main>
   <section class="card" id="step-login">
     <h2><b>🔒</b> Accès</h2>
-    <p class="muted">Le Studio voix utilise les crédits du compte ElevenLabs de Gravity : il est protégé par un mot de passe.</p>
+    <p class="muted">Le clonage utilise les crédits du compte ElevenLabs de Gravity : le Studio voix est protégé par un mot de passe.</p>
     <form class="row" id="login-form">
       <input type="password" id="password" placeholder="Mot de passe Art craft" autocomplete="current-password">
       <button class="btn" type="submit">Entrer</button>
@@ -40,6 +40,7 @@
 
   <section class="card" id="step-clone" hidden>
     <h2><b>1</b> Cloner une voix</h2>
+    <p class="note" id="clone-note" hidden>Le clonage passe par ElevenLabs : ajoute <code>ELEVENLABS_API_KEY</code> dans les variables Netlify du site pour l'activer. En attendant, les <b>voix gratuites</b> ci-dessous fonctionnent sans compte.</p>
     <p class="muted">Pour un clone fidèle : 1 à 3 minutes de parole au total, dans un endroit calme, micro proche, en parlant naturellement. Tu peux lire le texte ci-dessous.</p>
     <details>
       <summary>Texte à lire (environ 1 minute)</summary>
@@ -67,7 +68,7 @@
     <h2><b>2</b> Faire parler</h2>
     <div class="fields two">
       <label>Voix <select id="voice"></select></label>
-      <label>Moteur
+      <label id="model-wrap">Moteur
         <select id="model">
           <option value="eleven_v4">Eleven v4 (le plus naturel et expressif)</option>
           <option value="eleven_multilingual_v2">Multilingual v2 (très stable)</option>
@@ -84,10 +85,11 @@
     </div>
     <label class="fields"><textarea id="text" rows="7" maxlength="5000" placeholder="Écris ce que la voix doit dire…"></textarea></label>
     <p class="muted" id="chars">0 / 5000 caractères</p>
+    <p class="muted" id="free-note" hidden>Voix gratuite open source (Piper) : générée directement dans ton navigateur, sans compte ni crédit. Le premier essai télécharge la voix (~60 Mo) une seule fois.</p>
     <div class="fields two">
-      <label>Stabilité (bas = plus d'émotion) <input type="range" id="stability" min="0" max="1" step="0.05" value="0.45"></label>
-      <label>Ressemblance à la voix d'origine <input type="range" id="similarity" min="0" max="1" step="0.05" value="0.85"></label>
-      <label>Intensité du style <input type="range" id="style" min="0" max="1" step="0.05" value="0.25"></label>
+      <label class="eleven-only">Stabilité (bas = plus d'émotion) <input type="range" id="stability" min="0" max="1" step="0.05" value="0.45"></label>
+      <label class="eleven-only">Ressemblance à la voix d'origine <input type="range" id="similarity" min="0" max="1" step="0.05" value="0.85"></label>
+      <label class="eleven-only">Intensité du style <input type="range" id="style" min="0" max="1" step="0.05" value="0.25"></label>
       <label>Débit <input type="range" id="speed" min="0.7" max="1.2" step="0.05" value="1"></label>
     </div>
     <div class="row">
@@ -98,17 +100,17 @@
     <div id="result" hidden>
       <audio id="result-audio" controls></audio>
       <div class="row">
-        <a class="btn" id="btn-download">Télécharger le MP3</a>
+        <a class="btn" id="btn-download">Télécharger</a>
         <button class="btn ghost" id="btn-share" hidden>Partager…</button>
       </div>
-      <p class="muted">Importe ce MP3 dans le Studio son (voix off sur un beat) ou directement comme musique dans l'Éditeur.</p>
+      <p class="muted">Importe ce fichier dans le Studio son (voix off sur un beat) ou directement comme musique dans l'Éditeur.</p>
     </div>
   </section>
 
   <p class="error" id="error" role="alert" hidden></p>
 </main>
 
-<footer class="foot">Art craft · Gravity Basketball Montréal · voix par <a href="https://elevenlabs.io" target="_blank" rel="noopener">ElevenLabs</a></footer>
+<footer class="foot">Art craft · Gravity Basketball Montréal · voix gratuites <a href="https://github.com/rhasspy/piper" target="_blank" rel="noopener">Piper</a> (MIT) · clonage par <a href="https://elevenlabs.io" target="_blank" rel="noopener">ElevenLabs</a></footer>
 <script type="module" src="voix.js"></script>
 </body>
 </html>

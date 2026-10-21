@@ -213,6 +213,9 @@ textarea { width: 100%; background: #0f0d15; color: var(--text); border: 1px sol
 
 /* Une zone d'erreur vide ne s'affiche pas. */
 .error:empty { display: none; }
+.note { background: rgba(255,255,255,.05); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 10px; padding: 10px 12px; margin: 6px 0 12px; }
+.note code { font-size: .9em; }
+.free-voice .eleven-only { display: none; }
 
 /* ---------- Analyse tactique ---------- */
 .report { line-height: 1.6; }
