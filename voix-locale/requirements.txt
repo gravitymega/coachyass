@@ -1,0 +1,2 @@
+# Clonage de voix 100 % local — Chatterbox Multilingue (licence MIT, français inclus)
+chatterbox-tts>=0.1.7
