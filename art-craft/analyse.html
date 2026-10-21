@@ -15,7 +15,7 @@
   <img src="assets/logo.png" alt="" class="top-logo">
   <div>
     <h1>Art craft <span>Analyse tactique</span></h1>
-    <p>Dépose une séquence de match : l'IA regarde le jeu, explique les tactiques (attaque, défense, systèmes, erreurs) et te donne un rapport écrit et une vidéo commentée avec voix off.</p>
+    <p>Dépose une séquence de match : l'IA regarde le jeu, explique les tactiques (attaque, défense, systèmes, erreurs) et te donne un rapport écrit et une vidéo commentée : actions au ralenti, voix off du coach et tableau tactique avec les pions.</p>
   </div>
 </header>
 <nav class="tabs">
@@ -88,25 +88,40 @@
 
   <section class="card" id="step-voice" hidden>
     <h2><b>3</b> Vidéo commentée</h2>
-    <p class="muted">La voix off lit le commentaire ci-dessous (tu peux le modifier), les moments clés s'affichent en encadrés et le son de la salle est baissé. Les voix, gratuites et open source (Piper), sont générées dans ton navigateur, sans compte (la première fois, la voix se télécharge : ~60 Mo).</p>
-    <label>Commentaire (voix off)
-      <textarea id="commentary" rows="6"></textarea>
-    </label>
-    <p class="muted" id="commentary-count"></p>
-    <div class="row">
-      <label class="inline">Voix <select id="voice"></select></label>
-      <label class="inline">Qualité
-        <select id="quality">
-          <option value="720">1280 × 720</option>
-          <option value="1080">1920 × 1080 (plus lent)</option>
+    <p class="muted">Format vertical, comme une séance vidéo : la vidéo en haut, le tableau du coach en bas. Chaque action passe au ralenti pendant que le coach l'explique, et les pions (PG, SG, SF, PF, C) bougent sur le tableau en même temps. Si une explication dure plus longtemps que l'action, l'image se fige jusqu'à la fin de la phrase.</p>
+    <div class="fields two">
+      <label>Son de la vidéo
+        <select id="audio-mode">
+          <option value="mix" selected>Voix off du coach + ambiance du match</option>
+          <option value="voix">Voix off du coach seulement</option>
+          <option value="original">Son original de la vidéo (sans voix off)</option>
         </select>
       </label>
-      <label class="inline check"><input type="checkbox" id="show-captions" checked> Encadrés des moments clés</label>
+      <label id="voice-wrap">Voix du coach <select id="voice"></select></label>
+      <label>Ralenti des actions
+        <select id="slow">
+          <option value="1">Aucun (vitesse normale)</option>
+          <option value="0.75">× 0,75</option>
+          <option value="0.5" selected>× 0,5</option>
+          <option value="0.35">× 0,35</option>
+          <option value="0.25">× 0,25 (très lent)</option>
+        </select>
+      </label>
+      <label>Qualité
+        <select id="quality">
+          <option value="720">720 × 1280</option>
+          <option value="1080">1080 × 1920 (plus lent)</option>
+        </select>
+      </label>
     </div>
+    <h3 class="sub">Ce que dit le coach <span class="muted">(modifiable, action par action)</span></h3>
+    <div id="script" class="fields"></div>
+    <p class="muted" id="commentary-count"></p>
+    <p class="muted">Les voix, gratuites et open source (Piper), sont générées dans ton navigateur, sans compte (la première fois, la voix se télécharge : ~60 Mo).</p>
     <button class="btn big" id="btn-render" type="button">Créer la vidéo commentée</button>
     <div class="progress" id="render-progress" hidden><div></div><span></span></div>
     <div id="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" class="tall" controls playsinline></video>
       <div class="row">
         <a class="btn" id="btn-download">Télécharger le MP4</a>
         <button class="btn ghost" id="btn-share" hidden>Partager…</button>
