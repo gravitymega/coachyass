@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Art craft — Stats auto</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="" class="top-logo">
+  <div>
+    <h1>Art craft <span>Stats auto</span></h1>
+    <p>Dépose la vidéo d'un match : les joueurs sont détectés dans ton navigateur, l'IA lit les numéros et note les actions (paniers, rebonds, passes, pertes…). Tu vérifies, puis chaque joueur reçoit ses stats, ses clips et ses devoirs dans son Espace Joueurs.</p>
+  </div>
+</header>
+<nav class="tabs">
+  <a href="index.html">Highlights</a>
+  <a href="analyse.html">Analyse tactique</a>
+  <a href="stats.html" aria-current="page">Stats auto</a>
+  <a href="direct.html">Mode direct</a>
+  <a href="editeur.html">Éditeur</a>
+  <a href="son.html">Studio son</a>
+  <a href="beat.html">Studio beat</a>
+  <a href="voix.html">Studio voix</a>
+  <a href="image.html">Studio image</a>
+</nav>
+
+<main>
+  <section class="card" id="step-login">
+    <h2><b>🔒</b> Accès</h2>
+    <p class="muted">La lecture des numéros utilise les crédits IA de Gravity : elle est protégée par le mot de passe Art craft.</p>
+    <form class="row" id="login-form">
+      <input type="password" id="password" placeholder="Mot de passe Art craft" autocomplete="current-password">
+      <button class="btn" type="submit">Entrer</button>
+    </form>
+  </section>
+
+  <section class="card" id="step-game" hidden>
+    <h2><b>1</b> Le match</h2>
+    <div class="fields two">
+      <label>Équipe <select id="team"></select></label>
+      <label>Date du match <input type="date" id="game-date"></label>
+      <label>Adversaire <input id="opponent" maxlength="80" placeholder="ex. Les Lynx"></label>
+      <label>Nos maillots <input id="jersey" maxlength="80" placeholder="ex. noirs avec numéros blancs"></label>
+      <label class="wide">Numéros de l'effectif <input id="numbers" placeholder="ex. 3, 7, 10, 12, 23 (rempli tout seul avec les fiches joueurs)"></label>
+    </div>
+    <p class="muted" id="roster-info"></p>
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept="video/*,.mov,.mkv">
+      <strong>Dépose la vidéo du match ici</strong>
+      <span>caméra fixe ou XbotGo, MP4 ou MOV, jusqu'à plusieurs Go</span>
+    </label>
+    <div id="player-wrap" hidden>
+      <div class="det-wrap">
+        <video id="video" controls playsinline preload="metadata"></video>
+        <canvas id="det-canvas" hidden></canvas>
+      </div>
+      <p class="muted" id="file-info"></p>
+      <div class="row">
+        <button class="tool" id="btn-detect" type="button">Tester la détection des joueurs sur l'image affichée</button>
+        <span class="muted" id="detect-info"></span>
+      </div>
+      <fieldset>
+        <legend>Où chercher les actions</legend>
+        <label class="check"><input type="radio" name="mode" value="peaks" checked> Autour des moments forts au son (rapide, pour les paniers et les grosses actions)</label>
+        <label class="check"><input type="radio" name="mode" value="full"> Toute la vidéo, 15 s par 15 s (complet : tirs ratés, rebonds, pertes… plus long et plus cher)</label>
+        <label class="inline" id="max-wrap">Nombre de moments
+          <select id="max">
+            <option value="20">20</option>
+            <option value="40" selected>40</option>
+            <option value="60">60</option>
+            <option value="80">80</option>
+          </select>
+        </label>
+        <label class="inline">Partie de la vidéo <input id="range-start" value="0:00" size="7"> à <input id="range-end" placeholder="fin" size="7"></label>
+        <p class="muted" id="cost"></p>
+      </fieldset>
+      <label>Précisions pour l'IA (facultatif)
+        <textarea id="context" rows="2" maxlength="1500" placeholder="ex. On attaque vers la droite en 1re demie. Le #23 porte un bandeau."></textarea>
+      </label>
+      <div class="row">
+        <button class="btn big" id="btn-run" type="button">Trouver les actions</button>
+        <button class="btn ghost" id="btn-import" type="button">Importer les stats du Mode direct (.json)</button>
+        <input type="file" id="import-file" accept=".json,application/json" hidden>
+      </div>
+      <div class="progress" id="run-progress" hidden><div></div><span></span></div>
+    </div>
+  </section>
+
+  <section class="card" id="step-sync" hidden>
+    <h2><b>↔</b> Caler les stats du Mode direct sur la vidéo</h2>
+    <p class="muted">Les actions notées en direct ont l'heure de la tablette. Choisis une action, mets la vidéo au moment exact où elle se passe, puis clique « C'est ici » : toutes les autres se décalent pareil.</p>
+    <div class="row">
+      <select id="sync-event"></select>
+      <button class="btn" id="btn-sync" type="button">C'est ici (moment affiché dans la vidéo)</button>
+    </div>
+  </section>
+
+  <section class="card" id="step-review" hidden>
+    <h2><b>2</b> Vérifier les actions</h2>
+    <p class="muted">Clique sur l'heure pour revoir l'action. Corrige le numéro ou le type si l'IA s'est trompée, supprime les fausses actions, ajoute celles qui manquent. Les actions à vérifier (numéro illisible ou hors effectif, confiance basse) ont une barre orange.</p>
+    <div class="row">
+      <button class="tool" id="btn-add" type="button">+ Ajouter une action au moment affiché</button>
+      <label class="inline"><input type="checkbox" id="only-doubt"> Seulement les actions à vérifier</label>
+    </div>
+    <div class="table-scroll"><table class="events" id="events"></table></div>
+    <h3 class="sub">Feuille de stats</h3>
+    <p class="score" id="score"></p>
+    <div class="table-scroll"><table class="box" id="box"></table></div>
+    <div class="row">
+      <a class="btn ghost" id="btn-csv">Télécharger (.csv)</a>
+    </div>
+  </section>
+
+  <section class="card" id="step-send" hidden>
+    <h2><b>3</b> Envoyer dans l'Espace Joueurs</h2>
+    <p class="muted">Pour chaque joueur qui a une fiche (avec son numéro) : ses stats du match, un clip de chacune de ses actions (vidéo privée, visible seulement par lui) et ses devoirs proposés par l'IA d'après ses points faibles.</p>
+    <div class="fields">
+      <label class="check"><input type="checkbox" id="send-stats" checked> Stats du match</label>
+      <label class="check"><input type="checkbox" id="send-clips" checked> Clips des actions (paniers, passes, rebonds, interceptions, contres, pertes, tirs ratés)</label>
+      <label class="check"><input type="checkbox" id="send-devoirs" checked> Devoirs et exercices personnalisés (IA)</label>
+    </div>
+    <div id="send-list" class="bin"></div>
+    <form class="pub-login" id="sb-login" hidden>
+      <p class="muted">Connexion avec ton compte admin du Dashboard Gravity :</p>
+      <div class="row">
+        <input type="email" id="sb-email" placeholder="Courriel" autocomplete="username" required>
+        <input type="password" id="sb-password" placeholder="Mot de passe" autocomplete="current-password" required>
+        <button class="btn" type="submit">Se connecter</button>
+        <button class="btn ghost" type="button" id="sb-login-cancel">Annuler</button>
+      </div>
+      <p class="error-inline" id="sb-login-error"></p>
+    </form>
+    <div class="row">
+      <button class="btn big" id="btn-devoirs" type="button">1. Préparer les devoirs</button>
+      <button class="btn big" id="btn-send" type="button">2. Envoyer</button>
+      <span class="muted" id="sb-account"></span>
+    </div>
+    <div id="devoirs" class="fields"></div>
+    <div class="progress" id="send-progress" hidden><div></div><span></span></div>
+  </section>
+
+  <p class="error" id="error" role="alert" hidden></p>
+</main>
+
+<footer class="foot">Art craft · Gravity Basketball Montréal · détection des joueurs MediaPipe (Google, open source) · lecture des numéros et devoirs par IA (Claude, Anthropic) · moteur vidéo ffmpeg.wasm</footer>
+<script src="vendor/ffmpeg/ffmpeg.js"></script>
+<script type="module" src="stats.js"></script>
+</body>
+</html>

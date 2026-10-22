@@ -1321,3 +1321,13 @@ body { padding-bottom: 88px; }
   box-shadow: 0 4px 14px rgba(192, 77, 28, 0.32);
   transform: translateY(-1px);
 }
+
+/* Espace Joueurs : clips et devoirs (envoyés par Art craft) */
+.ej-clips { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 8px; }
+.ej-clip video { width: 100%; border-radius: 10px; background: #000; display: block; }
+.ej-clip-play { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,.04); color: inherit; font: inherit; font-weight: 600; text-align: left; cursor: pointer; }
+.ej-clip-play:hover { border-color: var(--accent); }
+.ej-devoirs { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; }
+.ej-devoirs li label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.ej-devoirs li input { margin-top: 4px; width: 18px; height: 18px; flex: 0 0 auto; }
+.ej-devoirs li.done span { opacity: .6; text-decoration: line-through; }
