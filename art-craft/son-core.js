@@ -7,6 +7,20 @@ export function trackSpan(t) {
   return { start: t.offset, end: t.offset + len };
 }
 
+// Gain qui amène la crête de la partie gardée (de start à end, en échantillons) à « target »
+// (0,89 ≈ -1 dB), plafonné à « max » (le curseur Volume va jusqu'à 2). Comme « Normaliser » d'AudioMass.
+export function normalizeGain(channels, start, end, { target = 0.89, max = 2 } = {}) {
+  let peak = 0;
+  for (const ch of channels) {
+    for (let i = Math.max(0, start); i < Math.min(ch.length, end); i++) {
+      const v = Math.abs(ch[i]);
+      if (v > peak) peak = v;
+    }
+  }
+  if (peak < 1e-4) return 1;
+  return Math.min(max, Math.round((target / peak) * 100) / 100);
+}
+
 export function projectDuration(tracks) {
   return tracks.reduce((m, t) => Math.max(m, trackSpan(t).end), 0);
 }

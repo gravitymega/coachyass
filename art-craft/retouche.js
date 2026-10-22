@@ -714,10 +714,17 @@ function resizeTo(c, tw, th){
 
 /* ---------- Export ---------- */
 let fmt = "jpg", scale = 1;
+// Formats d'export : WebP (et AVIF quand le navigateur sait l'encoder) donnent des fichiers
+// bien plus légers que JPEG à qualité égale, avec transparence possible (comme Squoosh).
+const FMT_MIME = {jpg:"image/jpeg", png:"image/png", webp:"image/webp", avif:"image/avif"};
+const FMT_LABEL = {jpg:"JPEG", png:"PNG", webp:"WebP", avif:"AVIF"};
+const fmtQuality = (f, rq) => f === "jpg" ? (rq || 0.93) : f === "png" ? 1 : f === "avif" ? 0.7 : 0.88;
+const canEncode = f => { try { const c = document.createElement("canvas"); c.width = c.height = 2; return c.toDataURL(FMT_MIME[f]).startsWith("data:" + FMT_MIME[f]); } catch (e) { return false; } };
+["webp", "avif"].forEach(f => { if (!canEncode(f)) $$(`[data-fmt="${f}"]`).forEach(b => b.remove()); });
 function outDims(sc){ return [src.width*sc, src.height*sc]; }
 function refreshSheet(){
   const tr = cutActive() && bgOpt.bg === "transparent";
-  if (tr) fmt = "png";
+  if (tr && fmt === "jpg") fmt = "png";
   $$("#fmtSeg button").forEach(b => b.disabled = tr && b.dataset.fmt === "jpg");
   $$("#sizeSeg button").forEach(b => {
     const s = +b.dataset.scale, [w,h] = outDims(s);
@@ -729,7 +736,7 @@ function refreshSheet(){
   $("#sizeSeg").style.display = $("#sizeLabel").style.display = crop ? "none" : "";
   if (crop){
     const R = RECO[crop.f.rec];
-    $("#outInfo").textContent = `${crop.f.pf} · ${crop.f.name} : ${crop.f.w} × ${crop.f.h} px. Export optimisé (${fmt === "jpg" ? "JPEG qualité " + Math.round(R.q*100) + " %" : "PNG"}, netteté écran).`;
+    $("#outInfo").textContent = `${crop.f.pf} · ${crop.f.name} : ${crop.f.w} × ${crop.f.h} px. Export optimisé (${fmt === "jpg" ? "JPEG qualité " + Math.round(R.q*100) + " %" : FMT_LABEL[fmt]}, netteté écran).`;
     return;
   }
   const [w,h] = outDims(scale);
@@ -765,12 +772,12 @@ $("#doExport").onclick = () => {
   setTimeout(async () => {
     try {
       const k = src.width / prev.w;
-      if (cutActive() && bgOpt.bg === "transparent") fmt = "png";
+      if (cutActive() && bgOpt.bg === "transparent" && fmt === "jpg") fmt = "png";
       let final = crop ? await exportCanvas(src, params, k, crop.f, crop, true) : await renderFull(src, params, k, scale, () => { $("#exportMsg").textContent = "Agrandissement…"; });
       if (!crop) lightCanvas(final, cut ? cut.alphaC : null);
       if (!crop && cutActive()) final = composeCut(final, cut.alphaC);
-      const mime = fmt==="png" ? "image/png" : "image/jpeg";
-      const q = crop && fmt === "jpg" ? RECO[crop.f.rec].q : 0.93;
+      const mime = FMT_MIME[fmt];
+      const q = fmtQuality(fmt, crop ? RECO[crop.f.rec].q : 0);
       const blob = await new Promise(r => final.toBlob(r, mime, q));
       if (!blob) throw new Error("encode");
       const name = crop ? `${fileBase}-${crop.f.id}.${fmt}` : `${fileBase}-artcraft${scale>1?"-x"+scale:""}.${fmt}`;
@@ -2077,7 +2084,7 @@ async function startJob(){
   runJob();
 }
 async function processOne(input, S, decode, encode){
-  const soc = S.soc ? SOCIAL.find(f => f.id === S.soc) : null, mime = S.fmt === "png" ? "image/png" : "image/jpeg";
+  const soc = S.soc ? SOCIAL.find(f => f.id === S.soc) : null, mime = FMT_MIME[S.fmt] || "image/jpeg";
   const c = await decode(input);
   const pc = scaledCanvas(c, PREV_EDGE);
   const a = computeAuto(prepare(pc.getContext("2d").getImageData(0, 0, pc.width, pc.height), 1, {detail:false, clarity:false, denoise:false}));
@@ -2089,7 +2096,7 @@ async function processOne(input, S, decode, encode){
   let s = S.scale; while (s > 1 && c.width*c.height*s*s > MAX_OUT) s /= 2;
   if (soc){ s = 1; if (S.reco) p = clampP(RECO[soc.rec].adj(p)); }
   const out = soc ? await exportCanvas(c, p, c.width/pc.width, soc, {cx:.5, cy:.5, z:1}) : await renderFull(c, p, c.width/pc.width, s);
-  const blob = await encode(out, mime, soc && S.fmt === "jpg" ? RECO[soc.rec].q : 0.93);
+  const blob = await encode(out, mime, fmtQuality(S.fmt, soc ? RECO[soc.rec].q : 0));
   if (!blob) throw new Error("encode");
   const m = Math.min(out.width, out.height), tc = document.createElement("canvas"); tc.width = tc.height = 88;
   tc.getContext("2d").drawImage(out, (out.width - m)/2, (out.height - m)/2, m, m, 0, 0, 88, 88);
@@ -2419,12 +2426,12 @@ function makeDriveBox(host, getItems, defTitle){
 }
 async function currentExport(){
   const k = src.width / prev.w;
-  if (cutActive() && bgOpt.bg === "transparent") fmt = "png";
+  if (cutActive() && bgOpt.bg === "transparent" && fmt === "jpg") fmt = "png";
   let final = crop ? await exportCanvas(src, params, k, crop.f, crop, true) : await renderFull(src, params, k, scale);
   if (!crop) lightCanvas(final, cut ? cut.alphaC : null);
   if (!crop && cutActive()) final = composeCut(final, cut.alphaC);
-  const mime = fmt === "png" ? "image/png" : "image/jpeg";
-  const blob = await toBlob(final, mime, crop && fmt === "jpg" ? RECO[crop.f.rec].q : 0.93);
+  const mime = FMT_MIME[fmt];
+  const blob = await toBlob(final, mime, fmtQuality(fmt, crop ? RECO[crop.f.rec].q : 0));
   if (!blob) throw {code:"empty"};
   const name = crop ? `${fileBase}-${crop.f.id}.${fmt}` : `${fileBase}-artcraft${scale > 1 ? "-x" + scale : ""}.${fmt}`;
   return [{name, blob}];

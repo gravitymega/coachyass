@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Art craft — Sous-titres</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="" class="top-logo">
+  <div>
+    <h1>Art craft <span>Sous-titres</span></h1>
+    <p>Dépose une vidéo : la voix est transcrite automatiquement sur ton appareil (Whisper), tu corriges le texte, puis tu obtiens la vidéo avec les sous-titres incrustés aux couleurs Gravity, ou un fichier .srt.</p>
+  </div>
+</header>
+<nav class="tabs">
+  <a href="index.html">Highlights</a>
+  <a href="analyse.html">Analyse tactique</a>
+  <a href="stats.html">Stats auto</a>
+  <a href="direct.html">Mode direct</a>
+  <a href="editeur.html">Éditeur</a>
+  <a href="sous-titres.html" aria-current="page">Sous-titres</a>
+  <a href="son.html">Studio son</a>
+  <a href="beat.html">Studio beat</a>
+  <a href="voix.html">Studio voix</a>
+  <a href="image.html">Studio image</a>
+</nav>
+
+<main>
+  <section class="card">
+    <h2><b>1</b> La vidéo</h2>
+    <label class="drop">
+      <input type="file" id="file" accept="video/*,audio/*,.mov,.mkv">
+      <span>Choisir une vidéo (un short, une interview, un discours d'avant-match…)</span>
+    </label>
+    <div class="st-stage" id="stage" hidden>
+      <video id="video" controls playsinline></video>
+      <canvas id="overlay"></canvas>
+    </div>
+    <p class="muted" id="video-info"></p>
+  </section>
+
+  <section class="card" id="step-transcribe" hidden>
+    <h2><b>2</b> Transcription automatique</h2>
+    <div class="fields two">
+      <label>Modèle <select id="model"></select></label>
+      <label>Langue parlée
+        <select id="language">
+          <option value="french" selected>Français</option>
+          <option value="english">Anglais</option>
+          <option value="arabic">Arabe</option>
+          <option value="spanish">Espagnol</option>
+          <option value="">Détection automatique</option>
+        </select>
+      </label>
+      <label>Mots par sous-titre
+        <select id="words">
+          <option value="1">1 mot (très dynamique)</option>
+          <option value="2">2 mots</option>
+          <option value="3" selected>3 mots</option>
+          <option value="5">5 mots</option>
+          <option value="8">Phrases (8 mots)</option>
+        </select>
+      </label>
+    </div>
+    <div class="row">
+      <button class="btn big" id="btn-transcribe" type="button">Transcrire la voix</button>
+      <label class="btn ghost">Importer un .srt / .vtt <input type="file" id="srt-file" accept=".srt,.vtt" hidden></label>
+    </div>
+    <div class="progress" id="progress" hidden><div></div><span></span></div>
+    <p class="muted">Tout se passe sur ton appareil : rien n'est envoyé. Le modèle se télécharge une seule fois. Plus rapide sur ordinateur (carte graphique) ; sur téléphone, compte environ 1 minute par minute de vidéo avec le modèle rapide.</p>
+  </section>
+
+  <section class="card" id="step-edit" hidden>
+    <h2><b>3</b> Corriger le texte</h2>
+    <p class="muted">Touche une heure pour y aller dans la vidéo. Le texte se corrige directement ; la vidéo au-dessus montre le résultat.</p>
+    <ol class="cues" id="cues"></ol>
+    <div class="row">
+      <button class="btn ghost" id="btn-add" type="button">+ Sous-titre à l'instant affiché</button>
+      <button class="btn ghost" id="btn-shift-minus" type="button">Tout −0,1 s</button>
+      <button class="btn ghost" id="btn-shift-plus" type="button">Tout +0,1 s</button>
+    </div>
+  </section>
+
+  <section class="card" id="step-export" hidden>
+    <h2><b>4</b> Style et export</h2>
+    <div class="fields two">
+      <label>Style <select id="style"></select></label>
+      <label>Position
+        <select id="position">
+          <option value="bottom" selected>En bas (au-dessus des boutons Instagram)</option>
+          <option value="middle">Au centre</option>
+          <option value="top">En haut</option>
+        </select>
+      </label>
+      <label>Taille
+        <select id="size">
+          <option value="0.055">Petite</option>
+          <option value="0.07" selected>Moyenne</option>
+          <option value="0.09">Grande</option>
+        </select>
+      </label>
+      <label class="check"><input type="checkbox" id="upper" checked> En MAJUSCULES</label>
+    </div>
+    <div class="row">
+      <button class="btn big" id="btn-burn" type="button">Créer la vidéo sous-titrée</button>
+      <a class="btn ghost" id="btn-srt">Télécharger le .srt</a>
+      <a class="btn ghost" id="btn-vtt">Télécharger le .vtt</a>
+    </div>
+    <div class="progress" id="burn-progress" hidden><div></div><span></span></div>
+    <div id="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="row">
+        <a class="btn" id="btn-download">Télécharger le MP4</a>
+        <button class="btn ghost" id="btn-share" hidden>Partager…</button>
+      </div>
+    </div>
+    <p class="muted">Le .srt sert pour YouTube (Sous-titres → Importer un fichier) ou pour l'Éditeur d'une autre appli. La vidéo sous-titrée est prête pour Instagram, TikTok et Facebook.</p>
+  </section>
+
+  <p class="error" id="error" role="alert" hidden></p>
+</main>
+
+<footer class="foot">Art craft · Gravity Basketball Montréal · transcription Whisper (OpenAI, MIT) par Transformers.js (Hugging Face, Apache 2.0), sur ton appareil</footer>
+<script src="vendor/ffmpeg/ffmpeg.js"></script>
+<script type="module" src="soustitres.js"></script>
+</body>
+</html>
