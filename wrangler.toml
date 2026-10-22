@@ -12,4 +12,4 @@ command = "cd art-craft && npm install && npm run build"
 [assets]
 directory = "art-craft/dist"
 binding = "ASSETS"
-run_worker_first = ["/api/*"]
+# Les fichiers existants sont servis directement ; /api/coach et /api/music, qui n'en sont pas, passent par le worker.
