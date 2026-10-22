@@ -48,7 +48,7 @@ $('login-form').addEventListener('submit', async e => {
   if (res.status === 401) { showError('Mot de passe incorrect.'); return; }
   if (!res.ok) { showError(await errorOf(res)); return; }
   try { localStorage.setItem(STORE_KEY, state.password); } catch { /* stockage indisponible */ }
-  if (!(await res.json()).ai) showError('ANTHROPIC_API_KEY manquant dans les variables Netlify du site art-craft : l\'analyse ne marchera pas.');
+  if (!(await res.json()).ai) showError('Aucune IA branchée : ajoute la clé gratuite GEMINI_API_KEY dans les variables Cloudflare du site Art craft : l\'analyse ne marchera pas.');
   $('step-login').hidden = true;
   $('step-video').hidden = false;
 });

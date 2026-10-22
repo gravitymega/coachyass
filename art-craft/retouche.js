@@ -1464,10 +1464,10 @@ $("#aiLogin").addEventListener("submit", async e => {
     msg.textContent = "";
     await initAI();
   } catch (err) {
-    msg.textContent = {bad_password:"Mot de passe incorrect.", no_key:"L’IA n’est pas encore branchée : ANTHROPIC_API_KEY manque sur Netlify (site art-craft-gravity)."}[err && err.code] || "Serveur injoignable, réessaie.";
+    msg.textContent = {bad_password:"Mot de passe incorrect.", no_key:"L’IA n’est pas encore branchée : ajoute la clé gratuite GEMINI_API_KEY dans Cloudflare (projet coachyass)."}[err && err.code] || "Serveur injoignable, réessaie.";
   }
 });
-const AI_ERR = c => ({not_granted:"Mot de passe Art craft refusé : reconnecte-toi dans l’onglet Studio IA.", server:"Le serveur d’Art craft ne répond pas, réessaie dans un instant.", rate_limited:"Trop de demandes en même temps, réessaie dans un moment.", refused:"Claude n’a pas pu traiter cette demande.", invalid_json:"Réponse illisible, réessaie avec une demande plus simple.", cancelled:"Demande annulée."}[c] || "La demande n’a pas abouti. Réessaie dans un instant.");
+const AI_ERR = c => ({not_granted:"Mot de passe Art craft refusé : reconnecte-toi dans l’onglet Studio IA.", server:"Le serveur d’Art craft ne répond pas, réessaie dans un instant.", rate_limited:"Trop de demandes en même temps, réessaie dans un moment.", refused:"L’IA n’a pas pu traiter cette demande.", invalid_json:"Réponse illisible, réessaie avec une demande plus simple.", cancelled:"Demande annulée."}[c] || "La demande n’a pas abouti. Réessaie dans un instant.");
 function previewBlob(){
   return new Promise(res => {
     if (!prev) return res(null);
@@ -1490,7 +1490,7 @@ async function aiCall(kind){
   const req = $("#aiPrompt").value.trim();
   if (kind === "edit" && !req){ $("#aiPrompt").focus(); return; }
   const b1 = $("#aiEdit"), b2 = $("#aiAnalyze"); b1.disabled = b2.disabled = true;
-  aiShow([el("p", "Claude regarde ta photo…", "muted")]);
+  aiShow([el("p", "L’IA regarde ta photo…", "muted")]);
   const cur = {}; for (const k in DEF) cur[k] = params[k];
   const task = kind === "edit"
     ? `Le photographe demande : « ${req} ». Choisis les réglages qui réalisent cette demande sur cette photo précise.`
@@ -1525,7 +1525,7 @@ $$("#capNet button").forEach(b => b.onclick = () => { capNet = b.textContent; $$
 $$("#capTone button").forEach(b => b.onclick = () => { capTone = b.textContent; $$("#capTone button").forEach(x => x.setAttribute("aria-pressed", x === b)); });
 $("#capBtn").onclick = async () => {
   if (!sampleFn || !prev) return;
-  const btn = $("#capBtn"), out = $("#capOut"); btn.disabled = true; out.hidden = false; out.innerHTML = ""; out.append(el("p", "Claude écrit ta légende…", "muted"));
+  const btn = $("#capBtn"), out = $("#capOut"); btn.disabled = true; out.hidden = false; out.innerHTML = ""; out.append(el("p", "L’IA écrit ta légende…", "muted"));
   const ctx = $("#capCtx").value.trim();
   const prompt = `Écris une légende de publication ${capNet} en français pour la marque Gravity Basketball, à partir de la photo jointe.
 Ton : ${capTone}. ${ctx ? "Contexte donné par l’auteur : " + ctx + "." : ""}
@@ -2715,12 +2715,12 @@ $("#aiBgGo").onclick = async () => {
   if (!sampleFn) return;
   const prm = $("#aiBgPrompt").value.trim(), msg = $("#aiBgMsg"), btn = $("#aiBgGo");
   if (!prm){ $("#aiBgPrompt").focus(); return; }
-  btn.disabled = true; msg.textContent = "Claude dessine ton fond… (30 à 60 secondes)";
+  btn.disabled = true; msg.textContent = "L’IA dessine ton fond… (30 à 60 secondes)";
   const prompt = `Tu es un illustrateur. Crée un fond d’affiche sportive au format SVG pour la marque Gravity Basketball, d’après cette description : « ${prm} ».
 Contraintes : un seul élément <svg> avec xmlns="http://www.w3.org/2000/svg", width="1600", height="1000" et viewBox="0 0 1600 1000". Uniquement des formes vectorielles, des dégradés et des filtres SVG : pas d’image externe, pas de texte, pas de personnage, pas de script, pas de foreignObject. La zone centrale reste un peu plus calme car un joueur détouré y sera placé. Style riche, lumineux et professionnel, avec de la profondeur (au moins 30 formes).
 Réponds uniquement avec le code SVG, sans explication ni bloc de code.`;
   try {
-    const r = await sampleFn(prompt, {modelTier:"default", onText: ({text}) => { msg.textContent = `Claude dessine ton fond… ${Math.round(text.length/1000)} ko`; }});
+    const r = await sampleFn(prompt, {modelTier:"default", onText: ({text}) => { msg.textContent = `L’IA dessine ton fond… ${Math.round(text.length/1000)} ko`; }});
     const svg = cleanSvg(r.text);
     if (!svg) throw {code:"bad_svg"};
     await new Promise((res, rej) => { const t = new Image(); t.onload = () => t.naturalWidth ? res() : rej({code:"bad_svg"}); t.onerror = () => rej({code:"bad_svg"}); t.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg); });
