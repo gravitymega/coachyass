@@ -1,0 +1,19 @@
+# Art craft sur Cloudflare Workers (parcours « Workers » : dépôt relié, Deploy command = npx wrangler deploy).
+# Les autres dossiers du dépôt (sites Netlify) ne sont pas concernés.
+name = "coachyass"  # nom du Worker créé dans le tableau de bord Cloudflare (doit être identique)
+main = "art-craft/worker/index.ts"
+compatibility_date = "2026-10-01"
+# Garde les variables ajoutées dans le tableau de bord (ART_CRAFT_PASSWORD) à chaque déploiement.
+keep_vars = true
+
+[build]
+command = "cd art-craft && npm install && npm run build"
+
+[assets]
+directory = "art-craft/dist"
+binding = "ASSETS"
+# Les fichiers existants sont servis directement ; /api/coach et /api/music, qui n'en sont pas, passent par le worker.
+
+# Aperçus de branche (commande « npx wrangler preview » lancée par Workers Builds sur les PR) :
+# le bloc doit exister, même vide. Les fichiers statiques restent ceux de [assets].
+[previews]
