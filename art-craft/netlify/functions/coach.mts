@@ -11,7 +11,8 @@
 //
 // Modes (champ « mode ») : analyse tactique (défaut), « track » (suivi image par image),
 // « stats » (actions et numéros d'une portion de match), « devoirs » (exercices d'un joueur,
-// sans image) et « live » (une phrase du commentateur en direct, Claude Haiku).
+// sans image), « live » (une phrase du commentateur en direct, Claude Haiku) et « photo »
+// (Retouche photo : réglages proposés, légendes, fonds SVG ; la consigne vient de la page).
 import Anthropic from "@anthropic-ai/sdk";
 import crypto from "node:crypto";
 
@@ -259,6 +260,10 @@ function samePassword(given: string, expected: string) {
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
+const PHOTO_SYSTEM = `Tu es l'assistant photo d'Art craft, l'outil de création de Gravity Basketball Montréal (club de basketball).
+Tu aides à retoucher des photos de sport, à écrire des légendes de publication et à dessiner des fonds d'affiche.
+Suis exactement le format de réponse demandé. Tu écris en français, en tutoyant.`;
+
 const json = (status: number, body: unknown) =>
   new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
 
@@ -267,7 +272,7 @@ type Frame = { t: number; data: string; label?: string };
 type Body = {
   ping?: boolean; mode?: string; frames?: Frame[]; crops?: Frame[]; team?: string; context?: string;
   start?: number; dur?: number; moment?: Record<string, unknown>; roster?: unknown; player?: unknown;
-  facts?: unknown;
+  facts?: unknown; prompt?: string; json?: boolean;
 };
 
 const clip = (v: unknown, n: number) => String(v ?? "").slice(0, n);
@@ -302,6 +307,18 @@ function buildRequest(body: Body) {
       content: [
         ...imageBlocks(frames, () => "Image de la caméra, maintenant"),
         { type: "text", text: `Situation (JSON) :\n${clip(JSON.stringify(body.facts ?? {}), 4000)}` },
+      ] as Anthropic.Beta.BetaContentBlockParam[],
+    };
+  }
+  if (mode === "photo") {
+    // Une photo au plus ; la réponse est du texte libre (JSON ou SVG selon la demande).
+    const prompt = clip(body.prompt, 8000);
+    if (!prompt.trim()) return { error: "Demande vide" };
+    return {
+      model: MODEL, system: PHOTO_SYSTEM, maxTokens: 16000, minFrames: 0, maxFrames: 1,
+      content: [
+        ...imageBlocks(frames, () => "Photo (aperçu actuel)"),
+        { type: "text", text: prompt + (body.json ? "\nRéponds uniquement avec le JSON demandé, sans bloc de code." : "") },
       ] as Anthropic.Beta.BetaContentBlockParam[],
     };
   }
@@ -390,7 +407,7 @@ export default async (req: Request) => {
   const params: Record<string, unknown> = {
     model: request.model,
     max_tokens: request.maxTokens,
-    output_config: { effort: "low", format: { type: "json_schema", schema: request.schema } },
+    output_config: request.schema ? { effort: "low", format: { type: "json_schema", schema: request.schema } } : { effort: "low" },
     system: request.system,
     messages: [{ role: "user", content: request.content }],
   };
