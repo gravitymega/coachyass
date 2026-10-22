@@ -7,7 +7,7 @@
 // Script classique (pas un module) : il doit exister avant retouche.js.
 (() => {
   const PASS_KEY = 'artcraft-voice-password'; // même mot de passe mémorisé que l'Analyse tactique
-  const ENDPOINT = '/.netlify/functions/coach';
+  const ENDPOINT = '/api/coach';
   const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
   const FOLDER = 'application/vnd.google-apps.folder';
 

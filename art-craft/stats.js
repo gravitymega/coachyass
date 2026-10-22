@@ -27,7 +27,7 @@ const state = {
 
 // ---------- Accès (mot de passe Art craft, comme l'Analyse tactique) ----------
 async function post(payload) {
-  return fetch('/.netlify/functions/coach', {
+  return fetch('/api/coach', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-art-password': state.password },
     body: JSON.stringify(payload),

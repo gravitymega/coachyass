@@ -5,7 +5,7 @@
 // La réponse est en flux pour rester sous la limite de 60 s des fonctions et
 // montrer la progression ; le JSON final suit ANALYSIS_SCHEMA (sorties structurées).
 //
-// Variables Netlify (site art-craft-gravity) :
+// Variables du site (Netlify ou Cloudflare Pages) :
 //   ANTHROPIC_API_KEY   — clé API Anthropic (console.anthropic.com), jamais exposée au navigateur
 //   ART_CRAFT_PASSWORD  — même mot de passe que le Studio voix (chaque analyse coûte des crédits)
 //
@@ -14,7 +14,6 @@
 // sans image), « live » (une phrase du commentateur en direct, Claude Haiku) et « photo »
 // (Retouche photo : réglages proposés, légendes, fonds SVG ; la consigne vient de la page).
 import Anthropic from "@anthropic-ai/sdk";
-import crypto from "node:crypto";
 
 const MODEL = "claude-opus-5-5";
 // Commentaire en direct : réponse rapide et peu chère (une phrase toutes les 10 à 20 s).
@@ -254,10 +253,13 @@ Règles :
 - Sois utile pour l'entraînement : chaque point faible doit mener à un conseil ou à un exercice précis.
 - Listes : phrases courtes, une idée par élément, 2 à 6 éléments par liste (liste vide si rien n'est visible).`;
 
+// Comparaison en temps constant, sans module Node (marche aussi sur Cloudflare).
 function samePassword(given: string, expected: string) {
-  const a = Buffer.from(given || "");
-  const b = Buffer.from(expected);
-  return a.length === b.length && crypto.timingSafeEqual(a, b);
+  const a = new TextEncoder().encode(given || "");
+  const b = new TextEncoder().encode(expected);
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < b.length; i++) diff |= (a[i] ?? 0) ^ b[i];
+  return diff === 0;
 }
 
 const PHOTO_SYSTEM = `Tu es l'assistant photo d'Art craft, l'outil de création de Gravity Basketball Montréal (club de basketball).
@@ -374,11 +376,13 @@ function buildRequest(body: Body) {
   return { model: MODEL, system: SYSTEM, schema: track ? TRACK_SCHEMA : ANALYSIS_SCHEMA, maxTokens: 16000, minFrames: 2, content };
 }
 
-export default async (req: Request) => {
+// Cœur de la fonction, commun à Netlify (ci-dessous) et à Cloudflare Pages (functions/api/coach.ts).
+// env(nom) lit une variable d'environnement de l'hébergeur.
+export async function handleCoach(req: Request, env: (name: string) => string | undefined) {
   if (req.method !== "POST") return json(405, { error: "Méthode non autorisée" });
-  const password = Netlify.env.get("ART_CRAFT_PASSWORD");
-  const apiKey = Netlify.env.get("ANTHROPIC_API_KEY");
-  if (!password) return json(500, { error: "ART_CRAFT_PASSWORD manquant dans les variables Netlify du site art-craft." });
+  const password = env("ART_CRAFT_PASSWORD");
+  const apiKey = env("ANTHROPIC_API_KEY");
+  if (!password) return json(500, { error: "ART_CRAFT_PASSWORD manquant dans les variables du site Art craft." });
   if (!samePassword(req.headers.get("x-art-password") || "", password)) return json(401, { error: "Mot de passe incorrect" });
 
   let body: Body;
@@ -389,7 +393,7 @@ export default async (req: Request) => {
   }
   // Vérification du mot de passe à la connexion (aucun appel à l'IA).
   if (body.ping) return json(200, { ok: true, ai: Boolean(apiKey) });
-  if (!apiKey) return json(500, { error: "ANTHROPIC_API_KEY manquant dans les variables Netlify du site art-craft." });
+  if (!apiKey) return json(500, { error: "ANTHROPIC_API_KEY manquant dans les variables du site Art craft." });
 
   const request = buildRequest(body);
   if ("error" in request) return json(400, { error: request.error });
@@ -453,3 +457,5 @@ export default async (req: Request) => {
 
   return new Response(stream, { headers: { "Content-Type": "application/x-ndjson; charset=utf-8", "Cache-Control": "no-store" } });
 };
+
+export default (req: Request) => handleCoach(req, (name) => Netlify.env.get(name));

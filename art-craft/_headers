@@ -1,0 +1,3 @@
+# Outil interne Gravity : jamais indexé (Cloudflare Pages et Netlify lisent ce fichier).
+/*
+  X-Robots-Tag: noindex, nofollow
