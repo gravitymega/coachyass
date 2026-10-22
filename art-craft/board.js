@@ -1,6 +1,6 @@
 // Dessin du tableau du coach (canvas) : demi-terrain, pions PG/SG/SF/PF/C, défenseurs,
 // trajets (coupe, dribble, écran, passe), ballon, et en tête le texte du moment.
-import { COURT, POSITIONS, paths, boardAt, toPx, fitCourt } from './board-core.js';
+import { COURT, POSITIONS, paths, boardAt, trackAt, toPx, fitCourt } from './board-core.js';
 import { BRAND } from './brand.js';
 
 const FLOOR = '#8f1d2c';
@@ -143,12 +143,46 @@ function drawMoves(ctx, board, box, r) {
   });
 }
 
-function drawPieces(ctx, board, box, u, r) {
-  const st = boardAt(board, u);
+// Suivi réel : trace de chaque déplacement déjà fait, et passes déjà jouées.
+function drawTrails(ctx, st, box, r) {
+  const lw = Math.max(2.5, box.w * 0.008);
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.lineWidth = lw;
+  ctx.strokeStyle = 'rgba(255,255,255,0.75)';
+  ctx.fillStyle = ctx.strokeStyle;
+  POSITIONS.forEach(p => {
+    const pts = st.trails[p].map(pt => toPx(pt, box));
+    let len = 0;
+    for (let i = 1; i < pts.length; i++) len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+    if (len < r * 1.2) return;
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    pts.slice(1).forEach(q => ctx.lineTo(q[0], q[1]));
+    ctx.stroke();
+  });
+  ctx.strokeStyle = '#ffd28a';
+  ctx.fillStyle = '#ffd28a';
+  ctx.setLineDash([lw * 2.5, lw * 2]);
+  st.passes.forEach(([a, b]) => {
+    const seg = trim(toPx(a, box), toPx(b, box), r * 1.15);
+    if (!seg) return;
+    ctx.beginPath();
+    ctx.moveTo(seg[0][0], seg[0][1]);
+    ctx.lineTo(seg[1][0], seg[1][1]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    arrowHead(ctx, seg[0], seg[1], r * 0.8);
+    ctx.setLineDash([lw * 2.5, lw * 2]);
+  });
+  ctx.setLineDash([]);
+}
+
+function drawPieces(ctx, st, box, r) {
   // Défenseurs : croix.
   ctx.strokeStyle = 'rgba(20,10,14,0.85)';
   ctx.lineWidth = Math.max(3, r * 0.22);
-  board.defenders.forEach(d => {
+  st.defenders.forEach(d => {
     const [x, y] = toPx(d, box);
     const k = r * 0.55;
     ctx.beginPath();
@@ -187,8 +221,8 @@ function drawPieces(ctx, board, box, u, r) {
 
 /**
  * Dessine une image du tableau. info = {
- *   board (normalizeBoard) ou null, u (avancement 0–1), tag (petit texte en haut), badge (pastille à droite),
- *   title, text }
+ *   board (normalizeBoard) ou null, u (avancement 0–1), track (suivi normalizeTrack) + s (instant de la vidéo),
+ *   tag (petit texte en haut), badge (pastille à droite), title, text }
  */
 export function drawBoard(ctx, W, H, info) {
   ctx.fillStyle = '#100d16';
@@ -250,10 +284,16 @@ export function drawBoard(ctx, W, H, info) {
 
   const box = fitCourt(0, headH, W, H - headH, pad * 0.6);
   drawCourt(ctx, box);
-  if (info.board) {
-    const r = box.w * 0.042;
+  const r = box.w * 0.042;
+  if (info.track && info.s != null) {
+    // Positions réelles suivies image par image.
+    const st = trackAt(info.track, info.s);
+    drawTrails(ctx, st, box, r);
+    drawPieces(ctx, st, box, r);
+  } else if (info.board) {
+    // Schéma de l'action (trajets prévus par l'IA).
     drawMoves(ctx, info.board, box, r);
-    drawPieces(ctx, info.board, box, info.u ?? 0, r);
+    drawPieces(ctx, { ...boardAt(info.board, info.u ?? 0), defenders: info.board.defenders }, box, r);
   }
   // Signature discrète.
   ctx.font = `700 ${Math.round(W * 0.026)}px Oswald, Impact, sans-serif`;

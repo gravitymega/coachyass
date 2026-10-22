@@ -90,6 +90,40 @@ const ANALYSIS_SCHEMA = {
   additionalProperties: false,
 };
 
+// Suivi image par image d'une action (2e passe) : positions réelles des joueurs à chaque instant.
+const TRACK_SCHEMA = {
+  type: "object",
+  properties: {
+    images: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          t: { type: "number" },
+          ballon: { type: "string", enum: [...POS, ""] },
+          joueurs: { type: "array", items: point },
+          defenseurs: {
+            type: "array",
+            items: { type: "object", properties: { x: { type: "number" }, y: { type: "number" } }, required: ["x", "y"], additionalProperties: false },
+          },
+        },
+        required: ["t", "ballon", "joueurs", "defenseurs"],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ["images"],
+  additionalProperties: false,
+};
+
+const TRACK_TASK = `Suivi image par image : pour CHAQUE image reçue (même instant « t »), place les joueurs sur le tableau du coach, exactement comme ils sont à cet instant précis dans la vidéo.
+- Le point d'un joueur = ses pieds au sol, reporté sur le demi-terrain vu de dessus (corrige la perspective de la caméra : sers-toi des lignes du terrain, de la raquette, de la ligne à 3 points et du panier comme repères ; si la caméra bouge, recale-toi sur ces lignes à chaque image).
+- Garde les MÊMES postes (PG, SG, SF, PF, C) pour les mêmes joueurs d'une image à l'autre : suis chaque joueur (numéro, couleur, taille), ne les échange jamais.
+- « ballon » : qui a le ballon sur cette image ("" s'il est en l'air : passe, tir, ballon perdu).
+- « defenseurs » : les défenseurs visibles, à leur position réelle.
+- Un joueur hors champ : garde sa dernière position connue (ou la plus logique).
+- Ne lisse pas et n'invente pas de trajectoire : rapporte ce que tu vois, image par image.`;
+
 const SYSTEM = `Tu es un entraîneur de basketball expert (niveau élite : 20 ans de coaching, analyse vidéo pour des équipes U15 à universitaires et professionnelles) qui travaille pour Gravity Basketball (Montréal).
 Tu reçois des images fixes tirées d'une séquence de match, dans l'ordre, chacune avec son instant (en secondes depuis le début de la vidéo).
 Ton travail : décortiquer le jeu comme un coach le ferait en séance vidéo avec ses joueurs, en français québécois clair, concret et précis, avec le vocabulaire du coaching (spacing, pick-and-roll, slip, pop, flare, back-door, aide côté faible, closeout, ice, hedge, switch, box-out…).
@@ -134,7 +168,7 @@ export default async (req: Request) => {
   if (!password) return json(500, { error: "ART_CRAFT_PASSWORD manquant dans les variables Netlify du site art-craft." });
   if (!samePassword(req.headers.get("x-art-password") || "", password)) return json(401, { error: "Mot de passe incorrect" });
 
-  let body: { ping?: boolean; frames?: Frame[]; team?: string; context?: string; start?: number; dur?: number };
+  let body: { ping?: boolean; mode?: string; frames?: Frame[]; team?: string; context?: string; start?: number; dur?: number; moment?: Record<string, unknown> };
   try {
     body = await req.json();
   } catch {
@@ -151,20 +185,37 @@ export default async (req: Request) => {
   const team = String(body.team || "").slice(0, 120);
   const context = String(body.context || "").slice(0, 1500);
 
+  const track = body.mode === "track";
   const content: Anthropic.Beta.BetaContentBlockParam[] = [];
   frames.forEach((f) => {
-    content.push({ type: "text", text: `Image à t = ${f.t.toFixed(1)} s` });
+    content.push({ type: "text", text: `Image à t = ${f.t.toFixed(2)} s` });
     content.push({ type: "image", source: { type: "base64", media_type: "image/jpeg", data: f.data } });
   });
-  content.push({
-    type: "text",
-    text: [
-      `Séquence : de ${Number(body.start || 0).toFixed(0)} s à ${(Number(body.start || 0) + Number(body.dur || 0)).toFixed(0)} s de la vidéo, ${frames.length} images.`,
-      team ? `Équipe à analyser en priorité : ${team}.` : "Analyse les deux équipes.",
-      context ? `Contexte donné par le coach : ${context}` : "",
-      "Fais l'analyse tactique complète, comme en séance vidéo avec l'équipe.",
-    ].filter(Boolean).join("\n"),
-  });
+  if (track) {
+    // Le moment repéré à la 1re passe : postes déjà attribués, pour garder les mêmes noms que la narration.
+    const m = body.moment && typeof body.moment === "object" ? body.moment : {};
+    content.push({
+      type: "text",
+      text: [
+        TRACK_TASK,
+        team ? `Équipe en attaque à suivre : ${team}.` : "",
+        `Action : ${String(m.titre || "").slice(0, 120)} — ${String(m.explication || "").slice(0, 300)}`,
+        m.narration ? `Ce que dit le coach : ${String(m.narration).slice(0, 600)}` : "",
+        m.joueurs ? `Postes attribués au début de l'action (garde ces noms) : ${JSON.stringify(m.joueurs).slice(0, 600)} ; ballon : ${String(m.ballon || "")}.` : "",
+        `${frames.length} images, à rendre dans le même ordre avec le même « t ».`,
+      ].filter(Boolean).join("\n"),
+    });
+  } else {
+    content.push({
+      type: "text",
+      text: [
+        `Séquence : de ${Number(body.start || 0).toFixed(0)} s à ${(Number(body.start || 0) + Number(body.dur || 0)).toFixed(0)} s de la vidéo, ${frames.length} images.`,
+        team ? `Équipe à analyser en priorité : ${team}.` : "Analyse les deux équipes.",
+        context ? `Contexte donné par le coach : ${context}` : "",
+        "Fais l'analyse tactique complète, comme en séance vidéo avec l'équipe.",
+      ].filter(Boolean).join("\n"),
+    });
+  }
 
   const client = new Anthropic({ apiKey });
   const encoder = new TextEncoder();
@@ -178,7 +229,7 @@ export default async (req: Request) => {
           max_tokens: 16000,
           betas: ["server-side-fallback-2026-07-01"],
           fallbacks: "default",
-          output_config: { effort: "low", format: { type: "json_schema", schema: ANALYSIS_SCHEMA } },
+          output_config: { effort: "low", format: { type: "json_schema", schema: track ? TRACK_SCHEMA : ANALYSIS_SCHEMA } },
           system: SYSTEM,
           messages: [{ role: "user", content }],
         } as Anthropic.Beta.MessageCreateParamsStreaming);
