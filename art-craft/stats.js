@@ -7,7 +7,7 @@ import {
 import { createStreamReader } from './analyse-core.js';
 import { energyEnvelope, excitementScore, findPeaks, WINDOW_S, parseTimestamp } from './highlights.js';
 import {
-  EVENT_TYPES, TYPE_KEYS, CLIP_TYPES, statsWindows, windowTimes, estimateCost, normalizeEvents, mergeEvents,
+  EVENT_TYPES, TYPE_KEYS, CLIP_TYPES, statsWindows, windowTimes, normalizeEvents, mergeEvents,
   boxScore, playerStatsRow, clipWindow, clipPlayers, kmeans2, hex, pickCrops, syncEvents, parseLive, fmtClock, pct,
 } from './stats-core.js';
 import { loadDetector, detectPlayers, jerseyColor, cropJpeg, scaledJpeg, detectorDevice } from './detect.js';
@@ -66,7 +66,7 @@ $('login-form').addEventListener('submit', async e => {
   if (res.status === 401) { showError('Mot de passe incorrect.'); return; }
   if (!res.ok) { showError(await errorOf(res)); return; }
   try { localStorage.setItem(STORE_KEY, state.password); } catch { /* stockage indisponible */ }
-  if (!(await res.json()).ai) showError('ANTHROPIC_API_KEY manquant dans les variables Netlify du site art-craft : la lecture des numéros ne marchera pas.');
+  if (!(await res.json()).ai) showError('Aucune IA branchée : ajoute la clé gratuite GEMINI_API_KEY dans les variables Cloudflare du site Art craft : la lecture des numéros ne marchera pas.');
   $('step-login').hidden = true;
   $('step-game').hidden = false;
   initTeams();
@@ -159,8 +159,7 @@ function updateCost() {
   const { from, to } = range();
   const n = mode() === 'full' ? Math.ceil((to - from) / 15) : +$('max').value;
   const wins = Array.from({ length: n }, (_, i) => ({ start: i * 15, end: i * 15 + 10 }));
-  const usd = estimateCost(wins, { every: EVERY, max: MAX_IMG, crops: CROPS });
-  $('cost').textContent = `Environ ${n} portions à faire lire par l'IA · coût estimé ~${usd.toFixed(2)} $ US de crédits Anthropic.`;
+  $('cost').textContent = `Environ ${n} portions à faire lire par l'IA (gratuite : Gemini, avec un quota par jour ; un long match peut l'épuiser, l'IA de secours prend alors le relais).`;
 }
 document.querySelectorAll('input[name=mode]').forEach(r => r.addEventListener('change', updateCost));
 ['max', 'range-start', 'range-end'].forEach(id => $(id).addEventListener('change', updateCost));
@@ -314,7 +313,7 @@ async function run() {
       } catch (err) {
         console.warn('portion', w, err);
         failed++;
-        if (/Mot de passe|ANTHROPIC|refusée/.test(err.message)) throw err;
+        if (/Mot de passe|GEMINI|ANTHROPIC|Aucune IA|refusée|Quota/.test(err.message)) throw err;
       }
     }
     setEvents([...state.events.filter(e => e.manual), ...found]);

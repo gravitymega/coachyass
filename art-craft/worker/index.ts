@@ -3,12 +3,16 @@
 import { handleCoach } from '../netlify/functions/coach.mts';
 import { handleMusic } from '../netlify/functions/music.mjs';
 
-type Env = { ASSETS: { fetch: (req: Request) => Promise<Response> } } & Record<string, unknown>;
+type Env = {
+  ASSETS: { fetch: (req: Request) => Promise<Response> };
+  // Workers AI (IA gratuite de secours, voir netlify/lib/free-ai.ts).
+  AI?: { run: (model: string, input: unknown) => Promise<unknown> };
+} & Record<string, unknown>;
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const { pathname } = new URL(request.url);
-    if (pathname === '/api/coach') return handleCoach(request, name => (typeof env[name] === 'string' ? (env[name] as string) : undefined));
+    if (pathname === '/api/coach') return handleCoach(request, name => (typeof env[name] === 'string' ? (env[name] as string) : undefined), env.AI);
     if (pathname === '/api/music') return handleMusic(request, { maxBytes: 20e6 });
     return env.ASSETS.fetch(request);
   },

@@ -5,15 +5,19 @@
 // La réponse est en flux pour rester sous la limite de 60 s des fonctions et
 // montrer la progression ; le JSON final suit ANALYSIS_SCHEMA (sorties structurées).
 //
-// Variables du site (Netlify ou Cloudflare Pages) :
-//   ANTHROPIC_API_KEY   — clé API Anthropic (console.anthropic.com), jamais exposée au navigateur
-//   ART_CRAFT_PASSWORD  — même mot de passe que le Studio voix (chaque analyse coûte des crédits)
+// Variables du site (Netlify ou Cloudflare) :
+//   ART_CRAFT_PASSWORD  — mot de passe Art craft (protège le quota des IA)
+//   GEMINI_API_KEY      — clé gratuite Google Gemini (aistudio.google.com), jamais exposée au navigateur
+//   ANTHROPIC_API_KEY   — facultative et PAYANTE (Claude) : à ne mettre que si l'utilisateur l'accepte.
+// Sans clé Anthropic, les IA gratuites de ../lib/free-ai.ts répondent : Gemini, puis Cloudflare Workers AI
+// en secours (liaison « AI » du Worker) si le quota gratuit de Gemini est épuisé.
 //
 // Modes (champ « mode ») : analyse tactique (défaut), « track » (suivi image par image),
 // « stats » (actions et numéros d'une portion de match), « devoirs » (exercices d'un joueur,
 // sans image), « live » (une phrase du commentateur en direct, Claude Haiku) et « photo »
 // (Retouche photo : réglages proposés, légendes, fonds SVG ; la consigne vient de la page).
 import Anthropic from "@anthropic-ai/sdk";
+import { askFree, cleanJson, AiError, type FreeRequest, type WorkersAi } from "../lib/free-ai.ts";
 
 const MODEL = "claude-opus-5-5";
 // Commentaire en direct : réponse rapide et peu chère (une phrase toutes les 10 à 20 s).
@@ -378,7 +382,8 @@ function buildRequest(body: Body) {
 
 // Cœur de la fonction, commun à Netlify (ci-dessous) et à Cloudflare Pages (functions/api/coach.ts).
 // env(nom) lit une variable d'environnement de l'hébergeur.
-export async function handleCoach(req: Request, env: (name: string) => string | undefined) {
+// ai : liaison Workers AI (Cloudflare Workers seulement), IA gratuite de secours.
+export async function handleCoach(req: Request, env: (name: string) => string | undefined, ai?: WorkersAi) {
   if (req.method !== "POST") return json(405, { error: "Méthode non autorisée" });
   const password = env("ART_CRAFT_PASSWORD");
   const apiKey = env("ANTHROPIC_API_KEY");
@@ -392,8 +397,13 @@ export async function handleCoach(req: Request, env: (name: string) => string | 
     return json(400, { error: "Requête illisible" });
   }
   // Vérification du mot de passe à la connexion (aucun appel à l'IA).
-  if (body.ping) return json(200, { ok: true, ai: Boolean(apiKey) });
-  if (!apiKey) return json(500, { error: "ANTHROPIC_API_KEY manquant dans les variables du site Art craft." });
+  const geminiKey = env("GEMINI_API_KEY");
+  if (body.ping) {
+    return json(200, { ok: true, ai: Boolean(apiKey || geminiKey || ai), provider: apiKey ? "claude" : geminiKey ? "gemini" : ai ? "workers-ai" : null });
+  }
+  if (!apiKey && !geminiKey && !ai) {
+    return json(500, { error: "Aucune IA branchée : ajoute GEMINI_API_KEY (clé gratuite, aistudio.google.com) dans les variables du site Art craft." });
+  }
 
   const request = buildRequest(body);
   if ("error" in request) return json(400, { error: request.error });
@@ -404,9 +414,11 @@ export async function handleCoach(req: Request, env: (name: string) => string | 
   }
   if (!validImages(frames)) return json(400, { error: "Image invalide ou trop lourde" });
 
-  const client = new Anthropic({ apiKey });
   const encoder = new TextEncoder();
   const line = (o: unknown) => encoder.encode(JSON.stringify(o) + "\n");
+  if (!apiKey) return freeResponse(request as unknown as FreeRequest, { geminiKey, ai }, line);
+
+  const client = new Anthropic({ apiKey });
 
   const params: Record<string, unknown> = {
     model: request.model,
@@ -457,5 +469,39 @@ export async function handleCoach(req: Request, env: (name: string) => string | 
 
   return new Response(stream, { headers: { "Content-Type": "application/x-ndjson; charset=utf-8", "Cache-Control": "no-store" } });
 };
+
+// IA gratuites (Gemini, puis Workers AI) : même flux NDJSON que Claude, en un seul morceau.
+function freeResponse(
+  request: FreeRequest,
+  providers: { geminiKey?: string; ai?: WorkersAi },
+  line: (o: unknown) => Uint8Array,
+) {
+  const stream = new ReadableStream({
+    async start(controller) {
+      // Un premier message tout de suite, pour que le navigateur voie que la demande est partie.
+      controller.enqueue(line({ wait: true }));
+      try {
+        const out = await askFree(providers, request);
+        let text = out.text;
+        if (request.schema) {
+          text = cleanJson(text);
+          try {
+            JSON.parse(text);
+          } catch {
+            throw new AiError("Réponse illisible de l'IA : réessaie.");
+          }
+        }
+        controller.enqueue(line({ d: text }));
+        controller.enqueue(line({ end: { model: out.model } }));
+      } catch (err) {
+        console.error("coach (IA gratuite):", err);
+        controller.enqueue(line({ error: err instanceof Error ? err.message : "Analyse impossible" }));
+      } finally {
+        controller.close();
+      }
+    },
+  });
+  return new Response(stream, { headers: { "Content-Type": "application/x-ndjson; charset=utf-8", "Cache-Control": "no-store" } });
+}
 
 export default (req: Request) => handleCoach(req, (name) => Netlify.env.get(name));

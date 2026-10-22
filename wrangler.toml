@@ -14,6 +14,10 @@ directory = "art-craft/dist"
 binding = "ASSETS"
 # Les fichiers existants sont servis directement ; /api/coach et /api/music, qui n'en sont pas, passent par le worker.
 
+# IA gratuite de secours (Workers AI, 10 000 neurones par jour inclus ; le plan gratuit ne facture rien).
+[ai]
+binding = "AI"
+
 # Aperçus de branche (commande « npx wrangler preview » lancée par Workers Builds sur les PR) :
 # le bloc doit exister, même vide. Les fichiers statiques restent ceux de [assets].
 [previews]

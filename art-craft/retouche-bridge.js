@@ -59,7 +59,7 @@
         if (!line.trim()) continue;
         const m = JSON.parse(line);
         if (m.d) { text += m.d; if (opts.onText) opts.onText({ text }); }
-        if (m.error) throw fail(/refus/i.test(m.error) ? 'refused' : /Trop de demandes/.test(m.error) ? 'rate_limited' : 'server');
+        if (m.error) throw fail(/refus/i.test(m.error) ? 'refused' : /Trop de demandes|Quota/.test(m.error) ? 'rate_limited' : 'server');
       }
     }
     return text;
