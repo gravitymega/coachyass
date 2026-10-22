@@ -7,6 +7,9 @@ import { FREE_VOICES, DEFAULT_FREE_VOICE } from './piper-core.js';
 import { synthFree } from './piper.js';
 import { canvasJpeg } from './detect.js';
 import { accessToken, rest, fillTeams, loadRoster, sessionEmail } from './supa.js';
+import { parseTimestamp } from './highlights.js';
+import { chatMessage, aiChatMessage, chapterText } from './youtube-core.js';
+import { sendChat, matchChapters, publishChapters, youtubeLive } from './youtube.js';
 
 const SAVE_KEY = 'artcraft-direct-match';
 const PASS_KEY = 'artcraft-voice-password';
@@ -66,6 +69,8 @@ $('btn-start').addEventListener('click', async () => {
     numbers,
     roster: roster.map(p => ({ id: p.id, full_name: p.full_name, numero: p.numero })),
     events: [],
+    // Début de chaque quart-temps (heure réelle) : sert aux chapitres YouTube.
+    markers: [{ wall: Date.now(), label: 'Début du match (Q1)' }],
     startedAt: Date.now(),
     clock: { period: 'Q1', left: +$('period-min').value * 60, running: false },
   };
@@ -128,6 +133,7 @@ $('actions').addEventListener('click', e => {
     numero: selected === 'adv' || selected === '?' ? null : +selected,
     period: match.clock.period,
     clock: fmtClock(match.clock.left),
+    wall: Date.now(), // heure réelle : cale l'action sur la vidéo du live YouTube
   };
   match.events.push(ev);
   selected = null;
@@ -137,6 +143,8 @@ $('actions').addEventListener('click', e => {
   renderAll();
   if (navigator.vibrate) navigator.vibrate(30);
   if (aiTimer !== null && BIG.includes(ev.type)) comment('action');
+  const score = boxScore(match.events, []).score;
+  sendChat(chatMessage(ev, { team: match.team, opponent: match.opponent, roster: match.roster, score, period: ev.period, clock: ev.clock }));
 });
 $('btn-undo').addEventListener('click', () => {
   if (!match.events.length) return;
@@ -178,6 +186,7 @@ $('btn-clock').addEventListener('click', () => {
 });
 $('period').addEventListener('change', () => {
   match.clock.period = $('period').value;
+  (match.markers = match.markers || []).push({ wall: Date.now(), label: `Début ${match.clock.period === 'Prol.' ? 'de la prolongation' : 'du ' + match.clock.period}` });
   match.clock.left = (match.clock.period === 'Prol.' ? 5 : match.periodMin) * 60;
   save();
   renderAll();
@@ -283,6 +292,7 @@ async function comment(reason) {
     lastSaid.push(phrase);
     lastSaid = lastSaid.slice(-8);
     renderAll();
+    sendChat(aiChatMessage(phrase), 'ia');
     await speak(phrase);
   } catch (e) {
     console.warn('commentateur', e);
@@ -348,6 +358,38 @@ $('btn-end').addEventListener('click', async () => {
   $('btn-json').href = URL.createObjectURL(json);
   $('btn-json').download = `stats-direct-${match.date}.json`;
   renderEndBox();
+  renderChapters();
+});
+
+// ---------- Chapitres YouTube ----------
+function renderChapters() {
+  const live = youtubeLive();
+  const offset = parseTimestamp($('yt-offset').value) || 0;
+  const { chapters, valid } = matchChapters(match, { origin: live.startMs || 0, offset });
+  $('yt-chapters').value = chapterText(chapters);
+  $('yt-chapters-status').textContent = valid
+    ? (live.id ? `Calés sur le live « ${live.title} ».` : 'Pas de live relié : calés sur le moment indiqué ci-dessus.')
+    : 'Il faut au moins 2 paniers (ou quarts-temps) espacés de 10 s pour que YouTube affiche des chapitres.';
+  $('btn-yt-chapters').disabled = !live.id || !valid;
+}
+$('yt-offset').addEventListener('change', renderChapters);
+$('btn-yt-copy').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText($('yt-chapters').value); $('btn-yt-copy').textContent = 'Copié ✔'; } catch { $('yt-chapters').select(); }
+  setTimeout(() => { $('btn-yt-copy').textContent = 'Copier les chapitres'; }, 1800);
+});
+$('btn-yt-chapters').addEventListener('click', async () => {
+  const btn = $('btn-yt-chapters');
+  btn.disabled = true;
+  $('yt-chapters-status').textContent = 'Envoi des chapitres à YouTube…';
+  try {
+    const r = await publishChapters(match);
+    $('yt-chapters').value = r.text;
+    $('yt-chapters-status').innerHTML = `✅ ${r.count} chapitres ajoutés à la description : <a href="${r.url}" target="_blank" rel="noopener">voir la vidéo</a>`;
+  } catch (err) {
+    $('yt-chapters-status').textContent = 'Chapitres impossibles : ' + err.message;
+  } finally {
+    btn.disabled = false;
+  }
 });
 
 function renderEndBox() {
