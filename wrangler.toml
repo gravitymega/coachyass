@@ -13,3 +13,7 @@ command = "cd art-craft && npm install && npm run build"
 directory = "art-craft/dist"
 binding = "ASSETS"
 # Les fichiers existants sont servis directement ; /api/coach et /api/music, qui n'en sont pas, passent par le worker.
+
+# Aperçus de branche (commande « npx wrangler preview » lancée par Workers Builds sur les PR) :
+# le bloc doit exister, même vide. Les fichiers statiques restent ceux de [assets].
+[previews]
