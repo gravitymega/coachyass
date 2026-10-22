@@ -8,10 +8,16 @@
 // Variables Netlify (site art-craft-gravity) :
 //   ANTHROPIC_API_KEY   — clé API Anthropic (console.anthropic.com), jamais exposée au navigateur
 //   ART_CRAFT_PASSWORD  — même mot de passe que le Studio voix (chaque analyse coûte des crédits)
+//
+// Modes (champ « mode ») : analyse tactique (défaut), « track » (suivi image par image),
+// « stats » (actions et numéros d'une portion de match), « devoirs » (exercices d'un joueur,
+// sans image) et « live » (une phrase du commentateur en direct, Claude Haiku).
 import Anthropic from "@anthropic-ai/sdk";
 import crypto from "node:crypto";
 
 const MODEL = "claude-opus-5-5";
+// Commentaire en direct : réponse rapide et peu chère (une phrase toutes les 10 à 20 s).
+const LIVE_MODEL = "claude-haiku-5-5";
 const MAX_FRAMES = 40;
 const MAX_FRAME_B64 = 400_000; // ~300 Ko par image JPEG
 
@@ -124,6 +130,103 @@ const TRACK_TASK = `Suivi image par image : pour CHAQUE image reçue (même inst
 - Un joueur hors champ : garde sa dernière position connue (ou la plus logique).
 - Ne lisse pas et n'invente pas de trajectoire : rapporte ce que tu vois, image par image.`;
 
+// Stats automatiques (module « Stats auto ») : actions de jeu vues dans une fenêtre de la vidéo.
+const EVENT_TYPES = [
+  "panier_2", "panier_3", "lf_reussi", "tir_rate_2", "tir_rate_3", "lf_rate",
+  "rebond_off", "rebond_def", "passe_decisive", "interception", "contre", "perte", "faute",
+];
+const STATS_SCHEMA = {
+  type: "object",
+  properties: {
+    evenements: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          t: { type: "number" },
+          type: { type: "string", enum: EVENT_TYPES },
+          equipe: { type: "string", enum: ["nous", "adversaire"] },
+          numero: { type: "integer" },
+          confiance: { type: "string", enum: ["haute", "moyenne", "basse"] },
+          detail: { type: "string" },
+        },
+        required: ["t", "type", "equipe", "numero", "confiance", "detail"],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ["evenements"],
+  additionalProperties: false,
+};
+
+const STATS_SYSTEM = `Tu es un statisticien de basketball (feuille de match FIBA) qui travaille pour Gravity Basketball (Montréal).
+Tu reçois, dans l'ordre, des images d'une courte portion de match (chacune avec son instant en secondes), puis des vignettes agrandies des joueurs détectés automatiquement (pour lire les numéros sur les maillots), avec la couleur moyenne de leur maillot.
+Ton travail : noter chaque action de jeu que tu VOIS dans cette portion, comme sur une feuille de stats.
+
+Types d'actions :
+- panier_2, panier_3 (le ballon entre dans le panier : 3 pts si le tireur est derrière la ligne à 3 points), lf_reussi (lancer franc réussi) ;
+- tir_rate_2, tir_rate_3, lf_rate (tir raté) ;
+- rebond_off (l'équipe qui a tiré récupère), rebond_def (l'autre équipe récupère) ;
+- passe_decisive (la passe juste avant un panier), interception, contre, perte (perte de balle : marcher, sortie, mauvaise passe…), faute.
+
+Règles :
+- « equipe » : « nous » = l'équipe suivie (décrite dans la demande), « adversaire » = l'autre équipe.
+- « numero » : le numéro sur le maillot du joueur qui fait l'action ; -1 si tu ne peux pas le lire avec une certitude raisonnable. N'invente JAMAIS un numéro : mieux vaut -1 qu'un faux numéro. Les numéros de l'effectif connu sont donnés quand on les a.
+- « t » : l'instant de l'action (le tir, la passe, le rebond), en secondes, d'après les images.
+- « confiance » : haute (on voit clairement l'action et le numéro), moyenne, basse (déduit).
+- « detail » : 100 caractères maximum, ex. « tir en suspension à mi-distance, côté gauche ».
+- Un panier se voit au ballon dans le filet, à la réaction des joueurs (repli en défense, remise en jeu depuis la ligne de fond) ou au tableau d'affichage s'il est visible. Si tu n'es pas sûr qu'un tir est rentré, note un tir raté avec confiance basse plutôt qu'un panier.
+- Ce sont des images fixes : déduis l'action en comparant les images, et ne note rien qui ne se voit pas. Une portion sans action claire = liste vide.
+- Ne note pas deux fois la même action.`;
+
+// Devoirs et exercices personnalisés (après un match), d'après les stats du joueur.
+const DEVOIRS_SCHEMA = {
+  type: "object",
+  properties: {
+    points_forts: strings,
+    points_faibles: strings,
+    message: { type: "string" },
+    devoirs: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          titre: { type: "string" },
+          categorie: { type: "string", enum: ["tir", "dribble", "passe", "defense", "rebond", "physique", "video", "mental"] },
+          description: { type: "string" },
+          repetitions: { type: "string" },
+          duree_min: { type: "integer" },
+        },
+        required: ["titre", "categorie", "description", "repetitions", "duree_min"],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ["points_forts", "points_faibles", "message", "devoirs"],
+  additionalProperties: false,
+};
+
+const DEVOIRS_SYSTEM = `Tu es l'entraîneur de développement individuel de Gravity Basketball (Montréal) : tu prépares, après chaque match, les devoirs d'un joueur, en français québécois, en le tutoyant.
+Tu reçois sa fiche (poste, catégorie d'âge), ses stats du match, la liste de ses actions et ses matchs précédents.
+- « points_forts » et « points_faibles » : 1 à 4 éléments chacun, courts, appuyés sur les chiffres (ex. « 1 sur 6 à 3 points »). Avec peu de données, dis-le plutôt que d'inventer.
+- « devoirs » : 3 à 5 exercices concrets à faire avant le prochain entraînement, adaptés à son âge et à son poste, qui travaillent d'abord ses points faibles ; au moins un devoir « video » (revoir ses clips dans l'Espace Joueurs avec une consigne précise). « repetitions » ex. « 5 séries de 10 tirs », « duree_min » réaliste (5 à 30).
+- « message » : 2 phrases d'encouragement, positives et honnêtes, sans émojis.
+- Jamais de jugement sur la personne : on parle du jeu.`;
+
+// Commentateur en direct (Mode direct) : une phrase courte à dire maintenant.
+const LIVE_SCHEMA = {
+  type: "object",
+  properties: { phrase: { type: "string" } },
+  required: ["phrase"],
+  additionalProperties: false,
+};
+
+const LIVE_SYSTEM = `Tu es le commentateur en direct des matchs de Gravity Basketball (Montréal), en français québécois, avec l'énergie d'un commentateur de télé.
+Tu reçois le score, le temps, les dernières actions notées par le coach et parfois une image de la caméra.
+Réponds par UNE phrase à dire tout de suite au micro : 6 à 22 mots, naturelle à l'oral, sans émojis ni hashtags, sans répéter les phrases précédentes.
+Appuie-toi sur les faits reçus (numéros, score, actions) ; sur l'image, décris seulement ce qui se voit. Pas de noms de joueurs inventés : dis « le numéro 12 ».
+Reste positif et respectueux envers les deux équipes et les arbitres : ce sont souvent des jeunes joueurs.`;
+
 const SYSTEM = `Tu es un entraîneur de basketball expert (niveau élite : 20 ans de coaching, analyse vidéo pour des équipes U15 à universitaires et professionnelles) qui travaille pour Gravity Basketball (Montréal).
 Tu reçois des images fixes tirées d'une séquence de match, dans l'ordre, chacune avec son instant (en secondes depuis le début de la vidéo).
 Ton travail : décortiquer le jeu comme un coach le ferait en séance vidéo avec ses joueurs, en français québécois clair, concret et précis, avec le vocabulaire du coaching (spacing, pick-and-roll, slip, pop, flare, back-door, aide côté faible, closeout, ice, hedge, switch, box-out…).
@@ -159,38 +262,73 @@ function samePassword(given: string, expected: string) {
 const json = (status: number, body: unknown) =>
   new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
 
-type Frame = { t: number; data: string };
+type Frame = { t: number; data: string; label?: string };
 
-export default async (req: Request) => {
-  if (req.method !== "POST") return json(405, { error: "Méthode non autorisée" });
-  const password = Netlify.env.get("ART_CRAFT_PASSWORD");
-  const apiKey = Netlify.env.get("ANTHROPIC_API_KEY");
-  if (!password) return json(500, { error: "ART_CRAFT_PASSWORD manquant dans les variables Netlify du site art-craft." });
-  if (!samePassword(req.headers.get("x-art-password") || "", password)) return json(401, { error: "Mot de passe incorrect" });
+type Body = {
+  ping?: boolean; mode?: string; frames?: Frame[]; crops?: Frame[]; team?: string; context?: string;
+  start?: number; dur?: number; moment?: Record<string, unknown>; roster?: unknown; player?: unknown;
+  facts?: unknown;
+};
 
-  let body: { ping?: boolean; mode?: string; frames?: Frame[]; team?: string; context?: string; start?: number; dur?: number; moment?: Record<string, unknown> };
-  try {
-    body = await req.json();
-  } catch {
-    return json(400, { error: "Requête illisible" });
-  }
-  // Vérification du mot de passe à la connexion (aucun appel à l'IA).
-  if (body.ping) return json(200, { ok: true, ai: Boolean(apiKey) });
-  if (!apiKey) return json(500, { error: "ANTHROPIC_API_KEY manquant dans les variables Netlify du site art-craft." });
-  const frames = Array.isArray(body.frames) ? body.frames : [];
-  if (frames.length < 2 || frames.length > MAX_FRAMES) return json(400, { error: `Il faut entre 2 et ${MAX_FRAMES} images.` });
-  if (frames.some((f) => !Number.isFinite(f.t) || typeof f.data !== "string" || f.data.length > MAX_FRAME_B64)) {
-    return json(400, { error: "Image invalide ou trop lourde" });
-  }
-  const team = String(body.team || "").slice(0, 120);
-  const context = String(body.context || "").slice(0, 1500);
+const clip = (v: unknown, n: number) => String(v ?? "").slice(0, n);
+const validImages = (list: Frame[]) =>
+  list.every((f) => Number.isFinite(f.t) && typeof f.data === "string" && f.data.length <= MAX_FRAME_B64);
 
-  const track = body.mode === "track";
+function imageBlocks(frames: Frame[], label = (f: Frame) => `Image à t = ${f.t.toFixed(2)} s`) {
   const content: Anthropic.Beta.BetaContentBlockParam[] = [];
   frames.forEach((f) => {
-    content.push({ type: "text", text: `Image à t = ${f.t.toFixed(2)} s` });
+    content.push({ type: "text", text: label(f) });
     content.push({ type: "image", source: { type: "base64", media_type: "image/jpeg", data: f.data } });
   });
+  return content;
+}
+
+// Ce que demande chaque mode : consigne, schéma de sortie, contenu du message, modèle.
+function buildRequest(body: Body) {
+  const mode = body.mode || "analyse";
+  const frames = Array.isArray(body.frames) ? body.frames : [];
+  const team = clip(body.team, 120);
+  const context = clip(body.context, 1500);
+
+  if (mode === "devoirs") {
+    return {
+      model: MODEL, system: DEVOIRS_SYSTEM, schema: DEVOIRS_SCHEMA, maxTokens: 4000, minFrames: 0,
+      content: [{ type: "text", text: `Joueur et match (JSON) :\n${clip(JSON.stringify(body.player ?? {}), 12000)}\nPrépare ses devoirs.` }] as Anthropic.Beta.BetaContentBlockParam[],
+    };
+  }
+  if (mode === "live") {
+    return {
+      model: LIVE_MODEL, system: LIVE_SYSTEM, schema: LIVE_SCHEMA, maxTokens: 600, minFrames: 0, maxFrames: 3, live: true,
+      content: [
+        ...imageBlocks(frames, () => "Image de la caméra, maintenant"),
+        { type: "text", text: `Situation (JSON) :\n${clip(JSON.stringify(body.facts ?? {}), 4000)}` },
+      ] as Anthropic.Beta.BetaContentBlockParam[],
+    };
+  }
+  if (mode === "stats") {
+    const crops = Array.isArray(body.crops) ? body.crops.slice(0, 12) : [];
+    if (!validImages(crops)) return { error: "Vignette invalide ou trop lourde" };
+    return {
+      model: MODEL, system: STATS_SYSTEM, schema: STATS_SCHEMA, maxTokens: 6000, minFrames: 2,
+      content: [
+        ...imageBlocks(frames),
+        ...imageBlocks(crops, (f) => `Vignette ${clip(f.label, 160)} (image à t = ${f.t.toFixed(2)} s)`),
+        {
+          type: "text",
+          text: [
+            `Portion de match : de ${Number(body.start || 0).toFixed(1)} s à ${(Number(body.start || 0) + Number(body.dur || 0)).toFixed(1)} s.`,
+            team ? `Équipe suivie (« nous ») : ${team}.` : "Équipe suivie (« nous ») : celle qui est décrite par le coach ; sinon, l'équipe en maillots foncés.",
+            body.roster ? `Numéros de l'effectif de l'équipe suivie : ${clip(JSON.stringify(body.roster), 600)}.` : "",
+            context ? `Précisions du coach : ${context}` : "",
+            "Note toutes les actions de jeu visibles dans cette portion.",
+          ].filter(Boolean).join("\n"),
+        },
+      ] as Anthropic.Beta.BetaContentBlockParam[],
+    };
+  }
+
+  const track = mode === "track";
+  const content = imageBlocks(frames);
   if (track) {
     // Le moment repéré à la 1re passe : postes déjà attribués, pour garder les mêmes noms que la narration.
     const m = body.moment && typeof body.moment === "object" ? body.moment : {};
@@ -199,9 +337,9 @@ export default async (req: Request) => {
       text: [
         TRACK_TASK,
         team ? `Équipe en attaque à suivre : ${team}.` : "",
-        `Action : ${String(m.titre || "").slice(0, 120)} — ${String(m.explication || "").slice(0, 300)}`,
-        m.narration ? `Ce que dit le coach : ${String(m.narration).slice(0, 600)}` : "",
-        m.joueurs ? `Postes attribués au début de l'action (garde ces noms) : ${JSON.stringify(m.joueurs).slice(0, 600)} ; ballon : ${String(m.ballon || "")}.` : "",
+        `Action : ${clip(m.titre, 120)} — ${clip(m.explication, 300)}`,
+        m.narration ? `Ce que dit le coach : ${clip(m.narration, 600)}` : "",
+        m.joueurs ? `Postes attribués au début de l'action (garde ces noms) : ${clip(JSON.stringify(m.joueurs), 600)} ; ballon : ${clip(m.ballon, 4)}.` : "",
         `${frames.length} images, à rendre dans le même ordre avec le même « t ».`,
       ].filter(Boolean).join("\n"),
     });
@@ -216,23 +354,58 @@ export default async (req: Request) => {
       ].filter(Boolean).join("\n"),
     });
   }
+  return { model: MODEL, system: SYSTEM, schema: track ? TRACK_SCHEMA : ANALYSIS_SCHEMA, maxTokens: 16000, minFrames: 2, content };
+}
+
+export default async (req: Request) => {
+  if (req.method !== "POST") return json(405, { error: "Méthode non autorisée" });
+  const password = Netlify.env.get("ART_CRAFT_PASSWORD");
+  const apiKey = Netlify.env.get("ANTHROPIC_API_KEY");
+  if (!password) return json(500, { error: "ART_CRAFT_PASSWORD manquant dans les variables Netlify du site art-craft." });
+  if (!samePassword(req.headers.get("x-art-password") || "", password)) return json(401, { error: "Mot de passe incorrect" });
+
+  let body: Body;
+  try {
+    body = await req.json();
+  } catch {
+    return json(400, { error: "Requête illisible" });
+  }
+  // Vérification du mot de passe à la connexion (aucun appel à l'IA).
+  if (body.ping) return json(200, { ok: true, ai: Boolean(apiKey) });
+  if (!apiKey) return json(500, { error: "ANTHROPIC_API_KEY manquant dans les variables Netlify du site art-craft." });
+
+  const request = buildRequest(body);
+  if ("error" in request) return json(400, { error: request.error });
+  const frames = Array.isArray(body.frames) ? body.frames : [];
+  const maxFrames = request.maxFrames ?? MAX_FRAMES;
+  if (frames.length < request.minFrames || frames.length > maxFrames) {
+    return json(400, { error: `Il faut entre ${request.minFrames} et ${maxFrames} images.` });
+  }
+  if (!validImages(frames)) return json(400, { error: "Image invalide ou trop lourde" });
 
   const client = new Anthropic({ apiKey });
   const encoder = new TextEncoder();
   const line = (o: unknown) => encoder.encode(JSON.stringify(o) + "\n");
 
+  const params: Record<string, unknown> = {
+    model: request.model,
+    max_tokens: request.maxTokens,
+    output_config: { effort: "low", format: { type: "json_schema", schema: request.schema } },
+    system: request.system,
+    messages: [{ role: "user", content: request.content }],
+  };
+  if (request.live) {
+    // Une phrase à dire tout de suite : pas de réflexion (Haiku n'a pas de modèle de repli).
+    params.thinking = { type: "disabled" };
+  } else {
+    params.betas = ["server-side-fallback-2026-07-01"];
+    params.fallbacks = "default";
+  }
+
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        const run = client.beta.messages.stream({
-          model: MODEL,
-          max_tokens: 16000,
-          betas: ["server-side-fallback-2026-07-01"],
-          fallbacks: "default",
-          output_config: { effort: "low", format: { type: "json_schema", schema: track ? TRACK_SCHEMA : ANALYSIS_SCHEMA } },
-          system: SYSTEM,
-          messages: [{ role: "user", content }],
-        } as Anthropic.Beta.MessageCreateParamsStreaming);
+        const run = client.beta.messages.stream(params as unknown as Anthropic.Beta.MessageCreateParamsStreaming);
         for await (const event of run) {
           if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
             controller.enqueue(line({ d: event.delta.text }));
@@ -242,7 +415,7 @@ export default async (req: Request) => {
         if (final.stop_reason === "refusal") {
           controller.enqueue(line({ error: "L'IA a refusé d'analyser ces images." }));
         } else if (final.stop_reason === "max_tokens") {
-          controller.enqueue(line({ error: "Analyse trop longue, coupée : réessaie avec une séquence plus courte." }));
+          controller.enqueue(line({ error: "Réponse trop longue, coupée : réessaie avec une séquence plus courte." }));
         } else {
           controller.enqueue(line({ end: { model: final.model, output_tokens: final.usage.output_tokens } }));
         }
