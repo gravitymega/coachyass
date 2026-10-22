@@ -1,14 +1,14 @@
 import {
   $, showError, setProgress, parseLogTime, getFFmpeg, mountFiles, runWithLog, offerFile, loadImage,
 } from './common.js';
-import { FORMATS, clipOutDuration, timelineDuration, buildEditorArgs } from './editor-core.js';
+import { FORMATS, LOOKS, EFFECTS, cubeLUT, checkCube, clipOutDuration, timelineDuration, buildEditorArgs } from './editor-core.js';
 import { formatTime } from './highlights.js';
 import { BRAND, OUTRO, brandCardPNG } from './brand.js';
 
 const MOUNT = '/m';
 const state = {
   media: [],      // { id, file, kind, name, url, duration }
-  clips: [],      // { id, mediaId, start, dur, speed, text, pos }
+  clips: [],      // { id, mediaId, start, dur, speed, text, pos, effect }
   selected: null,
   logo: null,
   busy: false,
@@ -19,6 +19,36 @@ loadImage('assets/logo.png').then(img => { state.logo = img; }).catch(() => {});
 
 const formatSel = $('format');
 Object.entries(FORMATS).forEach(([k, f]) => formatSel.add(new Option(f.label, k)));
+Object.entries(EFFECTS).forEach(([k, e]) => $('insp-effect').add(new Option(e.label, k)));
+Object.entries(LOOKS).forEach(([k, l]) => $('look').add(new Option(l.label, k)));
+
+// ---------- Look (étalonnage) ----------
+let customLut = null; // { name, text }
+function applyLookPreview() {
+  const custom = $('look').value === 'custom';
+  const css = custom ? '' : (LOOKS[$('look').value].css || '');
+  $('stage-video').style.filter = css;
+  $('stage-img').style.filter = css;
+}
+$('look').addEventListener('change', applyLookPreview);
+$('look-file').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const n = checkCube(text);
+    customLut = { name: file.name, text };
+    let opt = [...$('look').options].find(o => o.value === 'custom');
+    if (!opt) { opt = new Option('', 'custom'); $('look').add(opt); }
+    opt.textContent = `Ma LUT : ${file.name}`;
+    $('look').value = 'custom';
+    $('look-info').textContent = `LUT « ${file.name} » chargée (${n}×${n}×${n}). Pas d'aperçu en direct : elle s'applique à l'export.`;
+    applyLookPreview();
+  } catch (err) {
+    showError(err.message);
+    e.target.value = '';
+  }
+});
 
 const mediaById = id => state.media.find(m => m.id === id);
 const kindOf = file => {
@@ -116,7 +146,7 @@ function renderBin() {
 // ---------- Timeline ----------
 function addClip(m, select) {
   const dur = m.kind === 'image' ? 4 : Math.min(m.duration, 10);
-  const clip = { id: nextId++, mediaId: m.id, start: 0, dur, speed: 1, text: '', pos: 'bottom' };
+  const clip = { id: nextId++, mediaId: m.id, start: 0, dur, speed: 1, text: '', pos: 'bottom', effect: 'none' };
   state.clips.push(clip);
   if (select) state.selected = clip.id;
   renderTimeline();
@@ -135,7 +165,7 @@ function renderTimeline() {
     li.draggable = true;
     li.className = c.id === state.selected ? 'sel' : '';
     li.style.flexGrow = String(Math.max(1, clipOutDuration(c)));
-    li.innerHTML = `<b>${i + 1}</b><span class="name"></span><small>${clipOutDuration(c).toFixed(1)} s${c.speed !== 1 ? ` · ×${c.speed}` : ''}</small>`;
+    li.innerHTML = `<b>${i + 1}</b><span class="name"></span><small>${clipOutDuration(c).toFixed(1)} s${c.speed !== 1 ? ` · ×${c.speed}` : ''}${c.effect && c.effect !== 'none' ? ' · ✨' : ''}</small>`;
     li.querySelector('.name').textContent = c.text || m.name;
     li.onclick = () => { state.selected = c.id; renderTimeline(); previewClip(c, false); };
     li.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', String(c.id)); });
@@ -174,6 +204,7 @@ function renderInspector() {
   $('insp-speed').value = String(c.speed);
   $('insp-text').value = c.text;
   $('insp-pos').value = c.pos;
+  $('insp-effect').value = c.effect || 'none';
 }
 
 function clampClip(c) {
@@ -192,6 +223,12 @@ function clampClip(c) {
     renderTimeline();
     if (key === 'start') previewClip(c, false);
   });
+});
+$('insp-effect').addEventListener('change', e => {
+  const c = selectedClip();
+  if (!c) return;
+  c.effect = e.target.value;
+  renderTimeline();
 });
 $('insp-text').addEventListener('input', e => {
   const c = selectedClip();
@@ -376,7 +413,7 @@ $('btn-render').onclick = async () => {
         await ff.writeFile(overlay, png);
         written.push(overlay);
       }
-      clips.push({ kind: m.kind, path: pathOf(m), start: c.start, dur: c.dur, speed: c.speed, hasAudio: !!audioCache.get(m.id), overlay });
+      clips.push({ kind: m.kind, path: pathOf(m), start: c.start, dur: c.dur, speed: c.speed, hasAudio: !!audioCache.get(m.id), overlay, effect: c.effect });
     }
     // Modèle Gravity : cartes d'intro et d'outro ajoutées autour du montage.
     if ($('brand-intro').checked) {
@@ -384,19 +421,27 @@ $('btn-render').onclick = async () => {
         kicker: BRAND.name, title: $('brand-title').value.trim(), sub: $('brand-sub').value.trim(), footer: BRAND.site,
       }));
       written.push('/brand-intro.png');
-      clips.unshift({ kind: 'image', path: '/brand-intro.png', start: 0, dur: 2.5, speed: 1, hasAudio: false, overlay: null });
+      clips.unshift({ kind: 'image', path: '/brand-intro.png', start: 0, dur: 2.5, speed: 1, hasAudio: false, overlay: null, grade: false });
     }
     if ($('brand-outro').checked) {
       await ff.writeFile('/brand-outro.png', await brandCardPNG(W, H, state.logo, OUTRO));
       written.push('/brand-outro.png');
-      clips.push({ kind: 'image', path: '/brand-outro.png', start: 0, dur: 3, speed: 1, hasAudio: false, overlay: null });
+      clips.push({ kind: 'image', path: '/brand-outro.png', start: 0, dur: 3, speed: 1, hasAudio: false, overlay: null, grade: false });
+    }
+    let look = null;
+    const lookId = $('look').value;
+    if (lookId === 'custom' && customLut) look = customLut.text;
+    else if (LOOKS[lookId] && LOOKS[lookId].fn) look = cubeLUT(LOOKS[lookId].fn);
+    if (look) {
+      await ff.writeFile('/look.cube', new TextEncoder().encode(look));
+      written.push('/look.cube');
     }
     const musicMedia = mediaById(+$('music').value);
     const total = timelineDuration(clips, $('transition').value);
     const args = buildEditorArgs({
       clips, width: W, height: H, fit: $('fit').value, transition: $('transition').value,
       music: musicMedia ? { path: pathOf(musicMedia), volume: +$('music-vol').value } : null,
-      originalVolume: +$('orig-vol').value, output: '/edit.mp4',
+      originalVolume: +$('orig-vol').value, look: look ? '/look.cube' : null, output: '/edit.mp4',
     });
     const errors = [];
     const code = await runWithLog(ff, args, line => {

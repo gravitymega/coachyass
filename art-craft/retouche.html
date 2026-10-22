@@ -333,6 +333,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   <a href="stats.html">Stats auto</a>
   <a href="direct.html">Mode direct</a>
   <a href="editeur.html">Éditeur</a>
+  <a href="sous-titres.html">Sous-titres</a>
   <a href="son.html">Studio son</a>
   <a href="beat.html">Studio beat</a>
   <a href="voix.html">Studio voix</a>
@@ -541,8 +542,10 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
     <div class="seg" id="fmtSeg">
       <button data-fmt="jpg" aria-pressed="true">JPEG</button>
       <button data-fmt="png" aria-pressed="false">PNG</button>
+      <button data-fmt="webp" aria-pressed="false">WebP</button>
+      <button data-fmt="avif" aria-pressed="false">AVIF</button>
     </div>
-    <p class="fhint">JPEG pour les photos : fichier léger, qualité identique à l’œil. PNG seulement pour un visuel avec texte, logo ou aplats de couleur.</p>
+    <p class="fhint">JPEG pour les photos : léger et lu partout. WebP (ou AVIF) : 2 à 3 fois plus léger à qualité égale, idéal pour le site et les réseaux, transparence possible. PNG pour un visuel avec texte, logo ou aplats.</p>
     <div class="seg-label" id="sizeLabel">Taille</div>
     <div class="seg" id="sizeSeg">
       <button data-scale="1" aria-pressed="true">Originale</button>
@@ -581,7 +584,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
     <div class="chips" id="bSoc"></div>
     <label class="check" id="bRecoRow" hidden><input type="checkbox" id="bReco" checked> Ajouter les réglages conseillés pour ce réseau</label>
     <div class="seg-label">Format</div>
-    <div class="seg" id="bFmt"><button data-fmt="jpg" aria-pressed="true">JPEG</button><button data-fmt="png" aria-pressed="false">PNG</button></div>
+    <div class="seg" id="bFmt"><button data-fmt="jpg" aria-pressed="true">JPEG</button><button data-fmt="png" aria-pressed="false">PNG</button><button data-fmt="webp" aria-pressed="false">WebP</button></div>
     <div class="seg-label" id="bSizeLabel">Taille</div>
     <div class="seg" id="bSize"><button data-scale="1" aria-pressed="true">Originale</button><button data-scale="2" aria-pressed="false">×2</button><button data-scale="4" aria-pressed="false">×4</button></div>
     <ul id="bList"></ul>

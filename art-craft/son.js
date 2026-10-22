@@ -1,8 +1,8 @@
 import { $, showError, setProgress, offerFile } from './common.js';
-import { encodeWav, trackSpan, projectDuration } from './son-core.js';
+import { encodeWav, trackSpan, projectDuration, normalizeGain } from './son-core.js';
 
 const state = {
-  tracks: [],   // { id, name, buffer, gain, pan, offset, trimStart, trimEnd, fadeIn, fadeOut, mute, solo, clean }
+  tracks: [],   // { id, name, buffer, gain, pan, offset, trimStart, trimEnd, fadeIn, fadeOut, mute, solo, clean, bass, mid, treble }
   playing: false,
   position: 0,  // tête de lecture (s)
   recording: null,
@@ -62,6 +62,16 @@ function buildGraph(ac, destination, when, from) {
       node.connect(hp).connect(presence).connect(comp).connect(trim);
       node = trim;
     }
+    // Égaliseur 3 bandes (graves 120 Hz, médiums 1,5 kHz, aigus 6 kHz), en dB.
+    [['lowshelf', 120, t.bass], ['peaking', 1500, t.mid], ['highshelf', 6000, t.treble]].forEach(([type, f, db]) => {
+      if (!db) return;
+      const eq = ac.createBiquadFilter();
+      eq.type = type;
+      eq.frequency.value = f;
+      eq.gain.value = db;
+      node.connect(eq);
+      node = eq;
+    });
     const fade = ac.createGain();
     const gain = ac.createGain();
     gain.gain.value = t.gain;
@@ -158,7 +168,7 @@ $('master').oninput = () => { if (state.playing) { pause(); play(); } };
 function addTrack(name, buffer, offset = 0) {
   state.tracks.push({
     id: nextId++, name, buffer, gain: 1, pan: 0, offset, trimStart: 0, trimEnd: buffer.duration,
-    fadeIn: 0, fadeOut: 0, mute: false, solo: false, clean: false,
+    fadeIn: 0, fadeOut: 0, mute: false, solo: false, clean: false, bass: 0, mid: 0, treble: 0,
   });
   renderTracks();
 }
@@ -189,6 +199,7 @@ function renderTracks() {
           <button class="tool${t.mute ? ' on' : ''}" data-a="mute" title="Couper">M</button>
           <button class="tool${t.solo ? ' on' : ''}" data-a="solo" title="Écouter seule">S</button>
           <button class="tool${t.clean ? ' on' : ''}" data-a="clean" title="Nettoyer la voix">Voix ✨</button>
+          <button class="tool" data-a="norm" title="Monter le volume au maximum sans saturer">Normaliser</button>
           <button class="tool" data-a="del" title="Supprimer">✕</button>
         </div>
         <label>Volume <input type="range" data-k="gain" min="0" max="2" step="0.05" value="${t.gain}"></label>
@@ -197,6 +208,9 @@ function renderTracks() {
         <label>Fondu ↘ <input type="range" data-k="fadeOut" min="0" max="5" step="0.25" value="${t.fadeOut}"></label>
         <label>Début <input type="range" data-k="trimStart" min="0" max="${t.buffer.duration.toFixed(2)}" step="0.1" value="${t.trimStart}"></label>
         <label>Fin <input type="range" data-k="trimEnd" min="0" max="${t.buffer.duration.toFixed(2)}" step="0.1" value="${t.trimEnd}"></label>
+        <label>Graves <input type="range" data-k="bass" min="-12" max="12" step="1" value="${t.bass}"></label>
+        <label>Médiums <input type="range" data-k="mid" min="-12" max="12" step="1" value="${t.mid}"></label>
+        <label>Aigus <input type="range" data-k="treble" min="-12" max="12" step="1" value="${t.treble}"></label>
       </div>
       <canvas></canvas>`;
     el.querySelector('.tname').textContent = t.name;
@@ -214,7 +228,11 @@ function renderTracks() {
       const a = e.target.dataset.a;
       if (!a) return;
       if (a === 'del') state.tracks = state.tracks.filter(x => x !== t);
-      else t[a] = !t[a];
+      else if (a === 'norm') {
+        const sr = t.buffer.sampleRate;
+        const chans = Array.from({ length: t.buffer.numberOfChannels }, (_, i) => t.buffer.getChannelData(i));
+        t.gain = normalizeGain(chans, Math.floor(t.trimStart * sr), Math.ceil(t.trimEnd * sr));
+      } else t[a] = !t[a];
       if (state.playing) { pause(); play(); }
       renderTracks();
     });
