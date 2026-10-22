@@ -264,7 +264,7 @@ async function readWindow(ff, win, nums) {
   const { labels, centers } = kmeans2(dets.map(d => d.color));
   dets.forEach((d, i) => { d.team = labels[i]; });
   const crops = [];
-  for (const d of pickCrops(dets, CROPS)) {
+  for (const d of pickCrops(dets, CROPS, bitmaps[0] ? bitmaps[0].width / bitmaps[0].height : 16 / 9)) {
     crops.push({
       t: d.t,
       label: `joueur ${crops.length + 1}, maillot ${hex(d.color)} (groupe de couleur ${d.team === 0 ? 'A ' + hex(centers[0]) : 'B ' + hex(centers[1])})`,

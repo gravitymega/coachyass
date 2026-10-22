@@ -201,15 +201,26 @@ export function kmeans2(colors, iters = 12) {
 
 export const hex = c => '#' + c.map(v => Math.round(Math.min(255, Math.max(0, v))).toString(16).padStart(2, '0')).join('');
 
-// Vignettes à envoyer à l'IA : les joueurs les plus grands et les plus sûrs, sans doublon (même joueur, images voisines).
-export function pickCrops(dets, max = 8) {
-  const ranked = [...dets].sort((a, b) => b.score * b.h - a.score * a.h);
+// Vignettes à envoyer à l'IA : un joueur = une vignette. Les joueurs bougent d'une image à l'autre,
+// donc on part de l'image où l'on voit le plus de joueurs (la plus récente à égalité), puis on
+// complète avec les autres images seulement pour des joueurs loin de ceux déjà pris.
+// Les personnes assises (spectateurs, banc : boîte presque carrée) passent après les joueurs debout.
+// aspect = largeur / hauteur de l'image (les boîtes sont en coordonnées 0 à 1).
+export function pickCrops(dets, max = 8, aspect = 16 / 9) {
+  const byFrame = new Map();
+  dets.forEach(d => { if (!byFrame.has(d.frame)) byFrame.set(d.frame, []); byFrame.get(d.frame).push(d); });
+  const frames = [...byFrame.keys()].sort((a, b) => byFrame.get(b).length - byFrame.get(a).length || b - a);
+  const standing = d => d.h / (d.w * aspect) >= 1.6;
+  const weight = d => d.score * d.h * (standing(d) ? 1 : 0.25);
+  const rank = list => [...list].sort((a, b) => weight(b) - weight(a));
   const out = [];
-  for (const d of ranked) {
-    if (out.length >= max) break;
-    const same = out.some(o => o.frame !== d.frame && Math.abs(o.x + o.w / 2 - d.x - d.w / 2) < o.w * 0.4 && Math.abs(o.y - d.y) < o.h * 0.3);
-    if (!same) out.push(d);
-  }
+  frames.forEach((f, i) => {
+    for (const d of rank(byFrame.get(f))) {
+      if (out.length >= max) return;
+      const near = out.some(o => Math.abs(o.x + o.w / 2 - d.x - d.w / 2) < Math.max(o.w, d.w) * 1.2 && Math.abs(o.y + o.h - d.y - d.h) < Math.max(o.h, d.h) * 0.6);
+      if (i === 0 || !near) out.push(d);
+    }
+  });
   return out;
 }
 
