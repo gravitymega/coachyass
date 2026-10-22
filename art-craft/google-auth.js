@@ -1,7 +1,8 @@
 // Connexion Google partagée par les modules d'Art craft (Google Drive, YouTube).
 // Google Identity Services, directement dans le navigateur : aucun secret. L'identifiant
 // client OAuth (GOOGLE_CLIENT_ID) est public par nature ; il doit seulement autoriser
-// l'adresse du site (https://art-craft-gravity.netlify.app) dans la console Google Cloud.
+// l'adresse du site (https://art-craft-gravity.pages.dev, et l'ancienne adresse Netlify si elle sert
+// encore) dans la console Google Cloud.
 export const GOOGLE_CLIENT_ID = '';
 
 const tokens = new Map(); // permission → { value, expires }

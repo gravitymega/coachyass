@@ -1,8 +1,11 @@
 {
   "name": "art-craft",
   "private": true,
-  "description": "Art craft (Gravity) : dépendances des fonctions Netlify",
+  "description": "Art craft (Gravity) : dépendances des fonctions serveur (Netlify ou Cloudflare Pages)",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.134.0"
+  },
+  "scripts": {
+    "build": "node scripts/build-pages.mjs"
   }
 }

@@ -22,7 +22,7 @@ const state = { password: '', file: null, input: '', duration: 0, hasAudio: fals
 
 // ---------- Accès ----------
 async function post(fn, payload) {
-  return fetch(`/.netlify/functions/${fn}`, {
+  return fetch(`/api/${fn}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-art-password': state.password },
     body: JSON.stringify(payload),

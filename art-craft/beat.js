@@ -654,7 +654,7 @@ $('btn-export').onclick = async () => {
 };
 
 // ---------- Bibliothèque libre de droits ----------
-const FUNC = '/.netlify/functions/music';
+const FUNC = '/api/music';
 const lib = { q: [], page: 1, pages: 1, results: [], previewId: null };
 const preview = $('lib-preview');
 const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;

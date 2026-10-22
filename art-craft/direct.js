@@ -241,7 +241,7 @@ function camFrame() {
 // ---------- Commentateur IA ----------
 async function startAI() {
   password = $('password').value;
-  const res = await fetch('/.netlify/functions/coach', {
+  const res = await fetch('/api/coach', {
     method: 'POST', headers: { 'Content-Type': 'application/json', 'x-art-password': password }, body: JSON.stringify({ ping: true }),
   }).catch(() => null);
   if (!res || !res.ok) { showError(res && res.status === 401 ? 'Mot de passe Art craft incorrect : commentateur désactivé.' : 'Serveur injoignable : commentateur désactivé.'); return; }
@@ -273,7 +273,7 @@ async function comment(reason) {
       dernieres_actions: match.events.slice(-6).map(describe),
       phrases_precedentes: lastSaid.slice(-4),
     };
-    const res = await fetch('/.netlify/functions/coach', {
+    const res = await fetch('/api/coach', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-art-password': password },
       body: JSON.stringify({ mode: 'live', facts, frames: frame ? [{ t: now(), data: frame }] : [] }),
