@@ -72,6 +72,18 @@
       <label class="check"><input type="checkbox" id="rec-on"> Enregistrer la vidéo du match (pour faire les clips ensuite ; ~1 Go par heure, garde la tablette branchée)</label>
       <p class="muted">Tu filmes avec XbotGo ou un téléphone ? Laisse la caméra éteinte ici : à la fin, exporte les stats (.json) et importe-les dans Stats auto avec la vidéo XbotGo.</p>
     </fieldset>
+    <fieldset>
+      <legend>Chaîne YouTube Gravity Basketball (facultatif)</legend>
+      <p class="muted">Lance d'abord ton direct dans l'appli XbotGo. Pendant le match, les paniers et le score s'écrivent dans le chat du live ; après le match, chaque panier devient un chapitre cliquable dans la vidéo.</p>
+      <p class="warn" id="yt-setup">YouTube n'est pas encore configuré : il manque l'identifiant client Google (même réglage que Google Drive, voir les étapes données par Claude).</p>
+      <div class="row">
+        <button class="btn ghost" id="yt-connect" type="button">Trouver mon live YouTube</button>
+        <select id="yt-broadcast" hidden></select>
+      </div>
+      <label class="check"><input type="checkbox" id="yt-chat" checked> Écrire les paniers, interceptions, contres et le score dans le chat</label>
+      <label class="check"><input type="checkbox" id="yt-ai" checked> Écrire aussi les phrases du commentateur IA (au plus une toutes les 20 s)</label>
+      <p class="muted"><span id="yt-status"></span> <span id="yt-quota"></span></p>
+    </fieldset>
     <div class="row">
       <button class="btn big" id="btn-start" type="button">Commencer le match</button>
       <button class="btn ghost" id="btn-resume" type="button" hidden>Reprendre le match en cours</button>
@@ -124,6 +136,17 @@
       <a class="btn ghost" href="stats.html">Faire les clips dans Stats auto →</a>
     </div>
     <p class="muted" id="send-status"></p>
+    <h3 class="sub">Chapitres YouTube</h3>
+    <p class="muted">Chaque panier devient un chapitre cliquable dans la vidéo du live. Si le live est relié, un clic les ajoute à la description. Sinon, copie-les et colle-les dans YouTube Studio (indique à quel moment de la vidéo le match commence).</p>
+    <div class="row">
+      <label class="inline">Le match commence à <input id="yt-offset" value="0:00" size="7"> dans la vidéo</label>
+    </div>
+    <textarea id="yt-chapters" rows="8" readonly></textarea>
+    <div class="row">
+      <button class="btn" id="btn-yt-chapters" type="button">Ajouter les chapitres à la vidéo YouTube</button>
+      <button class="btn ghost" id="btn-yt-copy" type="button">Copier les chapitres</button>
+    </div>
+    <p class="muted" id="yt-chapters-status"></p>
     <div class="row">
       <button class="btn ghost danger" id="btn-new" type="button">Nouveau match (efface celui-ci)</button>
     </div>

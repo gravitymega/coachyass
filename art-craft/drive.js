@@ -2,47 +2,22 @@
 // Connexion Google officielle (Google Identity Services) avec la permission
 // « drive.file » : l'outil ne voit que les fichiers qu'il a créés lui-même,
 // jamais le reste du Drive. Les shorts vont dans le dossier DRIVE_FOLDER.
-// Aucun secret : l'identifiant client OAuth (GOOGLE_CLIENT_ID) est public par nature,
-// il doit simplement autoriser l'adresse du site dans la console Google Cloud.
+// Aucun secret : l'identifiant client OAuth (GOOGLE_CLIENT_ID, dans google-auth.js) est
+// public par nature, il doit simplement autoriser l'adresse du site dans la console Google Cloud.
 import { $, setProgress } from './common.js';
+import { GOOGLE_CLIENT_ID, googleToken, cachedToken } from './google-auth.js';
 
-export const GOOGLE_CLIENT_ID = '';
+export { GOOGLE_CLIENT_ID };
 export const DRIVE_FOLDER = 'Art craft — Gravity';
 const SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const AUTO_KEY = 'artcraft-drive-auto';
 
 let token = null; // { value, expires }
-let tokenClient = null;
-
-function loadGis() {
-  if (window.google && google.accounts && google.accounts.oauth2) return Promise.resolve();
-  return new Promise((resolve, reject) => {
-    const s = document.createElement('script');
-    s.src = 'https://accounts.google.com/gsi/client';
-    s.onload = resolve;
-    s.onerror = () => reject(new Error('Connexion Google indisponible (script bloqué ?)'));
-    document.head.appendChild(s);
-  });
-}
 
 // Doit être appelé pendant un clic : Google ouvre une fenêtre de connexion.
 async function getToken() {
-  if (token && token.expires > Date.now() + 60e3) return token.value;
-  if (!GOOGLE_CLIENT_ID) throw new Error('Google Drive n\'est pas encore configuré (identifiant client Google manquant).');
-  await loadGis();
-  return new Promise((resolve, reject) => {
-    tokenClient = google.accounts.oauth2.initTokenClient({
-      client_id: GOOGLE_CLIENT_ID,
-      scope: SCOPE,
-      callback: r => {
-        if (r.error) return reject(new Error(r.error === 'access_denied' ? 'Accès à Google Drive refusé' : r.error));
-        token = { value: r.access_token, expires: Date.now() + (r.expires_in || 3600) * 1000 };
-        resolve(token.value);
-      },
-      error_callback: e => reject(new Error(e && e.type === 'popup_closed' ? 'Fenêtre Google fermée' : 'Connexion Google impossible')),
-    });
-    tokenClient.requestAccessToken({ prompt: '' });
-  });
+  token = await googleToken(SCOPE, 'Google Drive');
+  return token.value;
 }
 
 async function api(path, init = {}) {
@@ -151,5 +126,5 @@ export function offerDrive(blob, name, description) {
   $('drive-error').textContent = '';
   $('drive-progress').hidden = true;
   $('drive-setup').hidden = !!GOOGLE_CLIENT_ID;
-  if ($('drive-auto').checked && token && token.expires > Date.now() + 60e3 && savedFor !== blob) save();
+  if ($('drive-auto').checked && cachedToken(SCOPE) && savedFor !== blob) save();
 }
