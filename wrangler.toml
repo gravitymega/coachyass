@@ -1,0 +1,15 @@
+# Art craft sur Cloudflare Workers (parcours « Workers » : dépôt relié, Deploy command = npx wrangler deploy).
+# Les autres dossiers du dépôt (sites Netlify) ne sont pas concernés.
+name = "art-craft-gravity"
+main = "art-craft/worker/index.ts"
+compatibility_date = "2026-10-01"
+# Garde les variables ajoutées dans le tableau de bord (ART_CRAFT_PASSWORD) à chaque déploiement.
+keep_vars = true
+
+[build]
+command = "cd art-craft && npm install && npm run build"
+
+[assets]
+directory = "art-craft/dist"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]

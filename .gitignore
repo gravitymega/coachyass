@@ -2,3 +2,4 @@
 node_modules/
 art-craft/dist/
 art-craft/.wrangler/
+.wrangler/
