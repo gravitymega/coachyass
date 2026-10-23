@@ -31,9 +31,16 @@ export function loadOpenCV() {
         try { await addScript(url); last = null; break; } catch (err) { last = err; }
       }
       if (last) throw new Error('Moteur de suivi de caméra injoignable (' + last.message + ')');
-      let cv = window.cv;
-      if (cv && typeof cv.then === 'function' && !cv.Mat) cv = await cv;
-      if (!cv.Mat) await new Promise(r => { cv.onRuntimeInitialized = r; });
+      const cv = window.cv;
+      // Le module Emscripten a une méthode then() qui se renvoie lui-même : un « await cv » ne finirait
+      // jamais. On attend la fin de l'initialisation, puis on retire then() avant de rendre le module.
+      if (!cv.Mat) {
+        await new Promise(r => {
+          if (typeof cv.then === 'function') cv.then(() => r());
+          else cv.onRuntimeInitialized = r;
+        });
+      }
+      if (typeof cv.then === 'function') delete cv.then;
       return cv;
     })().catch(err => { cvPromise = null; throw err; });
   }
