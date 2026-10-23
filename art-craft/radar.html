@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Art craft — Radar terrain</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="" class="top-logo">
+  <div>
+    <h1>Art craft <span>Radar terrain</span></h1>
+    <p>Les joueurs de ta vidéo, vus du dessus comme sur une tablette de coach : possession, passes, pertes de balle, zones occupées, écartement et cartes de chaleur des deux équipes. Tout est calculé dans ton navigateur, gratuitement, sans rien envoyer.</p>
+  </div>
+</header>
+<nav class="tabs">
+  <a href="index.html">Highlights</a>
+  <a href="analyse.html">Analyse tactique</a>
+  <a href="radar.html" aria-current="page">Radar terrain</a>
+  <a href="stats.html">Stats auto</a>
+  <a href="direct.html">Mode direct</a>
+  <a href="editeur.html">Éditeur</a>
+  <a href="sous-titres.html">Sous-titres</a>
+  <a href="son.html">Studio son</a>
+  <a href="beat.html">Studio beat</a>
+  <a href="voix.html">Studio voix</a>
+  <a href="image.html">Studio image</a>
+</nav>
+
+<main>
+  <section class="card" id="step-video">
+    <h2><b>1</b> La vidéo</h2>
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept="video/*,.mov,.mkv">
+      <strong>Dépose la vidéo ici</strong>
+      <span>caméra fixe (trépied, gradins) qui voit le demi-terrain</span>
+    </label>
+    <p class="muted">Il faut une <b>caméra qui ne bouge pas</b> pendant la séquence : le radar se cale une fois sur les lignes du terrain. Une caméra qui suit le jeu (XbotGo, téléphone à la main) décale le radar.</p>
+    <div id="player-wrap" hidden>
+      <video id="video" controls playsinline preload="metadata"></video>
+      <p class="muted" id="file-info"></p>
+    </div>
+  </section>
+
+  <section class="card" id="step-calib" hidden>
+    <h2><b>2</b> Caler le terrain</h2>
+    <p class="muted">Mets la vidéo sur une image où l'on voit bien les lignes, choisis les repères, puis touche-les sur l'image, dans l'ordre demandé.</p>
+    <div class="row">
+      <label class="inline">Repères
+        <select id="preset"></select>
+      </label>
+      <button class="btn" id="btn-frame" type="button">Utiliser l'image affichée</button>
+    </div>
+    <div id="calib-wrap" hidden>
+      <p class="calib-ask" id="calib-ask"></p>
+      <canvas id="calib" class="calib"></canvas>
+      <div class="row">
+        <button class="tool" id="btn-undo" type="button">Annuler le dernier repère</button>
+        <button class="tool" id="btn-reset" type="button">Recommencer</button>
+      </div>
+      <p class="muted" id="calib-info"></p>
+      <div id="teams" hidden>
+        <h3 class="sub">Les deux équipes (d'après les maillots)</h3>
+        <div class="team-row">
+          <span class="swatch" id="sw0"></span>
+          <input id="name0" maxlength="40" value="Gravity">
+          <span class="swatch" id="sw1"></span>
+          <input id="name1" maxlength="40" value="Adversaire">
+          <button class="tool" id="btn-swap" type="button" title="Inverser les noms">⇄</button>
+        </div>
+        <p class="muted">Couleurs trouvées sur l'image de calibration. Si les deux équipes portent la même couleur, le radar montre tous les joueurs mais ne peut pas les séparer.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="step-run" hidden>
+    <h2><b>3</b> La séquence</h2>
+    <div class="row">
+      <label class="inline">Début <input id="start" value="0:00" size="7" inputmode="numeric"></label>
+      <button class="tool" id="btn-here" type="button">Prendre le moment affiché</button>
+      <label class="inline">Durée
+        <select id="dur">
+          <option value="30">30 s</option>
+          <option value="60" selected>1 min</option>
+          <option value="120">2 min</option>
+          <option value="180">3 min</option>
+          <option value="300">5 min</option>
+        </select>
+      </label>
+      <label class="inline">Précision
+        <select id="fps">
+          <option value="1">1 image / s (rapide)</option>
+          <option value="2" selected>2 images / s</option>
+          <option value="3">3 images / s (passes plus justes)</option>
+        </select>
+      </label>
+      <label class="inline">Détection
+        <select id="grid">
+          <option value="2" selected>Fine (joueurs loin, ballon)</option>
+          <option value="1">Rapide (joueurs proches)</option>
+        </select>
+      </label>
+    </div>
+    <p class="muted" id="eta"></p>
+    <button class="btn big" id="btn-run" type="button">Lancer le radar</button>
+    <div class="progress" id="run-progress" hidden><div></div><span></span></div>
+  </section>
+
+  <section class="card" id="step-results" hidden>
+    <h2><b>4</b> Résultats</h2>
+    <div class="radar-grid">
+      <div>
+        <canvas id="radar" class="radar"></canvas>
+        <div class="row">
+          <button class="tool" id="btn-play" type="button">▶ Rejouer</button>
+          <input type="range" id="scrub" min="0" max="1000" value="0" aria-label="Instant du radar">
+          <span class="muted" id="scrub-t"></span>
+        </div>
+        <p class="legend">Ronds = joueurs (couleur de leur équipe), placés là où sont leurs pieds · cercle blanc et petit ballon orange = porteur du ballon.</p>
+      </div>
+      <div id="stats" class="radar-stats"></div>
+    </div>
+    <h3 class="sub">Cartes de chaleur</h3>
+    <div class="heat-grid">
+      <figure><canvas id="heat0" class="heat"></canvas><figcaption id="cap0"></figcaption></figure>
+      <figure><canvas id="heat1" class="heat"></canvas><figcaption id="cap1"></figcaption></figure>
+    </div>
+    <h3 class="sub">Passes et pertes repérées <span class="muted">(touche l'heure pour voir l'action)</span></h3>
+    <ul id="events" class="events"></ul>
+    <p class="muted">Estimations calculées image par image : le ballon caché par un joueur ou une caméra trop loin peuvent fausser quelques passes. À vérifier sur la vidéo, comme une feuille de stats.</p>
+    <div class="row">
+      <a class="btn" id="btn-card">Télécharger la fiche (PNG)</a>
+      <a class="btn ghost" id="btn-csv">Positions (CSV)</a>
+    </div>
+    <h3 class="sub">Vidéo radar</h3>
+    <p class="muted">La séquence en haut, le radar en bas, son d'origine : prête pour Instagram ou pour la séance vidéo.</p>
+    <button class="btn big" id="btn-render" type="button">Créer la vidéo radar</button>
+    <div class="progress" id="render-progress" hidden><div></div><span></span></div>
+    <div id="result" hidden>
+      <video id="result-video" class="tall" controls playsinline></video>
+      <div class="row">
+        <a class="btn" id="btn-download">Télécharger le MP4</a>
+        <button class="btn ghost" id="btn-share" hidden>Partager…</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="error" id="error" role="alert" hidden></p>
+</main>
+
+<footer class="foot">Art craft · Gravity Basketball Montréal · détection MediaPipe (Google, Apache 2.0) · projection du terrain et suivi du ballon d'après roboflow/sports (MIT) · moteur vidéo ffmpeg.wasm</footer>
+<script src="vendor/ffmpeg/ffmpeg.js"></script>
+<script type="module" src="radar.js"></script>
+</body>
+</html>
