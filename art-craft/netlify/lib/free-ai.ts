@@ -6,8 +6,8 @@
 // le texte de la réponse. Module sans dépendance : marche sur Netlify et sur Cloudflare.
 // (Rangé hors de netlify/functions/ : Netlify y ferait sinon une fonction à part.)
 
-type Block = { type: string; text?: string; source?: { data: string; media_type?: string } };
-type Part = { text?: string; image?: string; mime?: string };
+type Block = { type: string; text?: string; source?: { data: string; media_type?: string }; url?: string; start?: number; end?: number };
+type Part = { text?: string; image?: string; mime?: string; youtube?: { url: string; start: number; end: number } };
 export type FreeRequest = { system: string; content: Block[]; schema?: unknown; live?: boolean };
 export type WorkersAi = { run: (model: string, input: unknown) => Promise<unknown> };
 
@@ -31,7 +31,12 @@ export class AiError extends Error {
 
 // Contenu au format Claude ({type:"text"} / {type:"image", source:{data}}) → morceaux simples.
 const parts = (content: Block[]): Part[] =>
-  content.map((b) => (b.type === "image" && b.source ? { image: b.source.data, mime: b.source.media_type } : { text: b.text ?? "" }));
+  content.map((b) =>
+    b.type === "youtube" && b.url ? { youtube: { url: b.url, start: b.start ?? 0, end: b.end ?? 0 } }
+      : b.type === "image" && b.source ? { image: b.source.data, mime: b.source.media_type } : { text: b.text ?? "" });
+
+// Vrai si la demande contient un lien YouTube : seul Gemini sait regarder une vidéo YouTube.
+export const hasYoutube = (request: FreeRequest) => request.content.some((b) => b.type === "youtube");
 
 // Retire un éventuel bloc de code autour du JSON.
 export function cleanJson(text: string) {
@@ -42,8 +47,14 @@ const schemaHint = (schema: unknown) =>
   `\nRéponds uniquement avec un objet JSON valide (sans bloc de code) qui respecte ce schéma JSON :\n${JSON.stringify(schema)}`;
 
 async function geminiCall(key: string, model: string, request: FreeRequest, withSchema: boolean) {
+  // Lien YouTube public : Gemini regarde lui-même la vidéo, seulement de start à end (videoMetadata).
   const userParts = parts(request.content).map((p) =>
-    p.image ? { inlineData: { mimeType: p.mime || "image/jpeg", data: p.image } } : { text: p.text });
+    p.youtube
+      ? {
+        fileData: { fileUri: p.youtube.url },
+        videoMetadata: { startOffset: `${Math.floor(p.youtube.start)}s`, endOffset: `${Math.ceil(p.youtube.end)}s` },
+      }
+      : p.image ? { inlineData: { mimeType: p.mime || "image/jpeg", data: p.image } } : { text: p.text });
   const generationConfig: Record<string, unknown> = { maxOutputTokens: request.live ? 1024 : 32768 };
   if (request.schema && withSchema) {
     generationConfig.responseFormat = { text: { mimeType: "APPLICATION_JSON", schema: request.schema } };
@@ -126,10 +137,12 @@ export async function askFree({ geminiKey, ai }: { geminiKey?: string; ai?: Work
     try {
       return await askGemini(geminiKey, request);
     } catch (err) {
-      if (!(err instanceof AiError) || !err.retry || !ai) throw err;
+      // Le secours Cloudflare ne sait pas regarder une vidéo YouTube.
+      if (!(err instanceof AiError) || !err.retry || !ai || hasYoutube(request)) throw err;
       first = err;
     }
   }
+  if (hasYoutube(request)) throw new AiError("L'analyse d'un lien YouTube demande la clé GEMINI_API_KEY dans les variables du site Art craft.");
   if (!ai) throw new AiError("Aucune IA branchée : ajoute GEMINI_API_KEY dans les variables du site Art craft.");
   try {
     return await askWorkersAi(ai, request);

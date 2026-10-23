@@ -284,3 +284,8 @@ fieldset .inline { flex-wrap: wrap; }
   .cues li { grid-template-columns: auto 1fr 1fr auto; }
   .cues li .txt { grid-column: 1 / -1; grid-row: 2; }
 }
+
+/* Analyse tactique : lecteur YouTube (lien collé) */
+.yt-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #000; }
+.yt-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+#yt-form input { flex: 1; min-width: 0; }

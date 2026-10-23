@@ -34,7 +34,7 @@
 <main>
   <section class="card" id="step-login">
     <h2><b>🔒</b> Accès</h2>
-    <p class="muted">L'analyse utilise les crédits IA de Gravity : elle est protégée par le mot de passe Art craft.</p>
+    <p class="muted">L'analyse utilise l'IA gratuite d'Art craft (avec un quota par jour) : elle est protégée par le mot de passe Art craft.</p>
     <form class="row" id="login-form">
       <input type="password" id="password" placeholder="Mot de passe Art craft" autocomplete="current-password">
       <button class="btn" type="submit">Entrer</button>
@@ -48,8 +48,14 @@
       <strong>Dépose la vidéo ici</strong>
       <span>un match entier ou un extrait (MP4, MOV…)</span>
     </label>
+    <form class="row" id="yt-form" novalidate>
+      <input id="yt-url" type="url" inputmode="url" placeholder="… ou colle un lien YouTube (vidéo publique)">
+      <button class="tool" type="submit">Charger le lien</button>
+    </form>
+    <p class="muted">Avec un lien YouTube, l'IA (Gemini, gratuite) regarde la vidéo elle-même : tu obtiens le rapport et les moments clés. La vidéo doit être <b>publique</b> (pas « non répertoriée »). Pour la vidéo commentée (ralenti, voix off, tableau), dépose le fichier.</p>
     <div id="player-wrap" hidden>
       <video id="video" controls playsinline preload="metadata"></video>
+      <div id="yt-wrap" class="yt-wrap" hidden><iframe id="yt-frame" title="Vidéo YouTube" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
       <p class="muted" id="file-info"></p>
       <div class="row">
         <label class="inline">Début <input id="start" value="0:00" size="7" inputmode="numeric"></label>
@@ -72,7 +78,7 @@
       <label>Ce que tu veux savoir (facultatif)
         <textarea id="context" rows="2" maxlength="1500" placeholder="ex. Pourquoi on encaisse autant de paniers faciles ? Comment on attaque leur zone ?"></textarea>
       </label>
-      <label class="check"><input type="checkbox" id="track" checked> Suivi précis des joueurs, action par action (le tableau suit vraiment la vidéo ; un peu plus long et quelques crédits IA de plus)</label>
+      <label class="check" id="track-wrap"><input type="checkbox" id="track" checked> Suivi précis des joueurs, action par action (le tableau suit vraiment la vidéo ; un peu plus long et quelques crédits IA de plus)</label>
       <div class="row">
         <button class="btn big" id="btn-analyse" type="button">Analyser la séquence</button>
       </div>
