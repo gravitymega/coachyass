@@ -6,7 +6,8 @@
 // montrer la progression ; le JSON final suit ANALYSIS_SCHEMA (sorties structurées).
 //
 // Variables du site (Netlify ou Cloudflare) :
-//   ART_CRAFT_PASSWORD  — mot de passe Art craft (protège le quota des IA)
+//   ART_CRAFT_PASSWORD  — facultatif : sans lui, l'accès aux IA gratuites est libre (choix de l'utilisateur) ;
+//                         Claude (payant) n'est jamais utilisé sans mot de passe
 //   GEMINI_API_KEY      — clé gratuite Google Gemini (aistudio.google.com), jamais exposée au navigateur
 //   ANTHROPIC_API_KEY   — facultative et PAYANTE (Claude) : à ne mettre que si l'utilisateur l'accepte.
 // Sans clé Anthropic, les IA gratuites de ../lib/free-ai.ts répondent : Gemini, puis Cloudflare Workers AI
@@ -399,9 +400,10 @@ function buildRequest(body: Body) {
 export async function handleCoach(req: Request, env: (name: string) => string | undefined, ai?: WorkersAi) {
   if (req.method !== "POST") return json(405, { error: "Méthode non autorisée" });
   const password = env("ART_CRAFT_PASSWORD");
-  const apiKey = env("ANTHROPIC_API_KEY");
-  if (!password) return json(500, { error: "ART_CRAFT_PASSWORD manquant dans les variables du site Art craft." });
-  if (!samePassword(req.headers.get("x-art-password") || "", password)) return json(401, { error: "Mot de passe incorrect" });
+  // Sans mot de passe, l'accès est libre mais limité aux IA gratuites : une clé Claude (payante)
+  // ne sert que derrière un mot de passe, pour que personne ne puisse la faire payer.
+  const apiKey = password ? env("ANTHROPIC_API_KEY") : undefined;
+  if (password && !samePassword(req.headers.get("x-art-password") || "", password)) return json(401, { error: "Mot de passe incorrect" });
 
   let body: Body;
   try {
@@ -412,7 +414,7 @@ export async function handleCoach(req: Request, env: (name: string) => string | 
   // Vérification du mot de passe à la connexion (aucun appel à l'IA).
   const geminiKey = env("GEMINI_API_KEY");
   if (body.ping) {
-    return json(200, { ok: true, ai: Boolean(apiKey || geminiKey || ai), provider: apiKey ? "claude" : geminiKey ? "gemini" : ai ? "workers-ai" : null });
+    return json(200, { ok: true, open: !password, ai: Boolean(apiKey || geminiKey || ai), provider: apiKey ? "claude" : geminiKey ? "gemini" : ai ? "workers-ai" : null });
   }
   if (!apiKey && !geminiKey && !ai) {
     return json(500, { error: "Aucune IA branchée : ajoute GEMINI_API_KEY (clé gratuite, aistudio.google.com) dans les variables du site Art craft." });

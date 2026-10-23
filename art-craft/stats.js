@@ -60,17 +60,24 @@ if (state.password) $('password').value = state.password;
 $('login-form').addEventListener('submit', async e => {
   e.preventDefault();
   state.password = $('password').value;
+  await login();
+});
+
+async function login(auto = false) {
   showError('');
   const res = await post({ ping: true }).catch(() => null);
+  if (auto && (!res || !res.ok)) return; // essai silencieux : le formulaire reste affiché
   if (!res) { showError('Serveur injoignable : vérifie ta connexion.'); return; }
   if (res.status === 401) { showError('Mot de passe incorrect.'); return; }
   if (!res.ok) { showError(await errorOf(res)); return; }
-  try { localStorage.setItem(STORE_KEY, state.password); } catch { /* stockage indisponible */ }
+  if (state.password) try { localStorage.setItem(STORE_KEY, state.password); } catch { /* stockage indisponible */ }
   if (!(await res.json()).ai) showError('Aucune IA branchée : ajoute la clé gratuite GEMINI_API_KEY dans les variables Cloudflare du site Art craft : la lecture des numéros ne marchera pas.');
   $('step-login').hidden = true;
   $('step-game').hidden = false;
   initTeams();
-});
+}
+// Accès libre (aucun mot de passe configuré) ou mot de passe déjà mémorisé : on entre directement.
+login(true);
 
 // ---------- 1. Le match ----------
 $('game-date').value = new Date().toISOString().slice(0, 10);

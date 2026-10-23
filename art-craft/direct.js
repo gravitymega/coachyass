@@ -27,6 +27,9 @@ let password = '';
 
 try { password = localStorage.getItem(PASS_KEY) || ''; } catch { /* stockage indisponible */ }
 $('password').value = password;
+// Accès libre (aucun mot de passe configuré sur le site) : le champ mot de passe est caché.
+fetch('/api/coach', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ping: true }) })
+  .then(r => (r.ok ? r.json() : null)).then(j => { if (j && j.open) $('password').hidden = true; }).catch(() => {});
 $('game-date').value = new Date().toISOString().slice(0, 10);
 FREE_VOICES.forEach(v => $('voice').appendChild(new Option(v.name, v.id)));
 $('voice').appendChild(new Option('Voix de l\'appareil (instantanée)', DEVICE_VOICE));
