@@ -24,16 +24,22 @@ const K = FULL.keyW / 2;
 const side = (name, right) => {
   const X = x => (right ? FULL.L - x : x);
   const near = right ? 'à droite' : 'à gauche';
+  const paint = [
+    { name: `Panier ${near} · coin de la raquette sur la ligne de fond, côté caméra`, court: [X(0), MID + K] },
+    { name: `Panier ${near} · coin de la raquette sur la ligne de fond, côté du fond`, court: [X(0), MID - K] },
+    { name: `Panier ${near} · coin de la ligne des lancers francs, côté du fond`, court: [X(FULL.ftX), MID - K] },
+    { name: `Panier ${near} · coin de la ligne des lancers francs, côté caméra`, court: [X(FULL.ftX), MID + K] },
+  ];
   return {
-    [`raquette-${name}`]: {
-      label: `Raquette du panier ${near} (les 4 coins)`,
+    [`precis-${name}`]: {
+      label: `Raquette ${near} + ligne médiane (6 repères, le plus précis)`,
       points: [
-        { name: `Panier ${near} · coin de la raquette sur la ligne de fond, côté caméra`, court: [X(0), MID + K] },
-        { name: `Panier ${near} · coin de la raquette sur la ligne de fond, côté du fond`, court: [X(0), MID - K] },
-        { name: `Panier ${near} · coin de la ligne des lancers francs, côté du fond`, court: [X(FULL.ftX), MID - K] },
-        { name: `Panier ${near} · coin de la ligne des lancers francs, côté caméra`, court: [X(FULL.ftX), MID + K] },
+        ...paint,
+        { name: 'Ligne médiane · sur la ligne de côté du fond', court: [FULL.L / 2, 0] },
+        { name: 'Ligne médiane · sur la ligne de côté près de la caméra', court: [FULL.L / 2, FULL.W] },
       ],
     },
+    [`raquette-${name}`]: { label: `Raquette ${near} (les 4 coins)`, points: paint },
     [`moitie-${name}`]: {
       label: `Moitié de terrain ${near} (coins + ligne médiane)`,
       points: [
@@ -47,7 +53,12 @@ const side = (name, right) => {
 };
 
 // Repères à toucher sur l'image, dans l'ordre, avec leur position sur le terrain.
-export const PRESETS = { ...side('gauche', false), ...side('droite', true) };
+const G = side('gauche', false), D = side('droite', true);
+export const PRESETS = {
+  'precis-gauche': G['precis-gauche'], 'precis-droite': D['precis-droite'],
+  'raquette-gauche': G['raquette-gauche'], 'raquette-droite': D['raquette-droite'],
+  'moitie-gauche': G['moitie-gauche'], 'moitie-droite': D['moitie-droite'],
+};
 
 // Résout A x = b (élimination de Gauss avec pivot partiel). null si le système est singulier.
 function solve(A, b) {
@@ -68,18 +79,26 @@ function solve(A, b) {
 }
 
 /**
- * Matrice d'homographie 3×3 (tableau de 9) qui envoie 4 points source sur 4 points cible
- * (équivalent de cv2.findHomography pour 4 points). null si 3 points sont alignés.
+ * Matrice d'homographie 3×3 (tableau de 9) qui envoie les points source sur les points cible
+ * (équivalent de cv2.findHomography) : exacte avec 4 points, aux moindres carrés au-delà
+ * (plus de repères = les petites erreurs de toucher se compensent). null si les points sont alignés.
  */
 export function homography(src, dst) {
-  if (src.length !== 4 || dst.length !== 4) throw new Error('Il faut 4 points');
+  if (src.length < 4 || src.length !== dst.length) throw new Error('Il faut au moins 4 points');
   const A = [], b = [];
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < src.length; i++) {
     const [x, y] = src[i], [u, v] = dst[i];
     A.push([x, y, 1, 0, 0, 0, -u * x, -u * y]); b.push(u);
     A.push([0, 0, 0, x, y, 1, -v * x, -v * y]); b.push(v);
   }
-  const h = solve(A, b);
+  if (src.length === 4) {
+    const h = solve(A, b);
+    return h ? [...h, 1] : null;
+  }
+  // Équations normales (AᵀA) h = Aᵀb, avec les points ramenés à une échelle commune pour la stabilité.
+  const AtA = Array.from({ length: 8 }, (_, r) => Array.from({ length: 8 }, (_, c) => A.reduce((s, row) => s + row[r] * row[c], 0)));
+  const Atb = Array.from({ length: 8 }, (_, r) => A.reduce((s, row, k) => s + row[r] * b[k], 0));
+  const h = solve(AtA, Atb);
   return h ? [...h, 1] : null;
 }
 
@@ -107,11 +126,11 @@ export function invert(H) {
   return [A, -(b * i - c * h), b * f - c * e, B, a * i - c * g, -(a * f - c * d), C, -(a * h - b * g), a * e - b * d].map(v => v / det);
 }
 
-// Les 4 points touchés forment-ils un quadrilatère utilisable (pas de points confondus ni alignés) ?
+// Les repères touchés sont-ils utilisables (pas de points confondus ; les 4 premiers pas alignés) ?
 export function checkQuad(pts, minDist = 0.02) {
-  if (pts.length !== 4) return 'Touche les 4 repères.';
-  for (let i = 0; i < 4; i++) {
-    for (let j = i + 1; j < 4; j++) {
+  if (pts.length < 4) return 'Touche au moins 4 repères.';
+  for (let i = 0; i < pts.length; i++) {
+    for (let j = i + 1; j < pts.length; j++) {
       if (Math.hypot(pts[i][0] - pts[j][0], pts[i][1] - pts[j][1]) < minDist) return 'Deux repères sont trop proches : recommence.';
     }
   }

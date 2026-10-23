@@ -118,7 +118,7 @@ $('btn-frame').addEventListener('click', async () => {
 
 const calib = $('calib');
 calib.addEventListener('click', e => {
-  if (!state.cur.frame || state.cur.taps.length >= 4) return;
+  if (!state.cur.frame || state.cur.taps.length >= preset().points.length) return;
   const r = calib.getBoundingClientRect();
   state.cur.taps.push([(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]);
   updateCalib();
@@ -159,7 +159,7 @@ function updateCalib() {
   const pts = preset().points;
   const s = Math.max(img.width / 400, 2);
   state.cur.H = null;
-  if (taps.length === 4) {
+  if (taps.length === pts.length) {
     const err = checkQuad(taps);
     const H = err ? null : homography(taps, pts.map(p => p.court));
     if (H && invert(H)) {
@@ -174,7 +174,7 @@ function updateCalib() {
     const next = pts[taps.length];
     $('calib-ask').innerHTML = '';
     const b = document.createElement('b');
-    b.textContent = `Repère ${taps.length + 1} / 4 : `;
+    b.textContent = `Repère ${taps.length + 1} / ${pts.length} : `;
     $('calib-ask').append(b, next.name);
   }
   taps.forEach(([u, v], i) => {
