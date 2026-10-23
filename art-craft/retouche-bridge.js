@@ -136,11 +136,17 @@
     },
   };
 
+  // Accès libre : le formulaire de mot de passe du Studio IA est caché.
+  fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ping: true }) })
+    .then(r => (r.ok ? r.json() : null))
+    .then(j => { if (j && j.open) { const f = document.getElementById('aiLogin'); if (f) f.hidden = true; } })
+    .catch(() => {});
+
   window.artcraftRuntime = {
     async use(name) {
       if (name === 'sample') {
-        if (!password) throw fail('no_password');
-        if (!ready) ready = ping(password).catch(e => { ready = null; throw e; });
+        // Sans mot de passe mémorisé, on essaie l'accès libre ; s'il est refusé, la page demande le mot de passe.
+        if (!ready) ready = ping(password).catch(e => { ready = null; throw !password && e.code === 'bad_password' ? fail('no_password') : e; });
         await ready;
         return sampler();
       }
