@@ -132,11 +132,14 @@ function drawLinesOnImage(ctx, W, H, Hc, color = 'rgba(255, 214, 0, .95)', width
   if (!back) return;
   ctx.strokeStyle = color;
   ctx.lineWidth = width;
+  // La matrice est connue à un facteur près : le signe de w au rond central (que la caméra voit)
+  // sert de référence ; un point de signe opposé est derrière la caméra.
+  const ref = Math.sign(back[6] * FULL.L / 2 + back[7] * FULL.W / 2 + back[8]) || 1;
   courtLines().forEach(line => {
     ctx.beginPath();
     let pen = false;
     line.forEach(c => {
-      const w = back[6] * c[0] + back[7] * c[1] + back[8];
+      const w = (back[6] * c[0] + back[7] * c[1] + back[8]) * ref;
       if (w <= 0) { pen = false; return; } // point derrière la caméra
       const [u, v] = project(back, c);
       if (pen) ctx.lineTo(u * W, v * H); else ctx.moveTo(u * W, v * H);
