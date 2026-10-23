@@ -4,7 +4,9 @@
 // et rendu ffmpeg de la vidéo commentée (vidéo en haut, tableau du coach en bas).
 import { normalizeBoard } from './board-core.js';
 
-export const MAX_FRAMES = 32;
+// 24 images de 640 px (~1 Mo en tout) : assez pour lire le jeu, et assez léger pour un téléphone
+// en 4G et pour le serveur gratuit (Cloudflare limite le temps de calcul par demande).
+export const MAX_FRAMES = 24;
 
 // Instants (s) des images envoyées à l'IA : réparties sur la séquence,
 // une toutes les ~3 s au plus serré, MAX_FRAMES au maximum.
@@ -26,6 +28,30 @@ export function trackTimes(debut, fin, { step = 0.5, max = 16 } = {}) {
 // Jamais agrandie si la vidéo est plus petite.
 export function frameArgs(input, t, output, width = 640) {
   return ['-ss', t.toFixed(2), '-i', input, '-frames:v', '1', '-vf', `scale='min(${width},iw)':-2`, '-q:v', '6', output];
+}
+
+// Connexion coupée (Safari : « Load failed », Chrome : « Failed to fetch », Firefox : « NetworkError »),
+// par opposition à une erreur renvoyée par l'IA elle-même.
+export function isNetworkError(err) {
+  const msg = String((err && err.message) || err || '');
+  return (err && err.name === 'TypeError' && /fetch|load|network/i.test(msg))
+    || /load failed|failed to fetch|networkerror|network connection was lost|connexion.*(coupée|perdue)|interrompue avant la fin/i.test(msg);
+}
+
+export const NETWORK_HINT = 'La connexion avec l\'IA a été coupée. Garde Art craft ouvert et l\'écran allumé pendant l\'analyse (sur iPhone, changer d\'appli ou verrouiller l\'écran coupe la connexion), vérifie le réseau, puis réessaie.';
+
+// Garde au plus n images réparties sur toute la séquence (nouvel essai plus léger).
+export function thinFrames(frames, n) {
+  if (frames.length <= n) return frames;
+  return Array.from({ length: n }, (_, k) => frames[Math.round((k * (frames.length - 1)) / (n - 1))]);
+}
+
+// Texte de la barre pendant que l'IA travaille : le temps écoulé tant que rien n'est arrivé,
+// puis la longueur de la réponse.
+export function waitLabel(chars, seconds) {
+  if (chars > 0) return `${chars} caractères reçus`;
+  const s = Math.floor(seconds);
+  return `${s < 60 ? s + ' s' : Math.floor(s / 60) + ' min ' + String(s % 60).padStart(2, '0')} (compte 30 s à 2 min)`;
 }
 
 // Le serveur répond en NDJSON : {"d": morceau} … puis {"end": …} ou {"error": …}.
