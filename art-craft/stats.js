@@ -3,8 +3,9 @@
 // puis envoi dans l'Espace Joueurs : stats du match, clips privés et devoirs personnalisés.
 import {
   $, showError, setProgress, parseLogDuration, parseLogTime, getFFmpeg, mountFiles, runWithLog,
+  keepAwake, readCoachStream,
 } from './common.js';
-import { createStreamReader } from './analyse-core.js';
+import { createStreamReader, isNetworkError, NETWORK_HINT } from './analyse-core.js';
 import { energyEnvelope, excitementScore, findPeaks, WINDOW_S, parseTimestamp } from './highlights.js';
 import {
   EVENT_TYPES, TYPE_KEYS, CLIP_TYPES, statsWindows, windowTimes, normalizeEvents, mergeEvents,
@@ -39,19 +40,19 @@ async function errorOf(res) {
   if (res.status === 404) msg = 'Fonction introuvable : le site doit être déployé sur Netlify.';
   return msg;
 }
+// Connexion coupée (téléphone en veille, réseau faible) : un 2e essai part tout seul.
 async function askCoach(payload, normalize) {
-  const res = await post(payload);
-  if (!res.ok) throw new Error(await errorOf(res));
-  const reader = createStreamReader(normalize);
-  const decoder = new TextDecoder();
-  const stream = res.body.getReader();
-  for (;;) {
-    const { value, done } = await stream.read();
-    if (done) break;
-    reader.feed(decoder.decode(value, { stream: true }));
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const res = await post(payload);
+      if (!res.ok) throw new Error(await errorOf(res));
+      return await readCoachStream(res, createStreamReader(normalize));
+    } catch (err) {
+      if (!isNetworkError(err)) throw err;
+      if (attempt >= 1) throw new Error(NETWORK_HINT);
+      console.warn('Connexion coupée, nouvel essai', err);
+    }
   }
-  reader.feed(decoder.decode());
-  return reader.finish();
 }
 
 try { state.password = localStorage.getItem(STORE_KEY) || ''; } catch { /* stockage indisponible */ }
@@ -293,6 +294,7 @@ async function run() {
   state.busy = true;
   $('btn-run').disabled = true;
   showError('');
+  const release = await keepAwake();
   try {
     const ff = await getFFmpeg('run-progress');
     await mountInput(ff);
@@ -329,6 +331,7 @@ async function run() {
     console.error(err);
     showError('Recherche impossible : ' + (err.message || err));
   } finally {
+    release();
     state.busy = false;
     $('btn-run').disabled = false;
   }

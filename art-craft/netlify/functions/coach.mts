@@ -496,6 +496,11 @@ function freeResponse(
     async start(controller) {
       // Un premier message tout de suite, pour que le navigateur voie que la demande est partie.
       controller.enqueue(line({ wait: true }));
+      // Puis un signe de vie toutes les 10 s : Gemini peut réfléchir plus d'une minute, et un
+      // téléphone (Safari sur iPhone) coupe une connexion restée muette 60 s (« Load failed »).
+      const alive = setInterval(() => {
+        try { controller.enqueue(line({ wait: true })); } catch { /* flux déjà fermé */ }
+      }, 10_000);
       try {
         const out = await askFree(providers, request);
         let text = out.text;
@@ -513,6 +518,7 @@ function freeResponse(
         console.error("coach (IA gratuite):", err);
         controller.enqueue(line({ error: err instanceof Error ? err.message : "Analyse impossible" }));
       } finally {
+        clearInterval(alive);
         controller.close();
       }
     },

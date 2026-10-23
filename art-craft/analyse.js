@@ -3,9 +3,10 @@
 // générées dans le navigateur) et vidéo commentée rendue dans le navigateur.
 import {
   $, showError, setProgress, parseLogDuration, getFFmpeg, mountFiles, runWithLog, offerFile, slugify,
+  keepAwake, readCoachStream,
 } from './common.js';
 import {
-  sampleTimes, trackTimes, frameArgs, createStreamReader, reportText, SECTIONS, fmtTime,
+  sampleTimes, trackTimes, frameArgs, createStreamReader, isNetworkError, NETWORK_HINT, thinFrames, waitLabel, reportText, SECTIONS, fmtTime,
   buildBeats, placeVoice, concatList, buildTacticArgs,
 } from './analyse-core.js';
 import { boardFrames, normalizeTrack } from './board-core.js';
@@ -142,20 +143,21 @@ function toBase64(bytes) {
 }
 
 // Appel à l'IA (réponse en flux) : renvoie le JSON nettoyé par normalize.
-async function askCoach(payload, normalize, onLength) {
-  const res = await post('coach', payload);
-  if (!res.ok) throw new Error(await errorOf(res));
-  const reader = createStreamReader(normalize);
-  const decoder = new TextDecoder();
-  const stream = res.body.getReader();
-  for (;;) {
-    const { value, done } = await stream.read();
-    if (done) break;
-    reader.feed(decoder.decode(value, { stream: true }));
-    if (onLength) onLength(reader.length);
+// onTick(caractères reçus, secondes écoulées) fait vivre la barre de progression.
+// Connexion coupée : un 2e essai part tout seul, avec moins d'images si `lighter` le permet.
+async function askCoach(payload, normalize, onTick, lighter) {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const res = await post('coach', payload);
+      if (!res.ok) throw new Error(await errorOf(res));
+      return await readCoachStream(res, createStreamReader(normalize), onTick);
+    } catch (err) {
+      if (!isNetworkError(err)) throw err;
+      if (attempt >= 1) throw new Error(NETWORK_HINT);
+      console.warn('Connexion coupée, nouvel essai', err);
+      if (lighter) payload = lighter(payload);
+    }
   }
-  reader.feed(decoder.decode());
-  return reader.finish();
 }
 
 async function grabFrames(ff, times, width, onEach) {
@@ -188,7 +190,8 @@ async function trackMoments(ff, onProgress) {
           titre: m.titre, explication: m.explication, narration: m.narration, ballon: m.board.ball,
           joueurs: Object.entries(m.board.players).map(([p, [x, y]]) => ({ p, x: +x.toFixed(2), y: +y.toFixed(2) })),
         },
-      }, a => a, n => onProgress((i + 0.3 + 0.7 * Math.min(1, n / 6000)) / ms.length, `${label} · l'IA place les joueurs… ${n} caractères`));
+      }, a => a, (n, sec) => onProgress((i + 0.3 + 0.7 * Math.min(1, n ? n / 6000 : sec / 90)) / ms.length, `${label} · l'IA place les joueurs… ${waitLabel(n, sec)}`),
+      p => ({ ...p, frames: thinFrames(p.frames, 8) }));
       m.track = normalizeTrack(raw, m.board);
     } catch (err) {
       console.warn('Suivi impossible pour l\'action', i + 1, err);
@@ -206,7 +209,7 @@ async function analyseYoutube() {
   setProgress('analyse-progress', 0.05, 'Envoi du lien à l\'IA… (Gemini regarde la vidéo, compte 1 à 2 minutes)');
   state.analysis = await askCoach({
     youtube: state.youtube.url, team: $('team').value.trim(), context: $('context').value.trim(), start, dur,
-  }, undefined, n => setProgress('analyse-progress', 0.1 + Math.min(0.85, (n / 9000) * 0.85), `L'IA analyse le jeu… ${n} caractères`));
+  }, undefined, (n, sec) => setProgress('analyse-progress', 0.1 + Math.min(0.85, (n ? n / 9000 : sec / 150) * 0.85), `L'IA regarde la vidéo… ${waitLabel(n, sec)}`));
   renderReport();
   setProgress('analyse-progress', 1, 'Analyse prête · vidéo YouTube regardée par l\'IA');
 }
@@ -217,12 +220,14 @@ $('btn-analyse').onclick = async () => {
     state.busy = true;
     $('btn-analyse').disabled = true;
     showError('');
+    const release = await keepAwake();
     try {
       await analyseYoutube();
     } catch (err) {
       console.error(err);
       showError('Analyse impossible : ' + (err.message || err));
     } finally {
+      release();
       state.busy = false;
       $('btn-analyse').disabled = false;
     }
@@ -231,6 +236,7 @@ $('btn-analyse').onclick = async () => {
   state.busy = true;
   $('btn-analyse').disabled = true;
   showError('');
+  const release = await keepAwake();
   try {
     const ff = await getFFmpeg('analyse-progress');
     await mountInput(ff);
@@ -249,7 +255,8 @@ $('btn-analyse').onclick = async () => {
     const end = track ? 0.6 : 0.95;
     state.analysis = await askCoach({
       frames, team: $('team').value.trim(), context: $('context').value.trim(), start, dur,
-    }, undefined, n => setProgress('analyse-progress', 0.32 + Math.min(end - 0.33, (n / 9000) * (end - 0.33)), `L'IA analyse le jeu… ${n} caractères`));
+    }, undefined, (n, sec) => setProgress('analyse-progress', 0.32 + Math.min(end - 0.33, (n ? n / 9000 : sec / 120) * (end - 0.33)), `L'IA analyse le jeu… ${waitLabel(n, sec)}`),
+    p => ({ ...p, frames: thinFrames(p.frames, 14) }));
     if (track) await trackMoments(ff, (r, label) => setProgress('analyse-progress', end + (0.99 - end) * r, label));
     renderReport();
     const tracked = state.analysis.moments.filter(m => m.track).length;
@@ -258,6 +265,7 @@ $('btn-analyse').onclick = async () => {
     console.error(err);
     showError('Analyse impossible : ' + (err.message || err));
   } finally {
+    release();
     state.busy = false;
     $('btn-analyse').disabled = false;
   }
