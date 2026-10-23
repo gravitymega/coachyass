@@ -22,7 +22,7 @@ const MOUNT = '/rd';
 const FALLBACK_COLORS = ['#3ec8ff', BRAND.orange];
 const MOTION_FPS = 4;   // images par seconde pour suivre la caméra
 const MOTION_W = 320;   // largeur des images grises du suivi de caméra
-const CHUNK_S = 60;     // la vidéo est lue par tranches d'une minute (mémoire constante)
+const CHUNK_S = 30;     // la vidéo est lue par tranches de 30 s (mémoire constante, progression visible)
 const NEAR_S = 180;     // un calage sert jusqu'à 3 min de la séquence
 const FLOOR = '#8f1d2c';
 const PAINT = '#6f1622';
@@ -116,15 +116,70 @@ $('btn-frame').addEventListener('click', async () => {
   }
 });
 
+// Calage au doigt : toucher pose le repère suivant ; toucher un repère déjà posé le déplace en glissant.
+// Une loupe montre l'endroit exact sous le doigt. Un repère caché (joueur devant) peut être passé.
 const calib = $('calib');
-calib.addEventListener('click', e => {
-  if (!state.cur.frame || state.cur.taps.length >= preset().points.length) return;
+let drag = -1;      // indice du repère qu'on déplace
+let loupe = null;   // [u, v] affiché dans la loupe pendant qu'on touche
+const toUV = e => {
   const r = calib.getBoundingClientRect();
-  state.cur.taps.push([(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]);
-  updateCalib();
+  return [Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), Math.min(1, Math.max(0, (e.clientY - r.top) / r.height))];
+};
+calib.addEventListener('pointerdown', e => {
+  if (!state.cur.frame) return;
+  const uv = toUV(e);
+  if (state.pick != null) { pickTeamColor(uv); return; }
+  const r = calib.getBoundingClientRect();
+  const near = (state.cur.taps || []).findIndex(p => p && Math.hypot((p[0] - uv[0]) * r.width, (p[1] - uv[1]) * r.height) < 28);
+  if (near >= 0) drag = near;
+  else if (state.cur.taps.length < preset().points.length) { state.cur.taps.push(uv); drag = state.cur.taps.length - 1; }
+  else return;
+  e.preventDefault();
+  calib.setPointerCapture(e.pointerId);
+  loupe = state.cur.taps[drag];
+  updateCalib(false);
 });
-$('btn-undo').onclick = () => { state.cur.taps.pop(); updateCalib(); };
-$('btn-reset').onclick = () => { state.cur.taps = []; updateCalib(); };
+calib.addEventListener('pointermove', e => {
+  if (drag < 0) return;
+  state.cur.taps[drag] = loupe = toUV(e);
+  updateCalib(false);
+});
+const endDrag = () => {
+  if (drag < 0) return;
+  drag = -1;
+  loupe = null;
+  updateCalib(true);
+};
+calib.addEventListener('pointerup', endDrag);
+calib.addEventListener('pointercancel', endDrag);
+$('btn-undo').onclick = () => { state.cur.taps.pop(); updateCalib(true); };
+$('btn-reset').onclick = () => { state.cur.taps = []; updateCalib(true); };
+$('btn-skip').onclick = () => {
+  if (state.cur.taps.length < preset().points.length) { state.cur.taps.push(null); updateCalib(true); }
+};
+
+// Loupe : l'image agrandie 3 fois autour du doigt, dans le coin opposé, avec une croix au centre.
+function drawLoupe(ctx, img, [u, v]) {
+  const R = Math.round(Math.min(img.width, img.height) * 0.22);
+  const cx = u < 0.5 ? img.width - R - 10 : R + 10, cy = R + 10;
+  const zoom = 3, src = (R * 2) / zoom;
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, R, 0, Math.PI * 2);
+  ctx.clip();
+  ctx.drawImage(img, u * img.width - src / 2, v * img.height - src / 2, src, src, cx - R, cy - R, R * 2, R * 2);
+  ctx.restore();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = Math.max(2, R * 0.03);
+  ctx.beginPath();
+  ctx.arc(cx, cy, R, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.strokeStyle = BRAND.orange;
+  ctx.beginPath();
+  ctx.moveTo(cx - R * 0.25, cy); ctx.lineTo(cx + R * 0.25, cy);
+  ctx.moveTo(cx, cy - R * 0.25); ctx.lineTo(cx, cy + R * 0.25);
+  ctx.stroke();
+}
 
 // Lignes du terrain dessinées par-dessus une image (Hc : image 0 à 1 → terrain).
 function drawLinesOnImage(ctx, W, H, Hc, color = 'rgba(255, 214, 0, .95)', width = 2) {
@@ -149,7 +204,7 @@ function drawLinesOnImage(ctx, W, H, Hc, color = 'rgba(255, 214, 0, .95)', width
   });
 }
 
-function updateCalib() {
+function updateCalib(final = true) {
   const { frame: img, taps } = state.cur;
   if (!img) return;
   calib.width = img.width;
@@ -159,36 +214,41 @@ function updateCalib() {
   const pts = preset().points;
   const s = Math.max(img.width / 400, 2);
   state.cur.H = null;
+  const used = taps.map((p, i) => [p, pts[i]]).filter(([p]) => p);
   if (taps.length === pts.length) {
-    const err = checkQuad(taps);
-    const H = err ? null : homography(taps, pts.map(p => p.court));
+    const err = used.length < 4 ? 'Il faut au moins 4 repères visibles : recommence avec une autre image.' : checkQuad(used.map(([p]) => p));
+    const H = err ? null : homography(used.map(([p]) => p), used.map(([, q]) => q.court));
     if (H && invert(H)) {
       state.cur.H = H;
       drawLinesOnImage(ctx, img.width, img.height, H, 'rgba(255, 214, 0, .95)', s * 1.2);
-      saveCalib();
+      if (final) saveCalib();
     }
     $('calib-ask').textContent = state.cur.H
-      ? `✔ Calage enregistré à ${fmtTime(state.cur.t)} : les lignes jaunes doivent tomber sur les lignes du terrain. Sinon, recommence en touchant plus précisément.`
+      ? `✔ Calage enregistré à ${fmtTime(state.cur.t)}. Les lignes jaunes doivent tomber sur les lignes du terrain : sinon, fais glisser les points orange pour les ajuster.`
       : (err || 'Repères impossibles à utiliser : recommence.');
   } else {
     const next = pts[taps.length];
     $('calib-ask').innerHTML = '';
     const b = document.createElement('b');
     b.textContent = `Repère ${taps.length + 1} / ${pts.length} : `;
-    $('calib-ask').append(b, next.name);
+    $('calib-ask').append(b, next.name, document.createTextNode(' (pas visible ? « Passer ce repère »)'));
   }
-  taps.forEach(([u, v], i) => {
-    ctx.fillStyle = BRAND.orange;
-    ctx.strokeStyle = '#fff';
+  $('btn-skip').disabled = taps.length >= pts.length;
+  taps.forEach((p, i) => {
+    if (!p) return;
+    const [u, v] = p;
+    ctx.fillStyle = i === drag ? '#fff' : BRAND.orange;
+    ctx.strokeStyle = i === drag ? BRAND.orange : '#fff';
     ctx.lineWidth = s;
     ctx.beginPath();
-    ctx.arc(u * img.width, v * img.height, s * 5, 0, Math.PI * 2);
+    ctx.arc(u * img.width, v * img.height, s * 4, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
     ctx.fillStyle = '#fff';
     ctx.font = `700 ${Math.round(s * 7)}px Inter, sans-serif`;
-    ctx.fillText(String(i + 1), u * img.width + s * 7, v * img.height - s * 5);
+    ctx.fillText(String(i + 1), u * img.width + s * 6, v * img.height - s * 5);
   });
+  if (loupe) drawLoupe(ctx, img, loupe);
 }
 
 // Un calage réussi est gardé (un seul par instant) avec une petite vignette de contrôle.
@@ -261,6 +321,39 @@ async function detectTeams(frame) {
     $('calib-info').textContent = 'Détecteur indisponible : ' + (err.message || err);
   }
 }
+// Couleur d'une équipe choisie en touchant un joueur sur l'image (quand la détection se trompe).
+state.pick = null;
+[0, 1].forEach(k => {
+  $('btn-pick' + k).onclick = () => {
+    state.pick = k;
+    $('calib-ask').textContent = `Touche le maillot d'un joueur de ${names()[k]} sur l'image.`;
+    $('calib-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+});
+$('btn-same').onclick = () => {
+  state.centers = null;
+  [0, 1].forEach(k => { $('sw' + k).style.background = FALLBACK_COLORS[k]; });
+  $('calib-info').textContent = 'Mêmes maillots : le radar montre tous les joueurs d\'une seule couleur.';
+};
+function pickTeamColor([u, v]) {
+  const img = state.cur.frame, k = state.pick;
+  state.pick = null;
+  const c = document.createElement('canvas');
+  c.width = 9;
+  c.height = 9;
+  const x = c.getContext('2d', { willReadFrequently: true });
+  x.drawImage(img, u * img.width - 6, v * img.height - 6, 12, 12, 0, 0, 9, 9);
+  const d = x.getImageData(0, 0, 9, 9).data;
+  const rgb = [0, 0, 0];
+  for (let i = 0; i < d.length; i += 4) { rgb[0] += d[i]; rgb[1] += d[i + 1]; rgb[2] += d[i + 2]; }
+  const col = rgb.map(v2 => v2 / (d.length / 4));
+  const other = state.centers ? state.centers[1 - k] : (k ? [235, 235, 235] : [40, 40, 40]);
+  state.centers = k ? [other, col] : [col, other];
+  [0, 1].forEach(j => { $('sw' + j).style.background = hex(state.centers[j]); });
+  $('teams').hidden = false;
+  $('calib-info').textContent = `Couleur de ${names()[k]} choisie.`;
+  updateCalib(false);
+}
 $('btn-swap').onclick = () => { const a = $('name0').value; $('name0').value = $('name1').value; $('name1').value = a; };
 const names = () => [$('name0').value.trim() || 'Équipe A', $('name1').value.trim() || 'Équipe B'];
 const teamColor = k => (state.centers ? hex(state.centers[k]) : FALLBACK_COLORS[k]);
@@ -278,12 +371,21 @@ function updateEta() {
   $('eta').textContent = `${n} images à analyser${following() ? ' + suivi de la caméra' : ''} · compte environ ${lo} à ${hi} min selon l'appareil.`;
 }
 
+// Bouton « Arrêter » : l'analyse s'arrête proprement à la prochaine étape.
+let cancelled = false;
+function checkCancel() { if (cancelled) throw new Error('analyse arrêtée'); }
+$('btn-cancel').onclick = () => { cancelled = true; $('btn-cancel').disabled = true; };
+
 /**
  * Suit la caméra de r0 à r1 : renvoie une fonction t → homographie image → terrain (ou null si perdu).
  * La vidéo est lue en petites images grises, tranche par tranche ; seule l'image précédente est gardée.
  */
 async function trackCamera(ff, r0, r1, calibs, onProgress) {
-  const cv = await loadOpenCV();
+  onProgress(0, 'chargement du moteur de suivi (10 Mo, une seule fois)');
+  const cv = await Promise.race([
+    loadOpenCV(),
+    new Promise((_, rej) => setTimeout(() => rej(new Error('moteur de suivi trop long à charger')), 90000)),
+  ]);
   const probe = await grabBitmap(ff, r0, MOTION_W);
   if (!probe) throw new Error('image illisible pour le suivi de caméra');
   const w = probe.width, h = probe.height;
@@ -292,8 +394,10 @@ async function trackCamera(ff, r0, r1, calibs, onProgress) {
   const pairs = [];
   let prev = null;
   for (let c0 = r0; c0 < r1; c0 += CHUNK_S) {
+    checkCancel();
     const dur = Math.min(CHUNK_S, r1 - c0);
     const base = Math.round((c0 - r0) * MOTION_FPS);
+    onProgress((c0 - r0) / (r1 - r0), `lecture de ${fmtTime(c0)} à ${fmtTime(c0 + dur)}`);
     const code = await ff.exec(motionArgs({ input: state.input, start: c0, dur, fps: MOTION_FPS, width: w, output: '/mo.raw' }));
     if (code !== 0) throw new Error('lecture impossible pour le suivi de caméra');
     const data = await ff.readFile('/mo.raw');
@@ -306,7 +410,8 @@ async function trackCamera(ff, r0, r1, calibs, onProgress) {
       pairs[k] = prev ? pairMotion(cv, prev, cur, w, h) : null;
       prev = cur;
       if (i % 20 === 0) {
-        onProgress((c0 - r0 + i / MOTION_FPS) / (r1 - r0));
+        checkCancel();
+        onProgress((c0 - r0 + i / MOTION_FPS) / (r1 - r0), `mouvement de la caméra à ${fmtTime(c0 + i / MOTION_FPS)}`);
         await new Promise(r => setTimeout(r)); // laisse la page respirer
       }
     }
@@ -322,11 +427,16 @@ async function trackCamera(ff, r0, r1, calibs, onProgress) {
 $('btn-run').addEventListener('click', async () => {
   if (state.busy || !state.calibs.length) return;
   state.busy = true;
+  cancelled = false;
   $('btn-run').disabled = true;
+  $('btn-cancel').hidden = false;
+  $('btn-cancel').disabled = false;
   showError('');
+  let warn = '';
   try {
     const ff = await getFFmpeg('run-progress');
     await mountInput(ff);
+    setProgress('run-progress', 0, 'Chargement du détecteur de joueurs (une seule fois)…');
     await loadDetector();
     const start = Math.max(0, parseTimestamp($('start').value) || 0);
     if (state.duration && start >= state.duration - 1) throw new Error('Le début est après la fin de la vidéo.');
@@ -340,8 +450,15 @@ $('btn-run').addEventListener('click', async () => {
       const r0 = Math.min(start, ...near.map(c => c.t));
       const r1 = Math.min(state.duration || Infinity, Math.max(end, ...near.map(c => c.t)) + 0.5);
       share = 0.3;
-      setProgress('run-progress', 0, 'Suivi de la caméra (le moteur se télécharge la 1re fois)…');
-      Hat = await trackCamera(ff, r0, r1, near, u => setProgress('run-progress', u * share, `Suivi de la caméra… ${Math.round(u * 100)} %`));
+      try {
+        Hat = await trackCamera(ff, r0, r1, near, (u, what) => setProgress('run-progress', u * share, `Suivi de la caméra : ${what}… ${Math.round(u * 100)} %`));
+      } catch (err) {
+        if (cancelled) throw err;
+        // Suivi impossible (moteur injoignable, vidéo illisible) : chaque image prend le calage le plus proche.
+        console.error(err);
+        warn = ` · suivi de la caméra impossible (${err.message || err}) : chaque image utilise le calage le plus proche, ajoute des calages pour plus de précision`;
+        Hat = t => near.reduce((a, c) => (Math.abs(c.t - t) < Math.abs(a.t - t) ? c : a)).H;
+      }
     } else {
       const H = state.calibs[state.calibs.length - 1].H;
       Hat = () => H;
@@ -354,8 +471,11 @@ $('btn-run').addEventListener('click', async () => {
     const frames = [];
     const checks = [];
     let lost = 0;
+    const t0 = performance.now();
     for (let i = 0; i < times.length; i++) {
-      setProgress('run-progress', share + (1 - share) * (i / times.length), `Image ${i + 1} / ${times.length} · joueurs et ballon…`);
+      checkCancel();
+      const left = i ? ((performance.now() - t0) / i) * (times.length - i) / 1000 : 0;
+      setProgress('run-progress', share + (1 - share) * (i / times.length), `Image ${i + 1} / ${times.length} · joueurs et ballon${i ? ` · encore environ ${Math.max(1, Math.round(left / 60))} min` : ''}…`);
       const H = Hat(times[i]);
       if (!H) {
         lost++;
@@ -391,14 +511,15 @@ $('btn-run').addEventListener('click', async () => {
     state.metrics = teamMetrics(seenFrames);
     const seen = seenFrames.filter(f => f.ball).length;
     const lostTxt = lost ? ` · caméra perdue sur ${lost} image${lost > 1 ? 's' : ''}` : '';
-    setProgress('run-progress', 1, `Radar prêt · ${frames.length} images · ballon vu sur ${Math.round((seen / seenFrames.length) * 100)} % des images${lostTxt}`);
+    setProgress('run-progress', 1, `Radar prêt · ${frames.length} images · ballon vu sur ${Math.round((seen / seenFrames.length) * 100)} % des images${lostTxt}${warn}`);
     renderResults();
   } catch (err) {
     console.error(err);
-    showError('Radar impossible : ' + (err.message || err));
+    showError(cancelled ? 'Analyse arrêtée.' : 'Radar impossible : ' + (err.message || err) + '. Essaie une séquence plus courte (30 s), la détection « Rapide » ou 1 image / s.');
   } finally {
     state.busy = false;
     $('btn-run').disabled = false;
+    $('btn-cancel').hidden = true;
   }
 });
 

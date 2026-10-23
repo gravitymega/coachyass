@@ -49,7 +49,7 @@
 
   <section class="card" id="step-calib" hidden>
     <h2><b>2</b> Caler le terrain</h2>
-    <p class="muted">Mets la vidéo sur une image où l'on voit bien les lignes, choisis les repères, puis touche-les sur l'image, dans l'ordre demandé. Choisis de préférence « Raquette + ligne médiane (6 repères) » : plus il y a de repères éloignés, moins une petite erreur de toucher compte. Avec une caméra qui suit le jeu, fais un calage de chaque côté du terrain (raquette de gauche quand la caméra la filme, puis celle de droite).</p>
+    <p class="muted">Mets la vidéo sur une image où l'on voit bien les lignes, choisis les repères, puis touche-les sur l'image, dans l'ordre demandé. Une loupe montre l'endroit exact sous ton doigt ; tu peux ensuite <b>faire glisser</b> un point orange pour l'ajuster jusqu'à ce que les lignes jaunes tombent sur les lignes du terrain. Un repère caché par un joueur peut être passé. Choisis de préférence « Raquette + ligne médiane (6 repères) » : plus il y a de repères éloignés, moins une petite erreur de toucher compte. Avec une caméra qui suit le jeu, fais un calage de chaque côté du terrain (raquette de gauche quand la caméra la filme, puis celle de droite).</p>
     <div class="row">
       <label class="inline">Caméra
         <select id="camera">
@@ -65,9 +65,10 @@
       <button class="btn" id="btn-frame" type="button">Utiliser l'image affichée</button>
     </div>
     <div id="calib-wrap" hidden>
-      <p class="calib-ask" id="calib-ask"></p>
       <canvas id="calib" class="calib"></canvas>
+      <p class="calib-ask" id="calib-ask"></p>
       <div class="row">
+        <button class="tool" id="btn-skip" type="button">Passer ce repère (caché)</button>
         <button class="tool" id="btn-undo" type="button">Annuler le dernier repère</button>
         <button class="tool" id="btn-reset" type="button">Recommencer</button>
       </div>
@@ -80,6 +81,11 @@
           <span class="swatch" id="sw1"></span>
           <input id="name1" maxlength="40" value="Adversaire">
           <button class="tool" id="btn-swap" type="button" title="Inverser les noms">⇄</button>
+        </div>
+        <div class="row">
+          <button class="tool" id="btn-pick0" type="button">Toucher un joueur de l'équipe 1</button>
+          <button class="tool" id="btn-pick1" type="button">Toucher un joueur de l'équipe 2</button>
+          <button class="tool" id="btn-same" type="button">Mêmes maillots</button>
         </div>
         <p class="muted">Couleurs trouvées sur l'image de calibration. Si les deux équipes portent la même couleur, le radar montre tous les joueurs mais ne peut pas les séparer.</p>
       </div>
@@ -119,6 +125,7 @@
     </div>
     <p class="muted" id="eta"></p>
     <button class="btn big" id="btn-run" type="button">Lancer le radar</button>
+    <button class="btn ghost" id="btn-cancel" type="button" hidden>Arrêter</button>
     <div class="progress" id="run-progress" hidden><div></div><span></span></div>
   </section>
 
