@@ -38,9 +38,9 @@
     <label class="drop" id="drop">
       <input type="file" id="file" accept="video/*,.mov,.mkv">
       <strong>Dépose la vidéo ici</strong>
-      <span>caméra fixe (trépied, gradins) qui voit le demi-terrain</span>
+      <span>caméra XbotGo qui suit le jeu, téléphone qui pivote, ou caméra fixe</span>
     </label>
-    <p class="muted">Il faut une <b>caméra qui ne bouge pas</b> pendant la séquence : le radar se cale une fois sur les lignes du terrain. Une caméra qui suit le jeu (XbotGo, téléphone à la main) décale le radar.</p>
+    <p class="muted">La caméra peut <b>suivre le jeu d'un panier à l'autre</b> (XbotGo) : son mouvement est suivi image par image grâce aux lignes, aux gradins et aux murs, qui ne bougent pas. Elle doit rester au même endroit (sur son trépied) et éviter les zooms brusques.</p>
     <div id="player-wrap" hidden>
       <video id="video" controls playsinline preload="metadata"></video>
       <p class="muted" id="file-info"></p>
@@ -49,7 +49,15 @@
 
   <section class="card" id="step-calib" hidden>
     <h2><b>2</b> Caler le terrain</h2>
-    <p class="muted">Mets la vidéo sur une image où l'on voit bien les lignes, choisis les repères, puis touche-les sur l'image, dans l'ordre demandé.</p>
+    <p class="muted">Mets la vidéo sur une image où l'on voit bien les lignes, choisis les repères, puis touche-les sur l'image, dans l'ordre demandé. Avec une caméra qui suit le jeu, fais un calage de chaque côté du terrain (par exemple la raquette de gauche quand la caméra la filme, puis celle de droite) : le radar reste plus précis.</p>
+    <div class="row">
+      <label class="inline">Caméra
+        <select id="camera">
+          <option value="suit" selected>Caméra qui suit le jeu (XbotGo, téléphone qui pivote)</option>
+          <option value="fixe">Caméra fixe (ne bouge pas)</option>
+        </select>
+      </label>
+    </div>
     <div class="row">
       <label class="inline">Repères
         <select id="preset"></select>
@@ -76,6 +84,9 @@
         <p class="muted">Couleurs trouvées sur l'image de calibration. Si les deux équipes portent la même couleur, le radar montre tous les joueurs mais ne peut pas les séparer.</p>
       </div>
     </div>
+    <h3 class="sub">Calages enregistrés</h3>
+    <div id="calibs" class="calibs"></div>
+    <p class="muted" id="calibs-help">Aucun calage pour l'instant.</p>
   </section>
 
   <section class="card" id="step-run" hidden>
@@ -125,6 +136,11 @@
       </div>
       <div id="stats" class="radar-stats"></div>
     </div>
+    <div id="check-wrap" hidden>
+      <h3 class="sub">Contrôle du suivi de la caméra</h3>
+      <p class="muted">Les lignes jaunes sont recalculées par le suivi : elles doivent rester sur les lignes du terrain. Si elles glissent, ajoute un calage près de ce moment et relance.</p>
+      <div id="checks" class="checks"></div>
+    </div>
     <h3 class="sub">Cartes de chaleur</h3>
     <div class="heat-grid">
       <figure><canvas id="heat0" class="heat"></canvas><figcaption id="cap0"></figcaption></figure>
@@ -153,7 +169,7 @@
   <p class="error" id="error" role="alert" hidden></p>
 </main>
 
-<footer class="foot">Art craft · Gravity Basketball Montréal · détection MediaPipe (Google, Apache 2.0) · projection du terrain et suivi du ballon d'après roboflow/sports (MIT) · moteur vidéo ffmpeg.wasm</footer>
+<footer class="foot">Art craft · Gravity Basketball Montréal · détection MediaPipe (Google, Apache 2.0) · projection du terrain et suivi du ballon d'après roboflow/sports (MIT) · suivi de la caméra OpenCV.js (Apache 2.0) · moteur vidéo ffmpeg.wasm</footer>
 <script src="vendor/ffmpeg/ffmpeg.js"></script>
 <script type="module" src="radar.js"></script>
 </body>

@@ -1,6 +1,8 @@
 // Radar terrain : logique pure (aucun accès au DOM), testable avec Node.
 // La vidéo est filmée de côté ; on calibre le terrain en touchant 4 repères connus sur une image,
-// puis chaque joueur (pieds au sol) est projeté sur un demi-terrain vu du dessus, en mètres.
+// puis chaque joueur (pieds au sol) est projeté sur le terrain complet vu du dessus, en mètres.
+// Caméra qui suit le jeu (XbotGo, téléphone qui pivote) : le mouvement de la caméra entre deux images
+// (camera-motion.js) est enchaîné jusqu'à l'image de calage la plus proche (chainHomographies).
 //
 // homography() et le suivi du ballon (BallTracker) sont portés en JavaScript depuis
 // roboflow/sports (sports/common/view.py et sports/common/ball.py) :
@@ -12,33 +14,40 @@
 //   Software is furnished to do so, subject to the following conditions: The above copyright notice
 //   and this permission notice shall be included in all copies or substantial portions of the
 //   Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
-import { COURT } from './board-core.js';
 
-const CX = COURT.w / 2;
-const KEY = COURT.keyW / 2;
+// Terrain FIBA complet, en mètres : x de 0 (ligne de fond de gauche) à 28 (ligne de fond de droite),
+// y de 0 (ligne de côté du fond, en face de la caméra) à 15 (ligne de côté près de la caméra).
+export const FULL = { L: 28, W: 15, hoop: 1.575, keyW: 4.9, ftX: 5.8, ftR: 1.8, three: 6.75, corner: 0.9, center: 1.8 };
+const MID = FULL.W / 2;
+const K = FULL.keyW / 2;
 
-// Repères à toucher sur l'image, dans l'ordre, avec leur position sur le terrain (mètres :
-// x de 0 à 15 de gauche à droite, y = 0 sur la ligne de fond, 14 à la ligne médiane).
-export const PRESETS = {
-  raquette: {
-    label: 'Les 4 coins de la raquette (précis près du panier)',
-    points: [
-      { name: 'Coin de la raquette sur la ligne de fond, à gauche', court: [CX - KEY, 0] },
-      { name: 'Coin de la raquette sur la ligne de fond, à droite', court: [CX + KEY, 0] },
-      { name: 'Coin droit de la ligne des lancers francs', court: [CX + KEY, COURT.ftY] },
-      { name: 'Coin gauche de la ligne des lancers francs', court: [CX - KEY, COURT.ftY] },
-    ],
-  },
-  demi: {
-    label: 'Les 4 coins du demi-terrain (précis partout, il faut les voir)',
-    points: [
-      { name: 'Coin de la ligne de fond, à gauche', court: [0, 0] },
-      { name: 'Coin de la ligne de fond, à droite', court: [COURT.w, 0] },
-      { name: 'Ligne médiane, sur la ligne de côté droite', court: [COURT.w, COURT.h] },
-      { name: 'Ligne médiane, sur la ligne de côté gauche', court: [0, COURT.h] },
-    ],
-  },
+const side = (name, right) => {
+  const X = x => (right ? FULL.L - x : x);
+  const near = right ? 'à droite' : 'à gauche';
+  return {
+    [`raquette-${name}`]: {
+      label: `Raquette du panier ${near} (les 4 coins)`,
+      points: [
+        { name: `Panier ${near} · coin de la raquette sur la ligne de fond, côté caméra`, court: [X(0), MID + K] },
+        { name: `Panier ${near} · coin de la raquette sur la ligne de fond, côté du fond`, court: [X(0), MID - K] },
+        { name: `Panier ${near} · coin de la ligne des lancers francs, côté du fond`, court: [X(FULL.ftX), MID - K] },
+        { name: `Panier ${near} · coin de la ligne des lancers francs, côté caméra`, court: [X(FULL.ftX), MID + K] },
+      ],
+    },
+    [`moitie-${name}`]: {
+      label: `Moitié de terrain ${near} (coins + ligne médiane)`,
+      points: [
+        { name: `Moitié ${near} · coin de la ligne de fond, côté caméra`, court: [X(0), FULL.W] },
+        { name: `Moitié ${near} · coin de la ligne de fond, côté du fond`, court: [X(0), 0] },
+        { name: 'Ligne médiane · sur la ligne de côté du fond', court: [FULL.L / 2, 0] },
+        { name: 'Ligne médiane · sur la ligne de côté près de la caméra', court: [FULL.L / 2, FULL.W] },
+      ],
+    },
+  };
 };
+
+// Repères à toucher sur l'image, dans l'ordre, avec leur position sur le terrain.
+export const PRESETS = { ...side('gauche', false), ...side('droite', true) };
 
 // Résout A x = b (élimination de Gauss avec pivot partiel). null si le système est singulier.
 function solve(A, b) {
@@ -80,6 +89,15 @@ export function project(H, [x, y]) {
   return [(H[0] * x + H[1] * y + H[2]) / w, (H[3] * x + H[4] * y + H[5]) / w];
 }
 
+// Produit de deux homographies : mul(A, B) applique d'abord B, puis A.
+export function mul(A, B) {
+  const r = [];
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) r.push(A[i * 3] * B[j] + A[i * 3 + 1] * B[3 + j] + A[i * 3 + 2] * B[6 + j]);
+  }
+  return r[8] ? r.map(v => v / r[8]) : r;
+}
+
 // Inverse d'une matrice 3×3 (pour dessiner le terrain par-dessus l'image).
 export function invert(H) {
   const [a, b, c, d, e, f, g, h, i] = H;
@@ -105,26 +123,60 @@ export function checkQuad(pts, minDist = 0.02) {
   return '';
 }
 
-// Lignes du demi-terrain (en mètres), découpées en segments : pour les dessiner par-dessus l'image.
+/**
+ * Homographie image → terrain de chaque image du suivi de caméra.
+ * pairs[k] : homographie (coordonnées image 0 à 1) qui envoie l'image k sur l'image k − 1
+ * (null si le suivi a décroché entre les deux ; pairs[0] n'est pas utilisé).
+ * calibs : [{ k, H }] — image k calée à la main, H = image k → terrain.
+ * Chaque image prend le calage le plus proche (en nombre d'images) qu'on peut joindre sans décrochage.
+ * Renvoie un tableau de { H, from, dist } (H null si aucun calage n'est joignable).
+ */
+export function chainHomographies(pairs, calibs) {
+  const n = pairs.length;
+  const out = Array.from({ length: n }, () => ({ H: null, from: -1, dist: Infinity }));
+  calibs.forEach(({ k, H }, ci) => {
+    if (k < 0 || k >= n || !H) return;
+    const take = (j, M, d) => { if (d < out[j].dist) out[j] = { H: M, from: ci, dist: d }; };
+    take(k, H, 0);
+    // Vers l'avant : terrain ← image c ← … ← image j  (pairs[j] envoie j sur j − 1).
+    let M = H;
+    for (let j = k + 1; j < n && pairs[j]; j++) { M = mul(M, pairs[j]); take(j, M, j - k); }
+    // Vers l'arrière : l'image j va sur j + 1 par l'inverse de pairs[j + 1].
+    M = H;
+    for (let j = k - 1; j >= 0 && pairs[j + 1]; j--) {
+      const inv = invert(pairs[j + 1]);
+      if (!inv) break;
+      M = mul(M, inv);
+      take(j, M, k - j);
+    }
+  });
+  return out;
+}
+
+// Lignes du terrain complet (en mètres), découpées en segments : pour les dessiner (radar, contrôle).
 export function courtLines(step = 0.25) {
   const lines = [];
-  const seg = pts => lines.push(pts);
   const arc = (cx, cy, r, a0, a1) => {
     const n = Math.max(8, Math.ceil((Math.abs(a1 - a0) * r) / step));
-    seg(Array.from({ length: n + 1 }, (_, k) => {
+    lines.push(Array.from({ length: n + 1 }, (_, k) => {
       const a = a0 + ((a1 - a0) * k) / n;
       return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
     }));
   };
-  seg([[0, 0], [COURT.w, 0], [COURT.w, COURT.h], [0, COURT.h], [0, 0]]);
-  seg([[CX - KEY, 0], [CX - KEY, COURT.ftY], [CX + KEY, COURT.ftY], [CX + KEY, 0]]);
-  arc(CX, COURT.ftY, COURT.ftR, 0, Math.PI);
-  const dy = Math.sqrt(COURT.three ** 2 - (CX - COURT.cornerX) ** 2);
-  seg([[COURT.cornerX, 0], [COURT.cornerX, COURT.hoopY + dy]]);
-  seg([[COURT.w - COURT.cornerX, 0], [COURT.w - COURT.cornerX, COURT.hoopY + dy]]);
-  const ang = Math.atan2(dy, CX - COURT.cornerX);
-  arc(CX, COURT.hoopY, COURT.three, ang, Math.PI - ang);
-  arc(CX, COURT.h, 1.8, Math.PI, Math.PI * 2);
+  lines.push([[0, 0], [FULL.L, 0], [FULL.L, FULL.W], [0, FULL.W], [0, 0]]);
+  lines.push([[FULL.L / 2, 0], [FULL.L / 2, FULL.W]]);
+  arc(FULL.L / 2, MID, FULL.center, 0, Math.PI * 2);
+  const dx = Math.sqrt(FULL.three ** 2 - (MID - FULL.corner) ** 2);
+  const ang = Math.atan2(MID - FULL.corner, dx);
+  [false, true].forEach(right => {
+    const X = x => (right ? FULL.L - x : x);
+    lines.push([[X(0), MID - K], [X(FULL.ftX), MID - K], [X(FULL.ftX), MID + K], [X(0), MID + K]]);
+    arc(X(FULL.ftX), MID, FULL.ftR, right ? Math.PI / 2 : -Math.PI / 2, right ? Math.PI * 1.5 : Math.PI / 2);
+    lines.push([[X(0), FULL.corner], [X(FULL.hoop + dx), FULL.corner]]);
+    lines.push([[X(0), FULL.W - FULL.corner], [X(FULL.hoop + dx), FULL.W - FULL.corner]]);
+    if (right) arc(X(FULL.hoop), MID, FULL.three, Math.PI - ang, Math.PI + ang);
+    else arc(FULL.hoop, MID, FULL.three, -ang, ang);
+  });
   return lines;
 }
 
@@ -132,7 +184,10 @@ export function courtLines(step = 0.25) {
 export const feet = b => [b.x + b.w / 2, b.y + b.h];
 
 // Le point est-il sur le terrain (avec une marge en mètres, pour garder les joueurs sur les lignes) ?
-export const onCourt = ([x, y], margin = 1) => x >= -margin && x <= COURT.w + margin && y >= -margin && y <= COURT.h + margin;
+export const onCourt = ([x, y], margin = 1) => x >= -margin && x <= FULL.L + margin && y >= -margin && y <= FULL.W + margin;
+
+// Panier le plus proche d'un point : centre du cercle (mètres).
+const hoopOf = ([x]) => [x < FULL.L / 2 ? FULL.hoop : FULL.L - FULL.hoop, MID];
 
 // Équipe d'un maillot : centre de couleur le plus proche (k-moyennes faites sur l'image de calibration).
 export function nearestTeam(color, centers) {
@@ -183,13 +238,6 @@ export function ballHolder(players, ball, { pad = 0.35 } = {}) {
   return best;
 }
 
-/**
- * Possession, passes et pertes de balle sur la suite des images.
- * frames : [{ t, players: [{ court, team }], holder }] (holder = indice du porteur ou -1).
- * Le porteur est gardé tant que le ballon n'est pas revu ailleurs (au plus `hold` s).
- * Passe : le ballon saute de plus de `passDist` m dans la même équipe, plus vite qu'un joueur ne court.
- * Perte : le ballon passe à l'autre équipe (vol, interception, ou changement de possession).
- */
 // Un saut du ballon plus long que passDist et plus rapide qu'un joueur qui court (speed m/s) = une passe
 // (sinon c'est le même porteur qui dribble).
 function isPass(cur, h, t, passDist, speed) {
@@ -197,6 +245,13 @@ function isPass(cur, h, t, passDist, speed) {
   return d > passDist && d / Math.max(0.1, t - cur.t) > speed;
 }
 
+/**
+ * Possession, passes et pertes de balle sur la suite des images.
+ * frames : [{ t, players: [{ court, team }], holder }] (holder = indice du porteur ou -1).
+ * Le porteur est gardé tant que le ballon n'est pas revu ailleurs (au plus `hold` s).
+ * Passe : le ballon saute de plus de `passDist` m dans la même équipe, plus vite qu'un joueur ne court.
+ * Perte : le ballon passe à l'autre équipe (vol, interception, ou changement de possession).
+ */
 export function possession(frames, { hold = 1.5, passDist = 2.5, speed = 8 } = {}) {
   const time = [0, 0];
   const events = [];
@@ -223,12 +278,14 @@ export function possession(frames, { hold = 1.5, passDist = 2.5, speed = 8 } = {
   return { share: total ? time.map(x => x / total) : [0, 0], seconds: time, ...counts, events };
 }
 
-// Zone du terrain d'un point : 'raquette', 'trois' (derrière la ligne à 3 points) ou 'mi' (mi-distance).
-export function zoneOf([x, y]) {
-  if (Math.abs(x - CX) <= KEY && y <= COURT.ftY) return 'raquette';
-  const dy = Math.sqrt(COURT.three ** 2 - (CX - COURT.cornerX) ** 2);
-  if (y <= COURT.hoopY + dy && (x < COURT.cornerX || x > COURT.w - COURT.cornerX)) return 'trois';
-  return Math.hypot(x - CX, y - COURT.hoopY) > COURT.three ? 'trois' : 'mi';
+// Zone d'un point par rapport au panier de sa moitié : 'raquette', 'trois' ou 'mi' (mi-distance).
+export function zoneOf(p) {
+  const [x, y] = p;
+  const d = Math.min(x, FULL.L - x); // distance à la ligne de fond la plus proche
+  if (d <= FULL.ftX && Math.abs(y - MID) <= K) return 'raquette';
+  const h = hoopOf(p);
+  if ((y < FULL.corner || y > FULL.W - FULL.corner) && d <= FULL.hoop + Math.sqrt(FULL.three ** 2 - (MID - FULL.corner) ** 2)) return 'trois';
+  return Math.hypot(x - h[0], y - h[1]) > FULL.three ? 'trois' : 'mi';
 }
 
 // Écartement d'une équipe sur une image : distance moyenne entre coéquipiers (mètres), ou null.
@@ -243,16 +300,20 @@ export function spacing(points) {
 
 /**
  * Indicateurs par équipe sur toute la séquence : présence moyenne, temps par zone (%),
- * écartement moyen et profondeur moyenne (distance moyenne à la ligne de fond).
+ * écartement moyen et distance moyenne au panier le plus proche.
  */
 export function teamMetrics(frames) {
   return [0, 1].map(team => {
     const zones = { raquette: 0, mi: 0, trois: 0 };
-    let pts = 0, spSum = 0, spN = 0, depth = 0, seen = 0;
+    let pts = 0, spSum = 0, spN = 0, dist = 0;
     frames.forEach(f => {
       const mine = f.players.filter(p => p.team === team).map(p => p.court);
-      if (mine.length) seen++;
-      mine.forEach(c => { zones[zoneOf(c)]++; depth += c[1]; pts++; });
+      mine.forEach(c => {
+        zones[zoneOf(c)]++;
+        const h = hoopOf(c);
+        dist += Math.hypot(c[0] - h[0], c[1] - h[1]);
+        pts++;
+      });
       const sp = spacing(mine);
       if (sp != null) { spSum += sp; spN++; }
     });
@@ -261,19 +322,18 @@ export function teamMetrics(frames) {
       players: frames.length ? pts / frames.length : 0,
       zones: { raquette: pct('raquette'), mi: pct('mi'), trois: pct('trois') },
       spacing: spN ? spSum / spN : null,
-      depth: pts ? depth / pts : null,
-      seen: frames.length ? seen / frames.length : 0,
+      hoopDist: pts ? dist / pts : null,
     };
   });
 }
 
 /**
- * Carte de chaleur : grille nx × ny sur le demi-terrain, lissée (noyau gaussien), valeurs 0 à 1.
+ * Carte de chaleur : grille nx × ny sur le terrain complet, lissée (noyau gaussien), valeurs 0 à 1.
  */
-export function heatmap(points, { nx = 30, ny = 28, sigma = 1.2 } = {}) {
+export function heatmap(points, { nx = 56, ny = 30, sigma = 1.3 } = {}) {
   const raw = new Float32Array(nx * ny);
   points.forEach(([x, y]) => {
-    const i = Math.floor((x / COURT.w) * nx), j = Math.floor((y / COURT.h) * ny);
+    const i = Math.floor((x / FULL.L) * nx), j = Math.floor((y / FULL.W) * ny);
     if (i >= 0 && i < nx && j >= 0 && j < ny) raw[j * nx + i]++;
   });
   const r = Math.ceil(sigma * 2.5);
@@ -301,7 +361,7 @@ export function sampleTimes(start, dur, fps = 2) {
   return Array.from({ length: n }, (_, i) => +(start + i / fps).toFixed(3));
 }
 
-// Image du radar la plus proche de l'instant t (frames triées par t).
+// Élément d'une liste triée par t le plus proche de l'instant t.
 export function frameAt(frames, t) {
   if (!frames.length) return null;
   let lo = 0, hi = frames.length - 1;
@@ -348,4 +408,9 @@ export function buildRadarArgs({ input, start, dur, list, width = 720, radarH, h
   if (hasAudio) args.push('-map', '0:a:0', '-c:a', 'aac', '-b:a', '128k');
   args.push('-t', dur.toFixed(3), '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '23', '-movflags', '+faststart', output);
   return args;
+}
+
+// Arguments ffmpeg : la vidéo en petites images grises brutes (suivi du mouvement de la caméra).
+export function motionArgs({ input, start, dur, fps = 4, width = 320, output }) {
+  return ['-ss', start.toFixed(3), '-t', dur.toFixed(3), '-i', input, '-an', '-vf', `fps=${fps},scale=${width}:-2,format=gray`, '-f', 'rawvideo', output];
 }

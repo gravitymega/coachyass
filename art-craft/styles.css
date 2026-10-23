@@ -299,8 +299,8 @@ fieldset .inline { flex-wrap: wrap; }
 .team-row input { flex: 1; min-width: 110px; }
 .swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid rgba(255,255,255,.7); flex: none; display: inline-block; vertical-align: middle; }
 .swatch.small { width: 14px; height: 14px; border-width: 1px; }
-.radar-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
-@media (max-width: 760px) { .radar-grid { grid-template-columns: minmax(0, 1fr); } }
+.radar-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 900px) { .radar-grid { grid-template-columns: minmax(0, 1fr); } }
 .radar { width: 100%; height: auto; border-radius: 12px; display: block; }
 #scrub { flex: 1; }
 .poss-bar { display: flex; height: 34px; border-radius: 999px; overflow: hidden; font: 700 14px Oswald, sans-serif; color: #0d0b12; }
@@ -316,3 +316,10 @@ fieldset .inline { flex-wrap: wrap; }
 .heat-grid figcaption { font: 600 14px Inter, sans-serif; margin-top: 6px; }
 .events { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 6px; }
 .events li { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.calibs { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0; }
+.calib-chip { display: flex; align-items: center; gap: 6px; padding: 6px; border-radius: 12px; background: rgba(255,255,255,.06); max-width: 100%; }
+.calib-chip img { width: 96px; height: auto; border-radius: 8px; display: block; }
+.checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 12px; }
+.checks figure { margin: 0; }
+.checks img { width: 100%; height: auto; border-radius: 10px; display: block; }
+.checks figcaption { font: 600 13px Inter, sans-serif; margin-top: 4px; opacity: .8; }

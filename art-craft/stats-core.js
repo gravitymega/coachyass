@@ -176,7 +176,7 @@ export function clipPlayers(e, events, { gap = 4 } = {}) {
 
 // Zone du torse dans une boîte de détection (là où est le maillot).
 export function torsoBox(b) {
-  return { x: b.x + b.w * 0.28, y: b.y + b.h * 0.2, w: b.w * 0.44, h: b.h * 0.3 };
+  return { x: b.x + b.w * 0.34, y: b.y + b.h * 0.2, w: b.w * 0.32, h: b.h * 0.28 };
 }
 
 const dist2 = (a, b) => (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2;

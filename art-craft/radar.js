@@ -1,5 +1,7 @@
-// Module « Radar terrain » : joueurs détectés dans le navigateur (MediaPipe), projetés sur un
-// demi-terrain vu du dessus grâce à 4 repères touchés sur l'image (homographie, radar-core.js).
+// Module « Radar terrain » : joueurs détectés dans le navigateur (MediaPipe), projetés sur le terrain
+// complet vu du dessus grâce à 4 repères touchés sur l'image (homographie, radar-core.js).
+// Caméra qui suit le jeu (XbotGo, téléphone qui pivote) : le mouvement de la caméra est suivi image par
+// image (camera-motion.js, OpenCV.js) et enchaîné jusqu'au calage le plus proche.
 // Possession, passes, pertes, zones, écartement, cartes de chaleur, fiche PNG, CSV et vidéo radar.
 import {
   $, showError, setProgress, parseLogDuration, getFFmpeg, mountFiles, runWithLog, offerFile, slugify, loadImage,
@@ -7,21 +9,28 @@ import {
 import { loadDetector, detectScene, jerseyColor, detectorDevice } from './detect.js';
 import { kmeans2, hex } from './stats-core.js';
 import {
-  PRESETS, homography, project, invert, checkQuad, courtLines, feet, onCourt, nearestTeam, BallTracker,
+  FULL, PRESETS, homography, project, invert, checkQuad, courtLines, feet, onCourt, nearestTeam, BallTracker,
   ballHolder, possession, teamMetrics, heatmap, sampleTimes, frameAt, toCSV, radarConcat, buildRadarArgs,
+  chainHomographies, motionArgs,
 } from './radar-core.js';
-import { COURT, fitCourt } from './board-core.js';
-import { drawCourt } from './board.js';
+import { loadOpenCV, pairMotion } from './camera-motion.js';
 import { fmtTime } from './analyse-core.js';
 import { parseTimestamp } from './highlights.js';
 import { BRAND } from './brand.js';
 
 const MOUNT = '/rd';
 const FALLBACK_COLORS = ['#3ec8ff', BRAND.orange];
+const MOTION_FPS = 4;   // images par seconde pour suivre la caméra
+const MOTION_W = 320;   // largeur des images grises du suivi de caméra
+const CHUNK_S = 60;     // la vidéo est lue par tranches d'une minute (mémoire constante)
+const NEAR_S = 180;     // un calage sert jusqu'à 3 min de la séquence
+const FLOOR = '#8f1d2c';
+const PAINT = '#6f1622';
+const LINE = 'rgba(255,255,255,.9)';
 const state = {
   file: null, input: '', duration: 0, hasAudio: false, busy: false,
-  frame: null, frameT: 0, taps: [], H: null, centers: null,
-  frames: [], start: 0, dur: 0, pos: null, metrics: null, playing: false,
+  cur: { frame: null, t: 0, taps: [], H: null }, calibs: [], centers: null,
+  frames: [], checks: [], start: 0, dur: 0, pos: null, metrics: null, lost: 0, playing: false,
 };
 
 // ---------- 1. Vidéo ----------
@@ -36,11 +45,16 @@ function selectFile(file) {
   state.file = file;
   state.duration = 0;
   state.input = '';
+  state.calibs = [];
+  state.centers = null;
+  state.cur = { frame: null, t: 0, taps: [], H: null };
   if (video.src) URL.revokeObjectURL(video.src);
   video.src = URL.createObjectURL(file);
   $('player-wrap').hidden = false;
   $('step-calib').hidden = false;
+  $('calib-wrap').hidden = true;
   $('file-info').textContent = `${file.name} · ${(file.size / 1e6).toFixed(0)} Mo`;
+  renderCalibs();
 }
 video.addEventListener('loadedmetadata', () => {
   if (Number.isFinite(video.duration)) {
@@ -72,7 +86,9 @@ async function grabBitmap(ff, t, width = 1280) {
 // ---------- 2. Calibration ----------
 Object.entries(PRESETS).forEach(([k, p]) => $('preset').appendChild(new Option(p.label, k)));
 const preset = () => PRESETS[$('preset').value];
-$('preset').addEventListener('change', () => { state.taps = []; updateCalib(); });
+const following = () => $('camera').value === 'suit';
+$('preset').addEventListener('change', () => { state.cur.taps = []; updateCalib(); });
+$('camera').addEventListener('change', () => { renderCalibs(); updateEta(); });
 
 $('btn-frame').addEventListener('click', async () => {
   if (state.busy || !state.file) return;
@@ -82,15 +98,16 @@ $('btn-frame').addEventListener('click', async () => {
   try {
     const ff = await getFFmpeg('run-progress');
     await mountInput(ff);
-    state.frameT = video.currentTime || 0;
-    state.frame = await grabBitmap(ff, state.frameT);
-    if (!state.frame) throw new Error('image illisible');
+    const t = video.currentTime || 0;
+    const frame = await grabBitmap(ff, t);
+    if (!frame) throw new Error('image illisible');
     $('run-progress').hidden = true;
-    state.taps = [];
+    state.cur = { frame, t, taps: [], H: null };
     $('calib-wrap').hidden = false;
     updateCalib();
     $('calib-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    detectTeams();
+    if (!state.centers) detectTeams(frame);
+    else $('calib-info').textContent = '';
   } catch (err) {
     console.error(err);
     showError('Image impossible à lire : ' + (err.message || err));
@@ -101,16 +118,36 @@ $('btn-frame').addEventListener('click', async () => {
 
 const calib = $('calib');
 calib.addEventListener('click', e => {
-  if (!state.frame || state.taps.length >= 4) return;
+  if (!state.cur.frame || state.cur.taps.length >= 4) return;
   const r = calib.getBoundingClientRect();
-  state.taps.push([(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]);
+  state.cur.taps.push([(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]);
   updateCalib();
 });
-$('btn-undo').onclick = () => { state.taps.pop(); updateCalib(); };
-$('btn-reset').onclick = () => { state.taps = []; updateCalib(); };
+$('btn-undo').onclick = () => { state.cur.taps.pop(); updateCalib(); };
+$('btn-reset').onclick = () => { state.cur.taps = []; updateCalib(); };
+
+// Lignes du terrain dessinées par-dessus une image (Hc : image 0 à 1 → terrain).
+function drawLinesOnImage(ctx, W, H, Hc, color = 'rgba(255, 214, 0, .95)', width = 2) {
+  const back = invert(Hc);
+  if (!back) return;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  courtLines().forEach(line => {
+    ctx.beginPath();
+    let pen = false;
+    line.forEach(c => {
+      const w = back[6] * c[0] + back[7] * c[1] + back[8];
+      if (w <= 0) { pen = false; return; } // point derrière la caméra
+      const [u, v] = project(back, c);
+      if (pen) ctx.lineTo(u * W, v * H); else ctx.moveTo(u * W, v * H);
+      pen = true;
+    });
+    ctx.stroke();
+  });
+}
 
 function updateCalib() {
-  const img = state.frame;
+  const { frame: img, taps } = state.cur;
   if (!img) return;
   calib.width = img.width;
   calib.height = img.height;
@@ -118,36 +155,26 @@ function updateCalib() {
   ctx.drawImage(img, 0, 0);
   const pts = preset().points;
   const s = Math.max(img.width / 400, 2);
-  state.H = null;
-  if (state.taps.length === 4) {
-    const err = checkQuad(state.taps);
-    // Terrain (mètres) → image (0 à 1) : la matrice qui sert au radar va de l'image vers le terrain.
-    const H = err ? null : homography(state.taps, pts.map(p => p.court));
-    const back = H && invert(H);
-    if (back) {
-      state.H = H;
-      ctx.strokeStyle = 'rgba(255, 214, 0, .95)';
-      ctx.lineWidth = s * 1.2;
-      courtLines().forEach(line => {
-        ctx.beginPath();
-        line.forEach((c, i) => {
-          const [u, v] = project(back, c);
-          if (i) ctx.lineTo(u * img.width, v * img.height); else ctx.moveTo(u * img.width, v * img.height);
-        });
-        ctx.stroke();
-      });
+  state.cur.H = null;
+  if (taps.length === 4) {
+    const err = checkQuad(taps);
+    const H = err ? null : homography(taps, pts.map(p => p.court));
+    if (H && invert(H)) {
+      state.cur.H = H;
+      drawLinesOnImage(ctx, img.width, img.height, H, 'rgba(255, 214, 0, .95)', s * 1.2);
+      saveCalib();
     }
-    $('calib-ask').textContent = state.H
-      ? '✔ Terrain calé : les lignes jaunes doivent tomber sur les lignes du terrain. Sinon, recommence en touchant plus précisément.'
+    $('calib-ask').textContent = state.cur.H
+      ? `✔ Calage enregistré à ${fmtTime(state.cur.t)} : les lignes jaunes doivent tomber sur les lignes du terrain. Sinon, recommence en touchant plus précisément.`
       : (err || 'Repères impossibles à utiliser : recommence.');
   } else {
-    const next = pts[state.taps.length];
+    const next = pts[taps.length];
     $('calib-ask').innerHTML = '';
     const b = document.createElement('b');
-    b.textContent = `Repère ${state.taps.length + 1} / 4 : `;
+    b.textContent = `Repère ${taps.length + 1} / 4 : `;
     $('calib-ask').append(b, next.name);
   }
-  state.taps.forEach(([u, v], i) => {
+  taps.forEach(([u, v], i) => {
     ctx.fillStyle = BRAND.orange;
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = s;
@@ -159,21 +186,67 @@ function updateCalib() {
     ctx.font = `700 ${Math.round(s * 7)}px Inter, sans-serif`;
     ctx.fillText(String(i + 1), u * img.width + s * 7, v * img.height - s * 5);
   });
-  $('step-run').hidden = !state.H;
+}
+
+// Un calage réussi est gardé (un seul par instant) avec une petite vignette de contrôle.
+function saveCalib() {
+  const { frame, t, H } = state.cur;
+  const c = document.createElement('canvas');
+  c.width = 240;
+  c.height = Math.round((240 * frame.height) / frame.width);
+  const ctx = c.getContext('2d');
+  ctx.drawImage(frame, 0, 0, c.width, c.height);
+  drawLinesOnImage(ctx, c.width, c.height, H, 'rgba(255, 214, 0, .95)', 1.5);
+  const entry = { t, preset: preset().label, H, thumb: c.toDataURL('image/jpeg', 0.8) };
+  state.calibs = state.calibs.filter(x => Math.abs(x.t - t) > 0.05).concat(entry).sort((a, b) => a.t - b.t);
+  renderCalibs();
+}
+
+function renderCalibs() {
+  const box = $('calibs');
+  box.innerHTML = '';
+  state.calibs.forEach((c, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'calib-chip';
+    const img = document.createElement('img');
+    img.src = c.thumb;
+    img.alt = '';
+    const go = document.createElement('button');
+    go.type = 'button';
+    go.className = 'tool';
+    go.textContent = fmtTime(c.t);
+    go.title = c.preset;
+    go.onclick = () => { if (Number.isFinite(video.duration)) video.currentTime = c.t; };
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'tool';
+    del.textContent = '✕';
+    del.title = 'Supprimer ce calage';
+    del.onclick = () => { state.calibs.splice(i, 1); renderCalibs(); };
+    chip.append(img, go, del);
+    box.append(chip);
+  });
+  const n = state.calibs.length;
+  $('calibs-help').textContent = !n
+    ? ''
+    : following()
+      ? `${n} calage${n > 1 ? 's' : ''}. La caméra est suivie à partir du calage le plus proche. Sur une longue séquence, ou si la caméra traverse tout le terrain, ajoute un calage de l'autre côté (mets la vidéo plus loin, puis « Utiliser l'image affichée »).`
+      : 'Caméra fixe : seul le dernier calage sert pour toute la séquence.';
+  $('step-run').hidden = !n;
   updateEta();
 }
 
 // Couleurs des deux équipes : k-moyennes sur les maillots des joueurs debout sur le terrain.
-async function detectTeams() {
+async function detectTeams(frame) {
   $('calib-info').textContent = 'Recherche des joueurs et des couleurs de maillots (le détecteur se télécharge la 1re fois)…';
   try {
     await loadDetector();
-    const { players } = await detectScene(state.frame, { grid: 2 });
+    const { players } = await detectScene(frame, { grid: 2 });
     const c = document.createElement('canvas');
-    c.width = state.frame.width;
-    c.height = state.frame.height;
+    c.width = frame.width;
+    c.height = frame.height;
     const ctx = c.getContext('2d', { willReadFrequently: true });
-    ctx.drawImage(state.frame, 0, 0);
+    ctx.drawImage(frame, 0, 0);
     const colors = players.map(b => jerseyColor(ctx, b, c.width, c.height));
     const { centers } = kmeans2(colors);
     state.centers = centers.length === 2 ? centers : null;
@@ -193,13 +266,58 @@ const teamColor = k => (state.centers ? hex(state.centers[k]) : FALLBACK_COLORS[
 $('btn-here').onclick = () => { $('start').value = fmtTime(video.currentTime || 0); updateEta(); };
 ['start', 'dur', 'fps', 'grid'].forEach(id => $(id).addEventListener('change', updateEta));
 function updateEta() {
-  const n = Math.floor(+$('dur').value * +$('fps').value);
+  const dur = +$('dur').value;
+  const n = Math.floor(dur * +$('fps').value);
   const k = +$('grid').value > 1 ? 3 : 1;
-  $('eta').textContent = `${n} images à analyser · compte environ ${Math.max(1, Math.round((n * 0.7 * k) / 60))} à ${Math.max(2, Math.round((n * 1.5 * k) / 60))} min selon l'appareil.`;
+  const motion = following() ? dur * MOTION_FPS * 0.03 : 0;
+  const lo = Math.max(1, Math.round((n * 0.7 * k + motion) / 60));
+  const hi = Math.max(2, Math.round((n * 1.5 * k + motion * 2) / 60));
+  $('eta').textContent = `${n} images à analyser${following() ? ' + suivi de la caméra' : ''} · compte environ ${lo} à ${hi} min selon l'appareil.`;
+}
+
+/**
+ * Suit la caméra de r0 à r1 : renvoie une fonction t → homographie image → terrain (ou null si perdu).
+ * La vidéo est lue en petites images grises, tranche par tranche ; seule l'image précédente est gardée.
+ */
+async function trackCamera(ff, r0, r1, calibs, onProgress) {
+  const cv = await loadOpenCV();
+  const probe = await grabBitmap(ff, r0, MOTION_W);
+  if (!probe) throw new Error('image illisible pour le suivi de caméra');
+  const w = probe.width, h = probe.height;
+  probe.close();
+  const size = w * h;
+  const pairs = [];
+  let prev = null;
+  for (let c0 = r0; c0 < r1; c0 += CHUNK_S) {
+    const dur = Math.min(CHUNK_S, r1 - c0);
+    const base = Math.round((c0 - r0) * MOTION_FPS);
+    const code = await ff.exec(motionArgs({ input: state.input, start: c0, dur, fps: MOTION_FPS, width: w, output: '/mo.raw' }));
+    if (code !== 0) throw new Error('lecture impossible pour le suivi de caméra');
+    const data = await ff.readFile('/mo.raw');
+    await ff.deleteFile('/mo.raw');
+    const count = Math.floor(data.length / size);
+    for (let i = 0; i < count; i++) {
+      const k = base + i;
+      const cur = data.slice(i * size, (i + 1) * size);
+      while (pairs.length < k) pairs.push(null);
+      pairs[k] = prev ? pairMotion(cv, prev, cur, w, h) : null;
+      prev = cur;
+      if (i % 20 === 0) {
+        onProgress((c0 - r0 + i / MOTION_FPS) / (r1 - r0));
+        await new Promise(r => setTimeout(r)); // laisse la page respirer
+      }
+    }
+  }
+  const idx = t => Math.round((t - r0) * MOTION_FPS);
+  const chain = chainHomographies(pairs, calibs.map(c => ({ k: Math.min(pairs.length - 1, Math.max(0, idx(c.t))), H: c.H })));
+  return t => {
+    const k = idx(t);
+    return k >= 0 && k < chain.length ? chain[k].H : null;
+  };
 }
 
 $('btn-run').addEventListener('click', async () => {
-  if (state.busy || !state.H) return;
+  if (state.busy || !state.calibs.length) return;
   state.busy = true;
   $('btn-run').disabled = true;
   showError('');
@@ -210,13 +328,37 @@ $('btn-run').addEventListener('click', async () => {
     const start = Math.max(0, parseTimestamp($('start').value) || 0);
     if (state.duration && start >= state.duration - 1) throw new Error('Le début est après la fin de la vidéo.');
     const dur = Math.min(+$('dur').value, (state.duration || Infinity) - start);
+    const end = start + dur;
+    let Hat;
+    let share = 0; // part de la barre de progression prise par le suivi de caméra
+    if (following()) {
+      const near = state.calibs.filter(c => c.t >= start - NEAR_S && c.t <= end + NEAR_S);
+      if (!near.length) throw new Error(`Aucun calage près de cette séquence : ajoute un calage pris entre ${fmtTime(Math.max(0, start - NEAR_S))} et ${fmtTime(end + NEAR_S)}.`);
+      const r0 = Math.min(start, ...near.map(c => c.t));
+      const r1 = Math.min(state.duration || Infinity, Math.max(end, ...near.map(c => c.t)) + 0.5);
+      share = 0.3;
+      setProgress('run-progress', 0, 'Suivi de la caméra (le moteur se télécharge la 1re fois)…');
+      Hat = await trackCamera(ff, r0, r1, near, u => setProgress('run-progress', u * share, `Suivi de la caméra… ${Math.round(u * 100)} %`));
+    } else {
+      const H = state.calibs[state.calibs.length - 1].H;
+      Hat = () => H;
+    }
     const times = sampleTimes(start, dur, +$('fps').value);
+    const checkAt = new Set([0.1, 0.37, 0.63, 0.9].map(u => Math.min(times.length - 1, Math.round(u * (times.length - 1)))));
     const tracker = new BallTracker();
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const frames = [];
+    const checks = [];
+    let lost = 0;
     for (let i = 0; i < times.length; i++) {
-      setProgress('run-progress', i / times.length, `Image ${i + 1} / ${times.length} · joueurs et ballon…`);
+      setProgress('run-progress', share + (1 - share) * (i / times.length), `Image ${i + 1} / ${times.length} · joueurs et ballon…`);
+      const H = Hat(times[i]);
+      if (!H) {
+        lost++;
+        frames.push({ t: times[i], players: [], holder: -1, ball: false, lost: true });
+        continue;
+      }
       const img = await grabBitmap(ff, times[i], 1280);
       if (!img) continue;
       const { players, balls } = await detectScene(img, { grid: +$('grid').value });
@@ -225,23 +367,28 @@ $('btn-run').addEventListener('click', async () => {
       ctx.drawImage(img, 0, 0);
       const list = [];
       players.forEach(box => {
-        const court = project(state.H, feet(box));
+        const court = project(H, feet(box));
         if (!onCourt(court)) return; // banc, spectateurs, arbitres hors du terrain
         const team = state.centers ? nearestTeam(jerseyColor(ctx, box, img.width, img.height), state.centers) : 0;
         list.push({ box, court, team });
       });
       const ball = tracker.update(balls);
       frames.push({ t: times[i], players: list, holder: ballHolder(list, ball), ball: Boolean(ball) });
+      if (checkAt.has(i)) checks.push({ t: times[i], url: checkThumb(img, H) });
       img.close();
     }
-    if (frames.length < 2) throw new Error('Impossible de lire assez d\'images de cette vidéo.');
+    if (frames.length - lost < 2) throw new Error('Suivi impossible : la caméra a été perdue sur presque toute la séquence. Ajoute un calage pendant la séquence.');
     state.frames = frames;
+    state.checks = checks;
+    state.lost = lost;
     state.start = start;
     state.dur = dur;
+    const seenFrames = frames.filter(f => !f.lost);
     state.pos = possession(frames);
-    state.metrics = teamMetrics(frames);
-    const seen = frames.filter(f => f.ball).length;
-    setProgress('run-progress', 1, `Radar prêt · ${frames.length} images · ballon vu sur ${Math.round((seen / frames.length) * 100)} % des images`);
+    state.metrics = teamMetrics(seenFrames);
+    const seen = seenFrames.filter(f => f.ball).length;
+    const lostTxt = lost ? ` · caméra perdue sur ${lost} image${lost > 1 ? 's' : ''}` : '';
+    setProgress('run-progress', 1, `Radar prêt · ${frames.length} images · ballon vu sur ${Math.round((seen / seenFrames.length) * 100)} % des images${lostTxt}`);
     renderResults();
   } catch (err) {
     console.error(err);
@@ -252,30 +399,73 @@ $('btn-run').addEventListener('click', async () => {
   }
 });
 
+// Vignette de contrôle : l'image analysée avec les lignes du terrain recalculées par le suivi.
+function checkThumb(img, H) {
+  const c = document.createElement('canvas');
+  c.width = 480;
+  c.height = Math.round((480 * img.height) / img.width);
+  const ctx = c.getContext('2d');
+  ctx.drawImage(img, 0, 0, c.width, c.height);
+  drawLinesOnImage(ctx, c.width, c.height, H, 'rgba(255, 214, 0, .95)', 2);
+  return c.toDataURL('image/jpeg', 0.8);
+}
+
 // ---------- 4. Résultats ----------
 const radar = $('radar');
-const toPx = (box, [x, y]) => [box.x + (x / COURT.w) * box.w, box.y + (y / COURT.h) * box.h];
+
+// Rectangle du terrain complet (28 × 15 m) centré dans une zone.
+function fitFull(x, y, w, h, pad = 0) {
+  const s = Math.min((w - pad * 2) / FULL.L, (h - pad * 2) / FULL.W);
+  const bw = FULL.L * s, bh = FULL.W * s;
+  return { x: x + (w - bw) / 2, y: y + (h - bh) / 2, w: bw, h: bh };
+}
+const toPx = (box, [x, y]) => [box.x + (x / FULL.L) * box.w, box.y + (y / FULL.W) * box.h];
+
+function drawFullCourt(ctx, box) {
+  const s = box.w / FULL.L;
+  ctx.fillStyle = FLOOR;
+  ctx.fillRect(box.x, box.y, box.w, box.h);
+  ctx.fillStyle = PAINT;
+  const kw = FULL.keyW * s, ky = box.y + (FULL.W / 2) * s - kw / 2;
+  ctx.fillRect(box.x, ky, FULL.ftX * s, kw);
+  ctx.fillRect(box.x + box.w - FULL.ftX * s, ky, FULL.ftX * s, kw);
+  ctx.strokeStyle = LINE;
+  ctx.lineWidth = Math.max(1.5, box.w * 0.003);
+  courtLines().forEach(line => {
+    ctx.beginPath();
+    line.forEach((c, i) => { const [x, y] = toPx(box, c); if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y); });
+    ctx.stroke();
+  });
+  ctx.strokeStyle = BRAND.orange;
+  ctx.lineWidth = Math.max(1.5, box.w * 0.004);
+  [FULL.hoop, FULL.L - FULL.hoop].forEach(hx => {
+    const [x, y] = toPx(box, [hx, FULL.W / 2]);
+    ctx.beginPath();
+    ctx.arc(x, y, 0.23 * s, 0, Math.PI * 2);
+    ctx.stroke();
+  });
+}
 
 function drawRadar(ctx, W, H, f, { title = true } = {}) {
   ctx.fillStyle = BRAND.dark;
   ctx.fillRect(0, 0, W, H);
-  const head = title ? Math.round(H * 0.09) : 0;
-  const box = fitCourt(0, head, W, H - head, Math.round(W * 0.03));
-  drawCourt(ctx, box);
-  const r = box.w * 0.024;
+  const head = title ? Math.round(H * 0.14) : 0;
+  const box = fitFull(0, head, W, H - head, Math.round(W * 0.025));
+  drawFullCourt(ctx, box);
+  const r = box.w * 0.013;
   if (title) {
     const n = names();
     ctx.font = `700 ${Math.round(head * 0.42)}px Oswald, sans-serif`;
     ctx.textBaseline = 'middle';
     ctx.fillStyle = teamColor(0);
     ctx.textAlign = 'left';
-    ctx.fillText('● ' + n[0], W * 0.04, head * 0.55);
+    ctx.fillText('● ' + n[0], W * 0.03, head * 0.55);
     ctx.fillStyle = teamColor(1);
     ctx.textAlign = 'right';
-    ctx.fillText(n[1] + ' ●', W * 0.96, head * 0.55);
+    ctx.fillText(n[1] + ' ●', W * 0.97, head * 0.55);
     ctx.fillStyle = '#fff';
     ctx.textAlign = 'center';
-    if (f) ctx.fillText(fmtTime(f.t), W / 2, head * 0.55);
+    if (f) ctx.fillText(f.lost ? `${fmtTime(f.t)} · suivi perdu` : fmtTime(f.t), W / 2, head * 0.55);
   }
   if (!f) return;
   f.players.forEach((p, i) => {
@@ -302,9 +492,9 @@ function drawRadar(ctx, W, H, f, { title = true } = {}) {
 }
 
 function sizeRadar() {
-  const w = Math.min(720, radar.parentElement.clientWidth || 360) * (window.devicePixelRatio > 1 ? 2 : 1);
+  const w = Math.min(900, radar.parentElement.clientWidth || 360) * (window.devicePixelRatio > 1 ? 2 : 1);
   radar.width = Math.round(w);
-  radar.height = Math.round(w * 1.02);
+  radar.height = Math.round(w * 0.62);
 }
 
 function showAt(t) {
@@ -358,7 +548,7 @@ function statRows() {
     ['Mi-distance', pctTxt(m[0].zones.mi), pctTxt(m[1].zones.mi)],
     ['Derrière la ligne à 3 pts', pctTxt(m[0].zones.trois), pctTxt(m[1].zones.trois)],
     ['Écartement moyen', mTxt(m[0].spacing), mTxt(m[1].spacing)],
-    ['Distance moyenne à la ligne de fond', mTxt(m[0].depth), mTxt(m[1].depth)],
+    ['Distance moyenne au panier', mTxt(m[0].hoopDist), mTxt(m[1].hoopDist)],
     ['Joueurs vus par image', dec(m[0].players), dec(m[1].players)],
   ];
 }
@@ -405,7 +595,9 @@ function coachTip() {
   if (m[0].zones.raquette > 0.35) tips.push(`${n[0]} passe beaucoup de temps dans la raquette (${pctTxt(m[0].zones.raquette)}).`);
   if (m[0].zones.trois > 0.45) tips.push(`${n[0]} est souvent derrière la ligne à 3 points (${pctTxt(m[0].zones.trois)}).`);
   if (state.pos.pertes[0] > state.pos.pertes[1]) tips.push(`${n[0]} perd plus de ballons que ${n[1]} sur cette séquence.`);
-  return tips.length ? 'À retenir : ' + tips.join(' ') : 'À retenir : séquence équilibrée, rien de marquant dans les chiffres.';
+  let txt = tips.length ? 'À retenir : ' + tips.join(' ') : 'À retenir : séquence équilibrée, rien de marquant dans les chiffres.';
+  if (state.lost) txt += ` Caméra perdue sur ${state.lost} image${state.lost > 1 ? 's' : ''} (mouvement trop brusque) : un calage de plus pendant la séquence les récupère.`;
+  return txt;
 }
 
 const HEAT_STOPS = [[0, [0, 0, 0, 0]], [0.25, [62, 200, 255, 120]], [0.55, [255, 214, 0, 170]], [1, [216, 30, 91, 215]]];
@@ -422,7 +614,7 @@ function heatColor(v) {
 }
 
 function drawHeat(ctx, box, team) {
-  drawCourt(ctx, box);
+  drawFullCourt(ctx, box);
   const pts = state.frames.flatMap(f => f.players.filter(p => p.team === team).map(p => p.court));
   if (!pts.length) return;
   const hm = heatmap(pts);
@@ -444,14 +636,30 @@ function renderHeat() {
   const n = names();
   [0, 1].forEach(k => {
     const c = $('heat' + k);
-    c.width = 600;
-    c.height = 560;
+    c.width = 840;
+    c.height = 470;
     const ctx = c.getContext('2d');
     ctx.fillStyle = BRAND.dark;
     ctx.fillRect(0, 0, c.width, c.height);
-    drawHeat(ctx, fitCourt(0, 0, c.width, c.height, 12), k);
+    drawHeat(ctx, fitFull(0, 0, c.width, c.height, 12), k);
     $('cap' + k).textContent = `${n[k]} · où l'équipe a passé son temps`;
     $('cap' + k).style.color = teamColor(k);
+  });
+}
+
+function renderChecks() {
+  const box = $('checks');
+  box.innerHTML = '';
+  $('check-wrap').hidden = !state.checks.length;
+  state.checks.forEach(c => {
+    const fig = document.createElement('figure');
+    const img = document.createElement('img');
+    img.src = c.url;
+    img.alt = `Contrôle du calage à ${fmtTime(c.t)}`;
+    const cap = document.createElement('figcaption');
+    cap.textContent = fmtTime(c.t);
+    fig.append(img, cap);
+    box.append(fig);
   });
 }
 
@@ -492,6 +700,7 @@ function renderResults() {
   sizeRadar();
   renderStats();
   renderHeat();
+  renderChecks();
   renderEvents();
   showAt(state.start);
   // CSV des positions.
@@ -549,18 +758,18 @@ async function makeCard() {
   ctx.fillStyle = 'rgba(255,255,255,.7)';
   ctx.font = '500 24px Inter, sans-serif';
   ctx.fillText('Possession', 48, y0 + 88);
-  // Cartes de chaleur.
-  const hw = (W - 96 - 24) / 2;
+  // Cartes de chaleur (terrain complet), côte à côte.
+  const hw = (W - 96 - 24) / 2, hh = hw * (FULL.W / FULL.L);
   [0, 1].forEach(k => {
-    const box = fitCourt(48 + k * (hw + 24), 320, hw, hw * 0.94, 0);
+    const box = fitFull(48 + k * (hw + 24), 320, hw, hh, 0);
     drawHeat(ctx, box, k);
     ctx.fillStyle = teamColor(k);
     ctx.font = '700 28px Oswald, sans-serif';
     ctx.fillText(n[k], box.x, box.y + box.h + 38);
   });
   // Tableau.
-  let ty = 320 + hw * 0.94 + 90;
-  ctx.font = '500 26px Inter, sans-serif';
+  let ty = 320 + hh + 110;
+  ctx.font = '500 28px Inter, sans-serif';
   statRows().slice(1, 8).forEach(([label, a, b]) => {
     ctx.fillStyle = 'rgba(255,255,255,.8)';
     ctx.textAlign = 'left';
@@ -570,7 +779,7 @@ async function makeCard() {
     ctx.fillText(a, W - 240, ty);
     ctx.fillStyle = teamColor(1);
     ctx.fillText(b, W - 48, ty);
-    ty += 44;
+    ty += 52;
   });
   ctx.textAlign = 'left';
   ctx.fillStyle = 'rgba(255,255,255,.55)';
@@ -593,7 +802,7 @@ $('btn-render').addEventListener('click', async () => {
   try {
     const ff = await getFFmpeg('render-progress');
     await mountInput(ff);
-    const W = 720, RH = 736;
+    const W = 720, RH = 446;
     const c = document.createElement('canvas');
     c.width = W;
     c.height = RH;
