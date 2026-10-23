@@ -1,5 +1,5 @@
 // Détection des joueurs dans le navigateur : MediaPipe Object Detector (Google, Apache 2.0)
-// avec le modèle EfficientDet-Lite2 (entraîné sur COCO : classe « person »). Le calcul se fait
+// avec le modèle EfficientDet-Lite2 (entraîné sur COCO : classes « person » et « sports ball »). Le calcul se fait
 // sur la carte graphique (délégué GPU de MediaPipe), avec repli sur le processeur.
 // Rien n'est envoyé sur Internet : seuls le moteur (~10 Mo) et le modèle (~12 Mo) sont téléchargés
 // une fois, puis gardés en cache par le navigateur.
@@ -22,7 +22,7 @@ async function create(vision, FilesetResolver, base, delegate) {
     runningMode: 'IMAGE',
     scoreThreshold: 0.3,
     maxResults: 30,
-    categoryAllowlist: ['person'],
+    categoryAllowlist: ['person', 'sports ball'],
   });
 }
 
@@ -52,18 +52,55 @@ export function loadDetector() {
  * Les personnes minuscules (spectateurs au loin) sont écartées.
  */
 export async function detectPlayers(image) {
+  return (await detectScene(image)).players;
+}
+
+// Recouvrement de deux boîtes : intersection / plus petite des deux aires.
+function overlap(a, b) {
+  const w = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
+  const h = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
+  return w <= 0 || h <= 0 ? 0 : (w * h) / Math.min(a.w * a.h, b.w * b.h);
+}
+
+/**
+ * Joueurs et ballons visibles sur une image (boîtes en coordonnées 0 à 1).
+ * grid > 1 : l'image est découpée en grid × grid zones qui se chevauchent, analysées une par une
+ * (le modèle réduit chaque image à ~448 px : sur une vue large, les joueurs lointains et le ballon
+ * deviennent trop petits). Les doublons aux bords des zones sont fusionnés.
+ */
+export async function detectScene(image, { grid = 1 } = {}) {
   const det = await loadDetector();
   const W = image.width, H = image.height;
-  const res = det.detect(image);
-  return (res.detections || [])
-    .map(d => ({
-      x: d.boundingBox.originX / W,
-      y: d.boundingBox.originY / H,
-      w: d.boundingBox.width / W,
-      h: d.boundingBox.height / H,
-      score: d.categories[0] ? d.categories[0].score : 0,
-    }))
-    .filter(b => b.h > 0.06 && b.w > 0.01);
+  const read = (res, ox, oy, sw, sh) => (res.detections || []).map(d => ({
+    x: (ox + d.boundingBox.originX) / W,
+    y: (oy + d.boundingBox.originY) / H,
+    w: d.boundingBox.width / W,
+    h: d.boundingBox.height / H,
+    score: d.categories[0] ? d.categories[0].score : 0,
+    kind: d.categories[0] ? d.categories[0].categoryName : '',
+  }));
+  let all = read(det.detect(image), 0, 0);
+  if (grid > 1) {
+    const tw = Math.round(W / grid * 1.3), th = Math.round(H / grid * 1.3);
+    for (let r = 0; r < grid; r++) {
+      for (let c = 0; c < grid; c++) {
+        const ox = Math.min(W - tw, Math.max(0, Math.round((c * W) / grid - (tw - W / grid) / 2)));
+        const oy = Math.min(H - th, Math.max(0, Math.round((r * H) / grid - (th - H / grid) / 2)));
+        const tile = await createImageBitmap(image, ox, oy, tw, th);
+        all = all.concat(read(det.detect(tile), ox, oy));
+        tile.close();
+      }
+    }
+    // Fusion : on garde la meilleure boîte de chaque groupe qui se recouvre.
+    all.sort((a, b) => b.score - a.score);
+    const kept = [];
+    all.forEach(b => { if (!kept.some(k => k.kind === b.kind && overlap(k, b) > 0.6)) kept.push(b); });
+    all = kept;
+  }
+  return {
+    players: all.filter(b => b.kind === 'person' && b.h > 0.06 && b.w > 0.01),
+    balls: all.filter(b => b.kind === 'sports ball'),
+  };
 }
 
 // Couleur moyenne du maillot (zone du torse) d'une boîte, lue sur un canvas.

@@ -18,7 +18,7 @@ import { pcmToWav } from './piper-core.js';
 
 const STORE_KEY = 'artcraft-voice-password'; // nom historique (ancien Studio voix), gardé pour ne pas redemander le mot de passe
 const MOUNT = '/an';
-const state = { password: '', file: null, input: '', duration: 0, hasAudio: false, analysis: null, start: 0, dur: 0, busy: false };
+const state = { password: '', file: null, youtube: null, input: '', duration: 0, hasAudio: false, analysis: null, start: 0, dur: 0, busy: false };
 
 // ---------- Accès ----------
 async function post(fn, payload) {
@@ -63,8 +63,43 @@ $('drop').addEventListener('dragover', e => { e.preventDefault(); $('drop').clas
 $('drop').addEventListener('dragleave', () => $('drop').classList.remove('over'));
 $('drop').addEventListener('drop', e => { e.preventDefault(); $('drop').classList.remove('over'); selectFile(e.dataTransfer.files[0]); });
 
+// Lien YouTube (watch, youtu.be, shorts, live) → identifiant de la vidéo.
+function youtubeId(raw) {
+  const m = /^https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|live\/)|youtu\.be\/)([\w-]{11})(?:[?&#/].*)?$/.exec(String(raw || '').trim());
+  return m ? m[1] : null;
+}
+const ytEmbed = (id, t = 0, autoplay = false) =>
+  `https://www.youtube-nocookie.com/embed/${id}?start=${Math.floor(t)}&playsinline=1&rel=0${autoplay ? '&autoplay=1' : ''}`;
+
+// Deux sources possibles : un fichier (tout le module) ou un lien YouTube (rapport seulement).
+function useYoutube(on) {
+  video.hidden = on;
+  $('yt-wrap').hidden = !on;
+  $('btn-here').hidden = on;
+  $('track-wrap').hidden = on;
+  $('player-wrap').hidden = false;
+}
+
+$('yt-form').addEventListener('submit', e => {
+  e.preventDefault();
+  if (state.busy) return;
+  const id = youtubeId($('yt-url').value);
+  if (!id) { showError('Lien YouTube non reconnu : colle l\'adresse de la vidéo (youtube.com/watch?v=… ou youtu.be/…).'); return; }
+  showError('');
+  state.file = null;
+  state.youtube = { id, url: `https://www.youtube.com/watch?v=${id}` };
+  state.duration = 0;
+  if (video.src) { URL.revokeObjectURL(video.src); video.removeAttribute('src'); }
+  $('yt-frame').src = ytEmbed(id, parseTimestamp($('start').value) || 0);
+  $('file-info').textContent = `Vidéo YouTube · ${state.youtube.url}`;
+  useYoutube(true);
+});
+
 function selectFile(file) {
   if (!file || state.busy) return;
+  state.youtube = null;
+  $('yt-frame').removeAttribute('src'); // arrête la vidéo YouTube
+  useYoutube(false);
   state.file = file;
   state.duration = 0;
   state.input = '';
@@ -154,8 +189,38 @@ async function trackMoments(ff, onProgress) {
   }
 }
 
+// Lien YouTube : Gemini regarde la vidéo de la séquence choisie (pas d'images à extraire,
+// pas de suivi image par image ni de vidéo commentée, faute de fichier).
+async function analyseYoutube() {
+  const start = Math.max(0, parseTimestamp($('start').value) || 0);
+  const dur = +$('dur').value;
+  state.start = start;
+  state.dur = dur;
+  setProgress('analyse-progress', 0.05, 'Envoi du lien à l\'IA… (Gemini regarde la vidéo, compte 1 à 2 minutes)');
+  state.analysis = await askCoach({
+    youtube: state.youtube.url, team: $('team').value.trim(), context: $('context').value.trim(), start, dur,
+  }, undefined, n => setProgress('analyse-progress', 0.1 + Math.min(0.85, (n / 9000) * 0.85), `L'IA analyse le jeu… ${n} caractères`));
+  renderReport();
+  setProgress('analyse-progress', 1, 'Analyse prête · vidéo YouTube regardée par l\'IA');
+}
+
 $('btn-analyse').onclick = async () => {
-  if (!state.file || state.busy) return;
+  if ((!state.file && !state.youtube) || state.busy) return;
+  if (state.youtube) {
+    state.busy = true;
+    $('btn-analyse').disabled = true;
+    showError('');
+    try {
+      await analyseYoutube();
+    } catch (err) {
+      console.error(err);
+      showError('Analyse impossible : ' + (err.message || err));
+    } finally {
+      state.busy = false;
+      $('btn-analyse').disabled = false;
+    }
+    return;
+  }
   state.busy = true;
   $('btn-analyse').disabled = true;
   showError('');
@@ -229,7 +294,15 @@ function renderReport() {
       const t = el('button', 'tool', fmtTime(m.t));
       t.type = 'button';
       t.title = 'Voir ce moment';
-      t.onclick = () => { video.currentTime = m.t; video.scrollIntoView({ behavior: 'smooth', block: 'center' }); };
+      t.onclick = () => {
+        if (state.youtube) {
+          $('yt-frame').src = ytEmbed(state.youtube.id, Math.max(0, m.t - 3), true);
+          $('yt-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+        video.currentTime = m.t;
+        video.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      };
       li.append(t, ' ', el('b', '', m.titre), document.createTextNode(m.explication ? ' — ' + m.explication : ''));
       ul.append(li);
     });
@@ -242,7 +315,9 @@ function renderReport() {
   dl.download = `analyse-${slugify($('team').value, 'gravity')}-${fmtTime(state.start).replace(/:/g, 'h')}.txt`;
   renderScript();
   $('step-report').hidden = false;
-  $('step-voice').hidden = false;
+  // La vidéo commentée a besoin du fichier : avec un lien YouTube, seulement le rapport.
+  $('step-voice').hidden = Boolean(state.youtube);
+  if (state.youtube) box.append(el('p', 'muted', 'Pour la vidéo commentée (ralenti, voix off, tableau du coach), dépose le fichier de cette vidéo à l\'étape 1.'));
   $('step-report').scrollIntoView({ behavior: 'smooth' });
 }
 

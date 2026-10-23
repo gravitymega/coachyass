@@ -18,7 +18,7 @@ function wrapLines(ctx, text, maxW) {
   return lines;
 }
 
-function drawCourt(ctx, box) {
+export function drawCourt(ctx, box) {
   const s = box.w / COURT.w;
   const X = m => box.x + m * s;
   const Y = m => box.y + m * s;

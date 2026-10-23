@@ -19,6 +19,12 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { askFree, cleanJson, AiError, type FreeRequest, type WorkersAi } from "../lib/free-ai.ts";
 
+// Lien d'une vidéo YouTube publique (watch, youtu.be, shorts, live) → adresse « watch » normalisée.
+export function youtubeUrl(raw: unknown) {
+  const m = /^https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|live\/)|youtu\.be\/)([\w-]{11})(?:[?&#/].*)?$/.exec(String(raw ?? "").trim());
+  return m ? `https://www.youtube.com/watch?v=${m[1]}` : null;
+}
+
 const MODEL = "claude-opus-5-5";
 // Commentaire en direct : réponse rapide et peu chère (une phrase toutes les 10 à 20 s).
 const LIVE_MODEL = "claude-haiku-5-5";
@@ -278,7 +284,7 @@ type Frame = { t: number; data: string; label?: string };
 type Body = {
   ping?: boolean; mode?: string; frames?: Frame[]; crops?: Frame[]; team?: string; context?: string;
   start?: number; dur?: number; moment?: Record<string, unknown>; roster?: unknown; player?: unknown;
-  facts?: unknown; prompt?: string; json?: boolean;
+  facts?: unknown; prompt?: string; json?: boolean; youtube?: string;
 };
 
 const clip = (v: unknown, n: number) => String(v ?? "").slice(0, n);
@@ -367,17 +373,24 @@ function buildRequest(body: Body) {
       ].filter(Boolean).join("\n"),
     });
   } else {
+    const yt = youtubeUrl(body.youtube);
+    const start = Math.max(0, Number(body.start) || 0);
+    const end = start + Math.min(600, Math.max(10, Number(body.dur) || 60));
+    // Lien YouTube : la vidéo elle-même (pas d'images), regardée par Gemini de start à end.
+    if (yt) content.unshift({ type: "youtube", url: yt, start, end } as unknown as Anthropic.Beta.BetaContentBlockParam);
     content.push({
       type: "text",
       text: [
-        `Séquence : de ${Number(body.start || 0).toFixed(0)} s à ${(Number(body.start || 0) + Number(body.dur || 0)).toFixed(0)} s de la vidéo, ${frames.length} images.`,
+        yt
+          ? `Séquence : la vidéo YouTube ci-dessus, de ${start.toFixed(0)} s à ${end.toFixed(0)} s. Donne tous les instants (t, debut, fin) en secondes depuis le début de la vidéo YouTube entière, entre ${start.toFixed(0)} et ${end.toFixed(0)}.`
+          : `Séquence : de ${Number(body.start || 0).toFixed(0)} s à ${(Number(body.start || 0) + Number(body.dur || 0)).toFixed(0)} s de la vidéo, ${frames.length} images.`,
         team ? `Équipe à analyser en priorité : ${team}.` : "Analyse les deux équipes.",
         context ? `Contexte donné par le coach : ${context}` : "",
         "Fais l'analyse tactique complète, comme en séance vidéo avec l'équipe.",
       ].filter(Boolean).join("\n"),
     });
   }
-  return { model: MODEL, system: SYSTEM, schema: track ? TRACK_SCHEMA : ANALYSIS_SCHEMA, maxTokens: 16000, minFrames: 2, content };
+  return { model: MODEL, system: SYSTEM, schema: track ? TRACK_SCHEMA : ANALYSIS_SCHEMA, maxTokens: 16000, minFrames: !track && youtubeUrl(body.youtube) ? 0 : 2, content };
 }
 
 // Cœur de la fonction, commun à Netlify (ci-dessous) et à Cloudflare Pages (functions/api/coach.ts).
@@ -416,7 +429,8 @@ export async function handleCoach(req: Request, env: (name: string) => string | 
 
   const encoder = new TextEncoder();
   const line = (o: unknown) => encoder.encode(JSON.stringify(o) + "\n");
-  if (!apiKey) return freeResponse(request as unknown as FreeRequest, { geminiKey, ai }, line);
+  // Un lien YouTube ne peut être regardé que par Gemini (Claude et Workers AI ne lisent pas YouTube).
+  if (!apiKey || youtubeUrl(body.youtube)) return freeResponse(request as unknown as FreeRequest, { geminiKey, ai }, line);
 
   const client = new Anthropic({ apiKey });
 
