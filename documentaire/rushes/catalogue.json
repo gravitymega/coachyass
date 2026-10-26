@@ -1,0 +1,243 @@
+{
+  "documentaire": "Gravity — documentaire",
+  "mis_a_jour": "2026-10-26",
+  "rushes": [
+    {
+      "id": "IMG_6686",
+      "fichier": "IMG_6686.mov",
+      "vignette": "vignettes/IMG_6686.jpg",
+      "titre": "Selfie en marchant, de nuit",
+      "sequence": "La route",
+      "usage": "Plan parlé du coach (répliques de la route). Contre-plongée, capuche, arbres d'automne, lampadaires.",
+      "lieu": "Rue, Montréal",
+      "tags": [
+        "coach",
+        "selfie",
+        "marche",
+        "nuit",
+        "route"
+      ],
+      "voix": "Le coach parle peut-être à la caméra : à écouter et à transcrire.",
+      "son": "Pas, vent, voix possible.",
+      "tourne_le": "2026-10-20 20:10:47 (heure de Montréal)",
+      "duree_s": 4.37,
+      "resolution_affichee": "1440x1920",
+      "cadence_ips": 24.0,
+      "codec": "hevc",
+      "rotation": -90,
+      "audio": {
+        "codec": "pcm_s16le",
+        "volume_moyen_db": -38.6,
+        "crete_db": -10.2
+      },
+      "taille_octets": 10445291,
+      "sha256": "ced9fcea0f2a2df61f365dd72dd9620ce5375e4307b703112cb265eb15f0b910",
+      "utilise_dans": [
+        "documentaire/sequence-piscine.md",
+        "montage démo « La piscine »"
+      ]
+    },
+    {
+      "id": "IMG_6687",
+      "fichier": "IMG_6687.mov",
+      "vignette": "vignettes/IMG_6687.jpg",
+      "titre": "Ombre et pieds sur le trottoir",
+      "sequence": "La route",
+      "usage": "Plan de coupe : ombre allongée, pieds, feuilles mortes.",
+      "lieu": "Trottoir, Montréal",
+      "tags": [
+        "plan de coupe",
+        "ombre",
+        "pieds",
+        "nuit",
+        "route"
+      ],
+      "voix": "Aucune.",
+      "son": "Pas sur le trottoir.",
+      "tourne_le": "2026-10-20 20:10:56 (heure de Montréal)",
+      "duree_s": 2.2,
+      "resolution_affichee": "1440x1920",
+      "cadence_ips": 30.0,
+      "codec": "hevc",
+      "rotation": -90,
+      "audio": {
+        "codec": "pcm_s16le",
+        "volume_moyen_db": -37.4,
+        "crete_db": -18.8
+      },
+      "taille_octets": 5266548,
+      "sha256": "16892be0ad66a4c4ed85a53a22edf12e8b708b189f9f64916fe7ed9e43d31bb8",
+      "utilise_dans": [
+        "documentaire/sequence-piscine.md",
+        "montage démo « La piscine »"
+      ]
+    },
+    {
+      "id": "IMG_6688",
+      "fichier": "IMG_6688.mov",
+      "vignette": "vignettes/IMG_6688.jpg",
+      "titre": "Façade du Complexe sportif Claude-Robillard",
+      "sequence": "L'arrivée",
+      "usage": "Plan large d'établissement : façade de nuit, hall éclairé.",
+      "lieu": "Complexe sportif Claude-Robillard, extérieur",
+      "tags": [
+        "établissement",
+        "façade",
+        "nuit",
+        "Claude-Robillard"
+      ],
+      "voix": "Aucune.",
+      "son": "Rue calme, vent.",
+      "tourne_le": "2026-10-20 20:11:41 (heure de Montréal)",
+      "duree_s": 4.4,
+      "resolution_affichee": "1440x1920",
+      "cadence_ips": 30.0,
+      "codec": "hevc",
+      "rotation": -90,
+      "audio": {
+        "codec": "pcm_s16le",
+        "volume_moyen_db": -36.6,
+        "crete_db": -24.6
+      },
+      "taille_octets": 9214751,
+      "sha256": "46040296de0f863171a6867cc086f0ca09a9542c79bb8c56ee45071dd8930406",
+      "utilise_dans": [
+        "documentaire/sequence-piscine.md",
+        "montage démo « La piscine »"
+      ]
+    },
+    {
+      "id": "IMG_6689",
+      "fichier": "IMG_6689.mov",
+      "vignette": "vignettes/IMG_6689.jpg",
+      "titre": "La main pousse la porte vitrée",
+      "sequence": "L'arrivée",
+      "usage": "Subjectif : entrée dans le hall, tapis d'entrée.",
+      "lieu": "Claude-Robillard, entrée",
+      "tags": [
+        "subjectif",
+        "porte",
+        "entrée"
+      ],
+      "voix": "Aucune.",
+      "son": "Porte, écho du hall.",
+      "tourne_le": "2026-10-20 20:11:51 (heure de Montréal)",
+      "duree_s": 3.77,
+      "resolution_affichee": "1440x1920",
+      "cadence_ips": 30.0,
+      "codec": "hevc",
+      "rotation": -90,
+      "audio": {
+        "codec": "pcm_s16le",
+        "volume_moyen_db": -29.6,
+        "crete_db": -14.6
+      },
+      "taille_octets": 7529337,
+      "sha256": "c61b5ce1d82029c9c4c624bee2194f272875c4516093082e31f19de3148c867d",
+      "utilise_dans": [
+        "documentaire/sequence-piscine.md",
+        "montage démo « La piscine »"
+      ]
+    },
+    {
+      "id": "IMG_6690",
+      "fichier": "IMG_6690.mov",
+      "vignette": "vignettes/IMG_6690.jpg",
+      "titre": "Descente de l'escalier sous la bannière",
+      "sequence": "L'arrivée",
+      "usage": "Subjectif : escalier vers les bassins, bannière des athlètes.",
+      "lieu": "Claude-Robillard, escalier",
+      "tags": [
+        "subjectif",
+        "escalier",
+        "bannière"
+      ],
+      "voix": "Aucune.",
+      "son": "Pas qui résonnent.",
+      "tourne_le": "2026-10-20 20:12:11 (heure de Montréal)",
+      "duree_s": 2.93,
+      "resolution_affichee": "1440x1920",
+      "cadence_ips": 30.0,
+      "codec": "hevc",
+      "rotation": -90,
+      "audio": {
+        "codec": "pcm_s16le",
+        "volume_moyen_db": -26.9,
+        "crete_db": -13.4
+      },
+      "taille_octets": 3881243,
+      "sha256": "9009abdc33ade6e1706deb9a4612caaf591b2888fde43f7c65edecdf8079ffaf",
+      "utilise_dans": [
+        "documentaire/sequence-piscine.md",
+        "montage démo « La piscine »"
+      ]
+    },
+    {
+      "id": "IMG_6691",
+      "fichier": "IMG_6691.mov",
+      "vignette": "vignettes/IMG_6691.jpg",
+      "titre": "Couloir blanc vers les bassins",
+      "sequence": "L'arrivée",
+      "usage": "Subjectif en travelling : long couloir éclairé au néon, avant la révélation.",
+      "lieu": "Claude-Robillard, couloir",
+      "tags": [
+        "subjectif",
+        "couloir",
+        "travelling"
+      ],
+      "voix": "Aucune.",
+      "son": "Néons, écho.",
+      "tourne_le": "2026-10-20 20:12:29 (heure de Montréal)",
+      "duree_s": 1.37,
+      "resolution_affichee": "1440x1920",
+      "cadence_ips": 30.0,
+      "codec": "hevc",
+      "rotation": -90,
+      "audio": {
+        "codec": "pcm_s16le",
+        "volume_moyen_db": -23.5,
+        "crete_db": -11.2
+      },
+      "taille_octets": 1785927,
+      "sha256": "f7e5bb3f601443e0caf11bed71b9f7a08f6ebb9bbf278ed5b6fcc463aa6c8af5",
+      "utilise_dans": [
+        "documentaire/sequence-piscine.md",
+        "montage démo « La piscine »"
+      ]
+    },
+    {
+      "id": "IMG_6692",
+      "fichier": "IMG_6692.mov",
+      "vignette": "vignettes/IMG_6692.jpg",
+      "titre": "Panoramique : les bassins",
+      "sequence": "L'arrivée",
+      "usage": "Révélation des bassins : eau bleue, couloirs de nage, plongeoirs. Tourné environ 1 h après les autres plans.",
+      "lieu": "Claude-Robillard, bassins intérieurs",
+      "tags": [
+        "révélation",
+        "bassins",
+        "piscine",
+        "panoramique"
+      ],
+      "voix": "Aucune.",
+      "son": "Écho de piscine.",
+      "tourne_le": "2026-10-20 21:31:54 (heure de Montréal)",
+      "duree_s": 2.43,
+      "resolution_affichee": "1440x1920",
+      "cadence_ips": 30.0,
+      "codec": "hevc",
+      "rotation": -90,
+      "audio": {
+        "codec": "pcm_s16le",
+        "volume_moyen_db": -29.8,
+        "crete_db": -16.0
+      },
+      "taille_octets": 3386384,
+      "sha256": "10aafedffb2ba0dda8165e456f1db5632ec7289c4495419d578133226b3c98de",
+      "utilise_dans": [
+        "documentaire/sequence-piscine.md",
+        "montage démo « La piscine »"
+      ]
+    }
+  ]
+}
