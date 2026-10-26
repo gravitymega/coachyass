@@ -8,12 +8,12 @@ import {
 test('vocabulaire complet et cohérent', () => {
   assert.ok(WORDS.length >= 75, `${WORDS.length} mots`);
   assert.equal(new Set(WORDS.map((w) => w.id)).size, WORDS.length);
-  const rooms = ROOMS.map((r) => r.id);
+  const rooms = ROOMS.filter((r) => !r.school).map((r) => r.id);
   for (const w of WORDS) {
     assert.ok(rooms.includes(w.room), w.id);
     assert.ok(w.ma.lat && w.dz.lat && w.ma.ar && w.dz.ar && w.emoji && w.fr, w.id);
   }
-  for (const r of ROOMS) {
+  for (const r of ROOMS.filter((x) => !x.school)) {
     for (const older of [true, false]) {
       const ws = wordsFor(r.id, older);
       assert.ok(ws.length >= 5, `${r.id} ${older}`);
@@ -23,7 +23,7 @@ test('vocabulaire complet et cohérent', () => {
   assert.ok(STICKERS.length >= 30 && MISSIONS.length >= 12);
 });
 
-for (const r of ROOMS) {
+for (const r of ROOMS.filter((x) => !x.school)) {
   test(`salle ${r.id} : questions valides pour les deux profils`, () => {
     for (let s = 1; s < 120; s++) {
       for (const older of [true, false]) {

@@ -1,6 +1,6 @@
 // Les mini-jeux : chacun dessine sa scène et anime la réponse choisie.
 // build(q, label) → HTML ; anim(scene, i, good, ctx) → Promise (fin de l'animation).
-import { assad, fifi, grappo, dada, lantern, tajine, hoop, mosque, hbibiti } from './art.js';
+import { assad, fifi, grappo, dada, lantern, tajine, hoop, mosque, hbibiti, rocket } from './art.js';
 import { sfx } from './audio.js';
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -188,6 +188,99 @@ export const GAMES = {
         drum.classList.add('shake');
         await wait(350);
         drum.classList.remove('shake');
+      }
+    },
+  },
+
+  // L'Atelier des nombres : la fusée de la bonne réponse décolle.
+  rocket: {
+    build(q, label) {
+      const colors = ['#e5484d', '#3b7dd8', '#2bb673'];
+      return `
+        <div class="space">
+          <div class="stars"></div>
+          <div class="rocket-row">${q.choices.map((c, i) => `
+            <button class="choice rocket-btn" data-i="${i}" aria-label="Choix ${i + 1}">
+              <span class="rocket-art">${rocket(colors[i])}</span>
+              <span class="label">${label(c)}</span>
+            </button>`).join('')}
+          </div>
+          <div class="pad"></div>
+        </div>`;
+    },
+    async anim(scene, i, good) {
+      const btn = $$('.rocket-btn', scene)[i];
+      const art = $('.rocket-art', btn);
+      if (good) {
+        sfx('swish');
+        btn.classList.add('launch');
+        await anim(art, [{ transform: 'translateY(0)' }, { transform: 'translateY(6px)', offset: 0.15 }, { transform: 'translateY(-120vh) rotate(4deg)' }], { duration: 1100, easing: 'cubic-bezier(.5,0,.8,.4)' });
+        sfx('cheer');
+      } else {
+        sfx('bounce');
+        btn.classList.add('smoke');
+        await anim(art, [{ transform: 'translateX(0)' }, { transform: 'translateX(-6px) rotate(-4deg)' }, { transform: 'translateX(6px) rotate(4deg)' }, { transform: 'translateX(0)' }], { duration: 400 });
+        art.getAnimations().forEach((a) => a.cancel());
+        setTimeout(() => btn.classList.remove('smoke'), 600);
+      }
+    },
+  },
+
+  // La bibliothèque : le bon livre s'ouvre.
+  books: {
+    build(q, label) {
+      const covers = ['#e5484d', '#3b7dd8', '#2bb673'];
+      return `
+        <div class="library">
+          <div class="shelf">${q.choices.map((c, i) => `
+            <button class="choice book" data-i="${i}" aria-label="Choix ${i + 1}" style="--cover:${covers[i]}">
+              <span class="book-page"><span class="sparkle">✨📖✨</span></span>
+              <span class="book-cover"><span class="label">${label(c)}</span></span>
+            </button>`).join('')}
+          </div>
+          <div class="plank"></div>
+        </div>`;
+    },
+    async anim(scene, i, good) {
+      const b = $$('.book', scene)[i];
+      if (good) { b.classList.add('open'); sfx('chime'); await wait(800); }
+      else { sfx('miss'); b.classList.add('shake'); await wait(380); b.classList.remove('shake'); }
+    },
+  },
+
+  // La tour de l'horloge : on éclate le bon ballon.
+  balloons: {
+    build(q, label) {
+      const colors = ['#ff6b8a', '#ffc93c', '#5ec4ff'];
+      return `
+        <div class="sky">
+          <div class="balloon-row">${q.choices.map((c, i) => `
+            <button class="choice balloon" data-i="${i}" aria-label="Choix ${i + 1}" style="--b:${colors[i]};--d:${i * 0.4}s">
+              <span class="balloon-body">${label(c)}</span>
+              <span class="string"></span>
+            </button>`).join('')}
+          </div>
+        </div>`;
+    },
+    async anim(scene, i, good) {
+      const b = $$('.balloon', scene)[i];
+      if (good) {
+        sfx('pop');
+        b.classList.add('pop');
+        const c = center(b);
+        for (let k = 0; k < 10; k++) {
+          const s = document.createElement('span');
+          s.className = 'flying-note'; s.textContent = ['🎉', '✨', '⭐'][k % 3];
+          s.style.left = c.x + 'px'; s.style.top = c.y + 'px';
+          document.body.appendChild(s);
+          const a = (k / 10) * Math.PI * 2;
+          anim(s, [{ transform: 'translate(0,0) scale(.6)', opacity: 1 }, { transform: `translate(${Math.cos(a) * 120}px,${Math.sin(a) * 120}px) scale(1.2)`, opacity: 0 }], { duration: 700 }).then(() => s.remove());
+        }
+        await wait(800);
+      } else {
+        sfx('bounce');
+        await anim(b, [{ transform: 'translateY(0)' }, { transform: 'translateY(-24px)' }, { transform: 'translateY(0)' }], { duration: 400, easing: 'ease-out' });
+        b.getAnimations().forEach((a) => a.cancel());
       }
     },
   },

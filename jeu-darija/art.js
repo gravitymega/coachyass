@@ -150,4 +150,26 @@ export function mosque() {
     <path d="M40 92 h220" stroke="#d8c08a" stroke-width="4" stroke-dasharray="10 6"/>`, 'mosque');
 }
 
+// Fusée de l'Atelier des nombres.
+export function rocket(color = '#e5484d') {
+  return svg('0 0 100 160', `
+    <path class="flame" d="M38 128 Q50 160 62 128 Q50 140 38 128Z" fill="#ffc93c"/>
+    <path d="M30 104 L14 132 L34 124Z M70 104 L86 132 L66 124Z" fill="${color}"/>
+    <path d="M50 6 C76 30 76 90 68 126 H32 C24 90 24 30 50 6Z" fill="#f4f1ff" stroke="#c9c2e8" stroke-width="3"/>
+    <path d="M50 6 C62 17 68 30 70 40 H30 C32 30 38 17 50 6Z" fill="${color}"/>
+    <circle cx="50" cy="66" r="13" fill="#7fd3ff" stroke="#3b7dd8" stroke-width="4"/>
+    <circle cx="45" cy="61" r="4" fill="#fff" opacity=".8"/>
+    <rect x="36" y="118" width="28" height="10" rx="3" fill="#8a84b0"/>`, 'rocket');
+}
+
+// Pile de livres de la Bibliothèque.
+export function books() {
+  return svg('0 0 120 110', `
+    <rect x="14" y="74" width="92" height="22" rx="4" fill="#3b7dd8"/><rect x="18" y="78" width="84" height="4" fill="#fff" opacity=".6"/>
+    <rect x="22" y="50" width="80" height="24" rx="4" fill="#2bb673"/><rect x="26" y="54" width="72" height="4" fill="#fff" opacity=".6"/>
+    <rect x="10" y="28" width="86" height="22" rx="4" fill="#e5484d"/><rect x="14" y="32" width="78" height="4" fill="#fff" opacity=".6"/>
+    <path d="M60 28 L60 6 Q78 2 96 10 L96 28" fill="#ffc93c"/>
+    <text x="78" y="22" text-anchor="middle" font-size="14" font-weight="900" fill="#7a3b0a" font-family="Arial, sans-serif">Abc</text>`, 'books');
+}
+
 export const CHARACTERS = { hbibiti, assad, fifi, grappo, dada, lantern, tajine };

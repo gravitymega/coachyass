@@ -118,7 +118,10 @@ export const ROOMS = [
   { id: 'hall', name: "Hall d'entrée", theme: 'Salutations', game: 'doors', host: 'grappo', unlock: 0 },
   { id: 'stade', name: "Stade d'Assad", theme: 'La famille', game: 'penalty', host: 'assad', unlock: 0 },
   { id: 'jardin', name: 'Jardin de la mosquée', theme: 'Ma religion', game: 'garden', host: 'lantern', unlock: 0 },
+  { id: 'maths', name: 'Atelier des nombres', theme: 'Maths : compter, additionner', game: 'rocket', host: 'rocket', unlock: 0, school: true },
+  { id: 'lecture', name: 'Bibliothèque de Hbibiti', theme: 'Lire et écrire en français', game: 'books', host: 'books', unlock: 0, school: true },
   { id: 'gym', name: 'Gymnase de Fifi', theme: 'Chiffres et couleurs', game: 'basket', host: 'fifi', unlock: 2 },
+  { id: 'formes', name: 'Tour de l’horloge', theme: 'Formes, suites et heure', game: 'balloons', host: 'clock', unlock: 3, school: true },
   { id: 'cuisine', name: 'Cuisine de Hbibiti', theme: 'À table !', game: 'kitchen', host: 'tajine', unlock: 4 },
   { id: 'musique', name: 'Salle de la musique', theme: 'Les actions', game: 'drums', host: 'dada', unlock: 6 },
 ];
@@ -160,7 +163,7 @@ export function wordsFor(room, older) {
 }
 
 export function newProgress() {
-  return { words: {}, stickers: 0, stars: 0, levels: 0, gold: 0, missions: {}, chest: '' };
+  return { words: {}, stickers: 0, stars: 0, levels: 0, gold: 0, missions: {}, chest: '', rooms: {}, best: 0 };
 }
 
 export function roomUnlocked(room, progress, all = false) {
@@ -239,7 +242,8 @@ export function buildLevel(room, progress, opts = {}) {
 // Mode frère-sœur : les questions alternent entre les deux enfants, chacun à son niveau.
 export function buildCoop(room, players, opts = {}) {
   const per = Math.max(2, Math.ceil((opts.count || 6) / players.length));
-  const levels = players.map((p, i) => buildLevel(room, p.progress, { ...opts, older: p.older, count: per, noSequence: i > 0 }));
+  const build = opts.build || buildLevel;
+  const levels = players.map((p, i) => build(room, p.progress, { ...opts, older: p.older, count: per, noSequence: i > 0 }));
   const questions = [];
   for (let i = 0; i < per; i++) levels.forEach((lv, pi) => { if (lv.questions[i]) questions.push({ ...lv.questions[i], player: pi }); });
   const learn = [];

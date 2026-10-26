@@ -1,7 +1,7 @@
 // Hors ligne : on sert le réseau quand il répond (mises à jour immédiates),
 // sinon la copie gardée sur la tablette.
-const CACHE = 'hbibiti-v2';
-const SHELL = ['./', 'index.html', 'styles.css', 'app.js', 'core.js', 'art.js', 'audio.js', 'games.js', 'store.js', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
+const CACHE = 'hbibiti-v3';
+const SHELL = ['./', 'index.html', 'styles.css', 'app.js', 'core.js', 'art.js', 'audio.js', 'games.js', 'store.js', 'exercises.js', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

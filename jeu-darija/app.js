@@ -1,11 +1,12 @@
 // L'Usine magique de Hbibiti — écrans, déroulement des parties, espace parents.
 import {
-  WORDS, ROOMS, STICKERS, wordsFor, grade, markSeen, mastery, buildLevel, buildCoop,
+  WORDS, ROOMS, STICKERS, grade, markSeen, mastery, buildLevel, buildCoop,
   isCousin, today, sequenceChoices, missionOfWeek, roomUnlocked, newProgress,
 } from './core.js';
 import { settings, saveSettings, load, save, progressOf, saveProgressOf, putRec, delRec, recKeys, exportBackup, importBackup } from './store.js';
 import { say, stopVoice, sfx, startMusic, stopMusic, voiceFor, audio } from './audio.js';
 import { GAMES } from './games.js';
+import { buildExerciseLevel, buildChallenge, itemsFor, isExerciseRoom, clockSVG } from './exercises.js';
 import * as ART from './art.js';
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -128,7 +129,10 @@ function showTimeUp() {
 }
 
 // ---------- L'usine ----------
-const HOSTS = { grappo: ART.grappo, assad: ART.assad, fifi: ART.fifi, dada: ART.dada, lantern: () => ART.lantern(), tajine: ART.tajine };
+const HOSTS = { grappo: ART.grappo, assad: ART.assad, fifi: ART.fifi, dada: ART.dada, lantern: () => ART.lantern(), tajine: ART.tajine, rocket: () => ART.rocket(), books: ART.books, clock: () => clockSVG(3, 0) };
+// Défi éclair : questions mêlées de toutes les salles ouvertes, chacune dans la scène de sa salle.
+const DEFI = { id: 'defi', name: 'Défi éclair', theme: '10 questions de tout le jeu', game: 'rocket', host: 'rocket' };
+const openRooms = () => ROOMS.filter((r) => roomUnlocked(r, { levels: levelsDone() }, settings.unlockAll));
 function openMap(greet) {
   if (!players.length) return openHome();
   if (timeUp()) return showTimeUp();
@@ -137,7 +141,7 @@ function openMap(greet) {
   $('#map-stars').textContent = players.reduce((a, p) => a + p.progress.stars, 0);
   $('#map-gm').innerHTML = ART.hbibiti();
   const lead = players[0];
-  const all = ROOMS.flatMap((r) => wordsFor(r.id, lead.kid.older));
+  const all = ROOMS.flatMap((r) => itemsFor(r.id, lead.kid.older));
   const m = Math.round(mastery(lead.progress, all) * 100);
   const bubble = levelsDone()
     ? `Salam ${names()} ! L'usine est réveillée à ${m} %. Choisis une salle !`
@@ -146,9 +150,12 @@ function openMap(greet) {
   const mission = missionOfWeek();
   const done = players.every((p) => p.progress.missions?.[mission.key]);
   $('#map-mission').innerHTML = `<span class="mi-icon">${done ? '✅' : '📞'}</span><span><b>Mission de la semaine</b>${esc(mission.text)}${done ? ' <em>Réussie, bravo !</em>' : ''}</span>`;
+  const best = Math.max(...players.map((p) => p.progress.best || 0));
+  $('#map-defi').hidden = !levelsDone();
+  $('#map-defi').innerHTML = `<span class="mi-icon">⚡</span><span><b>Défi éclair</b>10 questions de tout le jeu : maths, lecture, darija…${best ? ` Record : ${best}/10` : ''}</span><span class="defi-go">Go !</span>`;
   $('#rooms').innerHTML = ROOMS.map((r) => {
     const open = roomUnlocked(r, { levels: levelsDone() }, settings.unlockAll);
-    const ws = wordsFor(r.id, lead.kid.older);
+    const ws = itemsFor(r.id, lead.kid.older);
     const rm = mastery(lead.progress, ws);
     const host = `<span class="room-host">${HOSTS[r.host]?.() || ''}</span>`;
     if (!open) {
@@ -165,16 +172,20 @@ function openMap(greet) {
   show('map');
   if (greet) say(bubble);
 }
+$('#map-defi').addEventListener('click', () => openStart(DEFI));
 $('#rooms').addEventListener('click', (e) => {
   const b = e.target.closest('[data-room]');
   if (!b) return;
+  openStart(ROOMS.find((r) => r.id === b.dataset.room));
+});
+function openStart(r) {
   sfx('tap');
-  room = ROOMS.find((r) => r.id === b.dataset.room);
+  room = r;
   $('#start-room').textContent = room.name;
   $('#start-host').innerHTML = HOSTS[room.host]?.() || '';
   show('start');
   say(room.name);
-});
+}
 let room = null;
 
 // ---------- Une partie ----------
@@ -183,11 +194,15 @@ const ctx = { score: 0, streak: 0 };
 $('#btn-bismillah').addEventListener('click', () => {
   sfx('chime');
   if (timeUp()) return showTimeUp();
-  const opts = { dialects: settings.dialects, seqIndex: levelsDone() };
+  const games = Object.fromEntries(ROOMS.map((r) => [r.id, r.game]));
+  const build = room === DEFI
+    ? (id, progress, o) => buildChallenge(progress, { ...o, count: coop() ? 5 : 10, rooms: openRooms().map((r) => r.id), games })
+    : isExerciseRoom(room.id) ? buildExerciseLevel : buildLevel;
+  const opts = { dialects: settings.dialects, seqIndex: levelsDone(), build, count: room === DEFI ? 10 : undefined };
   level = coop()
     ? buildCoop(room.id, players.map((p) => ({ progress: p.progress, older: p.kid.older })), opts)
-    : buildLevel(room.id, P().progress, { ...opts, older: P().kid.older });
-  level.i = 0; level.learnI = 0;
+    : build(room.id, P().progress, { ...opts, older: P().kid.older });
+  level.i = 0; level.learnI = 0; level.score = players.map(() => 0);
   level.stars = players.map(() => 0);
   ctx.score = 0; ctx.streak = 0;
   say('Bismillah !');
@@ -250,13 +265,15 @@ $('#play-replay').addEventListener('click', () => promptVoice());
 let q = null;
 let busy = false;
 const ansDialect = () => (q.type === 'cousin' ? q.other : q.dialect);
+const curGame = () => q.game || room.game;
 
 function promptHTML() {
   const w = q.word;
   if (q.type === 'sequence') return `${esc(q.seq.title)}<br><small>${esc(q.seq.ask)}</small>`;
+  if (q.type === 'gen') return `<div class="q-text">${q.text}</div>${q.visual ? `<div class="q-visual">${q.visual}</div>` : ''}`;
   if (q.type === 'listen') {
     if (w.phrase) return '🔊 Écoute bien : quand dit-on ça ?';
-    if (room.game === 'kitchen') return `🔊 ${esc(settings.gm)} te demande quelque chose : écoute bien !`;
+    if (curGame() === 'kitchen') return `🔊 ${esc(settings.gm)} te demande quelque chose : écoute bien !`;
     return '🔊 Écoute bien et trouve la bonne image !';
   }
   if (q.type === 'fr2dz') {
@@ -268,15 +285,17 @@ function promptHTML() {
 function promptVoice() {
   const w = q.word;
   if (q.type === 'sequence') return say(q.seq.title, q.seq.ask);
+  if (q.type === 'gen') return say(...q.say);
   if (q.type === 'listen') {
     if (w.phrase) return say('Écoute bien.', { word: w, d: q.dialect }, 'Quand dit-on ça ?');
-    if (room.game === 'kitchen') return say(`${settings.gm} demande :`, { word: w, d: q.dialect });
+    if (curGame() === 'kitchen') return say(`${settings.gm} demande :`, { word: w, d: q.dialect });
     return say('Écoute bien.', { word: w, d: q.dialect });
   }
   if (q.type === 'fr2dz') return say(w.phrase ? `${w.fr}, on dit quoi ?` : `Comment on dit ${w.fr}, ${DIALECT_NAME[q.dialect]} ?`);
   return say(`${cap(DIALECT_NAME[q.dialect])}, on dit :`, { word: w, d: q.dialect }, `Et ${DIALECT_NAME[q.other]} ?`);
 }
 function choiceLabel(c) {
+  if (q.type === 'gen') return c.html;
   if (q.type === 'listen') return `<span class="c-emoji">${c.word.emoji}</span>`;
   const d = ansDialect();
   return `<span class="c-text">${esc(c.word[d].lat)}</span>${showAr() ? `<span class="c-ar">${esc(c.word[d].ar)}</span>` : ''}`;
@@ -294,8 +313,8 @@ async function nextQuestion() {
   const scene = $('#scene');
   if (q.type === 'sequence') buildSequence(scene);
   else {
-    scene.className = 'scene game-' + room.game;
-    scene.innerHTML = GAMES[room.game].build(q, choiceLabel, ctx);
+    scene.className = 'scene game-' + curGame() + (q.type === 'gen' ? ' gen' : '');
+    scene.innerHTML = GAMES[curGame()].build(q, choiceLabel, ctx);
     $$('.choice', scene).forEach((b) => b.addEventListener('click', () => answer(+b.dataset.i, b)));
   }
   if (coop()) {
@@ -319,7 +338,7 @@ async function answer(i, el) {
   stopVoice();
   const c = q.choices[i];
   const good = c.correct;
-  await GAMES[room.game].anim($('#scene'), i, good, ctx);
+  await GAMES[curGame()].anim($('#scene'), i, good, ctx);
   const w = q.word;
   const d = ansDialect();
   if (good) {
@@ -327,12 +346,17 @@ async function answer(i, el) {
     confetti();
     const firstTry = q.misses === 0;
     grade(P().progress, w.id, firstTry);
-    if (firstTry) { P().progress.stars++; level.stars[turn]++; }
+    if (firstTry) { P().progress.stars++; level.stars[turn]++; level.score[turn]++; }
     saveAll();
     markDot(firstTry);
     const p = praise();
-    $('#feedback').innerHTML = w.phrase ? `${p} ${esc(w.ma.lat)} 🤲` : `${p} ${FLAG[d]} ${esc(w[d].lat)}`;
-    await say(p, { word: w, d });
+    if (q.type === 'gen') {
+      $('#feedback').textContent = `${p} ${q.answer.text}`;
+      await say(p, ...q.answer.say);
+    } else {
+      $('#feedback').innerHTML = w.phrase ? `${p} ${esc(w.ma.lat)} 🤲` : `${p} ${FLAG[d]} ${esc(w[d].lat)}`;
+      await say(p, { word: w, d });
+    }
     await wait(400);
     level.i++;
     return nextQuestion();
@@ -347,8 +371,13 @@ async function answer(i, el) {
     const right = $$('.choice', $('#scene'))[q.choices.findIndex((x) => x.correct)];
     right?.classList.add('reveal');
     markDot(false);
-    $('#feedback').textContent = w.phrase ? `C'était : ${w.ma.lat}` : `C'était celui-là : ${w.fr} = ${w[d].lat}`;
-    await say("C'était celui-là !", { word: w, d }, 300);
+    if (q.type === 'gen') {
+      $('#feedback').textContent = `La bonne réponse : ${q.answer.text}`;
+      await say('Voici la bonne réponse.', ...q.answer.say, 300);
+    } else {
+      $('#feedback').textContent = w.phrase ? `C'était : ${w.ma.lat}` : `C'était celui-là : ${w.fr} = ${w[d].lat}`;
+      await say("C'était celui-là !", { word: w, d }, 300);
+    }
     await wait(900);
     level.i++;
     return nextQuestion();
@@ -390,7 +419,7 @@ async function seqAnswer(i, el) {
       sfx('ok');
       confetti(50);
       const firstTry = q.misses === 0;
-      if (firstTry) { P().progress.stars += 2; level.stars[turn] += 2; }
+      if (firstTry) { P().progress.stars += 2; level.stars[turn] += 2; level.score[turn]++; }
       grade(P().progress, q.word.id, firstTry);
       saveAll();
       markDot(firstTry);
@@ -416,8 +445,20 @@ async function seqAnswer(i, el) {
 function finishLevel() {
   const shown = [];
   let chest = false;
-  players.forEach((p) => {
+  const defi = room === DEFI;
+  const records = [];
+  players.forEach((p, k) => {
     p.progress.levels++;
+    if (defi) {
+      const total = level.questions.filter((x) => (x.player ?? 0) === k).length;
+      const best = p.progress.best || 0;
+      const sc = Math.round((level.score[k] / total) * 10);
+      if (sc > best) p.progress.best = sc;
+      records.push({ sc, best, total, record: sc > best });
+    } else {
+      p.progress.rooms = p.progress.rooms || {};
+      p.progress.rooms[room.id] = (p.progress.rooms[room.id] || 0) + 1;
+    }
     const st = STICKERS[p.progress.stickers % STICKERS.length];
     if (p.progress.stickers < STICKERS.length) p.progress.stickers++;
     shown.push(st);
@@ -427,7 +468,7 @@ function finishLevel() {
   sfx('win');
   confetti(90);
   const lead = players[0];
-  const m = Math.round(mastery(lead.progress, wordsFor(room.id, lead.kid.older)) * 100);
+  const m = defi ? 0 : Math.round(mastery(lead.progress, itemsFor(room.id, lead.kid.older)) * 100);
   $('#reward-sticker').innerHTML = shown.map((st) => `<div class="st-wrap"><span class="st">${st.e}</span><small>${esc(st.n)}</small></div>`).join('');
   $('#reward-sticker').classList.toggle('two', shown.length > 1);
   const stars = level.stars.reduce((a, b) => a + b, 0);
@@ -437,7 +478,9 @@ function finishLevel() {
   $('#reward-chest').hidden = !chest;
   $('#reward-chest').innerHTML = chest ? `<span class="chest-icon">🎁</span> Le coffre de ${esc(settings.gm)} du jour : +3 ⭐` : '';
   if (chest) setTimeout(() => sfx('chest'), 900);
-  $('#reward-fog').textContent = m ? `🌫️ Le brouillard recule : ${room.name} réveillé à ${m} %` : '🌫️ Rejoue pour faire reculer le brouillard !';
+  $('#reward-fog').textContent = defi
+    ? records.map((x, k) => `⚡ ${coop() ? players[k].kid.name + ' : ' : ''}${x.sc}/10${x.record ? ' — nouveau record !' : x.best ? ` (record : ${x.best}/10)` : ''}`).join(' · ')
+    : m ? `🌫️ Le brouillard recule : ${room.name} réveillé à ${m} %` : '🌫️ Rejoue pour faire reculer le brouillard !';
   show('reward');
   say('Alhamdulillah !', 200, coop() ? `Bravo ${names()} !` : `Bravo ${lead.kid.name}, tu as réveillé ${mid(shown[0].n)} !`, ...(chest ? [`Et voici le coffre de ${settings.gm} !`] : []));
 }
