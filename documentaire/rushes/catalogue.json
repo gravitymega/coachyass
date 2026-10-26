@@ -238,6 +238,131 @@
         "documentaire/sequence-piscine.md",
         "montage démo « La piscine »"
       ]
+    },
+    {
+      "id": "IMG_6796",
+      "titre": "Le matériel dans le métro",
+      "sequence": "D'un gymnase à l'autre",
+      "usage": "Filet de ballons rouge et sac bleu sur les sièges, reflet du coach dans la vitre, tunnel qui défile. Tourné en HDR (à convertir en SDR au montage).",
+      "lieu": "Métro de Montréal",
+      "tags": [
+        "métro",
+        "matériel",
+        "reflet",
+        "logistique",
+        "déplacement"
+      ],
+      "voix": "",
+      "son": "",
+      "utilise_dans": [],
+      "fichier": "IMG_6796.mov",
+      "vignette": "vignettes/IMG_6796.jpg",
+      "tourne_le": "2026-10-25 12:08:14 (heure de Montréal)",
+      "duree_s": 5.77,
+      "resolution_affichee": "1080x1920",
+      "cadence_ips": 30.0,
+      "codec": "hevc",
+      "rotation": -90,
+      "audio": {
+        "codec": "aac",
+        "volume_moyen_db": -22.3,
+        "crete_db": -7.8
+      },
+      "taille_octets": 6304275,
+      "sha256": "cd3c7d4fda63f0789437af56251da5dcfd43f627e89b01b48ffd3d761cea646d"
+    },
+    {
+      "id": "IMG_6797",
+      "titre": "Entrée du Collège Dawson",
+      "sequence": "D'un gymnase à l'autre",
+      "usage": "Plan d'établissement au soleil (gens devant les portes), puis la caméra descend sur les pas dans les feuilles.",
+      "lieu": "Collège Dawson, extérieur",
+      "tags": [
+        "établissement",
+        "Dawson",
+        "pas",
+        "feuilles",
+        "jour"
+      ],
+      "voix": "",
+      "son": "",
+      "utilise_dans": [],
+      "fichier": "IMG_6797.mov",
+      "vignette": "vignettes/IMG_6797.jpg",
+      "tourne_le": "2026-10-25 12:45:45 (heure de Montréal)",
+      "duree_s": 4.43,
+      "resolution_affichee": "1440x1920",
+      "cadence_ips": 30.0,
+      "codec": "hevc",
+      "rotation": -90,
+      "audio": {
+        "codec": "pcm_s16le",
+        "volume_moyen_db": -29.3,
+        "crete_db": -13.5
+      },
+      "taille_octets": 6295219,
+      "sha256": "23581a215d55c34fd45c34874a7506244006ad6a9cde4cff0f22ab9a7f71af08"
+    },
+    {
+      "id": "IMG_6798",
+      "titre": "Couloir vers le gymnase",
+      "sequence": "D'un gymnase à l'autre",
+      "usage": "Subjectif rapide dans un couloir intérieur. Très court (1,6 s).",
+      "lieu": "Collège Dawson, couloir",
+      "tags": [
+        "subjectif",
+        "couloir",
+        "marche"
+      ],
+      "voix": "",
+      "son": "",
+      "utilise_dans": [],
+      "fichier": "IMG_6798.mov",
+      "vignette": "vignettes/IMG_6798.jpg",
+      "tourne_le": "2026-10-25 12:46:05 (heure de Montréal)",
+      "duree_s": 1.6,
+      "resolution_affichee": "1440x1920",
+      "cadence_ips": 30.0,
+      "codec": "hevc",
+      "rotation": -90,
+      "audio": {
+        "codec": "pcm_s16le",
+        "volume_moyen_db": -35.8,
+        "crete_db": -21.1
+      },
+      "taille_octets": 2130194,
+      "sha256": "bc12f3d4dac73410874410867ba3d62abcfef6c14fb1d532cf35c8fe6a7c0efb"
+    },
+    {
+      "id": "IMG_6799",
+      "titre": "Révélation du gymnase par la vitre",
+      "sequence": "D'un gymnase à l'autre",
+      "usage": "On découvre un match en cours à travers la vitre : terrain, mur d'escalade, public.",
+      "lieu": "Collège Dawson, gymnase",
+      "tags": [
+        "révélation",
+        "gymnase",
+        "match",
+        "tournoi"
+      ],
+      "voix": "",
+      "son": "",
+      "utilise_dans": [],
+      "fichier": "IMG_6799.mov",
+      "vignette": "vignettes/IMG_6799.jpg",
+      "tourne_le": "2026-10-25 12:46:57 (heure de Montréal)",
+      "duree_s": 9.3,
+      "resolution_affichee": "1440x1920",
+      "cadence_ips": 30.0,
+      "codec": "hevc",
+      "rotation": -90,
+      "audio": {
+        "codec": "pcm_s16le",
+        "volume_moyen_db": -31.4,
+        "crete_db": -16.9
+      },
+      "taille_octets": 12654786,
+      "sha256": "479aa9f2f65b8f82a40f82ee12c0ef22a5ce1c113b6956ed7cda4e95396b9767"
     }
   ]
 }

@@ -19,6 +19,10 @@ Base de données des vidéos brutes du documentaire : tous les plans partagés a
 | [IMG_6690](IMG_6690.mov) | 2026-10-20 20:12:11 | 2.93 s | 1440x1920 · 30 i/s | L'arrivée | Descente de l'escalier sous la bannière |
 | [IMG_6691](IMG_6691.mov) | 2026-10-20 20:12:29 | 1.37 s | 1440x1920 · 30 i/s | L'arrivée | Couloir blanc vers les bassins |
 | [IMG_6692](IMG_6692.mov) | 2026-10-20 21:31:54 | 2.43 s | 1440x1920 · 30 i/s | L'arrivée | Panoramique : les bassins |
+| [IMG_6796](IMG_6796.mov) | 2026-10-25 12:08:14 | 5.77 s | 1080x1920 · 30 i/s | D'un gymnase à l'autre | Le matériel dans le métro |
+| [IMG_6797](IMG_6797.mov) | 2026-10-25 12:45:45 | 4.43 s | 1440x1920 · 30 i/s | D'un gymnase à l'autre | Entrée du Collège Dawson |
+| [IMG_6798](IMG_6798.mov) | 2026-10-25 12:46:05 | 1.6 s | 1440x1920 · 30 i/s | D'un gymnase à l'autre | Couloir vers le gymnase |
+| [IMG_6799](IMG_6799.mov) | 2026-10-25 12:46:57 | 9.3 s | 1440x1920 · 30 i/s | D'un gymnase à l'autre | Révélation du gymnase par la vitre |
 <!-- index:fin -->
 
 ## Ajouter de nouveaux plans
