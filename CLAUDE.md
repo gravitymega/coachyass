@@ -40,6 +40,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 | **Art craft** (Highlight Agent, analyse tactique, stats auto, mode direct, radar terrain, hébergement Cloudflare) | `docs/contexte/art-craft.md` (gros fichier : chercher la section avec Grep) |
 | Art craft : module Vidéo IA (Hugging Face gratuit, Gemini) | `docs/contexte/video-ia.md` |
 | Art craft : rendu rapide du short (WebCodecs, Mediabunny, ffmpeg en secours) | `docs/contexte/rendu-rapide.md` |
+| Art craft : Gardien de chaîne YouTube (corrections tous les 2 jours, page « Ma chaîne », KV `art-craft-chaine`) | `docs/contexte/gardien-chaine.md` |
 | Supabase (tables), Notion, gravity-mailer, FormSubmit | `docs/contexte/backends.md` |
 | Liste des demandes du 31 août 2026 | `docs/contexte/historique-31-aout.md` |
 | Espace Joueurs | `docs/contexte/espace-joueurs.md` |
