@@ -38,7 +38,7 @@ function randomPassword() {
 async function sendAccessEmail(email, fullName, password) {
   const res = await fetch(MAILER_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-mailer-key': MAILER_KEY, Origin: MAILER_ORIGIN },
+    headers: { 'Content-Type': 'application/json', 'x-mailer-key': MAILER_KEY, 'x-mailer-server-key': process.env.MAILER_SERVER_KEY || '', Origin: MAILER_ORIGIN },
     body: JSON.stringify({
       type: 'espace-joueurs-access',
       to: email,

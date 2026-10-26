@@ -11,7 +11,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 | `osmm-montreal/` | Netlify `osmm-montreal` | osmm-mtl.site | Vitrine OSMM (organisme communautaire) |
 | `gravity-admin-dashboard/` | Netlify | gravity-admin-dashboard.netlify.app | Dashboard admin (Supabase) : équipes, partenaires, galerie, réservations, championnat, Espace Joueurs, Instagram |
 | `gravity-basketball-mtl/` | Netlify | gravity.osmm-mtl.site | Site public Gravity Basketball : équipes, championnat, vidéos, Espace Joueurs, boutique |
-| `gravity-mailer/` | Netlify (sans page) | — | Courriels (Brevo) + inscriptions Notion, clé `x-mailer-key` |
+| `gravity-mailer/` | Netlify (sans page) | — | Courriels (Brevo) + inscriptions Notion, clé publique `x-mailer-key` + secret `MAILER_SERVER_KEY` (voir backends.md) |
 | `talent-perle-site/` | Netlify `talent-perle` | talent-perle.netlify.app | Club de Karim (ami), **hors écosystème Gravity/OSMM**, inscriptions par Netlify Forms |
 | `talent-perle-dashboard/` | Netlify (à créer) | — | Dashboard de Karim, Supabase séparé (à configurer par Karim) |
 | `art-craft/` | **Worker Cloudflare `coachyass`** (contient seulement Art craft) | coachyass.moqtad6.workers.dev | Outil vidéo/son/image Gravity, 100 % navigateur (ffmpeg.wasm) + IA gratuites |

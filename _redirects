@@ -1,3 +1,14 @@
-# Fichiers de contexte pour Claude : jamais servis publiquement.
-/CLAUDE.md   /404   404!
-/docs/*      /404   404!
+# Le site Coaching publie la racine du repo : seuls ses propres fichiers doivent être servis.
+# Contexte pour Claude, code serveur et dossiers des autres sites : 404.
+/CLAUDE.md                  /404   404!
+/docs/*                     /404   404!
+/netlify/*                  /404   404!
+/wrangler.toml              /404   404!
+/art-craft/*                /404   404!
+/gravity-admin-dashboard/*  /404   404!
+/gravity-basketball-mtl/*   /404   404!
+/gravity-mailer/*           /404   404!
+/gravity-pickup-site/*      /404   404!
+/osmm-montreal/*            /404   404!
+/talent-perle-site/*        /404   404!
+/talent-perle-dashboard/*   /404   404!
