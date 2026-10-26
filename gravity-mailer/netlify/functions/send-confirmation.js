@@ -57,6 +57,25 @@ const ADMIN_NOTIFICATION_RECIPIENTS = {
   'basketball-mtl-prep-admin': 'Gavitybasketball@gmail.com',
 };
 
+// Types envoyés uniquement par d'autres fonctions serveur (jamais par une page) :
+// ils exigent MAILER_SERVER_KEY (variable Netlify, jamais dans le code), car
+// MAILER_SHARED_KEY est visible dans les pages publiques. Sans ça, n'importe
+// qui pourrait envoyer un faux « voici ton mot de passe » à n'importe quelle adresse.
+const MAILER_SERVER_KEY = process.env.MAILER_SERVER_KEY;
+const SERVER_ONLY_TYPES = new Set(['espace-joueurs-access']);
+
+// Limite d'envois des confirmations publiques (anti-abus, au mieux) : compteurs
+// en mémoire de l'instance de la fonction, remis à zéro quand Netlify la recycle.
+const LIMITS = { parIpHeure: 10, parDestinataireJour: 3 };
+const compteurs = new Map();
+function depasseLimite(cle, max, dureeMs) {
+  const now = Date.now();
+  const c = compteurs.get(cle);
+  if (!c || now > c.fin) { compteurs.set(cle, { n: 1, fin: now + dureeMs }); return false; }
+  c.n += 1;
+  return c.n > max;
+}
+
 const ALLOWED_ORIGIN_PATTERNS = [
   /^https:\/\/([a-z0-9-]+\.)?osmm-mtl\.site$/,
   /^https:\/\/([a-z0-9-]+--)?[a-z0-9-]+\.netlify\.app$/,
@@ -233,7 +252,7 @@ exports.handler = async (event) => {
   const origin = corsOrigin(event);
   const headers = {
     'Access-Control-Allow-Origin': origin || 'null',
-    'Access-Control-Allow-Headers': 'Content-Type, x-mailer-key',
+    'Access-Control-Allow-Headers': 'Content-Type, x-mailer-key, x-mailer-server-key',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     Vary: 'Origin',
   };
@@ -269,6 +288,11 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: `Type de courriel inconnu : ${type}` }) };
   }
 
+  const appelServeur = !!MAILER_SERVER_KEY && event.headers['x-mailer-server-key'] === MAILER_SERVER_KEY;
+  if (SERVER_ONLY_TYPES.has(type) && !appelServeur) {
+    return { statusCode: 403, headers, body: JSON.stringify({ error: 'Type réservé aux fonctions serveur' }) };
+  }
+
   // Pour une notification interne, le destinataire est fixé côté serveur
   // (ADMIN_NOTIFICATION_RECIPIENTS) — jamais celui fourni par l'appelant.
   let to = ADMIN_NOTIFICATION_RECIPIENTS[type];
@@ -276,6 +300,14 @@ exports.handler = async (event) => {
     to = String(d.to || '').trim().slice(0, 200);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'Adresse courriel invalide' }) };
+    }
+  }
+
+  if (!appelServeur) {
+    const ip = event.headers['x-nf-client-connection-ip'] || event.headers['x-forwarded-for'] || 'inconnue';
+    if (depasseLimite(`ip:${ip}`, LIMITS.parIpHeure, 3600e3)
+      || depasseLimite(`to:${to.toLowerCase()}`, LIMITS.parDestinataireJour, 86400e3)) {
+      return { statusCode: 429, headers, body: JSON.stringify({ error: 'Trop d’envois, réessaie plus tard' }) };
     }
   }
 

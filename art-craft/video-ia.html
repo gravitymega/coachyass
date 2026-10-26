@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Art craft — Vidéo IA</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="" class="top-logo">
+  <div>
+    <h1>Art craft <span>Vidéo IA</span></h1>
+    <p>Décris une scène en français : l'IA écrit le prompt au style Gravity (noir et orange), puis un modèle vidéo gratuit de Hugging Face crée un clip de quelques secondes.</p>
+  </div>
+</header>
+<nav class="tabs">
+  <a href="index.html">Highlights</a>
+  <a href="analyse.html">Analyse tactique</a>
+  <a href="radar.html">Radar terrain</a>
+  <a href="stats.html">Stats auto</a>
+  <a href="direct.html">Mode direct</a>
+  <a href="editeur.html">Éditeur</a>
+  <a href="sous-titres.html">Sous-titres</a>
+  <a href="video-ia.html" aria-current="page">Vidéo IA</a>
+  <a href="son.html">Studio son</a>
+  <a href="beat.html">Studio beat</a>
+  <a href="voix.html">Studio voix</a>
+  <a href="image.html">Studio image</a>
+  <a href="chaine.html">Ma chaîne</a>
+</nav>
+
+<main>
+  <section class="card" id="step-login" hidden>
+    <h2>Accès</h2>
+    <form id="login-form" class="row">
+      <input type="password" id="password" placeholder="Mot de passe Art craft" autocomplete="current-password">
+      <button class="btn" type="submit">Entrer</button>
+    </form>
+  </section>
+
+  <section class="card" id="step-idea">
+    <h2><b>1</b> La scène</h2>
+    <div class="fields two">
+      <label class="wide">Décris la scène en français
+        <textarea id="idea" rows="3" maxlength="1500" placeholder="Ex. : un joueur en maillot noir monte au dunk au ralenti dans un gymnase sombre, la foule crie"></textarea>
+      </label>
+      <label>Format
+        <select id="format">
+          <option value="9:16" selected>Vertical 9:16 (Instagram, TikTok)</option>
+          <option value="16:9">Horizontal 16:9 (YouTube)</option>
+        </select>
+      </label>
+      <label>Durée
+        <select id="duration">
+          <option value="2">2 s</option>
+          <option value="3" selected>3 s</option>
+          <option value="4">4 s</option>
+          <option value="5">5 s</option>
+        </select>
+      </label>
+      <label>Qualité
+        <select id="quality">
+          <option value="rapide" selected>Rapide (moins de quota)</option>
+          <option value="hd">HD (plus long, plus de quota)</option>
+        </select>
+      </label>
+    </div>
+    <div class="row">
+      <button class="btn big" id="btn-prompt" type="button">Préparer le prompt</button>
+    </div>
+    <p class="muted" id="status-line"></p>
+  </section>
+
+  <section class="card" id="step-generate" hidden>
+    <h2><b>2</b> Prompt et génération</h2>
+    <p class="muted" id="prompt-source"></p>
+    <div class="fields">
+      <label>Prompt envoyé au modèle vidéo (en anglais, modifiable)
+        <textarea id="prompt" rows="6" maxlength="2000"></textarea>
+      </label>
+    </div>
+    <div class="row">
+      <button class="btn big" id="btn-generate" type="button">Générer la vidéo</button>
+    </div>
+    <div class="progress" id="progress" hidden><div></div><span></span></div>
+    <p class="muted" id="wait-detail" hidden></p>
+    <p class="muted">Compte en général 1 à 4 minutes (file d'attente comprise). Laisse la page ouverte : sur téléphone, l'écran reste allumé pendant l'attente.</p>
+  </section>
+
+  <section class="card" id="step-result" hidden>
+    <h2><b>3</b> Ta vidéo</h2>
+    <video id="result-video" controls playsinline loop></video>
+    <p class="muted" id="result-info"></p>
+    <div class="row">
+      <a class="btn" id="btn-download">Télécharger le MP4</a>
+      <button class="btn ghost" id="btn-share" hidden>Partager…</button>
+      <button class="btn ghost" id="btn-again" type="button">Une autre version</button>
+    </div>
+    <p class="muted">Astuce : tu peux ensuite l'ajouter dans l'Éditeur (intro, outro Gravity, musique du Studio beat).</p>
+  </section>
+
+  <p class="error" id="error" role="alert" hidden></p>
+</main>
+
+<footer class="foot">Art craft · Gravity Basketball Montréal · vidéo générée par LTX-Video (Lightricks) sur les Spaces gratuits de Hugging Face (ZeroGPU) · prompt écrit par Google Gemini (plan gratuit)</footer>
+<script type="module" src="video-ia.js"></script>
+</body>
+</html>

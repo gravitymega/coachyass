@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Art craft — Ma chaîne</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .vid { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-top: 1px solid var(--border); }
+  .vid img { width: 120px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; flex: 0 0 auto; background: #000; }
+  .vid .grow { min-width: 0; }
+  .vid b { display: block; overflow-wrap: anywhere; }
+  .vid input { width: 100%; margin: 6px 0; }
+  .vid .row { margin-top: 4px; }
+  #thumb-canvas { width: 100%; height: auto; border-radius: 10px; display: block; margin: 10px 0; }
+  .ok-line { color: #57c785; }
+  @media (max-width: 480px) { .vid img { width: 88px; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="" class="top-logo">
+  <div>
+    <h1>Art craft <span>Ma chaîne</span></h1>
+    <p>Le Gardien passe sur ta chaîne YouTube tous les 2 jours : il ajoute le bloc Gravity et les hashtags aux descriptions, complète les mots-clés, et te signale les titres et les miniatures à revoir.</p>
+  </div>
+</header>
+<nav class="tabs">
+  <a href="index.html">Highlights</a>
+  <a href="analyse.html">Analyse tactique</a>
+  <a href="radar.html">Radar terrain</a>
+  <a href="stats.html">Stats auto</a>
+  <a href="direct.html">Mode direct</a>
+  <a href="editeur.html">Éditeur</a>
+  <a href="sous-titres.html">Sous-titres</a>
+  <a href="video-ia.html">Vidéo IA</a>
+  <a href="son.html">Studio son</a>
+  <a href="beat.html">Studio beat</a>
+  <a href="voix.html">Studio voix</a>
+  <a href="image.html">Studio image</a>
+  <a href="chaine.html" aria-current="page">Ma chaîne</a>
+</nav>
+
+<main>
+  <p class="warn" id="msg" hidden></p>
+
+  <section class="card">
+    <h2><b>1</b> Chaîne reliée</h2>
+    <p id="link-status" class="muted">Chargement…</p>
+    <div class="row">
+      <a class="btn" id="btn-connect" href="/api/chaine/connect" hidden>Relier ma chaîne YouTube</a>
+    </div>
+    <div id="setup" hidden>
+      <p class="muted">À configurer une fois (gratuit) :</p>
+      <ol class="muted">
+        <li>Console Google Cloud (même projet que Drive) : activer l'<b>API YouTube Data v3</b>.</li>
+        <li>Identifiants → identifiant client OAuth « Application Web » : origine JavaScript <code>https://coachyass.moqtad6.workers.dev</code>, URI de redirection <code>https://coachyass.moqtad6.workers.dev/api/chaine/callback</code>.</li>
+        <li>Écran de consentement : permission <code>…/auth/youtube.force-ssl</code>, puis <b>« Publier l'application »</b> (en mode « Test », Google coupe l'accès au bout de 7 jours).</li>
+        <li>Cloudflare → Worker <code>coachyass</code> → Settings → Variables and Secrets : <code>GOOGLE_CLIENT_ID</code> et <code>GOOGLE_CLIENT_SECRET</code> (secret).</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="card" id="step-report" hidden>
+    <h2><b>2</b> Dernier passage</h2>
+    <p id="report-summary"></p>
+    <ul id="report-updated" class="muted"></ul>
+    <p class="error-inline" id="report-errors" hidden></p>
+    <div class="row">
+      <button class="btn" id="btn-run" type="button">Vérifier maintenant</button>
+    </div>
+    <p class="muted">Prochain passage automatique : tous les 2 jours vers 8 h (heure de Montréal). Au plus 25 vidéos corrigées par passage, pour rester dans le quota gratuit de YouTube.</p>
+  </section>
+
+  <section class="card" id="step-titles" hidden>
+    <h2><b>3</b> Titres à revoir</h2>
+    <p class="muted">Le Gardien ne renomme jamais une vidéo tout seul. Modifie la proposition si tu veux, puis « Appliquer » (connexion Google du compte de la chaîne).</p>
+    <div id="titles"></div>
+  </section>
+
+  <section class="card" id="step-thumbs" hidden>
+    <h2><b>4</b> Miniatures Gravity</h2>
+    <p class="muted" id="thumbs-intro"></p>
+    <div id="thumb-editor" hidden>
+      <canvas id="thumb-canvas" width="1280" height="720"></canvas>
+      <div class="fields two">
+        <label class="wide">Texte de la miniature
+          <input id="thumb-title" maxlength="60">
+        </label>
+        <label>Étiquette
+          <input id="thumb-kicker" maxlength="30" value="Gravity Basketball">
+        </label>
+        <label>Image de fond
+          <input type="file" id="thumb-file" accept="image/*">
+        </label>
+      </div>
+      <div class="row">
+        <button class="btn" id="thumb-send" type="button">Envoyer sur YouTube</button>
+        <button class="btn ghost" id="thumb-download" type="button">Télécharger</button>
+        <button class="btn ghost" id="thumb-close" type="button">Fermer</button>
+      </div>
+      <p class="muted" id="thumb-status"></p>
+    </div>
+    <div id="thumbs"></div>
+  </section>
+
+  <section class="card" id="step-config" hidden>
+    <h2><b>5</b> Réglages du Gardien</h2>
+    <div class="fields">
+      <label class="checks"><input type="checkbox" id="cfg-enabled"> Corrections automatiques des descriptions et des mots-clés</label>
+      <label>Bloc ajouté à la fin de chaque description (les hashtags vont sur la dernière ligne ; YouTube affiche les 3 premiers au-dessus du titre)
+        <textarea id="cfg-footer" rows="6" maxlength="1500"></textarea>
+      </label>
+      <label>Mots-clés (tags) ajoutés s'ils manquent, séparés par des virgules
+        <input id="cfg-tags">
+      </label>
+    </div>
+    <div class="row">
+      <button class="btn" id="cfg-save" type="button">Enregistrer</button>
+    </div>
+    <p class="muted" id="cfg-status" style="white-space: pre-line">Le texte que tu as écrit dans une description n'est jamais effacé : le bloc Gravity est ajouté (ou remplacé) tout en bas.</p>
+  </section>
+
+  <p class="error" id="error" role="alert" hidden></p>
+</main>
+
+<footer class="foot">Art craft · Gravity Basketball Montréal · API YouTube Data v3 (quota gratuit de 10 000 unités par jour) · Cloudflare Workers (plan gratuit)</footer>
+<script type="module" src="chaine.js"></script>
+</body>
+</html>
