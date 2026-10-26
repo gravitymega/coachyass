@@ -323,3 +323,8 @@ fieldset .inline { flex-wrap: wrap; }
 .checks figure { margin: 0; }
 .checks img { width: 100%; height: auto; border-radius: 10px; display: block; }
 .checks figcaption { font: 600 13px Inter, sans-serif; margin-top: 4px; opacity: .8; }
+
+/* Vidéo IA */
+#result-video { display: block; width: 100%; max-height: 70vh; background: #000; border-radius: 12px; }
+#step-idea textarea, #step-generate textarea { display: block; margin-top: 4px; }
+@media (max-width: 600px) { #step-idea .fields.two { grid-template-columns: 1fr; } }

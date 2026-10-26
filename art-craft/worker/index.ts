@@ -2,6 +2,7 @@
 // et les deux fonctions serveur, avec le même code que Netlify et Cloudflare Pages.
 import { handleCoach } from '../netlify/functions/coach.mts';
 import { handleMusic } from '../netlify/functions/music.mjs';
+import { handleVideo } from '../netlify/functions/video.mts';
 
 type Env = {
   ASSETS: { fetch: (req: Request) => Promise<Response> };
@@ -14,6 +15,7 @@ export default {
     const { pathname } = new URL(request.url);
     if (pathname === '/api/coach') return handleCoach(request, name => (typeof env[name] === 'string' ? (env[name] as string) : undefined), env.AI);
     if (pathname === '/api/music') return handleMusic(request, { maxBytes: 20e6 });
+    if (pathname === '/api/video') return handleVideo(request, name => (typeof env[name] === 'string' ? (env[name] as string) : undefined));
     return env.ASSETS.fetch(request);
   },
 };
