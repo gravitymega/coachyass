@@ -18,6 +18,15 @@ binding = "ASSETS"
 [ai]
 binding = "AI"
 
+# Gardien de chaîne YouTube : connexion, réglages et rapports (espace KV gratuit « art-craft-chaine »).
+[[kv_namespaces]]
+binding = "CHAINE"
+id = "cdfb0467de6140da969165932770a2ec"
+
+# Passage du Gardien tous les 2 jours à 12 h 23 UTC (8 h 23 à Montréal en été). Gratuit sur le plan Workers.
+[triggers]
+crons = ["23 12 */2 * *"]
+
 # Aperçus de branche (commande « npx wrangler preview » lancée par Workers Builds sur les PR) :
 # le bloc doit exister, même vide. Les fichiers statiques restent ceux de [assets].
 [previews]

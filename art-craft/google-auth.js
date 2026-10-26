@@ -4,6 +4,9 @@
 // l'adresse du site (https://coachyass.moqtad6.workers.dev, et l'ancienne adresse Netlify si elle sert
 // encore) dans la console Google Cloud.
 export const GOOGLE_CLIENT_ID = '';
+// Identifiant lu ailleurs (variable GOOGLE_CLIENT_ID du Worker, via /api/chaine/status) si celui-ci est vide.
+let clientId = GOOGLE_CLIENT_ID;
+export function setGoogleClientId(id) { if (!GOOGLE_CLIENT_ID && id) clientId = id; }
 
 const tokens = new Map(); // permission → { value, expires }
 
@@ -29,11 +32,11 @@ export function cachedToken(scope) {
 export async function googleToken(scope, label = 'Google') {
   const ok = cachedToken(scope);
   if (ok) return ok;
-  if (!GOOGLE_CLIENT_ID) throw new Error(`${label} n'est pas encore configuré (identifiant client Google manquant).`);
+  if (!clientId) throw new Error(`${label} n'est pas encore configuré (identifiant client Google manquant).`);
   await loadGis();
   return new Promise((resolve, reject) => {
     const client = google.accounts.oauth2.initTokenClient({
-      client_id: GOOGLE_CLIENT_ID,
+      client_id: clientId,
       scope,
       callback: r => {
         if (r.error) return reject(new Error(r.error === 'access_denied' ? `Accès à ${label} refusé` : r.error));
