@@ -1036,6 +1036,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const ejEntrainementsEl = document.getElementById('ej-entrainements');
     const ejStatsEl = document.getElementById('ej-stats');
     const ejDocumentsEl = document.getElementById('ej-documents');
+    const ejClipsEl = document.getElementById('ej-clips');
+    const ejDevoirsEl = document.getElementById('ej-devoirs');
     const ejPasswordForm = document.getElementById('ej-password-form');
     const ejPasswordNote = document.getElementById('ej-password-note');
 
@@ -1233,6 +1235,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ejLoadEntrainements(player).catch(() => { ejEntrainementsEl.innerHTML = '<p class="ej-empty">Impossible de charger le calendrier des entraînements pour l\'instant.</p>'; }),
         ejLoadStats(player).catch(() => { ejStatsEl.innerHTML = '<p class="ej-empty">Impossible de charger les statistiques pour l\'instant.</p>'; }),
         ejLoadDocuments(player).catch(() => { ejDocumentsEl.innerHTML = '<p class="ej-empty">Impossible de charger les documents pour l\'instant.</p>'; }),
+        ejLoadClips(player).catch(() => { if (ejClipsEl) ejClipsEl.innerHTML = '<p class="ej-empty">Impossible de charger tes clips pour l\'instant.</p>'; }),
+        ejLoadDevoirs(player).catch(() => { if (ejDevoirsEl) ejDevoirsEl.innerHTML = '<p class="ej-empty">Impossible de charger tes devoirs pour l\'instant.</p>'; }),
       ]);
     }
 
@@ -1319,8 +1323,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await ejAuthedFetch(`${REST_URL}/player_stats?select=*&player_id=eq.${player.id}&order=game_date.desc`);
       const gameRows = res.ok ? await res.json() : [];
       if (gameRows.length) {
-        html += '<div class="table-wrap"><table class="data-table"><thead><tr><th>Date</th><th>Pts</th><th>Reb</th><th>Pas</th><th>Interceptions</th></tr></thead><tbody>' +
-          gameRows.map((s) => `<tr><td>${s.game_date ? new Date(s.game_date + 'T00:00:00').toLocaleDateString('fr-CA') : '—'}</td><td>${s.points ?? 0}</td><td>${s.rebounds ?? 0}</td><td>${s.assists ?? 0}</td><td>${s.steals ?? 0}</td></tr>`).join('') +
+        // Tirs « 3/7 » quand le match a été noté par Art craft (Stats auto ou Mode direct).
+        const shots = (m, a) => (a ? `${m ?? 0}/${a}` : '—');
+        html += '<div class="table-wrap"><table class="data-table"><thead><tr><th>Date</th><th>Pts</th><th>Reb</th><th>Pas</th><th>Interceptions</th><th>Tirs 2</th><th>Tirs 3</th><th>LF</th><th>Contres</th><th>Pertes</th></tr></thead><tbody>' +
+          gameRows.map((s) => `<tr><td>${s.game_date ? new Date(s.game_date + 'T00:00:00').toLocaleDateString('fr-CA') : '—'}</td><td>${s.points ?? 0}</td><td>${s.rebounds ?? 0}</td><td>${s.assists ?? 0}</td><td>${s.steals ?? 0}</td><td>${shots(s.fg2_made, s.fg2_att)}</td><td>${shots(s.fg3_made, s.fg3_att)}</td><td>${shots(s.ft_made, s.ft_att)}</td><td>${s.blocks ?? '—'}</td><td>${s.turnovers ?? '—'}</td></tr>`).join('') +
           '</tbody></table></div>';
       }
       ejStatsEl.innerHTML = html;
@@ -1355,6 +1361,121 @@ document.addEventListener('DOMContentLoaded', () => {
       }));
       ejDocumentsEl.innerHTML = cards.join('');
     }
+
+    // ---------- Mes clips (envoyés par Art craft, bucket privé player-clips) ----------
+    async function ejSignedUrl(bucket, path) {
+      const signRes = await ejAuthedFetch(`${STORAGE_URL}/object/sign/${bucket}/${path}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ expiresIn: 3600 }),
+      });
+      const signData = await signRes.json();
+      return signRes.ok && signData.signedURL ? `${STORAGE_URL}${signData.signedURL}` : '';
+    }
+
+    async function ejLoadClips(player) {
+      if (!ejClipsEl) return;
+      const res = await ejAuthedFetch(`${REST_URL}/player_clips?select=*&player_id=eq.${player.id}&order=game_date.desc,t_seconds.asc&limit=60`);
+      const rows = res.ok ? await res.json() : [];
+      if (!rows.length) {
+        ejClipsEl.innerHTML = '<p class="ej-empty">Aucun clip pour l\'instant. Après un match filmé, tes actions apparaîtront ici.</p>';
+        return;
+      }
+      // Regroupés par match ; la vidéo ne se charge qu'au clic (URL signée valable 1 h).
+      const groups = new Map();
+      rows.forEach((c) => {
+        const key = `${c.game_date || ''}|${c.adversaire || ''}`;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(c);
+      });
+      ejClipsEl.innerHTML = [...groups.entries()].map(([key, clips]) => {
+        const [date, adv] = key.split('|');
+        const title = `${date ? new Date(date + 'T00:00:00').toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Match'}${adv ? ' — vs ' + ejEscapeHtml(adv) : ''}`;
+        return `<div class="ej-card ej-card-neutral"><p class="ej-card-title">${title}</p><div class="ej-clips">${clips.map((c) => `
+          <div class="ej-clip" data-path="${ejEscapeHtml(c.file_path)}">
+            <button type="button" class="ej-clip-play">▶ ${ejEscapeHtml(c.titre || c.event_type)}</button>
+          </div>`).join('')}</div></div>`;
+      }).join('');
+    }
+
+    ejClipsEl?.addEventListener('click', async (e) => {
+      const btn = e.target.closest('.ej-clip-play');
+      if (!btn) return;
+      const box = btn.closest('.ej-clip');
+      btn.disabled = true;
+      try {
+        const url = await ejSignedUrl('player-clips', box.dataset.path);
+        if (!url) throw new Error('lien');
+        box.innerHTML = `<video src="${url}" controls autoplay playsinline preload="metadata"></video><p class="ej-card-meta">${btn.textContent.replace('▶ ', '')}</p>`;
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Clip indisponible, réessaie';
+      }
+    });
+
+    // ---------- Devoirs (bilan d'après-match + exercices proposés par Art craft) ----------
+    async function ejLoadDevoirs(player) {
+      if (!ejDevoirsEl) return;
+      const [repRes, asRes] = await Promise.all([
+        ejAuthedFetch(`${REST_URL}/player_reports?select=*&player_id=eq.${player.id}&order=created_at.desc&limit=10`),
+        ejAuthedFetch(`${REST_URL}/player_assignments?select=*&player_id=eq.${player.id}&order=created_at.desc&limit=80`),
+      ]);
+      const reports = repRes.ok ? await repRes.json() : [];
+      const tasks = asRes.ok ? await asRes.json() : [];
+      if (!reports.length && !tasks.length) {
+        ejDevoirsEl.innerHTML = '<p class="ej-empty">Aucun devoir pour l\'instant.</p>';
+        return;
+      }
+      const CATS = { tir: '🏀 Tir', dribble: '⛹ Dribble', passe: '🤝 Passe', defense: '🛡 Défense', rebond: '💪 Rebond', physique: '🏃 Physique', video: '🎬 Vidéo', mental: '🧠 Mental' };
+      const card = (rep) => {
+        const mine = tasks.filter((t) => (rep ? t.report_id === rep.id : !t.report_id || !reports.some((r) => r.id === t.report_id)));
+        const done = mine.filter((t) => t.statut === 'fait').length;
+        const head = rep
+          ? `<p class="ej-card-title">Après le match du ${rep.game_date ? new Date(rep.game_date + 'T00:00:00').toLocaleDateString('fr-CA', { day: 'numeric', month: 'long' }) : ''}${rep.adversaire ? ' vs ' + ejEscapeHtml(rep.adversaire) : ''}</p>
+             ${rep.message ? `<p>${ejEscapeHtml(rep.message)}</p>` : ''}
+             ${rep.points_forts && rep.points_forts.length ? `<p class="ej-card-meta">✅ ${rep.points_forts.map(ejEscapeHtml).join(' · ')}</p>` : ''}
+             ${rep.points_faibles && rep.points_faibles.length ? `<p class="ej-card-meta">🎯 À travailler : ${rep.points_faibles.map(ejEscapeHtml).join(' · ')}</p>` : ''}`
+          : '<p class="ej-card-title">Devoirs</p>';
+        if (!mine.length && !rep) return '';
+        return `<div class="ej-card">${head}
+          ${mine.length ? `<p class="ej-card-meta ej-devoir-count">${done} / ${mine.length} fait${done > 1 ? 's' : ''}</p>` : ''}
+          <ul class="ej-devoirs">${mine.map((t) => `
+            <li class="${t.statut === 'fait' ? 'done' : ''}">
+              <label><input type="checkbox" data-assignment="${t.id}" ${t.statut === 'fait' ? 'checked' : ''}>
+                <span><strong>${ejEscapeHtml(CATS[t.categorie] ? CATS[t.categorie] + ' — ' : '')}${ejEscapeHtml(t.titre)}</strong>
+                ${t.description ? `<br>${ejEscapeHtml(t.description)}` : ''}
+                ${t.repetitions || t.duree_min ? `<br><small>${ejEscapeHtml(t.repetitions || '')}${t.duree_min ? ` · ${t.duree_min} min` : ''}</small>` : ''}</span>
+              </label>
+            </li>`).join('')}</ul></div>`;
+      };
+      ejDevoirsEl.innerHTML = reports.map(card).join('') + card(null);
+    }
+
+    ejDevoirsEl?.addEventListener('change', async (e) => {
+      const box = e.target.closest('input[data-assignment]');
+      if (!box) return;
+      box.disabled = true;
+      try {
+        const res = await ejAuthedFetch(`${REST_URL}/rpc/set_assignment_status`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ p_id: box.dataset.assignment, p_done: box.checked }),
+        });
+        if (!res.ok) throw new Error('rpc');
+        box.closest('li').classList.toggle('done', box.checked);
+        const card = box.closest('.ej-card');
+        const count = card && card.querySelector('.ej-devoir-count');
+        if (count) {
+          const all = card.querySelectorAll('input[data-assignment]').length;
+          const done = card.querySelectorAll('input[data-assignment]:checked').length;
+          count.textContent = `${done} / ${all} fait${done > 1 ? 's' : ''}`;
+        }
+      } catch (err) {
+        box.checked = !box.checked;
+      } finally {
+        box.disabled = false;
+      }
+    });
 
     // Restaure la session si déjà connecté (refresh de page)
     ejGetValidSession().then((session) => { if (session) ejShowProfile(); });

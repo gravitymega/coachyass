@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Art craft — Mode direct</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="" class="top-logo">
+  <div>
+    <h1>Art craft <span>Mode direct</span></h1>
+    <p>Sur la tablette, au bord du terrain : touche un numéro puis l'action, le score et la feuille de stats se font tout seuls. Le commentateur IA peut commenter le match à voix haute. À la fin, les stats partent dans l'Espace Joueurs et la vidéo passe dans Stats auto pour les clips.</p>
+  </div>
+</header>
+<nav class="tabs">
+  <a href="index.html">Highlights</a>
+  <a href="analyse.html">Analyse tactique</a>
+  <a href="radar.html">Radar terrain</a>
+  <a href="stats.html">Stats auto</a>
+  <a href="direct.html" aria-current="page">Mode direct</a>
+  <a href="editeur.html">Éditeur</a>
+  <a href="sous-titres.html">Sous-titres</a>
+  <a href="video-ia.html">Vidéo IA</a>
+  <a href="son.html">Studio son</a>
+  <a href="beat.html">Studio beat</a>
+  <a href="voix.html">Studio voix</a>
+  <a href="image.html">Studio image</a>
+  <a href="chaine.html">Ma chaîne</a>
+</nav>
+
+<main>
+  <section class="card" id="step-setup">
+    <h2><b>1</b> Avant le match</h2>
+    <div class="fields two">
+      <label>Équipe <select id="team"></select></label>
+      <label>Adversaire <input id="opponent" maxlength="80" placeholder="ex. Les Lynx"></label>
+      <label>Date <input type="date" id="game-date"></label>
+      <label>Durée d'un quart-temps
+        <select id="period-min">
+          <option value="8">8 min</option>
+          <option value="10" selected>10 min</option>
+          <option value="12">12 min</option>
+          <option value="20">20 min (demies)</option>
+        </select>
+      </label>
+      <label class="wide">Numéros de nos joueurs <input id="numbers" placeholder="ex. 3, 7, 10, 12, 23 (rempli tout seul avec les fiches joueurs)"></label>
+    </div>
+    <fieldset>
+      <legend>Commentateur IA (facultatif)</legend>
+      <label class="check"><input type="checkbox" id="ai-on"> Commenter le match à voix haute</label>
+      <div class="fields two">
+        <label>Voix <select id="voice"></select></label>
+        <label>Rythme
+          <select id="ai-every">
+            <option value="0">Seulement après les paniers et les grosses actions</option>
+            <option value="15" selected>Toutes les 15 s + après les actions</option>
+            <option value="30">Toutes les 30 s + après les actions</option>
+          </select>
+        </label>
+      </div>
+      <form class="row" id="login-form">
+        <input type="password" id="password" placeholder="Mot de passe Art craft (pour l'IA)" autocomplete="current-password">
+        <span class="muted" id="ai-status"></span>
+      </form>
+      <p class="muted">Le commentaire utilise l’IA gratuite (Gemini Flash-Lite, rapide ; secours Cloudflare) et, si la caméra est allumée, une image toutes les 15 s. Les phrases sont lues par la voix choisie, sur le haut-parleur de la tablette.</p>
+    </fieldset>
+    <fieldset>
+      <legend>Caméra de la tablette (facultatif)</legend>
+      <label class="check"><input type="checkbox" id="cam-on"> Utiliser la caméra (le commentateur voit le jeu)</label>
+      <label class="check"><input type="checkbox" id="rec-on"> Enregistrer la vidéo du match (pour faire les clips ensuite ; ~1 Go par heure, garde la tablette branchée)</label>
+      <p class="muted">Tu filmes avec XbotGo ou un téléphone ? Laisse la caméra éteinte ici : à la fin, exporte les stats (.json) et importe-les dans Stats auto avec la vidéo XbotGo.</p>
+    </fieldset>
+    <fieldset>
+      <legend>Chaîne YouTube Gravity Basketball (facultatif)</legend>
+      <p class="muted">Lance d'abord ton direct dans l'appli XbotGo. Pendant le match, les paniers et le score s'écrivent dans le chat du live ; après le match, chaque panier devient un chapitre cliquable dans la vidéo.</p>
+      <p class="warn" id="yt-setup">YouTube n'est pas encore configuré : il manque l'identifiant client Google (même réglage que Google Drive, voir les étapes données par Claude).</p>
+      <div class="row">
+        <button class="btn ghost" id="yt-connect" type="button">Trouver mon live YouTube</button>
+        <select id="yt-broadcast" hidden></select>
+      </div>
+      <label class="check"><input type="checkbox" id="yt-chat" checked> Écrire les paniers, interceptions, contres et le score dans le chat</label>
+      <label class="check"><input type="checkbox" id="yt-ai" checked> Écrire aussi les phrases du commentateur IA (au plus une toutes les 20 s)</label>
+      <p class="muted"><span id="yt-status"></span> <span id="yt-quota"></span></p>
+    </fieldset>
+    <div class="row">
+      <button class="btn big" id="btn-start" type="button">Commencer le match</button>
+      <button class="btn ghost" id="btn-resume" type="button" hidden>Reprendre le match en cours</button>
+    </div>
+  </section>
+
+  <section class="card" id="step-live" hidden>
+    <div class="scoreboard">
+      <div><div class="name" id="name-us">Nous</div><div class="pts" id="pts-us">0</div></div>
+      <div>
+        <div class="row" style="justify-content:center;margin:0">
+          <select id="period"><option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option><option>Prol.</option></select>
+        </div>
+        <div class="clock" id="clock">10:00</div>
+        <button class="tool" id="btn-clock" type="button">▶ Chrono</button>
+      </div>
+      <div><div class="name" id="name-them">Adversaire</div><div class="pts" id="pts-them">0</div></div>
+    </div>
+    <video id="live-cam" playsinline muted hidden></video>
+    <h3 class="sub">1. Qui ? <span class="muted" id="who"></span></h3>
+    <div class="live-grid" id="players"></div>
+    <h3 class="sub">2. Quoi ?</h3>
+    <div class="live-grid actions" id="actions"></div>
+    <div class="row">
+      <button class="btn ghost" id="btn-undo" type="button">↶ Annuler la dernière action</button>
+      <button class="btn ghost" id="btn-say" type="button" hidden>🎙 Commenter maintenant</button>
+      <button class="btn" id="btn-end" type="button">Fin du match</button>
+      <span class="muted" id="rec-status"></span>
+    </div>
+    <ul class="feed" id="feed"></ul>
+  </section>
+
+  <section class="card" id="step-end" hidden>
+    <h2><b>2</b> Après le match</h2>
+    <div class="table-scroll"><table class="box" id="box"></table></div>
+    <form class="pub-login" id="sb-login" hidden>
+      <p class="muted">Connexion avec ton compte admin du Dashboard Gravity :</p>
+      <div class="row">
+        <input type="email" id="sb-email" placeholder="Courriel" autocomplete="username" required>
+        <input type="password" id="sb-password" placeholder="Mot de passe" autocomplete="current-password" required>
+        <button class="btn" type="submit">Se connecter</button>
+        <button class="btn ghost" type="button" id="sb-login-cancel">Annuler</button>
+      </div>
+      <p class="error-inline" id="sb-login-error"></p>
+    </form>
+    <div class="row">
+      <button class="btn" id="btn-send" type="button">Envoyer les stats dans l'Espace Joueurs</button>
+      <a class="btn ghost" id="btn-json">Exporter les stats (.json)</a>
+      <a class="btn ghost" id="btn-video" hidden>Télécharger la vidéo</a>
+      <a class="btn ghost" href="stats.html">Faire les clips dans Stats auto →</a>
+    </div>
+    <p class="muted" id="send-status"></p>
+    <h3 class="sub">Chapitres YouTube</h3>
+    <p class="muted">Chaque panier devient un chapitre cliquable dans la vidéo du live. Si le live est relié, un clic les ajoute à la description. Sinon, copie-les et colle-les dans YouTube Studio (indique à quel moment de la vidéo le match commence).</p>
+    <div class="row">
+      <label class="inline">Le match commence à <input id="yt-offset" value="0:00" size="7"> dans la vidéo</label>
+    </div>
+    <textarea id="yt-chapters" rows="8" readonly></textarea>
+    <div class="row">
+      <button class="btn" id="btn-yt-chapters" type="button">Ajouter les chapitres à la vidéo YouTube</button>
+      <button class="btn ghost" id="btn-yt-copy" type="button">Copier les chapitres</button>
+    </div>
+    <p class="muted" id="yt-chapters-status"></p>
+    <div class="row">
+      <button class="btn ghost danger" id="btn-new" type="button">Nouveau match (efface celui-ci)</button>
+    </div>
+  </section>
+
+  <p class="error" id="error" role="alert" hidden></p>
+</main>
+
+<footer class="foot">Art craft · Gravity Basketball Montréal · commentaire par IA gratuite (Google Gemini) · voix Piper (open source)</footer>
+<script type="module" src="direct.js"></script>
+</body>
+</html>

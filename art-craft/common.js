@@ -117,6 +117,37 @@ export function offerFile(blob, name, { download, share, title, text }) {
   return url;
 }
 
+// Garde l'écran allumé pendant un long calcul (sur téléphone, un écran qui se verrouille
+// coupe la connexion avec l'IA). Renvoie la fonction qui rend la main ; sans effet si le
+// navigateur ne sait pas le faire.
+export async function keepAwake() {
+  let lock = null;
+  try { lock = await navigator.wakeLock?.request('screen'); } catch { /* refusé ou indisponible */ }
+  return () => { try { lock?.release(); } catch { /* déjà rendu */ } };
+}
+
+// Lit la réponse en flux de la fonction coach (NDJSON, voir createStreamReader) en appelant
+// onTick(caractères reçus, secondes écoulées) chaque seconde et à chaque morceau reçu.
+export async function readCoachStream(res, reader, onTick) {
+  const t0 = Date.now();
+  const tick = () => onTick && onTick(reader.length, (Date.now() - t0) / 1000);
+  const timer = setInterval(tick, 1000);
+  try {
+    const decoder = new TextDecoder();
+    const stream = res.body.getReader();
+    for (;;) {
+      const { value, done } = await stream.read();
+      if (done) break;
+      reader.feed(decoder.decode(value, { stream: true }));
+      tick();
+    }
+    reader.feed(decoder.decode());
+    return reader.finish();
+  } finally {
+    clearInterval(timer);
+  }
+}
+
 export function loadImage(src) {
   return new Promise((resolve, reject) => {
     const img = new Image();

@@ -1,0 +1,4 @@
+# Cloudflare Pages (projet « art-craft-gravity ») : site statique dans dist/, fonctions dans functions/.
+name = "art-craft-gravity"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-10-01"

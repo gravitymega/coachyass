@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Art craft — Analyse tactique</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="" class="top-logo">
+  <div>
+    <h1>Art craft <span>Analyse tactique</span></h1>
+    <p>Dépose une séquence de match : l'IA regarde le jeu, explique les tactiques (attaque, défense, systèmes, erreurs) et te donne un rapport écrit et une vidéo commentée : actions au ralenti, voix off du coach et tableau tactique avec les pions.</p>
+  </div>
+</header>
+<nav class="tabs">
+  <a href="index.html">Highlights</a>
+  <a href="analyse.html" aria-current="page">Analyse tactique</a>
+  <a href="radar.html">Radar terrain</a>
+  <a href="stats.html">Stats auto</a>
+  <a href="direct.html">Mode direct</a>
+  <a href="editeur.html">Éditeur</a>
+  <a href="sous-titres.html">Sous-titres</a>
+  <a href="video-ia.html">Vidéo IA</a>
+  <a href="son.html">Studio son</a>
+  <a href="beat.html">Studio beat</a>
+  <a href="voix.html">Studio voix</a>
+  <a href="image.html">Studio image</a>
+  <a href="chaine.html">Ma chaîne</a>
+</nav>
+
+<main>
+  <section class="card" id="step-login">
+    <h2><b>🔒</b> Accès</h2>
+    <p class="muted">L'analyse utilise l'IA gratuite d'Art craft (avec un quota par jour) : elle est protégée par le mot de passe Art craft.</p>
+    <form class="row" id="login-form">
+      <input type="password" id="password" placeholder="Mot de passe Art craft" autocomplete="current-password">
+      <button class="btn" type="submit">Entrer</button>
+    </form>
+  </section>
+
+  <section class="card" id="step-video" hidden>
+    <h2><b>1</b> La séquence à analyser</h2>
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept="video/*,.mov,.mkv">
+      <strong>Dépose la vidéo ici</strong>
+      <span>un match entier ou un extrait (MP4, MOV…)</span>
+    </label>
+    <form class="row" id="yt-form" novalidate>
+      <input id="yt-url" type="url" inputmode="url" placeholder="… ou colle un lien YouTube (vidéo publique)">
+      <button class="tool" type="submit">Charger le lien</button>
+    </form>
+    <p class="muted">Avec un lien YouTube, l'IA (Gemini, gratuite) regarde la vidéo elle-même : tu obtiens le rapport et les moments clés. La vidéo doit être <b>publique</b> (pas « non répertoriée »). Pour la vidéo commentée (ralenti, voix off, tableau), dépose le fichier.</p>
+    <div id="player-wrap" hidden>
+      <video id="video" controls playsinline preload="metadata"></video>
+      <div id="yt-wrap" class="yt-wrap" hidden><iframe id="yt-frame" title="Vidéo YouTube" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+      <p class="muted" id="file-info"></p>
+      <div class="row">
+        <label class="inline">Début <input id="start" value="0:00" size="7" inputmode="numeric"></label>
+        <button class="tool" id="btn-here" type="button">Prendre le moment affiché</button>
+        <label class="inline">Durée
+          <select id="dur">
+            <option value="30">30 s</option>
+            <option value="60" selected>1 min</option>
+            <option value="120">2 min</option>
+            <option value="180">3 min</option>
+            <option value="300">5 min</option>
+            <option value="600">10 min</option>
+          </select>
+        </label>
+      </div>
+      <p class="muted">Conseil : une séquence d'une à trois minutes (une possession, un quart-temps difficile, une défense à corriger) donne l'analyse la plus précise. L'IA voit jusqu'à 32 images de la séquence.</p>
+      <label>Équipe à analyser (facultatif)
+        <input id="team" maxlength="120" placeholder="ex. Gravity, maillots noirs">
+      </label>
+      <label>Ce que tu veux savoir (facultatif)
+        <textarea id="context" rows="2" maxlength="1500" placeholder="ex. Pourquoi on encaisse autant de paniers faciles ? Comment on attaque leur zone ?"></textarea>
+      </label>
+      <label class="check" id="track-wrap"><input type="checkbox" id="track" checked> Suivi précis des joueurs, action par action (le tableau suit vraiment la vidéo ; un peu plus long et quelques crédits IA de plus)</label>
+      <div class="row">
+        <button class="btn big" id="btn-analyse" type="button">Analyser la séquence</button>
+      </div>
+      <div class="progress" id="analyse-progress" hidden><div></div><span></span></div>
+    </div>
+  </section>
+
+  <section class="card" id="step-report" hidden>
+    <h2><b>2</b> Rapport</h2>
+    <div id="report" class="report"></div>
+    <div class="row">
+      <button class="btn ghost" id="btn-copy" type="button">Copier le rapport</button>
+      <a class="btn ghost" id="btn-report-dl">Télécharger (.txt)</a>
+      <button class="btn ghost" id="btn-print" type="button">Imprimer / PDF</button>
+    </div>
+  </section>
+
+  <section class="card" id="step-voice" hidden>
+    <h2><b>3</b> Vidéo commentée</h2>
+    <p class="muted">Format vertical, comme une séance vidéo : la vidéo en haut, le tableau du coach en bas. Chaque action passe au ralenti pendant que le coach l'explique, et les pions (PG, SG, SF, PF, C) bougent sur le tableau en même temps. Si une explication dure plus longtemps que l'action, l'image se fige jusqu'à la fin de la phrase.</p>
+    <div class="fields two">
+      <label>Son de la vidéo
+        <select id="audio-mode">
+          <option value="mix" selected>Voix off du coach + ambiance du match</option>
+          <option value="voix">Voix off du coach seulement</option>
+          <option value="original">Son original de la vidéo (sans voix off)</option>
+        </select>
+      </label>
+      <label id="voice-wrap">Voix du coach <select id="voice"></select></label>
+      <label>Ralenti des actions
+        <select id="slow">
+          <option value="1">Aucun (vitesse normale)</option>
+          <option value="0.75">× 0,75</option>
+          <option value="0.5" selected>× 0,5</option>
+          <option value="0.35">× 0,35</option>
+          <option value="0.25">× 0,25 (très lent)</option>
+        </select>
+      </label>
+      <label>Qualité
+        <select id="quality">
+          <option value="720">720 × 1280</option>
+          <option value="1080">1080 × 1920 (plus lent)</option>
+        </select>
+      </label>
+    </div>
+    <h3 class="sub">Ce que dit le coach <span class="muted">(modifiable, action par action)</span></h3>
+    <div id="script" class="fields"></div>
+    <p class="muted" id="commentary-count"></p>
+    <p class="muted">Les voix, gratuites et open source (Piper), sont générées dans ton navigateur, sans compte (la première fois, la voix se télécharge : ~60 Mo).</p>
+    <button class="btn big" id="btn-render" type="button">Créer la vidéo commentée</button>
+    <div class="progress" id="render-progress" hidden><div></div><span></span></div>
+    <div id="result" hidden>
+      <video id="result-video" class="tall" controls playsinline></video>
+      <div class="row">
+        <a class="btn" id="btn-download">Télécharger le MP4</a>
+        <button class="btn ghost" id="btn-share" hidden>Partager…</button>
+        <a class="btn ghost" id="btn-voice-dl">Voix off seule (WAV)</a>
+      </div>
+    </div>
+  </section>
+
+  <p class="error" id="error" role="alert" hidden></p>
+</main>
+
+<footer class="foot">Art craft · Gravity Basketball Montréal · analyse par IA gratuite (Google Gemini, secours Cloudflare Workers AI) · voix Piper (open source) · moteur vidéo ffmpeg.wasm</footer>
+<script src="vendor/ffmpeg/ffmpeg.js"></script>
+<script type="module" src="analyse.js"></script>
+</body>
+</html>
