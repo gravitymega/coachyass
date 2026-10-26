@@ -36,8 +36,8 @@ Le coach se filme lui-même en marchant (plan « selfie » tenu à bout de bras,
 |---|---|---|---|
 | 2.1 | **✅ IMG_6686** — selfie en marchant, contre-plongée | Le coach en hoodie gris, capuche, sac en bandoulière. Derrière lui, les arbres jaunes d'automne et les lampadaires. Il regarde la route devant lui. | Son direct : sa voix, ses pas. |
 | 2.2 | **✅ IMG_6687** — caméra vers le sol | Son ombre allongée sur le trottoir, ses pieds qui avancent, des feuilles mortes. | Pas sur le trottoir. |
-| 2.3 | À tourner — plans de coupe | Lampadaires à travers les feuilles, une voiture qui passe, le reflet du coach dans une vitrine. | Ambiance de rue le soir. |
-| 2.4 | À tourner — plan large de dos | Le coach marche seul sur le trottoir, le sac sur l'épaule, et s'éloigne de la caméra. | La musique monte d'un cran. |
+| 2.3 | **✅ Tourné** — plans de coupe | Lampadaires à travers les feuilles, une voiture qui passe, le reflet du coach dans une vitrine. | Ambiance de rue le soir. |
+| 2.4 | **✅ Tourné** — plan large de dos | Le coach marche seul sur le trottoir, le sac sur l'épaule, et s'éloigne de la caméra. | La musique monte d'un cran. |
 
 **Coach Yassine (selfie en marchant, 2.1)** :
 > « La piscine, pour un basketteur, c'est un secret qui n'en est pas vraiment un. Tous les grands programmes l'utilisent. Nous, on l'a mise au cœur de notre préparation. »
@@ -126,9 +126,9 @@ Montage rythmé, la musique prend toute sa place. Alterner plans larges (le grou
 **Route**
 - [x] Selfie en marchant sous les arbres d'automne — **IMG_6686**
 - [x] Ombre et pieds sur le trottoir, feuilles mortes — **IMG_6687**
-- [ ] Le même selfie, mais en **prise longue** (30 s à 1 min par réplique), pour que le coach dise ses répliques en entier — faire 3 prises
-- [ ] Plans de coupe : lampadaires dans les feuilles, voiture qui passe, reflet dans une vitrine
-- [ ] Plan large de dos, le coach s'éloigne seul
+- [x] Le même selfie, mais en **prise longue** (30 s à 1 min par réplique), pour que le coach dise ses répliques en entier — faire 3 prises
+- [x] Plans de coupe : lampadaires dans les feuilles, voiture qui passe, reflet dans une vitrine
+- [x] Plan large de dos, le coach s'éloigne seul
 
 **Claude-Robillard**
 - [x] Façade de nuit — **IMG_6688**
