@@ -2,6 +2,8 @@
 
 Projet de l'utilisateur : un documentaire sur Gravity. Première séquence écrite : **« La piscine »** (le coach Yassine part de chez lui le soir, marche jusqu'au Complexe sportif Claude-Robillard et explique l'importance de la piscine pour la force et la vitesse des basketteurs, puis entraînement dans l'eau).
 
+- `documentaire/plan-general.md` : **plan général** (fil rouge, sujets à traiter A à I, structure en trois actes, questions d'entrevue coach/joueurs/parents, règles de qualité, autorisations).
+- `documentaire/sequence-deplacements.md` : séquence « D'un gymnase à l'autre » (métro + Collège Dawson, prises IMG_6796 à IMG_6799 du 25 octobre 2026). Montage démo de 25 s fait en session, pas dans le dépôt.
 - `documentaire/sequence-piscine.md` : script plan par plan, répliques, liste des prises à tourner, notes de tournage.
 - `documentaire/rushes/` : **base de données des vidéos brutes** (demande du 26 octobre 2026 : tout ce que l'utilisateur partage avec Claude va dans ce même dossier). `catalogue.json` = une fiche par plan ; `vignettes/` ; `ajouter.py` recalcule les infos techniques, ajoute les nouveaux plans et met à jour l'index de `README.md` (les notes écrites à la main sont conservées). Les vidéos gardent leur nom d'origine (`IMG_xxxx.mov`). Au-delà de ~100 Mo par fichier, GitHub refuse : prévoir Google Drive et ne garder ici que la fiche.
 - Plans tournés le 20 octobre 2026 : IMG_6686 à IMG_6691 (20 h 10 à 20 h 12, rue puis entrée), IMG_6692 (bassins, 21 h 31). Tous verticaux, HEVC, à l'iPhone.
