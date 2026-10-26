@@ -21,6 +21,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 - **Aucun frais** en dehors de l'abonnement Claude : plans gratuits seulement (Netlify, Cloudflare, Supabase, Brevo, Zeffy, Google). L'API Anthropic est facturée à part : pas de `ANTHROPIC_API_KEY` sans accord explicite. IA d'Art craft = Gemini (gratuit) puis Workers AI en secours. Détails : `docs/contexte/aucun-frais-ia-gratuites.md`.
 - Talent Perlé reste séparé de Gravity/OSMM (pas de domaine, de Supabase ni de Notion partagés).
 - Ne jamais mettre de secret dans le code ni dans le chat : variables d'environnement Netlify / secrets Cloudflare.
+- **Le documentaire (`documentaire/`, `voix-locale/`) ne doit être sur aucun site** (demande du 26 octobre 2026). Le site Coaching publie la racine du dépôt : tout nouveau dossier privé à la racine doit être ajouté à `_redirects` (`/dossier/*  /404  404!`).
 - Les choix déjà tranchés avec l'utilisateur (notés dans `docs/contexte/`) ne se remettent pas en question sans lui redemander.
 
 ## Backends (résumé)
