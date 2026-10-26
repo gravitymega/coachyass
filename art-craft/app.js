@@ -12,6 +12,7 @@ import { OUTRO, brandCardPNG } from './brand.js';
 import { setVideo, currentCaption } from './social.js';
 import { offerDrive } from './drive.js';
 import { uploadKbps } from './social-core.js';
+import { renderShortFast, fastRenderAvailable } from './fast-render.js';
 
 const AUDIO_RATE = 8000;
 const AUDIO_CHUNK_S = 600;
@@ -519,12 +520,17 @@ function drawPreview() {
   drawOverlay(ctx, W, H);
 }
 
-async function overlayPNG(W, H) {
+async function overlayCanvas(W, H) {
   try { await document.fonts.load(`700 ${Math.round(W * 0.085)}px Oswald`); } catch { /* police de secours */ }
   const cv = document.createElement('canvas');
   cv.width = W;
   cv.height = H;
   drawOverlay(cv.getContext('2d'), W, H);
+  return cv;
+}
+
+async function overlayPNG(W, H) {
+  const cv = await overlayCanvas(W, H);
   const blob = await new Promise(res => cv.toBlob(res, 'image/png'));
   return new Uint8Array(await blob.arrayBuffer());
 }
@@ -542,10 +548,16 @@ async function render() {
   showError('');
   const total = clips.reduce((s, c) => s + c.dur, 0) + ($('brand-outro').checked ? 3 : 0);
   try {
-    const ff = await getFFmpeg('render-progress');
-    await mountInput(ff);
     const [W, H] = $('quality').value === '720' ? [720, 1280] : [1080, 1920];
     const hasOverlay = $('title').value.trim() || $('subtitle').value.trim() || $('show-logo').checked;
+    const fast = await renderFast(clips, W, H, hasOverlay, total);
+    if (fast) {
+      showResult(fast);
+      setProgress('render-progress', 1, `Short prêt · ${Math.round(total)} s · ${(fast.size / 1e6).toFixed(1)} Mo · rendu rapide`);
+      return;
+    }
+    const ff = await getFFmpeg('render-progress');
+    await mountInput(ff);
     if (hasOverlay) await ff.writeFile('/overlay.png', await overlayPNG(W, H));
     const outro = $('brand-outro').checked ? { path: '/outro.png', dur: 3 } : null;
     if (outro) await ff.writeFile(outro.path, await brandCardPNG(W, H, state.logo, OUTRO));
@@ -578,6 +590,30 @@ async function render() {
   } finally {
     state.busy = false;
     $('btn-render').disabled = false;
+  }
+}
+
+// Rendu rapide (WebCodecs + Mediabunny). Renvoie null si le navigateur ne sait pas faire :
+// render() passe alors au montage ffmpeg.wasm, plus lent mais qui marche partout.
+async function renderFast(clips, W, H, hasOverlay, total) {
+  if (!fastRenderAvailable()) return null;
+  try {
+    setProgress('render-progress', 0, 'Montage rapide du short…');
+    const strength = +$('zoom').value;
+    const outro = $('brand-outro').checked
+      ? { image: await createImageBitmap(new Blob([await brandCardPNG(W, H, state.logo, OUTRO)], { type: 'image/png' })), dur: 3 }
+      : null;
+    return await renderShortFast({
+      file: state.file,
+      clips: clips.map(c => ({ start: c.start, dur: c.dur, cropX: c.cropX, zoom: strength > 1 ? clipZoom(c, strength) : null })),
+      layout: $('layout').value, width: W, height: H,
+      overlay: hasOverlay ? await overlayCanvas(W, H) : null, outro,
+      maxKbps: uploadKbps(total, W),
+      onProgress: r => setProgress('render-progress', r, `Montage rapide du short… ${Math.round(r * total)} s / ${Math.round(total)} s`),
+    });
+  } catch (err) {
+    console.warn('Rendu rapide impossible, passage à ffmpeg :', err);
+    return null;
   }
 }
 
