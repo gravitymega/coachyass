@@ -38,6 +38,8 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 | Dashboard Talent Perlé (Supabase de Karim, étapes restantes) | `docs/contexte/talent-perle.md` |
 | Règle aucun frais, Gemini / Workers AI, YouTube, sans mot de passe | `docs/contexte/aucun-frais-ia-gratuites.md` |
 | **Art craft** (Highlight Agent, analyse tactique, stats auto, mode direct, radar terrain, hébergement Cloudflare) | `docs/contexte/art-craft.md` (gros fichier : chercher la section avec Grep) |
+| Art craft : module Vidéo IA (Hugging Face gratuit, Gemini) | `docs/contexte/video-ia.md` |
+| Art craft : rendu rapide du short (WebCodecs, Mediabunny, ffmpeg en secours) | `docs/contexte/rendu-rapide.md` |
 | Supabase (tables), Notion, gravity-mailer, FormSubmit | `docs/contexte/backends.md` |
 | Liste des demandes du 31 août 2026 | `docs/contexte/historique-31-aout.md` |
 | Espace Joueurs | `docs/contexte/espace-joueurs.md` |
