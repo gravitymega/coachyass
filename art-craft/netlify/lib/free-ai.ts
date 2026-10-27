@@ -2,7 +2,7 @@
 //   1. Google Gemini, plan gratuit (clé GEMINI_API_KEY créée sur aistudio.google.com, sans carte) ;
 //   2. en secours, OpenRouter, modèles gratuits « :free » seulement (clé OPENROUTER_API_KEY ; compte sans
 //      crédit acheté : rien ne peut être facturé, les appels s'arrêtent au quota gratuit du jour) ;
-//   3. Groq, plan gratuit (clé GROQ_API_KEY, sans carte ; Qwen, 5 images au plus par demande) ;
+//   3. Groq, plan gratuit (clé GROQ_API_KEY, sans carte ; Qwen 3.8 27B, 3 images au plus par demande) ;
 //   4. en dernier recours, Cloudflare Workers AI (liaison « AI » du Worker, 10 000 neurones gratuits par jour ;
 //      sur le plan gratuit de Cloudflare, rien n'est facturé : les appels s'arrêtent au quota).
 // Tous reçoivent la même demande que Claude (consigne, images, schéma JSON) et renvoient
@@ -26,7 +26,7 @@ export const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 // Llama 4 Scout a été retiré par Groq le 17 juillet 2026 : les modèles Qwen lisent les images.
 // Essayés dans l'ordre (un modèle retiré ou inconnu passe au suivant) ; GROQ_MODEL en tête s'il est défini.
 export const GROQ_MODELS = ["qwen/qwen3.8-27b", "qwen/qwen3.6-27b"];
-const GROQ_MAX_IMAGES = 5; // limite de Groq par demande
+const GROQ_MAX_IMAGES = 3; // limite de Groq par demande pour les modèles Qwen
 export const WORKERS_MODEL = "@cf/meta/llama-4-scout-17b-16e-instruct";
 // Le modèle de secours lit moins bien beaucoup d'images à la fois, et chaque image coûte du quota.
 const WORKERS_MAX_IMAGES = 8;
@@ -166,6 +166,7 @@ export async function askGroq(key: string, request: FreeRequest, model?: string)
         model: m,
         messages: [{ role: "system", content: request.system }, { role: "user", content }],
         max_tokens: request.live ? 300 : 8000,
+        reasoning_effort: "none", // mode « instruct » : réponse directe, sans réflexion qui mange les jetons
       }),
     });
     const data: any = await res.json().catch(() => ({}));
