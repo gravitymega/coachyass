@@ -224,6 +224,46 @@ export function basketPeak(diff, fps = NET_FPS, { from = 0, to = Infinity } = {}
 
 export const BASKET_Z = 6;
 
+// ---------- Paniers marqués vus par l'IA (Gemini gratuit, sans rien toucher) ----------
+// Pour chaque moment fort : une image par seconde sur les 7 s avant la réaction de la salle
+// et la 1re seconde après, en 640 px. Ça marche aussi quand la caméra suit le jeu (XbotGo).
+export const AI_LOOK_BEFORE = 7;
+export const AI_LOOK_DUR = 8;
+export const AI_PER_BATCH = 3; // 3 moments × 8 images = 24 images par demande
+
+export function aiFrameArgs({ input, t, output = '/pk%02d.jpg' }) {
+  const start = Math.max(0, t - AI_LOOK_BEFORE);
+  return {
+    start,
+    args: ['-ss', start.toFixed(2), '-t', String(AI_LOOK_DUR), '-i', input, '-an',
+      '-vf', 'fps=1,scale=640:-2', '-q:v', '6', output],
+  };
+}
+
+export function aiBatches(list, size = AI_PER_BATCH) {
+  const out = [];
+  for (let i = 0; i < list.length; i += size) out.push(list.slice(i, i + size));
+  return out;
+}
+
+// Réponse de l'IA ({moments:[{moment, panier, t, x, y, confiance}]}) → candidats marqués.
+// « moment » est l'indice du candidat dans le lot ; une confiance basse ne compte pas.
+export function applyAiBaskets(batch, verdicts) {
+  const clamp = (v, lo, hi, d) => (Number.isFinite(+v) ? Math.min(hi, Math.max(lo, +v)) : d);
+  let found = 0;
+  batch.forEach((c, i) => {
+    const v = (verdicts?.moments || []).find(m => +m.moment === i + 1);
+    c.checked = true;
+    c.basket = Boolean(v && v.panier === true && v.confiance !== 'basse');
+    if (!c.basket) return;
+    found++;
+    c.netZ = v.confiance === 'haute' ? 20 : 10;
+    c.tb = clamp(v.t, Math.max(0, c.t - AI_LOOK_BEFORE), c.t + 1, c.t - 2);
+    c.hoop = { x: clamp(v.x, 0, 1, 0.5), y: clamp(v.y, 0, 1, 0.5) };
+  });
+  return found;
+}
+
 // Extraits à partir des moments forts (avec ou sans vérification des paniers).
 // pick = 'baskets' : seulement les paniers marqués, tous gardés (la durée visée ne coupe pas) ;
 // pick = 'all' : les moments forts au son, paniers d'abord, jusqu'à la durée visée.
