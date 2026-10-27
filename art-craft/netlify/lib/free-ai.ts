@@ -2,7 +2,7 @@
 //   1. Google Gemini, plan gratuit (clé GEMINI_API_KEY créée sur aistudio.google.com, sans carte) ;
 //   2. en secours, OpenRouter, modèles gratuits « :free » seulement (clé OPENROUTER_API_KEY ; compte sans
 //      crédit acheté : rien ne peut être facturé, les appels s'arrêtent au quota gratuit du jour) ;
-//   3. Groq, plan gratuit (clé GROQ_API_KEY, sans carte ; Llama 4 Scout, 5 images au plus par demande) ;
+//   3. Groq, plan gratuit (clé GROQ_API_KEY, sans carte ; Qwen 3.8 27B, 3 images au plus par demande) ;
 //   4. en dernier recours, Cloudflare Workers AI (liaison « AI » du Worker, 10 000 neurones gratuits par jour ;
 //      sur le plan gratuit de Cloudflare, rien n'est facturé : les appels s'arrêtent au quota).
 // Tous reçoivent la même demande que Claude (consigne, images, schéma JSON) et renvoient
@@ -23,8 +23,9 @@ export const GEMINI_LIVE_MODEL = "gemini-3.1-flash-lite";
 export const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 export const OPENROUTER_MODELS = ["nvidia/nemotron-3.5-super-vl:free", "google/gemma-4-31b-it:free", "openrouter/free"];
 export const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-export const GROQ_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
-const GROQ_MAX_IMAGES = 5; // limite de Groq par demande
+// Llama 4 Scout a été retiré par Groq le 17 juillet 2026 : Qwen 3.8 27B est son seul modèle qui lit les images.
+export const GROQ_MODEL = "qwen/qwen3.8-27b";
+const GROQ_MAX_IMAGES = 3; // limite de Groq par demande pour ce modèle
 export const WORKERS_MODEL = "@cf/meta/llama-4-scout-17b-16e-instruct";
 // Le modèle de secours lit moins bien beaucoup d'images à la fois, et chaque image coûte du quota.
 const WORKERS_MAX_IMAGES = 8;
@@ -160,6 +161,7 @@ export async function askGroq(key: string, request: FreeRequest) {
       model: GROQ_MODEL,
       messages: [{ role: "system", content: request.system }, { role: "user", content }],
       max_tokens: request.live ? 300 : 8000,
+      reasoning_effort: "none", // mode « instruct » : réponse directe, sans réflexion qui mange les jetons
     }),
   });
   const data: any = await res.json().catch(() => ({}));
