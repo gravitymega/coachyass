@@ -3,97 +3,151 @@
 
 const svg = (vb, body, cls = '') => `<svg class="art art-${cls}" viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${body}</svg>`;
 
-function eyes(lx, rx, y, r = 5, color = '#2b2140') {
-  return `<g class="blink" style="transform-origin:${(lx + rx) / 2}px ${y}px">
-    <circle cx="${lx}" cy="${y}" r="${r}" fill="${color}"/><circle cx="${rx}" cy="${y}" r="${r}" fill="${color}"/>
-    <circle cx="${lx + r * .35}" cy="${y - r * .4}" r="${r * .35}" fill="#fff"/><circle cx="${rx + r * .35}" cy="${y - r * .4}" r="${r * .35}" fill="#fff"/>
+// ---------- Personnages vivants ----------
+// Chaque personnage est un <div class="char" data-mood="…"> : les humeurs (happy, talk, cheer, sad, wow)
+// changent la bouche, les sourcils et la posture en CSS ; les pupilles suivent le doigt (characters.js).
+// Les groupes animés portent leur point de rotation en px du viewBox (transform-box: view-box).
+const O = (x, y) => `style="transform-origin:${x}px ${y}px"`;
+const wrap = (name, mood, cls, vb, body) =>
+  `<div class="char char-${name} ${cls}" data-char="${name}" data-mood="${mood}"><svg class="art" viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g class="body" ${O(100, 228)}>${body}</g></svg></div>`;
+
+// Un œil : blanc, iris, deux reflets. Le groupe .pupil se déplace pour regarder.
+function eye(cx, cy, r, iris = '#2b2140', white = '#fff') {
+  return `<g class="eye" style="transform-origin:${cx}px ${cy}px;animation-delay:${((cx * 7) % 30) / 10}s">
+    <ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r * 1.12}" fill="${white}"/>
+    <g class="pupil"><circle cx="${cx}" cy="${cy + r * 0.1}" r="${r * 0.66}" fill="${iris}"/>
+    <circle cx="${cx - r * 0.24}" cy="${cy - r * 0.26}" r="${r * 0.26}" fill="#fff"/>
+    <circle cx="${cx + r * 0.24}" cy="${cy + r * 0.26}" r="${r * 0.11}" fill="#fff"/></g></g>`;
+}
+// Les cinq bouches ; une seule est visible selon l'humeur.
+function mouths(cx, cy, w, ink = '#5a2318', tongue = '#ff7b8a') {
+  return `<g class="mouths">
+    <path class="m m-happy" d="M${cx - w} ${cy} Q${cx} ${cy + w * 0.95} ${cx + w} ${cy}" stroke="${ink}" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+    <g class="m m-talk" ${O(cx, cy + 2)}><ellipse cx="${cx}" cy="${cy + 3}" rx="${w * 0.55}" ry="${w * 0.5}" fill="${ink}"/><ellipse cx="${cx}" cy="${cy + 3 + w * 0.25}" rx="${w * 0.32}" ry="${w * 0.2}" fill="${tongue}"/></g>
+    <g class="m m-cheer"><path d="M${cx - w * 1.05} ${cy - 1} Q${cx} ${cy + w * 1.7} ${cx + w * 1.05} ${cy - 1}Z" fill="${ink}"/><ellipse cx="${cx}" cy="${cy + w * 0.8}" rx="${w * 0.48}" ry="${w * 0.28}" fill="${tongue}"/></g>
+    <path class="m m-sad" d="M${cx - w * 0.6} ${cy + 5} Q${cx} ${cy - 1} ${cx + w * 0.6} ${cy + 5}" stroke="${ink}" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+    <ellipse class="m m-wow" cx="${cx}" cy="${cy + 3}" rx="${w * 0.36}" ry="${w * 0.46}" fill="${ink}"/>
   </g>`;
 }
+function brows(lx, rx, y, color, len = 9) {
+  return `<g class="brows" ${O((lx + rx) / 2, y)}>
+    <path class="brow-l" ${O(lx, y)} d="M${lx - len} ${y + 1} Q${lx} ${y - 4} ${lx + len} ${y}" stroke="${color}" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <path class="brow-r" ${O(rx, y)} d="M${rx - len} ${y} Q${rx} ${y - 4} ${rx + len} ${y + 1}" stroke="${color}" stroke-width="3.4" fill="none" stroke-linecap="round"/></g>`;
+}
+const cheeks = (lx, rx, y, c = '#ff8f9a') => `<g class="cheeks"><ellipse cx="${lx}" cy="${y}" rx="9" ry="5.5" fill="${c}" opacity=".55"/><ellipse cx="${rx}" cy="${y}" rx="9" ry="5.5" fill="${c}" opacity=".55"/></g>`;
 
-// Hbibiti : grand-mère au foulard, lunettes rondes, sourire.
-export function hbibiti(mood = 'happy') {
-  const mouth = mood === 'sad'
-    ? '<path d="M88 132 Q100 124 112 132" stroke="#7a3b2a" stroke-width="4" fill="none" stroke-linecap="round"/>'
-    : mood === 'talk'
-      ? '<ellipse class="talk" cx="100" cy="130" rx="9" ry="6" fill="#7a3b2a"/>'
-      : '<path d="M86 126 Q100 140 114 126" stroke="#7a3b2a" stroke-width="4" fill="#fff" stroke-linecap="round"/>';
-  return svg('0 0 200 220', `
-    <path d="M36 220 C36 168 66 150 100 150 C134 150 164 168 164 220Z" fill="#6b3fa0"/>
-    <path d="M70 160 Q100 178 130 160 L126 220 L74 220Z" fill="#7d4fb3"/>
-    <g fill="#ffc93c">${[0, 1, 2, 3, 4].map((i) => `<circle cx="100" cy="${172 + i * 10}" r="3"/>`).join('')}</g>
-    <path d="M42 108 C38 40 162 40 158 108 C158 150 132 170 100 170 C68 170 42 150 42 108Z" fill="#c1272d"/>
-    <ellipse cx="100" cy="110" rx="40" ry="44" fill="#f0c19a"/>
-    <path d="M56 92 C66 50 134 50 144 92 C128 74 72 74 56 92Z" fill="#a51f27"/>
-    <g fill="#ffd56b" opacity=".9"><circle cx="70" cy="70" r="3"/><circle cx="90" cy="58" r="3"/><circle cx="112" cy="58" r="3"/><circle cx="132" cy="70" r="3"/><circle cx="52" cy="120" r="3"/><circle cx="148" cy="120" r="3"/><circle cx="60" cy="146" r="3"/><circle cx="140" cy="146" r="3"/></g>
-    <ellipse cx="74" cy="124" rx="8" ry="5" fill="#f19a8f" opacity=".7"/><ellipse cx="126" cy="124" rx="8" ry="5" fill="#f19a8f" opacity=".7"/>
-    ${eyes(85, 115, 108, 4.5)}
-    <g fill="none" stroke="#6b4423" stroke-width="3"><circle cx="85" cy="108" r="12"/><circle cx="115" cy="108" r="12"/><path d="M97 107 Q100 104 103 107"/></g>
-    <path d="M96 116 Q100 121 104 116" stroke="#c98b66" stroke-width="3" fill="none" stroke-linecap="round"/>
-    ${mouth}
-    <path d="M70 96 Q76 92 82 95 M118 95 Q124 92 130 96" stroke="#8a6a55" stroke-width="2.5" fill="none" stroke-linecap="round"/>`, 'hbibiti');
+// Hbibiti : grand-mère au foulard, lunettes rondes, bras qui saluent.
+export function hbibiti(mood = 'happy', cls = '') {
+  const dots = [[70, 70], [88, 60], [112, 60], [130, 70], [52, 118], [148, 118], [60, 150], [140, 150]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.2"/>`).join('');
+  return wrap('hbibiti', mood, cls, '0 0 200 230', `
+    <path d="M38 230 C38 180 68 160 100 160 C132 160 162 180 162 230Z" fill="#7a48b8"/>
+    <path d="M76 164 Q100 186 124 164 L120 178 Q100 194 80 178Z" fill="#ffc93c"/>
+    <g fill="#ffc93c">${[0, 1, 2].map((i) => `<circle cx="100" cy="${198 + i * 11}" r="3"/>`).join('')}</g>
+    <g class="arm arm-l" ${O(60, 180)}><path d="M60 180 Q40 196 46 214" stroke="#7a48b8" stroke-width="17" stroke-linecap="round" fill="none"/><circle cx="46" cy="217" r="10" fill="#f6cfaa"/></g>
+    <g class="arm arm-r" ${O(140, 180)}><path d="M140 180 Q160 196 154 214" stroke="#7a48b8" stroke-width="17" stroke-linecap="round" fill="none"/><circle cx="154" cy="217" r="10" fill="#f6cfaa"/></g>
+    <g class="head" ${O(100, 168)}>
+      <path d="M42 112 C38 42 162 42 158 112 C158 158 131 178 100 178 C69 178 42 158 42 112Z" fill="#d23a3f"/>
+      <ellipse cx="100" cy="113" rx="42" ry="44" fill="#f6cfaa"/>
+      <path d="M54 98 C62 52 138 52 146 98 C128 76 72 76 54 98Z" fill="#b02a30"/>
+      <g fill="#ffd56b">${dots}</g>
+      ${cheeks(70, 130, 132)}
+      ${eye(85, 112, 8.5)}${eye(115, 112, 8.5)}
+      <g fill="none" stroke="#6b4423" stroke-width="3"><circle cx="85" cy="112" r="13.5"/><circle cx="115" cy="112" r="13.5"/><path d="M98.5 111 Q100 108 101.5 111"/></g>
+      ${brows(85, 115, 91, '#8a6a55')}
+      <path d="M96 123 Q100 128 104 123" stroke="#d29a74" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M64 108 q-4 5 0 10 M136 108 q4 5 0 10" stroke="#d9a888" stroke-width="2" fill="none" stroke-linecap="round"/>
+      ${mouths(100, 138, 10)}
+    </g>`);
 }
 
-// Assad : lion de l'Atlas, gardien de but (maillot rouge, étoile verte, gants).
-export function assad() {
-  const mane = Array.from({ length: 16 }, (_, i) => {
-    const a = (i / 16) * Math.PI * 2;
-    return `<circle cx="${100 + Math.cos(a) * 52}" cy="${92 + Math.sin(a) * 50}" r="22"/>`;
+// Assad : lionceau de l'Atlas, gardien (maillot rouge, étoile verte, gants), queue qui balance.
+export function assad(mood = 'happy', cls = '') {
+  const ring = (n, rad, r, c) => Array.from({ length: n }, (_, i) => {
+    const a = (i / n) * Math.PI * 2;
+    return `<circle cx="${(100 + Math.cos(a) * rad).toFixed(1)}" cy="${(98 + Math.sin(a) * rad * 0.95).toFixed(1)}" r="${r}" fill="${c}"/>`;
   }).join('');
-  return svg('0 0 200 220', `
-    <path d="M44 220 C44 170 70 150 100 150 C130 150 156 170 156 220Z" fill="#c1272d"/>
-    <path d="M100 168 l5 13 h14 l-11 8 4 14 -12 -9 -12 9 4 -14 -11 -8 h14z" fill="#00843d"/>
-    <g fill="#b85c1e">${mane}</g>
-    <circle cx="62" cy="54" r="14" fill="#e3a14a"/><circle cx="138" cy="54" r="14" fill="#e3a14a"/>
-    <circle cx="62" cy="54" r="7" fill="#c77a35"/><circle cx="138" cy="54" r="7" fill="#c77a35"/>
-    <ellipse cx="100" cy="96" rx="46" ry="44" fill="#f2b85a"/>
-    <ellipse cx="100" cy="118" rx="24" ry="17" fill="#fde3b0"/>
-    ${eyes(83, 117, 88, 6)}
-    <path d="M78 74 Q84 70 90 74 M110 74 Q116 70 122 74" stroke="#8a4b16" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <path d="M92 106 h16 l-8 9z" fill="#5a2c10"/>
-    <path d="M100 115 v5 M88 122 Q100 132 112 122" stroke="#5a2c10" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <g class="gloves"><ellipse cx="38" cy="176" rx="18" ry="22" fill="#fff"/><ellipse cx="162" cy="176" rx="18" ry="22" fill="#fff"/>
-    <rect x="24" y="190" width="28" height="10" rx="4" fill="#ff8a3d"/><rect x="148" y="190" width="28" height="10" rx="4" fill="#ff8a3d"/></g>`, 'assad');
+  return wrap('assad', mood, cls, '0 0 200 230', `
+    <g class="tail" ${O(138, 206)}><path d="M138 206 Q182 202 178 160" stroke="#f2b85a" stroke-width="9" fill="none" stroke-linecap="round"/><circle cx="178" cy="153" r="11" fill="#c7671f"/></g>
+    <path d="M50 230 C50 184 74 166 100 166 C126 166 150 184 150 230Z" fill="#d23a3f"/>
+    <path d="M100 182 l5 12 h13 l-10 8 4 13 -12 -8 -12 8 4 -13 -10 -8 h13z" fill="#00843d"/>
+    <g class="arm arm-l" ${O(62, 186)}><ellipse cx="44" cy="198" rx="17" ry="20" fill="#fff"/><rect x="31" y="210" width="26" height="9" rx="4" fill="#ff8a3d"/></g>
+    <g class="arm arm-r" ${O(138, 186)}><ellipse cx="156" cy="198" rx="17" ry="20" fill="#fff"/><rect x="143" y="210" width="26" height="9" rx="4" fill="#ff8a3d"/></g>
+    <g class="head" ${O(100, 170)}>
+      <g class="mane" ${O(100, 98)}>${ring(14, 54, 21, '#c7671f')}${ring(14, 44, 15, '#df8a33')}</g>
+      <circle cx="58" cy="56" r="15" fill="#f2b85a"/><circle cx="142" cy="56" r="15" fill="#f2b85a"/>
+      <circle cx="58" cy="56" r="8" fill="#f7a6a0"/><circle cx="142" cy="56" r="8" fill="#f7a6a0"/>
+      <ellipse cx="100" cy="104" rx="46" ry="43" fill="#f7c46c"/>
+      <path d="M92 64 Q100 54 108 64 Q100 60 92 64Z" fill="#df8a33"/>
+      <ellipse cx="100" cy="125" rx="23" ry="16" fill="#fff1d0"/>
+      ${cheeks(68, 132, 121)}
+      ${eye(81, 100, 9.5, '#3a1c0a')}${eye(119, 100, 9.5, '#3a1c0a')}
+      ${brows(81, 119, 83, '#9a4a14', 10)}
+      <path d="M91 115 Q100 110 109 115 Q105 124 100 124 Q95 124 91 115Z" fill="#6b3014"/>
+      <g fill="#c98a3a"><circle cx="84" cy="126" r="1.8"/><circle cx="80" cy="131" r="1.8"/><circle cx="116" cy="126" r="1.8"/><circle cx="120" cy="131" r="1.8"/></g>
+      ${mouths(100, 132, 8, '#5a2010')}
+    </g>`);
 }
 
-// Fifi : fennec algérienne, maillot vert n° 10, ballon de basket.
-export function fifi() {
-  return svg('0 0 200 220', `
-    <path d="M48 220 C48 172 72 154 100 154 C128 154 152 172 152 220Z" fill="#00843d"/>
-    <text x="100" y="205" text-anchor="middle" font-size="36" font-weight="900" fill="#fff" font-family="Arial Rounded MT Bold, Arial, sans-serif">10</text>
-    <path d="M56 98 L34 14 L94 70Z" fill="#e8bd84"/><path d="M144 98 L166 14 L106 70Z" fill="#e8bd84"/>
-    <path d="M60 86 L44 32 L84 70Z" fill="#f7b7b0"/><path d="M140 86 L156 32 L116 70Z" fill="#f7b7b0"/>
-    <ellipse cx="100" cy="108" rx="44" ry="42" fill="#efc890"/>
-    <path d="M70 118 Q100 160 130 118 Q122 142 100 146 Q78 142 70 118Z" fill="#fff6e6"/>
-    ${eyes(83, 117, 104, 7)}
-    <ellipse cx="100" cy="124" rx="7" ry="5" fill="#2b2140"/>
-    <path d="M92 134 Q100 140 108 134" stroke="#2b2140" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <g class="bounce-ball"><circle cx="160" cy="186" r="24" fill="#f08a24"/>
-    <path d="M136 186 h48 M160 162 v48 M143 169 Q160 186 143 203 M177 169 Q160 186 177 203" stroke="#7a3b0a" stroke-width="2.5" fill="none"/></g>`, 'fifi');
+// Fifi : fennec algérienne, maillot vert n° 10, grandes oreilles qui frémissent, ballon qui rebondit.
+export function fifi(mood = 'happy', cls = '') {
+  return wrap('fifi', mood, cls, '0 0 200 230', `
+    <g class="tail" ${O(62, 210)}><path d="M62 210 C20 214 10 180 24 160 C40 170 52 186 62 196Z" fill="#ecc189"/><path d="M24 160 C18 170 18 180 22 188 C30 180 32 170 24 160Z" fill="#fff7ea"/></g>
+    <path d="M50 230 C50 184 74 166 100 166 C126 166 150 184 150 230Z" fill="#00843d"/>
+    <text x="100" y="218" text-anchor="middle" font-size="34" font-weight="900" fill="#fff" font-family="Arial Rounded MT Bold, Arial, sans-serif">10</text>
+    <g class="ball" ${O(162, 200)}><circle cx="162" cy="198" r="20" fill="#f08a24"/>
+      <path d="M142 198 h40 M162 178 v40 M148 184 Q162 198 148 212 M176 184 Q162 198 176 212" stroke="#7a3b0a" stroke-width="2.4" fill="none"/></g>
+    <g class="arm arm-l" ${O(64, 186)}><path d="M64 184 Q48 198 52 214" stroke="#00843d" stroke-width="15" stroke-linecap="round" fill="none"/><circle cx="52" cy="216" r="8.5" fill="#f2cb93"/></g>
+    <g class="arm arm-r" ${O(136, 184)}><path d="M136 184 Q150 182 154 176" stroke="#00843d" stroke-width="15" stroke-linecap="round" fill="none"/><circle cx="156" cy="174" r="8.5" fill="#f2cb93"/></g>
+    <g class="head" ${O(100, 168)}>
+      <g class="ear ear-l" ${O(80, 82)}><path d="M78 92 C52 72 34 36 38 10 C62 20 92 50 98 78Z" fill="#ecc189"/><path d="M76 84 C58 66 46 40 48 24 C66 34 86 54 90 74Z" fill="#f9b8b0"/></g>
+      <g class="ear ear-r" ${O(120, 82)}><path d="M122 92 C148 72 166 36 162 10 C138 20 108 50 102 78Z" fill="#ecc189"/><path d="M124 84 C142 66 154 40 152 24 C134 34 114 54 110 74Z" fill="#f9b8b0"/></g>
+      <ellipse cx="100" cy="114" rx="44" ry="40" fill="#f2cb93"/>
+      <path d="M60 120 Q100 170 140 120 Q132 148 100 152 Q68 148 60 120Z" fill="#fff7ea"/>
+      <path d="M94 80 Q100 74 106 80 Q100 86 94 80Z" fill="#dda866"/>
+      ${cheeks(68, 132, 128)}
+      ${eye(81, 108, 11)}${eye(119, 108, 11)}
+      ${brows(81, 119, 89, '#b7834a')}
+      <ellipse cx="100" cy="129" rx="6.5" ry="4.8" fill="#2b2140"/><circle cx="98" cy="127.5" r="1.6" fill="#fff"/>
+      ${mouths(100, 138, 7, '#3b1e2a')}
+    </g>`);
 }
 
-// Grappo : le gant magique (robot gentil, yeux lumineux dans la paume).
-export function grappo() {
-  return svg('0 0 200 200', `
-    <rect x="80" y="150" width="40" height="50" rx="8" fill="#5b6b8c"/>
-    <rect x="72" y="140" width="56" height="22" rx="8" fill="#ff8a3d"/>
-    ${[52, 78, 104, 130].map((x, i) => `<rect x="${x}" y="${i === 0 || i === 3 ? 42 : 26}" width="22" height="70" rx="11" fill="#3d7bff"/><circle cx="${x + 11}" cy="${i === 0 || i === 3 ? 56 : 40}" r="4" fill="#9fc0ff"/>`).join('')}
-    <rect x="30" y="92" width="24" height="54" rx="12" fill="#3d7bff" transform="rotate(-35 42 119)"/>
-    <rect x="50" y="78" width="104" height="72" rx="28" fill="#4a86ff"/>
-    <g class="blink" style="transform-origin:102px 108px"><rect x="78" y="100" width="12" height="16" rx="6" fill="#7ff7ff"/><rect x="114" y="100" width="12" height="16" rx="6" fill="#7ff7ff"/></g>
-    <path d="M88 126 Q102 136 116 126" stroke="#7ff7ff" stroke-width="4" fill="none" stroke-linecap="round"/>`, 'grappo');
+// Grappo : le gant magique, robot gentil ; doigts qui gigotent, écran-visage dans la paume.
+export function grappo(mood = 'happy', cls = '') {
+  const fingers = [[52, 46], [78, 28], [104, 28], [130, 46]].map(([x, y], i) => `
+    <g class="finger f${i}" ${O(x + 11, 106)}><rect x="${x}" y="${y}" width="22" height="${112 - y}" rx="11" fill="#3d7bff"/><rect x="${x + 4}" y="${y + 6}" width="6" height="16" rx="3" fill="#9fc0ff" opacity=".8"/></g>`).join('');
+  return wrap('grappo', mood, cls, '0 0 200 230', `
+    <rect x="80" y="180" width="40" height="50" rx="8" fill="#5b6b8c"/>
+    <rect x="70" y="166" width="60" height="22" rx="9" fill="#ff8a3d"/>
+    <circle class="led" cx="100" cy="177" r="4" fill="#fff36b"/>
+    <g class="head" ${O(100, 170)}>
+      ${fingers}
+      <g class="thumb arm-l" ${O(56, 140)}><rect x="26" y="102" width="26" height="58" rx="13" fill="#3d7bff" transform="rotate(-38 39 131)"/></g>
+      <rect x="48" y="84" width="108" height="86" rx="32" fill="#4a86ff"/>
+      <rect x="62" y="96" width="80" height="58" rx="18" fill="#16264f"/>
+      <g class="cheeks"><rect x="66" y="134" width="12" height="6" rx="3" fill="#ff8fb0" opacity=".8"/><rect x="126" y="134" width="12" height="6" rx="3" fill="#ff8fb0" opacity=".8"/></g>
+      ${eye(86, 118, 9, '#16264f', '#7ff7ff')}${eye(118, 118, 9, '#16264f', '#7ff7ff')}
+      ${brows(86, 118, 102, '#7ff7ff', 7)}
+      ${mouths(102, 140, 8, '#7ff7ff', '#ff8fb0')}
+    </g>`);
 }
 
-// Darbouka Dada : tambour qui chante.
-export function dada() {
-  return svg('0 0 200 220', `
-    <ellipse cx="100" cy="46" rx="56" ry="18" fill="#f6e7c8" stroke="#8a4b16" stroke-width="5"/>
-    <path d="M44 46 C44 110 78 116 78 150 L70 206 L130 206 L122 150 C122 116 156 110 156 46 C140 60 60 60 44 46Z" fill="#c1272d"/>
-    <path d="M52 76 l12 14 12 -14 12 14 12 -14 12 14 12 -14 12 14 12 -14" stroke="#ffc93c" stroke-width="5" fill="none"/>
-    <path d="M74 176 h52" stroke="#ffc93c" stroke-width="6"/>
-    ${eyes(86, 114, 104, 6)}
-    <path d="M86 120 Q100 134 114 120" stroke="#2b2140" stroke-width="4" fill="#fff" stroke-linecap="round"/>
-    <g class="hands"><circle cx="34" cy="120" r="12" fill="#f0c19a"/><circle cx="166" cy="120" r="12" fill="#f0c19a"/>
-    <path d="M44 112 L58 98 M156 112 L142 98" stroke="#f0c19a" stroke-width="8" stroke-linecap="round"/></g>`, 'dada');
+// Darbouka Dada : tambour qui chante et se tape sur la tête en rythme.
+export function dada(mood = 'happy', cls = '') {
+  return wrap('dada', mood, cls, '0 0 200 230', `
+    <ellipse cx="80" cy="222" rx="16" ry="7" fill="#7a3b0a"/><ellipse cx="120" cy="222" rx="16" ry="7" fill="#7a3b0a"/>
+    <g class="head" ${O(100, 214)}>
+      <path d="M44 50 C44 112 78 118 78 152 L72 214 L128 214 L122 152 C122 118 156 112 156 50 C140 64 60 64 44 50Z" fill="#d23a3f"/>
+      <ellipse cx="100" cy="50" rx="56" ry="18" fill="#f6e7c8" stroke="#8a4b16" stroke-width="5"/>
+      <path d="M52 82 l12 12 12 -12 12 12 12 -12 12 12 12 -12 12 12 12 -12" stroke="#ffc93c" stroke-width="5" fill="none" stroke-linejoin="round"/>
+      <path d="M76 186 h48" stroke="#ffc93c" stroke-width="6"/>
+      ${cheeks(76, 124, 132)}
+      ${eye(86, 112, 9.5)}${eye(114, 112, 9.5)}
+      ${brows(86, 114, 95, '#7a1c1c', 8)}
+      ${mouths(100, 132, 9, '#4a1010')}
+    </g>
+    <g class="arm arm-l hand-l" ${O(52, 116)}><path d="M52 116 Q22 88 58 56" stroke="#f3c6a0" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="60" cy="52" r="10" fill="#f3c6a0"/></g>
+    <g class="arm arm-r hand-r" ${O(148, 116)}><path d="M148 116 Q178 88 142 56" stroke="#f3c6a0" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="140" cy="52" r="10" fill="#f3c6a0"/></g>`);
 }
 
 // Lanterne (fanous) : s'allume quand on trouve la bonne réponse.
@@ -172,4 +226,4 @@ export function books() {
     <text x="78" y="22" text-anchor="middle" font-size="14" font-weight="900" fill="#7a3b0a" font-family="Arial, sans-serif">Abc</text>`, 'books');
 }
 
-export const CHARACTERS = { hbibiti, assad, fifi, grappo, dada, lantern, tajine };
+export const CHARACTERS = { hbibiti, assad, fifi, grappo, dada };

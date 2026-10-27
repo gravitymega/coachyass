@@ -26,7 +26,12 @@ export function stopVoice() {
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   setSpeaking(false);
 }
-function setSpeaking(v) { speaking = v; duck(v); }
+function setSpeaking(v) {
+  speaking = v;
+  duck(v);
+  // Les personnages « qui parlent » bougent la bouche pendant ce temps (characters.js).
+  window.dispatchEvent(new CustomEvent('hbibiti-speaking', { detail: v }));
+}
 
 function speak(text, lang = 'fr', rate = 0.95) {
   return new Promise((resolve) => {
@@ -138,6 +143,11 @@ export function sfx(kind) {
     if (kind === 'tek') tek(0, 0.4);
     if (kind === 'chime') [1319, 1568, 1976].forEach((f, i) => tone(f, i * 0.12, 0.8, 'sine', 0.08));
     if (kind === 'win') [392, 523, 659, 784, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.12, 0.32, 'triangle', 0.15));
+    if (kind === 'giggle') [880, 1100, 990, 1320, 1180].forEach((f, i) => tone(f, i * 0.07, 0.09, 'sine', 0.09, master, 1.15));
+    if (kind === 'roar') { tone(140, 0, 0.5, 'sawtooth', 0.06, master, 0.6); noise(0, 0.45, 0.12, 400, 0.8); }
+    if (kind === 'boing') tone(220, 0, 0.35, 'sine', 0.18, master, 3);
+    if (kind === 'beep') { tone(1200, 0, 0.08, 'square', 0.05); tone(1600, 0.1, 0.12, 'square', 0.05); }
+    if (kind === 'drum') { doum(0, 0.6); tek(0.15, 0.35); tek(0.3, 0.35); }
     if (kind === 'chest') { [523, 784, 1047, 1568].forEach((f, i) => tone(f, i * 0.1, 0.5, 'sine', 0.1)); noise(0, 0.6, 0.05, 6000, 0.5); }
   } catch { /* pas de son */ }
 }

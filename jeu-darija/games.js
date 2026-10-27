@@ -133,7 +133,7 @@ export const GAMES = {
     build(q, label) {
       return `
         <div class="kitchen">
-          <div class="cook"><div class="cook-gm">${hbibiti('talk')}</div><div class="pot">${tajine()}</div></div>
+          <div class="cook"><div class="cook-gm">${hbibiti('happy', 'speaker')}</div><div class="pot">${tajine()}</div></div>
           <div class="ingredients">${q.choices.map((c, i) => `
             <button class="choice ingredient" data-i="${i}" aria-label="Choix ${i + 1}">${label(c)}</button>`).join('')}
           </div>

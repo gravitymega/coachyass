@@ -8,6 +8,7 @@ import { say, stopVoice, sfx, startMusic, stopMusic, voiceFor, audio } from './a
 import { GAMES } from './games.js';
 import { buildExerciseLevel, buildChallenge, itemsFor, isExerciseRoom, clockSVG } from './exercises.js';
 import * as ART from './art.js';
+import { initCharacters, mount, react, setMood, charIn, INTRO } from './characters.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -55,7 +56,9 @@ function applyGmName() {
 // ---------- Accueil ----------
 function openHome() {
   applyGmName();
-  $('#home-gm').innerHTML = ART.hbibiti();
+  const gm = mount($('#home-gm'), ART.hbibiti(), { speaker: true });
+  setTimeout(() => gm?.classList.add('act'), 500);
+  setTimeout(() => gm?.classList.remove('act'), 2000);
   const kids = settings.kids.map((k, i) => `
     <button class="kid" data-kid="${i}">
       <span class="kid-av">${esc(k.avatar)}</span>
@@ -87,7 +90,7 @@ $('#kids').addEventListener('click', (e) => {
 // ---------- Histoire du début ----------
 let storyI = 0;
 const STORY = [
-  () => ({ art: ART.hbibiti('talk'), text: `Salam ${names()} ! Je suis ${settings.gm}. Bienvenue dans mon usine magique, où les jouets parlent darija, comme au Maroc et en Algérie !` }),
+  () => ({ art: ART.hbibiti('happy', 'speaker'), text: `Salam ${names()} ! Je suis ${settings.gm}. Bienvenue dans mon usine magique, où les jouets parlent darija, comme au Maroc et en Algérie !` }),
   () => ({ art: `<div class="fog-art">🌫️<span>🧸</span><span>🤖</span><span>🦄</span></div>`, text: 'Mais le brouillard de l’oubli est arrivé… Mes jouets se sont endormis : ils ont oublié leurs mots !' }),
   () => ({ art: `<div class="trio">${ART.grappo()}${ART.assad()}${ART.fifi()}</div>`, text: 'Avec Grappo le gant magique, Assad le lion et Fifi la fennec, aide-moi à les réveiller. Chaque mot appris fait reculer le brouillard. Yallah !' }),
 ];
@@ -95,6 +98,7 @@ function openStory() { storyI = 0; showStory(); show('story'); }
 function showStory() {
   const s = STORY[storyI]();
   $('#story-art').innerHTML = s.art;
+  $$('#story-art .char').forEach((c) => c.classList.add('pokable'));
   $('#story-text').textContent = s.text;
   $('#story-next').textContent = storyI === STORY.length - 1 ? 'Yallah ! ➜' : 'Suivant ➜';
   say(s.text);
@@ -123,13 +127,16 @@ setInterval(() => {
   if (current === 'map' && timeUp()) showTimeUp();
 }, 5000);
 function showTimeUp() {
-  $('#timeup-gm').innerHTML = ART.hbibiti();
+  mount($('#timeup-gm'), ART.hbibiti(), { speaker: true });
   show('timeup');
   say(`Bslama ${names()} ! Tu as bien travaillé. On se retrouve demain, inchallah.`);
 }
 
 // ---------- L'usine ----------
 const HOSTS = { grappo: ART.grappo, assad: ART.assad, fifi: ART.fifi, dada: ART.dada, lantern: () => ART.lantern(), tajine: ART.tajine, rocket: () => ART.rocket(), books: ART.books, clock: () => clockSVG(3, 0) };
+// Le copain qui accompagne chaque salle (il parle, se réjouit et encourage).
+const BUDDY = { hall: 'hbibiti', stade: 'fifi', jardin: 'hbibiti', maths: 'grappo', lecture: 'hbibiti', gym: 'assad', formes: 'fifi', cuisine: 'grappo', musique: 'fifi', defi: 'assad' };
+const buddyOf = (r) => BUDDY[r?.id] || 'hbibiti';
 // Défi éclair : questions mêlées de toutes les salles ouvertes, chacune dans la scène de sa salle.
 const DEFI = { id: 'defi', name: 'Défi éclair', theme: '10 questions de tout le jeu', game: 'rocket', host: 'rocket' };
 const openRooms = () => ROOMS.filter((r) => roomUnlocked(r, { levels: levelsDone() }, settings.unlockAll));
@@ -139,7 +146,7 @@ function openMap(greet) {
   applyGmName();
   $('#map-who').innerHTML = players.map((p) => `<span class="who">${esc(p.kid.avatar)} ${esc(p.kid.name)}</span>`).join('');
   $('#map-stars').textContent = players.reduce((a, p) => a + p.progress.stars, 0);
-  $('#map-gm').innerHTML = ART.hbibiti();
+  mount($('#map-gm'), ART.hbibiti(), { speaker: true });
   const lead = players[0];
   const all = ROOMS.flatMap((r) => itemsFor(r.id, lead.kid.older));
   const m = Math.round(mastery(lead.progress, all) * 100);
@@ -182,9 +189,12 @@ function openStart(r) {
   sfx('tap');
   room = r;
   $('#start-room').textContent = room.name;
-  $('#start-host').innerHTML = HOSTS[room.host]?.() || '';
+  const b = buddyOf(room);
+  const host = mount($('#start-host'), ART[b](), { speaker: true });
   show('start');
-  say(room.name);
+  setTimeout(() => host?.classList.add('act'), 300);
+  setTimeout(() => host?.classList.remove('act'), 1700);
+  say(INTRO[b], room.name);
 }
 let room = null;
 
@@ -230,6 +240,7 @@ function showLearn() {
   players.forEach((p) => markSeen(p.progress, w.id));
   saveAll();
   show('learn');
+  if (!$('#learn-buddy .char')) mount($('#learn-buddy'), ART.hbibiti(), { speaker: true });
   $('#learn-card').classList.remove('enter'); void $('#learn-card').offsetWidth; $('#learn-card').classList.add('enter');
   const seq = [];
   if (w.phrase) seq.push(`${w.fr}, on dit :`, { word: w, d: 'ma' });
@@ -255,6 +266,7 @@ $('#learn-next').addEventListener('click', () => {
 });
 
 function startPlay() {
+  mount($('#play-buddy'), ART[buddyOf(room)](), { speaker: true });
   show('play');
   $('#play-dots').innerHTML = level.questions.map((qq) => `<i>${coop() ? esc(players[qq.player].kid.avatar) : ''}</i>`).join('');
   nextQuestion();
@@ -339,6 +351,9 @@ async function answer(i, el) {
   const c = q.choices[i];
   const good = c.correct;
   await GAMES[curGame()].anim($('#scene'), i, good, ctx);
+  // Tout le monde réagit : le copain, et les personnages de la scène (le gardien, lui, est content quand il arrête !).
+  react(charIn($('#play-buddy')), good);
+  $$('#scene .char').forEach((c) => (c.closest('.keeper') ? setMood(c, good ? 'wow' : 'cheer', 1200) : react(c, good)));
   const w = q.word;
   const d = ansDialect();
   if (good) {
@@ -469,7 +484,9 @@ function finishLevel() {
   confetti(90);
   const lead = players[0];
   const m = defi ? 0 : Math.round(mastery(lead.progress, itemsFor(room.id, lead.kid.older)) * 100);
-  $('#reward-sticker').innerHTML = shown.map((st) => `<div class="st-wrap"><span class="st">${st.e}</span><small>${esc(st.n)}</small></div>`).join('');
+  $('#reward-sticker').innerHTML = `<div class="reward-char"></div>` + shown.map((st) => `<div class="st-wrap"><span class="st">${st.e}</span><small>${esc(st.n)}</small></div>`).join('');
+  const rc = mount($('#reward-sticker .reward-char'), ART[buddyOf(room)](), { speaker: true });
+  setTimeout(() => setMood(rc, 'cheer', 2400), 200);
   $('#reward-sticker').classList.toggle('two', shown.length > 1);
   const stars = level.stars.reduce((a, b) => a + b, 0);
   $('#reward-text').textContent = coop()
@@ -791,6 +808,7 @@ $('#set-reset').addEventListener('click', () => {
 });
 
 // ---------- Démarrage ----------
+initCharacters();
 openHome();
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
   navigator.serviceWorker.register('sw.js').catch(() => {});

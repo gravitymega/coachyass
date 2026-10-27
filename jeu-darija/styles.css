@@ -470,3 +470,93 @@ body[data-screen=parents] #factory, body[data-screen=parents] #fog { display: no
   .book { height: 150px; }
   .rocket-art { height: 80px; width: 50px; }
 }
+
+/* ---------- Personnages vivants ---------- */
+.char { position: relative; width: 100%; height: 100%; }
+.char > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.char svg g, .char svg path, .char svg ellipse, .char svg rect, .char svg circle { transform-box: view-box; }
+.char.pokable { cursor: pointer; }
+.char .pupil { transition: transform .18s ease-out; }
+/* Bouches et humeurs */
+.char .m { display: none; }
+.char[data-mood="happy"] .m-happy, .char[data-mood="cheer"] .m-cheer, .char[data-mood="sad"] .m-sad,
+.char[data-mood="wow"] .m-wow, .char[data-mood="talk"] .m-talk { display: inline; }
+.char[data-talk="1"][data-mood="happy"] .m-happy { display: none; }
+.char[data-talk="1"][data-mood="happy"] .m-talk { display: inline; }
+.char .m-talk { animation: jaw .22s ease-in-out infinite alternate; }
+@keyframes jaw { from { transform: scaleY(.35); } to { transform: scaleY(1.1); } }
+/* Respiration, clignement */
+.char .body { animation: breathe 3.2s ease-in-out infinite; }
+@keyframes breathe { 50% { transform: translateY(1.5px) scale(1.012, .985); } }
+.char .eye { animation: blinkk 5s infinite; }
+@keyframes blinkk { 0%, 93%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.08); } }
+/* Joie : saut avec écrasement, bras levés */
+.char[data-mood="cheer"] .body { animation: hop .5s cubic-bezier(.3, 1.6, .5, 1) 3; }
+@keyframes hop { 0% { transform: translateY(0) scale(1.06, .92); } 45% { transform: translateY(-16px) scale(.96, 1.05); } 100% { transform: translateY(0) scale(1); } }
+.char[data-mood="cheer"] .arm-l { transform: rotate(70deg); transition: transform .2s; }
+.char[data-mood="cheer"] .arm-r { transform: rotate(-70deg); transition: transform .2s; }
+.char[data-mood="cheer"] .brows { transform: translateY(-4px); }
+/* Petite moue, puis encouragement */
+.char[data-mood="sad"] .head { transform: rotate(-6deg); transition: transform .25s; }
+.char[data-mood="sad"] .brow-l { transform: rotate(14deg); }
+.char[data-mood="sad"] .brow-r { transform: rotate(-14deg); }
+.char[data-mood="wow"] .brows { transform: translateY(-6px); }
+.char[data-mood="wow"] .body { animation: wobble .4s ease-in-out 2; }
+@keyframes wobble { 25% { transform: rotate(-4deg); } 75% { transform: rotate(4deg); } }
+.char .brows, .char .brow-l, .char .brow-r { transition: transform .25s; }
+.char-spark { position: absolute; font-size: 20px; pointer-events: none; animation: spark 1.1s ease-out forwards; }
+@keyframes spark { from { transform: translateY(0) scale(.4); opacity: 1; } to { transform: translateY(-40px) scale(1.2); opacity: 0; } }
+
+/* Hbibiti : la tête balance doucement ; elle salue de la main */
+.char-hbibiti .head { animation: sway 6s ease-in-out infinite; }
+@keyframes sway { 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
+.char-hbibiti.act .arm-r { animation: wave .35s ease-in-out 4 alternate; }
+@keyframes wave { from { transform: rotate(-120deg); } to { transform: rotate(-160deg); } }
+/* Assad : queue qui balance, crinière qui gonfle ; il rugit pour rire */
+.char-assad .tail { animation: swish 2.2s ease-in-out infinite alternate; }
+@keyframes swish { from { transform: rotate(-10deg); } to { transform: rotate(12deg); } }
+.char-assad .mane { animation: puff 3.2s ease-in-out infinite; }
+@keyframes puff { 50% { transform: scale(1.035); } }
+.char-assad.act .body { animation: roar .6s ease-in-out 2; }
+.char-assad.act .m { display: none !important; }
+.char-assad.act .m-wow { display: inline !important; transform: scale(1.4); transform-origin: 100px 135px; }
+@keyframes roar { 50% { transform: scale(1.06) rotate(-3deg); } }
+/* Fifi : les oreilles frémissent chacune à son rythme ; le ballon rebondit */
+.char-fifi .ear-l { animation: twitch 5s ease-in-out infinite; }
+.char-fifi .ear-r { animation: twitch 6.3s ease-in-out .8s infinite reverse; }
+@keyframes twitch { 0%, 88%, 100% { transform: rotate(0); } 91% { transform: rotate(-12deg); } 95% { transform: rotate(7deg); } }
+.char-fifi .ball { animation: dribble2 .7s ease-in infinite alternate; }
+@keyframes dribble2 { to { transform: translateY(9px) scale(1.04, .94); } }
+.char-fifi .tail { animation: swish 1.8s ease-in-out infinite alternate; }
+.char-fifi.act .ear-l, .char-fifi.act .ear-r { animation: flap .18s ease-in-out 6 alternate; }
+@keyframes flap { to { transform: rotate(-18deg); } }
+/* Grappo : les doigts pianotent ; il tape dans la main */
+.char-grappo .finger { animation: wiggle 1.8s ease-in-out infinite; }
+.char-grappo .f1 { animation-delay: .15s; } .char-grappo .f2 { animation-delay: .3s; } .char-grappo .f3 { animation-delay: .45s; }
+@keyframes wiggle { 0%, 60%, 100% { transform: rotate(0); } 30% { transform: rotate(-7deg) translateY(-3px); } }
+.char-grappo .led { animation: ledb 1.2s steps(2) infinite; }
+@keyframes ledb { 50% { opacity: .2; } }
+.char-grappo.act .head { animation: highfive .5s ease-in-out 2; transform-origin: 100px 170px; }
+@keyframes highfive { 50% { transform: rotate(-14deg) scale(1.08); } }
+/* Dada : se tape sur la tête en rythme et sautille */
+.char-dada .hand-l { animation: tapl .6s ease-in-out infinite; }
+.char-dada .hand-r { animation: tapl .6s ease-in-out .3s infinite; }
+@keyframes tapl { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-10deg) translateY(4px); } }
+.char-dada .head { animation: bounce2 .6s ease-in-out infinite; }
+@keyframes bounce2 { 50% { transform: translateY(-3px); } }
+.char-dada.act .hand-l, .char-dada.act .hand-r { animation-duration: .2s; }
+
+/* Le copain qui accompagne la partie */
+.prompt-row { display: flex; align-items: center; gap: 10px; justify-content: center; }
+.prompt-row .prompt { flex: 0 1 auto; min-width: 0; }
+.buddy { width: clamp(62px, 9vw, 92px); height: clamp(70px, 10vw, 104px); flex: none; }
+.buddy:empty { display: none; }
+.learn-buddy { position: absolute; left: 10px; top: 8px; width: 118px; height: 136px; }
+.card { position: relative; }
+.reward-row { display: flex; align-items: flex-end; justify-content: center; gap: 16px; }
+.reward-char { width: clamp(110px, 18vw, 160px); height: clamp(124px, 20vw, 180px); }
+@media (max-width: 520px) { .learn-buddy { width: 76px; height: 88px; left: 4px; top: 4px; } }
+.char-hbibiti[data-mood="cheer"] .arm-l, .char-fifi[data-mood="cheer"] .arm-l { transform: rotate(115deg); }
+.char-hbibiti[data-mood="cheer"] .arm-r, .char-fifi[data-mood="cheer"] .arm-r { transform: rotate(-115deg); }
+.char-grappo[data-mood="cheer"] .arm-l, .char-dada[data-mood="cheer"] .arm-l, .char-dada[data-mood="cheer"] .arm-r { transform: none; }
+.sticker-reveal { align-items: center; }
