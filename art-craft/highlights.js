@@ -225,10 +225,11 @@ export function basketPeak(diff, fps = NET_FPS, { from = 0, to = Infinity } = {}
 export const BASKET_Z = 6;
 
 // Extraits à partir des moments forts (avec ou sans vérification des paniers).
-// pick = 'baskets' : seuls les paniers marqués sont présélectionnés.
+// pick = 'baskets' : seulement les paniers marqués, tous gardés (la durée visée ne coupe pas) ;
+// pick = 'all' : les moments forts au son, paniers d'abord, jusqu'à la durée visée.
 export function candidatesToClips(cands, { duration, targetS = 60, pick = 'baskets' } = {}) {
   const baskets = cands.filter(c => c.basket).sort((a, b) => (b.netZ + b.score) - (a.netZ + a.score));
-  const others = cands.filter(c => !c.basket).sort((a, b) => b.score - a.score);
+  const others = pick === 'baskets' ? [] : cands.filter(c => !c.basket).sort((a, b) => b.score - a.score);
   let total = 0;
   const clips = [...baskets, ...others].map((c, rank) => {
     const anchor = c.basket ? c.tb : c.t;
@@ -236,8 +237,7 @@ export function candidatesToClips(cands, { duration, targetS = 60, pick = 'baske
     const start = Math.max(0, anchor - before);
     const end = duration ? Math.min(duration, anchor + after) : anchor + after;
     const dur = Math.max(1, end - start);
-    const eligible = pick === 'all' || c.basket || !baskets.length;
-    const on = eligible && total + dur <= targetS + 1;
+    const on = pick === 'baskets' || total + dur <= targetS + 1;
     if (on) total += dur;
     return { ...c, rank, start, dur, on };
   });

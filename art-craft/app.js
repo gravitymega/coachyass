@@ -33,10 +33,27 @@ const state = {
   logo: null,
   busy: false,
 };
-// Nombre de moments forts vérifiés au filet : assez pour remplir la durée visée
-// (un extrait fait ~7,5 s et environ un moment fort sur deux est un panier).
-const checkedFor = target => Math.min(80, Math.max(30, Math.ceil((target / 7.5) * 2.5)));
 let nextId = 1;
+
+// Les paniers touchés sont gardés dans le navigateur : à la prochaine game filmée
+// du même endroit, l'analyse enchaîne directement sur la détection des paniers.
+const HOOPS_KEY = 'art-craft-hoops';
+function loadHoops() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(HOOPS_KEY) || 'null');
+    if (saved && Array.isArray(saved.hoops)) {
+      if (saved.size) $('hoop-size').value = saved.size;
+      return saved.hoops.filter(h => Number.isFinite(h.x) && Number.isFinite(h.y)).slice(0, 2);
+    }
+  } catch { /* stockage indisponible */ }
+  return [];
+}
+function saveHoops() {
+  try {
+    if (state.hoops.length) localStorage.setItem(HOOPS_KEY, JSON.stringify({ hoops: state.hoops, size: +$('hoop-size').value }));
+    else localStorage.removeItem(HOOPS_KEY);
+  } catch { /* stockage indisponible */ }
+}
 
 async function mountInput(ff) {
   [state.inputPath] = await mountFiles(ff, MOUNT, [state.file]);
@@ -49,7 +66,7 @@ async function selectFile(file) {
   state.file = file;
   state.clips = [];
   state.cands = [];
-  state.hoops = [];
+  state.hoops = loadHoops();
   state.score = null;
   state.duration = 0;
   state.srcW = state.srcH = 0;
@@ -128,7 +145,7 @@ async function analyse() {
       autoSelect();
       setProgress('analyse-progress', 1, `${state.cands.length} moments forts trouvés au son`);
       $('hoop-step').hidden = false;
-      loadFrame(state.duration * 0.3);
+      await loadFrame(state.duration * 0.3);
     } else {
       state.score = null;
       state.clips = [];
@@ -144,6 +161,8 @@ async function analyse() {
     state.busy = false;
     $('btn-analyse').disabled = false;
   }
+  // Paniers déjà montrés (game précédente ou avant l'analyse) : on garde directement les paniers marqués.
+  if (state.cands.length && state.hoops.length && $('pick').value === 'baskets') await detectBaskets();
 }
 
 // Taille réelle de la vidéo (après rotation éventuelle d'un téléphone), lue dans le journal ffmpeg.
@@ -208,6 +227,7 @@ function drawHoops() {
 }
 
 hoopCanvas.addEventListener('click', e => {
+  if (state.busy) return;
   const r = hoopCanvas.getBoundingClientRect();
   const hp = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
   if (state.hoops.length >= 2) {
@@ -217,16 +237,17 @@ hoopCanvas.addEventListener('click', e => {
   } else {
     state.hoops.push(hp);
   }
+  saveHoops();
   drawHoops();
 });
-$('hoop-size').addEventListener('input', drawHoops);
-$('btn-hoop-clear').addEventListener('click', () => { state.hoops = []; drawHoops(); });
+$('hoop-size').addEventListener('input', () => { saveHoops(); drawHoops(); });
+$('btn-hoop-clear').addEventListener('click', () => { if (state.busy) return; state.hoops = []; saveHoops(); drawHoops(); });
 $('btn-other-frame').addEventListener('click', () => {
   if (!state.busy) loadFrame((state.frameT + (state.duration || 60) * 0.17) % Math.max(1, state.duration || 60));
 });
 $('btn-baskets').addEventListener('click', detectBaskets);
 
-// Pour chaque moment fort (les plus forts d'abord), regarde le filet dans les 8 s qui précèdent la réaction.
+// Pour chaque moment fort (les plus forts d'abord, jusqu'à 80), regarde le filet dans les 8 s qui précèdent la réaction.
 async function detectBaskets() {
   if (state.busy || !state.hoops.length || !state.cands.length) return;
   state.busy = true;
@@ -236,7 +257,7 @@ async function detectBaskets() {
     const ff = await getFFmpeg('basket-progress');
     await mountInput(ff);
     const size = +$('hoop-size').value;
-    const todo = [...state.cands].sort((a, b) => b.score - a.score).slice(0, checkedFor(+$('target').value));
+    const todo = [...state.cands].sort((a, b) => b.score - a.score);
     let found = 0;
     for (let i = 0; i < todo.length; i++) {
       const c = todo[i];
@@ -263,12 +284,12 @@ async function detectBaskets() {
         found++;
       }
     }
-    $('pick').value = found ? 'baskets' : 'all';
+    $('pick').value = 'baskets';
     autoSelect();
     renderClips();
     setProgress('basket-progress', 1, found
       ? `${found} panier${found > 1 ? 's' : ''} marqué${found > 1 ? 's' : ''} trouvé${found > 1 ? 's' : ''} sur ${todo.length} moments forts vérifiés`
-      : `Aucun panier vu dans le filet : vérifie la position et la taille de la zone, ou garde la sélection au son`);
+      : `Aucun panier vu dans le filet : vérifie la position et la taille de la zone, ou choisis « tous les moments forts » plus bas`);
   } catch (err) {
     console.error(err);
     showError('Détection des paniers impossible : ' + (err.message || err));
@@ -358,8 +379,14 @@ function renderClips() {
   const target = +$('target').value;
   const el = $('total');
   const n = state.clips.filter(c => c.on).length;
-  el.textContent = `${n} extrait${n > 1 ? 's' : ''} retenu${n > 1 ? 's' : ''} · ${Math.round(total)} s / ${target} s`;
-  el.classList.toggle('over', total > target + 2);
+  const onlyBaskets = $('pick').value === 'baskets';
+  const checked = state.cands.some(c => c.checked);
+  el.textContent = onlyBaskets && state.score && !checked
+    ? '🏀 Touche le panier sur l\'image ci-dessus puis « Détecter les paniers marqués » : seuls les paniers marqués seront gardés.'
+    : onlyBaskets
+      ? `${n} panier${n > 1 ? 's' : ''} marqué${n > 1 ? 's' : ''} · ${Math.round(total)} s`
+      : `${n} extrait${n > 1 ? 's' : ''} retenu${n > 1 ? 's' : ''} · ${Math.round(total)} s / ${target} s`;
+  el.classList.toggle('over', !onlyBaskets && total > target + 2);
   $('btn-render').disabled = n === 0;
   drawEnergy();
 }
