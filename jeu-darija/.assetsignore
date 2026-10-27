@@ -1,0 +1,7 @@
+# Fichiers du dossier qui ne sont pas mis en ligne
+wrangler.toml
+.assetsignore
+netlify.toml
+outils
+*.test.mjs
+lancer-*

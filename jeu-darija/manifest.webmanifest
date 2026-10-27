@@ -1,0 +1,17 @@
+{
+  "name": "L'Usine magique de Hbibiti",
+  "short_name": "Hbibiti",
+  "description": "Apprendre la darija marocaine et algérienne en jouant.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#2a1d55",
+  "theme_color": "#3b2a6b",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

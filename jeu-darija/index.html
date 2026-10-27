@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>L'Usine magique de Hbibiti</title>
+<meta name="description" content="Jeu pour apprendre la darija marocaine et algérienne en famille.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2a1d55">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Hbibiti">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="factory" aria-hidden="true"><span class="g g1"></span><span class="g g2"></span><span class="g g3"></span><span class="pipe p1"></span><span class="pipe p2"></span></div>
+<div id="fog" aria-hidden="true"></div>
+
+<!-- Accueil -->
+<section id="s-home" class="screen active">
+  <div class="home-top">
+    <div class="home-gm" id="home-gm"></div>
+    <h1 class="title"><span>L'Usine magique</span><span class="title-big">de <b class="gm-name">Hbibiti</b></span></h1>
+  </div>
+  <p class="lead">Qui joue aujourd'hui ?</p>
+  <div id="kids" class="kids"></div>
+  <button class="corner-btn" id="btn-parents" aria-label="Espace parents">🔒 Parents</button>
+</section>
+
+<!-- Histoire du début -->
+<section id="s-story" class="screen center">
+  <div class="story-art" id="story-art"></div>
+  <p class="bubble big" id="story-text"></p>
+  <button class="go" id="story-next">Suivant ➜</button>
+</section>
+
+<!-- L'usine -->
+<section id="s-map" class="screen">
+  <header class="bar">
+    <button class="round" data-go="home" aria-label="Retour">⬅</button>
+    <div class="bar-kid" id="map-who"></div>
+    <div class="bar-stats"><span class="pill">⭐ <b id="map-stars">0</b></span><button class="round" id="btn-album" aria-label="Mon album">📒</button></div>
+  </header>
+  <div class="hbibiti-row">
+    <div class="gm-mini" id="map-gm"></div>
+    <p class="bubble" id="map-bubble"></p>
+  </div>
+  <div class="mission" id="map-mission"></div>
+  <button class="mission defi" id="map-defi" hidden></button>
+  <button class="mission ville-btn" id="map-ville"></button>
+  <button class="mission daily-btn" id="map-daily"></button>
+  <button class="mission tales-btn" id="map-tales"></button>
+  <p class="ramadan-banner" id="map-ramadan" hidden></p>
+  <h3 class="acts-title">🎈 Les activités</h3>
+  <div id="acts" class="acts"></div>
+  <div id="rooms" class="rooms"></div>
+</section>
+
+<!-- Activités -->
+<section id="s-act" class="screen">
+  <header class="bar act-bar">
+    <button class="round" id="act-back" aria-label="Retour">⬅</button>
+    <h2 id="act-title"></h2>
+    <span class="pill" id="act-pill"></span>
+  </header>
+  <div id="act-body" class="act-body"></div>
+</section>
+
+<!-- Bismillah -->
+<section id="s-start" class="screen center">
+  <div class="start-host" id="start-host"></div>
+  <p class="lead" id="start-room"></p>
+  <p class="start-lang" id="start-lang" hidden></p>
+  <button class="bismillah" id="btn-bismillah"><span class="ar">بسم الله</span><span>Bismillah</span></button>
+  <p class="hint">Touche pour commencer</p>
+  <button class="link" data-go="map">Retour à l'usine</button>
+</section>
+
+<!-- J'écoute -->
+<section id="s-learn" class="screen center">
+  <p class="step">🎧 Nouveau mot <span id="learn-count"></span></p>
+  <div class="card" id="learn-card">
+    <div class="learn-buddy" id="learn-buddy"></div>
+    <div class="big-emoji" id="learn-emoji"></div>
+    <div class="fr" id="learn-fr"></div>
+    <div class="cousin" id="learn-cousin">🤝 Mot cousin : pareil au Maroc et en Algérie !</div>
+    <div class="dialects">
+      <button class="dia ma" id="learn-ma"><span class="dia-who"></span><span class="flag">🇲🇦 Maroc · Papa</span><span class="lat"></span><span class="ar"></span><span class="speaker">🔊</span></button>
+      <button class="dia dz" id="learn-dz"><span class="dia-who"></span><span class="flag">🇩🇿 Algérie · Maman</span><span class="lat"></span><span class="ar"></span><span class="speaker">🔊</span></button>
+      <button class="dia both" id="learn-both"><span class="flag">🤲</span><span class="lat"></span><span class="ar"></span><span class="speaker">🔊</span></button>
+    </div>
+  </div>
+  <button class="go" id="learn-next">J'ai compris ➜</button>
+</section>
+
+<!-- Je joue -->
+<section id="s-play" class="screen">
+  <header class="bar">
+    <button class="round" id="play-quit" aria-label="Quitter">✖</button>
+    <div class="dots" id="play-dots"></div>
+    <button class="round" id="play-replay" aria-label="Réécouter">🔊</button>
+  </header>
+  <div class="turn" id="play-turn" hidden></div>
+  <div class="prompt-row"><div class="buddy" id="play-buddy"></div><div class="prompt" id="play-prompt"></div></div>
+  <div class="scene" id="scene"></div>
+  <div class="feedback" id="feedback" aria-live="polite"></div>
+</section>
+
+<!-- Récompense -->
+<section id="s-reward" class="screen center">
+  <h2 class="alham"><span class="ar">الحمد لله</span> Alhamdulillah !</h2>
+  <div class="sticker-reveal" id="reward-sticker"></div>
+  <p class="lead" id="reward-text"></p>
+  <div class="chest" id="reward-chest" hidden></div>
+  <p class="fog-text" id="reward-fog"></p>
+  <p class="reward-mission" id="reward-mission" hidden></p>
+  <button class="go alt" id="reward-msg" hidden>💌 Surprise : un message des grands-parents !</button>
+  <div class="row">
+    <button class="go" id="reward-again">Rejouer 🔁</button>
+    <button class="go alt" data-go="map">L'usine 🏭</button>
+  </div>
+</section>
+
+<!-- La ville de Hbibiti -->
+<section id="s-ville" class="screen">
+  <div class="ville-wrap">
+    <canvas id="ville-canvas" aria-label="La ville de Hbibiti"></canvas>
+    <div class="v-hud">
+      <button class="round" id="ville-back" aria-label="Retour à l'usine">⬅</button>
+      <div class="v-goal"><span id="v-arrow"></span> <span id="v-goal"></span></div>
+      <span class="pill" id="v-coins">🪙 0</span>
+      <button class="round v-tool" id="v-night" aria-label="Nuit de Ramadan" hidden>🌙</button>
+      <button class="round v-tool" id="v-build" aria-label="Construire">🧱</button>
+    </div>
+    <div class="v-palette" id="v-palette" hidden></div>
+    <div class="v-pad">
+      <button class="v-btn" id="v-left" aria-label="Aller à gauche">◀</button>
+      <button class="v-btn" id="v-right" aria-label="Aller à droite">▶</button>
+    </div>
+    <button class="go v-talk" id="v-talk" hidden>💬 Parler</button>
+    <button class="v-btn v-jump" id="v-jump" aria-label="Sauter">⤴</button>
+    <div class="v-dialog" id="v-dialog" hidden>
+      <p class="v-who" id="v-who"></p>
+      <p class="v-text" id="v-text"></p>
+      <div class="v-choices" id="v-choices"></div>
+      <button class="go" id="v-ok">D'accord ➜</button>
+    </div>
+  </div>
+</section>
+
+<!-- Les missions de Papa et Maman -->
+<section id="s-daily" class="screen">
+  <header class="bar">
+    <button class="round" data-go="map" aria-label="Retour">⬅</button>
+    <h2>Les missions de Papa et Maman</h2>
+    <span></span>
+  </header>
+  <div class="daily-top"><div class="daily-char" id="daily-papa"></div><p class="bubble">Chaque jour, 3 missions ! Quand tu as réussi une mission en vrai, montre-la à papa ou maman.</p><div class="daily-char" id="daily-maman"></div></div>
+  <div class="daily-list" id="daily-list"></div>
+</section>
+
+<!-- Les histoires de Hbibiti -->
+<section id="s-tales" class="screen">
+  <header class="bar">
+    <button class="round" data-go="map" aria-label="Retour">⬅</button>
+    <h2>Les histoires de <span class="gm-name">Hbibiti</span></h2>
+    <span class="pill" id="tales-count"></span>
+  </header>
+  <nav class="tabs tale-cats" id="tale-cats"></nav>
+  <div class="tale-grid" id="tale-grid"></div>
+</section>
+
+<!-- Une histoire -->
+<section id="s-tale" class="screen">
+  <header class="bar">
+    <button class="round" id="tale-back" aria-label="Retour aux histoires">⬅</button>
+    <div class="dots" id="tale-dots"></div>
+    <span></span>
+  </header>
+  <div class="tale-stage">
+    <div class="tale-teller" id="tale-teller"></div>
+    <div class="tale-card" id="tale-card">
+      <p class="tale-title" id="tale-title"></p>
+      <div class="tale-pic" id="tale-pic"></div>
+      <p class="tale-text" id="tale-text"></p>
+    </div>
+    <div class="tale-quiz" id="tale-quiz" hidden></div>
+  </div>
+  <div class="row tale-ctrl" id="tale-ctrl">
+    <button class="round big" id="tale-prev" aria-label="Page précédente">⏮</button>
+    <button class="go" id="tale-play">⏸ Pause</button>
+    <button class="round big" id="tale-next" aria-label="Page suivante">⏭</button>
+  </div>
+</section>
+
+<!-- Album -->
+<section id="s-album" class="screen">
+  <header class="bar">
+    <button class="round" data-go="map" aria-label="Retour">⬅</button>
+    <h2 id="album-title">Mon album</h2>
+    <span class="pill" id="album-gold"></span>
+  </header>
+  <div class="album" id="album"></div>
+</section>
+
+<!-- Temps écoulé -->
+<section id="s-timeup" class="screen center">
+  <div class="story-art" id="timeup-gm"></div>
+  <p class="bubble big">Bslama ! On se retrouve demain, inchallah. 🌙</p>
+  <button class="link" id="timeup-parents">Espace parents</button>
+</section>
+
+<!-- Espace parents -->
+<section id="s-parents" class="screen">
+  <header class="bar">
+    <button class="round" data-go="home" aria-label="Retour">⬅</button>
+    <h2>Espace parents</h2>
+    <span></span>
+  </header>
+  <nav class="tabs" id="ptabs">
+    <button data-tab="voices" class="on">🎙 Vos voix</button>
+    <button data-tab="missions">📞 Missions</button>
+    <button data-tab="progress">📈 Progrès</button>
+    <button data-tab="carnet">🏆 Carnet</button>
+    <button data-tab="settings">⚙️ Réglages</button>
+  </nav>
+  <div class="ptab on" id="tab-voices">
+    <p class="note">C'est <b>votre voix</b> qui rend le jeu vivant : papa pour le 🇲🇦 marocain, maman pour le 🇩🇿 algérien, ou un grand-parent. Le plus simple : <b>l'enregistrement rapide</b>, mot après mot. Sans enregistrement, la tablette lit les mots avec une voix approximative.</p>
+    <div class="row left">
+      <button class="go small" data-wizard="ma">🎙 Enregistrement rapide 🇲🇦</button>
+      <button class="go small" data-wizard="dz">🎙 Enregistrement rapide 🇩🇿</button>
+      <button class="go small alt" data-wizard="rel">🎙 Phrases du jardin 🤲</button>
+    </div>
+    <p class="note small" id="voice-count"></p>
+    <div id="voice-list" class="voice-list"></div>
+  </div>
+  <div class="ptab" id="tab-missions">
+    <p class="note">Chaque semaine, une petite mission à faire <b>en vrai</b>, en famille. Quand votre enfant l'a réussie, cochez-la : il gagne un autocollant doré et 5 ⭐.</p>
+    <div class="mission big" id="pm-text"></div>
+    <div id="pm-kids"></div>
+  </div>
+  <div class="ptab" id="tab-progress">
+    <div id="progress-list"></div>
+    <button class="go small danger" id="set-reset">Recommencer à zéro (tous les progrès)</button>
+  </div>
+  <div class="ptab" id="tab-carnet">
+    <p class="hint">Ce que chaque enfant a appris ces 7 derniers jours. Envoyez-le aux grands-parents !</p>
+    <div id="carnet-list"></div>
+  </div>
+  <div class="ptab" id="tab-settings">
+    <label class="field">Nom de la grand-mère dans le jeu <input id="set-gm" maxlength="20"></label>
+    <fieldset class="field"><legend>Enfants</legend><div id="set-kids"></div></fieldset>
+    <label class="field">Dialectes à montrer
+      <select id="set-dialects"><option value="ma,dz">Les deux : 🇲🇦 Maroc et 🇩🇿 Algérie</option><option value="ma">🇲🇦 Maroc seulement</option><option value="dz">🇩🇿 Algérie seulement</option></select>
+    </label>
+    <label class="check"><input type="checkbox" id="set-arabic"> Afficher aussi l'écriture arabe (enfants qui lisent)</label>
+    <label class="field">Anglais et arabe
+      <select id="set-bilingual"><option value="partie">Alterner : une partie en arabe, la suivante en anglais</option><option value="jour">Alterner : un jour en arabe, le lendemain en anglais</option><option value="off">Arabe seulement</option></select>
+    </label>
+    <label class="field">Voix du jeu
+      <select id="set-voice"><option value="hbibiti">Voix douce de Hbibiti (enregistrée, conseillée)</option><option value="tablette">Voix de la tablette</option></select>
+    </label>
+    <label class="field">Voix de la tablette, pour les phrases non enregistrées
+      <select id="set-frvoice"></select>
+    </label>
+    <p class="note small">Astuce : installez une voix française « premium » ou « améliorée » (iPad : Réglages › Accessibilité › Contenu énoncé › Voix › Français ; Android : paramètres de la synthèse vocale Google). Vos propres enregistrements des mots en darija passent toujours en premier.</p>
+    <div class="row left"><button class="go small alt" id="set-dlvoices">⬇️ Garder toutes les voix sur la tablette (hors ligne)</button></div>
+    <p class="note small" id="dlvoices-state"></p>
+    <label class="field">Musique de fond
+      <select id="set-music"><option value="doux">Musique douce (berceuse)</option><option value="perc">Percussions seulement (darbouka)</option><option value="full">Percussions et mélodie</option><option value="off">Pas de musique</option></select>
+    </label>
+    <label class="check"><input type="checkbox" id="set-sfx"> Petits sons du jeu (applaudissements, sifflet)</label>
+    <label class="check"><input type="checkbox" id="set-unlock-all"> Ouvrir toutes les salles tout de suite</label>
+    <label class="check"><input type="checkbox" id="set-scarf"> Maman porte le foulard dans le jeu</label>
+    <fieldset class="field"><legend>Activités proposées aux enfants</legend><div id="set-acts" class="set-acts"></div></fieldset>
+    <label class="check"><input type="checkbox" id="set-poppy"> Coin Poppy Playtime (questions sur les personnages du jeu, sans images)</label>
+    <label class="field">Temps de jeu par jour et par enfant
+      <select id="set-limit"><option value="0">Pas de limite</option><option value="10">10 min</option><option value="15">15 min</option><option value="20">20 min</option><option value="30">30 min</option></select>
+    </label>
+    <div class="row left">
+      <button class="go small" id="set-unlock">+10 min aujourd'hui</button>
+      <button class="go small alt" id="set-testvoice">Tester la voix de la tablette</button>
+    </div>
+    <p class="note small" id="voice-info"></p>
+    <fieldset class="field"><legend>Sauvegarde</legend>
+      <p class="note small">Un seul fichier avec vos voix, les réglages et les progrès : pour ne rien perdre, ou pour tout copier sur une autre tablette.</p>
+      <div class="row left">
+        <button class="go small" id="backup-export">⬇️ Télécharger la sauvegarde</button>
+        <label class="go small alt">⬆️ Restaurer<input type="file" id="backup-import" accept="application/json,.json" hidden></label>
+      </div>
+    </fieldset>
+    <p class="note small">Le vocabulaire varie selon les villes : vérifiez-le, et faites relire le jardin de la mosquée par une personne de confiance. Tout reste sur cette tablette (aucun compte, aucune publicité).</p>
+  </div>
+</section>
+
+<!-- Enregistrement rapide -->
+<div class="modal" id="wizard" hidden>
+  <div class="modal-box wide">
+    <p class="small" id="wz-count"></p>
+    <div class="big-emoji" id="wz-emoji"></div>
+    <p class="fr" id="wz-fr"></p>
+    <p class="wz-word" id="wz-word"></p>
+    <button class="rec-btn" id="wz-rec">🎙<small>Maintenir pour parler</small></button>
+    <p class="small" id="wz-status">Appuyez et gardez le doigt pendant que vous dites le mot.</p>
+    <div class="row">
+      <button class="go small alt" id="wz-play">▶ Réécouter</button>
+      <button class="go small alt" id="wz-skip">Passer</button>
+      <button class="go small" id="wz-next">Suivant ➜</button>
+    </div>
+    <button class="link" id="wz-close">Terminer</button>
+  </div>
+</div>
+
+<!-- Question pour les parents -->
+<div class="modal" id="gate" hidden>
+  <div class="modal-box">
+    <p>Question pour les parents :</p>
+    <p class="gate-q" id="gate-q"></p>
+    <input id="gate-a" inputmode="numeric" autocomplete="off" aria-label="Réponse">
+    <div class="row"><button class="go small alt" id="gate-cancel">Annuler</button><button class="go small" id="gate-ok">OK</button></div>
+  </div>
+</div>
+
+<div id="confetti" aria-hidden="true"></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

@@ -15,6 +15,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 | `talent-perle-site/` | Netlify `talent-perle` | talent-perle.netlify.app | Club de Karim (ami), **hors écosystème Gravity/OSMM**, inscriptions par Netlify Forms |
 | `talent-perle-dashboard/` | Netlify (à créer) | — | Dashboard de Karim, Supabase séparé (à configurer par Karim) |
 | `art-craft/` | **Worker Cloudflare `coachyass`** (contient seulement Art craft) | coachyass.moqtad6.workers.dev | Outil vidéo/son/image Gravity, 100 % navigateur (ffmpeg.wasm) + IA gratuites |
+| `jeu-darija/` | **Worker Cloudflare `jeu-hbibiti`** (séparé d'Art craft, `jeu-darija/wrangler.toml`, à relier par l'utilisateur) | jeu-hbibiti.moqtad6.workers.dev | Jeu familial pour tablette (darija marocaine/algérienne, religion, maths, lecture, histoires vraies) pour Ali et Asma, **hors écosystème Gravity/OSMM** |
 
 ## Règles permanentes
 
@@ -51,5 +52,6 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 | Billet Zeffy Gravity Prep + accès Espace Joueurs auto | `docs/contexte/zeffy-gravity-prep.md` |
 | API Meta / Instagram | `docs/contexte/meta-instagram.md` |
 | Boutique Gravity Basketball | `docs/contexte/boutique.md` |
+| Jeu « L'Usine magique de Hbibiti » (darija pour Ali et Asma, PR #98) | `docs/contexte/jeu-darija.md` |
 
 **Après un changement important** : mettre à jour le fichier `docs/contexte/` concerné (ou en créer un et l'ajouter au tableau ci-dessus). Garder ce `CLAUDE.md` court.
