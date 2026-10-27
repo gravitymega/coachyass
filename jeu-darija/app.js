@@ -212,7 +212,7 @@ $('#reward-msg').addEventListener('click', () => { sfx('tap'); openAct('messages
 const actOn = (id) => settings.acts?.[id] !== false;
 function renderActs() {
   const older = players.some((p) => p.kid.older);
-  const list = ACTS.filter((a) => actOn(a.id) && !a.hidden && (!a.older || older));
+  const list = ACTS.filter((a) => actOn(a.id) && !a.hidden && (!a.older || older) && (!a.poppy || settings.poppy));
   const ri = actOn('ramadan') ? ramadanInfo() : null;
   $('#map-ramadan').hidden = !ri;
   if (ri) $('#map-ramadan').textContent = ri.phase === 'ramadan' ? `🌙 Ramadan mbarek ! Jour ${ri.day} du Ramadan. La ville est illuminée ce soir.`

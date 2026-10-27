@@ -47,17 +47,33 @@ const PHRASES = [
 // Rien d'effrayant : seulement l'apparence et ce qui les rend reconnaissables. Pas de dessin officiel :
 // chaque personnage est un jeton de couleur avec un emoji. Les couleurs se répondent en darija.
 export const POPPY = [
-  { id: 'huggy', n: 'Huggy Wuggy', e: '🤗', c: '#2f6fe0', color: 'bleu', part: 'la fourrure de Huggy Wuggy', clues: ['Il a une fourrure toute bleue.', 'C’est la mascotte de l’usine Playtime Co.'] },
+  { id: 'huggy', ch: 1, n: 'Huggy Wuggy', e: '🤗', c: '#2f6fe0', color: 'bleu', part: 'la fourrure de Huggy Wuggy', clues: ['Il a une fourrure toute bleue.', 'C’est la mascotte de l’usine Playtime Co.'] },
   { id: 'kissy', n: 'Kissy Missy', e: '💗', c: '#ff6fae', clues: ['Elle ressemble à Huggy Wuggy, mais elle est toute rose.', 'C’est la copine de Huggy Wuggy.'] },
-  { id: 'poppy', n: 'Poppy', e: '🎎', c: '#e5484d', color: 'rouge', part: 'les cheveux de Poppy', clues: ['C’est une poupée aux cheveux roux tout bouclés.', 'Elle porte une jolie robe bleue.', 'On la trouve enfermée dans une vitrine en verre.', 'Le jeu porte son nom.'] },
-  { id: 'mommy', n: 'Mommy Long Legs', e: '🕷️', c: '#d6409f', clues: ['Elle est rose et ressemble à une araignée.', 'Ses bras et ses jambes s’étirent comme de l’élastique.'] },
-  { id: 'pj', n: 'PJ Pug-a-Pillar', e: '🐛', c: '#8bc34a', clues: ['C’est une chenille avec une tête de chien carlin.'] },
-  { id: 'bunzo', n: 'Bunzo Bunny', e: '🐰', c: '#ffc93c', clues: ['C’est un lapin qui joue des cymbales.'] },
+  { id: 'poppy', ch: 1, n: 'Poppy', e: '🎎', c: '#e5484d', color: 'rouge', part: 'les cheveux de Poppy', clues: ['C’est une poupée aux cheveux roux tout bouclés.', 'Elle porte une jolie robe bleue.', 'On la trouve enfermée dans une vitrine en verre.', 'Le jeu porte son nom.'] },
+  { id: 'mommy', ch: 2, n: 'Mommy Long Legs', e: '🕷️', c: '#d6409f', clues: ['Elle est rose et ressemble à une araignée.', 'Ses bras et ses jambes s’étirent comme de l’élastique.'] },
+  { id: 'pj', ch: 2, n: 'PJ Pug-a-Pillar', e: '🐛', c: '#8bc34a', clues: ['C’est une chenille avec une tête de chien carlin.'] },
+  { id: 'bunzo', ch: 2, n: 'Bunzo Bunny', e: '🐰', c: '#ffc93c', clues: ['C’est un lapin qui joue des cymbales.'] },
   { id: 'boxy', n: 'Boxy Boo', e: '📦', c: '#c0392b', clues: ['Il sort d’une boîte à surprise.'] },
-  { id: 'catnap', n: 'CatNap', e: '🐱', c: '#7c4dcc', symbol: '🌙', symbolName: 'une lune', clues: ['C’est un grand chat violet.', 'Il a une lune dessinée sur le ventre.', 'Son nom veut dire « petite sieste » en anglais.'] },
-  { id: 'dogday', n: 'DogDay', e: '🐶', c: '#ff9f1c', symbol: '☀️', symbolName: 'un soleil', clues: ['C’est un chien orange.', 'Il a un soleil dessiné sur le ventre.', 'C’est le chef des Smiling Critters.'] },
-  { id: 'bobby', n: 'Bobby BearHug', e: '🐻', c: '#ff5c7a', symbol: '❤️', symbolName: 'un cœur', clues: ['C’est une ourse qui adore faire des câlins.', 'Elle a un cœur dessiné sur le ventre.'] },
-  { id: 'delight', n: 'Miss Delight', e: '🍎', c: '#5aa469', clues: ['C’est la maîtresse de l’école de l’usine.'] },
+  { id: 'catnap', ch: 3, n: 'CatNap', e: '🐱', c: '#7c4dcc', symbol: '🌙', symbolName: 'une lune', clues: ['C’est un grand chat violet.', 'Il a une lune dessinée sur le ventre.', 'Son nom veut dire « petite sieste » en anglais.'] },
+  { id: 'dogday', ch: 3, n: 'DogDay', e: '🐶', c: '#ff9f1c', symbol: '☀️', symbolName: 'un soleil', clues: ['C’est un chien orange.', 'Il a un soleil dessiné sur le ventre.', 'C’est le chef des Smiling Critters.'] },
+  { id: 'bobby', ch: 3, n: 'Bobby BearHug', e: '🐻', c: '#ff5c7a', symbol: '❤️', symbolName: 'un cœur', clues: ['C’est une ourse qui adore faire des câlins.', 'Elle a un cœur dessiné sur le ventre.'] },
+  { id: 'delight', ch: 3, n: 'Miss Delight', e: '🍎', c: '#5aa469', clues: ['C’est la maîtresse de l’école de l’usine.'] },
+  // Les autres Smiling Critters (chapitre 3)
+  { id: 'bubba', n: 'Bubba Bubbaphant', e: '🐘', c: '#5aa9e6', ch: 3, clues: ['C’est l’éléphant des Smiling Critters.'] },
+  { id: 'hoppy', n: 'Hoppy Hopscotch', e: '🐇', c: '#4cc26a', ch: 3, clues: ['C’est le lapin des Smiling Critters qui adore sauter à la marelle.'] },
+  { id: 'kickin', n: 'KickinChicken', e: '🐔', c: '#f4b400', ch: 3, clues: ['C’est le poulet des Smiling Critters.'] },
+  { id: 'piggy', n: 'PickyPiggy', e: '🐷', c: '#f48fb1', ch: 3, clues: ['C’est le cochon des Smiling Critters.'] },
+  { id: 'crafty', n: 'CraftyCorn', e: '🦄', c: '#b39ddb', ch: 3, clues: ['C’est la licorne des Smiling Critters.'] },
+  // Chapitre 4 : Safe Haven
+  { id: 'doey', n: 'Doey the Doughman', e: '🫓', c: '#f6a04d', ch: 4, clues: ['C’est un personnage en pâte à modeler qui aide le joueur.', 'On le rencontre dans le chapitre 4, Safe Haven.'] },
+  { id: 'yarnaby', n: 'Yarnaby', e: '🧶', c: '#e0a43a', ch: 4, clues: ['Il ressemble à un lion tout doux fait en laine.'] },
+  { id: 'piano', n: 'Pianosaurus', e: '🎹', c: '#6d6875', ch: 4, clues: ['C’est un dinosaure qui est aussi un piano.'] },
+  // Chapitre 5 : Broken Things
+  { id: 'lily', n: 'Lily Lovebraids', e: '🎀', c: '#9b5de5', ch: 5, clues: ['C’est une poupée aux grandes tresses violettes.', 'Elle a une maison de poupée dans la rue Sweet Street.'] },
+  { id: 'giblet', n: 'Giblet', e: '🐕', c: '#c97b63', ch: 5, clues: ['C’est un petit chien qui marche avec une canne.', 'Il guide le joueur dans le chapitre 5.'] },
+  { id: 'chum', n: 'Chum Chompkins', e: '🧸', c: '#d64545', ch: 5, clues: ['C’est une grosse créature à la fourrure rouge, le meilleur ami de Giblet.'] },
+  { id: 'glowby', n: 'Glowby', e: '🔦', c: '#7b2ff7', ch: 5, clues: ['Sa lumière spéciale fait apparaître des écritures cachées sur les murs.'] },
+  { id: 'gracie', n: 'Ms. Gracie', e: '📺', c: '#ef476f', ch: 5, clues: ['Elle présente une émission de télé pour enfants et parle depuis les écrans.'] },
   { id: 'grabpack', n: 'Le GrabPack', e: '🎒', c: '#3b7dd8', clues: ['C’est le sac à dos du joueur, avec des mains qui s’allongent pour attraper les choses.'] },
 ];
 // Les couleurs qu'on peut dire en darija (mots de la salle de Fifi).
@@ -202,6 +218,7 @@ export const SKILLS = {
   'p-true': { room: 'poppy', older: true, title: 'Vrai pour qui ?' },
   'p-symbol': { room: 'poppy', young: true, older: true, min: 1, title: 'Les Smiling Critters' },
   'p-math': { room: 'poppy', older: true, min: 1, title: 'Les calculs de l’usine' },
+  'p-chap': { room: 'poppy', older: true, min: 2, title: 'Dans quel chapitre ?' },
   // L'école de l'alif : lettres et mots arabes
   'a-same': { room: 'alif', young: true, older: true, title: 'La même lettre arabe' },
   'a-hear': { room: 'alif', young: true, older: true, min: 1, title: 'Reconnaître une lettre arabe' },
@@ -308,7 +325,7 @@ export function makeExercise(skill, { r = Math.random, dialect = 'ma', level = I
         numChoices(n, vals, false), { text: String(n), say: [`Ça fait ${n} !`] }, `<span class="grp">${'🔟'.repeat(t)}</span>${u ? `<b class="op">+</b><span class="grp">${'🟡'.repeat(u)}</span>` : ''}`);
     }
     case 'm-problem': {
-      const kind = ri(r, 0, 3);
+      const kind = ri(r, 0, 5);
       let text, ans, how;
       if (kind === 0) { const a = ri(r, 3, 12), b = ri(r, 2, 8); ans = a + b; how = `${a} + ${b}`; text = `Ali a ${a} ballons. Asma lui en donne ${b}. Combien de ballons a Ali maintenant ?`; }
       else if (kind === 1) { const a = ri(r, 6, 15), b = ri(r, 1, a - 1); ans = a - b; how = `${a} − ${b}`; text = `Hbibiti a fait ${a} msemens. Les enfants en mangent ${b}. Combien en reste-t-il ?`; }
@@ -517,13 +534,22 @@ export function makeExercise(skill, { r = Math.random, dialect = 'ma', level = I
         crit.map((y) => ({ key: y.symbol, html: `<span class="c-emoji">${y.symbol}</span>`, correct: y === x })),
         { text: `${x.n} : ${x.symbolName}`, say: [`${x.n} a ${x.symbolName} sur le ventre !`] }, token(x, false));
     }
+    case 'p-chap': {
+      const x = pick(POPPY.filter((y) => y.ch), r);
+      const opts = [x.ch, ...shuffle([1, 2, 3, 4, 5].filter((k) => k !== x.ch), r).slice(0, 2)];
+      return Q(skill, `Dans quel chapitre rencontre-t-on <b>${esc(x.n)}</b> ?`, [`Dans quel chapitre rencontre-t-on ${x.n} ?`],
+        shuffle(opts, r).map((k) => ({ key: 'c' + k, html: `<span class="c-text">Chapitre ${k}</span>`, say: `Chapitre ${k}`, correct: k === x.ch })),
+        { text: `${x.n} : chapitre ${x.ch}`, say: [`${x.n}, c'est dans le chapitre ${x.ch} !`] }, token(x, false));
+    }
     case 'p-math': {
-      const kind = ri(r, 0, 3);
+      const kind = ri(r, 0, 5);
       let text, ans, how;
       if (kind === 0) { const a = ri(r, 2, 9), b = ri(r, 2, 9); ans = a + b; how = `${a} + ${b}`; text = `Le GrabPack attrape ${a} jouets, puis encore ${b}. Combien de jouets en tout ?`; }
       else if (kind === 1) { const b = ri(r, 1, 7); ans = 8 - b; how = `8 − ${b}`; text = `Les Smiling Critters sont 8 amis. ${b} font la sieste avec CatNap. Combien sont réveillés ?`; }
       else if (kind === 2) { const a = ri(r, 2, 5); ans = a * 2; how = `${a} + ${a}`; text = `Huggy Wuggy et Kissy Missy ont chacun ${a} ballons. Combien de ballons en tout ?`; }
-      else { const a = ri(r, 10, 18), b = ri(r, 2, 9); ans = a - b; how = `${a} − ${b}`; text = `Bunzo Bunny frappe ses cymbales ${a} fois. Il en a déjà fait ${b}. Combien en reste-t-il ?`; }
+      else if (kind === 3) { const a = ri(r, 10, 18), b = ri(r, 2, 9); ans = a - b; how = `${a} − ${b}`; text = `Bunzo Bunny frappe ses cymbales ${a} fois. Il en a déjà fait ${b}. Combien en reste-t-il ?`; }
+      else if (kind === 4) { const a = ri(r, 2, 6); ans = a * 2; how = `${a} + ${a}`; text = `Lily Lovebraids a 2 tresses. Elle met ${a} rubans sur chaque tresse. Combien de rubans en tout ?`; }
+      else { const a = ri(r, 3, 9), b = ri(r, 2, 8); ans = a + b; how = `${a} + ${b}`; text = `La lampe de Glowby trouve ${a} écritures cachées, puis encore ${b}. Combien d’écritures en tout ?`; }
       return Q(skill, esc(text), [text], numChoices(ans, nearNumbers(ans, r, 3, 0, 30), false),
         { text: `${how} = ${ans}`, say: [`${how.replace('−', 'moins').replace('+', 'plus')}, égale ${ans} !`] });
     }

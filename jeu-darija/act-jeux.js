@@ -247,3 +247,51 @@ function choosePet(ctx) {
     ctx.stars(1); ctx.confetti(60); animal(ctx);
   };
 }
+
+// ---------- 🔦 La lampe de Glowby (Poppy Playtime, chapitre 5) ----------
+// Le mur est dans le noir : on promène la lumière de Glowby avec le doigt pour trouver les mots de darija cachés.
+export function glowby(ctx) {
+  const kid = ctx.P();
+  const d = pickOne(ctx.settings.dialects);
+  const pool = WORDS.filter((w) => !w.phrase && w.emoji && (kid.kid.older || !w.older));
+  const seen = pool.filter((w) => kid.progress.words[w.id]?.seen);
+  const words = shuffled(seen.length >= 10 ? seen : pool).slice(0, 10);
+  const targets = words.slice(0, 5);
+  const body = screen(ctx, '🔦 La lampe de Glowby', '0 / 5');
+  const card = el(`<div class="act-card" style="text-align:center"><p class="act-big" id="gl-ask"></p>
+    <div class="glow-wall" id="gl-wall"><div class="glow-dark" id="gl-dark"></div></div>
+    <p class="act-note">Promène la lumière de Glowby avec ton doigt, puis touche le bon mot !</p></div>`);
+  body.append(card);
+  const wall = card.querySelector('#gl-wall'), dark = card.querySelector('#gl-dark');
+  // Les mots sont placés sur une grille pour ne pas se chevaucher.
+  const cells = shuffled(Array.from({ length: 12 }, (_, i) => i)).slice(0, words.length);
+  words.forEach((w, i) => {
+    const c = cells[i], x = 8 + (c % 4) * 23 + Math.random() * 6, y = 10 + Math.floor(c / 4) * 30 + Math.random() * 8;
+    wall.insertAdjacentHTML('afterbegin', `<button class="glow-word" data-w="${w.id}" style="left:${x}%;top:${y}%">${kid.kid.older ? ctx.esc(w[d].lat) : w.emoji}</button>`);
+  });
+  const move = (e) => {
+    const r = wall.getBoundingClientRect();
+    dark.style.setProperty('--x', `${e.clientX - r.left}px`); dark.style.setProperty('--y', `${e.clientY - r.top}px`);
+  };
+  wall.addEventListener('pointermove', move); wall.addEventListener('pointerdown', move);
+  let k = 0;
+  const ask = () => {
+    const w = targets[k];
+    card.querySelector('#gl-ask').textContent = kid.kid.older ? `Trouve : ${w.emoji} ${w.fr} ${ctx.FLAG[d]}` : `Trouve : ${w.emoji}`;
+    ctx.say(kid.kid.older ? `Trouve comment on dit ${w.fr}, ${ctx.DIALECT_NAME[d]}.` : 'Écoute bien et trouve-le avec la lampe !', { word: w, d });
+  };
+  wall.addEventListener('click', (e) => {
+    const b = e.target.closest('.glow-word'); if (!b || b.disabled) return;
+    const w = targets[k];
+    if (b.dataset.w !== w.id) { ctx.sfx('miss'); return ctx.say('Pas celui-là ! Cherche encore avec la lampe.'); }
+    b.disabled = true; b.classList.add('found'); ctx.sfx('ok'); ctx.confetti(30);
+    k++; ctx.$('#act-pill').textContent = `${k} / 5`;
+    if (k < targets.length) { ctx.say(ctx.praise(), { word: w, d }).then(ask); return; }
+    dark.classList.add('off'); ctx.stars(3); ctx.sfx('win'); ctx.confetti(100);
+    card.querySelector('#gl-ask').textContent = 'Bravo ! Glowby a trouvé tous les mots cachés !';
+    ctx.say('Bravo ! Avec Glowby, tu as trouvé tous les mots cachés !');
+    card.insertAdjacentHTML('beforeend', '<button class="go" data-again>Encore ➜</button>');
+    card.querySelector('[data-again]').onclick = () => glowby(ctx);
+  });
+  ask();
+}

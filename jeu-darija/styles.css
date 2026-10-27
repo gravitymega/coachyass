@@ -787,3 +787,12 @@ body[data-screen=parents] #factory, body[data-screen=parents] #fog { display: no
 .noms-card .act-ar { font-size: clamp(40px, 9vw, 70px); }
 .act-btn, .act-card, .act-tile, .act-choice, .league-row, .prayer-list div { color: var(--ink); }
 .acts-title { color: #fff; }
+
+/* La lampe de Glowby */
+.glow-wall { position: relative; height: min(56vh, 460px); border-radius: 18px; overflow: hidden; touch-action: none;
+  background: repeating-linear-gradient(0deg, #3b2a5c 0 38px, #33244f 38px 40px), #3b2a5c; }
+.glow-word { position: absolute; transform: translate(-50%, -50%); font-size: clamp(18px, 3vw, 26px); font-weight: 900; color: #e9d5ff; text-shadow: 0 0 10px #b46cff, 0 0 22px #7b2ff7; background: none; padding: 6px 8px; }
+.glow-word.found { color: #ffe08a; text-shadow: 0 0 14px #ffc93c; }
+.glow-dark { position: absolute; inset: 0; pointer-events: none; background: #0b0614; --x: 50%; --y: 50%;
+  -webkit-mask: radial-gradient(circle at var(--x) var(--y), transparent 70px, #000 115px); mask: radial-gradient(circle at var(--x) var(--y), transparent 70px, #000 115px); transition: opacity .8s; }
+.glow-dark.off { opacity: 0; }

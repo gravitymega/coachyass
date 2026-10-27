@@ -127,6 +127,8 @@ for (const v of VILLES) {
   add(`Bienvenue à ${v.name} ! Voici ${v.monument.name}. ${v.monument.fact} Ici, on mange ${v.plat.name.toLowerCase()}. Et on dit ${v.mot.lat} : ${v.mot.fr}.`,
     `Bravo ! Tu as gagné le tampon de ${v.name} dans ton passeport.`, `Quel monument as-tu vu à ${v.name} ?`, `Qu'est-ce qu'on mange à ${v.name} ?`, `Que veut dire « ${v.mot.lat} » ?`);
 }
+add('Écoute bien et trouve-le avec la lampe !', 'Pas celui-là ! Cherche encore avec la lampe.', 'Bravo ! Avec Glowby, tu as trouvé tous les mots cachés !');
+for (const w of WORDS) for (const d of ['ma', 'dz']) add(`Trouve comment on dit ${w.fr}, ${DIALECT[d]}.`);
 add(`Qu'est-ce qu'on prépare aujourd'hui avec ${gm} ?`, `Bssaha ! C'est prêt. ${gm} est fière de toi !`);
 for (const r of RECETTES) for (const ing of r.ing) add(`Apporte-moi ${ing.n} ${ing.unit ? ing.unit + ' de ' : ''}${ing.fr}.`, `Non, ça c'est autre chose. Il faut : ${ing.fr}.`);
 for (const n of NOMS) add(`${n.lat} : ${n.fr}.`);

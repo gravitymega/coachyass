@@ -137,3 +137,13 @@ Demande : ajouter, en option, toutes les idées proposées. Sur la carte, une se
 - Netlify a refusé le déploiement : « Skipped due to account credit usage exceeded », les crédits gratuits du compte sont épuisés. Le site Netlify `jeu-hbibiti` existe mais reste vide.
 - L'utilisateur a choisi **Cloudflare, séparé d'Art craft**. On utilise le Worker `jeu-hbibiti`, qui ne sert que les fichiers statiques : `jeu-darija/wrangler.toml` avec `[assets] directory = "."`, et `.assetsignore` pour exclure `outils/`, les tests, les lanceurs, `netlify.toml` et `wrangler.toml`. `npx wrangler deploy --dry-run` lit 8 527 fichiers, sous la limite gratuite de 20 000. `_headers` (noindex, `sw.js` sans cache) est respecté.
 - À relier par l'utilisateur dans le tableau de bord Cloudflare : Workers & Pages › Create › Import a repository › `gravitymega/coachyass`, Project name `jeu-hbibiti`, Root directory `jeu-darija`, Deploy command `npx wrangler deploy`, sans build. Adresse : `https://jeu-hbibiti.moqtad6.workers.dev`.
+
+## Poppy Playtime : chapitres 3 à 5 (27 octobre 2026)
+
+Demande : « beaucoup d'éléments de Poppy Playtime, chapitre 5 ». Le chapitre 5, *Broken Things*, est sorti le 18 février 2026 ; les faits ont été vérifiés par une recherche web. Comme avant, on garde **seulement des questions et des emojis, sans images du jeu et sans rien qui fasse peur**.
+- **13 nouveaux personnages** dans `POPPY` (`exercises.js`), avec le chapitre où on les rencontre (`ch`) :
+  - chapitre 3 : les autres Smiling Critters (Bubba Bubbaphant, Hoppy Hopscotch, KickinChicken, PickyPiggy, CraftyCorn) ;
+  - chapitre 4 : Doey the Doughman, Yarnaby, Pianosaurus ;
+  - chapitre 5 : Lily Lovebraids, Giblet, Chum Chompkins, Glowby, Ms. Gracie.
+- Nouvelle compétence **`p-chap`** (Ali, à partir de 2 niveaux) : « Dans quel chapitre rencontre-t-on… ? ». Deux nouveaux calculs : les rubans de Lily et les écritures de Glowby.
+- Nouvelle activité **🔦 La lampe de Glowby** (`glowby` dans `act-jeux.js`, visible seulement si le coin Poppy est activé). Le mur est dans le noir ; on promène la lumière avec le doigt pour trouver 5 mots de darija cachés (en écriture latine pour Ali, en emoji pour Asma). Cela donne 3 étoiles.

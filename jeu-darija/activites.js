@@ -1,7 +1,7 @@
 // La liste des activités proposées sur la carte. Les parents peuvent couper chacune dans les réglages.
 import { tracer, sourates, miroir, duel } from './act-ecole.js';
 import { voyage, cuisine, noms, marche, priere } from './act-monde.js';
-import { foot, basket, studio, animal } from './act-jeux.js';
+import { foot, basket, studio, animal, glowby } from './act-jeux.js';
 import { photos, messages } from './act-famille.js';
 
 const A = (id, icon, title, desc, open, extra = {}) => ({ id, icon, title, desc, open, ...extra });
@@ -19,6 +19,7 @@ export const ACTS = [
   A('priere', '⏰', 'Les heures de prière', 'La prochaine prière à la maison', priere),
   A('foot', '⚽', 'Le championnat d’Assad', 'Raja, Wydad, MCA, JSK : à toi de marquer !', foot),
   A('basket', '🏀', 'Le basket de Fifi', 'Vise et tire : des lancers francs', basket),
+  A('glowby', '🔦', 'La lampe de Glowby', 'Poppy Playtime 5 : trouve les mots cachés dans le noir', glowby, { poppy: true }),
   A('studio', '🎵', 'Le studio de musique', 'Darbouka, bendir et qraqeb', studio),
   A('animal', '🧸', 'Mon animal', 'Un chat ou un chameau à soigner', animal),
   A('photos', '📸', 'Qui c’est ?', 'Les photos de la famille, en darija', photos),
