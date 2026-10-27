@@ -5,6 +5,7 @@
 // Prononciation : on réécrit les mots arabes et darija pour qu'une voix française les dise bien.
 const FIXES = [
   [/\s*ﷺ/g, ', salla Allahou alayhi wa sallam,'],
+  [/Hbibi?ti/g, 'Hebibti'], // حبيبتي : « əbibti », pas « bibiti »
   [/Bismillah/gi, 'Bismilah'],
   [/Alhamdulillah/gi, 'Alhamdoulilah'],
   [/Inchallah/gi, 'Inn chaa Allah'],
