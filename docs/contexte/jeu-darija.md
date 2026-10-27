@@ -88,3 +88,10 @@ Demande « une partie avec un jeu comme Minecraft : Ali et Asma doivent courir, 
 - **10 habitants** (Maman, Papa, Fifi, Hbibiti, le boulanger, la maîtresse, l'imam, le fermier, la docteure, Assad) avec un « ! » quand ils ont une mission : d'abord **une question** de darija sur les mots de leur salle (2 essais, compte pour la révision), puis **« trouve-moi 3 … »** : l'objet est caché 3 fois loin de l'habitant, dont une fois en hauteur. Le bandeau du haut montre l'objectif et une flèche. En le rapportant, l'habitant dit le mot en darija marocaine et algérienne (+2 étoiles).
 - **Pièces** à ramasser (10 pièces = 1 étoile). Mission du jour automatique « Aide un habitant de la ville » (`j-ville`, Maman). `progress.ville` compte les missions réussies.
 - Voix : phrases de la ville ajoutées au collecteur (7 427 phrases au total).
+
+## Jouer en local, gratuitement (27 octobre 2026)
+
+Aucune dépendance en ligne : tout est dans `jeu-darija/`, voix comprises. Il faut seulement un petit serveur local, car les modules JS ne marchent pas en `file://`.
+- **Mac / Linux** : double-clic sur `lancer-mac-linux.command`, qui utilise `python3 -m http.server 8000`. La tablette peut ouvrir l'adresse affichée si elle est sur le même Wi-Fi.
+- **Windows** : `lancer-windows.bat`, qui lance `outils/serveur.ps1`, un serveur PowerShell sans installation ; il écoute seulement sur `localhost`.
+- Le mode hors ligne et l'installation sur l'écran d'accueil (service worker) demandent `localhost` ou `https`. Sur la tablette, il faut donc mettre le jeu en ligne gratuitement (Cloudflare Pages ou Netlify) pour l'installer.
