@@ -4,6 +4,7 @@
 // Logique pure, testable avec Node.
 import { WORDS, MAX_BOX, shuffle, wordsFor, makeQuestion } from './core.js';
 
+const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const ri = (r, a, b) => a + Math.floor(r() * (b - a + 1)); // entier entre a et b inclus
 const pick = (arr, r) => arr[Math.floor(r() * arr.length)];
@@ -41,6 +42,31 @@ const PHRASES = [
   ['On ouvre la porte avec une ___.', 'clé', ['fleur', 'lune']],
   ['Le ___ a une couronne.', 'roi', ['loup', 'lait']],
 ];
+
+// Coin Poppy Playtime : questions sur les personnages du jeu préféré d'Ali (couleurs, costumes, particularités).
+// Rien d'effrayant : seulement l'apparence et ce qui les rend reconnaissables. Pas de dessin officiel :
+// chaque personnage est un jeton de couleur avec un emoji. Les couleurs se répondent en darija.
+export const POPPY = [
+  { id: 'huggy', n: 'Huggy Wuggy', e: '🤗', c: '#2f6fe0', color: 'bleu', part: 'la fourrure de Huggy Wuggy', clues: ['Il a une fourrure toute bleue.', 'C’est la mascotte de l’usine Playtime Co.'] },
+  { id: 'kissy', n: 'Kissy Missy', e: '💗', c: '#ff6fae', clues: ['Elle ressemble à Huggy Wuggy, mais elle est toute rose.', 'C’est la copine de Huggy Wuggy.'] },
+  { id: 'poppy', n: 'Poppy', e: '🎎', c: '#e5484d', color: 'rouge', part: 'les cheveux de Poppy', clues: ['C’est une poupée aux cheveux roux tout bouclés.', 'Elle porte une jolie robe bleue.', 'On la trouve enfermée dans une vitrine en verre.', 'Le jeu porte son nom.'] },
+  { id: 'mommy', n: 'Mommy Long Legs', e: '🕷️', c: '#d6409f', clues: ['Elle est rose et ressemble à une araignée.', 'Ses bras et ses jambes s’étirent comme de l’élastique.'] },
+  { id: 'pj', n: 'PJ Pug-a-Pillar', e: '🐛', c: '#8bc34a', clues: ['C’est une chenille avec une tête de chien carlin.'] },
+  { id: 'bunzo', n: 'Bunzo Bunny', e: '🐰', c: '#ffc93c', clues: ['C’est un lapin qui joue des cymbales.'] },
+  { id: 'boxy', n: 'Boxy Boo', e: '📦', c: '#c0392b', clues: ['Il sort d’une boîte à surprise.'] },
+  { id: 'catnap', n: 'CatNap', e: '🐱', c: '#7c4dcc', symbol: '🌙', symbolName: 'une lune', clues: ['C’est un grand chat violet.', 'Il a une lune dessinée sur le ventre.', 'Son nom veut dire « petite sieste » en anglais.'] },
+  { id: 'dogday', n: 'DogDay', e: '🐶', c: '#ff9f1c', symbol: '☀️', symbolName: 'un soleil', clues: ['C’est un chien orange.', 'Il a un soleil dessiné sur le ventre.', 'C’est le chef des Smiling Critters.'] },
+  { id: 'bobby', n: 'Bobby BearHug', e: '🐻', c: '#ff5c7a', symbol: '❤️', symbolName: 'un cœur', clues: ['C’est une ourse qui adore faire des câlins.', 'Elle a un cœur dessiné sur le ventre.'] },
+  { id: 'delight', n: 'Miss Delight', e: '🍎', c: '#5aa469', clues: ['C’est la maîtresse de l’école de l’usine.'] },
+  { id: 'grabpack', n: 'Le GrabPack', e: '🎒', c: '#3b7dd8', clues: ['C’est le sac à dos du joueur, avec des mains qui s’allongent pour attraper les choses.'] },
+];
+// Les couleurs qu'on peut dire en darija (mots de la salle de Fifi).
+const POPPY_COLORS = [
+  ['La main gauche du GrabPack', 'bleu'], ['La main droite du GrabPack', 'rouge'], ['La main du GrabPack qui donne de l’électricité', 'vert'],
+  ...POPPY.filter((x) => x.color).map((x) => [cap(x.part), x.color]),
+];
+const COLOR_HEX = { bleu: '#2f6fe0', rouge: '#e5484d', vert: '#2bb673', jaune: '#ffc93c', blanc: '#ffffff', noir: '#222222' };
+const token = (x, withName = true) => `<span class="ptoken" style="--c:${x.c}"><span class="pt-e">${x.e}</span></span>${withName ? `<small class="pt-n">${esc(x.n)}</small>` : ''}`;
 
 const LETTRES = 'ABCDEFILMOPRSTUV'.split('');
 const SONS = { ch: 'ch', l: 'l', v: 'v', m: 'm', p: 'p', s: 's', f: 'f', b: 'b', k: 'k', g: 'g', t: 't', r: 'r', d: 'd', i: 'i', a: 'a', é: 'é', n: 'n' };
@@ -144,6 +170,12 @@ export const SKILLS = {
   'f-sides': { room: 'formes', older: true, title: 'Les côtés' },
   'f-clock': { room: 'formes', older: true, title: 'Lire l’heure' },
   'f-days': { room: 'formes', older: true, min: 1, title: 'Les jours de la semaine' },
+  // Coin Poppy Playtime
+  'p-who': { room: 'poppy', young: true, older: true, title: 'Qui est-ce ?' },
+  'p-color': { room: 'poppy', young: true, older: true, title: 'Les couleurs en darija' },
+  'p-true': { room: 'poppy', older: true, title: 'Vrai pour qui ?' },
+  'p-symbol': { room: 'poppy', young: true, older: true, min: 1, title: 'Les Smiling Critters' },
+  'p-math': { room: 'poppy', older: true, min: 1, title: 'Les calculs de l’usine' },
 };
 const defaultsOlder = (s) => (s.older === undefined ? true : s.older);
 
@@ -377,6 +409,47 @@ export function makeExercise(skill, { r = Math.random, dialect = 'ma' } = {}) {
       const opts = [ans, ...shuffle(JOURS.filter((d) => d !== ans && d !== JOURS[i]), r).slice(0, 2)];
       return Q(skill, `Quel jour vient <b>${after ? 'après' : 'avant'}</b> ${JOURS[i]} ?`, [`Quel jour vient ${after ? 'après' : 'avant'} ${JOURS[i]} ?`],
         opts.map((d) => ({ key: d, html: `<span class="c-text">${d}</span>`, correct: d === ans })), { text: ans, say: [`C'est ${ans} !`] });
+    }
+    // ----- Coin Poppy Playtime -----
+    case 'p-who': {
+      const x = pick(POPPY, r), clue = pick(x.clues, r);
+      const others = shuffle(POPPY.filter((y) => y !== x), r).slice(0, 2);
+      return Q(skill, `Qui est-ce ? <b>${esc(clue)}</b>`, ['Qui est-ce ?', clue],
+        [x, ...others].map((y) => ({ key: y.id, html: token(y), say: y.n, correct: y === x })),
+        { text: x.n, say: [`C'est ${x.n} !`] });
+    }
+    case 'p-true': {
+      const x = pick(POPPY, r), good = pick(x.clues, r);
+      const bad = shuffle(POPPY.filter((y) => y !== x), r).slice(0, 2).map((y) => pick(y.clues, r));
+      return Q(skill, `Qu’est-ce qui est vrai pour <b>${esc(x.n)}</b> ?`, [`Qu'est-ce qui est vrai pour ${x.n} ?`],
+        [good, ...bad].map((t, i) => ({ key: t, html: `<span class="c-text small">${esc(t)}</span>`, correct: i === 0 })),
+        { text: good, say: [good] }, token(x, false));
+    }
+    case 'p-color': {
+      const [what, col] = pick(POPPY_COLORS, r);
+      const w = (id) => WORDS.find((x) => x.id === id);
+      const opts = [col, ...shuffle(Object.keys(COLOR_HEX).filter((k) => k !== col), r).slice(0, 2)];
+      return Q(skill, `${esc(what)} est de quelle couleur ? <small>Réponds en darija ${dialect === 'ma' ? '🇲🇦' : '🇩🇿'} !</small>`,
+        [`${what} est de quelle couleur ? Réponds en darija !`],
+        opts.map((k) => ({ key: k, html: `<span class="swatch" style="--c:${COLOR_HEX[k]}"></span><span class="c-text">${esc(w(k)[dialect].lat)}</span>`, say: { word: w(k), d: dialect }, correct: k === col })),
+        { text: `${w(col).fr} : ${w(col)[dialect].lat}`, say: [{ word: w(col), d: dialect }] });
+    }
+    case 'p-symbol': {
+      const crit = POPPY.filter((x) => x.symbol);
+      const x = pick(crit, r);
+      return Q(skill, `Quel dessin a <b>${esc(x.n)}</b> sur le ventre ?`, [`Quel dessin ${x.n} a sur le ventre ?`],
+        crit.map((y) => ({ key: y.symbol, html: `<span class="c-emoji">${y.symbol}</span>`, correct: y === x })),
+        { text: `${x.n} : ${x.symbolName}`, say: [`${x.n} a ${x.symbolName} sur le ventre !`] }, token(x, false));
+    }
+    case 'p-math': {
+      const kind = ri(r, 0, 3);
+      let text, ans, how;
+      if (kind === 0) { const a = ri(r, 2, 9), b = ri(r, 2, 9); ans = a + b; how = `${a} + ${b}`; text = `Le GrabPack attrape ${a} jouets, puis encore ${b}. Combien de jouets en tout ?`; }
+      else if (kind === 1) { const b = ri(r, 1, 7); ans = 8 - b; how = `8 − ${b}`; text = `Les Smiling Critters sont 8 amis. ${b} font la sieste avec CatNap. Combien sont réveillés ?`; }
+      else if (kind === 2) { const a = ri(r, 2, 5); ans = a * 2; how = `${a} + ${a}`; text = `Huggy Wuggy et Kissy Missy ont chacun ${a} ballons. Combien de ballons en tout ?`; }
+      else { const a = ri(r, 10, 18), b = ri(r, 2, 9); ans = a - b; how = `${a} − ${b}`; text = `Bunzo Bunny frappe ses cymbales ${a} fois. Il en a déjà fait ${b}. Combien en reste-t-il ?`; }
+      return Q(skill, esc(text), [text], numChoices(ans, nearNumbers(ans, r, 3, 0, 30), false),
+        { text: `${how} = ${ans}`, say: [`${how.replace('−', 'moins').replace('+', 'plus')}, égale ${ans} !`] });
     }
     default:
       throw new Error('Compétence inconnue : ' + skill);

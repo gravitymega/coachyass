@@ -51,6 +51,7 @@
   </div>
   <div class="mission" id="map-mission"></div>
   <button class="mission defi" id="map-defi" hidden></button>
+  <button class="mission tales-btn" id="map-tales"></button>
   <div id="rooms" class="rooms"></div>
 </section>
 
@@ -103,6 +104,40 @@
   <div class="row">
     <button class="go" id="reward-again">Rejouer 🔁</button>
     <button class="go alt" data-go="map">L'usine 🏭</button>
+  </div>
+</section>
+
+<!-- Les histoires de Hbibiti -->
+<section id="s-tales" class="screen">
+  <header class="bar">
+    <button class="round" data-go="map" aria-label="Retour">⬅</button>
+    <h2>Les histoires de <span class="gm-name">Hbibiti</span></h2>
+    <span class="pill" id="tales-count"></span>
+  </header>
+  <nav class="tabs tale-cats" id="tale-cats"></nav>
+  <div class="tale-grid" id="tale-grid"></div>
+</section>
+
+<!-- Une histoire -->
+<section id="s-tale" class="screen">
+  <header class="bar">
+    <button class="round" id="tale-back" aria-label="Retour aux histoires">⬅</button>
+    <div class="dots" id="tale-dots"></div>
+    <span></span>
+  </header>
+  <div class="tale-stage">
+    <div class="tale-teller" id="tale-teller"></div>
+    <div class="tale-card" id="tale-card">
+      <p class="tale-title" id="tale-title"></p>
+      <div class="tale-pic" id="tale-pic"></div>
+      <p class="tale-text" id="tale-text"></p>
+    </div>
+    <div class="tale-quiz" id="tale-quiz" hidden></div>
+  </div>
+  <div class="row tale-ctrl" id="tale-ctrl">
+    <button class="round big" id="tale-prev" aria-label="Page précédente">⏮</button>
+    <button class="go" id="tale-play">⏸ Pause</button>
+    <button class="round big" id="tale-next" aria-label="Page suivante">⏭</button>
   </div>
 </section>
 
@@ -167,6 +202,7 @@
     </label>
     <label class="check"><input type="checkbox" id="set-sfx"> Petits sons du jeu (applaudissements, sifflet)</label>
     <label class="check"><input type="checkbox" id="set-unlock-all"> Ouvrir toutes les salles tout de suite</label>
+    <label class="check"><input type="checkbox" id="set-poppy"> Coin Poppy Playtime (questions sur les personnages du jeu, sans images)</label>
     <label class="field">Temps de jeu par jour et par enfant
       <select id="set-limit"><option value="0">Pas de limite</option><option value="10">10 min</option><option value="15">15 min</option><option value="20">20 min</option><option value="30">30 min</option></select>
     </label>

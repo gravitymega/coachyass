@@ -285,6 +285,51 @@ export const GAMES = {
     },
   },
 
+  // Le coin Poppy Playtime : Grappo, au bout du câble de la machine à pinces, attrape la bonne boîte à jouets.
+  claw: {
+    build(q, label) {
+      const colors = ['#ff6fae', '#5ec4ff', '#ffc93c'];
+      return `
+        <div class="claw-machine">
+          <div class="claw-lights"></div>
+          <div class="claw-rail"></div>
+          <div class="claw"><span class="claw-hand">${grappo('happy')}</span></div>
+          <div class="capsule-row">${q.choices.map((c, i) => `
+            <button class="choice capsule" data-i="${i}" aria-label="Choix ${i + 1}" style="--cap:${colors[i]}">
+              <span class="capsule-dome"></span>
+              <span class="label">${label(c)}</span>
+            </button>`).join('')}
+          </div>
+        </div>`;
+    },
+    async anim(scene, i, good) {
+      const claw = $('.claw', scene), cap = $$('.capsule', scene)[i];
+      const kr = claw.getBoundingClientRect(), cr = cap.getBoundingClientRect();
+      const dx = cr.left + cr.width / 2 - (kr.left + kr.width / 2);
+      const dy = Math.max(0, cr.top - kr.bottom + 34);
+      const at = (x, y) => ({ transform: `translate(${x}px, ${y}px)` });
+      sfx('beep');
+      await anim(claw, [at(0, 0), at(dx, 0)], { duration: 480, easing: 'ease-in-out' });
+      await anim(claw, [at(dx, 0), at(dx, dy)], { duration: 420, easing: 'ease-in' });
+      if (good) {
+        sfx('pop');
+        await Promise.all([
+          anim(claw, [at(dx, dy), at(dx, 0)], { duration: 650, easing: 'ease-out' }),
+          anim(cap, [{ transform: 'translateY(0)' }, { transform: `translateY(${-dy}px) rotate(-4deg)` }], { duration: 650, easing: 'ease-out' }),
+        ]);
+        sfx('cheer');
+        cap.classList.add('won');
+        await wait(350);
+      } else {
+        sfx('bounce');
+        await anim(cap, [{ transform: 'rotate(0)' }, { transform: 'rotate(-6deg)' }, { transform: 'rotate(6deg)' }, { transform: 'rotate(0)' }], { duration: 360 });
+        await anim(claw, [at(dx, dy), at(dx, 0), at(0, 0)], { duration: 600, easing: 'ease-in-out' });
+        claw.getAnimations().forEach((a) => a.cancel());
+        cap.getAnimations().forEach((a) => a.cancel());
+      }
+    },
+  },
+
   // Le jardin de la mosquée : la bonne lanterne s'allume.
   garden: {
     build(q, label) {

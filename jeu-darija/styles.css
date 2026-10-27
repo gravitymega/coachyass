@@ -560,3 +560,65 @@ body[data-screen=parents] #factory, body[data-screen=parents] #fog { display: no
 .char-hbibiti[data-mood="cheer"] .arm-r, .char-fifi[data-mood="cheer"] .arm-r { transform: rotate(-115deg); }
 .char-grappo[data-mood="cheer"] .arm-l, .char-dada[data-mood="cheer"] .arm-l, .char-dada[data-mood="cheer"] .arm-r { transform: none; }
 .sticker-reveal { align-items: center; }
+
+/* ---------- Coin Poppy Playtime : machine à pinces ---------- */
+.claw-machine { flex: 1; position: relative; display: flex; flex-direction: column; justify-content: flex-end; border-radius: 26px; overflow: hidden; min-height: 330px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, 0) 30%), radial-gradient(ellipse at 50% 110%, #1f6fb2, #12285a 75%);
+  border: 6px solid #ff8a3d; box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .15); }
+.claw-lights { position: absolute; inset: 6px 10px auto; height: 10px; background: repeating-linear-gradient(90deg, #ffc93c 0 10px, transparent 10px 26px); border-radius: 6px; opacity: .8; animation: lights 1.2s steps(2) infinite; }
+@keyframes lights { 50% { opacity: .35; } }
+.claw-rail { position: absolute; left: 0; right: 0; top: 22px; height: 10px; background: #c9d2e6; box-shadow: 0 3px 0 rgba(0, 0, 0, .25); }
+.claw { position: absolute; left: calc(50% - 50px); top: 28px; width: 100px; height: 110px; z-index: 3; }
+.claw::before { content: ""; position: absolute; left: calc(50% - 3px); bottom: 70%; width: 6px; height: 100vh; background: #9aa6bf; }
+.claw-hand { position: absolute; inset: 0; }
+.capsule-row { position: relative; display: flex; justify-content: space-around; align-items: flex-end; gap: 10px; padding: 0 10px 14px; z-index: 2; }
+.capsule { flex: 1 1 0; max-width: 240px; background: none; padding: 0; display: flex; flex-direction: column; align-items: center; }
+.capsule-dome { width: 74%; height: 34px; border-radius: 60px 60px 6px 6px; background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .85), rgba(255, 255, 255, .15) 45%), var(--cap); box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .15); }
+.capsule .label { border-top: 6px solid var(--cap); min-height: 96px; }
+.capsule.won .label { box-shadow: 0 0 0 5px var(--sun), 0 0 30px var(--sun); }
+.ptoken { --c: #3b7dd8; display: inline-grid; place-items: center; width: clamp(52px, 8vw, 70px); height: clamp(52px, 8vw, 70px); border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .55), transparent 55%), var(--c); box-shadow: 0 4px 0 rgba(0, 0, 0, .2); }
+.pt-e { font-size: clamp(28px, 4.6vw, 40px); line-height: 1; }
+.pt-n { font-size: 14px; font-weight: 800; margin-top: 4px; }
+.q-visual .ptoken { width: 84px; height: 84px; }
+.q-visual .ptoken .pt-e { font-size: 46px; }
+.swatch { display: inline-block; width: 46px; height: 30px; border-radius: 10px; background: var(--c); border: 3px solid rgba(0, 0, 0, .2); margin-bottom: 4px; }
+.c-text.small { font-size: clamp(15px, 2.3vw, 19px); line-height: 1.2; }
+.room-poppy { background: linear-gradient(160deg, #cfe0ff, #b9a3ff); }
+
+/* ---------- Les histoires de Hbibiti ---------- */
+.mission.tales-btn { width: 100%; text-align: left; font-family: inherit; color: inherit; cursor: pointer; border-style: solid; background: linear-gradient(90deg, rgba(94, 196, 255, .3), rgba(155, 93, 229, .3)); border-color: rgba(94, 196, 255, .7); }
+.tale-cats button { font-family: inherit; color: var(--ink); }
+.tale-cats button.on { color: #fff; }
+.tale-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; overflow-y: auto; padding: 10px 10px 20px; }
+.tale-item { --t: #fff3d6; background: var(--t); color: var(--ink); border-radius: 22px; padding: 14px 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; font-family: inherit; box-shadow: 0 5px 0 rgba(0, 0, 0, .2); min-height: 150px; }
+.tale-item:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0, 0, 0, .2); }
+.tale-item b { font-size: 17px; line-height: 1.2; }
+.tale-item small { font-size: 13px; font-weight: 700; opacity: .7; }
+.ti-e { font-size: 46px; line-height: 1; }
+.tale-item.cat-islam { --t: #d9f7e6; } .tale-item.cat-savants { --t: #ffe9c7; } .tale-item.cat-sciences { --t: #dcecff; }
+.tale-item.cat-geo { --t: #fff3b8; } .tale-item.cat-maths { --t: #f0e0ff; }
+.tale-item.suggest { outline: 4px solid var(--sun); outline-offset: 3px; animation: popk 1.6s infinite; }
+.tale-stage { flex: 1; display: flex; align-items: center; justify-content: center; gap: 16px; padding: 6px 0; min-height: 0; }
+.tale-teller { width: clamp(100px, 17vw, 170px); height: clamp(114px, 19vw, 196px); flex: none; align-self: flex-end; }
+.tale-card { background: var(--paper); color: var(--ink); border-radius: 30px; padding: 18px 22px; width: min(640px, 100%); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.tale-card.enter { animation: cardIn .5s cubic-bezier(.3, 1.4, .5, 1); }
+.tale-title { font-weight: 900; color: var(--orange); font-size: 17px; text-align: center; }
+.tale-pic { font-size: clamp(54px, 10vw, 92px); line-height: 1.1; letter-spacing: 6px; }
+.tale-text { font-size: clamp(19px, 2.7vw, 24px); line-height: 1.45; font-weight: 600; text-align: center; }
+.tale-ctrl { flex: none; align-items: center; padding-bottom: 8px; }
+.round.big { width: 64px; height: 64px; font-size: 28px; }
+.round:disabled { opacity: .35; }
+.tale-quiz { width: min(680px, 100%); display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.tq-q { font-size: clamp(21px, 3vw, 27px); font-weight: 900; text-align: center; }
+.tq-who { font-size: 18px; color: var(--sun); }
+.tq-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; }
+.tq-c { background: var(--paper); color: var(--ink); border-radius: 22px; padding: 12px 8px; display: flex; flex-direction: column; align-items: center; gap: 6px; font-family: inherit; box-shadow: 0 5px 0 rgba(0, 0, 0, .2); min-height: 150px; justify-content: center; }
+.tq-c.won { box-shadow: 0 0 0 5px var(--green), 0 0 28px var(--green); }
+.tq-t { font-size: clamp(16px, 2.2vw, 20px); font-weight: 800; line-height: 1.2; }
+@media (max-width: 620px) {
+  .tale-stage { flex-direction: column; justify-content: flex-start; }
+  .tale-teller { align-self: center; width: 90px; height: 100px; }
+  .tq-choices { grid-template-columns: 1fr; }
+  .tq-c { min-height: 0; flex-direction: row; justify-content: flex-start; padding: 10px 14px; }
+  .tq-c .c-emoji { font-size: 36px; }
+}

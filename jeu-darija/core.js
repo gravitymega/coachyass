@@ -120,6 +120,7 @@ export const ROOMS = [
   { id: 'jardin', name: 'Jardin de la mosquée', theme: 'Ma religion', game: 'garden', host: 'lantern', unlock: 0 },
   { id: 'maths', name: 'Atelier des nombres', theme: 'Maths : compter, additionner', game: 'rocket', host: 'rocket', unlock: 0, school: true },
   { id: 'lecture', name: 'Bibliothèque de Hbibiti', theme: 'Lire et écrire en français', game: 'books', host: 'books', unlock: 0, school: true },
+  { id: 'poppy', name: 'Coin Poppy Playtime', theme: 'Les personnages, leurs couleurs et costumes', game: 'claw', host: 'claw', unlock: 1, school: true, fan: true },
   { id: 'gym', name: 'Gymnase de Fifi', theme: 'Chiffres et couleurs', game: 'basket', host: 'fifi', unlock: 2 },
   { id: 'formes', name: 'Tour de l’horloge', theme: 'Formes, suites et heure', game: 'balloons', host: 'clock', unlock: 3, school: true },
   { id: 'cuisine', name: 'Cuisine de Hbibiti', theme: 'À table !', game: 'kitchen', host: 'tajine', unlock: 4 },
@@ -163,7 +164,7 @@ export function wordsFor(room, older) {
 }
 
 export function newProgress() {
-  return { words: {}, stickers: 0, stars: 0, levels: 0, gold: 0, missions: {}, chest: '', rooms: {}, best: 0 };
+  return { words: {}, stickers: 0, stars: 0, levels: 0, gold: 0, missions: {}, chest: '', rooms: {}, best: 0, tales: {} };
 }
 
 export function roomUnlocked(room, progress, all = false) {

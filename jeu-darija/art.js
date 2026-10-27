@@ -226,4 +226,17 @@ export function books() {
     <text x="78" y="22" text-anchor="middle" font-size="14" font-weight="900" fill="#7a3b0a" font-family="Arial, sans-serif">Abc</text>`, 'books');
 }
 
+// Machine à pinces du coin Poppy Playtime (icône de la salle).
+export function clawMachine() {
+  return svg('0 0 110 120', `
+    <rect x="10" y="4" width="90" height="112" rx="10" fill="#ff8a3d"/>
+    <rect x="18" y="14" width="74" height="62" rx="6" fill="#1f4f9a"/>
+    <rect x="18" y="14" width="74" height="6" fill="#c9d2e6"/>
+    <rect x="53" y="20" width="4" height="18" fill="#9aa6bf"/>
+    <path d="M46 38 h18 l-3 8 h-12 z" fill="#5ec4ff"/><path d="M47 46 l-4 8 M63 46 l4 8" stroke="#5ec4ff" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="32" cy="68" r="8" fill="#2f6fe0"/><circle cx="50" cy="70" r="7" fill="#ff6fae"/><circle cx="68" cy="68" r="8" fill="#7c4dcc"/><circle cx="82" cy="70" r="6" fill="#ffc93c"/>
+    <rect x="18" y="14" width="74" height="62" rx="6" fill="#fff" opacity=".12"/>
+    <rect x="22" y="86" width="40" height="22" rx="5" fill="#2b2140"/><circle cx="76" cy="97" r="8" fill="#e5484d"/><rect x="74" y="80" width="4" height="12" rx="2" fill="#2b2140"/>`, 'claw-icon');
+}
+
 export const CHARACTERS = { hbibiti, assad, fifi, grappo, dada };

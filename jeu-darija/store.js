@@ -22,6 +22,7 @@ export const DEFAULT_SETTINGS = {
   music: 'perc', // 'off' | 'perc' (percussions seulement) | 'full' (percussions + mélodie)
   limit: 0,
   unlockAll: false,
+  poppy: true, // coin Poppy Playtime (quiz sur les personnages)
 };
 export const settings = { ...DEFAULT_SETTINGS, ...load('settings', {}) };
 export const saveSettings = () => save('settings', settings);
