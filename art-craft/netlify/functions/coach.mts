@@ -9,11 +9,12 @@
 //   ART_CRAFT_PASSWORD  — facultatif : sans lui, l'accès aux IA gratuites est libre (choix de l'utilisateur) ;
 //                         Claude (payant) n'est jamais utilisé sans mot de passe
 //   GEMINI_API_KEY      — clé gratuite Google Gemini (aistudio.google.com), jamais exposée au navigateur
-//   OPENROUTER_API_KEY, GROQ_API_KEY — clés gratuites facultatives : IA de secours après Gemini
-//   ROBOFLOW_API_KEY    — clé gratuite facultative : détecteur « made_basket » pour le mode « paniers »
+//   OPENROUTER_API_KEY  — facultative : clé OpenRouter, modèles gratuits « :free » seulement (2e IA gratuite)
+//   GROQ_API_KEY        — facultative : clé gratuite Groq (3e IA gratuite)
+//   ROBOFLOW_API_KEY    — facultative : clé gratuite Roboflow, détecteur « made_basket » du mode « paniers »
 //   ANTHROPIC_API_KEY   — facultative et PAYANTE (Claude) : à ne mettre que si l'utilisateur l'accepte.
-// Sans clé Anthropic, les IA gratuites de ../lib/free-ai.ts répondent : Gemini, puis Cloudflare Workers AI
-// en secours (liaison « AI » du Worker) si le quota gratuit de Gemini est épuisé.
+// Sans clé Anthropic, les IA gratuites de ../lib/free-ai.ts répondent : Gemini, puis OpenRouter (modèles
+// gratuits), puis Groq, puis Cloudflare Workers AI (liaison « AI » du Worker) quand les quotas gratuits sont épuisés.
 //
 // Modes (champ « mode ») : analyse tactique (défaut), « track » (suivi image par image),
 // « stats » (actions et numéros d'une portion de match), « devoirs » (exercices d'un joueur,
@@ -21,7 +22,7 @@
 // (Retouche photo : réglages proposés, légendes, fonds SVG ; la consigne vient de la page)
 // et « paniers » (Highlight Agent : quels moments forts sont des paniers marqués).
 import Anthropic from "@anthropic-ai/sdk";
-import { askFree, cleanJson, AiError, type FreeRequest, type FreeProviders, type WorkersAi } from "../lib/free-ai.ts";
+import { askFree, testFree, cleanJson, AiError, type FreeRequest, type FreeProviders, type WorkersAi } from "../lib/free-ai.ts";
 import { madeBasketVerdicts } from "../lib/made-basket.ts";
 
 // Lien d'une vidéo YouTube publique (watch, youtu.be, shorts, live) → adresse « watch » normalisée.
@@ -446,6 +447,10 @@ function buildRequest(body: Body) {
 // env(nom) lit une variable d'environnement de l'hébergeur.
 // ai : liaison Workers AI (Cloudflare Workers seulement), IA gratuite de secours.
 export async function handleCoach(req: Request, env: (name: string) => string | undefined, ai?: WorkersAi) {
+  // Diagnostic : GET /api/coach?test essaie chaque IA gratuite avec une question très courte.
+  if (req.method === "GET" && new URL(req.url).searchParams.has("test")) {
+    return json(200, await testFree({ geminiKey: env("GEMINI_API_KEY"), openRouterKey: env("OPENROUTER_API_KEY"), groqKey: env("GROQ_API_KEY"), ai }));
+  }
   if (req.method !== "POST") return json(405, { error: "Méthode non autorisée" });
   const password = env("ART_CRAFT_PASSWORD");
   // Sans mot de passe, l'accès est libre mais limité aux IA gratuites : une clé Claude (payante)
@@ -461,12 +466,17 @@ export async function handleCoach(req: Request, env: (name: string) => string | 
   }
   // Vérification du mot de passe à la connexion (aucun appel à l'IA).
   const geminiKey = env("GEMINI_API_KEY");
-  const free: FreeProviders = { geminiKey, openrouterKey: env("OPENROUTER_API_KEY"), groqKey: env("GROQ_API_KEY"), ai };
+  const openRouterKey = env("OPENROUTER_API_KEY");
+  const groqKey = env("GROQ_API_KEY");
+  const free: FreeProviders = { geminiKey, openRouterKey, groqKey, ai };
   const roboflowKey = env("ROBOFLOW_API_KEY");
-  const anyFree = Boolean(geminiKey || free.openrouterKey || free.groqKey || ai);
+  const anyFree = Boolean(geminiKey || openRouterKey || groqKey || ai);
   if (body.ping) {
-    const provider = apiKey ? "claude" : geminiKey ? "gemini" : free.openrouterKey ? "openrouter" : free.groqKey ? "groq" : ai ? "workers-ai" : null;
-    return json(200, { ok: true, open: !password, ai: Boolean(apiKey || anyFree), provider, madeBasket: Boolean(roboflowKey) });
+    return json(200, {
+      ok: true, open: !password, ai: Boolean(apiKey || anyFree),
+      provider: apiKey ? "claude" : geminiKey ? "gemini" : openRouterKey ? "openrouter" : groqKey ? "groq" : ai ? "workers-ai" : null,
+      madeBasket: Boolean(roboflowKey),
+    });
   }
   if (!apiKey && !anyFree && !(body.mode === "paniers" && roboflowKey)) {
     return json(500, { error: "Aucune IA branchée : ajoute GEMINI_API_KEY (clé gratuite, aistudio.google.com) dans les variables du site Art craft." });
@@ -546,7 +556,8 @@ export async function handleCoach(req: Request, env: (name: string) => string | 
   return new Response(stream, { headers: { "Content-Type": "application/x-ndjson; charset=utf-8", "Cache-Control": "no-store" } });
 };
 
-// IA gratuites (Gemini, puis Workers AI) : même flux NDJSON que Claude, en un seul morceau.
+// IA gratuites (Gemini, OpenRouter, Groq, puis Workers AI) : même flux NDJSON que Claude, en un seul morceau.
+// first : un premier essai facultatif (détecteur made_basket), avec les IA gratuites en secours.
 function freeResponse(
   request: FreeRequest,
   providers: FreeProviders,
@@ -569,8 +580,7 @@ function freeResponse(
             out = await first();
           } catch (err) {
             // Détecteur en panne ou quota du mois épuisé : les IA gratuites prennent le relais.
-            const anyAi = providers.geminiKey || providers.openrouterKey || providers.groqKey || providers.ai;
-            if (!anyAi) throw err;
+            if (!(providers.geminiKey || providers.openRouterKey || providers.groqKey || providers.ai)) throw err;
             console.warn("coach (made_basket):", err);
             out = await askFree(providers, request);
           }
