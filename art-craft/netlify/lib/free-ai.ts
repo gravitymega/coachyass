@@ -1,8 +1,10 @@
 // IA gratuites d'Art craft (règle « aucun frais » : pas de clé API facturée à l'usage).
 //   1. Google Gemini, plan gratuit (clé GEMINI_API_KEY créée sur aistudio.google.com, sans carte) ;
-//   2. en secours, Cloudflare Workers AI (liaison « AI » du Worker, 10 000 neurones gratuits par jour ;
+//   2. en secours, OpenRouter, modèles gratuits « :free » seulement (clé OPENROUTER_API_KEY ; compte sans
+//      crédit acheté : rien ne peut être facturé, les appels s'arrêtent au quota gratuit du jour) ;
+//   3. en dernier recours, Cloudflare Workers AI (liaison « AI » du Worker, 10 000 neurones gratuits par jour ;
 //      sur le plan gratuit de Cloudflare, rien n'est facturé : les appels s'arrêtent au quota).
-// Les deux reçoivent la même demande que Claude (consigne, images, schéma JSON) et renvoient
+// Tous reçoivent la même demande que Claude (consigne, images, schéma JSON) et renvoient
 // le texte de la réponse. Module sans dépendance : marche sur Netlify et sur Cloudflare.
 // (Rangé hors de netlify/functions/ : Netlify y ferait sinon une fonction à part.)
 
@@ -15,6 +17,10 @@ const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models";
 export const GEMINI_MODEL = "gemini-3.8-flash";
 // Commentaire en direct : une phrase, il faut répondre vite.
 export const GEMINI_LIVE_MODEL = "gemini-3.1-flash-lite";
+// OpenRouter : modèles gratuits qui lisent les images, essayés dans l'ordre par OpenRouter lui-même
+// (paramètre « models »). Seuls des modèles gratuits sont permis : voir isFreeModel.
+export const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
+export const OPENROUTER_MODELS = ["nvidia/nemotron-3.5-super-vl:free", "google/gemma-4-31b-it:free", "openrouter/free"];
 export const WORKERS_MODEL = "@cf/meta/llama-4-scout-17b-16e-instruct";
 // Le modèle de secours lit moins bien beaucoup d'images à la fois, et chaque image coûte du quota.
 const WORKERS_MAX_IMAGES = 8;
@@ -98,6 +104,46 @@ export async function askGemini(key: string, request: FreeRequest) {
   return out;
 }
 
+// Garde-fou « aucun frais » : un modèle OpenRouter payant ne doit jamais être appelé.
+export const isFreeModel = (model: string) => model.endsWith(":free") || model === "openrouter/free";
+
+async function openRouterCall(key: string, request: FreeRequest, withFormat: boolean) {
+  const models = OPENROUTER_MODELS.filter(isFreeModel);
+  const content = parts(request.content).map((p) =>
+    p.image ? { type: "image_url", image_url: { url: `data:${p.mime || "image/jpeg"};base64,${p.image}` } } : { type: "text", text: p.text });
+  if (request.schema) content.push({ type: "text", text: schemaHint(request.schema) });
+  const body: Record<string, unknown> = {
+    model: models[0],
+    models,
+    messages: [{ role: "system", content: request.system }, { role: "user", content }],
+    max_tokens: request.live ? 1024 : 16000,
+  };
+  if (request.schema && withFormat) body.response_format = { type: "json_schema", json_schema: { name: "reponse", strict: false, schema: request.schema } };
+  const res = await fetch(OPENROUTER_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}`, "X-Title": "Art craft" },
+    body: JSON.stringify(body),
+  });
+  const data: any = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    if (res.status === 400 && withFormat && request.schema) return null; // format JSON refusé : on réessaie sans
+    const msg = data?.error?.message || `HTTP ${res.status}`;
+    throw new AiError(res.status === 401 ? "Clé OPENROUTER_API_KEY refusée par OpenRouter"
+      : res.status === 429 ? "Quota gratuit d'OpenRouter épuisé pour le moment" : `OpenRouter indisponible : ${msg}`, { status: res.status });
+  }
+  const choice = data.choices?.[0];
+  if (choice?.error) throw new AiError(`OpenRouter indisponible : ${choice.error.message || "erreur"}`);
+  const text = typeof choice?.message?.content === "string" ? choice.message.content : "";
+  if (!text) throw new AiError("Réponse vide d'OpenRouter");
+  return { text, model: String(data.model || models[0]) };
+}
+
+export async function askOpenRouter(key: string, request: FreeRequest) {
+  const out = (await openRouterCall(key, request, true)) ?? (await openRouterCall(key, request, false));
+  if (!out) throw new AiError("Réponse vide d'OpenRouter");
+  return out;
+}
+
 // Garde au plus n images, réparties sur toute la séquence (avec le texte qui précède chacune).
 function thinImages(list: Part[], n: number) {
   const idx = list.map((p, i) => (p.image ? i : -1)).filter((i) => i >= 0);
@@ -121,7 +167,7 @@ export async function askWorkersAi(ai: WorkersAi, request: FreeRequest) {
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     throw new AiError(/limit|quota|neuron|4006/i.test(msg)
-      ? "Quota gratuit du jour épuisé (Gemini et Cloudflare) : réessaie demain."
+      ? "Quota gratuit du jour épuisé (Gemini, OpenRouter et Cloudflare) : réessaie demain."
       : `IA de secours (Cloudflare) indisponible : ${msg}`);
   }
   const r = out?.response;
@@ -130,25 +176,34 @@ export async function askWorkersAi(ai: WorkersAi, request: FreeRequest) {
   return { text, model: WORKERS_MODEL };
 }
 
-// Gemini d'abord, puis Workers AI si Gemini est épuisé ou en panne (ou absent).
-export async function askFree({ geminiKey, ai }: { geminiKey?: string; ai?: WorkersAi }, request: FreeRequest) {
-  let first: AiError | null = null;
+// Gemini d'abord, puis OpenRouter (gratuit), puis Workers AI si les précédents sont épuisés, en panne ou absents.
+export async function askFree({ geminiKey, openRouterKey, ai }: { geminiKey?: string; openRouterKey?: string; ai?: WorkersAi }, request: FreeRequest) {
+  const errors: AiError[] = [];
   if (geminiKey) {
     try {
       return await askGemini(geminiKey, request);
     } catch (err) {
-      // Le secours Cloudflare ne sait pas regarder une vidéo YouTube.
-      if (!(err instanceof AiError) || !err.retry || !ai || hasYoutube(request)) throw err;
-      first = err;
+      // Les secours ne savent pas regarder une vidéo YouTube.
+      if (!(err instanceof AiError) || !err.retry || !(openRouterKey || ai) || hasYoutube(request)) throw err;
+      errors.push(err);
     }
   }
   if (hasYoutube(request)) throw new AiError("L'analyse d'un lien YouTube demande la clé GEMINI_API_KEY dans les variables du site Art craft.");
+  if (openRouterKey) {
+    try {
+      return await askOpenRouter(openRouterKey, request);
+    } catch (err) {
+      // Quelle que soit l'erreur d'OpenRouter, Cloudflare peut encore répondre.
+      if (!(err instanceof AiError) || !ai) throw err;
+      errors.push(err);
+    }
+  }
   if (!ai) throw new AiError("Aucune IA branchée : ajoute GEMINI_API_KEY dans les variables du site Art craft.");
   try {
     return await askWorkersAi(ai, request);
   } catch (err) {
-    // Gemini épuisé puis Cloudflare épuisé : le message de Cloudflare dit déjà tout.
-    if (first && err instanceof AiError && !/Quota gratuit du jour/.test(err.message)) err.message = `${first.message} ; ${err.message}`;
+    // Tout épuisé : le message de Cloudflare dit déjà tout.
+    if (errors.length && err instanceof AiError && !/Quota gratuit du jour/.test(err.message)) err.message = [...errors.map((e) => e.message), err.message].join(" ; ");
     throw err;
   }
 }
