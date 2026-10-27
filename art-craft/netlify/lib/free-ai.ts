@@ -21,7 +21,9 @@ export const GEMINI_LIVE_MODEL = "gemini-3.1-flash-lite";
 // OpenRouter : modèles gratuits qui lisent les images, essayés dans l'ordre par OpenRouter lui-même
 // (paramètre « models »). Seuls des modèles gratuits sont permis : voir isFreeModel.
 export const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
-export const OPENROUTER_MODELS = ["nvidia/nemotron-3.5-super-vl:free", "google/gemma-4-31b-it:free", "openrouter/free"];
+// Liste précise, sans le routeur « openrouter/free » : il peut tomber sur un modèle qui ne sait pas
+// répondre (ex. nemotron-3.5-content-safety, qui ne fait que classer un message « sûr » ou non).
+export const OPENROUTER_MODELS = ["nvidia/nemotron-3.5-super-vl:free", "google/gemma-4-31b-it:free", "google/gemma-4-26b-a4b-it:free"];
 export const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 // Llama 4 Scout a été retiré par Groq le 17 juillet 2026 : les modèles Qwen lisent les images.
 // Essayés dans l'ordre (un modèle retiré ou inconnu passe au suivant) ; GROQ_MODEL en tête s'il est défini.
@@ -111,7 +113,7 @@ export async function askGemini(key: string, request: FreeRequest) {
 }
 
 // Garde-fou « aucun frais » : un modèle OpenRouter payant ne doit jamais être appelé.
-export const isFreeModel = (model: string) => model.endsWith(":free") || model === "openrouter/free";
+export const isFreeModel = (model: string) => model.endsWith(":free");
 
 async function openRouterCall(key: string, request: FreeRequest, withFormat: boolean) {
   const models = OPENROUTER_MODELS.filter(isFreeModel);
