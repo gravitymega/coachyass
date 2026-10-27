@@ -51,6 +51,7 @@
   </div>
   <div class="mission" id="map-mission"></div>
   <button class="mission defi" id="map-defi" hidden></button>
+  <button class="mission ville-btn" id="map-ville"></button>
   <button class="mission daily-btn" id="map-daily"></button>
   <button class="mission tales-btn" id="map-tales"></button>
   <div id="rooms" class="rooms"></div>
@@ -107,6 +108,30 @@
   <div class="row">
     <button class="go" id="reward-again">Rejouer 🔁</button>
     <button class="go alt" data-go="map">L'usine 🏭</button>
+  </div>
+</section>
+
+<!-- La ville de Hbibiti -->
+<section id="s-ville" class="screen">
+  <div class="ville-wrap">
+    <canvas id="ville-canvas" aria-label="La ville de Hbibiti"></canvas>
+    <div class="v-hud">
+      <button class="round" id="ville-back" aria-label="Retour à l'usine">⬅</button>
+      <div class="v-goal"><span id="v-arrow"></span> <span id="v-goal"></span></div>
+      <span class="pill" id="v-coins">🪙 0</span>
+    </div>
+    <div class="v-pad">
+      <button class="v-btn" id="v-left" aria-label="Aller à gauche">◀</button>
+      <button class="v-btn" id="v-right" aria-label="Aller à droite">▶</button>
+    </div>
+    <button class="go v-talk" id="v-talk" hidden>💬 Parler</button>
+    <button class="v-btn v-jump" id="v-jump" aria-label="Sauter">⤴</button>
+    <div class="v-dialog" id="v-dialog" hidden>
+      <p class="v-who" id="v-who"></p>
+      <p class="v-text" id="v-text"></p>
+      <div class="v-choices" id="v-choices"></div>
+      <button class="go" id="v-ok">D'accord ➜</button>
+    </div>
   </div>
 </section>
 

@@ -91,6 +91,15 @@ for (const w of WORDS) if (EN[w.id]) {
 add('Papa dit :', 'Maman dit :');
 for (const m of DAILY) for (const n of m.t.includes('{frere}') ? kids : [null]) add(m.t.replace('{frere}', n || ''));
 
+// La ville de Hbibiti
+import { NPCS } from '../../ville-core.js';
+add(`Bienvenue dans la ville de ${gm} ! Cours, saute et parle aux habitants pour recevoir des missions.`);
+add("Salam ! J'ai une question pour toi.", 'Merci pour ton aide ! Va voir les autres habitants.', 'Merci beaucoup ! En darija, on dit :', 'Encore 1 !', 'Encore 2 !');
+for (const n of NPCS) {
+  add(`Tu as tout trouvé ! Retourne voir ${n.name}.`, `Finis d'abord la mission de ${n.name}, puis reviens me voir !`);
+}
+for (const w of WORDS) if (w.emoji && !w.phrase) add(`Peux-tu me trouver 3 fois : ${w.fr} ? Ils sont cachés dans la ville.`);
+
 const list = [...out].map(([key, text]) => ({ key, text, say: fixFr(text) }))
   .concat([...english].map(([key, text]) => ({ key, text, say: text, lang: 'en-us', voice: 'af_heart' })));
 process.stdout.write(JSON.stringify(list, null, 0));

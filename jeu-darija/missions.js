@@ -51,6 +51,7 @@ export const DAILY = [
   M('j-histoire', 'jeu', 'maman', 'Écoute une histoire de Hbibiti jusqu’au bout.', 'all', { auto: 'tale' }),
   M('j-poppy', 'jeu', 'papa', 'Fais un niveau dans le coin Poppy Playtime.', 'all', { auto: 'poppy', poppy: true }),
   M('j-ecole', 'jeu', 'maman', 'Fais un niveau à l’Atelier des nombres ou à la Bibliothèque.', 'all', { auto: 'school' }),
+  M('j-ville', 'jeu', 'maman', 'Aide un habitant de la ville de Hbibiti.', 'all', { auto: 'ville' }),
   M('j-defi', 'jeu', 'papa', 'Joue au Défi éclair.', 'older', { auto: 'defi', minLevels: 1 }),
 ];
 
@@ -81,7 +82,7 @@ export function dailyState(progress, date) {
 // Une partie terminée valide les missions de jeu correspondantes. Renvoie les missions validées.
 export function autoComplete(progress, missions, date, event) {
   const st = dailyState(progress, date);
-  const done = missions.filter((m) => m.auto && !st.done[m.id] && (m.auto === event.kind || (m.auto === 'level' && event.kind !== 'tale' && event.kind !== 'defi') || (m.auto === 'school' && event.school)));
+  const done = missions.filter((m) => m.auto && !st.done[m.id] && (m.auto === event.kind || (m.auto === 'level' && !['tale', 'defi', 'ville'].includes(event.kind)) || (m.auto === 'school' && event.school)));
   for (const m of done) st.done[m.id] = true;
   return done;
 }

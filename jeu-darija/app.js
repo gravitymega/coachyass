@@ -10,6 +10,7 @@ import { buildExerciseLevel, buildChallenge, itemsFor, isExerciseRoom, clockSVG 
 import * as ART from './art.js';
 import { TALES, TALE_CATS, speakTale, nextTale } from './tales.js';
 import { dailyMissions, dailyState, autoComplete } from './missions.js';
+import { createVille } from './ville.js';
 import { initCharacters, mount, react, setMood, charIn, INTRO } from './characters.js';
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -40,7 +41,7 @@ function show(id) {
   document.body.dataset.screen = id;
   if (id !== 'play' && id !== 'learn') stopVoice();
   if (['map', 'start', 'learn', 'play', 'reward', 'album'].includes(id)) startMusic();
-  else if (['tales', 'tale', 'daily'].includes(id)) startMusic(true);
+  else if (['tales', 'tale', 'daily', 'ville'].includes(id)) startMusic(true);
   else stopMusic();
   if (id !== 'tale') taleTok++; // quitter une histoire arrête la lecture
 }
@@ -172,6 +173,7 @@ function openMap(greet) {
   $('#map-defi').hidden = !levelsDone();
   const md = players.reduce((a, p) => a + Object.keys(dailyState(p.progress, today()).done).length, 0);
   $('#map-daily').innerHTML = `<span class="daily-duo">${ART.papa()}${drawChar('maman')}</span><span><b>Les missions de Papa et Maman</b>${md}/${players.length * 3} réussies aujourd'hui</span><span class="defi-go">Voir</span>`;
+  $('#map-ville').innerHTML = `<span class="mi-icon">🏙️</span><span><b>La ville de ${esc(settings.gm)}</b>Cours, saute et aide les habitants : ils ont des missions pour toi !</span><span class="defi-go">Jouer</span>`;
   const heard = Object.keys(lead.progress.tales || {}).length;
   $('#map-tales').innerHTML = `<span class="mi-icon">📚</span><span><b>Les histoires de ${esc(settings.gm)}</b>Des histoires vraies : l'islam, les savants, les sciences, le monde…${heard ? ` Écoutées : ${heard} / ${TALES.length}` : ''}</span><span class="defi-go">Écouter</span>`;
   $('#map-defi').innerHTML = `<span class="mi-icon">⚡</span><span><b>Défi éclair</b>10 questions de tout le jeu : maths, lecture, darija…${best ? ` Record : ${best}/10` : ''}</span><span class="defi-go">Go !</span>`;
@@ -197,6 +199,7 @@ function openMap(greet) {
 $('#map-defi').addEventListener('click', () => openStart(DEFI));
 $('#map-tales').addEventListener('click', () => { sfx('tap'); openTales(); });
 $('#map-daily').addEventListener('click', () => { sfx('tap'); openDaily(); });
+$('#map-ville').addEventListener('click', () => { sfx('tap'); openVille(); });
 $('#rooms').addEventListener('click', (e) => {
   const b = e.target.closest('[data-room]');
   if (!b) return;
@@ -870,6 +873,88 @@ $('#set-reset').addEventListener('click', () => {
   players = [];
   renderProgress();
 });
+
+// ---------- La ville de Hbibiti : courir, sauter, parler aux habitants ----------
+let ville = null;
+function openVille() {
+  if (!players.length) return openHome();
+  if (timeUp()) return showTimeUp();
+  show('ville');
+  ville?.stop();
+  let turnK = 0;
+  say(`Bienvenue dans la ville de ${settings.gm} ! Cours, saute et parle aux habitants pour recevoir des missions.`);
+  const kidLook = (k) => (k.older ? 'ali' : 'asma');
+  ville = createVille({
+    older: () => players[turnK % players.length].kid.older,
+    dialects: settings.dialects,
+    kidLook: kidLook(players[0].kid),
+    kidLook2: coop() ? kidLook(players[1].kid) : null,
+    scarf: settings.mamaScarf,
+    say, sfx, stop: stopVoice,
+    // Une question posée par un habitant : 2 essais, comme dans les salles.
+    ask(question, box, textEl) {
+      turn = turnK % players.length;
+      const w = question.word, d = question.dialect, o = question.other;
+      const who = coop() ? `${P().kid.avatar} ${P().kid.name} : ` : '';
+      const label = (c) => (question.type === 'listen' ? `<span class="c-emoji">${c.word.emoji}</span>`
+        : `<span class="c-text">${esc(c.word[question.type === 'cousin' ? o : d].lat)}</span>`);
+      let prompt, voice;
+      if (question.type === 'listen') { prompt = w.phrase ? '🔊 Écoute bien : quand dit-on ça ?' : '🔊 Écoute bien et trouve la bonne image !'; voice = ['Écoute bien.', { word: w, d }]; }
+      else if (question.type === 'fr2dz') { prompt = `Comment on dit « ${esc(w.fr)} » ${DIALECT_NAME[d]} ${FLAG[d]} ?`; voice = [`Comment on dit ${w.fr}, ${DIALECT_NAME[d]} ?`]; }
+      else { prompt = `${FLAG[d]} On dit « ${esc(w[d].lat)} ». Et ${DIALECT_NAME[o]} ${FLAG[o]} ?`; voice = [`${cap(DIALECT_NAME[d])}, on dit :`, { word: w, d }, `Et ${DIALECT_NAME[o]} ?`]; }
+      textEl.innerHTML = who + prompt;
+      box.innerHTML = question.choices.map((c, i) => `<button class="v-choice" data-i="${i}">${label(c)}</button>`).join('');
+      say(...voice);
+      let misses = 0;
+      return new Promise((resolve) => {
+        box.querySelectorAll('.v-choice').forEach((b) => b.addEventListener('click', async () => {
+          if (b.disabled) return;
+          const c = question.choices[+b.dataset.i];
+          const ad = question.type === 'cousin' ? o : d;
+          if (c.correct) {
+            sfx('ok'); confetti(30);
+            box.querySelectorAll('.v-choice').forEach((x) => { x.disabled = true; });
+            b.classList.add('won');
+            grade(P().progress, w.id, misses === 0);
+            if (misses === 0) P().progress.stars++;
+            saveAll();
+            textEl.textContent = `${praise()} ${w[ad].lat}`;
+            await say(praise(), { word: w, d: ad });
+            turnK++;
+            return resolve(misses === 0);
+          }
+          sfx('miss'); misses++; b.disabled = true; b.classList.add('tried');
+          if (misses >= 2) {
+            box.querySelectorAll('.v-choice').forEach((x) => { x.disabled = true; });
+            box.querySelectorAll('.v-choice')[question.choices.findIndex((x) => x.correct)].classList.add('reveal');
+            grade(P().progress, w.id, false); saveAll();
+            textEl.textContent = `C'était : ${w[ad].lat}`;
+            await say("C'était celui-là !", { word: w, d: ad });
+            turnK++;
+            return resolve(false);
+          }
+          await say('Presque ! Essaie encore.');
+        }));
+      });
+    },
+    onAskDone() { villeDone('ask'); },
+    onFetchDone(npc, w) {
+      players.forEach((p) => { markSeen(p.progress, w.id); p.progress.stars += 2; });
+      saveAll(); confetti(60); villeDone('fetch');
+    },
+    onCoins(n) { players.forEach((p) => { p.progress.stars += n; }); saveAll(); },
+  });
+  if (location.search.includes('e2e')) window.__ville = ville; // pour les tests automatiques
+}
+// Chaque mission réussie en ville compte pour la mission du jour « balade en ville ».
+function villeDone() {
+  players.forEach((p) => {
+    p.progress.ville = (p.progress.ville || 0) + 1;
+    autoComplete(p.progress, missionsOf(p), today(), { kind: 'ville' }).forEach(() => { p.progress.stars += 3; });
+  });
+  saveAll();
+}
+$('#ville-back').addEventListener('click', () => { sfx('tap'); ville?.stop(); ville = null; openMap(); });
 
 // ---------- Les missions de Papa et Maman ----------
 // 3 missions par jour et par enfant : en vrai (confirmées par un parent) ou dans le jeu (validées toutes seules).
