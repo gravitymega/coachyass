@@ -30,3 +30,15 @@ test('missions : une question avec une seule bonne réponse, 3 objets loin de l�
   assert.ok(coinSpots(world, 3).length >= 30);
   assert.equal(nextGiver(qs, 0).id, 'maman');
 });
+
+import { canPlace, applyBuild, T as TT, GROUND as G } from './ville-core.js';
+test('construire : on pose un bloc collé à un autre, jamais sur un habitant', () => {
+  const w = makeWorld();
+  assert.equal(canPlace(w, 20, G - 1), true); // posé sur l'herbe
+  assert.equal(canPlace(w, 20, G - 4), false); // en l'air, rien à côté
+  assert.equal(canPlace(w, 9, G - 1), false); // Maman est là
+  assert.equal(canPlace(w, 20, G), false); // déjà plein
+  applyBuild(w, { [`20,${G - 1}`]: TT.BRICK });
+  assert.equal(w.solid[G - 1][20], TT.BRICK);
+  assert.equal(canPlace(w, 20, G - 2), true); // on empile
+});

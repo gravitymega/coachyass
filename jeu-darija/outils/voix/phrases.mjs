@@ -100,6 +100,51 @@ for (const n of NPCS) {
 }
 for (const w of WORDS) if (w.emoji && !w.phrase) add(`Peux-tu me trouver 3 fois : ${w.fr} ? Ils sont cachés dans la ville.`);
 
+// Activités
+const PRAISE_LIST = ['Bravo !', 'Machallah !', 'Zwin bezzaf !', 'Super !', 'Saha !', 'Waouh !', 'Top !'];
+import { VILLES, RECETTES, NOMS, PRODUITS, SOURATES } from '../../act-data.js';
+import { ALIF } from '../../exercises.js';
+import { PRAYERS } from '../../calendrier.js';
+add('Choisis un bloc, puis touche une case pour construire. Touche ton bloc pour l’enlever.', 'Il te manque des pièces ! Ramasse les pièces de la ville ou réussis un niveau.',
+  'Ramadan mbarek ! La ville est illuminée. Les habitants préparent la fête.', 'Bienvenue au souk ! Achète, paie et compte bien.', 'Bravo ! Tu connais bien ta famille. Machallah !',
+  'Buuut !', 'Choisis ton adversaire. Assad compte sur toi !', 'Choisis ton animal et donne-lui un prénom.', 'Choisis une sourate. On l’apprend ligne par ligne.',
+  'Choisis une ville. On part en voyage au Maroc et en Algérie !', 'Demande à Papa ou Maman d’ajouter des photos de la famille : Jeddi, Jedda, tes oncles et tes tantes !',
+  'Demande à Papa ou à Maman de réciter ce verset, puis de l’enregistrer avec le bouton Parents.', 'Il te faut une étoile. Joue dans l’usine pour en gagner !',
+  'Maintiens d’abord le micro et dis le mot !', 'Oups, reste bien sur la lettre ! On recommence.', 'Pas de ballon cette fois. Question suivante !',
+  'Ton rythme est gardé ! Fais-le écouter à Papa et Maman.', 'Touche les cases pour créer ton rythme, puis appuie sur Jouer. Doum, tek, tek !',
+  'Bravo ! Tu sais faire les courses au souk.', 'Les Lions d’Assad sont champions ! Bravo !', 'La saison est finie. On recommence pour gagner la coupe ?',
+  'Miam miam ! Bssaha !', 'Et après ?', 'Par quoi on commence ?', 'Panier !', 'Swish !', 'Surprise ! Quelqu’un t’a envoyé un message. Touche l’enveloppe !',
+  'Touche une enveloppe pour écouter le message.', "C'était :", 'Le compte est bon !', 'À toi de tirer !', 'Égalité ! Bravo à tous les deux !', 'Papa a gagné cette fois. Revanche ?', 'Maman a gagné cette fois. Revanche ?',
+  'Mimi a faim ! Donne-lui à manger.', 'Mimi est content de te voir !', 'Waouh ! Mimi a grandi !');
+for (let n = 1; n <= 20; n++) add(String(n));
+for (const pr of PRAISE_LIST) {
+  add(`${pr} Le compte est bon !`, `${pr} À toi de tirer !`);
+  for (let price = 2; price <= 8; price++) { const given = price < 5 ? 5 : 10; add(`${pr} ${given} moins ${price}, ça fait ${given - price}.`); }
+}
+for (const L of ALIF) add(`Trace la lettre ${L.say}. Commence au point vert.`, `La lettre ${L.say}.`, ...PRAISE_LIST.map((pr) => `${pr} Tu as écrit la lettre ${L.say}, comme dans ${L.fr}.`));
+for (const s of SOURATES) add(`Machallah ! Tu connais l’ordre de la sourate ${s.name}.`);
+for (const v of VILLES) {
+  add(`Bienvenue à ${v.name} ! Voici ${v.monument.name}. ${v.monument.fact} Ici, on mange ${v.plat.name.toLowerCase()}. Et on dit ${v.mot.lat} : ${v.mot.fr}.`,
+    `Bravo ! Tu as gagné le tampon de ${v.name} dans ton passeport.`, `Quel monument as-tu vu à ${v.name} ?`, `Qu'est-ce qu'on mange à ${v.name} ?`, `Que veut dire « ${v.mot.lat} » ?`);
+}
+add(`Qu'est-ce qu'on prépare aujourd'hui avec ${gm} ?`, `Bssaha ! C'est prêt. ${gm} est fière de toi !`);
+for (const r of RECETTES) for (const ing of r.ing) add(`Apporte-moi ${ing.n} ${ing.unit ? ing.unit + ' de ' : ''}${ing.fr}.`, `Non, ça c'est autre chose. Il faut : ${ing.fr}.`);
+for (const n of NOMS) add(`${n.lat} : ${n.fr}.`);
+for (const it of PRODUITS) for (const money of ['dirhams', 'dinars']) {
+  const c = it.fr.charAt(0).toUpperCase() + it.fr.slice(1);
+  for (let price = 1; price <= 9; price++) {
+    add(`${c}, ça fait ${price} ${money}.`, `Oh, c'est trop ! Il faut ${price}. On recommence.`);
+    if (price >= 2 && price <= 8) add(`${c} coûte ${price} ${money}. Tu donnes ${price < 5 ? 5 : 10}. Combien le marchand te rend ?`);
+  }
+}
+for (let a = 1; a <= 10; a++) for (let b = 1; b <= 9; b++) { add(`${a} plus ${b}, ça fait combien ?`); if (a > b) add(`${a} moins ${b}, ça fait combien ?`); }
+for (let a = 1; a <= 3; a++) for (let b = 1; b <= 2; b++) add(`Compte les ballons : ${a} plus ${b}.`);
+for (let s = 0; s <= 6; s++) add(`Bravo ! ${s} paniers. Fifi est contente !`);
+for (const pr of PRAYERS) add(`C'est l'heure de la prière ${pr.name}. Allons faire les ablutions !`);
+for (const d of ['ma', 'dz']) add(`Qui c'est ? Dis-le ${DIALECT[d]}.`);
+for (const n of [...kids, 'Papa', 'Maman']) add(`À toi, ${n} !`, `${n} a gagné ! Machallah !`);
+for (let a = 0; a <= 5; a++) for (let b = 0; b <= 5; b++) { if (a > b) add(`Victoire ${a} à ${b} ! Bravo !`); if (a === b) add(`Match nul, ${a} partout !`); if (a < b) add(`Défaite ${a} à ${b}. On fera mieux au prochain match !`); }
+
 const list = [...out].map(([key, text]) => ({ key, text, say: fixFr(text) }))
   .concat([...english].map(([key, text]) => ({ key, text, say: text, lang: 'en-us', voice: 'af_heart' })));
 process.stdout.write(JSON.stringify(list, null, 0));

@@ -7,7 +7,7 @@ export const GROUND = 10; // ligne du sol (le haut de l'herbe)
 export const W = 168; // largeur du monde en blocs
 
 // Les blocs solides (on marche dessus) et le décor (derrière le personnage).
-export const T = { AIR: 0, GRASS: 1, DIRT: 2, STONE: 3, PLANK: 4, BRICK: 5, LEAVES: 6, LOG: 7, WHITE: 8, GLASS: 9, SAND: 10, ROOF: 11, GREEN: 12, GOLD: 13 };
+export const T = { AIR: 0, GRASS: 1, DIRT: 2, STONE: 3, PLANK: 4, BRICK: 5, LEAVES: 6, LOG: 7, WHITE: 8, GLASS: 9, SAND: 10, ROOF: 11, GREEN: 12, GOLD: 13, CARPET: 14, LANTERN: 15 };
 
 // Les quartiers, de gauche à droite. room : la salle de mots dont viennent les questions de l'habitant.
 export const NPCS = [
@@ -92,6 +92,29 @@ export const isSolid = (world, x, y) => {
   return world.solid[Math.floor(y)][Math.floor(x)] !== T.AIR;
 };
 
+// ---------- Construire (comme dans Minecraft) ----------
+// Les blocs qu'on achète avec les pièces gagnées. Les constructions des enfants sont gardées à part (clé "x,y").
+export const SHOP = [
+  { t: T.PLANK, name: 'Bois', price: 1 }, { t: T.STONE, name: 'Pierre', price: 1 }, { t: T.BRICK, name: 'Brique', price: 2 },
+  { t: T.WHITE, name: 'Mur blanc', price: 2 }, { t: T.GLASS, name: 'Verre', price: 2 }, { t: T.ROOF, name: 'Toit', price: 2 },
+  { t: T.CARPET, name: 'Tapis', price: 3 }, { t: T.GREEN, name: 'Coupole', price: 3 }, { t: T.LANTERN, name: 'Lanterne', price: 4 },
+  { t: T.GOLD, name: 'Or', price: 5 },
+];
+// On peut poser un bloc dans le vide, pas sur un habitant ni sur l'enfant, et collé à un autre bloc (comme dans Minecraft).
+export function canPlace(world, x, y, { px = -9, py = -9 } = {}) {
+  if (x < 1 || x >= W - 1 || y < 1 || y >= H) return false;
+  if (world.solid[y][x] !== T.AIR) return false;
+  if (NPCS.some((n) => Math.floor(n.x) === x && y >= world.ground[x] - 2)) return false;
+  if (Math.floor(px) === x && y >= Math.floor(py - 1.75) && y < py) return false;
+  return [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => world.solid[y + dy]?.[x + dx]);
+}
+export function applyBuild(world, blocks) {
+  for (const [k, t] of Object.entries(blocks || {})) {
+    const [x, y] = k.split(',').map(Number);
+    if (world.solid[y]?.[x] === T.AIR && x > 0 && x < W - 1) world.solid[y][x] = t;
+  }
+}
+
 // ---------- Missions des habitants ----------
 // Chaque habitant donne d'abord une question (un mot de sa salle), puis une mission « ramène-moi 3 … » :
 // les objets sont cachés en ville, souvent en hauteur (il faut sauter !). On recommence avec d'autres mots.
@@ -110,9 +133,9 @@ export function askQuestion(npc, state, { older, dialects = ['ma', 'dz'] } = {})
 }
 
 // Mission de recherche : un objet de la salle de l'habitant, 3 exemplaires cachés à des endroits différents.
-export function fetchQuest(npc, state, world, { older, count = 3 } = {}) {
+export function fetchQuest(npc, state, world, { older, count = 3, room: only } = {}) {
   const r = rng(state.seed + state.round * 31 + 7);
-  const room = npc.room === 'jardin' ? 'cuisine' : npc.room;
+  const room = only || (npc.room === 'jardin' ? 'cuisine' : npc.room);
   const pool = withEmoji(room, older);
   const word = pool[Math.floor(r() * pool.length)];
   // Au moins un objet en hauteur, les autres loin de l'habitant pour obliger à se balader.

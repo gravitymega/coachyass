@@ -696,3 +696,94 @@ body[data-screen=parents] #factory, body[data-screen=parents] #fog { display: no
 .carnet-stats b { display: block; font-size: 22px; }
 .carnet-words { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
 .carnet-words span { background: #eef7ee; border-radius: 10px; padding: 4px 8px; font-size: 14px; }
+
+/* Ville : construire */
+.v-tool { background: rgba(43, 33, 64, .55); color: #fff; }
+.v-tool.on { background: #ffc93c; color: var(--ink); }
+.v-palette { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; background: rgba(43, 33, 64, .7); padding: 6px; border-radius: 14px; max-width: calc(100% - 20px); overflow-x: auto; }
+.v-block { display: flex; flex-direction: column; align-items: center; gap: 2px; background: rgba(255,255,255,.15); border-radius: 10px; padding: 4px; color: #fff; border: 3px solid transparent; }
+.v-block.on { border-color: #ffc93c; }
+.v-block canvas { width: 34px; height: 34px; image-rendering: pixelated; }
+.v-block small { font-size: 11px; font-weight: 800; }
+
+/* Activités */
+.acts-title { margin: 16px 4px 8px; font-size: 20px; }
+.acts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.act-btn { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; background: #fff; border-radius: 18px; padding: 12px 8px; box-shadow: 0 4px 0 rgba(0,0,0,.12); }
+.act-icon { font-size: 40px; line-height: 1; }
+.act-btn b { font-size: 16px; }
+.act-btn small { font-size: 12px; opacity: .75; }
+.ramadan-banner { background: linear-gradient(90deg, #1b2a6b, #3b2a7b); color: #ffe9a8; border-radius: 14px; padding: 10px 14px; font-weight: 800; margin: 10px 0 0; }
+.set-acts { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 2px 10px; }
+#s-act { flex-direction: column; }
+.act-bar { display: flex; align-items: center; gap: 10px; padding: 10px; }
+.act-bar h2 { flex: 1; margin: 0; font-size: clamp(18px, 3vw, 26px); }
+.act-body { flex: 1; overflow-y: auto; padding: 0 14px 20px; display: flex; flex-direction: column; gap: 12px; }
+.act-card { background: #fff; border-radius: 18px; padding: 14px; box-shadow: 0 4px 0 rgba(0,0,0,.1); }
+.act-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
+.act-choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.act-choice { background: #fff; border-radius: 16px; padding: 14px; font-size: 20px; font-weight: 800; box-shadow: 0 4px 0 rgba(0,0,0,.15); min-height: 64px; }
+.act-choice.won { background: #c9f2d1; }
+.act-choice.tried { opacity: .45; }
+.act-choice.reveal { outline: 4px solid #2bb673; }
+.act-big { font-size: clamp(22px, 4vw, 34px); font-weight: 900; text-align: center; margin: 4px 0; }
+.act-ar { font-family: "Amiri", "Noto Naskh Arabic", "Geeza Pro", serif; direction: rtl; font-size: clamp(30px, 6vw, 52px); text-align: center; line-height: 1.6; }
+.act-note { font-size: 14px; opacity: .75; text-align: center; margin: 0; }
+.act-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+.act-tile { background: #fff; border-radius: 16px; padding: 10px; text-align: center; box-shadow: 0 4px 0 rgba(0,0,0,.1); }
+.act-tile.locked { opacity: .45; }
+.act-tile .e { font-size: 34px; display: block; }
+
+/* Activités : détails */
+.go.rec, .act-choice.rec { background: #e5484d !important; color: #fff; animation: popk 1s infinite; }
+.trace-wrap { display: flex; justify-content: center; }
+#tr-canvas { border-radius: 18px; touch-action: none; box-shadow: inset 0 0 0 3px #f0e6d6; }
+.trace-list { gap: 6px; }
+.trace-chip { font-family: "Noto Naskh Arabic","Geeza Pro",serif; font-size: 22px; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; background: #f3eee4; cursor: pointer; }
+.trace-chip.ok { background: #ffe08a; }
+.trace-chip.cur { outline: 3px solid #7a48b8; }
+.duel-score { display: flex; justify-content: space-around; font-size: 20px; margin-bottom: 8px; }
+.duel-score span { padding: 6px 12px; border-radius: 12px; }
+.duel-score span.on { background: #ffe08a; }
+.duel-score b { font-size: 28px; margin-left: 6px; }
+.cu-bowl { min-height: 56px; font-size: 34px; background: #f6efe2; border-radius: 50% / 30%; padding: 8px; margin: 8px auto; max-width: 420px; }
+.cu-steps { text-align: left; max-width: 520px; margin: 8px auto; }
+.mk-paid { min-height: 40px; font-size: 26px; }
+.mk-coin { font-size: 22px; }
+.lantern { font-size: 80px; filter: grayscale(.7); transition: filter .4s; }
+.lantern.on { filter: none; animation: popk 1.4s infinite; text-shadow: 0 0 30px #ffc93c; }
+.prayer-list { display: grid; gap: 6px; max-width: 420px; margin: 10px auto; }
+.prayer-list div { display: flex; justify-content: space-between; background: #f6efe2; border-radius: 12px; padding: 10px 14px; font-size: 20px; }
+.prayer-list div.next { background: #ffe08a; font-weight: 900; }
+.league { display: grid; gap: 8px; }
+.league-row { display: flex; align-items: center; gap: 10px; background: #f6efe2; border-radius: 14px; padding: 12px; font-size: 18px; }
+.league-row b { flex: 1; text-align: left; }
+.league-row:disabled { opacity: .8; }
+.kit { width: 22px; height: 22px; border-radius: 6px; }
+.pitch { position: relative; height: 170px; background: linear-gradient(#5cbf3a, #3f9b3a); border-radius: 16px; overflow: hidden; }
+.goal-net { position: absolute; left: 50%; top: 14px; width: 220px; height: 80px; transform: translateX(-50%); border: 6px solid #fff; border-bottom: 0; background: repeating-linear-gradient(45deg, rgba(255,255,255,.25) 0 2px, transparent 2px 12px); }
+.ball { position: absolute; left: 50%; bottom: 10px; font-size: 34px; transform: translateX(-50%); transition: all .6s ease-out; }
+.ball.shoot-in { bottom: 110px; left: 40%; font-size: 24px; }
+.ball.shoot-out { bottom: 150px; left: 80%; font-size: 22px; opacity: .3; }
+.keeper { position: absolute; left: 50%; top: 50px; width: 46px; height: 40px; border-radius: 12px; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; transition: all .5s; }
+.keeper.dive-save { left: 50%; transform: translateX(-50%) scale(1.3); }
+.keeper.dive-miss { left: 65%; transform: translateX(-50%) rotate(30deg); }
+.bk-cv { border-radius: 16px; touch-action: none; max-width: 100%; }
+.seq { display: grid; gap: 6px; overflow-x: auto; }
+.seq-row { display: flex; align-items: center; gap: 6px; }
+.seq-name { width: 150px; font-weight: 800; font-size: 14px; flex: none; }
+.seq-cell { width: 44px; height: 44px; border-radius: 10px; background: #f3eee4; flex: none; }
+.seq-cell.beat { background: #e9dfcd; }
+.seq-cell.on { background: #7a48b8; }
+.seq-cell.now { outline: 3px solid #ffc93c; }
+.pet { position: relative; display: inline-block; line-height: 1.1; transition: font-size .4s; }
+.pet.hop { animation: pethop .5s; }
+@keyframes pethop { 40% { transform: translateY(-30px) rotate(-8deg); } }
+.pet-wear { position: absolute; top: -18%; left: 50%; transform: translateX(-50%); font-size: .45em; white-space: nowrap; }
+.pet-bars { display: grid; gap: 6px; max-width: 360px; margin: 8px auto; }
+.pet-bars span { display: flex; align-items: center; gap: 8px; font-weight: 800; }
+.pet-bars i { display: block; height: 12px; border-radius: 6px; background: #ffc93c; flex: 1; max-width: 220px; }
+.ph-frame img { max-width: 100%; max-height: 46vh; border-radius: 16px; }
+.noms-card .act-ar { font-size: clamp(40px, 9vw, 70px); }
+.act-btn, .act-card, .act-tile, .act-choice, .league-row, .prayer-list div { color: var(--ink); }
+.acts-title { color: #fff; }

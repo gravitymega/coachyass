@@ -3,8 +3,8 @@ import {
   WORDS, ROOMS, STICKERS, grade, markSeen, mastery, buildLevel, buildCoop,
   isCousin, today, sequenceChoices, missionOfWeek, roomUnlocked, newProgress, shuffle, hasEnglish, EN,
 } from './core.js';
-import { settings, saveSettings, load, save, progressOf, saveProgressOf, putRec, delRec, recKeys, exportBackup, importBackup } from './store.js';
-import { say, stopVoice, sfx, startMusic, stopMusic, voiceFor, frVoices, recordedKeys, preload, audio } from './audio.js';
+import { settings, saveSettings, load, save, progressOf, saveProgressOf, getRec, putRec, delRec, recKeys, exportBackup, importBackup } from './store.js';
+import { playWord, say, stopVoice, sfx, startMusic, stopMusic, voiceFor, frVoices, recordedKeys, preload, audio } from './audio.js';
 import { GAMES } from './games.js';
 import { buildExerciseLevel, buildChallenge, itemsFor, isExerciseRoom, clockSVG } from './exercises.js';
 import * as ART from './art.js';
@@ -12,6 +12,10 @@ import { TALES, TALE_CATS, speakTale, nextTale } from './tales.js';
 import { dailyMissions, dailyState, autoComplete } from './missions.js';
 import { createVille } from './ville.js';
 import { recordDay, weekReport, reportText } from './carnet.js';
+import { ramadanInfo } from './calendrier.js';
+import { ACTS, openAct } from './activites.js';
+import { unheardMessages } from './act-famille.js';
+import { nextPrayerLabel } from './act-monde.js';
 import { initCharacters, mount, react, setMood, charIn, INTRO } from './characters.js';
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -178,6 +182,7 @@ function openMap(greet) {
   const heard = Object.keys(lead.progress.tales || {}).length;
   $('#map-tales').innerHTML = `<span class="mi-icon">📚</span><span><b>Les histoires de ${esc(settings.gm)}</b>Des histoires vraies : l'islam, les savants, les sciences, le monde…${heard ? ` Écoutées : ${heard} / ${TALES.length}` : ''}</span><span class="defi-go">Écouter</span>`;
   $('#map-defi').innerHTML = `<span class="mi-icon">⚡</span><span><b>Défi éclair</b>10 questions de tout le jeu : maths, lecture, darija…${best ? ` Record : ${best}/10` : ''}</span><span class="defi-go">Go !</span>`;
+  renderActs();
   $('#rooms').innerHTML = gameRooms().map((r) => {
     const open = roomUnlocked(r, { levels: levelsDone() }, settings.unlockAll);
     const ws = itemsFor(r.id, lead.kid.older);
@@ -201,6 +206,35 @@ $('#map-defi').addEventListener('click', () => openStart(DEFI));
 $('#map-tales').addEventListener('click', () => { sfx('tap'); openTales(); });
 $('#map-daily').addEventListener('click', () => { sfx('tap'); openDaily(); });
 $('#map-ville').addEventListener('click', () => { sfx('tap'); openVille(); });
+$('#reward-msg').addEventListener('click', () => { sfx('tap'); openAct('messages', actCtx(), { surprise: true }); });
+
+// ---------- Activités (chacune peut être coupée dans les réglages des parents) ----------
+const actOn = (id) => settings.acts?.[id] !== false;
+function renderActs() {
+  const older = players.some((p) => p.kid.older);
+  const list = ACTS.filter((a) => actOn(a.id) && !a.hidden && (!a.older || older));
+  const ri = actOn('ramadan') ? ramadanInfo() : null;
+  $('#map-ramadan').hidden = !ri;
+  if (ri) $('#map-ramadan').textContent = ri.phase === 'ramadan' ? `🌙 Ramadan mbarek ! Jour ${ri.day} du Ramadan. La ville est illuminée ce soir.`
+    : ri.phase === 'aid' ? '🎉 Aïd mbarek ! Saha 3idkoum !' : ri.phase === 'aidkbir' ? '🐑 Aïd el-Kebir mbarek !' : `🌙 Le Ramadan arrive dans ${ri.days} jours, inchallah.`;
+  const desc = (a) => (a.id === 'priere' ? nextPrayerLabel(settings) : a.id === 'messages' && unheardMessages(settings).length ? `💌 ${unheardMessages(settings).length} nouveau(x) message(s) !` : a.desc);
+  $('#acts').innerHTML = list.map((a) => `<button class="act-btn" data-act="${a.id}"><span class="act-icon">${a.icon}</span><b>${esc(a.title)}</b><small>${esc(desc(a))}</small></button>`).join('');
+}
+$('#acts').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-act]');
+  if (!b) return;
+  sfx('tap');
+  openAct(b.dataset.act, actCtx());
+});
+function actCtx() {
+  return {
+    $, esc, settings, players, P: () => players[0], say, sfx, stopVoice, saveAll, confetti, praise, show, playWord, getRec, putRec, delRec, recKeys,
+    load, save, saveSettings, audio, DIALECT_NAME, FLAG, cap, openVille,
+    stars(n) { players.forEach((p) => { p.progress.stars += n; }); saveAll(); },
+    back() { stopVoice(); openMap(); },
+  };
+}
+$('#act-back').addEventListener('click', () => { sfx('tap'); document.dispatchEvent(new Event('act-leave')); stopVoice(); openMap(); });
 $('#rooms').addEventListener('click', (e) => {
   const b = e.target.closest('[data-room]');
   if (!b) return;
@@ -521,6 +555,7 @@ function finishLevel() {
   const kind = defi ? 'defi' : room.id === 'poppy' ? 'poppy' : 'room';
   const missionsDone = players.flatMap((p) => autoComplete(p.progress, missionsOf(p), today(), { kind, school: !!room.school && !room.fan }).map((m) => ({ p, m })));
   missionsDone.forEach(({ p }) => { p.progress.stars += 3; });
+  players.forEach((p) => { p.progress.coins = (p.progress.coins || 0) + 5; }); // 5 pièces pour construire en ville
   saveAll();
   sfx('win');
   confetti(90);
@@ -540,6 +575,7 @@ function finishLevel() {
   $('#reward-fog').textContent = defi
     ? records.map((x, k) => `⚡ ${coop() ? players[k].kid.name + ' : ' : ''}${x.sc}/10${x.record ? ' — nouveau record !' : x.best ? ` (record : ${x.best}/10)` : ''}`).join(' · ')
     : m ? `🌫️ Le brouillard recule : ${room.name} réveillé à ${m} %` : '🌫️ Rejoue pour faire reculer le brouillard !';
+  $('#reward-msg').hidden = !(actOn('messages') && unheardMessages(settings).length);
   $('#reward-mission').hidden = !missionsDone.length;
   $('#reward-mission').textContent = missionsDone.map(({ p, m }) => `📋 ${coop() ? p.kid.name + ' : ' : ''}mission de ${m.from === 'papa' ? 'Papa' : 'Maman'} réussie ! +3 ⭐`).join(' · ');
   show('reward');
@@ -769,6 +805,7 @@ function renderSettings() {
   $('#set-sfx').checked = settings.sfx;
   $('#set-unlock-all').checked = settings.unlockAll;
   $('#set-poppy').checked = settings.poppy;
+  $('#set-acts').innerHTML = ACTS.filter((a) => !a.noToggle).map((a) => `<label class="check"><input type="checkbox" data-act-set="${a.id}" ${actOn(a.id) ? 'checked' : ''}> ${a.icon} ${esc(a.title)}</label>`).join('');
   $('#set-scarf').checked = settings.mamaScarf;
   $('#set-bilingual').value = settings.bilingual;
   $('#set-limit').value = String(settings.limit);
@@ -792,6 +829,7 @@ $('#tab-settings').addEventListener('change', (e) => {
   if (t.id === 'set-sfx') settings.sfx = t.checked;
   if (t.id === 'set-unlock-all') settings.unlockAll = t.checked;
   if (t.id === 'set-poppy') settings.poppy = t.checked;
+  if (t.dataset.actSet) settings.acts = { ...(settings.acts || {}), [t.dataset.actSet]: t.checked };
   if (t.id === 'set-scarf') settings.mamaScarf = t.checked;
   if (t.id === 'set-bilingual') settings.bilingual = t.value;
   if (t.id === 'set-limit') settings.limit = +t.value;
@@ -907,7 +945,7 @@ $('#set-reset').addEventListener('click', () => {
 
 // ---------- La ville de Hbibiti : courir, sauter, parler aux habitants ----------
 let ville = null;
-function openVille() {
+function openVille(opts = {}) {
   if (!players.length) return openHome();
   if (timeUp()) return showTimeUp();
   show('ville');
@@ -921,6 +959,16 @@ function openVille() {
     kidLook: kidLook(players[0].kid),
     kidLook2: coop() ? kidLook(players[1].kid) : null,
     scarf: settings.mamaScarf,
+    // Construire : les blocs sont à toute la famille, les pièces sont celles de l'enfant qui joue (le premier en mode Ensemble).
+    build: { blocks: load('build', {}) },
+    saveBuild() { save('build', this.build.blocks); },
+    wallet: () => players[0].progress.coins || 0,
+    earn(n) { players.forEach((p) => { p.progress.coins = (p.progress.coins || 0) + n; }); saveAll(); },
+    spend(n) { const p = players[0].progress; if ((p.coins || 0) < n) return false; p.coins -= n; saveAll(); return true; },
+    refund(n) { players[0].progress.coins = (players[0].progress.coins || 0) + n; saveAll(); },
+    ramadan: actOn('ramadan'),
+    night: !!opts.night || (actOn('ramadan') && ['ramadan', 'aid'].includes(ramadanInfo()?.phase)),
+    startBuild: !!opts.build,
     say, sfx, stop: stopVoice,
     // Une question posée par un habitant : 2 essais, comme dans les salles.
     ask(question, box, textEl) {

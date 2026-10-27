@@ -1,6 +1,6 @@
 // La ville de Hbibiti : le monde en blocs (dessin, course, saut, habitants, objets à ramasser).
 // La logique pure (plan, missions) est dans ville-core.js ; app.js fournit les joueurs, la voix et les récompenses.
-import { H, W, GROUND, T, NPCS, ZONES, makeWorld, isSolid, newQuests, askQuestion, fetchQuest, coinSpots, nextGiver } from './ville-core.js';
+import { H, W, GROUND, T, NPCS, ZONES, SHOP, makeWorld, isSolid, newQuests, askQuestion, fetchQuest, coinSpots, nextGiver, canPlace, applyBuild } from './ville-core.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -14,6 +14,7 @@ const PAL = {
   [T.GLASS]: ['#8fd3f4', '#6fc1ea', '#c7ecff', '#4fa3d1'], [T.SAND]: ['#e94f4f', '#f6c445', '#f4efe4', '#3b7dd8'],
   [T.ROOF]: ['#c0392b', '#a93226', '#d35445', '#7f2a20'], [T.GREEN]: ['#2bb673', '#239a61', '#45c98a', '#1c7d4f'],
   [T.GOLD]: ['#ffc93c', '#f0b52a', '#ffe08a', '#c98f12'],
+  [T.CARPET]: ['#b22234', '#8e1b2a', '#f6c445', '#1f4e9a'], [T.LANTERN]: ['#ffc93c', '#f0a020', '#fff3a8', '#7a4e2a'],
 };
 function makeTexture(t, seed) {
   const c = document.createElement('canvas'); c.width = 16; c.height = 16;
@@ -29,6 +30,8 @@ function makeTexture(t, seed) {
     if (t === T.SAND) col = [a, hi, b, hi][Math.floor(x / 4) % 4];
     if (t === T.ROOF) col = (x + y) % 6 === 0 ? lo : (r() < 0.7 ? a : b);
     if (t === T.WHITE) col = r() < 0.85 ? a : b;
+    if (t === T.CARPET) col = (x === 0 || x === 15 || y === 0 || y === 15) ? hi : ((x + y) % 8 === 0 || (x - y + 16) % 8 === 0) ? lo : a;
+    if (t === T.LANTERN) col = (y < 2 || y > 13) ? lo : (x < 3 || x > 12) ? lo : (x + y) % 4 === 0 ? hi : (y % 4 === 0 ? b : hi);
     g.fillStyle = col; g.fillRect(x, y, 1, 1);
   }
   return c;
@@ -82,6 +85,9 @@ function drawPerson(g, look, x, y, s, t, facing = 1, moving = false) {
 export function createVille(api) {
   // api : { players, older, dialects, kidLook, kidLook2, say, sfx, onCorrect(word, firstTry), onMiss(word), onQuestDone(npc, kind), onCoins(n), scarf }
   const world = makeWorld();
+  const build = api.build || { blocks: {} };
+  applyBuild(world, build.blocks);
+  world.spots = world.spots.filter((sp) => !world.solid[Math.floor(sp.y)]?.[Math.floor(sp.x)]);
   const canvas = $('#ville-canvas');
   const g = canvas.getContext('2d');
   const tex = {};
@@ -93,6 +99,7 @@ export function createVille(api) {
   const buddy = { x: 4.5, y: GROUND, facing: 1 };
   const keys = { left: false, right: false, jump: false };
   let jumpQueued = 0, raf = 0, last = 0, t = 0, near = null, dialog = false, coinCount = 0;
+  let building = false, pick = SHOP[0], view = { camX: 0, camY: 0, s: 1 };
   if (api.scarf === false) LOOKS.maman.scarf = undefined;
 
   function resize() {
@@ -143,7 +150,7 @@ export function createVille(api) {
     buddy.x += (target - buddy.x) * Math.min(1, dt * 4); buddy.y += (p.y - buddy.y) * Math.min(1, dt * 6); buddy.facing = p.facing;
     // Ramasser pièces et objets
     for (const c of coins) if (!c.taken && Math.abs(c.x - p.x) < 0.7 && c.y > p.y - PH - 0.3 && c.y < p.y + 0.3) {
-      c.taken = true; coinCount++; api.sfx('pop');
+      c.taken = true; coinCount++; api.sfx('pop'); api.earn?.(1);
       if (coinCount % 10 === 0) api.onCoins(1);
     }
     if (fetch) for (const it of fetch.items) if (!it.taken && Math.abs(it.x - p.x) < 0.8 && it.y > p.y - PH - 0.4 && it.y < p.y + 0.4) {
@@ -158,6 +165,10 @@ export function createVille(api) {
   const npcY = (n) => world.ground[Math.floor(n.x)];
 
   // ----- Dessin -----
+  function glow(x, y, r) {
+    const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, 'rgba(255,214,120,.55)'); gr.addColorStop(1, 'rgba(255,214,120,0)');
+    g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2);
+  }
   function draw() {
     const cw = canvas.width, ch = canvas.height;
     const s = ch / 12; // taille d'un bloc à l'écran
@@ -166,10 +177,20 @@ export function createVille(api) {
     const camY = H - 12;
     g.imageSmoothingEnabled = false;
     // Ciel et soleil, nuages qui défilent doucement.
-    const sky = g.createLinearGradient(0, 0, 0, ch); sky.addColorStop(0, '#6ec6ff'); sky.addColorStop(1, '#c9ecff');
+    view = { camX, camY, s };
+    const night = !!api.night;
+    const sky = g.createLinearGradient(0, 0, 0, ch);
+    sky.addColorStop(0, night ? '#0b1640' : '#6ec6ff'); sky.addColorStop(1, night ? '#2a2f6b' : '#c9ecff');
     g.fillStyle = sky; g.fillRect(0, 0, cw, ch);
-    g.fillStyle = '#fff3a8'; g.fillRect(cw * 0.82, ch * 0.08, s * 1.4, s * 1.4);
-    g.fillStyle = 'rgba(255,255,255,.9)';
+    if (night) {
+      g.fillStyle = '#fff';
+      for (let i = 0; i < 60; i++) { const sx = ((i * 97.3 - camX * s * 0.1) % cw + cw) % cw, sy = (i * 53.1) % (ch * 0.55); g.globalAlpha = 0.5 + 0.5 * Math.sin(t * 2 + i); g.fillRect(sx, sy, 2, 2); }
+      g.globalAlpha = 1;
+      // Le croissant de lune du Ramadan
+      g.fillStyle = '#ffe9a8'; g.beginPath(); g.arc(cw * 0.84, ch * 0.14, s * 0.8, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#0f1a48'; g.beginPath(); g.arc(cw * 0.84 + s * 0.35, ch * 0.14 - s * 0.15, s * 0.7, 0, Math.PI * 2); g.fill();
+    } else { g.fillStyle = '#fff3a8'; g.fillRect(cw * 0.82, ch * 0.08, s * 1.4, s * 1.4); }
+    g.fillStyle = night ? 'rgba(255,255,255,0)' : 'rgba(255,255,255,.9)';
     for (let i = 0; i < 8; i++) { const cx = ((i * 23 - camX * 0.3 + t * 0.4) % (viewW + 10) + viewW + 10) % (viewW + 10) - 5; g.fillRect(cx * s, (1 + (i % 3)) * s, s * 3, s * 0.8); g.fillRect((cx + 0.6) * s, (0.6 + (i % 3)) * s, s * 1.6, s * 0.6); }
     const x0 = Math.floor(camX), x1 = Math.min(W - 1, Math.ceil(camX + viewW));
     for (let y = 0; y < H; y++) for (let x = x0; x <= x1; x++) {
@@ -178,6 +199,18 @@ export function createVille(api) {
       if (d && !world.solid[y][x]) { g.drawImage(tex[d][(x * 7 + y) % 3], sx, sy, s + 1, s + 1); g.fillStyle = 'rgba(0,0,30,.12)'; g.fillRect(sx, sy, s + 1, s + 1); }
       const b = world.solid[y][x];
       if (b) g.drawImage(tex[b][(x * 3 + y * 5) % 3], sx, sy, s + 1, s + 1);
+    }
+    if (night) {
+      g.fillStyle = 'rgba(10,12,50,.42)'; g.fillRect(0, 0, cw, ch);
+      // Guirlandes de lanternes entre les maisons, et lumière des lanternes posées par les enfants.
+      for (let x = x0; x <= x1; x++) {
+        if (x % 4 === 0) { const lx = (x - camX + 0.5) * s, ly = (GROUND - 6.4 - camY + Math.sin(x) * 0.3) * s; glow(lx, ly, s * 0.9); g.fillStyle = ['#ffc93c', '#ff6f6f', '#7ee0a1'][x % 3]; g.fillRect(lx - s * 0.12, ly - s * 0.18, s * 0.24, s * 0.36); }
+        for (let y = 0; y < H; y++) if (world.solid[y][x] === T.LANTERN) glow((x - camX + 0.5) * s, (y - camY + 0.5) * s, s * 1.8);
+      }
+    }
+    if (building) {
+      g.strokeStyle = 'rgba(255,255,255,.25)'; g.lineWidth = 1;
+      for (let x = x0; x <= x1; x++) for (let y = 0; y < H; y++) if (canPlace(world, x, y, p)) g.strokeRect((x - camX) * s + 2, (y - camY) * s + 2, s - 4, s - 4);
     }
     // Panneaux des quartiers
     g.font = `bold ${s * 0.42}px ${getComputedStyle(document.body).fontFamily}`; g.textAlign = 'center';
@@ -222,7 +255,7 @@ export function createVille(api) {
       const dx = goal.x - p.x;
       $('#v-arrow').textContent = Math.abs(dx) < 1.5 ? '⬇️' : dx > 0 ? '➡️' : '⬅️';
     } else $('#v-arrow').textContent = '';
-    $('#v-coins').textContent = `🪙 ${coinCount}`;
+    $('#v-coins').textContent = `🪙 ${api.wallet ? api.wallet() : coinCount}`;
   }
   function objective() {
     if (fetch) {
@@ -257,7 +290,7 @@ export function createVille(api) {
     }
     if (q.step === 1) {
       if (fetch) return openDialog(npc, `Finis d'abord la mission de ${fetch.npc.name}, puis reviens me voir !`);
-      const f = fetchQuest(npc, q, world, { older: api.older() });
+      const f = fetchQuest(npc, q, world, { older: api.older(), room: api.night ? 'fete' : undefined });
       fetch = { npc, ...f };
       api.say(`Peux-tu me trouver 3 fois : ${f.word.fr} ? Ils sont cachés dans la ville.`);
       return openDialog(npc, `Peux-tu me trouver 3 ${f.word.emoji} ? Ils sont cachés dans la ville, parfois tout en haut !`, null, null, true);
@@ -289,6 +322,38 @@ export function createVille(api) {
     });
   }
 
+  // ----- Construire : choisir un bloc, toucher une case pour le poser ou enlever un bloc qu'on a posé -----
+  const palette = $('#v-palette');
+  function renderPalette() {
+    palette.innerHTML = SHOP.map((b, i) => `<button class="v-block ${b === pick ? 'on' : ''}" data-i="${i}" title="${esc(b.name)}"><canvas width="16" height="16"></canvas><small>${b.price}🪙</small></button>`).join('');
+    palette.querySelectorAll('canvas').forEach((c, i) => c.getContext('2d').drawImage(tex[SHOP[i].t][0], 0, 0));
+  }
+  palette.onclick = (e) => { const b = e.target.closest('[data-i]'); if (b) { pick = SHOP[+b.dataset.i]; api.sfx('tap'); renderPalette(); } };
+  $('#v-build').onclick = () => {
+    building = !building; api.sfx('tap');
+    $('#v-build').classList.toggle('on', building); palette.hidden = !building;
+    if (building) { renderPalette(); api.say('Choisis un bloc, puis touche une case pour construire. Touche ton bloc pour l’enlever.'); }
+  };
+  palette.hidden = true; $('#v-build').classList.remove('on');
+  if (api.startBuild) setTimeout(() => $('#v-build').click(), 300);
+  const onTap = (e) => {
+    if (!building || dialog) return;
+    const r = canvas.getBoundingClientRect(); const k = canvas.width / r.width;
+    const x = Math.floor((e.clientX - r.left) * k / view.s + view.camX), y = Math.floor((e.clientY - r.top) * k / view.s + view.camY);
+    const key = `${x},${y}`;
+    if (build.blocks[key] && world.solid[y]?.[x] === build.blocks[key]) {
+      const b = SHOP.find((o) => o.t === build.blocks[key]);
+      world.solid[y][x] = T.AIR; delete build.blocks[key]; api.refund(b ? b.price : 1); api.sfx('pop'); api.saveBuild(); return;
+    }
+    if (!canPlace(world, x, y, p)) return api.sfx('miss');
+    if (!api.spend(pick.price)) { api.sfx('miss'); return api.say('Il te manque des pièces ! Ramasse les pièces de la ville ou réussis un niveau.'); }
+    world.solid[y][x] = pick.t; build.blocks[key] = pick.t; api.sfx('ok'); api.saveBuild();
+  };
+  canvas.addEventListener('pointerdown', onTap);
+  $('#v-night').hidden = !api.ramadan;
+  $('#v-night').textContent = api.night ? '☀️' : '🌙';
+  $('#v-night').onclick = () => { api.night = !api.night; $('#v-night').textContent = api.night ? '☀️' : '🌙'; api.sfx('chime'); if (api.night) api.say('Ramadan mbarek ! La ville est illuminée. Les habitants préparent la fête.'); };
+
   // ----- Boucle -----
   function loop(now) {
     const dt = Math.min(0.033, (now - last) / 1000 || 0); last = now; t += dt;
@@ -299,8 +364,9 @@ export function createVille(api) {
   resize();
   raf = requestAnimationFrame((n) => { last = n; loop(n); });
   return {
-    stop() { cancelAnimationFrame(raf); window.removeEventListener('keydown', kd); window.removeEventListener('keyup', ku); window.removeEventListener('resize', resize); },
+    stop() { cancelAnimationFrame(raf); canvas.removeEventListener('pointerdown', onTap); window.removeEventListener('keydown', kd); window.removeEventListener('keyup', ku); window.removeEventListener('resize', resize); },
     get state() { return { p: { ...p }, quests, fetch, coins: coinCount }; },
+    tap(x, y) { const r = canvas.getBoundingClientRect(), k = canvas.width / r.width; onTap({ clientX: r.left + ((x - view.camX + 0.5) * view.s) / k, clientY: r.top + ((y - view.camY + 0.5) * view.s) / k }); },
     teleport(x, y) { p.x = x; p.y = y ?? world.ground[Math.floor(x)]; p.vy = 0; },
   };
 }

@@ -54,7 +54,20 @@
   <button class="mission ville-btn" id="map-ville"></button>
   <button class="mission daily-btn" id="map-daily"></button>
   <button class="mission tales-btn" id="map-tales"></button>
+  <p class="ramadan-banner" id="map-ramadan" hidden></p>
+  <h3 class="acts-title">🎈 Les activités</h3>
+  <div id="acts" class="acts"></div>
   <div id="rooms" class="rooms"></div>
+</section>
+
+<!-- Activités -->
+<section id="s-act" class="screen">
+  <header class="bar act-bar">
+    <button class="round" id="act-back" aria-label="Retour">⬅</button>
+    <h2 id="act-title"></h2>
+    <span class="pill" id="act-pill"></span>
+  </header>
+  <div id="act-body" class="act-body"></div>
 </section>
 
 <!-- Bismillah -->
@@ -105,6 +118,7 @@
   <div class="chest" id="reward-chest" hidden></div>
   <p class="fog-text" id="reward-fog"></p>
   <p class="reward-mission" id="reward-mission" hidden></p>
+  <button class="go alt" id="reward-msg" hidden>💌 Surprise : un message des grands-parents !</button>
   <div class="row">
     <button class="go" id="reward-again">Rejouer 🔁</button>
     <button class="go alt" data-go="map">L'usine 🏭</button>
@@ -119,7 +133,10 @@
       <button class="round" id="ville-back" aria-label="Retour à l'usine">⬅</button>
       <div class="v-goal"><span id="v-arrow"></span> <span id="v-goal"></span></div>
       <span class="pill" id="v-coins">🪙 0</span>
+      <button class="round v-tool" id="v-night" aria-label="Nuit de Ramadan" hidden>🌙</button>
+      <button class="round v-tool" id="v-build" aria-label="Construire">🧱</button>
     </div>
+    <div class="v-palette" id="v-palette" hidden></div>
     <div class="v-pad">
       <button class="v-btn" id="v-left" aria-label="Aller à gauche">◀</button>
       <button class="v-btn" id="v-right" aria-label="Aller à droite">▶</button>
@@ -259,6 +276,7 @@
     <label class="check"><input type="checkbox" id="set-sfx"> Petits sons du jeu (applaudissements, sifflet)</label>
     <label class="check"><input type="checkbox" id="set-unlock-all"> Ouvrir toutes les salles tout de suite</label>
     <label class="check"><input type="checkbox" id="set-scarf"> Maman porte le foulard dans le jeu</label>
+    <fieldset class="field"><legend>Activités proposées aux enfants</legend><div id="set-acts" class="set-acts"></div></fieldset>
     <label class="check"><input type="checkbox" id="set-poppy"> Coin Poppy Playtime (questions sur les personnages du jeu, sans images)</label>
     <label class="field">Temps de jeu par jour et par enfant
       <select id="set-limit"><option value="0">Pas de limite</option><option value="10">10 min</option><option value="15">15 min</option><option value="20">20 min</option><option value="30">30 min</option></select>
