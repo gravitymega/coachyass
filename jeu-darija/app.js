@@ -4,11 +4,12 @@ import {
   isCousin, today, sequenceChoices, missionOfWeek, roomUnlocked, newProgress, shuffle,
 } from './core.js';
 import { settings, saveSettings, load, save, progressOf, saveProgressOf, putRec, delRec, recKeys, exportBackup, importBackup } from './store.js';
-import { say, stopVoice, sfx, startMusic, stopMusic, voiceFor, audio } from './audio.js';
+import { say, stopVoice, sfx, startMusic, stopMusic, voiceFor, frVoices, recordedKeys, preload, audio } from './audio.js';
 import { GAMES } from './games.js';
 import { buildExerciseLevel, buildChallenge, itemsFor, isExerciseRoom, clockSVG } from './exercises.js';
 import * as ART from './art.js';
 import { TALES, TALE_CATS, speakTale, nextTale } from './tales.js';
+import { dailyMissions, dailyState, autoComplete } from './missions.js';
 import { initCharacters, mount, react, setMood, charIn, INTRO } from './characters.js';
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -38,7 +39,9 @@ function show(id) {
   current = id;
   document.body.dataset.screen = id;
   if (id !== 'play' && id !== 'learn') stopVoice();
-  if (['map', 'start', 'learn', 'play', 'reward', 'album'].includes(id)) startMusic(); else stopMusic();
+  if (['map', 'start', 'learn', 'play', 'reward', 'album'].includes(id)) startMusic();
+  else if (['tales', 'tale', 'daily'].includes(id)) startMusic(true);
+  else stopMusic();
   if (id !== 'tale') taleTok++; // quitter une histoire arrête la lecture
 }
 document.addEventListener('click', (e) => {
@@ -96,7 +99,7 @@ const STORY = [
   () => ({ art: `<div class="fog-art">🌫️<span>🧸</span><span>🤖</span><span>🦄</span></div>`, text: 'Mais le brouillard de l’oubli est arrivé… Mes jouets se sont endormis : ils ont oublié leurs mots !' }),
   () => ({ art: `<div class="trio">${ART.grappo()}${ART.assad()}${ART.fifi()}</div>`, text: 'Avec Grappo le gant magique, Assad le lion et Fifi la fennec, aide-moi à les réveiller. Chaque mot appris fait reculer le brouillard. Yallah !' }),
 ];
-function openStory() { storyI = 0; showStory(); show('story'); }
+function openStory() { storyI = 0; show('story'); showStory(); }
 function showStory() {
   const s = STORY[storyI]();
   $('#story-art').innerHTML = s.art;
@@ -137,8 +140,10 @@ function showTimeUp() {
 // ---------- L'usine ----------
 const HOSTS = { grappo: ART.grappo, assad: ART.assad, fifi: ART.fifi, dada: ART.dada, lantern: () => ART.lantern(), tajine: ART.tajine, rocket: () => ART.rocket(), books: ART.books, claw: ART.clawMachine, clock: () => clockSVG(3, 0) };
 // Le copain qui accompagne chaque salle (il parle, se réjouit et encourage).
-const BUDDY = { poppy: 'grappo', hall: 'hbibiti', stade: 'fifi', jardin: 'hbibiti', maths: 'grappo', lecture: 'hbibiti', gym: 'assad', formes: 'fifi', cuisine: 'grappo', musique: 'fifi', defi: 'assad' };
+const BUDDY = { poppy: 'grappo', hall: 'hbibiti', stade: 'papa', jardin: 'hbibiti', maths: 'grappo', lecture: 'hbibiti', gym: 'assad', formes: 'fifi', cuisine: 'maman', musique: 'fifi', defi: 'assad' };
 const buddyOf = (r) => BUDDY[r?.id] || 'hbibiti';
+// Dessine un personnage (Maman avec ou sans foulard, selon le réglage des parents).
+const drawChar = (name, mood = 'happy') => (name === 'maman' ? ART.maman(mood, '', settings.mamaScarf) : ART[name](mood));
 // Défi éclair : questions mêlées de toutes les salles ouvertes, chacune dans la scène de sa salle.
 const DEFI = { id: 'defi', name: 'Défi éclair', theme: '10 questions de tout le jeu', game: 'rocket', host: 'rocket' };
 // Le coin Poppy Playtime peut être masqué par les parents.
@@ -163,6 +168,8 @@ function openMap(greet) {
   $('#map-mission').innerHTML = `<span class="mi-icon">${done ? '✅' : '📞'}</span><span><b>Mission de la semaine</b>${esc(mission.text)}${done ? ' <em>Réussie, bravo !</em>' : ''}</span>`;
   const best = Math.max(...players.map((p) => p.progress.best || 0));
   $('#map-defi').hidden = !levelsDone();
+  const md = players.reduce((a, p) => a + Object.keys(dailyState(p.progress, today()).done).length, 0);
+  $('#map-daily').innerHTML = `<span class="daily-duo">${ART.papa()}${drawChar('maman')}</span><span><b>Les missions de Papa et Maman</b>${md}/${players.length * 3} réussies aujourd'hui</span><span class="defi-go">Voir</span>`;
   const heard = Object.keys(lead.progress.tales || {}).length;
   $('#map-tales').innerHTML = `<span class="mi-icon">📚</span><span><b>Les histoires de ${esc(settings.gm)}</b>Des histoires vraies : l'islam, les savants, les sciences, le monde…${heard ? ` Écoutées : ${heard} / ${TALES.length}` : ''}</span><span class="defi-go">Écouter</span>`;
   $('#map-defi').innerHTML = `<span class="mi-icon">⚡</span><span><b>Défi éclair</b>10 questions de tout le jeu : maths, lecture, darija…${best ? ` Record : ${best}/10` : ''}</span><span class="defi-go">Go !</span>`;
@@ -187,6 +194,7 @@ function openMap(greet) {
 }
 $('#map-defi').addEventListener('click', () => openStart(DEFI));
 $('#map-tales').addEventListener('click', () => { sfx('tap'); openTales(); });
+$('#map-daily').addEventListener('click', () => { sfx('tap'); openDaily(); });
 $('#rooms').addEventListener('click', (e) => {
   const b = e.target.closest('[data-room]');
   if (!b) return;
@@ -197,7 +205,7 @@ function openStart(r) {
   room = r;
   $('#start-room').textContent = room.name;
   const b = buddyOf(room);
-  const host = mount($('#start-host'), ART[b](), { speaker: true });
+  const host = mount($('#start-host'), drawChar(b), { speaker: true });
   show('start');
   setTimeout(() => host?.classList.add('act'), 300);
   setTimeout(() => host?.classList.remove('act'), 1700);
@@ -223,6 +231,7 @@ $('#btn-bismillah').addEventListener('click', () => {
   level.stars = players.map(() => 0);
   ctx.score = 0; ctx.streak = 0;
   say('Bismillah !');
+  preload(level.questions.flatMap((x) => (x.type === 'gen' ? [...x.say, ...x.answer.say] : [])));
   if (level.learn.length) showLearn(); else startPlay();
 });
 
@@ -239,6 +248,7 @@ function showLearn() {
     b.hidden = !!w.phrase || !settings.dialects.includes(d);
     $('.lat', b).textContent = w[d].lat;
     $('.ar', b).textContent = settings.arabic && anyReader() ? w[d].ar : '';
+    $('.dia-who', b).innerHTML = drawChar(d === 'ma' ? 'papa' : 'maman');
   }
   const both = $('#learn-both');
   both.hidden = !w.phrase;
@@ -273,7 +283,7 @@ $('#learn-next').addEventListener('click', () => {
 });
 
 function startPlay() {
-  mount($('#play-buddy'), ART[buddyOf(room)](), { speaker: true });
+  mount($('#play-buddy'), drawChar(buddyOf(room)), { speaker: true });
   show('play');
   $('#play-dots').innerHTML = level.questions.map((qq) => `<i>${coop() ? esc(players[qq.player].kid.avatar) : ''}</i>`).join('');
   nextQuestion();
@@ -486,13 +496,16 @@ function finishLevel() {
     shown.push(st);
     if (p.progress.chest !== today()) { p.progress.chest = today(); p.progress.stars += 3; chest = true; }
   });
+  const kind = defi ? 'defi' : room.id === 'poppy' ? 'poppy' : 'room';
+  const missionsDone = players.flatMap((p) => autoComplete(p.progress, missionsOf(p), today(), { kind, school: !!room.school && !room.fan }).map((m) => ({ p, m })));
+  missionsDone.forEach(({ p }) => { p.progress.stars += 3; });
   saveAll();
   sfx('win');
   confetti(90);
   const lead = players[0];
   const m = defi ? 0 : Math.round(mastery(lead.progress, itemsFor(room.id, lead.kid.older)) * 100);
   $('#reward-sticker').innerHTML = `<div class="reward-char"></div>` + shown.map((st) => `<div class="st-wrap"><span class="st">${st.e}</span><small>${esc(st.n)}</small></div>`).join('');
-  const rc = mount($('#reward-sticker .reward-char'), ART[buddyOf(room)](), { speaker: true });
+  const rc = mount($('#reward-sticker .reward-char'), drawChar(buddyOf(room)), { speaker: true });
   setTimeout(() => setMood(rc, 'cheer', 2400), 200);
   $('#reward-sticker').classList.toggle('two', shown.length > 1);
   const stars = level.stars.reduce((a, b) => a + b, 0);
@@ -505,6 +518,8 @@ function finishLevel() {
   $('#reward-fog').textContent = defi
     ? records.map((x, k) => `⚡ ${coop() ? players[k].kid.name + ' : ' : ''}${x.sc}/10${x.record ? ' — nouveau record !' : x.best ? ` (record : ${x.best}/10)` : ''}`).join(' · ')
     : m ? `🌫️ Le brouillard recule : ${room.name} réveillé à ${m} %` : '🌫️ Rejoue pour faire reculer le brouillard !';
+  $('#reward-mission').hidden = !missionsDone.length;
+  $('#reward-mission').textContent = missionsDone.map(({ p, m }) => `📋 ${coop() ? p.kid.name + ' : ' : ''}mission de ${m.from === 'papa' ? 'Papa' : 'Maman'} réussie ! +3 ⭐`).join(' · ');
   show('reward');
   say('Alhamdulillah !', 200, coop() ? `Bravo ${names()} !` : `Bravo ${lead.kid.name}, tu as réveillé ${mid(shown[0].n)} !`, ...(chest ? [`Et voici le coffre de ${settings.gm} !`] : []));
 }
@@ -731,6 +746,7 @@ function renderSettings() {
   $('#set-sfx').checked = settings.sfx;
   $('#set-unlock-all').checked = settings.unlockAll;
   $('#set-poppy').checked = settings.poppy;
+  $('#set-scarf').checked = settings.mamaScarf;
   $('#set-limit').value = String(settings.limit);
   $('#set-kids').innerHTML = settings.kids.map((k, i) => `
     <div class="kid-set" data-i="${i}">
@@ -738,6 +754,8 @@ function renderSettings() {
       <input data-f="name" value="${esc(k.name)}" maxlength="16" aria-label="Prénom">
       <label class="check"><input type="checkbox" data-f="older" ${k.older ? 'checked' : ''}> sait lire (6 ans et +)</label>
     </div>`).join('');
+  $('#set-voice').value = settings.voice;
+  $('#set-frvoice').innerHTML = `<option value="">Automatique (la plus naturelle)</option>` + frVoices().map((x) => `<option ${x.name === settings.frVoice ? 'selected' : ''}>${esc(x.name)}</option>`).join('');
   const v = { fr: voiceFor('fr'), ar: voiceFor('ar') };
   $('#voice-info').textContent = `Voix de cette tablette — français : ${v.fr ? v.fr.name : 'aucune'} ; arabe : ${v.ar ? v.ar.name + ' (arabe standard, pas la darija)' : 'aucune (les mots sont lus en français, très approximatif)'}. Vos enregistrements passent toujours en premier.`;
 }
@@ -750,7 +768,10 @@ $('#tab-settings').addEventListener('change', (e) => {
   if (t.id === 'set-sfx') settings.sfx = t.checked;
   if (t.id === 'set-unlock-all') settings.unlockAll = t.checked;
   if (t.id === 'set-poppy') settings.poppy = t.checked;
+  if (t.id === 'set-scarf') settings.mamaScarf = t.checked;
   if (t.id === 'set-limit') settings.limit = +t.value;
+  if (t.id === 'set-voice') settings.voice = t.value;
+  if (t.id === 'set-frvoice') settings.frVoice = t.value;
   const ks = t.closest('.kid-set');
   if (ks) {
     const k = settings.kids[+ks.dataset.i];
@@ -769,7 +790,19 @@ $('#set-unlock').addEventListener('click', () => {
   }
   alert('10 minutes de plus pour aujourd’hui.');
 });
-$('#set-testvoice').addEventListener('click', () => say('Salam ! Voici la voix de la tablette.', { word: WORDS[0], d: 'ma' }));
+$('#set-testvoice').addEventListener('click', () => say('Salam ya galbi ! Je suis Hbibiti. Viens, on apprend ensemble.', { word: WORDS[0], d: 'ma' }));
+// Garder toutes les voix enregistrées sur la tablette, pour jouer sans internet.
+$('#set-dlvoices').addEventListener('click', async () => {
+  const keys = recordedKeys();
+  const out = $('#dlvoices-state');
+  if (!keys.length) { out.textContent = 'Aucune voix enregistrée trouvée.'; return; }
+  let n = 0;
+  for (let i = 0; i < keys.length; i += 6) {
+    await Promise.all(keys.slice(i, i + 6).map((k) => fetch(`voix/${k}.mp3`).then(() => { n++; }).catch(() => {})));
+    out.textContent = `Téléchargement : ${n} / ${keys.length}…`;
+  }
+  out.textContent = `C'est prêt : ${n} phrases gardées sur la tablette.`;
+});
 $('#backup-export').addEventListener('click', async () => {
   const blob = await exportBackup();
   const a = document.createElement('a');
@@ -817,6 +850,64 @@ $('#set-reset').addEventListener('click', () => {
   renderProgress();
 });
 
+// ---------- Les missions de Papa et Maman ----------
+// 3 missions par jour et par enfant : en vrai (confirmées par un parent) ou dans le jeu (validées toutes seules).
+const FROM = { papa: 'Papa', maman: 'Maman' };
+function missionsOf(p) {
+  const sib = settings.kids.find((k) => k.id !== p.kid.id);
+  return dailyMissions(p.kid, today(), { sibling: sib?.name, poppy: settings.poppy, levels: p.progress.levels || 0 });
+}
+function openDaily() {
+  if (!players.length) return openHome();
+  mount($('#daily-papa'), ART.papa(), { speaker: true });
+  mount($('#daily-maman'), drawChar('maman'), { speaker: true });
+  renderDaily();
+  show('daily');
+  const left = players.reduce((a, p) => a + missionsOf(p).filter((m) => !dailyState(p.progress, today()).done[m.id]).length, 0);
+  say(left ? `Salam ${names()} ! Voici les missions de Papa et Maman pour aujourd'hui. Touche une mission pour l'écouter.` : `Machallah ${names()} ! Toutes les missions sont réussies aujourd'hui. Papa et Maman sont très fiers de toi !`);
+}
+function renderDaily() {
+  $('#daily-list').innerHTML = players.map((p, k) => {
+    const st = dailyState(p.progress, today());
+    return `<div class="daily-kid">${coop() ? `<h3>${esc(p.kid.avatar)} ${esc(p.kid.name)}</h3>` : ''}
+      ${missionsOf(p).map((m) => {
+        const done = !!st.done[m.id];
+        return `<div class="dm ${done ? 'done' : ''} from-${m.from}" data-p="${k}" data-m="${m.id}">
+          <span class="dm-from">${drawChar(m.from)}<small>${FROM[m.from]}</small></span>
+          <span class="dm-t">${esc(m.t)}</span>
+          ${done ? '<span class="dm-ok">✅</span>' : m.auto ? '<span class="dm-auto">🎮 en jouant</span>' : '<button class="go small dm-btn">C\'est fait !</button>'}
+        </div>`;
+      }).join('')}</div>`;
+  }).join('');
+}
+$('#daily-list').addEventListener('click', (e) => {
+  const card = e.target.closest('.dm');
+  if (!card) return;
+  const p = players[+card.dataset.p];
+  const m = missionsOf(p).find((x) => x.id === card.dataset.m);
+  const who = m.from === 'papa' ? $('#daily-papa') : $('#daily-maman');
+  if (!e.target.closest('.dm-btn')) {
+    sfx('tap');
+    who.querySelector('.char')?.classList.add('act');
+    setTimeout(() => who.querySelector('.char')?.classList.remove('act'), 1400);
+    return say(`${FROM[m.from]} dit :`, m.t);
+  }
+  // Un parent confirme que la mission est faite en vrai.
+  sfx('tap');
+  openGate(() => {
+    dailyState(p.progress, today()).done[m.id] = true;
+    p.progress.stars += 3;
+    const st = dailyState(p.progress, today());
+    const all = missionsOf(p).every((x) => st.done[x.id]);
+    if (all) p.progress.gold = (p.progress.gold || 0) + 1;
+    saveAll();
+    renderDaily();
+    sfx(all ? 'win' : 'ok'); confetti(all ? 90 : 40);
+    setMood(charIn(who), 'cheer', 1800);
+    say(all ? `Machallah ${p.kid.name} ! Les trois missions sont réussies : médaille d'or !` : `Bravo ${p.kid.name} ! ${FROM[m.from]} est très fier de toi.`.replace('Maman est très fier', 'Maman est très fière'));
+  });
+});
+
 // ---------- Les histoires de Hbibiti ----------
 // Petites histoires vraies lues à voix haute, page par page, puis deux petites questions.
 let tale = null, taleI = 0, talePlaying = true, taleTok = 0, taleCat = null;
@@ -843,6 +934,7 @@ $('#tale-grid').addEventListener('click', (e) => { const b = e.target.closest('[
 function openTale(t) {
   sfx('chime');
   tale = t; taleI = 0; talePlaying = true;
+  preload([t.title + '.', ...t.pages.map((pg) => speakTale(pg.t))]);
   show('tale');
   mount($('#tale-teller'), ART.hbibiti(), { speaker: true });
   $('#tale-dots').innerHTML = t.pages.map(() => '<i></i>').join('') + '<i class="q">❓</i>';
@@ -913,7 +1005,7 @@ async function showTaleQuestion() {
   $('#tale-quiz').hidden = false;
   $$('#tale-quiz .tq-c').forEach((b) => b.addEventListener('click', () => taleAnswer(+b.dataset.i, b)));
   const opts = tq.choices.flatMap((c, i) => [i ? 'ou' : '', speakTale(c.t)]).filter(Boolean);
-  await say(...(coop() ? [`À toi, ${P().kid.name} !`] : []), speakTale(item.q), 300, ...opts, '?');
+  await say(...(coop() ? [`À toi, ${P().kid.name} !`] : []), speakTale(item.q), 300, ...opts);
   tq.busy = false;
 }
 async function taleAnswer(i, el) {
@@ -952,10 +1044,12 @@ async function taleAnswer(i, el) {
 }
 function finishTale() {
   players.forEach((p) => { p.progress.tales = { ...(p.progress.tales || {}), [tale.id]: true }; });
+  const taleMissions = players.filter((p) => autoComplete(p.progress, missionsOf(p), today(), { kind: 'tale' }).length);
+  taleMissions.forEach((p) => { p.progress.stars += 3; });
   saveAll();
   const stars = tq.gained.map((g, i) => (g ? (coop() ? `${esc(players[i].kid.name)} +${g} ⭐` : `+${g} ⭐`) : '')).filter(Boolean).join(' · ') || 'Merci d’avoir écouté !';
   const next = nextTale(players[0].progress.tales, tale.cat);
-  $('#tale-quiz').innerHTML = `<p class="tq-q">Alhamdulillah, bravo ! ${stars}</p>
+  $('#tale-quiz').innerHTML = `<p class="tq-q">Alhamdulillah, bravo ! ${stars}</p>${taleMissions.length ? '<p class="tq-who">📋 Mission de Maman réussie ! +3 ⭐</p>' : ''}
     <div class="row"><button class="go" id="tale-more">📚 Une autre histoire</button><button class="go alt" id="tale-again">🔁 Réécouter</button></div>`;
   $('#tale-more').addEventListener('click', () => { sfx('tap'); openTales(); });
   $('#tale-again').addEventListener('click', () => openTale(tale));

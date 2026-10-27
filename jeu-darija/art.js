@@ -60,6 +60,54 @@ export function hbibiti(mood = 'happy', cls = '') {
     </g>`);
 }
 
+// Papa (côté marocain) : cheveux courts, petite barbe, chemise rouge avec l'étoile verte.
+export function papa(mood = 'happy', cls = '') {
+  return wrap('papa', mood, cls, '0 0 200 230', `
+    <path d="M40 230 C40 182 68 162 100 162 C132 162 160 182 160 230Z" fill="#c8323a"/>
+    <path d="M84 164 L100 184 L116 164" fill="#fff" opacity=".9"/>
+    <path d="M124 196 l3 7 h8 l-6 5 2 8 -7 -5 -7 5 2 -8 -6 -5 h8z" fill="#00843d"/>
+    <g class="arm arm-l" ${O(60, 182)}><path d="M60 182 Q40 198 46 216" stroke="#c8323a" stroke-width="18" stroke-linecap="round" fill="none"/><circle cx="46" cy="219" r="10" fill="#d9a77e"/></g>
+    <g class="arm arm-r" ${O(140, 182)}><path d="M140 182 Q160 198 154 216" stroke="#c8323a" stroke-width="18" stroke-linecap="round" fill="none"/><circle cx="154" cy="219" r="10" fill="#d9a77e"/></g>
+    <g class="head" ${O(100, 168)}>
+      <ellipse cx="56" cy="112" rx="9" ry="12" fill="#d9a77e"/><ellipse cx="144" cy="112" rx="9" ry="12" fill="#d9a77e"/>
+      <ellipse cx="100" cy="110" rx="45" ry="50" fill="#e2b48c"/>
+      <path d="M53 102 C46 42 154 42 147 102 C142 82 124 74 100 76 C76 74 58 82 53 102Z" fill="#2b1b12"/>
+      <path d="M58 118 C60 160 80 168 100 168 C120 168 140 160 142 118 C138 140 124 150 100 150 C76 150 62 140 58 118Z" fill="#2b1b12" opacity=".9"/>
+      ${cheeks(72, 128, 128, '#e58a7a')}
+      ${eye(83, 108, 8.5, '#3a2416')}${eye(117, 108, 8.5, '#3a2416')}
+      ${brows(83, 117, 90, '#2b1b12', 11)}
+      <path d="M96 118 Q100 126 104 118" stroke="#b9805a" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M86 131 Q100 127 114 131" stroke="#2b1b12" stroke-width="5" fill="none" stroke-linecap="round"/>
+      ${mouths(100, 138, 9, '#4a1d12')}
+    </g>`);
+}
+
+// Maman (côté algérien) : tunique verte et blanche, broche étoile et croissant, foulard (facultatif).
+export function maman(mood = 'happy', cls = '', scarf = true) {
+  const hair = scarf
+    ? `<path d="M44 112 C40 44 160 44 156 112 C156 160 130 180 100 180 C70 180 44 160 44 112Z" fill="#2bb673"/>
+       <path d="M56 96 C64 54 136 54 144 96 C126 76 74 76 56 96Z" fill="#1f9a5d"/>`
+    : `<path d="M50 120 C40 50 160 50 150 120 C152 170 136 196 132 200 L68 200 C64 196 48 170 50 120Z" fill="#3a2212"/>
+       <path d="M58 100 C66 60 134 60 142 100 C122 80 78 80 58 100Z" fill="#4a2c18"/>`;
+  return wrap('maman', mood, cls, '0 0 200 230', `
+    <path d="M38 230 C38 182 68 162 100 162 C132 162 162 182 162 230Z" fill="#fff"/>
+    <path d="M38 230 C38 182 68 162 100 162 L100 230Z" fill="#2bb673"/>
+    <g transform="translate(122 196)"><circle r="8" fill="#e5484d"/><circle cx="3" r="6.5" fill="#fff"/><path d="M7 -4 l1.6 3.4 3.6.4 -2.7 2.4 .8 3.6 -3.3-1.9 -3.3 1.9 .8-3.6 -2.7-2.4 3.6-.4z" fill="#e5484d"/></g>
+    <g class="arm arm-l" ${O(60, 182)}><path d="M60 182 Q40 198 46 216" stroke="#2bb673" stroke-width="17" stroke-linecap="round" fill="none"/><circle cx="46" cy="219" r="10" fill="#f0c4a0"/></g>
+    <g class="arm arm-r" ${O(140, 182)}><path d="M140 182 Q160 198 154 216" stroke="#fff" stroke-width="17" stroke-linecap="round" fill="none"/><circle cx="154" cy="219" r="10" fill="#f0c4a0"/></g>
+    <g class="head" ${O(100, 168)}>
+      ${hair}
+      <ellipse cx="100" cy="114" rx="41" ry="45" fill="#f0c4a0"/>
+      ${scarf ? '' : '<path d="M60 104 C66 66 134 66 140 104 C128 86 112 80 100 82 C88 80 72 86 60 104Z" fill="#3a2212"/>'}
+      ${cheeks(70, 130, 132)}
+      ${eye(84, 112, 8.5, '#3a2416')}${eye(116, 112, 8.5, '#3a2416')}
+      <path d="M74 104 l-4 -3 M126 104 l4 -3" stroke="#3a2416" stroke-width="2.4" stroke-linecap="round"/>
+      ${brows(84, 116, 93, '#5a3a24')}
+      <path d="M96 122 Q100 128 104 122" stroke="#d29a74" stroke-width="3" fill="none" stroke-linecap="round"/>
+      ${mouths(100, 138, 9.5, '#7a2a2a')}
+    </g>`);
+}
+
 // Assad : lionceau de l'Atlas, gardien (maillot rouge, étoile verte, gants), queue qui balance.
 export function assad(mood = 'happy', cls = '') {
   const ring = (n, rad, r, c) => Array.from({ length: n }, (_, i) => {
@@ -239,4 +287,4 @@ export function clawMachine() {
     <rect x="22" y="86" width="40" height="22" rx="5" fill="#2b2140"/><circle cx="76" cy="97" r="8" fill="#e5484d"/><rect x="74" y="80" width="4" height="12" rx="2" fill="#2b2140"/>`, 'claw-icon');
 }
 
-export const CHARACTERS = { hbibiti, assad, fifi, grappo, dada };
+export const CHARACTERS = { hbibiti, assad, fifi, grappo, dada, papa, maman };

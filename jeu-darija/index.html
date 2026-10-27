@@ -51,6 +51,7 @@
   </div>
   <div class="mission" id="map-mission"></div>
   <button class="mission defi" id="map-defi" hidden></button>
+  <button class="mission daily-btn" id="map-daily"></button>
   <button class="mission tales-btn" id="map-tales"></button>
   <div id="rooms" class="rooms"></div>
 </section>
@@ -73,8 +74,8 @@
     <div class="fr" id="learn-fr"></div>
     <div class="cousin" id="learn-cousin">🤝 Mot cousin : pareil au Maroc et en Algérie !</div>
     <div class="dialects">
-      <button class="dia ma" id="learn-ma"><span class="flag">🇲🇦 Maroc</span><span class="lat"></span><span class="ar"></span><span class="speaker">🔊</span></button>
-      <button class="dia dz" id="learn-dz"><span class="flag">🇩🇿 Algérie</span><span class="lat"></span><span class="ar"></span><span class="speaker">🔊</span></button>
+      <button class="dia ma" id="learn-ma"><span class="dia-who"></span><span class="flag">🇲🇦 Maroc · Papa</span><span class="lat"></span><span class="ar"></span><span class="speaker">🔊</span></button>
+      <button class="dia dz" id="learn-dz"><span class="dia-who"></span><span class="flag">🇩🇿 Algérie · Maman</span><span class="lat"></span><span class="ar"></span><span class="speaker">🔊</span></button>
       <button class="dia both" id="learn-both"><span class="flag">🤲</span><span class="lat"></span><span class="ar"></span><span class="speaker">🔊</span></button>
     </div>
   </div>
@@ -101,10 +102,22 @@
   <p class="lead" id="reward-text"></p>
   <div class="chest" id="reward-chest" hidden></div>
   <p class="fog-text" id="reward-fog"></p>
+  <p class="reward-mission" id="reward-mission" hidden></p>
   <div class="row">
     <button class="go" id="reward-again">Rejouer 🔁</button>
     <button class="go alt" data-go="map">L'usine 🏭</button>
   </div>
+</section>
+
+<!-- Les missions de Papa et Maman -->
+<section id="s-daily" class="screen">
+  <header class="bar">
+    <button class="round" data-go="map" aria-label="Retour">⬅</button>
+    <h2>Les missions de Papa et Maman</h2>
+    <span></span>
+  </header>
+  <div class="daily-top"><div class="daily-char" id="daily-papa"></div><p class="bubble">Chaque jour, 3 missions ! Quand tu as réussi une mission en vrai, montre-la à papa ou maman.</p><div class="daily-char" id="daily-maman"></div></div>
+  <div class="daily-list" id="daily-list"></div>
 </section>
 
 <!-- Les histoires de Hbibiti -->
@@ -197,11 +210,21 @@
       <select id="set-dialects"><option value="ma,dz">Les deux : 🇲🇦 Maroc et 🇩🇿 Algérie</option><option value="ma">🇲🇦 Maroc seulement</option><option value="dz">🇩🇿 Algérie seulement</option></select>
     </label>
     <label class="check"><input type="checkbox" id="set-arabic"> Afficher aussi l'écriture arabe (enfants qui lisent)</label>
+    <label class="field">Voix du jeu
+      <select id="set-voice"><option value="hbibiti">Voix douce de Hbibiti (enregistrée, conseillée)</option><option value="tablette">Voix de la tablette</option></select>
+    </label>
+    <label class="field">Voix de la tablette, pour les phrases non enregistrées
+      <select id="set-frvoice"></select>
+    </label>
+    <p class="note small">Astuce : installez une voix française « premium » ou « améliorée » (iPad : Réglages › Accessibilité › Contenu énoncé › Voix › Français ; Android : paramètres de la synthèse vocale Google). Vos propres enregistrements des mots en darija passent toujours en premier.</p>
+    <div class="row left"><button class="go small alt" id="set-dlvoices">⬇️ Garder toutes les voix sur la tablette (hors ligne)</button></div>
+    <p class="note small" id="dlvoices-state"></p>
     <label class="field">Musique de fond
-      <select id="set-music"><option value="perc">Percussions seulement (darbouka)</option><option value="full">Percussions et mélodie</option><option value="off">Pas de musique</option></select>
+      <select id="set-music"><option value="doux">Musique douce (berceuse)</option><option value="perc">Percussions seulement (darbouka)</option><option value="full">Percussions et mélodie</option><option value="off">Pas de musique</option></select>
     </label>
     <label class="check"><input type="checkbox" id="set-sfx"> Petits sons du jeu (applaudissements, sifflet)</label>
     <label class="check"><input type="checkbox" id="set-unlock-all"> Ouvrir toutes les salles tout de suite</label>
+    <label class="check"><input type="checkbox" id="set-scarf"> Maman porte le foulard dans le jeu</label>
     <label class="check"><input type="checkbox" id="set-poppy"> Coin Poppy Playtime (questions sur les personnages du jeu, sans images)</label>
     <label class="field">Temps de jeu par jour et par enfant
       <select id="set-limit"><option value="0">Pas de limite</option><option value="10">10 min</option><option value="15">15 min</option><option value="20">20 min</option><option value="30">30 min</option></select>

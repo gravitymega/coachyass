@@ -19,10 +19,13 @@ export const DEFAULT_SETTINGS = {
   dialects: ['ma', 'dz'],
   arabic: false,
   sfx: true,
-  music: 'perc', // 'off' | 'perc' (percussions seulement) | 'full' (percussions + mélodie)
+  music: 'doux', // 'doux' (berceuse douce) | 'perc' (darbouka) | 'full' (darbouka + mélodie) | 'off'
   limit: 0,
   unlockAll: false,
   poppy: true, // coin Poppy Playtime (quiz sur les personnages)
+  mamaScarf: true, // Maman porte le foulard dans le jeu
+  voice: 'hbibiti', // 'hbibiti' : voix douce enregistrée à l'avance ; 'tablette' : voix de la tablette
+  frVoice: '', // voix de la tablette choisie (vide = la plus naturelle)
 };
 export const settings = { ...DEFAULT_SETTINGS, ...load('settings', {}) };
 export const saveSettings = () => save('settings', settings);

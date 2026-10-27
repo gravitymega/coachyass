@@ -508,9 +508,9 @@ body[data-screen=parents] #factory, body[data-screen=parents] #fog { display: no
 @keyframes spark { from { transform: translateY(0) scale(.4); opacity: 1; } to { transform: translateY(-40px) scale(1.2); opacity: 0; } }
 
 /* Hbibiti : la tête balance doucement ; elle salue de la main */
-.char-hbibiti .head { animation: sway 6s ease-in-out infinite; }
+.char-hbibiti .head, .char-papa .head, .char-maman .head { animation: sway 6s ease-in-out infinite; }
 @keyframes sway { 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
-.char-hbibiti.act .arm-r { animation: wave .35s ease-in-out 4 alternate; }
+.char-hbibiti.act .arm-r, .char-papa.act .arm-r, .char-maman.act .arm-r { animation: wave .35s ease-in-out 4 alternate; }
 @keyframes wave { from { transform: rotate(-120deg); } to { transform: rotate(-160deg); } }
 /* Assad : queue qui balance, crinière qui gonfle ; il rugit pour rire */
 .char-assad .tail { animation: swish 2.2s ease-in-out infinite alternate; }
@@ -556,8 +556,8 @@ body[data-screen=parents] #factory, body[data-screen=parents] #fog { display: no
 .reward-row { display: flex; align-items: flex-end; justify-content: center; gap: 16px; }
 .reward-char { width: clamp(110px, 18vw, 160px); height: clamp(124px, 20vw, 180px); }
 @media (max-width: 520px) { .learn-buddy { width: 76px; height: 88px; left: 4px; top: 4px; } }
-.char-hbibiti[data-mood="cheer"] .arm-l, .char-fifi[data-mood="cheer"] .arm-l { transform: rotate(115deg); }
-.char-hbibiti[data-mood="cheer"] .arm-r, .char-fifi[data-mood="cheer"] .arm-r { transform: rotate(-115deg); }
+.char-hbibiti[data-mood="cheer"] .arm-l, .char-fifi[data-mood="cheer"] .arm-l, .char-papa[data-mood="cheer"] .arm-l, .char-maman[data-mood="cheer"] .arm-l { transform: rotate(115deg); }
+.char-hbibiti[data-mood="cheer"] .arm-r, .char-fifi[data-mood="cheer"] .arm-r, .char-papa[data-mood="cheer"] .arm-r, .char-maman[data-mood="cheer"] .arm-r { transform: rotate(-115deg); }
 .char-grappo[data-mood="cheer"] .arm-l, .char-dada[data-mood="cheer"] .arm-l, .char-dada[data-mood="cheer"] .arm-r { transform: none; }
 .sticker-reveal { align-items: center; }
 
@@ -621,4 +621,34 @@ body[data-screen=parents] #factory, body[data-screen=parents] #fog { display: no
   .tq-choices { grid-template-columns: 1fr; }
   .tq-c { min-height: 0; flex-direction: row; justify-content: flex-start; padding: 10px 14px; }
   .tq-c .c-emoji { font-size: 36px; }
+}
+
+/* ---------- Papa, Maman et leurs missions ---------- */
+.dia-who { position: absolute; left: 8px; bottom: 6px; width: 64px; height: 74px; pointer-events: none; }
+.dia-who:empty { display: none; }
+.dia-who .char > svg, .dm-from svg, .daily-duo svg { width: 100%; height: 100%; }
+.mission.daily-btn { width: 100%; text-align: left; font-family: inherit; color: inherit; cursor: pointer; border-style: solid; background: linear-gradient(90deg, rgba(229, 72, 77, .3), rgba(43, 182, 115, .3)); border-color: rgba(255, 255, 255, .45); }
+.daily-duo { display: flex; flex: none; }
+.daily-duo > svg, .daily-duo > .char { width: 40px; height: 46px; }
+.daily-duo .char + .char { margin-left: -8px; }
+.daily-top { display: flex; align-items: flex-end; justify-content: center; gap: 12px; margin: 6px 0 12px; flex: none; }
+.daily-top .bubble { max-width: 520px; }
+.daily-char { width: clamp(84px, 13vw, 130px); height: clamp(96px, 15vw, 150px); flex: none; }
+.daily-list { display: flex; flex-direction: column; gap: 16px; overflow-y: auto; padding: 4px 2px 20px; }
+.daily-kid h3 { margin: 0 0 8px; color: var(--sun); }
+.dm { display: flex; align-items: center; gap: 12px; background: var(--paper); color: var(--ink); border-radius: 20px; padding: 10px 14px; box-shadow: 0 5px 0 rgba(0, 0, 0, .2); margin-bottom: 10px; cursor: pointer; border-left: 10px solid var(--ma); }
+.dm.from-maman { border-left-color: var(--dz); }
+.dm.done { opacity: .75; background: #e8f8ee; }
+.dm-from { display: flex; flex-direction: column; align-items: center; width: 54px; flex: none; }
+.dm-from .char { width: 48px; height: 54px; }
+.dm-from small { font-size: 12px; font-weight: 800; }
+.dm-t { flex: 1; font-size: clamp(17px, 2.4vw, 21px); font-weight: 700; line-height: 1.3; }
+.dm-ok { font-size: 34px; }
+.dm-auto { font-size: 14px; font-weight: 800; background: #efe6ff; border-radius: 12px; padding: 6px 10px; white-space: nowrap; }
+.dm-btn { flex: none; }
+.reward-mission { font-weight: 800; color: #8ef0b6; text-align: center; }
+@media (max-width: 620px) {
+  .dm { flex-wrap: wrap; } .dm-btn, .dm-auto { margin-left: auto; }
+  .daily-char { width: 62px; height: 72px; } .daily-top .bubble { font-size: 15px; padding: 10px 12px; }
+  .dia-who { width: 46px; height: 54px; }
 }

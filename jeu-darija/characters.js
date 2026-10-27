@@ -3,15 +3,19 @@
 import { say, sfx } from './audio.js';
 
 // Ce que chacun dit quand un enfant le touche (lu par la voix française).
-const PHRASES = {
+export const PHRASES = {
   hbibiti: ['Ya galbi, je t’aime fort !', 'Hihihi, ça chatouille !', 'Tu veux un verre de thé à la menthe ?', 'Machallah, tu apprends si vite !', 'Bisou de Hbibiti !'],
   assad: ['Grrr ! Je suis Assad, le lion de l’Atlas !', 'Yallah, on joue au foot ?', 'Hihi, arrête, ça chatouille ma crinière !', 'Tu ne marqueras pas… enfin, peut-être !', 'Dima Maghrib !'],
   fifi: ['Salam ! Regarde mes grandes oreilles !', 'Saha ! On fait un panier ?', 'Je suis Fifi, la fennec du désert !', 'Boing, boing, boing !', 'Hihi, mes oreilles bougent toutes seules !'],
   grappo: ['Tape m’en cinq !', 'Bip bip ! Grappo est prêt !', 'J’attrape tout, même les mots !', 'Bip ! Ça chatouille mes circuits !'],
+  papa: ['Je suis tellement fier de toi !', 'Kanbghik bezzaf !', 'On fait un match de foot après ?', 'Tu es une vraie star !'],
+  maman: ['Ya galbi, tu es formidable !', 'Nhabek bezzaf !', 'Un câlin de maman !', 'Machallah, comme tu grandis !'],
   dada: ['Doum tek tek, doum tek !', 'On danse ensemble ?', 'Je suis Darbouka Dada !', 'Tape dans tes mains avec moi !'],
 };
-const SOUND = { hbibiti: 'giggle', assad: 'roar', fifi: 'boing', grappo: 'beep', dada: 'drum' };
+const SOUND = { papa: 'giggle', maman: 'giggle', hbibiti: 'giggle', assad: 'roar', fifi: 'boing', grappo: 'beep', dada: 'drum' };
 export const INTRO = {
+  papa: 'Salam ! C’est papa. On joue ensemble, ya galbi ?',
+  maman: 'Salam ya galbi ! Maman est avec toi.',
   hbibiti: 'Salam ya galbi ! Viens, on apprend ensemble.',
   assad: 'Salam ! Moi c’est Assad. Prêt à marquer des buts ?',
   fifi: 'Salam ! C’est Fifi ! On joue ensemble ?',

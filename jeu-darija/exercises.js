@@ -241,7 +241,8 @@ export function makeExercise(skill, { r = Math.random, dialect = 'ma' } = {}) {
         numChoices(d, nearNumbers(d, r, 3, 0, max), false), { text: `${a} − ${b} = ${d}`, say: [`${a} moins ${b}, égale ${d} !`] });
     }
     case 'm-compare': {
-      const a = ri(r, 0, 50), b = r() < 0.2 ? a : ri(r, 0, 50);
+      // Deux nombres proches (jusqu'à 9 d'écart) : plus intéressant à comparer.
+      const a = ri(r, 0, 50), b = r() < 0.2 ? a : Math.min(50, Math.max(0, a + ri(r, 1, 9) * (r() < 0.5 ? -1 : 1)));
       const sign = a < b ? '<' : a > b ? '>' : '=';
       const name = { '<': 'plus petit que', '>': 'plus grand que', '=': 'égal à' };
       return Q(skill, `<span class="calc">${a} <span class="blank">?</span> ${b}</span>`, [`Quel signe va entre ${a} et ${b} ?`],
