@@ -6,7 +6,7 @@ Préparation (une fois) :
   python3 -m venv venv && venv/bin/pip install kokoro-onnx soundfile
   npm pack kokoro-fp16-shards kokoro-js   # poids du modèle et voix, publiés sur npm
   cat kokoro-fp16.part{0..9}.bin > kokoro-fp16.onnx   (après extraction des archives)
-  python3 -c "import numpy as n; n.savez('voices.npz', ff_siwis=n.fromfile('voices/ff_siwis.bin', 'float32').reshape(-1,1,256))"
+  python3 -c "import numpy as n; v=lambda f: n.fromfile('voices/'+f+'.bin', 'float32').reshape(-1,1,256); n.savez('voices.npz', ff_siwis=v('ff_siwis'), af_heart=v('af_heart'))"
 
 Utilisation :
   node jeu-darija/outils/voix/phrases.mjs > phrases.json
@@ -34,10 +34,10 @@ def init(model, voices):
     _k = Kokoro.from_session(ort.InferenceSession(model, opts), voices)
 
 
-def synth(text):
+def synth(text, voice='ff_siwis', lang='fr-fr'):
     # Le modèle rend parfois un son vide pour une phrase : on réessaie à une vitesse voisine, puis phrase par phrase.
     for speed in (SPEED, SPEED - 0.02, SPEED + 0.02, SPEED - 0.04):
-        audio, sr = _k.create(text, voice='ff_siwis', speed=speed, lang='fr-fr')
+        audio, sr = _k.create(text, voice=voice, speed=speed, lang=lang)
         audio = np.nan_to_num(np.asarray(audio, dtype=np.float32).reshape(-1))
         if audio.size >= sr // 10:
             return audio, sr
@@ -47,7 +47,7 @@ def synth(text):
     pause = np.zeros(int(0.25 * sr), dtype=np.float32)
     out = []
     for p in parts:
-        a, sr = synth(p)
+        a, sr = synth(p, voice, lang)
         out += [a, pause]
     return np.concatenate(out), sr
 
@@ -57,7 +57,7 @@ def make(item):
     dest = os.path.join(OUT, key + '.mp3')
     if os.path.exists(dest):
         return key, 'ok'
-    audio, sr = synth(say)
+    audio, sr = synth(say, item.get('voice', 'ff_siwis'), item.get('lang', 'fr-fr'))
     if audio.size < sr // 10:
         return key, 'vide : ' + say
     # Silences du début et de la fin raccourcis, volume égalisé.

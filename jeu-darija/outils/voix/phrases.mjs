@@ -1,7 +1,7 @@
 // Liste toutes les phrases françaises que le jeu peut dire, pour les enregistrer à l'avance.
 // Usage : node jeu-darija/outils/voix/phrases.mjs > phrases.json
 // À relancer après chaque changement de texte ; les phrases manquantes passent par la voix de la tablette.
-import { WORDS, ROOMS, SEQUENCES, STICKERS } from '../../core.js';
+import { WORDS, ROOMS, SEQUENCES, STICKERS, EN } from '../../core.js';
 import { SKILLS, makeExercise } from '../../exercises.js';
 import { TALES, speakTale } from '../../tales.js';
 import { DAILY } from '../../missions.js';
@@ -79,10 +79,19 @@ for (const t of TALES) {
 }
 add('ou', 'Alhamdulillah ! Bravo, tu as bien écouté.');
 
+// Mode bilingue : consignes en français et mots en anglais (voix anglaise).
+add('En anglais, on dit :', 'Et en anglais ?', 'Cette partie est en anglais !', 'Cette partie est en arabe !');
+const english = new Map();
+for (const w of WORDS) if (EN[w.id]) {
+  add(`Comment on dit ${w.fr}, en anglais ?`);
+  english.set(voiceKey('EN|' + EN[w.id]), EN[w.id]);
+}
+
 // Missions de Papa et Maman
 add('Papa dit :', 'Maman dit :');
 for (const m of DAILY) for (const n of m.t.includes('{frere}') ? kids : [null]) add(m.t.replace('{frere}', n || ''));
 
-const list = [...out].map(([key, text]) => ({ key, text, say: fixFr(text) }));
+const list = [...out].map(([key, text]) => ({ key, text, say: fixFr(text) }))
+  .concat([...english].map(([key, text]) => ({ key, text, say: text, lang: 'en-us', voice: 'af_heart' })));
 process.stdout.write(JSON.stringify(list, null, 0));
 console.error(`${list.length} phrases`);

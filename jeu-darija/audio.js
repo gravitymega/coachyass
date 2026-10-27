@@ -23,6 +23,7 @@ export function voiceFor(lang) {
     return list.find((v) => v.name === settings.frVoice) || list[0];
   }
   const list = voices.filter((v) => v.lang?.toLowerCase().startsWith(lang));
+  if (lang === 'en') return list.sort((a, b) => score(b) - score(a))[0];
   return list.find((v) => /ar-(ma|dz)/i.test(v.lang)) || list[0];
 }
 
@@ -48,9 +49,9 @@ export function preload(texts) {
   for (const t of texts) if (typeof t === 'string' && isRecorded(t)) loadBuffer(voiceKey(t)).catch(() => {});
 }
 let currentSrc = null;
-async function playRecorded(text) {
+async function playRecorded(text, isKey = false) {
   const tok = sayToken;
-  const buf = await loadBuffer(voiceKey(text));
+  const buf = await loadBuffer(isKey ? text : voiceKey(text));
   if (tok !== sayToken) return; // annulé pendant le chargement
   await new Promise((resolve) => {
     const src = ac.createBufferSource();
@@ -92,7 +93,7 @@ function speakTablet(text, lang, rate) {
     const u = new SpeechSynthesisUtterance(text);
     const v = voiceFor(lang);
     if (v) u.voice = v;
-    u.lang = v?.lang || (lang === 'fr' ? 'fr-FR' : 'ar');
+    u.lang = v?.lang || ({ fr: 'fr-FR', en: 'en-US' }[lang] || 'ar');
     u.rate = rate;
     u.pitch = lang === 'fr' ? 1.08 : 1;
     let done = false;
@@ -116,6 +117,7 @@ async function playBlob(blob) {
 }
 // Le mot dans un dialecte : votre enregistrement d'abord, sinon la voix temporaire de la tablette.
 export async function playWord(word, d) {
+  if (d === 'en') return playEnglish(word);
   const tok = sayToken;
   // Les phrases du jardin sont les mêmes partout : un seul enregistrement suffit.
   const rec = (await getRec(word.id + ':' + d)) || (word.phrase ? await getRec(word.id + ':' + (d === 'ma' ? 'dz' : 'ma')) : null);
@@ -123,6 +125,19 @@ export async function playWord(word, d) {
   if (rec) return playBlob(rec);
   if (voiceFor('ar')) return speak(word[d].ar, 'ar', 0.8);
   return speak(speakable(word[d].lat), 'fr', 0.8);
+}
+// Un mot en anglais : enregistrement des parents (clé « mot:en »), sinon voix anglaise enregistrée à l'avance, sinon la tablette.
+async function playEnglish(word) {
+  const tok = sayToken;
+  const text = word.en.lat;
+  const rec = await getRec((word.base || word.id) + ':en');
+  if (tok !== sayToken) return;
+  if (rec) return playBlob(rec);
+  const key = voiceKey('EN|' + text);
+  if (settings.voice !== 'tablette' && recorded.has(key)) {
+    try { return await playRecorded(key, true); } catch { /* voix de la tablette */ }
+  }
+  return speakTablet(text, 'en', 0.85);
 }
 export const hasRecording = async (word, d) => !!(await getRec(word.id + ':' + d));
 

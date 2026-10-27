@@ -1,7 +1,7 @@
 // L'Usine magique de Hbibiti — écrans, déroulement des parties, espace parents.
 import {
   WORDS, ROOMS, STICKERS, grade, markSeen, mastery, buildLevel, buildCoop,
-  isCousin, today, sequenceChoices, missionOfWeek, roomUnlocked, newProgress, shuffle,
+  isCousin, today, sequenceChoices, missionOfWeek, roomUnlocked, newProgress, shuffle, hasEnglish, EN,
 } from './core.js';
 import { settings, saveSettings, load, save, progressOf, saveProgressOf, putRec, delRec, recKeys, exportBackup, importBackup } from './store.js';
 import { say, stopVoice, sfx, startMusic, stopMusic, voiceFor, frVoices, recordedKeys, preload, audio } from './audio.js';
@@ -16,8 +16,8 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const DIALECT_NAME = { ma: 'au Maroc', dz: 'en Algérie' };
-const FLAG = { ma: '🇲🇦', dz: '🇩🇿' };
+const DIALECT_NAME = { ma: 'au Maroc', dz: 'en Algérie', en: 'en anglais' };
+const FLAG = { ma: '🇲🇦', dz: '🇩🇿', en: '🇬🇧' };
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 // « Le ballon de Fifi » → « le ballon de Fifi » au milieu d'une phrase.
 const mid = (s) => (/^(Le|La|Les|L’)/.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s);
@@ -211,9 +211,20 @@ function openStart(r) {
   show('start');
   setTimeout(() => host?.classList.add('act'), 300);
   setTimeout(() => host?.classList.remove('act'), 1700);
-  say(INTRO[b], room.name);
+  const lang = levelLang(room);
+  $('#start-lang').hidden = !bilingualRoom(room);
+  $('#start-lang').textContent = lang === 'en' ? '🇬🇧 Cette partie est en anglais' : '🇲🇦 🇩🇿 Cette partie est en arabe';
+  say(INTRO[b], room.name, ...(bilingualRoom(room) ? [lang === 'en' ? 'Cette partie est en anglais !' : 'Cette partie est en arabe !'] : []));
 }
 let room = null;
+
+// ---------- Mode bilingue : une partie en arabe, la suivante en anglais (ou un jour sur deux) ----------
+const bilingualRoom = (r) => settings.bilingual !== 'off' && r && r !== DEFI && !r.school && hasEnglish(r.id);
+function levelLang(r) {
+  if (!bilingualRoom(r)) return 'ar';
+  if (settings.bilingual === 'jour') return Math.floor(Date.now() / 86400000) % 2 ? 'en' : 'ar';
+  return players[0]?.progress.nextLang === 'en' ? 'en' : 'ar';
+}
 
 // ---------- Une partie ----------
 let level = null;
@@ -225,11 +236,12 @@ $('#btn-bismillah').addEventListener('click', () => {
   const build = room === DEFI
     ? (id, progress, o) => buildChallenge(progress, { ...o, count: coop() ? 5 : 10, rooms: openRooms().map((r) => r.id), games })
     : isExerciseRoom(room.id) ? buildExerciseLevel : buildLevel;
-  const opts = { dialects: settings.dialects, seqIndex: levelsDone(), build, count: room === DEFI ? 10 : undefined };
+  const lang = levelLang(room);
+  const opts = { dialects: settings.dialects, seqIndex: levelsDone(), build, count: room === DEFI ? 10 : undefined, lang };
   level = coop()
     ? buildCoop(room.id, players.map((p) => ({ progress: p.progress, older: p.kid.older })), opts)
     : build(room.id, P().progress, { ...opts, older: P().kid.older });
-  level.i = 0; level.learnI = 0; level.score = players.map(() => 0);
+  level.i = 0; level.learnI = 0; level.score = players.map(() => 0); level.lang = lang;
   level.stars = players.map(() => 0);
   ctx.score = 0; ctx.streak = 0;
   say('Bismillah !');
@@ -244,18 +256,20 @@ function showLearn() {
   $('#learn-count').textContent = `${level.learnI + 1} / ${level.learn.length}`;
   $('#learn-emoji').textContent = w.emoji;
   $('#learn-fr').textContent = w.phrase ? `${w.fr}, on dit :` : w.fr;
-  $('#learn-cousin').hidden = !(isCousin(w) && !w.phrase && settings.dialects.length > 1);
+  const en = level.lang === 'en';
+  $('#learn-cousin').hidden = en || !(isCousin(w) && !w.phrase && settings.dialects.length > 1);
   for (const d of ['ma', 'dz']) {
     const b = $('#learn-' + d);
-    b.hidden = !!w.phrase || !settings.dialects.includes(d);
+    b.hidden = en || !!w.phrase || !settings.dialects.includes(d);
     $('.lat', b).textContent = w[d].lat;
     $('.ar', b).textContent = settings.arabic && anyReader() ? w[d].ar : '';
     $('.dia-who', b).innerHTML = drawChar(d === 'ma' ? 'papa' : 'maman');
   }
   const both = $('#learn-both');
-  both.hidden = !w.phrase;
-  $('.lat', both).textContent = w.ma.lat;
-  $('.ar', both).textContent = w.ma.ar;
+  both.hidden = !w.phrase && !en;
+  $('.flag', both).textContent = en ? '🇬🇧 English' : '🤲';
+  $('.lat', both).textContent = en ? w.en.lat : w.ma.lat;
+  $('.ar', both).textContent = en ? '' : w.ma.ar;
   players.forEach((p) => markSeen(p.progress, w.id));
   saveAll();
   show('learn');
@@ -263,6 +277,7 @@ function showLearn() {
   $('#learn-card').classList.remove('enter'); void $('#learn-card').offsetWidth; $('#learn-card').classList.add('enter');
   const seq = [];
   if (w.phrase) seq.push(`${w.fr}, on dit :`, { word: w, d: 'ma' });
+  else if (en) seq.push(w.fr, 300, 'En anglais, on dit :', { word: w, d: 'en' }, 400);
   else {
     seq.push(w.fr, 300);
     for (const d of settings.dialects) seq.push(`${cap(DIALECT_NAME[d])}, on dit :`, { word: w, d }, 400);
@@ -275,7 +290,7 @@ for (const d of ['ma', 'dz', 'both']) {
     const w = level.learn[level.learnI];
     const b = $('#learn-' + d);
     b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
-    say({ word: w, d: d === 'both' ? 'ma' : d });
+    say({ word: w, d: d === 'both' ? (level.lang === 'en' ? 'en' : 'ma') : d });
   });
 }
 $('#learn-next').addEventListener('click', () => {
@@ -483,6 +498,7 @@ function finishLevel() {
   const records = [];
   players.forEach((p, k) => {
     p.progress.levels++;
+    if (bilingualRoom(room) && settings.bilingual === 'partie') p.progress.nextLang = level.lang === 'en' ? 'ar' : 'en';
     if (defi) {
       const total = level.questions.filter((x) => (x.player ?? 0) === k).length;
       const best = p.progress.best || 0;
@@ -749,6 +765,7 @@ function renderSettings() {
   $('#set-unlock-all').checked = settings.unlockAll;
   $('#set-poppy').checked = settings.poppy;
   $('#set-scarf').checked = settings.mamaScarf;
+  $('#set-bilingual').value = settings.bilingual;
   $('#set-limit').value = String(settings.limit);
   $('#set-kids').innerHTML = settings.kids.map((k, i) => `
     <div class="kid-set" data-i="${i}">
@@ -771,6 +788,7 @@ $('#tab-settings').addEventListener('change', (e) => {
   if (t.id === 'set-unlock-all') settings.unlockAll = t.checked;
   if (t.id === 'set-poppy') settings.poppy = t.checked;
   if (t.id === 'set-scarf') settings.mamaScarf = t.checked;
+  if (t.id === 'set-bilingual') settings.bilingual = t.value;
   if (t.id === 'set-limit') settings.limit = +t.value;
   if (t.id === 'set-voice') settings.voice = t.value;
   if (t.id === 'set-frvoice') settings.frVoice = t.value;
@@ -835,6 +853,7 @@ function renderProgress() {
     return `<div class="pkid">
       <h3>${esc(k.avatar)} ${esc(k.name)}</h3>
       <p>${p.levels} niveau(x) · ⭐ ${p.stars} · ${p.stickers} autocollant(s) · 🏅 ${p.gold || 0} mission(s) · aujourd'hui : ${Math.round(t.ms / 60000)} min</p>
+      <p>Mots en anglais bien sus : <b>${Object.keys(EN).filter((id) => (p.words['en:' + id]?.box || 0) >= 2).length} / ${Object.keys(EN).length}</b></p>
       <p>Mots bien sus : <b>${ws.filter((w) => (p.words[w.id]?.box || 0) >= 2).length} / ${ws.length}</b>${hard.length ? ` · À revoir : ${hard.map((w) => esc(w.fr)).join(', ')}` : ''}</p>
       <p>Histoires écoutées : <b>${Object.keys(p.tales || {}).length} / ${TALES.length}</b></p>
       ${ROOMS.filter((r) => WORDS.some((w) => w.room === r.id)).map((r) => `<div class="proom"><b>${r.name}</b><div class="pwords">${ws.filter((w) => w.room === r.id).map((w) => {

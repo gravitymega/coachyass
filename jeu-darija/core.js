@@ -331,6 +331,50 @@ export function wordsFor(room, older) {
   return WORDS.filter((w) => w.room === room && (older || !w.older));
 }
 
+// Mode bilingue : les mêmes mots en anglais (une partie sur deux, ou un jour sur deux).
+// Les oncles et tantes (même mot en anglais des deux côtés) et les phrases du jardin restent en arabe.
+export const EN = {
+  bonjour: 'Good morning', bonsoir: 'Good evening', cava: 'How are you?', merci: 'Thank you', oui: 'Yes', non: 'No',
+  aurevoir: 'Goodbye', bienvenue: 'Welcome', jetaime: 'I love you', pardon: 'Sorry', beau: 'Pretty', maintenant: 'Now',
+  ou: 'Where?', quoi: 'What?',
+  maman: 'Mom', papa: 'Dad', frere: 'My brother', soeur: 'My sister', grandmere: 'Grandma', grandpere: 'Grandpa', bebe: 'The baby',
+  n1: 'One', n2: 'Two', n3: 'Three', n4: 'Four', n5: 'Five', n6: 'Six', n7: 'Seven', n8: 'Eight', n9: 'Nine', n10: 'Ten',
+  rouge: 'Red', vert: 'Green', jaune: 'Yellow', bleu: 'Blue', blanc: 'White', noir: 'Black',
+  pain: 'Bread', eau: 'Water', lait: 'Milk', the: 'Tea', orange: 'Orange', tomate: 'Tomato', patate: 'Potato', viande: 'Meat',
+  poulet: 'Chicken', couscous: 'Couscous', pomme: 'Apple', banane: 'Banana',
+  va: 'Go!', viens: 'Come!', regarde: 'Look!', mange: 'Eat!', bois: 'Drink!', dors: 'Sleep!', cours: 'Run!', joue: 'Play!',
+  chante: 'Sing!', ecoute: 'Listen!', assis: 'Sit down!', donne: 'Give me!',
+  tete: 'Head', yeux: 'Eyes', oreille: 'Ear', nez: 'Nose', bouche: 'Mouth', main: 'Hand', pied: 'Foot', dents: 'Teeth',
+  cheveux: 'Hair', bras: 'Arm', coeur: 'Heart',
+  chat: 'Cat', chien: 'Dog', cheval: 'Horse', vache: 'Cow', mouton: 'Sheep', poule: 'Hen', oiseau: 'Bird', poisson: 'Fish',
+  chameau: 'Camel', lion: 'Lion', souris: 'Mouse', tortue: 'Turtle',
+  dar: 'House', porte: 'Door', fenetre: 'Window', lit: 'Bed', table: 'Table', chaise: 'Chair', cle: 'Key', lumiere: 'Light',
+  tel: 'Phone', tele: 'TV', balai: 'Broom',
+  chaussures: 'Shoes', pantalon: 'Pants', chemise: 'Shirt', chaussettes: 'Socks', manteau: 'Coat', casquette: 'Cap',
+  lunettes: 'Glasses', robe: 'Dress', sac: 'Bag', echarpe: 'Scarf',
+  soleil: 'Sun', lune: 'Moon', etoile: 'Star', pluie: 'Rain', neige: 'Snow', vent: 'Wind', froid: 'It is cold',
+  chaud: 'It is hot', arbre: 'Tree', fleur: 'Flower', mer: 'Sea', aujourdhui: 'Today', demain: 'Tomorrow', hier: 'Yesterday',
+  bien: 'I am fine', manque: 'I miss you', faim: 'I am hungry', soif: 'I am thirsty', fatigue: 'I am tired', bisous: 'Kisses!',
+  bonnenuit: 'Good night', doucement: 'Slowly', vite: 'Quick!', sais: 'I don’t know', nom: 'What is your name?', moi: 'My name is…',
+  raisin: 'Grapes', fraise: 'Strawberry', pasteque: 'Watermelon', melon: 'Melon', dattes: 'Dates', olives: 'Olives',
+  carotte: 'Carrot', oignon: 'Onion', courgette: 'Zucchini', citron: 'Lemon',
+  madrasa: 'School', maitresse: 'Teacher', cahier: 'Notebook', stylo: 'Pen', crayon: 'Pencil', livre: 'Book', ami: 'My friend',
+  lis: 'Read!', ecris: 'Write!', tableau: 'Board', ciseaux: 'Scissors',
+  ballon: 'Ball', gagne: 'We won!', perdu: 'We lost', saute: 'Jump!', lance: 'Throw!', attrape: 'Catch!', equipe: 'Team',
+  nage: 'Swim!', velo: 'Bike', fort: 'Strong',
+  content: 'Happy', triste: 'Sad', fache: 'Angry', peur: 'I am scared', malade: 'Sick', mal: 'It hurts', ris: 'Laugh!',
+  pleurepas: 'Don’t cry', gentil: 'Kind',
+  medecin: 'Doctor', policier: 'Police officer', boulanger: 'Baker', cuisinier: 'Cook', chauffeur: 'Driver', coiffeur: 'Barber',
+  menuisier: 'Carpenter', fermier: 'Farmer', pecheur: 'Fisherman', imam: 'Imam',
+  ramadan: 'Ramadan', siyam: 'Fasting', ftour: 'Iftar', aid: 'Eid', aidmbarek: 'Happy Eid!', cadeau: 'Present', gateaux: 'Cookies',
+  habits: 'New clothes', jame3: 'Mosque', fanous: 'Lantern', hlal: 'Crescent moon',
+};
+// Un mot vu « en anglais » : son propre suivi de révision (id « en:… ») et la langue « en » à la place des dialectes.
+export const toEnglish = (w) => ({ ...w, id: 'en:' + w.id, base: w.id, en: { lat: EN[w.id], ar: '' } });
+export const englishWords = (room, older) => wordsFor(room, older).filter((w) => EN[w.id]).map(toEnglish);
+// Une salle de mots peut-elle se jouer en anglais ?
+export const hasEnglish = (room) => WORDS.some((w) => w.room === room && EN[w.id]);
+
 export function newProgress() {
   return { words: {}, stickers: 0, stars: 0, levels: 0, gold: 0, missions: {}, chest: '', rooms: {}, best: 0, tales: {} };
 }
@@ -385,11 +429,11 @@ function weighted(words, progress, r) {
 export function buildLevel(room, progress, opts = {}) {
   const r = opts.r || Math.random;
   const older = !!opts.older;
-  const dialects = opts.dialects?.length ? opts.dialects : ['ma', 'dz'];
-  const garden = room === 'jardin' && !opts.noSequence;
+  const dialects = opts.lang === 'en' ? ['en'] : opts.dialects?.length ? opts.dialects : ['ma', 'dz'];
+  const garden = room === 'jardin' && !opts.noSequence && opts.lang !== 'en';
   const count = opts.count || 5;
   const wordCount = garden ? count - 1 : count;
-  const pool = wordsFor(room, older);
+  const pool = opts.lang === 'en' ? englishWords(room, older) : wordsFor(room, older);
   const unseen = pool.filter((w) => !progress.words[w.id]?.seen);
   const learn = unseen.slice(0, Math.min(older ? 3 : 2, wordCount));
   const known = pool.filter((w) => progress.words[w.id]?.seen);

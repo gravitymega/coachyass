@@ -26,6 +26,7 @@ export const DEFAULT_SETTINGS = {
   mamaScarf: true, // Maman porte le foulard dans le jeu
   voice: 'hbibiti', // 'hbibiti' : voix douce enregistrée à l'avance ; 'tablette' : voix de la tablette
   frVoice: '', // voix de la tablette choisie (vide = la plus naturelle)
+  bilingual: 'partie', // 'partie' : une partie en arabe, la suivante en anglais ; 'jour' : un jour sur deux ; 'off' : arabe seulement
 };
 export const settings = { ...DEFAULT_SETTINGS, ...load('settings', {}) };
 export const saveSettings = () => save('settings', settings);

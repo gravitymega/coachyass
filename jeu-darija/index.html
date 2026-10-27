@@ -60,6 +60,7 @@
 <section id="s-start" class="screen center">
   <div class="start-host" id="start-host"></div>
   <p class="lead" id="start-room"></p>
+  <p class="start-lang" id="start-lang" hidden></p>
   <button class="bismillah" id="btn-bismillah"><span class="ar">بسم الله</span><span>Bismillah</span></button>
   <p class="hint">Touche pour commencer</p>
   <button class="link" data-go="map">Retour à l'usine</button>
@@ -210,6 +211,9 @@
       <select id="set-dialects"><option value="ma,dz">Les deux : 🇲🇦 Maroc et 🇩🇿 Algérie</option><option value="ma">🇲🇦 Maroc seulement</option><option value="dz">🇩🇿 Algérie seulement</option></select>
     </label>
     <label class="check"><input type="checkbox" id="set-arabic"> Afficher aussi l'écriture arabe (enfants qui lisent)</label>
+    <label class="field">Anglais et arabe
+      <select id="set-bilingual"><option value="partie">Alterner : une partie en arabe, la suivante en anglais</option><option value="jour">Alterner : un jour en arabe, le lendemain en anglais</option><option value="off">Arabe seulement</option></select>
+    </label>
     <label class="field">Voix du jeu
       <select id="set-voice"><option value="hbibiti">Voix douce de Hbibiti (enregistrée, conseillée)</option><option value="tablette">Voix de la tablette</option></select>
     </label>

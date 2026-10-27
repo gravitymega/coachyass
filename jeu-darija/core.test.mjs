@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  WORDS, ROOMS, SEQUENCES, STICKERS, MISSIONS, buildLevel, buildCoop, newProgress, grade, mastery, wordsFor,
+  WORDS, ROOMS, SEQUENCES, STICKERS, MISSIONS, buildLevel, buildCoop, newProgress, grade, mastery, wordsFor, EN, englishWords,
   isCousin, rng, makeQuestion, speakable, sequenceChoices, missionOfWeek, roomUnlocked,
 } from './core.js';
 
@@ -153,4 +153,21 @@ test('dans chaque salle, images et mots sont tous différents (choix jamais ambi
       assert.equal(new Set(vals).size, vals.length, `${r.id} : doublon dans ${vals.join(', ')}`);
     }
   }
+});
+
+test('mode anglais : chaque mot anglais est unique dans sa salle, suivi à part', () => {
+  for (const r of ROOMS) {
+    const ws = englishWords(r.id, true);
+    const vals = ws.map((w) => w.en.lat);
+    assert.equal(new Set(vals).size, vals.length, `${r.id} : doublon anglais dans ${vals.join(', ')}`);
+  }
+  for (const id of Object.keys(EN)) assert.ok(WORDS.some((w) => w.id === id), 'EN inconnu : ' + id);
+  const lv = buildLevel('animaux', newProgress(), { older: true, lang: 'en', r: rng(3) });
+  assert.ok(lv.learn.every((w) => w.id.startsWith('en:') && w.en.lat));
+  for (const q of lv.questions) {
+    assert.equal(q.dialect, 'en');
+    assert.notEqual(q.type, 'cousin');
+    assert.equal(q.choices.filter((c) => c.correct).length, 1);
+  }
+  assert.ok(!buildLevel('jardin', newProgress(), { older: true, lang: 'en' }).questions.some((q) => q.type === 'sequence'));
 });
