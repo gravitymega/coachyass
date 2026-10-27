@@ -9,6 +9,8 @@
 //   ART_CRAFT_PASSWORD  — facultatif : sans lui, l'accès aux IA gratuites est libre (choix de l'utilisateur) ;
 //                         Claude (payant) n'est jamais utilisé sans mot de passe
 //   GEMINI_API_KEY      — clé gratuite Google Gemini (aistudio.google.com), jamais exposée au navigateur
+//   OPENROUTER_API_KEY, GROQ_API_KEY — clés gratuites facultatives : IA de secours après Gemini
+//   ROBOFLOW_API_KEY    — clé gratuite facultative : détecteur « made_basket » pour le mode « paniers »
 //   ANTHROPIC_API_KEY   — facultative et PAYANTE (Claude) : à ne mettre que si l'utilisateur l'accepte.
 // Sans clé Anthropic, les IA gratuites de ../lib/free-ai.ts répondent : Gemini, puis Cloudflare Workers AI
 // en secours (liaison « AI » du Worker) si le quota gratuit de Gemini est épuisé.
@@ -19,7 +21,8 @@
 // (Retouche photo : réglages proposés, légendes, fonds SVG ; la consigne vient de la page)
 // et « paniers » (Highlight Agent : quels moments forts sont des paniers marqués).
 import Anthropic from "@anthropic-ai/sdk";
-import { askFree, cleanJson, AiError, type FreeRequest, type WorkersAi } from "../lib/free-ai.ts";
+import { askFree, cleanJson, AiError, type FreeRequest, type FreeProviders, type WorkersAi } from "../lib/free-ai.ts";
+import { madeBasketVerdicts } from "../lib/made-basket.ts";
 
 // Lien d'une vidéo YouTube publique (watch, youtu.be, shorts, live) → adresse « watch » normalisée.
 export function youtubeUrl(raw: unknown) {
@@ -458,10 +461,14 @@ export async function handleCoach(req: Request, env: (name: string) => string | 
   }
   // Vérification du mot de passe à la connexion (aucun appel à l'IA).
   const geminiKey = env("GEMINI_API_KEY");
+  const free: FreeProviders = { geminiKey, openrouterKey: env("OPENROUTER_API_KEY"), groqKey: env("GROQ_API_KEY"), ai };
+  const roboflowKey = env("ROBOFLOW_API_KEY");
+  const anyFree = Boolean(geminiKey || free.openrouterKey || free.groqKey || ai);
   if (body.ping) {
-    return json(200, { ok: true, open: !password, ai: Boolean(apiKey || geminiKey || ai), provider: apiKey ? "claude" : geminiKey ? "gemini" : ai ? "workers-ai" : null });
+    const provider = apiKey ? "claude" : geminiKey ? "gemini" : free.openrouterKey ? "openrouter" : free.groqKey ? "groq" : ai ? "workers-ai" : null;
+    return json(200, { ok: true, open: !password, ai: Boolean(apiKey || anyFree), provider, madeBasket: Boolean(roboflowKey) });
   }
-  if (!apiKey && !geminiKey && !ai) {
+  if (!apiKey && !anyFree && !(body.mode === "paniers" && roboflowKey)) {
     return json(500, { error: "Aucune IA branchée : ajoute GEMINI_API_KEY (clé gratuite, aistudio.google.com) dans les variables du site Art craft." });
   }
 
@@ -476,8 +483,16 @@ export async function handleCoach(req: Request, env: (name: string) => string | 
 
   const encoder = new TextEncoder();
   const line = (o: unknown) => encoder.encode(JSON.stringify(o) + "\n");
+  // Paniers marqués : le détecteur made_basket (Roboflow) d'abord ; s'il échoue, les IA gratuites.
+  if (body.mode === "paniers" && roboflowKey) {
+    const first = async () => ({
+      text: JSON.stringify(await madeBasketVerdicts(frames, { key: roboflowKey, model: env("ROBOFLOW_MODEL") || undefined, madeClass: env("ROBOFLOW_MADE_CLASS") || undefined })),
+      model: "roboflow-made_basket",
+    });
+    return freeResponse(request as unknown as FreeRequest, free, line, first);
+  }
   // Un lien YouTube ne peut être regardé que par Gemini (Claude et Workers AI ne lisent pas YouTube).
-  if (!apiKey || youtubeUrl(body.youtube)) return freeResponse(request as unknown as FreeRequest, { geminiKey, ai }, line);
+  if (!apiKey || youtubeUrl(body.youtube)) return freeResponse(request as unknown as FreeRequest, free, line);
 
   const client = new Anthropic({ apiKey });
 
@@ -534,8 +549,9 @@ export async function handleCoach(req: Request, env: (name: string) => string | 
 // IA gratuites (Gemini, puis Workers AI) : même flux NDJSON que Claude, en un seul morceau.
 function freeResponse(
   request: FreeRequest,
-  providers: { geminiKey?: string; ai?: WorkersAi },
+  providers: FreeProviders,
   line: (o: unknown) => Uint8Array,
+  first?: () => Promise<{ text: string; model: string }>,
 ) {
   const stream = new ReadableStream({
     async start(controller) {
@@ -547,7 +563,20 @@ function freeResponse(
         try { controller.enqueue(line({ wait: true })); } catch { /* flux déjà fermé */ }
       }, 10_000);
       try {
-        const out = await askFree(providers, request);
+        let out: { text: string; model: string };
+        if (first) {
+          try {
+            out = await first();
+          } catch (err) {
+            // Détecteur en panne ou quota du mois épuisé : les IA gratuites prennent le relais.
+            const anyAi = providers.geminiKey || providers.openrouterKey || providers.groqKey || providers.ai;
+            if (!anyAi) throw err;
+            console.warn("coach (made_basket):", err);
+            out = await askFree(providers, request);
+          }
+        } else {
+          out = await askFree(providers, request);
+        }
         let text = out.text;
         if (request.schema) {
           text = cleanJson(text);

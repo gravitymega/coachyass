@@ -1,7 +1,10 @@
 // IA gratuites d'Art craft (règle « aucun frais » : pas de clé API facturée à l'usage).
 //   1. Google Gemini, plan gratuit (clé GEMINI_API_KEY créée sur aistudio.google.com, sans carte) ;
-//   2. en secours, Cloudflare Workers AI (liaison « AI » du Worker, 10 000 neurones gratuits par jour ;
+//   2. OpenRouter, modèles « :free » (clé OPENROUTER_API_KEY, sans carte ; ~50 à 200 demandes/jour) ;
+//   3. Groq, plan gratuit (clé GROQ_API_KEY, sans carte ; Llama 4 Scout, 5 images par demande) ;
+//   4. en dernier secours, Cloudflare Workers AI (liaison « AI » du Worker, 10 000 neurones gratuits par jour ;
 //      sur le plan gratuit de Cloudflare, rien n'est facturé : les appels s'arrêtent au quota).
+// On ne passe au suivant que si le précédent est épuisé (429), en panne (5xx) ou absent.
 // Les deux reçoivent la même demande que Claude (consigne, images, schéma JSON) et renvoient
 // le texte de la réponse. Module sans dépendance : marche sur Netlify et sur Cloudflare.
 // (Rangé hors de netlify/functions/ : Netlify y ferait sinon une fonction à part.)
@@ -16,6 +19,11 @@ export const GEMINI_MODEL = "gemini-3.8-flash";
 // Commentaire en direct : une phrase, il faut répondre vite.
 export const GEMINI_LIVE_MODEL = "gemini-3.1-flash-lite";
 export const WORKERS_MODEL = "@cf/meta/llama-4-scout-17b-16e-instruct";
+// « openrouter/free » choisit lui-même un modèle gratuit qui sait lire les images envoyées.
+export const OPENROUTER_MODEL = "openrouter/free";
+export const GROQ_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
+const OPENROUTER_MAX_IMAGES = 16;
+const GROQ_MAX_IMAGES = 5; // limite de Groq par demande
 // Le modèle de secours lit moins bien beaucoup d'images à la fois, et chaque image coûte du quota.
 const WORKERS_MAX_IMAGES = 8;
 
@@ -106,10 +114,49 @@ function thinImages(list: Part[], n: number) {
   return list.filter((p, i) => !p.image || keep.has(i));
 }
 
-export async function askWorkersAi(ai: WorkersAi, request: FreeRequest) {
-  const content = thinImages(parts(request.content), WORKERS_MAX_IMAGES).map((p) =>
+// Contenu au format « chat » d'OpenAI (OpenRouter, Groq, Workers AI), au plus n images.
+function chatContent(request: FreeRequest, n: number) {
+  const content = thinImages(parts(request.content), n).map((p) =>
     p.image ? { type: "image_url", image_url: { url: `data:${p.mime || "image/jpeg"};base64,${p.image}` } } : { type: "text", text: p.text });
   if (request.schema) content.push({ type: "text", text: schemaHint(request.schema) });
+  return content;
+}
+
+// OpenRouter et Groq : même API « chat completions » qu'OpenAI.
+async function chatCall(name: string, url: string, key: string, model: string, maxImages: number, request: FreeRequest) {
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+      body: JSON.stringify({
+        model,
+        messages: [{ role: "system", content: request.system }, { role: "user", content: chatContent(request, maxImages) }],
+        max_tokens: request.live ? 300 : 8000,
+      }),
+    });
+  } catch (err) {
+    throw new AiError(`${name} injoignable`, { retry: true });
+  }
+  const data: any = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const msg = data?.error?.message || `HTTP ${res.status}`;
+    if (res.status === 401 || res.status === 403) throw new AiError(`Clé ${name} refusée`, { status: res.status, retry: true });
+    throw new AiError(res.status === 429 ? `Quota gratuit de ${name} épuisé pour le moment` : `${name} indisponible (${res.status}) : ${msg}`,
+      { status: res.status, retry: res.status === 429 || res.status === 402 || res.status >= 500 || res.status === 400 });
+  }
+  const text = data?.choices?.[0]?.message?.content;
+  if (typeof text !== "string" || !text.trim()) throw new AiError(`Réponse vide de ${name}`, { retry: true });
+  return { text, model: data.model || model };
+}
+
+export const askOpenRouter = (key: string, request: FreeRequest) =>
+  chatCall("OpenRouter", "https://openrouter.ai/api/v1/chat/completions", key, OPENROUTER_MODEL, OPENROUTER_MAX_IMAGES, request);
+export const askGroq = (key: string, request: FreeRequest) =>
+  chatCall("Groq", "https://api.groq.com/openai/v1/chat/completions", key, GROQ_MODEL, GROQ_MAX_IMAGES, request);
+
+export async function askWorkersAi(ai: WorkersAi, request: FreeRequest) {
+  const content = chatContent(request, WORKERS_MAX_IMAGES);
   const input: Record<string, unknown> = {
     messages: [{ role: "system", content: request.system }, { role: "user", content }],
     max_tokens: request.live ? 300 : 8000,
@@ -130,25 +177,34 @@ export async function askWorkersAi(ai: WorkersAi, request: FreeRequest) {
   return { text, model: WORKERS_MODEL };
 }
 
-// Gemini d'abord, puis Workers AI si Gemini est épuisé ou en panne (ou absent).
-export async function askFree({ geminiKey, ai }: { geminiKey?: string; ai?: WorkersAi }, request: FreeRequest) {
-  let first: AiError | null = null;
-  if (geminiKey) {
+export type FreeProviders = { geminiKey?: string; openrouterKey?: string; groqKey?: string; ai?: WorkersAi };
+
+// Gemini d'abord, puis OpenRouter, Groq et Workers AI si le précédent est épuisé, en panne ou absent.
+export async function askFree({ geminiKey, openrouterKey, groqKey, ai }: FreeProviders, request: FreeRequest) {
+  // Un lien YouTube ne peut être regardé que par Gemini.
+  if (hasYoutube(request)) {
+    if (!geminiKey) throw new AiError("L'analyse d'un lien YouTube demande la clé GEMINI_API_KEY dans les variables du site Art craft.");
+    return askGemini(geminiKey, request);
+  }
+  const chain: [string, () => Promise<{ text: string; model: string }>][] = [];
+  if (geminiKey) chain.push(["Gemini", () => askGemini(geminiKey, request)]);
+  if (openrouterKey) chain.push(["OpenRouter", () => askOpenRouter(openrouterKey, request)]);
+  if (groqKey) chain.push(["Groq", () => askGroq(groqKey, request)]);
+  if (ai) chain.push(["Cloudflare", () => askWorkersAi(ai, request)]);
+  if (!chain.length) throw new AiError("Aucune IA branchée : ajoute GEMINI_API_KEY dans les variables du site Art craft.");
+  const errors: string[] = [];
+  for (let i = 0; i < chain.length; i++) {
     try {
-      return await askGemini(geminiKey, request);
+      return await chain[i][1]();
     } catch (err) {
-      // Le secours Cloudflare ne sait pas regarder une vidéo YouTube.
-      if (!(err instanceof AiError) || !err.retry || !ai || hasYoutube(request)) throw err;
-      first = err;
+      const last = i === chain.length - 1;
+      // Erreur définitive (mauvaise clé Gemini, images refusées) ou dernier recours : on s'arrête.
+      if (!(err instanceof AiError) || !err.retry || last) {
+        if (err instanceof AiError && errors.length && !/Quota gratuit du jour/.test(err.message)) err.message = `${errors.join(" ; ")} ; ${err.message}`;
+        throw err;
+      }
+      errors.push(err.message);
     }
   }
-  if (hasYoutube(request)) throw new AiError("L'analyse d'un lien YouTube demande la clé GEMINI_API_KEY dans les variables du site Art craft.");
-  if (!ai) throw new AiError("Aucune IA branchée : ajoute GEMINI_API_KEY dans les variables du site Art craft.");
-  try {
-    return await askWorkersAi(ai, request);
-  } catch (err) {
-    // Gemini épuisé puis Cloudflare épuisé : le message de Cloudflare dit déjà tout.
-    if (first && err instanceof AiError && !/Quota gratuit du jour/.test(err.message)) err.message = `${first.message} ; ${err.message}`;
-    throw err;
-  }
+  throw new AiError("Aucune IA disponible");
 }
