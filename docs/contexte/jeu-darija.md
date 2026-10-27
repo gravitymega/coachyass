@@ -101,3 +101,9 @@ Aucune dépendance en ligne : tout est dans `jeu-darija/`, voix comprises. Il fa
 - La voix française lisait « Hbibiti » comme « bibiti ». `fixFr` (voix.js) le réécrit en « Hebibti » (حبيبتي).
 - `generer.py` (`NAMES`, `darija_names`) remplace les phonèmes français de Hbibiti, Ali, Asma et Assad par une prononciation darija avant la synthèse : accent sur la 1re syllabe, coup de glotte (`ʔˈali`, `ʔˈasma`, `ʔˈasad`, `hbˈibti`).
 - 635 phrases ont été réenregistrées.
+
+## Carnet de fierté (27 octobre 2026)
+
+- Nouvel onglet **🏆 Carnet** dans l'espace parents : ce que chaque enfant a appris ces 7 derniers jours. On y voit les nouveaux mots de darija (avec 🇲🇦 et 🇩🇿), les mots d'anglais, les histoires, les missions, les habitants aidés en ville, les étoiles et le nombre de jours joués.
+- Le bouton **📤 Envoyer aux grands-parents** ouvre le partage de la tablette (WhatsApp, SMS…), ou copie le texte si le partage n'est pas disponible.
+- `carnet.js` est pur et testé par `carnet.test.mjs`. `recordDay` garde chaque jour une photo des compteurs dans `progress.days` (60 jours au plus) ; il est appelé par `saveAll`. `weekReport` calcule la différence avec la dernière photo d'avant la semaine, et `reportText` écrit le message.
