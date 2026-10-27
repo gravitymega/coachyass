@@ -68,6 +68,32 @@ const POPPY_COLORS = [
 const COLOR_HEX = { bleu: '#2f6fe0', rouge: '#e5484d', vert: '#2bb673', jaune: '#ffc93c', blanc: '#ffffff', noir: '#222222' };
 const token = (x, withName = true) => `<span class="ptoken" style="--c:${x.c}"><span class="pt-e">${x.e}</span></span>${withName ? `<small class="pt-n">${esc(x.n)}</small>` : ''}`;
 
+// L'école de l'alif : les 28 lettres arabes, leur nom, un mot illustré qui commence par chacune.
+// name : nom affiché ; say : nom lu à voix haute (deux lettres ont le même son pour une oreille française :
+// on ne les propose jamais ensemble).
+export const ALIF = [
+  ['ا', 'Alif', 'Alif', 'أَرْنَب', 'le lapin', '🐰'], ['ب', 'Ba', 'Ba', 'بَيْت', 'la maison', '🏠'],
+  ['ت', 'Ta', 'Ta', 'تُفَّاح', 'la pomme', '🍎'], ['ث', 'Tha', 'Tha', 'ثَعْلَب', 'le renard', '🦊'],
+  ['ج', 'Jim', 'Jim', 'جَمَل', 'le chameau', '🐪'], ['ح', 'Ḥa', 'Ha', 'حِصَان', 'le cheval', '🐴'],
+  ['خ', 'Kha', 'Kha', 'خُبْز', 'le pain', '🍞'], ['د', 'Dal', 'Dal', 'دُبّ', 'l’ours', '🐻'],
+  ['ذ', 'Dhal', 'Dhal', 'ذُرَة', 'le maïs', '🌽'], ['ر', 'Ra', 'Ra', 'رِيشَة', 'la plume', '🪶'],
+  ['ز', 'Zay', 'Zay', 'زَرَافَة', 'la girafe', '🦒'], ['س', 'Sin', 'Sine', 'سَمَكَة', 'le poisson', '🐟'],
+  ['ش', 'Chin', 'Chine', 'شَمْس', 'le soleil', '☀️'], ['ص', 'Sad', 'Sad', 'صَقْر', 'le faucon', '🦅'],
+  ['ض', 'Dad', 'Dad', 'ضِفْدَع', 'la grenouille', '🐸'], ['ط', 'Ṭa', 'Ta', 'طَائِرَة', 'l’avion', '✈️'],
+  ['ظ', 'Ẓa', 'Za', 'ظَرْف', 'l’enveloppe', '✉️'], ['ع', '3ayn', 'Aïne', 'عَيْن', 'l’œil', '👁️'],
+  ['غ', 'Ghayn', 'Ghaïne', 'غَزَال', 'la gazelle', '🦌'], ['ف', 'Fa', 'Fa', 'فِيل', 'l’éléphant', '🐘'],
+  ['ق', 'Qaf', 'Qaf', 'قَمَر', 'la lune', '🌙'], ['ك', 'Kaf', 'Kaf', 'كِتَاب', 'le livre', '📖'],
+  ['ل', 'Lam', 'Lam', 'لَيْمُون', 'le citron', '🍋'], ['م', 'Mim', 'Mim', 'مَوْز', 'la banane', '🍌'],
+  ['ن', 'Noun', 'Noune', 'نَحْلَة', 'l’abeille', '🐝'], ['ه', 'Ha', 'Ha', 'هَاتِف', 'le téléphone', '📱'],
+  ['و', 'Waw', 'Waw', 'وَرْدَة', 'la rose', '🌹'], ['ي', 'Ya', 'Ya', 'يَد', 'la main', '✋'],
+].map(([l, name, say, ar, fr, e]) => ({ l, name, say, ar, fr, e }));
+// Les lettres arrivent petit à petit : 6 au début, 4 de plus à chaque niveau joué dans la salle.
+const alifPool = (level) => ALIF.slice(0, Math.min(ALIF.length, 6 + 4 * (Number.isFinite(level) ? level : 99)));
+const arL = (x) => `<span class="c-arl" lang="ar" dir="rtl">${x.l}</span>`;
+const arW = (t) => `<span class="ar-word" lang="ar" dir="rtl">${t}</span>`;
+// Deux autres lettres, jamais avec le même nom à l'oreille que la bonne.
+const others = (x, pool, r, n = 2) => shuffle(pool.filter((y) => y !== x && y.say !== x.say), r).filter((y, i, a) => a.findIndex((z) => z.say === y.say) === i).slice(0, n);
+
 const LETTRES = 'ABCDEFILMOPRSTUV'.split('');
 const SONS = { ch: 'ch', l: 'l', v: 'v', m: 'm', p: 'p', s: 's', f: 'f', b: 'b', k: 'k', g: 'g', t: 't', r: 'r', d: 'd', i: 'i', a: 'a', é: 'é', n: 'n' };
 const OBJETS = ['🍎', '⚽', '🏀', '⭐', '🐟', '🌸', '🧸', '🍬', '🦆', '🚗'];
@@ -176,6 +202,13 @@ export const SKILLS = {
   'p-true': { room: 'poppy', older: true, title: 'Vrai pour qui ?' },
   'p-symbol': { room: 'poppy', young: true, older: true, min: 1, title: 'Les Smiling Critters' },
   'p-math': { room: 'poppy', older: true, min: 1, title: 'Les calculs de l’usine' },
+  // L'école de l'alif : lettres et mots arabes
+  'a-same': { room: 'alif', young: true, older: true, title: 'La même lettre arabe' },
+  'a-hear': { room: 'alif', young: true, older: true, min: 1, title: 'Reconnaître une lettre arabe' },
+  'a-name': { room: 'alif', older: true, title: 'Le nom des lettres arabes' },
+  'a-first': { room: 'alif', older: true, min: 1, title: 'La première lettre d’un mot arabe' },
+  'a-read': { room: 'alif', older: true, min: 2, title: 'Lire un mot arabe' },
+  'a-darija': { room: 'alif', older: true, min: 3, title: 'Lire la darija en arabe' },
 };
 const defaultsOlder = (s) => (s.older === undefined ? true : s.older);
 
@@ -197,7 +230,7 @@ const Q = (skill, text, sayParts, choices, answer, visual = '') => ({
 });
 
 // Fabrique une question pour une compétence. dialect sert au calcul en darija.
-export function makeExercise(skill, { r = Math.random, dialect = 'ma' } = {}) {
+export function makeExercise(skill, { r = Math.random, dialect = 'ma', level = Infinity } = {}) {
   switch (skill) {
     case 'm-count': {
       const e = pick(OBJETS, r), n = ri(r, 1, 6);
@@ -411,6 +444,48 @@ export function makeExercise(skill, { r = Math.random, dialect = 'ma' } = {}) {
       return Q(skill, `Quel jour vient <b>${after ? 'après' : 'avant'}</b> ${JOURS[i]} ?`, [`Quel jour vient ${after ? 'après' : 'avant'} ${JOURS[i]} ?`],
         opts.map((d) => ({ key: d, html: `<span class="c-text">${d}</span>`, correct: d === ans })), { text: ans, say: [`C'est ${ans} !`] });
     }
+    // ----- L'école de l'alif -----
+    case 'a-same': {
+      const pool = alifPool(level), x = pick(pool, r);
+      return Q(skill, `Trouve la même lettre : ${arL(x)}`, ['Trouve la même lettre.'],
+        [x, ...others(x, pool.length >= 3 ? pool : ALIF, r)].map((y) => ({ key: y.l, html: arL(y), correct: y === x })),
+        { text: `${x.l} : ${x.name}`, say: [`C'est la lettre ${x.say} !`] });
+    }
+    case 'a-hear': {
+      const pool = alifPool(level), x = pick(pool, r);
+      return Q(skill, '🔊 Touche la bonne lettre', [`Touche la lettre ${x.say}.`],
+        [x, ...others(x, pool, r)].map((y) => ({ key: y.l, html: arL(y), correct: y === x })),
+        { text: `${x.l} : ${x.name}`, say: [`Voici la lettre ${x.say} !`] });
+    }
+    case 'a-name': {
+      const pool = alifPool(level), x = pick(pool, r);
+      return Q(skill, 'Comment s’appelle cette lettre ?', ['Comment s’appelle cette lettre ?'],
+        [x, ...others(x, pool, r)].map((y) => ({ key: y.l, html: `<span class="c-text">${y.name}</span>`, say: y.say, correct: y === x })),
+        { text: `${x.l} : ${x.name}`, say: [`C'est la lettre ${x.say} !`] }, arL(x));
+    }
+    case 'a-first': {
+      const pool = alifPool(level), x = pick(pool, r);
+      return Q(skill, `Par quelle lettre commence <b>${esc(x.fr)}</b> en arabe ?`, [`Par quelle lettre commence ${x.fr}, en arabe ?`],
+        [x, ...others(x, pool, r)].map((y) => ({ key: y.l, html: arL(y), correct: y === x })),
+        { text: `${x.ar} commence par ${x.l}`, say: [`Oui, ça commence par la lettre ${x.say} !`] },
+        `<span class="big-pic">${x.e}</span>${arW(x.ar)}`);
+    }
+    case 'a-read': {
+      const pool = alifPool(level), x = pick(pool, r);
+      const os = shuffle(pool.filter((y) => y !== x && y.e !== x.e), r).slice(0, 2);
+      return Q(skill, `Lis le mot : ${arW(x.ar)}`, ['Lis le mot en arabe, et trouve la bonne image.'],
+        [x, ...os].map((y) => ({ key: y.l, html: `<span class="c-emoji">${y.e}</span>`, correct: y === x })),
+        { text: `${x.ar} : ${x.fr}`, say: [`C'est ${x.fr} !`] });
+    }
+    case 'a-darija': {
+      // Les mots de darija du jeu, écrits en arabe : on lit, on trouve l'image.
+      const pool = WORDS.filter((w) => !w.phrase);
+      const w = pick(pool, r);
+      const os = shuffle(pool.filter((y) => y.room === w.room && y !== w && y.emoji !== w.emoji), r).slice(0, 2);
+      return Q(skill, `Lis ce mot en darija ${dialect === 'ma' ? '🇲🇦' : '🇩🇿'} : ${arW(esc(w[dialect].ar))}`, ['Lis ce mot en darija, et trouve la bonne image.'],
+        [w, ...os].map((y) => ({ key: y.id, html: `<span class="c-emoji">${y.emoji}</span>`, correct: y === w })),
+        { text: `${w[dialect].ar} : ${w[dialect].lat} (${w.fr})`, say: [{ word: w, d: dialect }, w.fr] });
+    }
     // ----- Coin Poppy Playtime -----
     case 'p-who': {
       const x = pick(POPPY, r), clue = pick(x.clues, r);
@@ -478,7 +553,7 @@ export function buildExerciseLevel(room, progress, opts = {}) {
     let s = i === 0 && fresh.length ? fresh[0] : weightedSkill(skills, progress, r);
     if (s === last && skills.length > 1) s = weightedSkill(skills.filter((x) => x !== last), progress, r);
     last = s;
-    questions.push(makeExercise(s, { r, dialect: dialects[i % dialects.length] }));
+    questions.push(makeExercise(s, { r, dialect: dialects[i % dialects.length], level: progress.rooms?.[room] || 0 }));
   }
   return { learn: [], questions };
 }

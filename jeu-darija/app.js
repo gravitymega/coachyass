@@ -139,10 +139,10 @@ function showTimeUp() {
 
 // ---------- L'usine ----------
 const HOSTS = { grappo: ART.grappo, assad: ART.assad, fifi: ART.fifi, dada: ART.dada, lantern: () => ART.lantern(), tajine: ART.tajine, rocket: () => ART.rocket(), books: ART.books, claw: ART.clawMachine, clock: () => clockSVG(3, 0),
-  ...Object.fromEntries(Object.entries({ corps: '🦷💪', animaux: '🐪🐑', maison: '🏠🔑', vetements: '👟🧢', ciel: '☀️🌧️', appel: '📞💬' })
+  ...Object.fromEntries(Object.entries({ corps: '🦷💪', animaux: '🐪🐑', maison: '🏠🔑', vetements: '👟🧢', ciel: '☀️🌧️', appel: '📞💬', alif: 'أ ب ت', marche: '🍇🥕', ecole: '📚✏️', sport: '⚽🏆', emotions: '😄😢', metiers: '🩺👮', fete: '🌙🎁' })
     .map(([k, e]) => ['e-' + k, () => `<span class="host-emoji">${e}</span>`])) };
 // Le copain qui accompagne chaque salle (il parle, se réjouit et encourage).
-const BUDDY = { corps: 'fifi', animaux: 'assad', maison: 'maman', vetements: 'papa', ciel: 'hbibiti', appel: 'maman', poppy: 'grappo', hall: 'hbibiti', stade: 'papa', jardin: 'hbibiti', maths: 'grappo', lecture: 'hbibiti', gym: 'assad', formes: 'fifi', cuisine: 'maman', musique: 'fifi', defi: 'assad' };
+const BUDDY = { alif: 'hbibiti', marche: 'hbibiti', ecole: 'grappo', sport: 'fifi', emotions: 'maman', metiers: 'papa', fete: 'hbibiti', corps: 'fifi', animaux: 'assad', maison: 'maman', vetements: 'papa', ciel: 'hbibiti', appel: 'maman', poppy: 'grappo', hall: 'hbibiti', stade: 'papa', jardin: 'hbibiti', maths: 'grappo', lecture: 'hbibiti', gym: 'assad', formes: 'fifi', cuisine: 'maman', musique: 'fifi', defi: 'assad' };
 const buddyOf = (r) => BUDDY[r?.id] || 'hbibiti';
 // Dessine un personnage (Maman avec ou sans foulard, selon le réglage des parents).
 const drawChar = (name, mood = 'happy') => (name === 'maman' ? ART.maman(mood, '', settings.mamaScarf) : ART[name](mood));

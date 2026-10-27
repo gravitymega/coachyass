@@ -163,6 +163,79 @@ export const WORDS = [
   W('nom', 'appel', 'Comment tu t’appelles ?', '🙋', 'Chnou smitek ?', 'شنو سميتك؟', 'Wach esmek ?', 'واش اسمك؟', { older: true }),
   W('moi', 'appel', 'Je m’appelle…', '📛', 'Smiti…', 'سميتي…', 'Esmi…', 'اسمي…', { older: true }),
 
+  // Le marché de Hbibiti : fruits et légumes
+  W('raisin', 'marche', 'Le raisin', '🍇', '3neb', 'عنب', '3neb', 'عنب'),
+  W('fraise', 'marche', 'La fraise', '🍓', 'Tout', 'توت', 'Frez', 'فريز'),
+  W('pasteque', 'marche', 'La pastèque', '🍉', 'Dellah', 'دلّاح', 'Della3', 'دلّاع'),
+  W('melon', 'marche', 'Le melon', '🍈', 'Btikh', 'بطيخ', 'Bettikh', 'بطّيخ'),
+  W('dattes', 'marche', 'Les dattes', '🌴', 'Tmer', 'تمر', 'Tmer', 'تمر'),
+  W('olives', 'marche', 'Les olives', '🫒', 'Zitoun', 'زيتون', 'Zitoun', 'زيتون'),
+  W('carotte', 'marche', 'La carotte', '🥕', 'Khizzou', 'خيزّو', 'Zrodiya', 'زرودية'),
+  W('oignon', 'marche', "L'oignon", '🧅', 'Bsla', 'بصلة', 'Bsel', 'بصل'),
+  W('courgette', 'marche', 'La courgette', '🥒', 'Gar3a', 'ڭرعة', 'Qar3a', 'قرعة'),
+  W('citron', 'marche', 'Le citron', '🍋', 'Hamed', 'حامض', 'Qares', 'قارص'),
+
+  // La classe de Grappo : l'école
+  W('madrasa', 'ecole', "L'école", '🏫', 'Lmadrasa', 'المدرسة', 'Lakoul', 'لاكول'),
+  W('maitresse', 'ecole', 'La maîtresse', '👩‍🏫', 'Lostada', 'الأستاذة', 'Lmou3allima', 'المعلّمة'),
+  W('cahier', 'ecole', 'Le cahier', '📒', 'Konnach', 'كنّاش', 'Kayé', 'كاييه'),
+  W('stylo', 'ecole', 'Le stylo', '🖊️', 'Stilou', 'ستيلو', 'Stilou', 'ستيلو'),
+  W('crayon', 'ecole', 'Le crayon', '✏️', 'Qlam rsas', 'قلم رصاص', 'Qlam', 'قلم'),
+  W('livre', 'ecole', 'Le livre', '📖', 'Ktab', 'كتاب', 'Ktab', 'كتاب'),
+  W('ami', 'ecole', 'Mon ami', '🧑‍🤝‍🧑', 'Sa7bi', 'صاحبي', 'Sa7bi', 'صاحبي'),
+  W('lis', 'ecole', 'Lis !', '👓', 'Qra !', 'قرا!', 'Aqra !', 'اقرا!'),
+  W('ecris', 'ecole', 'Écris !', '📝', 'Kteb !', 'كتب!', 'Aktab !', 'اكتب!'),
+  W('tableau', 'ecole', 'Le tableau', '🟩', 'Sbbora', 'سبّورة', 'Tablo', 'طابلو', { older: true }),
+  W('ciseaux', 'ecole', 'Les ciseaux', '✂️', 'Mqess', 'مقص', 'Mqess', 'مقص', { older: true }),
+
+  // Le terrain de Fifi : le sport
+  W('ballon', 'sport', 'Le ballon', '⚽', 'Kora', 'كورة', 'Balon', 'بالون'),
+  W('gagne', 'sport', 'On a gagné !', '🏆', 'Rbe7na !', 'ربحنا!', 'Rbe7na !', 'ربحنا!'),
+  W('perdu', 'sport', 'On a perdu', '😞', 'Khserna', 'خسرنا', 'Khserna', 'خسرنا'),
+  W('saute', 'sport', 'Saute !', '🦘', 'Nqez !', 'نقز!', 'Nagez !', 'ناقز!'),
+  W('lance', 'sport', 'Lance !', '🤾', 'Lou7 !', 'لوّح!', 'Armi !', 'ارمي!'),
+  W('attrape', 'sport', 'Attrape !', '🧤', 'Chedd !', 'شدّ!', 'Hkem !', 'حكم!'),
+  W('equipe', 'sport', "L'équipe", '👥', 'Lfarqa', 'الفرقة', 'Lekip', 'ليكيب'),
+  W('nage', 'sport', 'Nage !', '🏊', '3oum !', 'عوم!', '3oum !', 'عوم!'),
+  W('velo', 'sport', 'Le vélo', '🚲', 'Bechklita', 'بشكليطة', 'Bichklita', 'بيشكليطة'),
+  W('fort', 'sport', 'Fort', '💪', 'Qwi', 'قوي', 'Qwi', 'قوي', { older: true }),
+
+  // La chambre des émotions de Maman : les sentiments
+  W('content', 'emotions', 'Content', '😄', 'Fer7an', 'فرحان', 'Fer7an', 'فرحان'),
+  W('triste', 'emotions', 'Triste', '😢', '7zin', 'حزين', 'Mghboun', 'مغبون'),
+  W('fache', 'emotions', 'Fâché', '😠', 'Mqelleq', 'مقلّق', 'Za3fan', 'زعفان'),
+  W('peur', 'emotions', "J'ai peur", '😨', 'Khayef', 'خايف', 'Khayef', 'خايف'),
+  W('malade', 'emotions', 'Malade', '🤒', 'Mrid', 'مريض', 'Mrid', 'مريض'),
+  W('mal', 'emotions', "J'ai mal", '🤕', 'Kaydorni', 'كيضرّني', 'Ywaja3ni', 'يوجعني'),
+  W('ris', 'emotions', 'Ris !', '😂', 'Dhek !', 'ضحك!', 'Edhek !', 'اضحك!'),
+  W('pleurepas', 'emotions', 'Ne pleure pas', '🥲', 'Ma tbkich', 'ما تبكيش', 'Ma tebkich', 'ما تبكيش'),
+  W('gentil', 'emotions', 'Gentil', '😇', 'Driyef', 'ضريف', 'Mlih', 'مليح', { older: true }),
+
+  // La rue des métiers de Papa
+  W('medecin', 'metiers', 'Le médecin', '🩺', 'Tbib', 'طبيب', 'Tbib', 'طبيب'),
+  W('policier', 'metiers', 'Le policier', '👮', 'Boulisi', 'بوليسي', 'Chorti', 'شرطي'),
+  W('boulanger', 'metiers', 'Le boulanger', '🥖', 'Moul lferran', 'مول الفران', 'Khabbaz', 'خبّاز'),
+  W('cuisinier', 'metiers', 'Le cuisinier', '🧑‍🍳', 'Tabbakh', 'طبّاخ', 'Tabbakh', 'طبّاخ'),
+  W('chauffeur', 'metiers', 'Le chauffeur', '🚕', 'Chifor', 'شيفور', 'Chifor', 'شيفور'),
+  W('coiffeur', 'metiers', 'Le coiffeur', '💈', '7ejjam', 'حجّام', '7ejjam', 'حجّام'),
+  W('menuisier', 'metiers', 'Le menuisier', '🪚', 'Nejjar', 'نجّار', 'Nejjar', 'نجّار'),
+  W('fermier', 'metiers', 'Le fermier', '🧑‍🌾', 'Fellah', 'فلّاح', 'Fellah', 'فلّاح'),
+  W('pecheur', 'metiers', 'Le pêcheur', '🎣', 'Sayyad', 'صيّاد', 'Sayyad', 'صيّاد'),
+  W('imam', 'metiers', "L'imam", '🕌', 'Limam', 'الإمام', 'Limam', 'الإمام', { older: true }),
+
+  // La fête de Hbibiti : Ramadan et l'Aïd
+  W('ramadan', 'fete', 'Le Ramadan', '🌙', 'Ramdan', 'رمضان', 'Ramdan', 'رمضان'),
+  W('siyam', 'fete', 'Le jeûne', '🍽️', 'Siyam', 'الصيام', 'Siyam', 'الصيام'),
+  W('ftour', 'fete', 'Le repas du soir (ftour)', '🥣', 'Lftour', 'الفطور', 'Lftour', 'الفطور'),
+  W('aid', 'fete', "L'Aïd", '🎉', 'L3id', 'العيد', 'L3id', 'العيد'),
+  W('aidmbarek', 'fete', 'Bonne fête !', '🎊', '3id mbarek !', 'عيد مبارك!', 'Saha 3idkoum !', 'صحّا عيدكم!'),
+  W('cadeau', 'fete', 'Le cadeau', '🎁', 'Lhdiya', 'الهدية', 'Lhdiya', 'الهدية'),
+  W('gateaux', 'fete', "Les gâteaux de l'Aïd", '🍪', 'Ghriba', 'غريبة', 'Makrout', 'مقروط'),
+  W('habits', 'fete', 'Les habits neufs', '👘', 'Hwayej jdad', 'حوايج جداد', 'Lebsa jdida', 'لبسة جديدة'),
+  W('jame3', 'fete', 'La mosquée', '🕌', 'Jjame3', 'الجامع', 'Jjame3', 'الجامع'),
+  W('fanous', 'fete', 'La lanterne', '🏮', 'Fanous', 'فانوس', 'Fanous', 'فانوس'),
+  W('hlal', 'fete', 'Le croissant de lune', '🌒', 'Lhlal', 'الهلال', 'Lhlal', 'الهلال', { older: true }),
+
   // Jardin de la mosquée : les phrases du musulman (pareilles dans les deux pays).
   // `fr` = la situation où on la dit.
   ...[
@@ -203,6 +276,7 @@ export const ROOMS = [
   { id: 'maths', name: 'Atelier des nombres', theme: 'Maths : compter, additionner', game: 'rocket', host: 'rocket', unlock: 0, school: true },
   { id: 'lecture', name: 'Bibliothèque de Hbibiti', theme: 'Lire et écrire en français', game: 'books', host: 'books', unlock: 0, school: true },
   { id: 'poppy', name: 'Coin Poppy Playtime', theme: 'Les personnages, leurs couleurs et costumes', game: 'claw', host: 'claw', unlock: 1, school: true, fan: true },
+  { id: 'alif', name: 'L’école de l’alif', theme: 'Lettres et mots arabes', game: 'garden', host: 'e-alif', unlock: 1, school: true },
   { id: 'gym', name: 'Gymnase de Fifi', theme: 'Chiffres et couleurs', game: 'basket', host: 'fifi', unlock: 2 },
   { id: 'formes', name: 'Tour de l’horloge', theme: 'Formes, suites et heure', game: 'balloons', host: 'clock', unlock: 3, school: true },
   { id: 'cuisine', name: 'Cuisine de Hbibiti', theme: 'À table !', game: 'kitchen', host: 'tajine', unlock: 4 },
@@ -213,6 +287,12 @@ export const ROOMS = [
   { id: 'vetements', name: 'Le vestiaire de Papa', theme: 'Les vêtements', game: 'rocket', host: 'e-vetements', unlock: 7 },
   { id: 'ciel', name: 'Le balcon de Hbibiti', theme: 'Le ciel, la météo, la nature', game: 'balloons', host: 'e-ciel', unlock: 8 },
   { id: 'appel', name: 'Le téléphone de Jedda', theme: 'Parler avec la famille', game: 'drums', host: 'e-appel', unlock: 9 },
+  { id: 'marche', name: 'Le marché de Hbibiti', theme: 'Fruits et légumes', game: 'kitchen', host: 'e-marche', unlock: 4 },
+  { id: 'ecole', name: 'La classe de Grappo', theme: 'L’école', game: 'books', host: 'e-ecole', unlock: 6 },
+  { id: 'sport', name: 'Le terrain de Fifi', theme: 'Le sport', game: 'penalty', host: 'e-sport', unlock: 10 },
+  { id: 'emotions', name: 'La chambre des émotions', theme: 'Ce que je ressens', game: 'balloons', host: 'e-emotions', unlock: 11 },
+  { id: 'metiers', name: 'La rue des métiers', theme: 'Les métiers', game: 'doors', host: 'e-metiers', unlock: 12 },
+  { id: 'fete', name: 'La fête de Hbibiti', theme: 'Ramadan et l’Aïd', game: 'garden', host: 'e-fete', unlock: 13 },
 ];
 
 export const STICKERS = [
