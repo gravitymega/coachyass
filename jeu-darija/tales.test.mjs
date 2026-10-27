@@ -42,7 +42,7 @@ test('Poppy Playtime : un indice ne désigne qu’un seul personnage parmi les c
     const good = q.choices.filter((c) => c.correct);
     assert.equal(good.length, 1);
     const clue = q.say[1];
-    const owners = POPPY.filter((x) => x.clues.includes(clue)).map((x) => x.id);
+    const owners = POPPY.filter((x) => x.clues.map((c) => c.replaceAll('de {joueur}', 'du joueur').replaceAll('{joueur}', 'le joueur')).includes(clue)).map((x) => x.id);
     assert.deepEqual(owners, [good[0].key]);
   }
 });

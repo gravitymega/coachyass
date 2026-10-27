@@ -277,8 +277,8 @@ $('#btn-bismillah').addEventListener('click', () => {
   const lang = levelLang(room);
   const opts = { dialects: settings.dialects, seqIndex: levelsDone(), build, count: room === DEFI ? 10 : undefined, lang };
   level = coop()
-    ? buildCoop(room.id, players.map((p) => ({ progress: p.progress, older: p.kid.older })), opts)
-    : build(room.id, P().progress, { ...opts, older: P().kid.older });
+    ? buildCoop(room.id, players.map((p) => ({ progress: p.progress, older: p.kid.older, name: p.kid.name })), opts)
+    : build(room.id, P().progress, { ...opts, older: P().kid.older, player: P().kid.name });
   level.i = 0; level.learnI = 0; level.score = players.map(() => 0); level.lang = lang;
   level.stars = players.map(() => 0);
   ctx.score = 0; ctx.streak = 0;

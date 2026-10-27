@@ -65,16 +65,18 @@ export const POPPY = [
   { id: 'piggy', n: 'PickyPiggy', e: '🐷', c: '#f48fb1', ch: 3, clues: ['C’est le cochon des Smiling Critters.'] },
   { id: 'crafty', n: 'CraftyCorn', e: '🦄', c: '#b39ddb', ch: 3, clues: ['C’est la licorne des Smiling Critters.'] },
   // Chapitre 4 : Safe Haven
-  { id: 'doey', n: 'Doey the Doughman', e: '🫓', c: '#f6a04d', ch: 4, clues: ['C’est un personnage en pâte à modeler qui aide le joueur.', 'On le rencontre dans le chapitre 4, Safe Haven.'] },
+  { id: 'doey', n: 'Doey the Doughman', e: '🫓', c: '#f6a04d', ch: 4, clues: ['C’est un personnage en pâte à modeler qui aide {joueur}.', 'On le rencontre dans le chapitre 4, Safe Haven.'] },
   { id: 'yarnaby', n: 'Yarnaby', e: '🧶', c: '#e0a43a', ch: 4, clues: ['Il ressemble à un lion tout doux fait en laine.'] },
   { id: 'piano', n: 'Pianosaurus', e: '🎹', c: '#6d6875', ch: 4, clues: ['C’est un dinosaure qui est aussi un piano.'] },
   // Chapitre 5 : Broken Things
   { id: 'lily', n: 'Lily Lovebraids', e: '🎀', c: '#9b5de5', ch: 5, clues: ['C’est une poupée aux grandes tresses violettes.', 'Elle a une maison de poupée dans la rue Sweet Street.'] },
-  { id: 'giblet', n: 'Giblet', e: '🐕', c: '#c97b63', ch: 5, clues: ['C’est un petit chien qui marche avec une canne.', 'Il guide le joueur dans le chapitre 5.'] },
+  { id: 'giblet', n: 'Giblet', e: '🐕', c: '#c97b63', ch: 5, clues: ['C’est un petit chien qui marche avec une canne.', 'Il guide {joueur} dans le chapitre 5.'] },
   { id: 'chum', n: 'Chum Chompkins', e: '🧸', c: '#d64545', ch: 5, clues: ['C’est une grosse créature à la fourrure rouge, le meilleur ami de Giblet.'] },
   { id: 'glowby', n: 'Glowby', e: '🔦', c: '#7b2ff7', ch: 5, clues: ['Sa lumière spéciale fait apparaître des écritures cachées sur les murs.'] },
   { id: 'gracie', n: 'Ms. Gracie', e: '📺', c: '#ef476f', ch: 5, clues: ['Elle présente une émission de télé pour enfants et parle depuis les écrans.'] },
-  { id: 'grabpack', n: 'Le GrabPack', e: '🎒', c: '#3b7dd8', clues: ['C’est le sac à dos du joueur, avec des mains qui s’allongent pour attraper les choses.'] },
+  // Le héros du jeu (« the Player ») : c'est l'enfant qui joue !
+  { id: 'player', n: '{joueur}', e: '🦸', c: '#3b7dd8', clues: ['C’est le héros qui explore l’usine Playtime Co. avec le GrabPack. C’est toi !'] },
+  { id: 'grabpack', n: 'Le GrabPack', e: '🎒', c: '#3b7dd8', clues: ['C’est le sac à dos de {joueur}, avec des mains qui s’allongent pour attraper les choses.'] },
 ];
 // Les couleurs qu'on peut dire en darija (mots de la salle de Fifi).
 const POPPY_COLORS = [
@@ -247,7 +249,11 @@ const Q = (skill, text, sayParts, choices, answer, visual = '') => ({
 });
 
 // Fabrique une question pour une compétence. dialect sert au calcul en darija.
-export function makeExercise(skill, { r = Math.random, dialect = 'ma', level = Infinity } = {}) {
+export function makeExercise(skill, { r = Math.random, dialect = 'ma', level = Infinity, player = 'le joueur' } = {}) {
+  // Dans le coin Poppy, le héros (« the Player ») porte le prénom de l'enfant qui joue.
+  const deP = player === 'le joueur' ? 'du joueur' : /^[aeiouyhàâéèêîôû]/i.test(player) ? `d’${player}` : `de ${player}`;
+  const fill = (t) => t.replaceAll('de {joueur}', deP).replaceAll('{joueur}', player);
+  const PP = skill.startsWith('p-') ? POPPY.map((x) => ({ ...x, n: fill(x.n), clues: x.clues.map(fill) })) : POPPY;
   switch (skill) {
     case 'm-count': {
       const e = pick(OBJETS, r), n = ri(r, 1, 6);
@@ -505,15 +511,15 @@ export function makeExercise(skill, { r = Math.random, dialect = 'ma', level = I
     }
     // ----- Coin Poppy Playtime -----
     case 'p-who': {
-      const x = pick(POPPY, r), clue = pick(x.clues, r);
-      const others = shuffle(POPPY.filter((y) => y !== x), r).slice(0, 2);
+      const x = pick(PP, r), clue = pick(x.clues, r);
+      const others = shuffle(PP.filter((y) => y !== x), r).slice(0, 2);
       return Q(skill, `Qui est-ce ? <b>${esc(clue)}</b>`, ['Qui est-ce ?', clue],
         [x, ...others].map((y) => ({ key: y.id, html: token(y), say: y.n, correct: y === x })),
         { text: x.n, say: [`C'est ${x.n} !`] });
     }
     case 'p-true': {
-      const x = pick(POPPY, r), good = pick(x.clues, r);
-      const bad = shuffle(POPPY.filter((y) => y !== x), r).slice(0, 2).map((y) => pick(y.clues, r));
+      const x = pick(PP, r), good = pick(x.clues, r);
+      const bad = shuffle(PP.filter((y) => y !== x), r).slice(0, 2).map((y) => pick(y.clues, r));
       return Q(skill, `Qu’est-ce qui est vrai pour <b>${esc(x.n)}</b> ?`, [`Qu'est-ce qui est vrai pour ${x.n} ?`],
         [good, ...bad].map((t, i) => ({ key: t, html: `<span class="c-text small">${esc(t)}</span>`, correct: i === 0 })),
         { text: good, say: [good] }, token(x, false));
@@ -528,14 +534,14 @@ export function makeExercise(skill, { r = Math.random, dialect = 'ma', level = I
         { text: `${w(col).fr} : ${w(col)[dialect].lat}`, say: [{ word: w(col), d: dialect }] });
     }
     case 'p-symbol': {
-      const crit = POPPY.filter((x) => x.symbol);
+      const crit = PP.filter((x) => x.symbol);
       const x = pick(crit, r);
       return Q(skill, `Quel dessin a <b>${esc(x.n)}</b> sur le ventre ?`, [`Quel dessin ${x.n} a sur le ventre ?`],
         crit.map((y) => ({ key: y.symbol, html: `<span class="c-emoji">${y.symbol}</span>`, correct: y === x })),
         { text: `${x.n} : ${x.symbolName}`, say: [`${x.n} a ${x.symbolName} sur le ventre !`] }, token(x, false));
     }
     case 'p-chap': {
-      const x = pick(POPPY.filter((y) => y.ch), r);
+      const x = pick(PP.filter((y) => y.ch), r);
       const opts = [x.ch, ...shuffle([1, 2, 3, 4, 5].filter((k) => k !== x.ch), r).slice(0, 2)];
       return Q(skill, `Dans quel chapitre rencontre-t-on <b>${esc(x.n)}</b> ?`, [`Dans quel chapitre rencontre-t-on ${x.n} ?`],
         shuffle(opts, r).map((k) => ({ key: 'c' + k, html: `<span class="c-text">Chapitre ${k}</span>`, say: `Chapitre ${k}`, correct: k === x.ch })),
@@ -544,7 +550,7 @@ export function makeExercise(skill, { r = Math.random, dialect = 'ma', level = I
     case 'p-math': {
       const kind = ri(r, 0, 5);
       let text, ans, how;
-      if (kind === 0) { const a = ri(r, 2, 9), b = ri(r, 2, 9); ans = a + b; how = `${a} + ${b}`; text = `Le GrabPack attrape ${a} jouets, puis encore ${b}. Combien de jouets en tout ?`; }
+      if (kind === 0) { const a = ri(r, 2, 9), b = ri(r, 2, 9); ans = a + b; how = `${a} + ${b}`; text = `Le GrabPack ${deP} attrape ${a} jouets, puis encore ${b}. Combien de jouets en tout ?`; }
       else if (kind === 1) { const b = ri(r, 1, 7); ans = 8 - b; how = `8 − ${b}`; text = `Les Smiling Critters sont 8 amis. ${b} font la sieste avec CatNap. Combien sont réveillés ?`; }
       else if (kind === 2) { const a = ri(r, 2, 5); ans = a * 2; how = `${a} + ${a}`; text = `Huggy Wuggy et Kissy Missy ont chacun ${a} ballons. Combien de ballons en tout ?`; }
       else if (kind === 3) { const a = ri(r, 10, 18), b = ri(r, 2, 9); ans = a - b; how = `${a} − ${b}`; text = `Bunzo Bunny frappe ses cymbales ${a} fois. Il en a déjà fait ${b}. Combien en reste-t-il ?`; }
@@ -579,7 +585,7 @@ export function buildExerciseLevel(room, progress, opts = {}) {
     let s = i === 0 && fresh.length ? fresh[0] : weightedSkill(skills, progress, r);
     if (s === last && skills.length > 1) s = weightedSkill(skills.filter((x) => x !== last), progress, r);
     last = s;
-    questions.push(makeExercise(s, { r, dialect: dialects[i % dialects.length], level: progress.rooms?.[room] || 0 }));
+    questions.push(makeExercise(s, { r, dialect: dialects[i % dialects.length], level: progress.rooms?.[room] || 0, player: opts.player }));
   }
   return { learn: [], questions };
 }
@@ -609,7 +615,7 @@ export function buildChallenge(progress, opts = {}) {
     } else if (exRooms.length) {
       const room = pick(exRooms, r);
       const skills = skillsFor(room, older, progress.rooms?.[room] || 0);
-      questions.push({ ...makeExercise(pick(skills, r), { r, dialect: pick(dialects, r) }), game: games[room] });
+      questions.push({ ...makeExercise(pick(skills, r), { r, dialect: pick(dialects, r), player: opts.player }), game: games[room] });
     } else break;
   }
   return { learn: [], questions, challenge: true };

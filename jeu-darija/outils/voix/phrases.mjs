@@ -65,7 +65,7 @@ for (const skill of Object.keys(SKILLS)) {
   let calm = 0;
   for (let i = 0; i < 400000 && calm < 40000; i++) {
     const before = out.size;
-    const q = makeExercise(skill, { dialect: i % 2 ? 'ma' : 'dz' });
+    const q = makeExercise(skill, { dialect: i % 2 ? 'ma' : 'dz', player: kids[i % kids.length] });
     add(...q.say, ...q.answer.say, ...q.choices.map((c) => c.say));
     calm = out.size === before ? calm + 1 : 0;
   }

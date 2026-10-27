@@ -456,7 +456,7 @@ export function buildLevel(room, progress, opts = {}) {
 export function buildCoop(room, players, opts = {}) {
   const per = Math.max(2, Math.ceil((opts.count || 6) / players.length));
   const build = opts.build || buildLevel;
-  const levels = players.map((p, i) => build(room, p.progress, { ...opts, older: p.older, count: per, noSequence: i > 0 }));
+  const levels = players.map((p, i) => build(room, p.progress, { ...opts, older: p.older, player: p.name, count: per, noSequence: i > 0 }));
   const questions = [];
   for (let i = 0; i < per; i++) levels.forEach((lv, pi) => { if (lv.questions[i]) questions.push({ ...lv.questions[i], player: pi }); });
   const learn = [];
