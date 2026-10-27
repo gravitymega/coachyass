@@ -207,3 +207,25 @@ export async function askFree({ geminiKey, openRouterKey, ai }: { geminiKey?: st
     throw err;
   }
 }
+
+// Diagnostic (/api/coach?test) : une question très courte à chaque IA gratuite, séparément,
+// pour vérifier les clés sans lancer d'analyse. Ne montre jamais les clés.
+export async function testFree({ geminiKey, openRouterKey, ai }: { geminiKey?: string; openRouterKey?: string; ai?: WorkersAi }) {
+  const request: FreeRequest = { system: "Réponds en un seul mot.", content: [{ type: "text", text: "Dis OK." }], live: true };
+  const run = async (ready: unknown, ask: () => Promise<{ text: string; model: string }>) => {
+    if (!ready) return "non branchée";
+    const t = Date.now();
+    try {
+      const out = await ask();
+      return `OK (${out.model}, ${Date.now() - t} ms) : ${out.text.trim().slice(0, 40)}`;
+    } catch (err) {
+      return `erreur : ${err instanceof Error ? err.message : String(err)}`;
+    }
+  };
+  const [gemini, openrouter, workersAi] = await Promise.all([
+    run(geminiKey, () => askGemini(geminiKey!, request)),
+    run(openRouterKey, () => askOpenRouter(openRouterKey!, request)),
+    run(ai, () => askWorkersAi(ai!, request)),
+  ]);
+  return { gemini, openrouter, workersAi };
+}
