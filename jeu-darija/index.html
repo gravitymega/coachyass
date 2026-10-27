@@ -208,6 +208,7 @@
     <button data-tab="voices" class="on">🎙 Vos voix</button>
     <button data-tab="missions">📞 Missions</button>
     <button data-tab="progress">📈 Progrès</button>
+    <button data-tab="carnet">🏆 Carnet</button>
     <button data-tab="settings">⚙️ Réglages</button>
   </nav>
   <div class="ptab on" id="tab-voices">
@@ -228,6 +229,10 @@
   <div class="ptab" id="tab-progress">
     <div id="progress-list"></div>
     <button class="go small danger" id="set-reset">Recommencer à zéro (tous les progrès)</button>
+  </div>
+  <div class="ptab" id="tab-carnet">
+    <p class="hint">Ce que chaque enfant a appris ces 7 derniers jours. Envoyez-le aux grands-parents !</p>
+    <div id="carnet-list"></div>
   </div>
   <div class="ptab" id="tab-settings">
     <label class="field">Nom de la grand-mère dans le jeu <input id="set-gm" maxlength="20"></label>

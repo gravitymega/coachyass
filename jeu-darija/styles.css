@@ -688,3 +688,11 @@ body[data-screen=parents] #factory, body[data-screen=parents] #fog { display: no
 .v-choice.won { box-shadow: 0 0 0 5px var(--green); }
 .v-choice.reveal { outline: 5px solid var(--sun); }
 .v-teach { background: #fff; border-radius: 14px; padding: 8px 14px; font-size: 24px; font-weight: 900; }
+
+/* Carnet de fierté */
+.carnet h3 small { font-size: 14px; font-weight: 400; opacity: .7; }
+.carnet-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
+.carnet-stats span { background: #fff6e0; border-radius: 10px; padding: 6px; text-align: center; font-size: 13px; }
+.carnet-stats b { display: block; font-size: 22px; }
+.carnet-words { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.carnet-words span { background: #eef7ee; border-radius: 10px; padding: 4px 8px; font-size: 14px; }

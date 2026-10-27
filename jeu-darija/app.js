@@ -11,6 +11,7 @@ import * as ART from './art.js';
 import { TALES, TALE_CATS, speakTale, nextTale } from './tales.js';
 import { dailyMissions, dailyState, autoComplete } from './missions.js';
 import { createVille } from './ville.js';
+import { recordDay, weekReport, reportText } from './carnet.js';
 import { initCharacters, mount, react, setMood, charIn, INTRO } from './characters.js';
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -28,7 +29,7 @@ const mid = (s) => (/^(Le|La|Les|L’)/.test(s) ? s.charAt(0).toLowerCase() + s.
 let players = [];
 let turn = 0; // joueur de la question en cours
 const P = () => players[turn];
-const saveAll = () => players.forEach((p) => saveProgressOf(p.kid, p.progress));
+const saveAll = () => players.forEach((p) => { recordDay(p.progress); saveProgressOf(p.kid, p.progress); });
 const coop = () => players.length > 1;
 const names = () => players.map((p) => p.kid.name).join(' et ');
 const levelsDone = () => Math.max(...players.map((p) => p.progress.levels || 0));
@@ -601,6 +602,7 @@ function openParents() {
   renderMissions();
   renderSettings();
   renderProgress();
+  renderCarnet();
   show('parents');
 }
 $('#ptabs').addEventListener('click', (e) => {
@@ -867,6 +869,35 @@ function renderProgress() {
     </div>`;
   }).join('');
 }
+// ---------- Le carnet de fierté (à montrer aux grands-parents) ----------
+function renderCarnet() {
+  $('#carnet-list').innerHTML = settings.kids.map((k, i) => {
+    const r = weekReport(progressOf(k));
+    const ds = settings.dialects;
+    return `<div class="pkid carnet">
+      <h3>${esc(k.avatar)} ${esc(k.name)} <small>${r.days} jour${r.days > 1 ? 's' : ''} de jeu</small></h3>
+      <div class="carnet-stats">
+        <span><b>${r.words.length}</b>mots de darija</span><span><b>${r.english}</b>mots d'anglais</span>
+        <span><b>${r.tales}</b>histoires</span><span><b>${r.missions}</b>missions</span>
+        <span><b>${r.ville}</b>aides en ville</span><span><b>⭐ ${r.stars}</b>étoiles</span>
+      </div>
+      ${r.words.length ? `<div class="carnet-words">${r.words.map((w) => `<span>${w.emoji || ''} ${esc(w.fr)} : <b>${[...new Set(ds.map((d) => w[d]?.lat).filter(Boolean))].map(esc).join(' / ')}</b></span>`).join('')}</div>`
+    : '<p>Pas encore de nouveau mot cette semaine.</p>'}
+      <button class="go small" data-share="${i}">📤 Envoyer aux grands-parents</button>
+    </div>`;
+  }).join('');
+}
+$('#carnet-list').addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-share]');
+  if (!b) return;
+  const k = settings.kids[+b.dataset.share];
+  const text = reportText(k.name, weekReport(progressOf(k)), settings.dialects);
+  try {
+    if (navigator.share) await navigator.share({ text });
+    else { await navigator.clipboard.writeText(text); b.textContent = '✅ Copié : collez-le dans WhatsApp'; }
+  } catch { /* partage annulé */ }
+});
+
 $('#set-reset').addEventListener('click', () => {
   if (!confirm('Effacer tous les progrès des enfants ? (Vos enregistrements de voix sont gardés.)')) return;
   for (const k of settings.kids) { saveProgressOf(k, newProgress()); save('t-' + k.id, {}); }
