@@ -144,3 +144,13 @@ test('question cousin : la bonne réponse est l’autre dialecte', () => {
     if (q.type === 'cousin') { assert.equal(q.other, 'dz'); assert.equal(q.choices.find((c) => c.correct).word.dz.lat, 'Dorka'); }
   }
 });
+
+test('dans chaque salle, images et mots sont tous différents (choix jamais ambigus)', () => {
+  for (const r of ROOMS) {
+    const ws = WORDS.filter((w) => w.room === r.id);
+    for (const key of [(w) => w.emoji, (w) => w.fr, (w) => w.ma.lat, (w) => w.dz.lat]) {
+      const vals = ws.map(key);
+      assert.equal(new Set(vals).size, vals.length, `${r.id} : doublon dans ${vals.join(', ')}`);
+    }
+  }
+});

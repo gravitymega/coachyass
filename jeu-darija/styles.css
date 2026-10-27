@@ -652,3 +652,6 @@ body[data-screen=parents] #factory, body[data-screen=parents] #fog { display: no
   .daily-char { width: 62px; height: 72px; } .daily-top .bubble { font-size: 15px; padding: 10px 12px; }
   .dia-who { width: 46px; height: 54px; }
 }
+.host-emoji { display: flex; align-items: center; justify-content: center; height: 100%; font-size: clamp(34px, 6vw, 52px); letter-spacing: 2px; }
+.dia:has(.dia-who:not(:empty)) { padding-left: 70px; }
+@media (max-width: 520px) { .dia:has(.dia-who:not(:empty)) { padding-left: 50px; } }

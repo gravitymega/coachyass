@@ -81,6 +81,88 @@ export const WORDS = [
   W('assis', 'musique', 'Assieds-toi !', '🪑', 'Gles !', 'گلس!', 'Ag3od !', 'اقعد!'),
   W('donne', 'musique', 'Donne-moi !', '🤲', '3tini !', 'عطيني!', 'A3tini !', 'اعطيني!', { older: true }),
 
+  // L'infirmerie de Fifi : le corps
+  W('tete', 'corps', 'La tête', '🙂', 'Ras', 'راس', 'Ras', 'راس'),
+  W('yeux', 'corps', 'Les yeux', '👀', '3inin', 'عينين', '3inin', 'عينين'),
+  W('oreille', 'corps', "L'oreille", '👂', 'Wden', 'ودن', 'Wden', 'ودن'),
+  W('nez', 'corps', 'Le nez', '👃', 'Nif', 'نيف', 'Nif', 'نيف'),
+  W('bouche', 'corps', 'La bouche', '👄', 'Fomm', 'فم', 'Foum', 'فم'),
+  W('main', 'corps', 'La main', '✋', 'Yedd', 'يدّ', 'Yedd', 'يدّ'),
+  W('pied', 'corps', 'Le pied', '🦶', 'Rjel', 'رجل', 'Rjel', 'رجل'),
+  W('dents', 'corps', 'Les dents', '🦷', 'Snan', 'سنان', 'Snan', 'سنان'),
+  W('cheveux', 'corps', 'Les cheveux', '💇', 'Cha3r', 'شعر', 'Cha3r', 'شعر'),
+  W('bras', 'corps', 'Le bras', '💪', 'Dra3', 'دراع', 'Dra3', 'دراع', { older: true }),
+  W('coeur', 'corps', 'Le cœur', '❤️', 'Qalb', 'قلب', 'Qalb', 'قلب', { older: true }),
+
+  // La ferme d'Assad : les animaux
+  W('chat', 'animaux', 'Le chat', '🐱', 'Mech', 'مشّ', 'Qett', 'قطّ'),
+  W('chien', 'animaux', 'Le chien', '🐶', 'Kelb', 'كلب', 'Kelb', 'كلب'),
+  W('cheval', 'animaux', 'Le cheval', '🐴', '3oud', 'عود', '3aoud', 'عود'),
+  W('vache', 'animaux', 'La vache', '🐄', 'Begra', 'بڭرة', 'Bagra', 'بقرة'),
+  W('mouton', 'animaux', 'Le mouton', '🐑', 'Houli', 'حولي', 'Kebch', 'كبش'),
+  W('poule', 'animaux', 'La poule', '🐔', 'Djaja', 'دجاجة', 'Djaja', 'دجاجة'),
+  W('oiseau', 'animaux', "L'oiseau", '🐦', 'Tir', 'طير', 'Tir', 'طير'),
+  W('poisson', 'animaux', 'Le poisson', '🐟', 'Hout', 'حوت', 'Hout', 'حوت'),
+  W('chameau', 'animaux', 'Le chameau', '🐪', 'Jmel', 'جمل', 'Jmel', 'جمل'),
+  W('lion', 'animaux', 'Le lion', '🦁', 'Sba3', 'سبع', 'Sbe3', 'سبع'),
+  W('souris', 'animaux', 'La souris', '🐭', 'Far', 'فار', 'Far', 'فار'),
+  W('tortue', 'animaux', 'La tortue', '🐢', 'Fakroun', 'فكرون', 'Fakroun', 'فكرون', { older: true }),
+
+  // La maison de Maman
+  W('dar', 'maison', 'La maison', '🏠', 'Dar', 'دار', 'Dar', 'دار'),
+  W('porte', 'maison', 'La porte', '🚪', 'Bab', 'باب', 'Bab', 'باب'),
+  W('fenetre', 'maison', 'La fenêtre', '🪟', 'Chrjem', 'شرجم', 'Taqa', 'طاقة'),
+  W('lit', 'maison', 'Le lit', '🛏️', 'Namousiya', 'ناموسية', 'Frach', 'فراش'),
+  W('table', 'maison', 'La table', '🍽️', 'Tabla', 'طبلة', 'Tabla', 'طابلة'),
+  W('chaise', 'maison', 'La chaise', '🪑', 'Korsi', 'كرسي', 'Korsi', 'كرسي'),
+  W('cle', 'maison', 'La clé', '🔑', 'Sarout', 'ساروت', 'Mefta7', 'مفتاح'),
+  W('lumiere', 'maison', 'La lumière', '💡', 'Dou', 'ضو', 'Dhou', 'ضو'),
+  W('tel', 'maison', 'Le téléphone', '📱', 'Tilifoun', 'تيليفون', 'Tilifoun', 'تيليفون'),
+  W('tele', 'maison', 'La télé', '📺', 'Tlfaza', 'تلفازة', 'Tilivizioun', 'تيليفيزيون'),
+  W('balai', 'maison', 'Le balai', '🧹', 'Chettaba', 'شطّابة', 'Mkensa', 'مكنسة', { older: true }),
+
+  // Le vestiaire de Papa : les vêtements
+  W('chaussures', 'vetements', 'Les chaussures', '👟', 'Sebbat', 'صبّاط', 'Sbabet', 'صبابط'),
+  W('pantalon', 'vetements', 'Le pantalon', '👖', 'Serwal', 'سروال', 'Serwal', 'سروال'),
+  W('chemise', 'vetements', 'La chemise', '👔', 'Qamija', 'قاميجة', 'Qmija', 'قميجة'),
+  W('chaussettes', 'vetements', 'Les chaussettes', '🧦', 'Tqacher', 'تقاشر', 'Tqacher', 'تقاشر'),
+  W('manteau', 'vetements', 'Le manteau', '🧥', 'Kebbout', 'كبّوط', 'Kebbout', 'كبّوط'),
+  W('casquette', 'vetements', 'La casquette', '🧢', 'Kaskita', 'كاسكيطة', 'Kaskita', 'كاسكيطة'),
+  W('lunettes', 'vetements', 'Les lunettes', '👓', 'Ndader', 'نضاضر', 'Mrayat', 'مرايات'),
+  W('robe', 'vetements', 'La robe', '👗', 'Keswa', 'كسوة', 'Roba', 'روبة'),
+  W('sac', 'vetements', 'Le sac', '🎒', 'Sak', 'صاك', 'Sak', 'صاك'),
+  W('echarpe', 'vetements', "L'écharpe", '🧣', 'Chal', 'شال', 'Chal', 'شال', { older: true }),
+
+  // Le balcon de Hbibiti : le ciel, la météo et la nature
+  W('soleil', 'ciel', 'Le soleil', '☀️', 'Chems', 'شمس', 'Chems', 'شمس'),
+  W('lune', 'ciel', 'La lune', '🌙', 'Qamar', 'قمر', 'Qmar', 'قمر'),
+  W('etoile', 'ciel', "L'étoile", '⭐', 'Nejma', 'نجمة', 'Nejma', 'نجمة'),
+  W('pluie', 'ciel', 'La pluie', '🌧️', 'Chta', 'شتا', 'Chta', 'شتا'),
+  W('neige', 'ciel', 'La neige', '❄️', 'Telj', 'تلج', 'Telj', 'تلج'),
+  W('vent', 'ciel', 'Le vent', '🌬️', 'Rih', 'ريح', 'Rih', 'ريح'),
+  W('froid', 'ciel', 'Il fait froid', '🥶', 'Kayn lberd', 'كاين البرد', 'Kayen lberd', 'كاين البرد'),
+  W('chaud', 'ciel', 'Il fait chaud', '🥵', 'Skhana', 'سخانة', 'Skhana', 'سخانة'),
+  W('arbre', 'ciel', "L'arbre", '🌳', 'Chejra', 'شجرة', 'Chejra', 'شجرة'),
+  W('fleur', 'ciel', 'La fleur', '🌹', 'Warda', 'وردة', 'Nouwwara', 'نوّارة'),
+  W('mer', 'ciel', 'La mer', '🌊', 'Lbhar', 'البحر', 'Lbhar', 'البحر'),
+  W('aujourdhui', 'ciel', "Aujourd'hui", '📅', 'Lyoum', 'اليوم', 'Lyoum', 'اليوم', { older: true }),
+  W('demain', 'ciel', 'Demain', '🌅', 'Ghedda', 'غدّا', 'Ghodwa', 'غدوة', { older: true }),
+  W('hier', 'ciel', 'Hier', '⏪', 'Lbare7', 'البارح', 'Lbare7', 'البارح', { older: true }),
+
+  // Le téléphone de Jedda : parler avec la famille
+  W('bien', 'appel', 'Je vais bien', '😊', 'Ana bikhir', 'أنا بخير', 'Rani mlih', 'راني مليح'),
+  W('manque', 'appel', 'Tu me manques', '🥺', 'Twe7chtek', 'توحشتك', 'Twe7chtek', 'توحشتك'),
+  W('faim', 'appel', "J'ai faim", '😋', 'Fiya jjou3', 'فيا الجوع', 'Rani ji3an', 'راني جيعان'),
+  W('soif', 'appel', "J'ai soif", '🥤', 'Ana 3tchan', 'أنا عطشان', 'Rani 3atchan', 'راني عطشان'),
+  W('fatigue', 'appel', 'Je suis fatigué', '🥱', '3yit', 'عييت', '3yit', 'عييت'),
+  W('bisous', 'appel', 'Des bisous !', '😘', 'Bousat', 'بوسات', 'Bousat', 'بوسات'),
+  W('bonnenuit', 'appel', 'Bonne nuit', '🛌', 'Tesbah 3la khir', 'تصبح على خير', 'Tesbah 3la khir', 'تصبح على خير'),
+  W('doucement', 'appel', 'Doucement', '🤫', 'Bechwiya', 'بشوية', 'Bechwiya', 'بشوية'),
+  W('vite', 'appel', 'Vite !', '⚡', 'Dghya', 'دغيا', 'Fissa3', 'فيسع'),
+  W('sais', 'appel', 'Je ne sais pas', '🤷', 'Ma3reftch', 'ما عرفتش', 'Ma3labalich', 'ما علاباليش', { older: true }),
+  W('nom', 'appel', 'Comment tu t’appelles ?', '🙋', 'Chnou smitek ?', 'شنو سميتك؟', 'Wach esmek ?', 'واش اسمك؟', { older: true }),
+  W('moi', 'appel', 'Je m’appelle…', '📛', 'Smiti…', 'سميتي…', 'Esmi…', 'اسمي…', { older: true }),
+
   // Jardin de la mosquée : les phrases du musulman (pareilles dans les deux pays).
   // `fr` = la situation où on la dit.
   ...[
@@ -125,6 +207,12 @@ export const ROOMS = [
   { id: 'formes', name: 'Tour de l’horloge', theme: 'Formes, suites et heure', game: 'balloons', host: 'clock', unlock: 3, school: true },
   { id: 'cuisine', name: 'Cuisine de Hbibiti', theme: 'À table !', game: 'kitchen', host: 'tajine', unlock: 4 },
   { id: 'musique', name: 'Salle de la musique', theme: 'Les actions', game: 'drums', host: 'dada', unlock: 6 },
+  { id: 'corps', name: 'L’infirmerie de Fifi', theme: 'Le corps', game: 'basket', host: 'e-corps', unlock: 2 },
+  { id: 'animaux', name: 'La ferme d’Assad', theme: 'Les animaux', game: 'claw', host: 'e-animaux', unlock: 3 },
+  { id: 'maison', name: 'La maison de Maman', theme: 'La maison', game: 'doors', host: 'e-maison', unlock: 5 },
+  { id: 'vetements', name: 'Le vestiaire de Papa', theme: 'Les vêtements', game: 'rocket', host: 'e-vetements', unlock: 7 },
+  { id: 'ciel', name: 'Le balcon de Hbibiti', theme: 'Le ciel, la météo, la nature', game: 'balloons', host: 'e-ciel', unlock: 8 },
+  { id: 'appel', name: 'Le téléphone de Jedda', theme: 'Parler avec la famille', game: 'drums', host: 'e-appel', unlock: 9 },
 ];
 
 export const STICKERS = [
