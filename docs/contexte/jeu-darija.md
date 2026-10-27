@@ -95,3 +95,9 @@ Aucune dépendance en ligne : tout est dans `jeu-darija/`, voix comprises. Il fa
 - **Mac / Linux** : double-clic sur `lancer-mac-linux.command`, qui utilise `python3 -m http.server 8000`. La tablette peut ouvrir l'adresse affichée si elle est sur le même Wi-Fi.
 - **Windows** : `lancer-windows.bat`, qui lance `outils/serveur.ps1`, un serveur PowerShell sans installation ; il écoute seulement sur `localhost`.
 - Le mode hors ligne et l'installation sur l'écran d'accueil (service worker) demandent `localhost` ou `https`. Sur la tablette, il faut donc mettre le jeu en ligne gratuitement (Cloudflare Pages ou Netlify) pour l'installer.
+
+## Prononciation des prénoms (27 octobre 2026)
+
+- La voix française lisait « Hbibiti » comme « bibiti ». `fixFr` (voix.js) le réécrit en « Hebibti » (حبيبتي).
+- `generer.py` (`NAMES`, `darija_names`) remplace les phonèmes français de Hbibiti, Ali, Asma et Assad par une prononciation darija avant la synthèse : accent sur la 1re syllabe, coup de glotte (`ʔˈali`, `ʔˈasma`, `ʔˈasad`, `hbˈibti`).
+- 635 phrases ont été réenregistrées.

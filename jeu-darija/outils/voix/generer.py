@@ -34,10 +34,25 @@ def init(model, voices):
     _k = Kokoro.from_session(ort.InferenceSession(model, opts), voices)
 
 
+# Les prénoms arabes avec l'accent de la darija (accent sur la 1re syllabe, coup de glotte),
+# au lieu de l'accent français. On remplace leurs phonèmes français avant de faire parler la voix.
+NAMES = [(r'əbibt[ˈˌ]?i', 'hbˈibti'), (r'al[ˈˌ]?i', 'ʔˈali'), (r'asm[ˈˌ]?a', 'ʔˈasma'), (r'as[ˈˌ]?ad', 'ʔˈasad')]
+
+
+def darija_names(text, lang):
+    ph = _k.tokenizer.phonemize(text, lang)
+    for fr, dz in NAMES:
+        ph = re.sub(r'(?<![^\s])' + fr + r'(?=[\s,.!?;:]|$)', dz, ph)
+    return ph
+
+
 def synth(text, voice='ff_siwis', lang='fr-fr'):
     # Le modèle rend parfois un son vide pour une phrase : on réessaie à une vitesse voisine, puis phrase par phrase.
     for speed in (SPEED, SPEED - 0.02, SPEED + 0.02, SPEED - 0.04):
-        audio, sr = _k.create(text, voice=voice, speed=speed, lang=lang)
+        if lang == 'fr-fr':
+            audio, sr = _k.create(darija_names(text, lang), voice=voice, speed=speed, lang=lang, is_phonemes=True)
+        else:
+            audio, sr = _k.create(text, voice=voice, speed=speed, lang=lang)
         audio = np.nan_to_num(np.asarray(audio, dtype=np.float32).reshape(-1))
         if audio.size >= sr // 10:
             return audio, sr
