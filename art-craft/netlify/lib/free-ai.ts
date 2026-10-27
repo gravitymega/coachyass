@@ -25,9 +25,10 @@ export const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 // répondre (ex. nemotron-3.5-content-safety, qui ne fait que classer un message « sûr » ou non).
 export const OPENROUTER_MODELS = ["nvidia/nemotron-3.5-super-vl:free", "google/gemma-4-31b-it:free", "google/gemma-4-26b-a4b-it:free"];
 export const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-// Llama 4 Scout a été retiré par Groq le 17 juillet 2026 : Qwen 3.8 27B est son seul modèle qui lit les images.
-export const GROQ_MODEL = "qwen/qwen3.8-27b";
-const GROQ_MAX_IMAGES = 3; // limite de Groq par demande pour ce modèle
+// Llama 4 Scout a été retiré par Groq le 17 juillet 2026 : les modèles Qwen lisent les images.
+// Essayés dans l'ordre (un modèle retiré ou inconnu passe au suivant) ; GROQ_MODEL en tête s'il est défini.
+export const GROQ_MODELS = ["qwen/qwen3.8-27b", "qwen/qwen3.6-27b"];
+const GROQ_MAX_IMAGES = 3; // limite de Groq par demande pour les modèles Qwen
 export const WORKERS_MODEL = "@cf/meta/llama-4-scout-17b-16e-instruct";
 // Le modèle de secours lit moins bien beaucoup d'images à la fois, et chaque image coûte du quota.
 const WORKERS_MAX_IMAGES = 8;
@@ -152,29 +153,37 @@ export async function askOpenRouter(key: string, request: FreeRequest) {
 }
 
 // Groq (plan gratuit) : même API « chat completions » qu'OpenAI, schéma JSON donné dans la consigne.
-export async function askGroq(key: string, request: FreeRequest) {
+// model : GROQ_MODEL (facultatif) à essayer avant la liste GROQ_MODELS.
+export async function askGroq(key: string, request: FreeRequest, model?: string) {
   const content = thinImages(parts(request.content), GROQ_MAX_IMAGES).map((p) =>
     p.image ? { type: "image_url", image_url: { url: `data:${p.mime || "image/jpeg"};base64,${p.image}` } } : { type: "text", text: p.text });
   if (request.schema) content.push({ type: "text", text: schemaHint(request.schema) });
-  const res = await fetch(GROQ_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-    body: JSON.stringify({
-      model: GROQ_MODEL,
-      messages: [{ role: "system", content: request.system }, { role: "user", content }],
-      max_tokens: request.live ? 300 : 8000,
-      reasoning_effort: "none", // mode « instruct » : réponse directe, sans réflexion qui mange les jetons
-    }),
-  });
-  const data: any = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    const msg = data?.error?.message || `HTTP ${res.status}`;
-    throw new AiError(res.status === 401 ? "Clé GROQ_API_KEY refusée par Groq"
-      : res.status === 429 ? "Quota gratuit de Groq épuisé pour le moment" : `Groq indisponible : ${msg}`, { status: res.status });
+  const models = [...new Set([model, ...GROQ_MODELS].filter(Boolean) as string[])];
+  let last = "";
+  for (const m of models) {
+    const res = await fetch(GROQ_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+      body: JSON.stringify({
+        model: m,
+        messages: [{ role: "system", content: request.system }, { role: "user", content }],
+        max_tokens: request.live ? 300 : 8000,
+        reasoning_effort: "none", // mode « instruct » : réponse directe, sans réflexion qui mange les jetons
+      }),
+    });
+    const data: any = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const msg = data?.error?.message || `HTTP ${res.status}`;
+      // Modèle retiré, inconnu ou qui ne lit pas les images : on essaie le suivant.
+      if (res.status === 404 || /does not exist|decommissioned|not found|not supported|image/i.test(msg)) { last = `${m} : ${msg}`; continue; }
+      throw new AiError(res.status === 401 ? "Clé GROQ_API_KEY refusée par Groq"
+        : res.status === 429 ? "Quota gratuit de Groq épuisé pour le moment" : `Groq indisponible : ${msg}`, { status: res.status });
+    }
+    const text = data.choices?.[0]?.message?.content;
+    if (typeof text !== "string" || !text) throw new AiError("Réponse vide de Groq");
+    return { text, model: String(data.model || m) };
   }
-  const text = data.choices?.[0]?.message?.content;
-  if (typeof text !== "string" || !text) throw new AiError("Réponse vide de Groq");
-  return { text, model: String(data.model || GROQ_MODEL) };
+  throw new AiError(`Aucun modèle Groq disponible (${last}) : mets le nom d'un modèle qui lit les images dans GROQ_MODEL.`);
 }
 
 // Garde au plus n images, réparties sur toute la séquence (avec le texte qui précède chacune).
@@ -209,10 +218,10 @@ export async function askWorkersAi(ai: WorkersAi, request: FreeRequest) {
   return { text, model: WORKERS_MODEL };
 }
 
-export type FreeProviders = { geminiKey?: string; openRouterKey?: string; groqKey?: string; ai?: WorkersAi };
+export type FreeProviders = { geminiKey?: string; openRouterKey?: string; groqKey?: string; groqModel?: string; ai?: WorkersAi };
 
 // Gemini d'abord, puis OpenRouter et Groq (gratuits), puis Workers AI si les précédents sont épuisés, en panne ou absents.
-export async function askFree({ geminiKey, openRouterKey, groqKey, ai }: FreeProviders, request: FreeRequest) {
+export async function askFree({ geminiKey, openRouterKey, groqKey, groqModel, ai }: FreeProviders, request: FreeRequest) {
   const errors: AiError[] = [];
   if (geminiKey) {
     try {
@@ -235,7 +244,7 @@ export async function askFree({ geminiKey, openRouterKey, groqKey, ai }: FreePro
   }
   if (groqKey) {
     try {
-      return await askGroq(groqKey, request);
+      return await askGroq(groqKey, request, groqModel);
     } catch (err) {
       if (!(err instanceof AiError) || !ai) throw err;
       errors.push(err);
@@ -253,7 +262,7 @@ export async function askFree({ geminiKey, openRouterKey, groqKey, ai }: FreePro
 
 // Diagnostic (/api/coach?test) : une question très courte à chaque IA gratuite, séparément,
 // pour vérifier les clés sans lancer d'analyse. Ne montre jamais les clés.
-export async function testFree({ geminiKey, openRouterKey, groqKey, ai }: FreeProviders) {
+export async function testFree({ geminiKey, openRouterKey, groqKey, groqModel, ai }: FreeProviders) {
   const request: FreeRequest = { system: "Réponds en un seul mot.", content: [{ type: "text", text: "Dis OK." }], live: true };
   const run = async (ready: unknown, ask: () => Promise<{ text: string; model: string }>) => {
     if (!ready) return "non branchée";
@@ -268,7 +277,7 @@ export async function testFree({ geminiKey, openRouterKey, groqKey, ai }: FreePr
   const [gemini, openrouter, groq, workersAi] = await Promise.all([
     run(geminiKey, () => askGemini(geminiKey!, request)),
     run(openRouterKey, () => askOpenRouter(openRouterKey!, request)),
-    run(groqKey, () => askGroq(groqKey!, request)),
+    run(groqKey, () => askGroq(groqKey!, request, groqModel)),
     run(ai, () => askWorkersAi(ai!, request)),
   ]);
   return { gemini, openrouter, groq, workersAi };

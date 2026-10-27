@@ -10,7 +10,7 @@
 //                         Claude (payant) n'est jamais utilisé sans mot de passe
 //   GEMINI_API_KEY      — clé gratuite Google Gemini (aistudio.google.com), jamais exposée au navigateur
 //   OPENROUTER_API_KEY  — facultative : clé OpenRouter, modèles gratuits « :free » seulement (2e IA gratuite)
-//   GROQ_API_KEY        — facultative : clé gratuite Groq (3e IA gratuite)
+//   GROQ_API_KEY        — facultative : clé gratuite Groq (3e IA gratuite) ; GROQ_MODEL pour imposer un modèle
 //   ROBOFLOW_API_KEY    — facultative : clé gratuite Roboflow, détecteur « made_basket » du mode « paniers »
 //   ANTHROPIC_API_KEY   — facultative et PAYANTE (Claude) : à ne mettre que si l'utilisateur l'accepte.
 // Sans clé Anthropic, les IA gratuites de ../lib/free-ai.ts répondent : Gemini, puis OpenRouter (modèles
@@ -317,7 +317,7 @@ Tu aides à retoucher des photos de sport, à écrire des légendes de publicati
 Suis exactement le format de réponse demandé. Tu écris en français, en tutoyant.`;
 
 const json = (status: number, body: unknown) =>
-  new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
+  new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json; charset=utf-8" } });
 
 type Frame = { t: number; data: string; label?: string };
 
@@ -449,7 +449,7 @@ function buildRequest(body: Body) {
 export async function handleCoach(req: Request, env: (name: string) => string | undefined, ai?: WorkersAi) {
   // Diagnostic : GET /api/coach?test essaie chaque IA gratuite avec une question très courte.
   if (req.method === "GET" && new URL(req.url).searchParams.has("test")) {
-    return json(200, await testFree({ geminiKey: env("GEMINI_API_KEY"), openRouterKey: env("OPENROUTER_API_KEY"), groqKey: env("GROQ_API_KEY"), ai }));
+    return json(200, await testFree({ geminiKey: env("GEMINI_API_KEY"), openRouterKey: env("OPENROUTER_API_KEY"), groqKey: env("GROQ_API_KEY"), groqModel: env("GROQ_MODEL"), ai }));
   }
   if (req.method !== "POST") return json(405, { error: "Méthode non autorisée" });
   const password = env("ART_CRAFT_PASSWORD");
@@ -468,7 +468,7 @@ export async function handleCoach(req: Request, env: (name: string) => string | 
   const geminiKey = env("GEMINI_API_KEY");
   const openRouterKey = env("OPENROUTER_API_KEY");
   const groqKey = env("GROQ_API_KEY");
-  const free: FreeProviders = { geminiKey, openRouterKey, groqKey, ai };
+  const free: FreeProviders = { geminiKey, openRouterKey, groqKey, groqModel: env("GROQ_MODEL"), ai };
   const roboflowKey = env("ROBOFLOW_API_KEY");
   const anyFree = Boolean(geminiKey || openRouterKey || groqKey || ai);
   if (body.ping) {
