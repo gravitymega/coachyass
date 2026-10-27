@@ -2,11 +2,13 @@ import {
   WINDOW_S, energyEnvelope, excitementScore, findPeaks, candidatesToClips,
   parseTimestamp, formatTime, buildRenderArgs,
   hoopBox, netMotionArgs, netMotion, basketPeak, BASKET_Z, NET_FPS, zoomSize,
+  aiFrameArgs, aiBatches, applyAiBaskets, AI_LOOK_DUR,
 } from './highlights.js';
+import { createStreamReader, isNetworkError, NETWORK_HINT } from './analyse-core.js';
 
 import {
   $, showError, setProgress, parseLogTime, parseLogDuration, getFFmpeg, mountFiles,
-  runWithLog, slugify, offerFile,
+  runWithLog, slugify, offerFile, keepAwake, readCoachStream,
 } from './common.js';
 import { OUTRO, brandCardPNG } from './brand.js';
 import { setVideo, currentCaption } from './social.js';
@@ -33,10 +35,8 @@ const state = {
   logo: null,
   busy: false,
 };
-// Nombre de moments forts vérifiés au filet : assez pour remplir la durée visée
-// (un extrait fait ~7,5 s et environ un moment fort sur deux est un panier).
-const checkedFor = target => Math.min(80, Math.max(30, Math.ceil((target / 7.5) * 2.5)));
 let nextId = 1;
+const STORE_KEY = 'artcraft-voice-password'; // même mot de passe mémorisé que les autres modules IA
 
 async function mountInput(ff) {
   [state.inputPath] = await mountFiles(ff, MOUNT, [state.file]);
@@ -128,7 +128,7 @@ async function analyse() {
       autoSelect();
       setProgress('analyse-progress', 1, `${state.cands.length} moments forts trouvés au son`);
       $('hoop-step').hidden = false;
-      loadFrame(state.duration * 0.3);
+      await loadFrame(state.duration * 0.3);
     } else {
       state.score = null;
       state.clips = [];
@@ -144,6 +144,8 @@ async function analyse() {
     state.busy = false;
     $('btn-analyse').disabled = false;
   }
+  // Mode « les paniers marqués » : l'IA trie tout de suite les moments forts, sans rien toucher.
+  if (state.cands.length && $('pick').value === 'baskets') await detectBasketsAi();
 }
 
 // Taille réelle de la vidéo (après rotation éventuelle d'un téléphone), lue dans le journal ffmpeg.
@@ -208,6 +210,7 @@ function drawHoops() {
 }
 
 hoopCanvas.addEventListener('click', e => {
+  if (state.busy) return;
   const r = hoopCanvas.getBoundingClientRect();
   const hp = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
   if (state.hoops.length >= 2) {
@@ -220,13 +223,104 @@ hoopCanvas.addEventListener('click', e => {
   drawHoops();
 });
 $('hoop-size').addEventListener('input', drawHoops);
-$('btn-hoop-clear').addEventListener('click', () => { state.hoops = []; drawHoops(); });
+$('btn-hoop-clear').addEventListener('click', () => { if (state.busy) return; state.hoops = []; drawHoops(); });
 $('btn-other-frame').addEventListener('click', () => {
   if (!state.busy) loadFrame((state.frameT + (state.duration || 60) * 0.17) % Math.max(1, state.duration || 60));
 });
 $('btn-baskets').addEventListener('click', detectBaskets);
+$('btn-ai-baskets').addEventListener('click', () => detectBasketsAi());
 
-// Pour chaque moment fort (les plus forts d'abord), regarde le filet dans les 8 s qui précèdent la réaction.
+// ---------- 2 ter. Paniers marqués vus par l'IA (fonction coach, mode « paniers ») ----------
+function toBase64(bytes) {
+  let s = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(s);
+}
+
+async function askPaniers(frames) {
+  let password = '';
+  try { password = localStorage.getItem(STORE_KEY) || ''; } catch { /* stockage indisponible */ }
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const res = await fetch('/api/coach', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-art-password': password },
+        body: JSON.stringify({ mode: 'paniers', frames }),
+      });
+      if (!res.ok) {
+        let msg = `Erreur ${res.status}`;
+        try { msg = (await res.json()).error || msg; } catch { /* réponse non JSON */ }
+        if (res.status === 401) msg = 'Mot de passe Art craft demandé : connecte-toi une fois dans « Stats auto » ou « Analyse tactique », puis relance.';
+        if (res.status === 404) msg = 'IA introuvable : le site Art craft doit être en ligne (Cloudflare).';
+        throw Object.assign(new Error(msg), { fatal: true });
+      }
+      return await readCoachStream(res, createStreamReader(x => x));
+    } catch (err) {
+      if (!isNetworkError(err)) throw err;
+      if (attempt >= 1) throw new Error(NETWORK_HINT);
+    }
+  }
+}
+
+// Tous les moments forts (les plus forts d'abord), 3 par demande : l'IA dit lesquels sont des paniers.
+async function detectBasketsAi() {
+  if (state.busy || !state.cands.length) return;
+  state.busy = true;
+  $('btn-ai-baskets').disabled = true;
+  showError('');
+  const release = await keepAwake();
+  const todo = [...state.cands].sort((a, b) => b.score - a.score);
+  todo.forEach(c => { c.checked = false; c.basket = false; });
+  let found = 0, done = 0, failed = 0, lastErr = '';
+  try {
+    const ff = await getFFmpeg('basket-progress');
+    await mountInput(ff);
+    for (const batch of aiBatches(todo)) {
+      setProgress('basket-progress', done / todo.length,
+        `L'IA cherche les paniers marqués… ${done} / ${todo.length} moments (${found} panier${found > 1 ? 's' : ''})`);
+      const frames = [];
+      for (let i = 0; i < batch.length; i++) {
+        const { start, args } = aiFrameArgs({ input: state.inputPath, t: batch[i].t });
+        if (await ff.exec(args) !== 0) continue;
+        for (let k = 1; k <= AI_LOOK_DUR + 1; k++) {
+          const name = `/pk${String(k).padStart(2, '0')}.jpg`;
+          let data;
+          try { data = await ff.readFile(name); } catch { break; }
+          await ff.deleteFile(name);
+          frames.push({ t: Math.round((start + k - 1) * 10) / 10, data: toBase64(data), label: `Moment ${i + 1}` });
+        }
+      }
+      try {
+        if (frames.length < 2) throw new Error('images illisibles');
+        found += applyAiBaskets(batch, await askPaniers(frames));
+      } catch (err) {
+        console.error(err);
+        if (err.fatal || /Quota gratuit du jour|Aucune IA/.test(err.message)) throw err;
+        failed += batch.length;
+        lastErr = err.message;
+      }
+      done += batch.length;
+      autoSelect();
+      renderClips();
+    }
+    setProgress('basket-progress', 1, found
+      ? `${found} panier${found > 1 ? 's' : ''} marqué${found > 1 ? 's' : ''} trouvé${found > 1 ? 's' : ''} par l'IA sur ${todo.length} moments forts`
+      : `L'IA n'a vu aucun panier marqué : choisis « tous les moments forts » plus bas, ou touche le panier (caméra fixe)`);
+    if (failed) showError(`${failed} moment${failed > 1 ? 's' : ''} non vérifié${failed > 1 ? 's' : ''} par l'IA (${lastErr}). Relance pour réessayer.`);
+  } catch (err) {
+    console.error(err);
+    showError('Détection des paniers par l\'IA impossible : ' + (err.message || err));
+  } finally {
+    release();
+    state.busy = false;
+    $('btn-ai-baskets').disabled = false;
+    autoSelect();
+    renderClips();
+    drawHoops();
+  }
+}
+
+// Pour chaque moment fort (les plus forts d'abord, jusqu'à 80), regarde le filet dans les 8 s qui précèdent la réaction.
 async function detectBaskets() {
   if (state.busy || !state.hoops.length || !state.cands.length) return;
   state.busy = true;
@@ -236,7 +330,7 @@ async function detectBaskets() {
     const ff = await getFFmpeg('basket-progress');
     await mountInput(ff);
     const size = +$('hoop-size').value;
-    const todo = [...state.cands].sort((a, b) => b.score - a.score).slice(0, checkedFor(+$('target').value));
+    const todo = [...state.cands].sort((a, b) => b.score - a.score);
     let found = 0;
     for (let i = 0; i < todo.length; i++) {
       const c = todo[i];
@@ -263,12 +357,12 @@ async function detectBaskets() {
         found++;
       }
     }
-    $('pick').value = found ? 'baskets' : 'all';
+    $('pick').value = 'baskets';
     autoSelect();
     renderClips();
     setProgress('basket-progress', 1, found
       ? `${found} panier${found > 1 ? 's' : ''} marqué${found > 1 ? 's' : ''} trouvé${found > 1 ? 's' : ''} sur ${todo.length} moments forts vérifiés`
-      : `Aucun panier vu dans le filet : vérifie la position et la taille de la zone, ou garde la sélection au son`);
+      : `Aucun panier vu dans le filet : vérifie la position et la taille de la zone, ou choisis « tous les moments forts » plus bas`);
   } catch (err) {
     console.error(err);
     showError('Détection des paniers impossible : ' + (err.message || err));
@@ -358,8 +452,14 @@ function renderClips() {
   const target = +$('target').value;
   const el = $('total');
   const n = state.clips.filter(c => c.on).length;
-  el.textContent = `${n} extrait${n > 1 ? 's' : ''} retenu${n > 1 ? 's' : ''} · ${Math.round(total)} s / ${target} s`;
-  el.classList.toggle('over', total > target + 2);
+  const onlyBaskets = $('pick').value === 'baskets';
+  const checked = state.cands.some(c => c.checked);
+  el.textContent = onlyBaskets && state.score && !checked
+    ? '🏀 L\'IA va trier les moments forts : seuls les paniers marqués seront gardés.'
+    : onlyBaskets
+      ? `${n} panier${n > 1 ? 's' : ''} marqué${n > 1 ? 's' : ''} · ${Math.round(total)} s`
+      : `${n} extrait${n > 1 ? 's' : ''} retenu${n > 1 ? 's' : ''} · ${Math.round(total)} s / ${target} s`;
+  el.classList.toggle('over', !onlyBaskets && total > target + 2);
   $('btn-render').disabled = n === 0;
   drawEnergy();
 }

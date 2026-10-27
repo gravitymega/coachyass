@@ -15,8 +15,9 @@
 //
 // Modes (champ « mode ») : analyse tactique (défaut), « track » (suivi image par image),
 // « stats » (actions et numéros d'une portion de match), « devoirs » (exercices d'un joueur,
-// sans image), « live » (une phrase du commentateur en direct, Claude Haiku) et « photo »
-// (Retouche photo : réglages proposés, légendes, fonds SVG ; la consigne vient de la page).
+// sans image), « live » (une phrase du commentateur en direct, Claude Haiku), « photo »
+// (Retouche photo : réglages proposés, légendes, fonds SVG ; la consigne vient de la page)
+// et « paniers » (Highlight Agent : quels moments forts sont des paniers marqués).
 import Anthropic from "@anthropic-ai/sdk";
 import { askFree, cleanJson, AiError, type FreeRequest, type WorkersAi } from "../lib/free-ai.ts";
 
@@ -264,6 +265,40 @@ Règles :
 - Sois utile pour l'entraînement : chaque point faible doit mener à un conseil ou à un exercice précis.
 - Listes : phrases courtes, une idée par élément, 2 à 6 éléments par liste (liste vide si rien n'est visible).`;
 
+// Paniers marqués (Highlight Agent) : pour chaque moment fort, le ballon est-il rentré ?
+const PANIERS_SCHEMA = {
+  type: "object",
+  properties: {
+    moments: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          moment: { type: "integer" },
+          panier: { type: "boolean" },
+          t: { type: "number" },
+          x: { type: "number" },
+          y: { type: "number" },
+          confiance: { type: "string", enum: ["haute", "moyenne", "basse"] },
+        },
+        required: ["moment", "panier", "t", "x", "y", "confiance"],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ["moments"],
+  additionalProperties: false,
+};
+
+const PANIERS_SYSTEM = `Tu es l'assistant vidéo de Gravity Basketball (Montréal). Tu prépares un highlight qui ne doit contenir QUE des paniers marqués.
+Tu reçois plusieurs moments d'un match filmé (la caméra peut bouger pour suivre le jeu). Pour chaque moment : quelques images, environ une par seconde, chacune avec son numéro de moment et son instant en secondes. La salle réagit fort à la fin de chaque moment.
+Pour CHAQUE moment, dis si un panier est marqué (le ballon passe dans le cercle, tir ou lancer franc, n'importe quelle équipe) :
+- « panier » : true seulement si tu vois le ballon rentrer, ou si les images juste après le montrent sans doute possible (ballon qui sort du filet, remise en jeu sous le panier par l'autre équipe, joueurs qui repartent en défense pendant que l'autre équipe remet en jeu). Un tir raté, un contre, un rebond, une belle passe, une faute ou une dispute : false.
+- « t » : l'instant (s) de l'image où le ballon passe dans le cercle (ou la plus proche) ; si pas de panier, l'instant de l'action principale.
+- « x », « y » : position du cercle du panier concerné sur cette image, de 0 à 1 (x de gauche à droite, y de haut en bas) ; 0,5 et 0,5 si on ne le voit pas.
+- « confiance » : haute si tu vois le ballon rentrer, moyenne si tu le déduis sans doute raisonnable, basse sinon.
+Rends un élément par moment reçu, avec le même numéro « moment ». Dans le doute, réponds false.`;
+
 // Comparaison en temps constant, sans module Node (marche aussi sur Cloudflare).
 function samePassword(given: string, expected: string) {
   const a = new TextEncoder().encode(given || "");
@@ -332,6 +367,16 @@ function buildRequest(body: Body) {
       content: [
         ...imageBlocks(frames, () => "Photo (aperçu actuel)"),
         { type: "text", text: prompt + (body.json ? "\nRéponds uniquement avec le JSON demandé, sans bloc de code." : "") },
+      ] as Anthropic.Beta.BetaContentBlockParam[],
+    };
+  }
+  if (mode === "paniers") {
+    const ids = [...new Set(frames.map((f) => clip(f.label, 40)))];
+    return {
+      model: MODEL, system: PANIERS_SYSTEM, schema: PANIERS_SCHEMA, maxTokens: 3000, minFrames: 2,
+      content: [
+        ...imageBlocks(frames, (f) => `${clip(f.label, 40)}, image à t = ${f.t.toFixed(1)} s`),
+        { type: "text", text: `${ids.length} moments : ${ids.join(", ")}. Pour chacun, le ballon est-il rentré dans le panier ?` },
       ] as Anthropic.Beta.BetaContentBlockParam[],
     };
   }
