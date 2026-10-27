@@ -7,7 +7,7 @@ export const GROUND = 10; // ligne du sol (le haut de l'herbe)
 export const W = 168; // largeur du monde en blocs
 
 // Les blocs solides (on marche dessus) et le décor (derrière le personnage).
-export const T = { AIR: 0, GRASS: 1, DIRT: 2, STONE: 3, PLANK: 4, BRICK: 5, LEAVES: 6, LOG: 7, WHITE: 8, GLASS: 9, SAND: 10, ROOF: 11, GREEN: 12, GOLD: 13, CARPET: 14, LANTERN: 15 };
+export const T = { AIR: 0, GRASS: 1, DIRT: 2, STONE: 3, PLANK: 4, BRICK: 5, LEAVES: 6, LOG: 7, WHITE: 8, GLASS: 9, SAND: 10, ROOF: 11, GREEN: 12, GOLD: 13, CARPET: 14, LANTERN: 15, ZELLIGE: 16, PALM: 17, FROND: 18, WATER: 19, ARCH: 20, DOOR: 21 };
 
 // Les quartiers, de gauche à droite. room : la salle de mots dont viennent les questions de l'habitant.
 export const NPCS = [
@@ -45,29 +45,42 @@ export function makeWorld() {
   // Murs aux deux bouts.
   for (let y = 0; y < H; y++) { solid[y][0] = T.STONE; solid[y][W - 1] = T.STONE; }
   const fill = (grid, x, y, w, h, t) => { for (let j = y; j < y + h; j++) for (let i = x; i < x + w; i++) if (grid[j] && i > 0 && i < W - 1) grid[j][i] = t; };
+  // Palmier : un tronc et des palmes qui retombent.
+  const palm = (x) => {
+    const g = ground[x];
+    fill(deco, x, g - 4, 1, 4, T.PALM);
+    fill(deco, x - 2, g - 5, 5, 1, T.FROND); fill(deco, x - 1, g - 6, 3, 1, T.FROND);
+    fill(deco, x - 3, g - 4, 1, 1, T.FROND); fill(deco, x + 3, g - 4, 1, 1, T.FROND);
+  };
+  // Porte en arc outrepassé (comme dans les médinas) : l'arc en haut, la porte en bois en dessous.
+  const door = (x, top) => { fill(deco, x, top, 1, 1, T.ARCH); fill(deco, x, top + 1, 1, GROUND - top - 1, T.DOOR); };
   const tree = (x) => { fill(deco, x, ground[x] - 3, 1, 3, T.LOG); fill(deco, x - 1, ground[x] - 5, 3, 2, T.LEAVES); fill(deco, x, ground[x] - 6, 1, 1, T.LEAVES); };
   // Maison : murs en briques, fenêtres, toit ; on peut sauter sur le toit (plateforme).
   fill(deco, 4, GROUND - 4, 9, 4, T.BRICK); fill(deco, 6, GROUND - 3, 2, 2, T.GLASS); fill(deco, 10, GROUND - 3, 2, 2, T.GLASS);
   fill(solid, 3, GROUND - 5, 11, 1, T.ROOF);
-  tree(18); tree(23);
+  door(8, GROUND - 3); palm(18); tree(23);
   // Parc : arbres et plateformes de bois pour sauter.
-  tree(25); tree(37); tree(39);
+  tree(25); palm(39);
   fill(solid, 32, GROUND - 3, 3, 1, T.PLANK); fill(solid, 36, GROUND - 5, 3, 1, T.PLANK);
   // Souk : étals avec toiles colorées.
   for (const x of [43, 50, 58]) { fill(deco, x, GROUND - 3, 4, 3, T.PLANK); fill(solid, x - 1, GROUND - 4, 6, 1, T.SAND); }
   fill(solid, 40, GROUND - 2, 1, 1, T.PLANK);
+  fill(deco, 53, GROUND - 3, 2, 2, T.ZELLIGE); fill(deco, 53, GROUND - 1, 2, 1, T.WATER); palm(61);
   // École.
   fill(deco, 65, GROUND - 5, 13, 5, T.WHITE); fill(deco, 67, GROUND - 4, 2, 2, T.GLASS); fill(deco, 71, GROUND - 4, 2, 2, T.GLASS); fill(deco, 75, GROUND - 4, 2, 2, T.GLASS);
   fill(solid, 64, GROUND - 6, 15, 1, T.ROOF);
+  fill(deco, 65, GROUND - 1, 13, 1, T.ZELLIGE); door(73, GROUND - 3);
   // Mosquée : murs blancs, coupole verte, minaret.
   fill(deco, 86, GROUND - 5, 13, 5, T.WHITE); fill(deco, 89, GROUND - 7, 7, 2, T.GREEN); fill(deco, 90, GROUND - 8, 5, 1, T.GREEN);
   fill(deco, 92, GROUND - 9, 1, 1, T.GOLD); fill(deco, 99, GROUND - 9, 2, 9, T.WHITE); fill(deco, 99, GROUND - 10, 2, 1, T.GREEN);
   fill(deco, 88, GROUND - 3, 1, 2, T.GLASS); fill(deco, 96, GROUND - 3, 1, 2, T.GLASS);
+  fill(deco, 86, GROUND - 1, 13, 1, T.ZELLIGE); door(90, GROUND - 3); door(94, GROUND - 3); palm(84); palm(102);
   // Ferme : grange, clôture (plateformes basses).
   fill(deco, 106, GROUND - 4, 7, 4, T.PLANK); fill(solid, 105, GROUND - 5, 9, 1, T.ROOF); tree(116);
   fill(solid, 114, GROUND - 2, 3, 1, T.PLANK);
   // Dispensaire.
   fill(deco, 125, GROUND - 4, 11, 4, T.WHITE); fill(deco, 129, GROUND - 3, 3, 3, T.GLASS); fill(solid, 124, GROUND - 5, 13, 1, T.ROOF);
+  door(127, GROUND - 3);
   // Stade : tribunes en escaliers, buts.
   // Tribunes en pyramide : on monte et on redescend des deux côtés.
   for (let i = 0; i < 4; i++) fill(solid, 145 + i, GROUND - 1 - i, 1, 1 + i, T.STONE);

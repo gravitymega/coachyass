@@ -1,6 +1,6 @@
 // Hors ligne : on sert le réseau quand il répond (mises à jour immédiates),
 // sinon la copie gardée sur la tablette.
-const CACHE = 'hbibiti-v10';
+const CACHE = 'hbibiti-v11';
 // Les voix enregistrées ne changent jamais (le nom du fichier vient du texte) : cache à part, gardé entre les versions.
 const VOICES = 'hbibiti-voix';
 const SHELL = ['./', 'index.html', 'styles.css', 'app.js', 'core.js', 'art.js', 'audio.js', 'games.js', 'store.js', 'exercises.js', 'characters.js', 'tales.js', 'missions.js', 'voix.js', 'ville.js', 'ville-core.js', 'carnet.js', 'calendrier.js', 'activites.js', 'act-kit.js', 'act-data.js', 'act-ecole.js', 'act-monde.js', 'act-jeux.js', 'act-famille.js', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];

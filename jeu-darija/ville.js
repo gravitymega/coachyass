@@ -15,6 +15,9 @@ const PAL = {
   [T.ROOF]: ['#c0392b', '#a93226', '#d35445', '#7f2a20'], [T.GREEN]: ['#2bb673', '#239a61', '#45c98a', '#1c7d4f'],
   [T.GOLD]: ['#ffc93c', '#f0b52a', '#ffe08a', '#c98f12'],
   [T.CARPET]: ['#b22234', '#8e1b2a', '#f6c445', '#1f4e9a'], [T.LANTERN]: ['#ffc93c', '#f0a020', '#fff3a8', '#7a4e2a'],
+  [T.ZELLIGE]: ['#f4efe4', '#1f8a5b', '#2b5fb3', '#f6c445'], [T.PALM]: ['#9a6b3c', '#86592f', '#b8844f', '#6a4527'],
+  [T.FROND]: ['#3c9a3f', '#2e7f33', '#6cc24a', '#22662a'], [T.WATER]: ['#3aa0e0', '#2b86c8', '#bfe9ff', '#1f6aa6'],
+  [T.ARCH]: ['#f4efe4', '#5a3a20', '#2bb673', '#3e2814'], [T.DOOR]: ['#6b4423', '#5a3a20', '#c8914f', '#3e2814'],
 };
 function makeTexture(t, seed) {
   const c = document.createElement('canvas'); c.width = 16; c.height = 16;
@@ -31,6 +34,12 @@ function makeTexture(t, seed) {
     if (t === T.ROOF) col = (x + y) % 6 === 0 ? lo : (r() < 0.7 ? a : b);
     if (t === T.WHITE) col = r() < 0.85 ? a : b;
     if (t === T.CARPET) col = (x === 0 || x === 15 || y === 0 || y === 15) ? hi : ((x + y) % 8 === 0 || (x - y + 16) % 8 === 0) ? lo : a;
+    if (t === T.ZELLIGE) { const u = x % 8, v = y % 8, dd = Math.abs(u - 3.5) + Math.abs(v - 3.5); col = dd < 2 ? lo : dd < 3 ? b : dd < 4 ? hi : a; }
+    if (t === T.PALM) col = (y + x) % 5 === 0 ? lo : y % 4 === 0 ? hi : (r() < 0.6 ? a : b);
+    if (t === T.FROND) col = (x + 2 * y) % 7 === 0 ? hi : (r() < 0.6 ? a : b);
+    if (t === T.WATER) col = (y % 5 === 1 && (x + y) % 4 < 2) ? hi : (r() < 0.6 ? a : b);
+    if (t === T.ARCH) { const inArch = (x >= 3 && x <= 12 && y >= 8) || ((x - 7.5) ** 2 + (y - 8) ** 2 < 30); const edge = !inArch && ((x >= 2 && x <= 13 && y >= 8) || (x - 7.5) ** 2 + (y - 8) ** 2 < 42); col = inArch ? (y % 4 === 3 ? lo : b) : edge ? hi : a; }
+    if (t === T.DOOR) col = (x === 0 || x === 15) ? lo : x % 5 === 2 ? lo : (y % 6 === 3 && x % 5 === 4) ? hi : (r() < 0.7 ? a : b);
     if (t === T.LANTERN) col = (y < 2 || y > 13) ? lo : (x < 3 || x > 12) ? lo : (x + y) % 4 === 0 ? hi : (y % 4 === 0 ? b : hi);
     g.fillStyle = col; g.fillRect(x, y, 1, 1);
   }
@@ -164,6 +173,52 @@ export function createVille(api) {
   }
   const npcY = (n) => world.ground[Math.floor(n.x)];
 
+  // ----- Paysage du bled en arrière-plan (3 plans qui défilent moins vite que la ville) -----
+  const hill = (x, a, b, c) => a + b * Math.sin(x * 0.23) + c * Math.sin(x * 0.071 + 1.3);
+  function scenery(cw, ch, s, camX, camY, night) {
+    const px = (k) => (x) => (x - camX * k) * s;
+    const base = (GROUND - camY) * s;
+    const cols = Math.ceil(cw / s) + 2;
+    // 1. Les montagnes de l'Atlas, avec de la neige en haut.
+    let p = px(0.15), off = Math.floor(camX * 0.15);
+    for (let i = -1; i < cols; i++) {
+      const x = off + i, h = Math.round(hill(x, 5, 1.6, 1.1));
+      g.fillStyle = night ? '#2a2c5e' : '#c6bde8'; g.fillRect(p(x), base - h * s, s + 1, h * s);
+      if (h >= 6) { g.fillStyle = night ? '#b9c0e8' : '#ffffff'; g.fillRect(p(x), base - h * s, s + 1, s * (h - 5) * 0.6); }
+    }
+    // 2. Les dunes du désert et les palmiers d'une oasis.
+    p = px(0.35); off = Math.floor(camX * 0.35);
+    for (let i = -1; i < cols; i++) {
+      const x = off + i, h = Math.round(hill(x * 0.6, 3.3, 1, 0.6));
+      g.fillStyle = night ? '#6b5a4a' : '#e6c27a'; g.fillRect(p(x), base - h * s, s + 1, h * s);
+      g.fillStyle = night ? '#5d4e40' : '#d9ae62'; g.fillRect(p(x), base - h * s, s + 1, s * 0.25);
+      if (x % 9 === 0) {
+        g.fillStyle = night ? '#3e3226' : '#8a6238'; g.fillRect(p(x) + s * 0.4, base - (h + 3) * s, s * 0.25, 3 * s);
+        g.fillStyle = night ? '#24442c' : '#3f9b3a';
+        g.fillRect(p(x) - s * 0.6, base - (h + 3.2) * s, s * 2.3, s * 0.45); g.fillRect(p(x) - s * 0.2, base - (h + 3.6) * s, s * 1.5, s * 0.45);
+      }
+    }
+    // 3. La médina : maisons blanches et ocre, petites fenêtres en arc, minarets et kasbah.
+    p = px(0.6); off = Math.floor(camX * 0.6);
+    for (let i = -2; i < cols; i++) {
+      const x = off + i, seed = (x * 7919) % 13, h = 1.2 + (seed % 3) * 0.6;
+      if ([1, 5, 9, 11].includes(seed)) continue; // des ruelles entre les maisons
+      const ocre = seed % 4 === 0;
+      g.fillStyle = night ? (ocre ? '#6b4a3a' : '#5d6080') : (ocre ? '#e3a86b' : '#f7f1e6'); g.fillRect(p(x), base - h * s, s + 1, h * s);
+      g.fillStyle = night ? (seed % 2 ? '#ffd27a' : '#2b2f55') : '#5a8fc7';
+      g.fillRect(p(x) + s * 0.35, base - h * s + s * 0.35, s * 0.3, s * 0.35); // fenêtre (allumée la nuit)
+      if (seed === 3) { // minaret avec son lanterneau vert
+        g.fillStyle = night ? '#5d6080' : '#f7f1e6'; g.fillRect(p(x) + s * 0.2, base - (h + 2.6) * s, s * 0.6, 2.6 * s);
+        g.fillStyle = night ? '#1f5a44' : '#2bb673'; g.fillRect(p(x) + s * 0.15, base - (h + 3.1) * s, s * 0.7, s * 0.5);
+        g.fillStyle = '#ffc93c'; g.fillRect(p(x) + s * 0.45, base - (h + 3.5) * s, s * 0.1, s * 0.4);
+      }
+      if (seed === 8) { // tour de kasbah crénelée
+        g.fillStyle = night ? '#6b4a3a' : '#c9824e'; g.fillRect(p(x), base - (h + 1.8) * s, s + 1, 1.8 * s);
+        g.fillRect(p(x), base - (h + 2.1) * s, s * 0.3, s * 0.3); g.fillRect(p(x) + s * 0.7, base - (h + 2.1) * s, s * 0.3, s * 0.3);
+      }
+    }
+  }
+
   // ----- Dessin -----
   function glow(x, y, r) {
     const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, 'rgba(255,214,120,.55)'); gr.addColorStop(1, 'rgba(255,214,120,0)');
@@ -192,6 +247,7 @@ export function createVille(api) {
     } else { g.fillStyle = '#fff3a8'; g.fillRect(cw * 0.82, ch * 0.08, s * 1.4, s * 1.4); }
     g.fillStyle = night ? 'rgba(255,255,255,0)' : 'rgba(255,255,255,.9)';
     for (let i = 0; i < 8; i++) { const cx = ((i * 23 - camX * 0.3 + t * 0.4) % (viewW + 10) + viewW + 10) % (viewW + 10) - 5; g.fillRect(cx * s, (1 + (i % 3)) * s, s * 3, s * 0.8); g.fillRect((cx + 0.6) * s, (0.6 + (i % 3)) * s, s * 1.6, s * 0.6); }
+    scenery(cw, ch, s, camX, camY, night);
     const x0 = Math.floor(camX), x1 = Math.min(W - 1, Math.ceil(camX + viewW));
     for (let y = 0; y < H; y++) for (let x = x0; x <= x1; x++) {
       const sx = (x - camX) * s, sy = (y - camY) * s;
