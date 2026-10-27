@@ -15,7 +15,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 | `talent-perle-site/` | Netlify `talent-perle` | talent-perle.netlify.app | Club de Karim (ami), **hors écosystème Gravity/OSMM**, inscriptions par Netlify Forms |
 | `talent-perle-dashboard/` | Netlify (à créer) | — | Dashboard de Karim, Supabase séparé (à configurer par Karim) |
 | `art-craft/` | **Worker Cloudflare `coachyass`** (contient seulement Art craft) | coachyass.moqtad6.workers.dev | Outil vidéo/son/image Gravity, 100 % navigateur (ffmpeg.wasm) + IA gratuites |
-| `jeu-darija/` | Pas encore en ligne (Cloudflare Pages ou Netlify, gratuit) | — | Jeu familial pour tablette (darija marocaine/algérienne, religion, maths, lecture, histoires vraies) pour Ali et Asma, **hors écosystème Gravity/OSMM** |
+| `jeu-darija/` | **Worker Cloudflare `jeu-hbibiti`** (séparé d'Art craft, `jeu-darija/wrangler.toml`, à relier par l'utilisateur) | jeu-hbibiti.moqtad6.workers.dev | Jeu familial pour tablette (darija marocaine/algérienne, religion, maths, lecture, histoires vraies) pour Ali et Asma, **hors écosystème Gravity/OSMM** |
 
 ## Règles permanentes
 

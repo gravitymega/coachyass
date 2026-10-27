@@ -1,0 +1,8 @@
+# Le jeu de Hbibiti sur Cloudflare (Worker séparé d'Art craft : nom « jeu-hbibiti », gratuit).
+# Dans Cloudflare : Workers & Pages › Create › Import a repository › gravitymega/coachyass,
+# Root directory = jeu-darija, Deploy command = npx wrangler deploy (pas de build).
+name = "jeu-hbibiti"
+compatibility_date = "2026-10-01"
+
+[assets]
+directory = "."

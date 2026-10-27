@@ -131,3 +131,9 @@ Demande : ajouter, en option, toutes les idées proposées. Sur la carte, une se
 - **📞 Messages** : les parents importent les messages vocaux des grands-parents (fichier WhatsApp, clé `gp:*`, liste dans `settings.gpMsgs`). Un message pas encore écouté apparaît comme surprise sur l'écran de récompense.
 - Les boutons « parents » de ces activités demandent une confirmation (`confirm`), pas la multiplication.
 - La voix douce couvre les phrases fixes des activités (8 463 phrases au total). Les autres passent par la voix de la tablette.
+
+## Mise en ligne sur Cloudflare (27 octobre 2026)
+
+- Netlify a refusé le déploiement : « Skipped due to account credit usage exceeded », les crédits gratuits du compte sont épuisés. Le site Netlify `jeu-hbibiti` existe mais reste vide.
+- L'utilisateur a choisi **Cloudflare, séparé d'Art craft**. On utilise le Worker `jeu-hbibiti`, qui ne sert que les fichiers statiques : `jeu-darija/wrangler.toml` avec `[assets] directory = "."`, et `.assetsignore` pour exclure `outils/`, les tests, les lanceurs, `netlify.toml` et `wrangler.toml`. `npx wrangler deploy --dry-run` lit 8 527 fichiers, sous la limite gratuite de 20 000. `_headers` (noindex, `sw.js` sans cache) est respecté.
+- À relier par l'utilisateur dans le tableau de bord Cloudflare : Workers & Pages › Create › Import a repository › `gravitymega/coachyass`, Project name `jeu-hbibiti`, Root directory `jeu-darija`, Deploy command `npx wrangler deploy`, sans build. Adresse : `https://jeu-hbibiti.moqtad6.workers.dev`.
