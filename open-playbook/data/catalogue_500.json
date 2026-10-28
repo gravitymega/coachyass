@@ -2120,7 +2120,7 @@
       "fr": "Attaque de la zone match-up : coupes traversantes",
       "en": "Cutters through the match-up zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "overloading-the-match-up-zone",
@@ -2131,7 +2131,7 @@
       "fr": "Attaque de la zone match-up : surcharge",
       "en": "Overloading the match-up zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "dribble-rotation-vs-match-up",
@@ -2142,7 +2142,7 @@
       "fr": "Attaque de la zone match-up : dribble de déplacement",
       "en": "Dribble rotation vs match-up"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "quick-reversal-vs-match-up",
@@ -2153,7 +2153,7 @@
       "fr": "Attaque de la zone match-up : renversement rapide",
       "en": "Quick reversal vs match-up"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "attacking-the-box-and-1",
@@ -2164,7 +2164,7 @@
       "fr": "Attaque contre boîte et 1 (box-and-1)",
       "en": "Attacking the box-and-1"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "attacking-the-triangle-and-2",
@@ -2175,7 +2175,7 @@
       "fr": "Attaque contre triangle et 2",
       "en": "Attacking the triangle-and-2"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "attacking-the-diamond-and-1",
@@ -2186,7 +2186,7 @@
       "fr": "Attaque contre losange et 1",
       "en": "Attacking the diamond-and-1"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "freeing-the-face-guarded-player",
@@ -2197,7 +2197,7 @@
       "fr": "Libérer le joueur marqué individuellement",
       "en": "Freeing the face-guarded player"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "fast-break-3-lanes",
@@ -2219,7 +2219,7 @@
       "fr": "Contre-attaque à 2 contre 1",
       "en": "2-on-1 fast break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-2-fast-break",
@@ -2230,7 +2230,7 @@
       "fr": "Contre-attaque à 3 contre 2",
       "en": "3-on-2 fast break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "4-on-3-fast-break",
@@ -2241,7 +2241,7 @@
       "fr": "Contre-attaque à 4 contre 3",
       "en": "4-on-3 fast break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "fast-break-after-a-steal",
@@ -2252,7 +2252,7 @@
       "fr": "Contre-attaque après interception",
       "en": "Fast break after a steal"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "fast-break-after-a-made-basket",
@@ -2263,7 +2263,7 @@
       "fr": "Contre-attaque après panier encaissé",
       "en": "Fast break after a made basket"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "outlet-pass",
@@ -2274,7 +2274,7 @@
       "fr": "Première passe (outlet)",
       "en": "Outlet pass"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "home-run-pass",
@@ -2285,7 +2285,7 @@
       "fr": "Passe longue en avant (home run)",
       "en": "Home-run pass"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "trailer-fast-break",
@@ -2296,7 +2296,7 @@
       "fr": "Contre-attaque avec le traîneur (trailer)",
       "en": "Trailer fast break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "rim-run",
@@ -2307,7 +2307,7 @@
       "fr": "Contre-attaque : course du pivot vers le cercle (rim run)",
       "en": "Rim run"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "wing-led-fast-break",
@@ -2318,7 +2318,7 @@
       "fr": "Contre-attaque par les ailes",
       "en": "Wing-led fast break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "double-drag",
@@ -2340,7 +2340,7 @@
       "fr": "Drag avec double écran (re-drag)",
       "en": "Re-drag screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pistol-action",
@@ -2351,7 +2351,7 @@
       "fr": "Transition « Pistol »",
       "en": "Pistol action"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "trailer-reversal",
