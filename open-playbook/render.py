@@ -55,7 +55,10 @@ RED = (0xD7 / 255, 0x26 / 255, 0x3D / 255)
 ORANGE = (0xF0 / 255, 0x8A / 255, 0x24 / 255)
 INK = (0.11, 0.14, 0.2)
 BG = (0.06, 0.1, 0.17)
-BOARD = (1, 1, 1)
+# Terrain : parquet clair, raquette peinte (mêmes valeurs que COLORS dans src/engine.ts)
+BOARD = (0xE9 / 255, 0xC8 / 255, 0x9B / 255)
+PLANK = (0xDD / 255, 0xB8 / 255, 0x86 / 255)
+PAINT = (0xC9 / 255, 0x8E / 255, 0x5A / 255)
 WHITE = (1, 1, 1)
 MUTED = (0.72, 0.77, 0.85)
 
@@ -143,8 +146,19 @@ class Board:
         s = self.s
         cr.save()
         rounded(cr, self.x, self.y, self.w, self.h, 28)
+        cr.clip_preserve()
         cr.set_source_rgb(*BOARD)
         cr.fill()
+        x0, y0 = self.pt((0, 0))
+        cr.set_source_rgb(*PLANK)  # lattes du parquet, une sur deux
+        for i in range(-2, 28, 2):
+            cr.rectangle(x0 + i * 2 * s, self.y, 2 * s, self.h)
+        cr.fill()
+        px, py = self.pt((17, 0))
+        cr.set_source_rgba(*PAINT, 0.55)  # raquette peinte
+        cr.rectangle(px, py, 16 * s, 19 * s)
+        cr.fill()
+        cr.reset_clip()
         cr.set_source_rgb(*INK)
         cr.set_line_width(0.18 * s)
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
