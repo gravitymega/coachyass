@@ -2,13 +2,18 @@
   "name": "open-playbook",
   "private": true,
   "version": "0.1.0",
+  "description": "Playbook Ouvert / Open Playbook : bibliothèque libre de tactiques de basket (FR/EN)",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "validate": "tsx scripts/validate.ts"
   },
   "devDependencies": {
+    "@fontsource/barlow": "^5.3.0",
+    "@fontsource/barlow-condensed": "^5.3.0",
     "@types/node": "^26.6.5",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",

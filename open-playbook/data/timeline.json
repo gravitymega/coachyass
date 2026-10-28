@@ -1,0 +1,6 @@
+{
+  "move": 1.5,
+  "pass": 0.85,
+  "readMin": 2.2,
+  "readPerWord": 0.13
+}

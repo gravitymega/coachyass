@@ -14,6 +14,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 | `gravity-mailer/` | Netlify (sans page) | — | Courriels (Brevo) + inscriptions Notion, clé publique `x-mailer-key` + secret `MAILER_SERVER_KEY` (voir backends.md) |
 | `talent-perle-site/` | Netlify `talent-perle` | talent-perle.netlify.app | Club de Karim (ami), **hors écosystème Gravity/OSMM**, inscriptions par Netlify Forms |
 | `talent-perle-dashboard/` | Netlify (à créer) | — | Dashboard de Karim, Supabase séparé (à configurer par Karim) |
+| `open-playbook/` | GitHub Pages (phase 6, à configurer) | — | Playbook Ouvert : bibliothèque libre de tactiques de basket FR/EN, schémas animés et vidéos |
 | `art-craft/` | **Worker Cloudflare `coachyass`** (contient seulement Art craft) | coachyass.moqtad6.workers.dev | Outil vidéo/son/image Gravity, 100 % navigateur (ffmpeg.wasm) + IA gratuites |
 
 ## Règles permanentes
@@ -44,6 +45,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 | Art craft : Gardien de chaîne YouTube (corrections tous les 2 jours, page « Ma chaîne », KV `art-craft-chaine`) | `docs/contexte/gardien-chaine.md` |
 | Documentaire Gravity (script, rushes vidéo, voix off locale) | `docs/contexte/documentaire.md` |
 | Supabase (tables), Notion, gravity-mailer, FormSubmit | `docs/contexte/backends.md` |
+| Open Playbook (format des fiches, phases, choix techniques) | `docs/contexte/open-playbook.md` |
 | Liste des demandes du 31 août 2026 | `docs/contexte/historique-31-aout.md` |
 | Espace Joueurs | `docs/contexte/espace-joueurs.md` |
 | Inscription GRAV (base Notion unifiée) | `docs/contexte/inscription-grav-notion.md` |

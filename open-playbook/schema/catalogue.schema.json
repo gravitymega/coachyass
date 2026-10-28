@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "catalogue.schema.json",
+  "title": "catalogue_500.json : fiches à créer",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "cat", "family", "lvl", "name", "status"],
+    "additionalProperties": false,
+    "properties": {
+      "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+      "cat": { "type": "string" },
+      "family": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+      "lvl": { "type": "integer", "minimum": 1, "maximum": 3 },
+      "name": { "$ref": "tactic.schema.json#/definitions/text" },
+      "status": { "enum": ["todo", "done"] }
+    }
+  }
+}
