@@ -51116,6 +51116,2475 @@
           "Lob in transition"
         ]
       }
+    },
+    {
+      "id": "full-court-one-on-one",
+      "cat": "exercices",
+      "family": "un-contre-un",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "1 contre 1 tout terrain",
+        "en": "Full-court one-on-one"
+      },
+      "sum": {
+        "fr": "1 contre 1 sur tout le terrain : l'attaquant remonte en dribble contre un défenseur qui le pousse vers la ligne de touche.",
+        "en": "Full-court one-on-one: the attacker brings the ball up against a defender pushing him toward the sideline."
+      },
+      "why": {
+        "fr": "Travaille le dribble sous pression pour l'attaquant et l'endurance défensive pour le défenseur.",
+        "en": "Works the dribble under pressure for the attacker and defensive endurance for the defender."
+      },
+      "counter": {
+        "fr": "Le défenseur force un seul côté et change de direction le porteur.",
+        "en": "The defender forces one side and turns the ball handler."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Recevoir en triple menace",
+          "Lire le pied avant du défenseur",
+          "Premier pas long et bas",
+          "Finir ou passer selon l'aide"
+        ],
+        "en": [
+          "Catch in triple threat",
+          "Read the defender's lead foot",
+          "Long, low first step",
+          "Finish or pass depending on the help"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          46
+        ],
+        "x1": [
+          25,
+          43
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              10,
+              34,
+              "d"
+            ],
+            "x1": [
+              12.5,
+              31,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 remonte ; x1 le pousse vers la ligne de touche.",
+            "en": "1 dribbles up; x1 pushes him toward the sideline."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              20,
+              12,
+              "d"
+            ],
+            "x1": [
+              21,
+              16,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 change de direction et attaque le panier.",
+            "en": "1 changes direction and attacks the rim."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "Terrain complet, 1 ballon par paire",
+        "en": "Full court, 1 ball per pair"
+      },
+      "players": "2-10",
+      "age": [
+        "U13",
+        "U15",
+        "U17"
+      ],
+      "variants": {
+        "fr": [
+          "Le défenseur part avec un retard",
+          "Limite de dribbles",
+          "Arrivée en tir à 3 points"
+        ],
+        "en": [
+          "The defender starts behind",
+          "Dribble limit",
+          "Finish with a three"
+        ]
+      }
+    },
+    {
+      "id": "post-one-on-one",
+      "cat": "exercices",
+      "family": "un-contre-un",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "1 contre 1 au poste",
+        "en": "Post one-on-one"
+      },
+      "sum": {
+        "fr": "Le pivot reçoit au poste bas et joue un contre un contre son défenseur, avec un passeur sur l'aile.",
+        "en": "The post catches on the block and plays one-on-one against his defender, with a passer on the wing."
+      },
+      "why": {
+        "fr": "Travaille la prise de position, la réception et les mouvements dos au panier.",
+        "en": "Works post position, the catch and back-to-the-basket moves."
+      },
+      "counter": {
+        "fr": "Le défenseur joue devant ou derrière selon l'entraîneur.",
+        "en": "The defender fronts or plays behind as the coach decides."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Recevoir en triple menace",
+          "Lire le pied avant du défenseur",
+          "Premier pas long et bas",
+          "Finir ou passer selon l'aide"
+        ],
+        "en": [
+          "Catch in triple threat",
+          "Read the defender's lead foot",
+          "Long, low first step",
+          "Finish or pass depending on the help"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "5": [
+          32,
+          10
+        ],
+        "x5": [
+          30,
+          8
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "5 prend position, x5 derrière lui ; 2 lui passe.",
+            "en": "5 establishes position, x5 behind him; 2 feeds him."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              27,
+              7,
+              "d"
+            ],
+            "x5": [
+              28,
+              9.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pivote vers le milieu et finit.",
+            "en": "5 drops toward the middle and finishes."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par trio",
+        "en": "1 basket, 1 ball per group of 3"
+      },
+      "players": "3-9",
+      "age": [
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Deux dribbles maximum",
+          "Ressortie si prise à deux",
+          "Des deux côtés"
+        ],
+        "en": [
+          "Two dribbles max",
+          "Kick out on a double team",
+          "From both sides"
+        ]
+      }
+    },
+    {
+      "id": "one-on-one-three-dribbles-max",
+      "cat": "exercices",
+      "family": "un-contre-un",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "1 contre 1 en trois dribbles",
+        "en": "One-on-one, three dribbles max"
+      },
+      "sum": {
+        "fr": "1 contre 1 depuis le haut, avec trois dribbles au maximum pour marquer.",
+        "en": "One-on-one from the top, with three dribbles at most to score."
+      },
+      "why": {
+        "fr": "La limite oblige à attaquer avec un but et à utiliser chaque dribble.",
+        "en": "The limit forces purposeful attacks and makes every dribble count."
+      },
+      "counter": {
+        "fr": "Le défenseur contient et force le porteur à utiliser ses dribbles.",
+        "en": "The defender contains and makes the ball handler use up his dribbles."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Recevoir en triple menace",
+          "Lire le pied avant du défenseur",
+          "Premier pas long et bas",
+          "Finir ou passer selon l'aide"
+        ],
+        "en": [
+          "Catch in triple threat",
+          "Read the defender's lead foot",
+          "Long, low first step",
+          "Finish or pass depending on the help"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "x1": [
+          25,
+          28
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              20,
+              24,
+              "d"
+            ],
+            "x1": [
+              21,
+              21.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque à gauche (1 dribble).",
+            "en": "1 attacks left (1 dribble)."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              26,
+              10,
+              "d"
+            ],
+            "x1": [
+              24,
+              14,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Changement de direction (2 dribbles) et finition.",
+            "en": "Change of direction (2 dribbles) and finish."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par paire",
+        "en": "1 basket, 1 ball per pair"
+      },
+      "players": "2-12",
+      "age": [
+        "U13",
+        "U15"
+      ],
+      "variants": {
+        "fr": [
+          "Deux dribbles maximum",
+          "Départ de l'aile",
+          "Arrêt et tir obligatoire"
+        ],
+        "en": [
+          "Two dribbles max",
+          "Start from the wing",
+          "Must pull up and shoot"
+        ]
+      }
+    },
+    {
+      "id": "one-on-one-off-the-close-out",
+      "cat": "exercices",
+      "family": "un-contre-un",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "1 contre 1 après close-out",
+        "en": "One-on-one off the close-out"
+      },
+      "sum": {
+        "fr": "Le défenseur passe le ballon à l'attaquant puis sort sur lui (close-out) ; le 1 contre 1 démarre tout de suite.",
+        "en": "The defender passes to the attacker, then closes out on him; the one-on-one starts right away."
+      },
+      "why": {
+        "fr": "Reproduit la situation la plus fréquente en match : attaquer un défenseur qui arrive en courant.",
+        "en": "Reproduces the most common game situation: attacking a defender who is running at you."
+      },
+      "counter": {
+        "fr": "Le défenseur sort en contrôle et ferme la ligne de fond.",
+        "en": "The defender closes out under control and takes away the baseline."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Recevoir en triple menace",
+          "Lire le pied avant du défenseur",
+          "Premier pas long et bas",
+          "Finir ou passer selon l'aide"
+        ],
+        "en": [
+          "Catch in triple threat",
+          "Read the defender's lead foot",
+          "Long, low first step",
+          "Finish or pass depending on the help"
+        ]
+      },
+      "start": {
+        "x1": [
+          26,
+          9
+        ],
+        "1": [
+          44,
+          24
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x1": [
+              40,
+              21,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 sort sur 1, qui a le ballon.",
+            "en": "x1 closes out to 1, who has the ball."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              34,
+              12,
+              "d"
+            ],
+            "x1": [
+              37,
+              16,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque le défenseur qui arrive trop vite.",
+            "en": "1 attacks the defender who arrives too fast."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par paire",
+        "en": "1 basket, 1 ball per pair"
+      },
+      "players": "2-12",
+      "age": [
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Une feinte de tir obligatoire",
+          "Close-out depuis le côté faible",
+          "Deux dribbles maximum"
+        ],
+        "en": [
+          "A mandatory shot fake",
+          "Close-out from the weak side",
+          "Two dribbles max"
+        ]
+      }
+    },
+    {
+      "id": "one-on-one-off-a-screen",
+      "cat": "exercices",
+      "family": "un-contre-un",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "1 contre 1 en sortie d'écran",
+        "en": "One-on-one off a screen"
+      },
+      "sum": {
+        "fr": "L'attaquant sort d'un écran retour avec son défenseur derrière lui, reçoit et joue un contre un.",
+        "en": "The attacker comes off a pin-down with his defender trailing, catches and plays one-on-one."
+      },
+      "why": {
+        "fr": "Lire son défenseur en sortie d'écran : tir, pénétration ou boucle.",
+        "en": "Reading the defender off the screen: shot, drive or curl."
+      },
+      "counter": {
+        "fr": "Le défenseur suit au ras de l'écran et reste devant à la réception.",
+        "en": "The defender trails tight and gets in front at the catch."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Recevoir en triple menace",
+          "Lire le pied avant du défenseur",
+          "Premier pas long et bas",
+          "Finir ou passer selon l'aide"
+        ],
+        "en": [
+          "Catch in triple threat",
+          "Read the defender's lead foot",
+          "Long, low first step",
+          "Finish or pass depending on the help"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          19,
+          8
+        ],
+        "4": [
+          17,
+          13
+        ],
+        "x2": [
+          21,
+          10
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              16,
+              10,
+              "s"
+            ],
+            "2": [
+              8,
+              22,
+              "c"
+            ],
+            "x2": [
+              10,
+              19,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran ; 2 remonte, x2 suit.",
+            "en": "4 screens; 2 comes up, x2 trails."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 : le 1 contre 1 commence.",
+            "en": "1 passes to 2: the one-on-one starts."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              18,
+              9,
+              "d"
+            ],
+            "x2": [
+              14,
+              14,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 arrive en retard : 2 attaque le panier.",
+            "en": "x2 arrives late: 2 drives to the rim."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "4-8",
+      "age": [
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Écran flare",
+          "Remise main à main",
+          "Boucle vers le panier"
+        ],
+        "en": [
+          "Flare screen",
+          "Handoff",
+          "Curl to the rim"
+        ]
+      }
+    },
+    {
+      "id": "one-on-one-from-the-high-post",
+      "cat": "exercices",
+      "family": "un-contre-un",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "1 contre 1 depuis le poste haut",
+        "en": "One-on-one from the high post"
+      },
+      "sum": {
+        "fr": "L'attaquant reçoit au poste haut, se retourne face au panier et joue un contre un.",
+        "en": "The attacker catches at the high post, faces up and plays one-on-one."
+      },
+      "why": {
+        "fr": "Au milieu du terrain, le joueur peut attaquer des deux côtés : le défenseur doit choisir.",
+        "en": "In the middle of the floor, the player can attack either side: the defender has to choose."
+      },
+      "counter": {
+        "fr": "Le défenseur reste à un bras, prêt à reculer.",
+        "en": "The defender stays an arm's length away, ready to back up."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Recevoir en triple menace",
+          "Lire le pied avant du défenseur",
+          "Premier pas long et bas",
+          "Finir ou passer selon l'aide"
+        ],
+        "en": [
+          "Catch in triple threat",
+          "Read the defender's lead foot",
+          "Long, low first step",
+          "Finish or pass depending on the help"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "4": [
+          25,
+          19
+        ],
+        "x4": [
+          25,
+          16
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4 au poste haut.",
+            "en": "1 passes to 4 at the high post."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              20,
+              9,
+              "d"
+            ],
+            "x4": [
+              22,
+              11,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "4 se retourne et attaque à gauche.",
+            "en": "4 faces up and drives left."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par trio",
+        "en": "1 basket, 1 ball per group of 3"
+      },
+      "players": "3-9",
+      "age": [
+        "U15",
+        "U17",
+        "seniors"
+      ],
+      "variants": {
+        "fr": [
+          "Tir sur place après feinte",
+          "Un dribble maximum",
+          "Ajouter un aideur"
+        ],
+        "en": [
+          "Jab and shoot",
+          "One dribble max",
+          "Add a helper"
+        ]
+      }
+    },
+    {
+      "id": "one-on-one-with-a-shot-clock",
+      "cat": "exercices",
+      "family": "un-contre-un",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "1 contre 1 avec limite de temps",
+        "en": "One-on-one with a shot clock"
+      },
+      "sum": {
+        "fr": "1 contre 1 depuis l'aile, avec 8 secondes pour marquer.",
+        "en": "One-on-one from the wing, with 8 seconds to score."
+      },
+      "why": {
+        "fr": "Le temps limité oblige à prendre une décision et à ne pas dribbler pour rien.",
+        "en": "The time limit forces a decision and stops pointless dribbling."
+      },
+      "counter": {
+        "fr": "Le défenseur fait durer : il contient sans prendre de risque.",
+        "en": "The defender makes it last: he contains without taking risks."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Recevoir en triple menace",
+          "Lire le pied avant du défenseur",
+          "Premier pas long et bas",
+          "Finir ou passer selon l'aide"
+        ],
+        "en": [
+          "Catch in triple threat",
+          "Read the defender's lead foot",
+          "Long, low first step",
+          "Finish or pass depending on the help"
+        ]
+      },
+      "start": {
+        "1": [
+          6,
+          24
+        ],
+        "x1": [
+          9,
+          21.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              9,
+              9,
+              "d"
+            ],
+            "x1": [
+              11,
+              11.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 a 8 secondes : il attaque la ligne de fond.",
+            "en": "1 has 8 seconds: he drives baseline."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              20,
+              6,
+              "d"
+            ],
+            "x1": [
+              17,
+              8,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Il finit avant la fin du temps.",
+            "en": "He finishes before time runs out."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 panier, 1 ballon, chronomètre",
+        "en": "1 basket, 1 ball, stopwatch"
+      },
+      "players": "2-12",
+      "age": [
+        "U13",
+        "U15",
+        "U17"
+      ],
+      "variants": {
+        "fr": [
+          "5 secondes",
+          "Départ du haut",
+          "Le défenseur commence au poste bas"
+        ],
+        "en": [
+          "5 seconds",
+          "Start from the top",
+          "The defender starts on the block"
+        ]
+      }
+    },
+    {
+      "id": "continuous-2-on-1",
+      "cat": "exercices",
+      "family": "surnombre",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "2 contre 1 en continu",
+        "en": "Continuous 2-on-1"
+      },
+      "sum": {
+        "fr": "Deux attaquants contre un défenseur ; le tireur devient défenseur pour le passage suivant, contre deux nouveaux attaquants.",
+        "en": "Two attackers against one defender; the shooter becomes the defender for the next rep, against two new attackers."
+      },
+      "why": {
+        "fr": "Beaucoup de répétitions de lecture simple : attaquer, fixer, passer.",
+        "en": "Lots of reps of a simple read: attack, freeze, pass."
+      },
+      "counter": {
+        "fr": "Le défenseur feinte et recule pour gagner du temps.",
+        "en": "The defender fakes and backpedals to buy time."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Attaquer jusqu'à ce qu'un défenseur s'engage",
+          "Passer avant que le défenseur arrive",
+          "Rester large pour étirer la défense",
+          "Décider vite"
+        ],
+        "en": [
+          "Attack until a defender commits",
+          "Pass before the defender arrives",
+          "Stay wide to stretch the defense",
+          "Decide quickly"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          40
+        ],
+        "2": [
+          10,
+          40
+        ],
+        "x1": [
+          25,
+          22
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              24,
+              "d"
+            ],
+            "2": [
+              12,
+              22,
+              "c"
+            ],
+            "x1": [
+              24.5,
+              19,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque ; 2 reste large.",
+            "en": "1 attacks; 2 stays wide."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              17,
+              11,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "x1 s'engage sur 1 : passe à 2 pour le lay-up.",
+            "en": "x1 commits to 1: pass to 2 for the layup."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "Terrain complet, 2 ballons",
+        "en": "Full court, 2 balls"
+      },
+      "players": "6-15",
+      "age": [
+        "U11",
+        "U13",
+        "U15"
+      ],
+      "variants": {
+        "fr": [
+          "Sans dribble pour le partenaire",
+          "Un seul dribble pour le porteur",
+          "Défenseur qui part de derrière"
+        ],
+        "en": [
+          "No dribble for the partner",
+          "One dribble for the ball handler",
+          "Defender starting from behind"
+        ]
+      }
+    },
+    {
+      "id": "4-on-3-with-a-trailer",
+      "cat": "exercices",
+      "family": "surnombre",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "4 contre 3 avec retour",
+        "en": "4-on-3 with a trailer"
+      },
+      "sum": {
+        "fr": "Quatre attaquants contre trois défenseurs, puis un quatrième défenseur arrive en retard : il faut finir avant son retour.",
+        "en": "Four attackers against three defenders, then a fourth defender arrives late: score before he gets back."
+      },
+      "why": {
+        "fr": "Apprend à exploiter un avantage vite, avant qu'il disparaisse.",
+        "en": "Teaches exploiting an advantage quickly, before it disappears."
+      },
+      "counter": {
+        "fr": "Les trois premiers défenseurs protègent le cercle et retardent le ballon.",
+        "en": "The first three defenders protect the rim and delay the ball."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Attaquer jusqu'à ce qu'un défenseur s'engage",
+          "Passer avant que le défenseur arrive",
+          "Rester large pour étirer la défense",
+          "Décider vite"
+        ],
+        "en": [
+          "Attack until a defender commits",
+          "Pass before the defender arrives",
+          "Stay wide to stretch the defense",
+          "Decide quickly"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          40
+        ],
+        "2": [
+          6,
+          40
+        ],
+        "3": [
+          44,
+          40
+        ],
+        "4": [
+          20,
+          46
+        ],
+        "x1": [
+          25,
+          22
+        ],
+        "x2": [
+          16,
+          10
+        ],
+        "x3": [
+          34,
+          10
+        ],
+        "x4": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              30,
+              "d"
+            ],
+            "2": [
+              5,
+              22,
+              "c"
+            ],
+            "3": [
+              45,
+              22,
+              "c"
+            ],
+            "4": [
+              22,
+              36,
+              "c"
+            ],
+            "x4": [
+              28,
+              34,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Les quatre attaquent ; x4 revient en courant.",
+            "en": "The four attack; x4 sprints back."
+          }
+        },
+        {
+          "m": {
+            "x3": [
+              41,
+              18,
+              "m"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3 ; x3 sort.",
+            "en": "1 passes to 3; x3 closes out."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              24,
+              30,
+              "c"
+            ],
+            "x4": [
+              27,
+              29,
+              "m"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "3 trouve 4 en haut avant l'arrivée de x4.",
+            "en": "3 finds 4 up top before x4 arrives."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "Terrain complet, 1 ballon",
+        "en": "Full court, 1 ball"
+      },
+      "players": "8-12",
+      "age": [
+        "U15",
+        "U17",
+        "seniors"
+      ],
+      "variants": {
+        "fr": [
+          "Limite de passes",
+          "Deux défenseurs en retard",
+          "Finir en moins de 6 secondes"
+        ],
+        "en": [
+          "Pass limit",
+          "Two late defenders",
+          "Score in under 6 seconds"
+        ]
+      }
+    },
+    {
+      "id": "3-on-3-with-a-joker",
+      "cat": "exercices",
+      "family": "surnombre",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "3 contre 3 avec un joker",
+        "en": "3-on-3 with a joker"
+      },
+      "sum": {
+        "fr": "3 contre 3 avec un « joker » qui joue toujours en attaque : l'équipe qui a le ballon est à quatre contre trois.",
+        "en": "3-on-3 with a \"joker\" who always plays offense: the team with the ball is four against three."
+      },
+      "why": {
+        "fr": "Le surnombre permanent oblige à chercher le joueur libre et la défense à tourner.",
+        "en": "The permanent extra man forces the offense to find the open player and the defense to rotate."
+      },
+      "counter": {
+        "fr": "La défense joue en zone pour couvrir le joker.",
+        "en": "The defense plays zone to cover the joker."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Attaquer jusqu'à ce qu'un défenseur s'engage",
+          "Passer avant que le défenseur arrive",
+          "Rester large pour étirer la défense",
+          "Décider vite"
+        ],
+        "en": [
+          "Attack until a defender commits",
+          "Pass before the defender arrives",
+          "Stay wide to stretch the defense",
+          "Decide quickly"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          40,
+          22
+        ],
+        "x3": [
+          10,
+          22
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "5, le joker, se place au poste haut et reçoit.",
+            "en": "5, the joker, sets up at the high post and catches."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              25,
+              22,
+              "m"
+            ],
+            "1": [
+              29,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "x1 descend sur le joker : 1 coupe vers le panier.",
+            "en": "x1 drops onto the joker: 1 cuts to the rim."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "5 passe à 1.",
+            "en": "5 hits 1."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "1 panier, 1 ballon, chasubles",
+        "en": "1 basket, 1 ball, bibs"
+      },
+      "players": "7",
+      "age": [
+        "U13",
+        "U15",
+        "U17"
+      ],
+      "variants": {
+        "fr": [
+          "Le joker ne peut pas tirer",
+          "Joker au poste bas",
+          "Deux jokers"
+        ],
+        "en": [
+          "The joker cannot shoot",
+          "Joker on the block",
+          "Two jokers"
+        ]
+      }
+    },
+    {
+      "id": "5-on-4-advantage",
+      "cat": "exercices",
+      "family": "surnombre",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "5 contre 4 avantage",
+        "en": "5-on-4 advantage"
+      },
+      "sum": {
+        "fr": "Cinq attaquants contre quatre défenseurs sur demi-terrain : l'attaque doit trouver le joueur libre par la passe.",
+        "en": "Five attackers against four defenders in the half court: the offense has to find the open man with the pass."
+      },
+      "why": {
+        "fr": "Avec un défenseur en moins, chaque passe rapide crée une rotation de plus jusqu'au tir ouvert.",
+        "en": "With one defender short, every quick pass forces another rotation until the open shot."
+      },
+      "counter": {
+        "fr": "Défendre la raquette en priorité et tourner vers le ballon.",
+        "en": "Protect the paint first and rotate toward the ball."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Attaquer jusqu'à ce qu'un défenseur s'engage",
+          "Passer avant que le défenseur arrive",
+          "Rester large pour étirer la défense",
+          "Décider vite"
+        ],
+        "en": [
+          "Attack until a defender commits",
+          "Pass before the defender arrives",
+          "Stay wide to stretch the defense",
+          "Decide quickly"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          36,
+          19
+        ],
+        "x3": [
+          14,
+          19
+        ],
+        "x4": [
+          25,
+          9
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x2": [
+              41,
+              22,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 : x2 sort.",
+            "en": "1 passes to 2: x2 closes out."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              44,
+              7,
+              "m"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "2 passe à 4 au corner : x4 sort de la raquette.",
+            "en": "2 passes to 4 in the corner: x4 leaves the paint."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "4 renverse vers 5 au corner opposé, laissé seul.",
+            "en": "4 skips to 5 in the far corner, left open."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "9",
+      "age": [
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Sans dribble",
+          "Le cinquième défenseur arrive après 3 passes",
+          "Points seulement sur tir ouvert"
+        ],
+        "en": [
+          "No dribbling",
+          "The fifth defender arrives after 3 passes",
+          "Points only on open shots"
+        ]
+      }
+    },
+    {
+      "id": "2-on-2-from-advantage",
+      "cat": "exercices",
+      "family": "surnombre",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "2 contre 2 depuis le surnombre",
+        "en": "2-on-2 from advantage"
+      },
+      "sum": {
+        "fr": "Deux attaquants partent avec un avantage contre un défenseur ; le second défenseur arrive de derrière.",
+        "en": "Two attackers start with an advantage against one defender; the second defender arrives from behind."
+      },
+      "why": {
+        "fr": "Apprend à finir le surnombre vite et à jouer un 2 contre 2 si l'avantage disparaît.",
+        "en": "Teaches finishing the advantage fast and playing 2-on-2 if it disappears."
+      },
+      "counter": {
+        "fr": "Le premier défenseur ralentit, le second revient en sprint.",
+        "en": "The first defender slows them down, the second sprints back."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Attaquer jusqu'à ce qu'un défenseur s'engage",
+          "Passer avant que le défenseur arrive",
+          "Rester large pour étirer la défense",
+          "Décider vite"
+        ],
+        "en": [
+          "Attack until a defender commits",
+          "Pass before the defender arrives",
+          "Stay wide to stretch the defense",
+          "Decide quickly"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          40
+        ],
+        "2": [
+          12,
+          40
+        ],
+        "x1": [
+          25,
+          24
+        ],
+        "x2": [
+          20,
+          46
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              27,
+              "d"
+            ],
+            "2": [
+              11,
+              22,
+              "c"
+            ],
+            "x2": [
+              17,
+              30,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 et 2 attaquent ; x2 revient de derrière.",
+            "en": "1 and 2 attack; x2 sprints back from behind."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 avant le retour de x2.",
+            "en": "1 passes to 2 before x2 gets back."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              19,
+              9,
+              "d"
+            ],
+            "x2": [
+              15,
+              16,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 finit ou rejoue le 2 contre 2.",
+            "en": "2 finishes or plays out the 2-on-2."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "Terrain complet, 1 ballon",
+        "en": "Full court, 1 ball"
+      },
+      "players": "4-12",
+      "age": [
+        "U15",
+        "U17",
+        "seniors"
+      ],
+      "variants": {
+        "fr": [
+          "Le second défenseur part plus près",
+          "Pick-and-roll si l'avantage disparaît",
+          "Limite de 6 secondes"
+        ],
+        "en": [
+          "The second defender starts closer",
+          "Pick-and-roll if the advantage is gone",
+          "6-second limit"
+        ]
+      }
+    },
+    {
+      "id": "defensive-slides",
+      "cat": "exercices",
+      "family": "defense-individuelle",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Glissements défensifs (slides)",
+        "en": "Defensive slides"
+      },
+      "sum": {
+        "fr": "Le défenseur glisse latéralement d'une ligne de la raquette à l'autre, au signal de l'entraîneur, sans croiser les pieds.",
+        "en": "The defender slides laterally from one side of the lane to the other on the coach's signal, without crossing his feet."
+      },
+      "why": {
+        "fr": "Les glissements sont la base de toute défense individuelle.",
+        "en": "Slides are the foundation of all individual defense."
+      },
+      "counter": {
+        "fr": "Ajouter un attaquant qui dribble.",
+        "en": "Add a dribbling attacker."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Position basse, pieds écartés",
+          "Glisser sans croiser les pieds",
+          "Rester entre son joueur et le panier",
+          "Les mains actives, sans faute"
+        ],
+        "en": [
+          "Low stance, feet wide",
+          "Slide without crossing the feet",
+          "Stay between your man and the basket",
+          "Active hands, no fouls"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "x1": [
+          17,
+          14
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x1": [
+              33,
+              14,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Au signal, x1 glisse vers la droite.",
+            "en": "On the signal, x1 slides right."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              17,
+              14,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Retour vers la gauche, toujours bas.",
+            "en": "Back to the left, still low."
+          }
+        }
+      ],
+      "duration": 6,
+      "equipment": {
+        "fr": "Aucun",
+        "en": "None"
+      },
+      "players": "1-20",
+      "age": [
+        "U11",
+        "U13",
+        "U15"
+      ],
+      "variants": {
+        "fr": [
+          "En reculant en diagonale",
+          "Avec un ballon tenu au-dessus de la tête",
+          "Chronométré"
+        ],
+        "en": [
+          "Backing up on a diagonal",
+          "Holding a ball overhead",
+          "Timed"
+        ]
+      }
+    },
+    {
+      "id": "defensive-zigzag",
+      "cat": "exercices",
+      "family": "defense-individuelle",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Zigzag défensif",
+        "en": "Defensive zigzag"
+      },
+      "sum": {
+        "fr": "L'attaquant dribble en zigzag sur le terrain ; le défenseur glisse en restant devant lui et change de direction à chaque changement.",
+        "en": "The attacker dribbles in a zigzag up the floor; the defender slides to stay in front and turns him at every change."
+      },
+      "why": {
+        "fr": "Travaille les glissements, le changement de direction et la position du corps.",
+        "en": "Works slides, changes of direction and body position."
+      },
+      "counter": {
+        "fr": "L'attaquant accélère pour tester le défenseur.",
+        "en": "The attacker speeds up to test the defender."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Position basse, pieds écartés",
+          "Glisser sans croiser les pieds",
+          "Rester entre son joueur et le panier",
+          "Les mains actives, sans faute"
+        ],
+        "en": [
+          "Low stance, feet wide",
+          "Slide without crossing the feet",
+          "Stay between your man and the basket",
+          "Active hands, no fouls"
+        ]
+      },
+      "start": {
+        "1": [
+          10,
+          46
+        ],
+        "x1": [
+          12,
+          43
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              30,
+              36,
+              "d"
+            ],
+            "x1": [
+              28,
+              33,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 dribble en diagonale ; x1 glisse devant lui.",
+            "en": "1 dribbles on a diagonal; x1 slides in front of him."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              12,
+              24,
+              "d"
+            ],
+            "x1": [
+              14,
+              21,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 change de direction ; x1 se retourne et suit.",
+            "en": "1 changes direction; x1 turns and follows."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "Terrain complet, 1 ballon par paire",
+        "en": "Full court, 1 ball per pair"
+      },
+      "players": "2-12",
+      "age": [
+        "U11",
+        "U13",
+        "U15"
+      ],
+      "variants": {
+        "fr": [
+          "Mains dans le dos pour le défenseur",
+          "Couloir réduit",
+          "Attaquant libre"
+        ],
+        "en": [
+          "Defender with hands behind his back",
+          "Narrow lane",
+          "Live attacker"
+        ]
+      }
+    },
+    {
+      "id": "lane-defense-on-the-ball",
+      "cat": "exercices",
+      "family": "defense-individuelle",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défense sur le porteur en couloir",
+        "en": "Lane defense on the ball"
+      },
+      "sum": {
+        "fr": "1 contre 1 dans un couloir étroit (entre la ligne de touche et la raquette) : le défenseur doit arrêter le dribbleur.",
+        "en": "One-on-one in a narrow lane (between the sideline and the paint): the defender has to stop the dribbler."
+      },
+      "why": {
+        "fr": "Le couloir oblige le défenseur à rester devant au lieu de compter sur l'aide.",
+        "en": "The lane forces the defender to stay in front instead of relying on help."
+      },
+      "counter": {
+        "fr": "L'attaquant change de rythme pour passer.",
+        "en": "The attacker changes pace to get by."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Position basse, pieds écartés",
+          "Glisser sans croiser les pieds",
+          "Rester entre son joueur et le panier",
+          "Les mains actives, sans faute"
+        ],
+        "en": [
+          "Low stance, feet wide",
+          "Slide without crossing the feet",
+          "Stay between your man and the basket",
+          "Active hands, no fouls"
+        ]
+      },
+      "start": {
+        "1": [
+          8,
+          44
+        ],
+        "x1": [
+          8,
+          40
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              11,
+              32,
+              "d"
+            ],
+            "x1": [
+              10,
+              29,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque dans le couloir ; x1 glisse devant lui.",
+            "en": "1 attacks in the lane; x1 slides in front."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              7,
+              26,
+              "d"
+            ],
+            "x1": [
+              8,
+              23,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 le force à s'arrêter.",
+            "en": "x1 forces him to stop."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 ballon par paire, plots pour le couloir",
+        "en": "1 ball per pair, cones for the lane"
+      },
+      "players": "2-12",
+      "age": [
+        "U13",
+        "U15",
+        "U17"
+      ],
+      "variants": {
+        "fr": [
+          "Couloir plus large",
+          "Arrivée en tir",
+          "Défenseur les mains dans le dos"
+        ],
+        "en": [
+          "Wider lane",
+          "Finish with a shot",
+          "Defender with hands behind his back"
+        ]
+      }
+    },
+    {
+      "id": "denial-drill",
+      "cat": "exercices",
+      "family": "defense-individuelle",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Refus de passe (deny)",
+        "en": "Denial drill"
+      },
+      "sum": {
+        "fr": "Le défenseur empêche l'ailier de recevoir, en gardant une main et un pied dans la ligne de passe.",
+        "en": "The defender stops the wing from catching, keeping a hand and a foot in the passing lane."
+      },
+      "why": {
+        "fr": "Refuser la passe casse le début des systèmes adverses.",
+        "en": "Denying the pass breaks the start of the opponent's sets."
+      },
+      "counter": {
+        "fr": "L'ailier coupe dans le dos quand le défenseur refuse trop haut.",
+        "en": "The wing cuts backdoor when the defender denies too high."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Position basse, pieds écartés",
+          "Glisser sans croiser les pieds",
+          "Rester entre son joueur et le panier",
+          "Les mains actives, sans faute"
+        ],
+        "en": [
+          "Low stance, feet wide",
+          "Slide without crossing the feet",
+          "Stay between your man and the basket",
+          "Active hands, no fouls"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "x2": [
+          40,
+          25.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              45,
+              28,
+              "c"
+            ],
+            "x2": [
+              41.5,
+              28.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 descend puis remonte en V : x2 reste dans la ligne de passe.",
+            "en": "2 goes down then V-cuts up: x2 stays in the passing lane."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              31,
+              9,
+              "c"
+            ],
+            "x2": [
+              32,
+              12,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 coupe dans le dos : x2 pivote vers le ballon et le suit.",
+            "en": "2 cuts backdoor: x2 opens to the ball and follows him."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par trio",
+        "en": "1 basket, 1 ball per group of 3"
+      },
+      "players": "3-12",
+      "age": [
+        "U15",
+        "U17",
+        "seniors"
+      ],
+      "variants": {
+        "fr": [
+          "Refus au poste bas",
+          "Avec un aideur",
+          "Live après 10 secondes"
+        ],
+        "en": [
+          "Post denial",
+          "With a helper",
+          "Live after 10 seconds"
+        ]
+      }
+    },
+    {
+      "id": "taking-a-charge",
+      "cat": "exercices",
+      "family": "defense-individuelle",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Charge (prendre le passage en force)",
+        "en": "Taking a charge"
+      },
+      "sum": {
+        "fr": "Le défenseur se place sur la trajectoire du dribbleur, pieds immobiles, hors de la zone de non-charge, et reçoit le contact dans la poitrine.",
+        "en": "The defender gets into the dribbler's path, feet set, outside the restricted area, and takes the contact in the chest."
+      },
+      "why": {
+        "fr": "Une charge rend le ballon et donne une faute offensive.",
+        "en": "A charge wins the ball and gives an offensive foul."
+      },
+      "counter": {
+        "fr": "L'attaquant s'arrête ou passe avant le contact.",
+        "en": "The attacker stops or passes before contact."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Position basse, pieds écartés",
+          "Glisser sans croiser les pieds",
+          "Rester entre son joueur et le panier",
+          "Les mains actives, sans faute"
+        ],
+        "en": [
+          "Low stance, feet wide",
+          "Slide without crossing the feet",
+          "Stay between your man and the basket",
+          "Active hands, no fouls"
+        ]
+      },
+      "start": {
+        "1": [
+          44,
+          24
+        ],
+        "x5": [
+          22,
+          9
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              31,
+              15,
+              "d"
+            ],
+            "x5": [
+              28,
+              11,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque le panier ; x5 glisse sur sa trajectoire.",
+            "en": "1 drives to the rim; x5 slides into his path."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              29.5,
+              13,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "x5 a les pieds immobiles hors de la zone de non-charge : il reçoit le contact.",
+            "en": "x5 has his feet set outside the restricted area: he takes the contact."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 panier, 1 ballon, tapis de chute (conseillé)",
+        "en": "1 basket, 1 ball, crash mat (recommended)"
+      },
+      "players": "2-10",
+      "age": [
+        "U15",
+        "U17",
+        "seniors"
+      ],
+      "variants": {
+        "fr": [
+          "Depuis le côté faible",
+          "Sur un attaquant en dribble",
+          "Apprendre d'abord à tomber"
+        ],
+        "en": [
+          "From the weak side",
+          "On a dribbling attacker",
+          "Learn how to fall first"
+        ]
+      }
+    },
+    {
+      "id": "2-on-2-help-and-recover",
+      "cat": "exercices",
+      "family": "defense-collective",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Aide et reprise 2 contre 2",
+        "en": "2-on-2 help and recover"
+      },
+      "sum": {
+        "fr": "2 contre 2 : quand le porteur pénètre, le second défenseur aide puis revient sur son joueur.",
+        "en": "2-on-2: when the ball handler drives, the second defender helps, then gets back to his man."
+      },
+      "why": {
+        "fr": "Travaille l'aide et le retour, le cœur de la défense collective.",
+        "en": "Works help and recover, the heart of team defense."
+      },
+      "counter": {
+        "fr": "L'attaque passe au joueur de l'aideur.",
+        "en": "The offense passes to the helper's man."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Voir le ballon et son joueur",
+          "Aider puis revenir",
+          "Parler à chaque action",
+          "Bloquer au rebond"
+        ],
+        "en": [
+          "See the ball and your man",
+          "Help, then recover",
+          "Talk on every action",
+          "Box out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          38,
+          22
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              30,
+              18,
+              "d"
+            ],
+            "x1": [
+              28,
+              22,
+              "m"
+            ],
+            "x2": [
+              33,
+              17,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 bat x1 ; x2 aide.",
+            "en": "1 beats x1; x2 helps."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 : x2 revient en close-out.",
+            "en": "1 passes to 2: x2 recovers with a close-out."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              41,
+              22,
+              "m"
+            ],
+            "x1": [
+              30,
+              15,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 est sur 2, x1 reprend 1.",
+            "en": "x2 is on 2, x1 picks 1 back up."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "4-12",
+      "age": [
+        "U13",
+        "U15",
+        "U17"
+      ],
+      "variants": {
+        "fr": [
+          "Le passeur coupe après la passe",
+          "Départ de l'aile",
+          "Live jusqu'au panier"
+        ],
+        "en": [
+          "The passer cuts after the pass",
+          "Start from the wing",
+          "Live to a basket"
+        ]
+      }
+    },
+    {
+      "id": "3-on-3-pick-and-roll-defense",
+      "cat": "exercices",
+      "family": "defense-collective",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "3 contre 3 défense du pick-and-roll",
+        "en": "3-on-3 pick-and-roll defense"
+      },
+      "sum": {
+        "fr": "3 contre 3 avec pick-and-roll : les deux défenseurs choisissent une couverture et le troisième aide sur le roll.",
+        "en": "3-on-3 with a pick-and-roll: two defenders choose a coverage and the third helps on the roll."
+      },
+      "why": {
+        "fr": "La défense du pick-and-roll dépend de trois joueurs, pas de deux.",
+        "en": "Pick-and-roll defense depends on three players, not two."
+      },
+      "counter": {
+        "fr": "L'attaque lit la couverture : roll, pop ou passe au corner.",
+        "en": "The offense reads the coverage: roll, pop or pass to the corner."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Voir le ballon et son joueur",
+          "Aider puis revenir",
+          "Parler à chaque action",
+          "Bloquer au rebond"
+        ],
+        "en": [
+          "See the ball and your man",
+          "Help, then recover",
+          "Talk on every action",
+          "Box out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "x1": [
+          25,
+          29
+        ],
+        "x5": [
+          25,
+          16
+        ],
+        "x2": [
+          6,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x5": [
+              26,
+              18,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran ; x5 recule.",
+            "en": "5 screens; x5 drops."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              32,
+              23,
+              "d"
+            ],
+            "x1": [
+              30,
+              27,
+              "m"
+            ],
+            "5": [
+              27,
+              11,
+              "c"
+            ],
+            "x2": [
+              22,
+              9,
+              "m"
+            ],
+            "x5": [
+              30,
+              19,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque ; 5 roule : x2 aide sur le roll.",
+            "en": "1 attacks; 5 rolls: x2 tags the roll."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              5,
+              8,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "Passe au corner : x2 revient en close-out.",
+            "en": "Pass to the corner: x2 recovers with a close-out."
+          }
+        }
+      ],
+      "duration": 15,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "6",
+      "age": [
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Imposer le changement",
+          "Imposer le hedge",
+          "Pick-and-roll latéral"
+        ],
+        "en": [
+          "Force a switch",
+          "Force a hedge",
+          "Side pick-and-roll"
+        ]
+      }
+    },
+    {
+      "id": "4-on-3-rotation-drill",
+      "cat": "exercices",
+      "family": "defense-collective",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Rotation défensive en 4 contre 3",
+        "en": "4-on-3 rotation drill"
+      },
+      "sum": {
+        "fr": "Quatre attaquants autour de la ligne à 3 points contre trois défenseurs : la défense doit tourner à chaque passe pour fermer le tir.",
+        "en": "Four attackers around the arc against three defenders: the defense has to rotate on every pass to close out the shot."
+      },
+      "why": {
+        "fr": "Les défenseurs apprennent à se répartir et à communiquer en infériorité.",
+        "en": "Defenders learn to share the floor and communicate when outnumbered."
+      },
+      "counter": {
+        "fr": "Passes rapides et pénétrations dans les intervalles.",
+        "en": "Quick passes and drives into the gaps."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Voir le ballon et son joueur",
+          "Aider puis revenir",
+          "Parler à chaque action",
+          "Bloquer au rebond"
+        ],
+        "en": [
+          "See the ball and your man",
+          "Help, then recover",
+          "Talk on every action",
+          "Box out"
+        ]
+      },
+      "start": {
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          34,
+          29
+        ],
+        "3": [
+          6,
+          18
+        ],
+        "4": [
+          44,
+          18
+        ],
+        "x1": [
+          19,
+          26
+        ],
+        "x2": [
+          31,
+          26
+        ],
+        "x3": [
+          25,
+          14
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x1": [
+              9,
+              18,
+              "m"
+            ],
+            "x3": [
+              19,
+              15,
+              "m"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "Passe à 3 : x1 sort, x3 glisse vers la gauche.",
+            "en": "Pass to 3: x1 closes out, x3 slides left."
+          }
+        },
+        {
+          "m": {
+            "x3": [
+              17.5,
+              26,
+              "m"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "3 renvoie à 1 : x3 sort sur lui, x1 reste avec 3.",
+            "en": "3 swings to 1: x3 closes out on him, x1 stays with 3."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              33,
+              26.5,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 trouve 2 : x2 sort.",
+            "en": "1 finds 2: x2 closes out."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "7",
+      "age": [
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Live après 4 passes",
+          "Avec pénétrations",
+          "Quatrième défenseur qui arrive"
+        ],
+        "en": [
+          "Live after 4 passes",
+          "With drives",
+          "A fourth defender joins"
+        ]
+      }
     }
   ]
 }

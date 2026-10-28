@@ -4716,7 +4716,7 @@
       "fr": "1 contre 1 tout terrain",
       "en": "Full-court one-on-one"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "post-one-on-one",
@@ -4727,7 +4727,7 @@
       "fr": "1 contre 1 au poste",
       "en": "Post one-on-one"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-three-dribbles-max",
@@ -4738,7 +4738,7 @@
       "fr": "1 contre 1 en trois dribbles",
       "en": "One-on-one, three dribbles max"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-off-the-close-out",
@@ -4749,7 +4749,7 @@
       "fr": "1 contre 1 après close-out",
       "en": "One-on-one off the close-out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-off-a-screen",
@@ -4760,7 +4760,7 @@
       "fr": "1 contre 1 en sortie d'écran",
       "en": "One-on-one off a screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-from-the-high-post",
@@ -4771,7 +4771,7 @@
       "fr": "1 contre 1 depuis le poste haut",
       "en": "One-on-one from the high post"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-with-a-shot-clock",
@@ -4782,7 +4782,7 @@
       "fr": "1 contre 1 avec limite de temps",
       "en": "One-on-one with a shot clock"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "three-on-two-continuous",
@@ -4804,7 +4804,7 @@
       "fr": "2 contre 1 en continu",
       "en": "Continuous 2-on-1"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "4-on-3-with-a-trailer",
@@ -4815,7 +4815,7 @@
       "fr": "4 contre 3 avec retour",
       "en": "4-on-3 with a trailer"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-3-with-a-joker",
@@ -4826,7 +4826,7 @@
       "fr": "3 contre 3 avec un joker",
       "en": "3-on-3 with a joker"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "5-on-4-advantage",
@@ -4837,7 +4837,7 @@
       "fr": "5 contre 4 avantage",
       "en": "5-on-4 advantage"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-on-2-from-advantage",
@@ -4848,7 +4848,7 @@
       "fr": "2 contre 2 depuis le surnombre",
       "en": "2-on-2 from advantage"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "closeout-contest",
@@ -4870,7 +4870,7 @@
       "fr": "Glissements défensifs (slides)",
       "en": "Defensive slides"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defensive-zigzag",
@@ -4881,7 +4881,7 @@
       "fr": "Zigzag défensif",
       "en": "Defensive zigzag"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "lane-defense-on-the-ball",
@@ -4892,7 +4892,7 @@
       "fr": "Défense sur le porteur en couloir",
       "en": "Lane defense on the ball"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "denial-drill",
@@ -4903,7 +4903,7 @@
       "fr": "Refus de passe (deny)",
       "en": "Denial drill"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "taking-a-charge",
@@ -4914,7 +4914,7 @@
       "fr": "Charge (prendre le passage en force)",
       "en": "Taking a charge"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shell-drill",
@@ -4936,7 +4936,7 @@
       "fr": "Aide et reprise 2 contre 2",
       "en": "2-on-2 help and recover"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-3-pick-and-roll-defense",
@@ -4947,7 +4947,7 @@
       "fr": "3 contre 3 défense du pick-and-roll",
       "en": "3-on-3 pick-and-roll defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "4-on-3-rotation-drill",
@@ -4958,7 +4958,7 @@
       "fr": "Rotation défensive en 4 contre 3",
       "en": "4-on-3 rotation drill"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-3-off-ball-screen-defense",
