@@ -5,6 +5,7 @@ Bibliothèque libre de tactiques de basket FR/EN, avec schémas animés et vidé
 ## Historique
 
 - 28 oct. 2026 : les fichiers d'origine de l'utilisateur (`tactics.json`, `render.py`, `catalogue_500.json`) étaient perdus. Ils ont été **recréés** d'après son cahier des charges. Toutes les fiches sont en `"review": "pending"`, à faire relire par des coachs.
+- 28 oct. 2026 : phase 5 terminée, **500/500 fiches animées** (lots 0 à 24). Doublons fusionnés et entrées impossibles à dessiner remplacées dans le catalogue. Restent les plans de séance par niveau (jeunes, amateurs, pro, pré-saison, veille de match), qui demandent une extension du format avec un script de migration.
 
 ## Cahier des charges (résumé)
 

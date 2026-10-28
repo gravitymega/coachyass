@@ -5398,7 +5398,7 @@
       "fr": "Contester chaque tir",
       "en": "Contest every shot"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "finish-with-the-rebound",
@@ -5409,7 +5409,7 @@
       "fr": "Finir la possession par le rebond",
       "en": "Finish with the rebound"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defense-talk-all-the-time",
@@ -5420,7 +5420,7 @@
       "fr": "Défense : parler tout le temps",
       "en": "Defense: talk all the time"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "attack-the-close-out",
@@ -5431,7 +5431,7 @@
       "fr": "Attaquer le close-out",
       "en": "Attack the close-out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "attack-the-rim-first",
@@ -5442,7 +5442,7 @@
       "fr": "Attaquer le cercle en premier",
       "en": "Attack the rim first"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "weak-side-spacing",
@@ -5453,7 +5453,7 @@
       "fr": "Écarter le côté faible",
       "en": "Weak-side spacing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "get-open-without-the-ball",
@@ -5464,7 +5464,7 @@
       "fr": "Se démarquer sans ballon",
       "en": "Get open without the ball"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "nearest-man-takes-the-ball",
@@ -5475,7 +5475,7 @@
       "fr": "Le plus proche prend le ballon",
       "en": "Nearest man takes the ball"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "protect-the-baseline",
@@ -5486,7 +5486,7 @@
       "fr": "Défendre la ligne de fond",
       "en": "Protect the baseline"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "get-back-before-you-press",
@@ -5497,6 +5497,6 @@
       "fr": "Revenir avant de presser",
       "en": "Get back before you press"
     },
-    "status": "todo"
+    "status": "done"
   }
 ]

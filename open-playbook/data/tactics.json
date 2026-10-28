@@ -58185,6 +58185,1093 @@
           }
         }
       ]
+    },
+    {
+      "id": "contest-every-shot",
+      "cat": "principes",
+      "family": "principes-defense",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Contester chaque tir",
+        "en": "Contest every shot"
+      },
+      "sum": {
+        "fr": "Chaque tir adverse est contesté : le défenseur le plus proche lève une main devant les yeux du tireur, sans faute.",
+        "en": "Every opponent's shot is contested: the closest defender raises a hand in the shooter's eyes, without fouling."
+      },
+      "why": {
+        "fr": "Un tir contesté rentre nettement moins souvent qu'un tir ouvert.",
+        "en": "A contested shot goes in far less often than an open one."
+      },
+      "counter": {
+        "fr": "Feinter le tir pour faire sauter le défenseur, puis attaquer.",
+        "en": "Pump fake to get the defender in the air, then drive."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Sortir en courant puis freiner par petits pas",
+          "Main haute devant les yeux du tireur",
+          "Ne pas sauter sur la feinte",
+          "Bloquer au rebond après le tir"
+        ],
+        "en": [
+          "Sprint, then chop your steps",
+          "High hand in the shooter's eyes",
+          "Don't jump on the fake",
+          "Box out after the shot"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "x2": [
+          34,
+          14
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 : x2 est loin, en aide.",
+            "en": "1 passes to 2: x2 is far away, helping."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              41.5,
+              22,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 sort et lève la main au moment du tir.",
+            "en": "x2 closes out and raises his hand as he shoots."
+          }
+        }
+      ]
+    },
+    {
+      "id": "finish-with-the-rebound",
+      "cat": "principes",
+      "family": "principes-defense",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Finir la possession par le rebond",
+        "en": "Finish with the rebound"
+      },
+      "sum": {
+        "fr": "Une bonne défense ne compte que si elle se termine par le rebond : les cinq défenseurs bloquent puis vont au ballon.",
+        "en": "Good defense only counts if it ends with the rebound: all five defenders box out and then go get the ball."
+      },
+      "why": {
+        "fr": "Un rebond offensif adverse annule 24 secondes d'efforts défensifs.",
+        "en": "An opponent's offensive rebound wipes out 24 seconds of defensive effort."
+      },
+      "counter": {
+        "fr": "Envoyer plusieurs joueurs au rebond offensif, surtout côté faible.",
+        "en": "Send several players to the offensive glass, especially on the weak side."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Trouver son joueur dès le tir",
+          "Contact avant de chercher le ballon",
+          "Les arrières aussi prennent des rebonds",
+          "Sécuriser le ballon à deux mains"
+        ],
+        "en": [
+          "Find your man as the shot goes up",
+          "Contact before chasing the ball",
+          "Guards rebound too",
+          "Secure the ball with two hands"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "x2": [
+          41.9,
+          21.9
+        ],
+        "x3": [
+          8.1,
+          21.9
+        ],
+        "x4": [
+          45.0,
+          4.2
+        ],
+        "x5": [
+          5.0,
+          4.2
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "m": {
+            "x1": [
+              25,
+              25,
+              "m"
+            ],
+            "x2": [
+              40,
+              18,
+              "m"
+            ],
+            "x3": [
+              12,
+              18,
+              "m"
+            ],
+            "x4": [
+              43,
+              6,
+              "m"
+            ],
+            "x5": [
+              7,
+              6,
+              "m"
+            ],
+            "1": [
+              25,
+              28,
+              "c"
+            ],
+            "3": [
+              9,
+              21,
+              "c"
+            ],
+            "4": [
+              46,
+              7,
+              "c"
+            ],
+            "5": [
+              4,
+              7,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 tire : chaque défenseur se retourne et bloque.",
+            "en": "2 shoots: every defender turns and boxes out."
+          }
+        },
+        {
+          "m": {
+            "x3": [
+              18,
+              9,
+              "m"
+            ],
+            "3": [
+              14,
+              13,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "x3 prend le rebond côté faible.",
+            "en": "x3 grabs the weak-side rebound."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defense-talk-all-the-time",
+      "cat": "principes",
+      "family": "principes-defense",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Défense : parler tout le temps",
+        "en": "Defense: talk all the time"
+      },
+      "sum": {
+        "fr": "Tous les défenseurs parlent pendant toute la possession : ils annoncent le ballon, l'aide, les écrans et les changements.",
+        "en": "Every defender talks for the whole possession: calling ball, help, screens and switches."
+      },
+      "why": {
+        "fr": "Cinq défenseurs qui se parlent réagissent comme un seul ; le silence crée les erreurs.",
+        "en": "Five defenders who talk react as one; silence causes breakdowns."
+      },
+      "counter": {
+        "fr": "Bouger vite et enchaîner les écrans pour saturer la communication.",
+        "en": "Move fast and chain screens to overload communication."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "« Ballon ! » sur le porteur",
+          "« Aide ! » côté faible",
+          "« Écran gauche / droite ! »",
+          "Annoncer tôt et fort"
+        ],
+        "en": [
+          "\"Ball!\" on the ball handler",
+          "\"Help!\" on the weak side",
+          "\"Screen left / right!\"",
+          "Call it early and loud"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "x2": [
+          41.9,
+          21.9
+        ],
+        "x3": [
+          8.1,
+          21.9
+        ],
+        "x4": [
+          45.0,
+          4.2
+        ],
+        "x5": [
+          5.0,
+          4.2
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x3": [
+              14,
+              17,
+              "m"
+            ],
+            "x5": [
+              12,
+              7,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 « ballon ! » ; x3 et x5 « aide ! ».",
+            "en": "x1 \"ball!\"; x3 and x5 \"help!\"."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              37,
+              22,
+              "s"
+            ],
+            "x4": [
+              39,
+              18,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "4 monte poser un écran : x4 « écran droite ! ».",
+            "en": "4 comes up to screen: x4 \"screen right!\"."
+          }
+        }
+      ]
+    },
+    {
+      "id": "attack-the-close-out",
+      "cat": "principes",
+      "family": "principes-attaque",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaquer le close-out",
+        "en": "Attack the close-out"
+      },
+      "sum": {
+        "fr": "Quand un défenseur sort en courant sur un attaquant, celui-ci le dépasse en dribble au lieu de tirer contesté.",
+        "en": "When a defender runs out at a player, the player drives past him instead of taking a contested shot."
+      },
+      "why": {
+        "fr": "Le défenseur qui arrive vite est déséquilibré : un dribble suffit à le battre et à créer l'avantage.",
+        "en": "A defender arriving fast is off balance: one dribble beats him and creates the advantage."
+      },
+      "counter": {
+        "fr": "Sortir en contrôle, à petits pas, et fermer la ligne de fond.",
+        "en": "Close out under control with short steps and take away the baseline."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Recevoir prêt à attaquer",
+          "Lire la vitesse du défenseur",
+          "Un ou deux dribbles maximum",
+          "Finir ou passer quand l'aide arrive"
+        ],
+        "en": [
+          "Catch ready to attack",
+          "Read the defender's speed",
+          "One or two dribbles at most",
+          "Finish or pass when help comes"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "x2": [
+          33,
+          14
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x2": [
+              41,
+              22,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 ; x2 sort trop vite.",
+            "en": "1 passes to 2; x2 closes out too fast."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              32,
+              7,
+              "d"
+            ],
+            "x2": [
+              39,
+              17,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 le dépasse côté ligne de fond et finit.",
+            "en": "2 drives by him baseline and finishes."
+          }
+        }
+      ]
+    },
+    {
+      "id": "attack-the-rim-first",
+      "cat": "principes",
+      "family": "principes-attaque",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Attaquer le cercle en premier",
+        "en": "Attack the rim first"
+      },
+      "sum": {
+        "fr": "L'attaque cherche d'abord un tir près du cercle (pénétration, coupe, passe au poste) avant de se contenter d'un tir extérieur.",
+        "en": "The offense first looks for a shot at the rim (drive, cut, post feed) before settling for an outside shot."
+      },
+      "why": {
+        "fr": "Les tirs près du cercle ont le meilleur pourcentage et provoquent des fautes ; ils ouvrent ensuite l'extérieur.",
+        "en": "Shots at the rim have the best percentage and draw fouls; they then open up the perimeter."
+      },
+      "counter": {
+        "fr": "Protéger la raquette et accepter de concéder des tirs extérieurs contestés.",
+        "en": "Protect the paint and accept giving up contested outside shots."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Regarder le cercle en premier",
+          "Pénétrer pour attirer l'aide",
+          "Ressortir si l'aide arrive",
+          "Ne pas se contenter du premier tir extérieur"
+        ],
+        "en": [
+          "Look at the rim first",
+          "Drive to draw help",
+          "Kick out if help comes",
+          "Don't settle for the first jump shot"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "x2": [
+          41.9,
+          21.9
+        ],
+        "x3": [
+          8.1,
+          21.9
+        ],
+        "x4": [
+          45.0,
+          4.2
+        ],
+        "x5": [
+          5.0,
+          4.2
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              13,
+              "d"
+            ],
+            "x1": [
+              26,
+              16,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque le cercle en dribble.",
+            "en": "1 attacks the rim off the dribble."
+          }
+        },
+        {
+          "m": {
+            "x5": [
+              20,
+              8,
+              "m"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "x5 aide : 1 ressort vers 5 au corner.",
+            "en": "x5 helps: 1 kicks out to 5 in the corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "weak-side-spacing",
+      "cat": "principes",
+      "family": "principes-attaque",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Écarter le côté faible",
+        "en": "Weak-side spacing"
+      },
+      "sum": {
+        "fr": "Côté opposé au ballon, les attaquants restent larges (aile et corner) pour éloigner leurs défenseurs de la raquette.",
+        "en": "Away from the ball, attackers stay wide (wing and corner) to pull their defenders away from the paint."
+      },
+      "why": {
+        "fr": "Un défenseur d'aide qui doit surveiller un tireur au corner hésite à aider : la pénétration passe.",
+        "en": "A help defender who must watch a corner shooter hesitates to help: the drive gets through."
+      },
+      "counter": {
+        "fr": "Aider quand même et récupérer, ou laisser le tireur le moins dangereux.",
+        "en": "Help anyway and recover, or leave the least dangerous shooter."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Corner et aile occupés côté faible",
+          "Rester derrière la ligne à 3 points",
+          "Se déplacer dans le champ de vision du porteur",
+          "Être prêt à tirer"
+        ],
+        "en": [
+          "Corner and wing filled on the weak side",
+          "Stay behind the arc",
+          "Move into the ball handler's line of sight",
+          "Be ready to shoot"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "x2": [
+          41.9,
+          21.9
+        ],
+        "x3": [
+          8.1,
+          21.9
+        ],
+        "x4": [
+          45.0,
+          4.2
+        ],
+        "x5": [
+          5.0,
+          4.2
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              32,
+              12,
+              "d"
+            ],
+            "x2": [
+              35,
+              15,
+              "m"
+            ],
+            "x5": [
+              10,
+              7,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 pénètre ; x3 et x5 hésitent entre aider et rester.",
+            "en": "2 drives; x3 and x5 are torn between helping and staying."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              28,
+              6.5,
+              "d"
+            ],
+            "x5": [
+              19,
+              7,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x5 aide trop tard : 2 finit.",
+            "en": "x5 helps too late: 2 finishes."
+          }
+        }
+      ]
+    },
+    {
+      "id": "get-open-without-the-ball",
+      "cat": "principes",
+      "family": "principes-attaque",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Se démarquer sans ballon",
+        "en": "Get open without the ball"
+      },
+      "sum": {
+        "fr": "Le joueur sans ballon se démarque par un changement de rythme et de direction (appel en V, coupe) au lieu d'attendre.",
+        "en": "The player without the ball gets open with a change of pace and direction (V-cut, cut) instead of standing still."
+      },
+      "why": {
+        "fr": "Un attaquant immobile est facile à priver de ballon ; le mouvement crée l'espace.",
+        "en": "A stationary attacker is easy to deny; movement creates space."
+      },
+      "counter": {
+        "fr": "Défendre la ligne de passe avec la main et le corps, et rester devant.",
+        "en": "Deny the lane with hand and body, and stay in front."
+      },
+      "used": {
+        "fr": "Courant chez les jeunes et en amateur.",
+        "en": "Common in youth and amateur basketball."
+      },
+      "keys": {
+        "fr": [
+          "Aller vers le panier pour revenir vers le ballon",
+          "Changer de vitesse au moment de l'appel",
+          "Montrer la main cible",
+          "Couper derrière si le défenseur refuse"
+        ],
+        "en": [
+          "Go toward the basket to come back to the ball",
+          "Change speed as you break out",
+          "Show a target hand",
+          "Go backdoor if denied"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "x2": [
+          39,
+          24
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              38,
+              14,
+              "c"
+            ],
+            "x2": [
+              36,
+              17,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 descend vers le panier ; x2 le suit.",
+            "en": "2 walks his man toward the basket; x2 follows."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              44,
+              24,
+              "c"
+            ],
+            "x2": [
+              39,
+              20,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "Appel en V : 2 remonte vite et reçoit.",
+            "en": "V-cut: 2 pops back out and catches."
+          }
+        }
+      ]
+    },
+    {
+      "id": "nearest-man-takes-the-ball",
+      "cat": "principes",
+      "family": "principes-defense",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Le plus proche prend le ballon",
+        "en": "Nearest man takes the ball"
+      },
+      "sum": {
+        "fr": "En transition défensive, le défenseur le plus proche du ballon l'arrête, quel que soit son joueur habituel ; les autres s'ajustent.",
+        "en": "In transition defense, the defender nearest the ball stops it, whoever his usual man is; the others adjust."
+      },
+      "why": {
+        "fr": "Arrêter le ballon tôt empêche le lay-up facile ; les ajustements se font ensuite.",
+        "en": "Stopping the ball early prevents the easy layup; matchups get sorted out afterward."
+      },
+      "counter": {
+        "fr": "Pousser vite et chercher le décalage avant que la défense se réorganise.",
+        "en": "Push fast and find the mismatch before the defense sorts itself out."
+      },
+      "used": {
+        "fr": "Principe enseigné dans la plupart des formations d'entraîneurs.",
+        "en": "A principle taught in most coaching education programs."
+      },
+      "keys": {
+        "fr": [
+          "Le plus proche crie « ballon ! »",
+          "Arrêter le porteur avant la ligne à 3 points",
+          "Les autres courent vers le cercle",
+          "Échanger les joueurs une fois arrêtés"
+        ],
+        "en": [
+          "Nearest man calls \"ball!\"",
+          "Stop the ball before the arc",
+          "Everyone else sprints to the rim",
+          "Switch back once the ball is stopped"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          10,
+          42
+        ],
+        "x4": [
+          23,
+          36
+        ],
+        "x1": [
+          20,
+          44
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              34,
+              "d"
+            ],
+            "x4": [
+              25,
+              30,
+              "m"
+            ],
+            "2": [
+              8,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 pousse le ballon : x4 est le plus proche.",
+            "en": "1 pushes the ball: x4 is nearest."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              20,
+              14,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x4 arrête le ballon ; x1 sprinte vers le cercle.",
+            "en": "x4 stops the ball; x1 sprints to the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "protect-the-baseline",
+      "cat": "principes",
+      "family": "principes-defense",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre la ligne de fond",
+        "en": "Protect the baseline"
+      },
+      "sum": {
+        "fr": "Le défenseur du porteur sur l'aile ou au corner l'empêche d'attaquer par la ligne de fond et le renvoie vers l'aide au milieu.",
+        "en": "The defender on a wing or corner ball handler keeps him from driving baseline and sends him toward the help in the middle."
+      },
+      "why": {
+        "fr": "Une pénétration par la ligne de fond arrive derrière l'aide et ouvre le corner opposé.",
+        "en": "A baseline drive gets behind the help and opens the opposite corner."
+      },
+      "counter": {
+        "fr": "Certaines défenses font l'inverse (renvoyer vers la ligne de fond) : le choix dépend du système.",
+        "en": "Some defenses do the opposite (force baseline): it depends on the system."
+      },
+      "used": {
+        "fr": "Principe courant mais pas universel : certaines défenses forcent au contraire vers la ligne de fond.",
+        "en": "A common but not universal principle: some defenses force baseline instead."
+      },
+      "keys": {
+        "fr": [
+          "Pied côté ligne de fond en avant",
+          "Prendre la place avant le porteur",
+          "Renvoyer vers le milieu, où se trouve l'aide",
+          "Ne pas se faire battre en ligne droite"
+        ],
+        "en": [
+          "Baseline foot forward",
+          "Beat the ball handler to the spot",
+          "Turn him back to the middle, where the help is",
+          "Don't get beaten in a straight line"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "x2": [
+          43,
+          21
+        ],
+        "x5": [
+          25,
+          10
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              45,
+              16,
+              "d"
+            ],
+            "x2": [
+              44,
+              13,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 veut attaquer la ligne de fond ; x2 lui ferme le chemin.",
+            "en": "2 wants to drive baseline; x2 cuts him off."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              34,
+              15,
+              "d"
+            ],
+            "x5": [
+              30,
+              12,
+              "m"
+            ],
+            "x2": [
+              37,
+              13,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 repart au milieu, droit sur x5 en aide.",
+            "en": "2 goes back to the middle, right into x5's help."
+          }
+        }
+      ]
+    },
+    {
+      "id": "get-back-before-you-press",
+      "cat": "principes",
+      "family": "principes-defense",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Revenir avant de presser",
+        "en": "Get back before you press"
+      },
+      "sum": {
+        "fr": "Avant de presser tout terrain, l'équipe garde au moins un défenseur en arrière pour protéger le cercle.",
+        "en": "Before pressing full court, the team keeps at least one defender back to protect the rim."
+      },
+      "why": {
+        "fr": "Une presse sans protection donne des lay-ups faciles dès qu'elle est battue.",
+        "en": "A press without protection gives up easy layups as soon as it is beaten."
+      },
+      "counter": {
+        "fr": "Battre la presse par des passes longues vers le joueur le plus avancé.",
+        "en": "Beat the press with long passes to the deepest attacker."
+      },
+      "used": {
+        "fr": "Principe enseigné dans la plupart des formations d'entraîneurs.",
+        "en": "A principle taught in most coaching education programs."
+      },
+      "keys": {
+        "fr": [
+          "Un défenseur reste toujours derrière le ballon",
+          "Presser seulement après un panier ou un arrêt",
+          "Si la presse est battue, sprinter vers le cercle",
+          "Communiquer qui reste en arrière"
+        ],
+        "en": [
+          "One defender always stays behind the ball",
+          "Press only after a make or a dead ball",
+          "If the press is beaten, sprint to the rim",
+          "Talk about who stays back"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          40,
+          38
+        ],
+        "x1": [
+          25,
+          40
+        ],
+        "x2": [
+          37,
+          35
+        ],
+        "x5": [
+          25,
+          12
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              42,
+              20,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 bat la presse par une passe longue à 2.",
+            "en": "1 beats the press with a long pass to 2."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              36,
+              12,
+              "d"
+            ],
+            "x5": [
+              32,
+              10,
+              "m"
+            ],
+            "x2": [
+              38,
+              22,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x5, resté en arrière, arrête 2 avant le cercle.",
+            "en": "x5, who stayed back, stops 2 before the rim."
+          }
+        }
+      ]
     }
   ]
 }
