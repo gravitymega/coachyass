@@ -1,0 +1,4 @@
+node_modules/
+dist/
+videos/
+__pycache__/
