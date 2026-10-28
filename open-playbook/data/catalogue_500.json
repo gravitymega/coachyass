@@ -3803,7 +3803,7 @@
       "fr": "Défense du joueur sans ballon : sauter vers le ballon",
       "en": "Jump to the ball"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-isolation",
@@ -3814,7 +3814,7 @@
       "fr": "Défense contre l'isolation",
       "en": "Defending the isolation"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-pin-down",
@@ -3825,7 +3825,7 @@
       "fr": "Défendre l'écran retour (pin-down)",
       "en": "Defending the pin-down"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-flare-screen",
@@ -3836,7 +3836,7 @@
       "fr": "Défendre l'écran flare",
       "en": "Defending the flare screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-back-screen",
@@ -3847,7 +3847,7 @@
       "fr": "Défendre l'écran dans le dos",
       "en": "Defending the back screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-stagger-screens",
@@ -3858,7 +3858,7 @@
       "fr": "Défendre les écrans en escalier",
       "en": "Defending stagger screens"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-handoff",
@@ -3869,7 +3869,7 @@
       "fr": "Défendre la remise main à main",
       "en": "Defending the handoff"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-iverson-cut",
@@ -3880,7 +3880,7 @@
       "fr": "Défendre la coupe Iverson",
       "en": "Defending the Iverson cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-floppy",
@@ -3891,7 +3891,7 @@
       "fr": "Défendre le Floppy",
       "en": "Defending Floppy"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-elevator-doors",
@@ -3902,7 +3902,7 @@
       "fr": "Défendre les portes d'ascenseur",
       "en": "Defending elevator doors"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-cross-screen",
@@ -3913,7 +3913,7 @@
       "fr": "Défendre l'écran croisé",
       "en": "Defending the cross screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-zipper-cut",
@@ -3924,7 +3924,7 @@
       "fr": "Défendre la coupe Zipper",
       "en": "Defending the Zipper cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "switching-off-ball-screens",
@@ -3935,7 +3935,7 @@
       "fr": "Changer sur les écrans sans ballon",
       "en": "Switching off-ball screens"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-chicago-action",
@@ -3946,7 +3946,7 @@
       "fr": "Défendre le Chicago",
       "en": "Defending Chicago action"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "fronting-the-post",
@@ -3957,7 +3957,7 @@
       "fr": "Défense devant le poste (front)",
       "en": "Fronting the post"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "three-quarter-post-defense",
@@ -3968,7 +3968,7 @@
       "fr": "Défense aux trois quarts",
       "en": "Three-quarter post defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "playing-behind-the-post",
@@ -3979,7 +3979,7 @@
       "fr": "Défense derrière le poste",
       "en": "Playing behind the post"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "post-double-team",
@@ -3990,7 +3990,7 @@
       "fr": "Prise à deux au poste",
       "en": "Post double team"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "baseline-post-double",
@@ -4001,7 +4001,7 @@
       "fr": "Prise à deux au poste depuis la ligne de fond",
       "en": "Baseline post double"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-high-low",
@@ -4012,7 +4012,7 @@
       "fr": "Défendre le haut-bas",
       "en": "Defending the high-low"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-duck-in",

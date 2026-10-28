@@ -41883,6 +41883,2354 @@
           }
         }
       ]
+    },
+    {
+      "id": "jump-to-the-ball",
+      "cat": "defense",
+      "family": "homme-a-homme",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Défense du joueur sans ballon : sauter vers le ballon",
+        "en": "Jump to the ball"
+      },
+      "sum": {
+        "fr": "Pendant chaque passe, tous les défenseurs sans ballon se déplacent dans la direction du ballon, avant la réception.",
+        "en": "During every pass, all off-ball defenders move in the direction of the ball, before the catch."
+      },
+      "why": {
+        "fr": "En bougeant pendant la passe, les défenseurs coupent les coupes vers le panier et sont prêts à aider.",
+        "en": "By moving during the pass, defenders cut off basket cuts and are ready to help."
+      },
+      "counter": {
+        "fr": "Passer vite et souvent pour fatiguer la défense.",
+        "en": "Pass fast and often to wear the defense down."
+      },
+      "used": {
+        "fr": "Courant chez les jeunes et en amateur.",
+        "en": "Common in youth and amateur basketball."
+      },
+      "keys": {
+        "fr": [
+          "Toujours entre son joueur et le panier",
+          "Voir le ballon et son joueur",
+          "Bouger pendant chaque passe, pas après",
+          "Parler : « ballon », « aide », « écran »"
+        ],
+        "en": [
+          "Always between your man and the basket",
+          "See the ball and your man",
+          "Move during every pass, not after",
+          "Talk: \"ball\", \"help\", \"screen\""
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          40,
+          25
+        ],
+        "x3": [
+          14,
+          18
+        ],
+        "x4": [
+          13,
+          10
+        ],
+        "x5": [
+          33,
+          9.5
+        ]
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "Passe à l'aile droite.",
+            "en": "Pass to the right wing."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              30,
+              25,
+              "m"
+            ],
+            "x2": [
+              41,
+              22,
+              "m"
+            ],
+            "x3": [
+              20,
+              16,
+              "m"
+            ],
+            "x4": [
+              18,
+              8,
+              "m"
+            ],
+            "x5": [
+              32,
+              10.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Tous sautent vers le ballon : x1 vers l'aile, x3 et x4 dans la raquette.",
+            "en": "Everyone jumps to the ball: x1 toward the wing, x3 and x4 into the paint."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-isolation",
+      "cat": "defense",
+      "family": "homme-a-homme",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défense contre l'isolation",
+        "en": "Defending the isolation"
+      },
+      "sum": {
+        "fr": "Contre une isolation sur l'aile, le défenseur pousse le porteur vers la ligne de fond et les autres se rapprochent du côté ballon pour aider.",
+        "en": "Against a wing isolation, the defender pushes the ball handler toward the baseline and the others shift toward the ball side to help."
+      },
+      "why": {
+        "fr": "Le porteur isolé se retrouve face à un défenseur et une aide préparée.",
+        "en": "The isolated ball handler faces one defender plus prepared help."
+      },
+      "counter": {
+        "fr": "Passer au joueur de l'aideur, ou attaquer avant que l'aide se place.",
+        "en": "Pass to the helper's man, or attack before the help is set."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Toujours entre son joueur et le panier",
+          "Voir le ballon et son joueur",
+          "Bouger pendant chaque passe, pas après",
+          "Parler : « ballon », « aide », « écran »"
+        ],
+        "en": [
+          "Always between your man and the basket",
+          "See the ball and your man",
+          "Move during every pass, not after",
+          "Talk: \"ball\", \"help\", \"screen\""
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "1": [
+          16,
+          29
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          19,
+          8
+        ],
+        "b": "2",
+        "x2": [
+          42,
+          22
+        ],
+        "x1": [
+          20,
+          25
+        ],
+        "x3": [
+          12,
+          18
+        ],
+        "x4": [
+          13,
+          10
+        ],
+        "x5": [
+          22,
+          9
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "x1": [
+              24,
+              22,
+              "m"
+            ],
+            "x3": [
+              17,
+              16,
+              "m"
+            ],
+            "x5": [
+              25,
+              8,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Les défenseurs du côté opposé se rapprochent de la raquette.",
+            "en": "The far-side defenders shift toward the paint."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              39,
+              9,
+              "d"
+            ],
+            "x2": [
+              41,
+              12,
+              "m"
+            ],
+            "x5": [
+              35,
+              7,
+              "m"
+            ],
+            "x4": [
+              20,
+              8,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 attaque la ligne de fond : x5 l'arrête, x4 descend sur 5.",
+            "en": "2 drives baseline: x5 stops him, x4 drops onto 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-pin-down",
+      "cat": "defense",
+      "family": "defense-ecrans-sans-ballon",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre l'écran retour (pin-down)",
+        "en": "Defending the pin-down"
+      },
+      "sum": {
+        "fr": "Contre un écran retour, le défenseur du tireur reste collé derrière lui (il le « suit ») et le défenseur de l'écraneur sort un instant pour gêner la réception.",
+        "en": "Against a pin-down, the shooter's defender trails right behind him and the screener's defender steps out for a moment to bother the catch."
+      },
+      "why": {
+        "fr": "Le tireur ne reçoit ni seul ni en boucle vers le panier.",
+        "en": "The shooter catches neither open nor curling to the rim."
+      },
+      "counter": {
+        "fr": "Tourner en boucle vers le panier si le défenseur suit trop près.",
+        "en": "Curl to the rim if the defender trails too tight."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran",
+          "Rester collé au coupeur, sans passer derrière l'écran",
+          "Le défenseur de l'écraneur ralentit le coupeur",
+          "Changer seulement sur l'appel"
+        ],
+        "en": [
+          "The screener's defender calls the screen",
+          "Stay attached to the cutter without going behind the screen",
+          "The screener's defender slows the cutter",
+          "Only switch on the call"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          19,
+          8
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "3": [
+          44,
+          24
+        ],
+        "b": "1",
+        "x2": [
+          21,
+          10
+        ],
+        "x4": [
+          19.5,
+          17
+        ],
+        "x1": [
+          25,
+          28
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              16,
+              10,
+              "s"
+            ],
+            "x4": [
+              18,
+              13,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "4 descend poser l'écran ; x4 annonce l'écran.",
+            "en": "4 comes down to screen; x4 calls it out."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              8,
+              22,
+              "c"
+            ],
+            "x2": [
+              10,
+              20,
+              "m"
+            ],
+            "x4": [
+              12,
+              17,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 remonte : x2 le suit collé, x4 sort un instant devant lui.",
+            "en": "2 comes up: x2 trails tight, x4 shows for a moment in front of him."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              17.5,
+              12,
+              "m"
+            ],
+            "x2": [
+              9.5,
+              20.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x4 retourne sur 4, x2 est sur 2.",
+            "en": "x4 returns to 4, x2 is on 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-flare-screen",
+      "cat": "defense",
+      "family": "defense-ecrans-sans-ballon",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre l'écran flare",
+        "en": "Defending the flare screen"
+      },
+      "sum": {
+        "fr": "Contre un écran flare, le défenseur de l'écraneur sort sur le tireur pendant que le défenseur du tireur contourne l'écran, puis chacun reprend son joueur.",
+        "en": "Against a flare screen, the screener's defender steps out to the shooter while the shooter's defender gets around the screen, then each returns to his man."
+      },
+      "why": {
+        "fr": "Le tireur ne reçoit pas seul pendant le retour de son défenseur.",
+        "en": "The shooter does not catch open while his defender recovers."
+      },
+      "counter": {
+        "fr": "Faire plonger l'écraneur vers le cercle quand son défenseur sort.",
+        "en": "Have the screener dive to the rim when his defender steps out."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran",
+          "Rester collé au coupeur, sans passer derrière l'écran",
+          "Le défenseur de l'écraneur ralentit le coupeur",
+          "Changer seulement sur l'appel"
+        ],
+        "en": [
+          "The screener's defender calls the screen",
+          "Stay attached to the cutter without going behind the screen",
+          "The screener's defender slows the cutter",
+          "Only switch on the call"
+        ]
+      },
+      "start": {
+        "1": [
+          34,
+          29
+        ],
+        "2": [
+          16,
+          29
+        ],
+        "4": [
+          20,
+          22
+        ],
+        "b": "1",
+        "x2": [
+          19,
+          26
+        ],
+        "x4": [
+          22,
+          19
+        ],
+        "x1": [
+          31,
+          27
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              15,
+              26,
+              "s"
+            ],
+            "2": [
+              5,
+              25,
+              "c"
+            ],
+            "x2": [
+              17,
+              28,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran flare ; 2 s'écarte vers l'aile.",
+            "en": "4 sets the flare screen; 2 fades to the wing."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              9,
+              22,
+              "m"
+            ],
+            "x2": [
+              11,
+              29,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x4 sort sur 2 ; x2 contourne l'écran.",
+            "en": "x4 steps out to 2; x2 gets around the screen."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              8,
+              24,
+              "m"
+            ],
+            "x4": [
+              17,
+              22,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 reprend 2, x4 retourne sur 4.",
+            "en": "x2 picks 2 back up, x4 returns to 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-back-screen",
+      "cat": "defense",
+      "family": "defense-ecrans-sans-ballon",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre l'écran dans le dos",
+        "en": "Defending the back screen"
+      },
+      "sum": {
+        "fr": "Contre un écran dans le dos, le défenseur de l'écraneur recule pour gêner le coupeur et le défenseur du coupeur passe côté ballon.",
+        "en": "Against a back screen, the screener's defender drops to bother the cutter and the cutter's defender goes over on the ball side."
+      },
+      "why": {
+        "fr": "La passe lobée est coupée et le coupeur ne prend pas d'avance.",
+        "en": "The lob is taken away and the cutter gains no head start."
+      },
+      "counter": {
+        "fr": "L'écraneur ressort à 3 points quand son défenseur recule.",
+        "en": "The screener pops to the arc when his defender drops."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran",
+          "Rester collé au coupeur, sans passer derrière l'écran",
+          "Le défenseur de l'écraneur ralentit le coupeur",
+          "Changer seulement sur l'appel"
+        ],
+        "en": [
+          "The screener's defender calls the screen",
+          "Stay attached to the cutter without going behind the screen",
+          "The screener's defender slows the cutter",
+          "Only switch on the call"
+        ]
+      },
+      "start": {
+        "1": [
+          34,
+          29
+        ],
+        "2": [
+          6,
+          24
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "b": "1",
+        "x2": [
+          9,
+          21
+        ],
+        "x4": [
+          18,
+          16
+        ],
+        "x1": [
+          31,
+          26
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              10,
+              20,
+              "s"
+            ],
+            "x4": [
+              14,
+              15,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran dans le dos de x2 ; x4 annonce l'écran.",
+            "en": "4 back-screens x2; x4 calls it out."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              19,
+              8,
+              "c"
+            ],
+            "x4": [
+              18,
+              11,
+              "m"
+            ],
+            "x2": [
+              16,
+              15,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 coupe vers le panier : x4 recule devant lui, x2 passe côté ballon.",
+            "en": "2 cuts to the rim: x4 drops in front of him, x2 goes over on the ball side."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              20,
+              10.5,
+              "m"
+            ],
+            "x4": [
+              12,
+              18,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 rattrape 2 ; x4 retourne sur 4.",
+            "en": "x2 catches up to 2; x4 returns to 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-stagger-screens",
+      "cat": "defense",
+      "family": "defense-ecrans-sans-ballon",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre les écrans en escalier",
+        "en": "Defending stagger screens"
+      },
+      "sum": {
+        "fr": "Contre des écrans en escalier, le défenseur du tireur suit collé et le défenseur du dernier écraneur sort au moment de la réception, ou la défense change sur le dernier écran.",
+        "en": "Against staggered screens, the shooter's defender trails tight and the last screener's defender steps out at the catch, or the defense switches the last screen."
+      },
+      "why": {
+        "fr": "Deux écrans de suite sont impossibles à passer seul : l'aide du dernier écraneur est indispensable.",
+        "en": "Two screens in a row cannot be beaten alone: the last screener's defender must help."
+      },
+      "counter": {
+        "fr": "Faire plonger le dernier écraneur quand son défenseur sort.",
+        "en": "Have the last screener dive when his defender steps out."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran",
+          "Rester collé au coupeur, sans passer derrière l'écran",
+          "Le défenseur de l'écraneur ralentit le coupeur",
+          "Changer seulement sur l'appel"
+        ],
+        "en": [
+          "The screener's defender calls the screen",
+          "Stay attached to the cutter without going behind the screen",
+          "The screener's defender slows the cutter",
+          "Only switch on the call"
+        ]
+      },
+      "start": {
+        "1": [
+          30,
+          30
+        ],
+        "2": [
+          24,
+          7.5
+        ],
+        "4": [
+          17,
+          10
+        ],
+        "5": [
+          12,
+          17
+        ],
+        "b": "1",
+        "x2": [
+          26,
+          9
+        ],
+        "x4": [
+          19,
+          12
+        ],
+        "x5": [
+          15,
+          18
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              6,
+              25,
+              "c"
+            ],
+            "x2": [
+              9,
+              22,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 traverse les deux écrans : x2 le suit collé.",
+            "en": "2 runs off both screens: x2 trails tight."
+          }
+        },
+        {
+          "m": {
+            "x5": [
+              9,
+              25.5,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "x5 sort au moment de la réception, puis retourne sur 5.",
+            "en": "x5 steps out at the catch, then returns to 5."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              8,
+              22.5,
+              "m"
+            ],
+            "x5": [
+              14,
+              17,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 reprend 2, x5 retourne sur 5.",
+            "en": "x2 picks 2 back up, x5 returns to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-handoff",
+      "cat": "defense",
+      "family": "defense-ecrans-sans-ballon",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre la remise main à main",
+        "en": "Defending the handoff"
+      },
+      "sum": {
+        "fr": "Contre une remise main à main, le défenseur du receveur saute dans sa trajectoire pour l'empêcher de prendre le ballon ; le défenseur du passeur protège la coupe dans le dos.",
+        "en": "Against a handoff, the receiver's defender jumps into his path to stop him getting the ball; the passer's defender protects against the backdoor cut."
+      },
+      "why": {
+        "fr": "La remise est refusée : le porteur doit garder le ballon ou forcer une passe.",
+        "en": "The handoff is denied: the ball handler has to keep the ball or force a pass."
+      },
+      "counter": {
+        "fr": "Couper dans le dos du défenseur qui saute.",
+        "en": "Cut behind the jumping defender."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran",
+          "Rester collé au coupeur, sans passer derrière l'écran",
+          "Le défenseur de l'écraneur ralentit le coupeur",
+          "Changer seulement sur l'appel"
+        ],
+        "en": [
+          "The screener's defender calls the screen",
+          "Stay attached to the cutter without going behind the screen",
+          "The screener's defender slows the cutter",
+          "Only switch on the call"
+        ]
+      },
+      "start": {
+        "5": [
+          30,
+          29
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "b": "5",
+        "x5": [
+          30,
+          26
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "x3": [
+          14,
+          18
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              37,
+              27,
+              "d"
+            ],
+            "x5": [
+              36,
+              24.5,
+              "m"
+            ],
+            "x2": [
+              40.5,
+              26.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 dribble vers 2 : x2 saute dans la trajectoire de la remise.",
+            "en": "5 dribbles at 2: x2 jumps into the handoff path."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              33,
+              9,
+              "c"
+            ],
+            "x5": [
+              33,
+              13,
+              "m"
+            ],
+            "x3": [
+              24,
+              10,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 coupe dans le dos : x5 recule pour le couper, x3 aide.",
+            "en": "2 cuts backdoor: x5 drops to cut him off, x3 helps."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-iverson-cut",
+      "cat": "defense",
+      "family": "defense-ecrans-sans-ballon",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre la coupe Iverson",
+        "en": "Defending the Iverson cut"
+      },
+      "sum": {
+        "fr": "Contre une coupe Iverson, le défenseur passe au-dessus des écrans, côté ballon, et le défenseur du dernier écraneur gêne la réception.",
+        "en": "Against an Iverson cut, the defender goes over the screens on the ball side and the last screener's defender bothers the catch."
+      },
+      "why": {
+        "fr": "Le coupeur reçoit loin de son point préféré, ou pas du tout.",
+        "en": "The cutter catches far from his favorite spot, or not at all."
+      },
+      "counter": {
+        "fr": "Plonger avec l'écraneur dont le défenseur aide.",
+        "en": "Dive with the screener whose defender helps."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran",
+          "Rester collé au coupeur, sans passer derrière l'écran",
+          "Le défenseur de l'écraneur ralentit le coupeur",
+          "Changer seulement sur l'appel"
+        ],
+        "en": [
+          "The screener's defender calls the screen",
+          "Stay attached to the cutter without going behind the screen",
+          "The screener's defender slows the cutter",
+          "Only switch on the call"
+        ]
+      },
+      "start": {
+        "1": [
+          26,
+          34
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "4": [
+          30,
+          24
+        ],
+        "5": [
+          20,
+          24
+        ],
+        "b": "1",
+        "x2": [
+          40,
+          22
+        ],
+        "x4": [
+          30,
+          21
+        ],
+        "x5": [
+          20,
+          21
+        ],
+        "x1": [
+          26,
+          31
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              7,
+              24,
+              "c"
+            ],
+            "x2": [
+              11,
+              27,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 traverse : x2 passe au-dessus des écrans, côté ballon.",
+            "en": "2 runs across: x2 goes over the screens on the ball side."
+          }
+        },
+        {
+          "m": {
+            "x5": [
+              10,
+              22,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x5 sort un instant devant 2, puis retourne sur 5.",
+            "en": "x5 steps out briefly in front of 2, then returns to 5."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              9,
+              23,
+              "m"
+            ],
+            "x5": [
+              19,
+              21,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 reprend 2 ; x5 retrouve 5.",
+            "en": "x2 picks 2 back up; x5 gets back to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-floppy",
+      "cat": "defense",
+      "family": "defense-ecrans-sans-ballon",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre le Floppy",
+        "en": "Defending Floppy"
+      },
+      "sum": {
+        "fr": "Contre le Floppy, le défenseur du tireur suit au plus près le côté choisi ; sur le double écran, un défenseur des écraneurs change ou sort sur le tireur.",
+        "en": "Against Floppy, the shooter's defender trails tight on the chosen side; on the double screen, a screener's defender switches or steps out to the shooter."
+      },
+      "why": {
+        "fr": "Le tireur ne reçoit jamais seul, quel que soit son choix.",
+        "en": "The shooter never catches open, whichever side he picks."
+      },
+      "counter": {
+        "fr": "Revenir en boucle vers le panier ou lire le changement.",
+        "en": "Curl back to the rim or read the switch."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran",
+          "Rester collé au coupeur, sans passer derrière l'écran",
+          "Le défenseur de l'écraneur ralentit le coupeur",
+          "Changer seulement sur l'appel"
+        ],
+        "en": [
+          "The screener's defender calls the screen",
+          "Stay attached to the cutter without going behind the screen",
+          "The screener's defender slows the cutter",
+          "Only switch on the call"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          25,
+          8
+        ],
+        "5": [
+          19,
+          10
+        ],
+        "4": [
+          31,
+          10.5
+        ],
+        "3": [
+          33,
+          14
+        ],
+        "b": "1",
+        "x2": [
+          25,
+          10.5
+        ],
+        "x4": [
+          29,
+          12
+        ],
+        "x3": [
+          34,
+          17
+        ],
+        "x5": [
+          21,
+          12
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              42,
+              21,
+              "c"
+            ],
+            "x2": [
+              36,
+              15,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 sort par le double écran : x2 le suit.",
+            "en": "2 comes off the double screen: x2 trails."
+          }
+        },
+        {
+          "m": {
+            "x3": [
+              40,
+              19,
+              "m"
+            ],
+            "x2": [
+              33,
+              16.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x3 change et sort sur 2 ; x2 prend 3.",
+            "en": "x3 switches out to 2; x2 takes 3."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-elevator-doors",
+      "cat": "defense",
+      "family": "defense-ecrans-sans-ballon",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre les portes d'ascenseur",
+        "en": "Defending elevator doors"
+      },
+      "sum": {
+        "fr": "Contre les portes d'ascenseur, le défenseur du tireur ne peut pas passer : un défenseur des écraneurs change et sort sur le tireur.",
+        "en": "Against elevator doors, the shooter's defender cannot get through: a screener's defender switches and steps out to the shooter."
+      },
+      "why": {
+        "fr": "Seul un changement anticipé permet de contester le tir.",
+        "en": "Only an early switch lets the defense contest the shot."
+      },
+      "counter": {
+        "fr": "Plonger avec l'écraneur dont le défenseur a changé.",
+        "en": "Dive with the screener whose defender switched."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran",
+          "Rester collé au coupeur, sans passer derrière l'écran",
+          "Le défenseur de l'écraneur ralentit le coupeur",
+          "Changer seulement sur l'appel"
+        ],
+        "en": [
+          "The screener's defender calls the screen",
+          "Stay attached to the cutter without going behind the screen",
+          "The screener's defender slows the cutter",
+          "Only switch on the call"
+        ]
+      },
+      "start": {
+        "1": [
+          6,
+          24
+        ],
+        "2": [
+          25,
+          8.5
+        ],
+        "4": [
+          22.5,
+          25
+        ],
+        "5": [
+          27.5,
+          25
+        ],
+        "b": "1",
+        "x2": [
+          25,
+          11
+        ],
+        "x4": [
+          22,
+          21.5
+        ],
+        "x5": [
+          28,
+          21.5
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              25,
+              30,
+              "c"
+            ],
+            "4": [
+              24,
+              25,
+              "s"
+            ],
+            "5": [
+              26,
+              25,
+              "s"
+            ],
+            "x2": [
+              25,
+              21,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 traverse la porte ; 4 et 5 se referment devant x2.",
+            "en": "2 runs through the door; 4 and 5 close in front of x2."
+          }
+        },
+        {
+          "m": {
+            "x5": [
+              26,
+              27.5,
+              "m"
+            ],
+            "x2": [
+              28.5,
+              22,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x5 change et sort sur 2 ; x2 prend 5.",
+            "en": "x5 switches out to 2; x2 takes 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-cross-screen",
+      "cat": "defense",
+      "family": "defense-ecrans-sans-ballon",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre l'écran croisé",
+        "en": "Defending the cross screen"
+      },
+      "sum": {
+        "fr": "Contre un écran croisé au poste bas, le défenseur du coupeur passe devant l'écran, côté ballon, pour garder la position.",
+        "en": "Against a cross screen on the block, the cutter's defender goes over the screen on the ball side to keep position."
+      },
+      "why": {
+        "fr": "Le coupeur reçoit derrière son défenseur, loin du cercle, ou pas du tout.",
+        "en": "The cutter catches behind his defender, away from the rim, or not at all."
+      },
+      "counter": {
+        "fr": "Couper sous l'écran quand le défenseur passe devant.",
+        "en": "Cut under the screen when the defender goes over the top."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran",
+          "Rester collé au coupeur, sans passer derrière l'écran",
+          "Le défenseur de l'écraneur ralentit le coupeur",
+          "Changer seulement sur l'appel"
+        ],
+        "en": [
+          "The screener's defender calls the screen",
+          "Stay attached to the cutter without going behind the screen",
+          "The screener's defender slows the cutter",
+          "Only switch on the call"
+        ]
+      },
+      "start": {
+        "1": [
+          6,
+          24
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1",
+        "x4": [
+          20,
+          10
+        ],
+        "x5": [
+          30,
+          10
+        ],
+        "2": [
+          25,
+          31
+        ],
+        "x2": [
+          25,
+          28
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              27,
+              7.5,
+              "s"
+            ],
+            "x4": [
+              24,
+              10,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "4 traverse pour l'écran croisé ; x4 annonce.",
+            "en": "4 crosses to set the cross screen; x4 calls it."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              18,
+              8,
+              "c"
+            ],
+            "x5": [
+              20,
+              10.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 coupe : x5 passe devant l'écran, côté ballon.",
+            "en": "5 cuts: x5 goes over the screen on the ball side."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-zipper-cut",
+      "cat": "defense",
+      "family": "defense-ecrans-sans-ballon",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre la coupe Zipper",
+        "en": "Defending the Zipper cut"
+      },
+      "sum": {
+        "fr": "Contre une coupe Zipper, le défenseur passe au-dessus de l'écran et reste entre le coupeur et le ballon pour refuser la réception en haut.",
+        "en": "Against a Zipper cut, the defender goes over the screen and stays between the cutter and the ball to deny the catch up top."
+      },
+      "why": {
+        "fr": "Le coupeur ne reçoit pas face au panier en haut : l'action est cassée.",
+        "en": "The cutter does not catch facing the basket up top: the action is broken."
+      },
+      "counter": {
+        "fr": "Couper dans le dos vers le panier quand le défenseur refuse trop.",
+        "en": "Cut backdoor to the rim when the defender overplays."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran",
+          "Rester collé au coupeur, sans passer derrière l'écran",
+          "Le défenseur de l'écraneur ralentit le coupeur",
+          "Changer seulement sur l'appel"
+        ],
+        "en": [
+          "The screener's defender calls the screen",
+          "Stay attached to the cutter without going behind the screen",
+          "The screener's defender slows the cutter",
+          "Only switch on the call"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          30,
+          6
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1",
+        "x2": [
+          28,
+          8
+        ],
+        "x5": [
+          31,
+          16
+        ],
+        "x1": [
+          25,
+          29
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              15,
+              29,
+              "d"
+            ],
+            "x1": [
+              17,
+              26,
+              "m"
+            ],
+            "5": [
+              30,
+              14,
+              "s"
+            ],
+            "2": [
+              33,
+              27,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 dribble ; 5 descend faire écran, 2 remonte.",
+            "en": "1 dribbles; 5 steps down to screen, 2 comes up."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              29,
+              25,
+              "m"
+            ],
+            "x5": [
+              30,
+              18,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 passe au-dessus de l'écran et reste dans la ligne de passe.",
+            "en": "x2 goes over the screen and stays in the passing lane."
+          }
+        }
+      ]
+    },
+    {
+      "id": "switching-off-ball-screens",
+      "cat": "defense",
+      "family": "defense-ecrans-sans-ballon",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Changer sur les écrans sans ballon",
+        "en": "Switching off-ball screens"
+      },
+      "sum": {
+        "fr": "Sur un écran sans ballon, les deux défenseurs échangent leurs joueurs au moment de l'écran, en l'annonçant.",
+        "en": "On an off-ball screen, the two defenders swap assignments at the moment of the screen, calling it out."
+      },
+      "why": {
+        "fr": "Personne ne se fait bloquer : chaque coupeur trouve un défenseur devant lui.",
+        "en": "Nobody gets screened: every cutter finds a defender in front of him."
+      },
+      "counter": {
+        "fr": "Faire plonger l'écraneur (slip) avant le changement.",
+        "en": "Have the screener slip before the switch."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran",
+          "Rester collé au coupeur, sans passer derrière l'écran",
+          "Le défenseur de l'écraneur ralentit le coupeur",
+          "Changer seulement sur l'appel"
+        ],
+        "en": [
+          "The screener's defender calls the screen",
+          "Stay attached to the cutter without going behind the screen",
+          "The screener's defender slows the cutter",
+          "Only switch on the call"
+        ]
+      },
+      "start": {
+        "1": [
+          6,
+          24
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "2": [
+          25,
+          31
+        ],
+        "b": "1",
+        "x4": [
+          20,
+          10
+        ],
+        "x5": [
+          30,
+          10
+        ],
+        "x2": [
+          25,
+          28
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              27,
+              7.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran croisé pour 5.",
+            "en": "4 sets a cross screen for 5."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              18,
+              8,
+              "c"
+            ],
+            "x4": [
+              19.5,
+              10.5,
+              "m"
+            ],
+            "x5": [
+              27.5,
+              10,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "« Change ! » : x4 prend 5 qui coupe, x5 prend 4.",
+            "en": "\"Switch!\": x4 takes the cutting 5, x5 takes 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-chicago-action",
+      "cat": "defense",
+      "family": "defense-ecrans-sans-ballon",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre le Chicago",
+        "en": "Defending Chicago action"
+      },
+      "sum": {
+        "fr": "Contre le Chicago (écran retour puis remise main à main), on suit sur l'écran retour et on change sur la remise main à main.",
+        "en": "Against Chicago action (pin-down into handoff), trail the pin-down and switch the handoff."
+      },
+      "why": {
+        "fr": "Le changement sur la remise arrête la pénétration lancée.",
+        "en": "Switching the handoff stops the running drive."
+      },
+      "counter": {
+        "fr": "Plonger avec le grand après la remise pour profiter du changement.",
+        "en": "Dive with the big after the handoff to exploit the switch."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran",
+          "Rester collé au coupeur, sans passer derrière l'écran",
+          "Le défenseur de l'écraneur ralentit le coupeur",
+          "Changer seulement sur l'appel"
+        ],
+        "en": [
+          "The screener's defender calls the screen",
+          "Stay attached to the cutter without going behind the screen",
+          "The screener's defender slows the cutter",
+          "Only switch on the call"
+        ]
+      },
+      "start": {
+        "5": [
+          17,
+          29
+        ],
+        "2": [
+          9,
+          22
+        ],
+        "4": [
+          6,
+          13
+        ],
+        "b": "5",
+        "x2": [
+          11,
+          20
+        ],
+        "x5": [
+          19,
+          26
+        ],
+        "x4": [
+          9,
+          12
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              13,
+              27,
+              "d"
+            ],
+            "2": [
+              15,
+              25,
+              "c"
+            ],
+            "x2": [
+              15,
+              22,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "5 dribble vers 2 pour la remise.",
+            "en": "5 dribbles at 2 for the handoff."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              22,
+              17,
+              "d"
+            ],
+            "x5": [
+              21,
+              14,
+              "m"
+            ],
+            "5": [
+              19,
+              9,
+              "c"
+            ],
+            "x2": [
+              18,
+              12,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Changement : x5 prend 2, x2 prend 5 qui roule.",
+            "en": "Switch: x5 takes 2, x2 takes the rolling 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fronting-the-post",
+      "cat": "defense",
+      "family": "defense-poste",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défense devant le poste (front)",
+        "en": "Fronting the post"
+      },
+      "sum": {
+        "fr": "Le défenseur se place devant le pivot, entre lui et le ballon ; un défenseur du côté faible protège contre la passe lobée.",
+        "en": "The defender plays in front of the post, between him and the ball; a weak-side defender protects against the lob."
+      },
+      "why": {
+        "fr": "Le pivot ne peut pas recevoir directement : seule une passe lobée reste possible, et l'aide l'attend.",
+        "en": "The post cannot get a direct pass: only a lob remains, and help is waiting for it."
+      },
+      "counter": {
+        "fr": "Passe lobée vers le côté opposé, ou renverser pour changer l'angle.",
+        "en": "Lob to the far side, or reverse to change the angle."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se battre pour la position avant la passe",
+          "Bras dans la ligne de passe",
+          "Aide du côté faible prête pour la passe lobée",
+          "Ne pas faire faute en poussant"
+        ],
+        "en": [
+          "Fight for position before the pass",
+          "Arm in the passing lane",
+          "Weak-side help ready for the lob",
+          "Do not foul by pushing"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "5": [
+          31,
+          9
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "b": "2",
+        "x5": [
+          33,
+          11
+        ],
+        "x3": [
+          17,
+          12
+        ],
+        "x2": [
+          41,
+          22
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "x5": [
+              33.5,
+              11,
+              "m"
+            ],
+            "x3": [
+              24,
+              8,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x5 passe devant 5, entre lui et le ballon ; x3 descend pour l'aide.",
+            "en": "x5 steps in front of 5, between him and the ball; x3 drops to help."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              29.5,
+              8,
+              "c"
+            ],
+            "x3": [
+              27,
+              6.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 tente la passe lobée : x3 est là pour la couper.",
+            "en": "2 tries the lob: x3 is there to take it away."
+          }
+        }
+      ]
+    },
+    {
+      "id": "three-quarter-post-defense",
+      "cat": "defense",
+      "family": "defense-poste",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défense aux trois quarts",
+        "en": "Three-quarter post defense"
+      },
+      "sum": {
+        "fr": "Le défenseur se place à trois quarts devant le pivot, du côté du ballon : côté haut quand le ballon est sur l'aile, côté ligne de fond quand il est au corner.",
+        "en": "The defender plays three-quarters in front of the post on the ball side: high side when the ball is on the wing, baseline side when it is in the corner."
+      },
+      "why": {
+        "fr": "La passe directe est gênée sans laisser le panier derrière le défenseur.",
+        "en": "The direct pass is bothered without leaving the basket open behind the defender."
+      },
+      "counter": {
+        "fr": "Changer l'angle de passe par une passe au corner ou en haut.",
+        "en": "Change the passing angle with a pass to the corner or up top."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se battre pour la position avant la passe",
+          "Bras dans la ligne de passe",
+          "Aide du côté faible prête pour la passe lobée",
+          "Ne pas faire faute en poussant"
+        ],
+        "en": [
+          "Fight for position before the pass",
+          "Arm in the passing lane",
+          "Weak-side help ready for the lob",
+          "Do not foul by pushing"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          31,
+          9
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "b": "2",
+        "x5": [
+          32.5,
+          11.5
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x4": [
+          44,
+          7
+        ]
+      },
+      "steps": [
+        {
+          "c": {
+            "fr": "Ballon sur l'aile : x5 est à trois quarts côté haut.",
+            "en": "Ball on the wing: x5 plays three-quarter on the high side."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "Passe au corner.",
+            "en": "Pass to the corner."
+          }
+        },
+        {
+          "m": {
+            "x5": [
+              33,
+              7,
+              "m"
+            ],
+            "x4": [
+              45.5,
+              6.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x5 passe de l'autre côté, à trois quarts côté ligne de fond.",
+            "en": "x5 moves around to three-quarter on the baseline side."
+          }
+        }
+      ]
+    },
+    {
+      "id": "playing-behind-the-post",
+      "cat": "defense",
+      "family": "defense-poste",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Défense derrière le poste",
+        "en": "Playing behind the post"
+      },
+      "sum": {
+        "fr": "Le défenseur reste derrière le pivot, entre lui et le panier, et le laisse recevoir loin du cercle avant de le défendre.",
+        "en": "The defender stays behind the post, between him and the basket, and lets him catch away from the rim before guarding him."
+      },
+      "why": {
+        "fr": "Utile quand le pivot reçoit loin du cercle : le défenseur garde la position et le panier est protégé.",
+        "en": "Useful when the post catches far from the rim: the defender keeps position and the basket stays protected."
+      },
+      "counter": {
+        "fr": "Faire recevoir le pivot plus près du cercle avant de passer.",
+        "en": "Get the post to catch closer to the rim before passing."
+      },
+      "used": {
+        "fr": "Courant chez les jeunes et en amateur.",
+        "en": "Common in youth and amateur basketball."
+      },
+      "keys": {
+        "fr": [
+          "Se battre pour la position avant la passe",
+          "Bras dans la ligne de passe",
+          "Aide du côté faible prête pour la passe lobée",
+          "Ne pas faire faute en poussant"
+        ],
+        "en": [
+          "Fight for position before the pass",
+          "Arm in the passing lane",
+          "Weak-side help ready for the lob",
+          "Do not foul by pushing"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "5": [
+          33,
+          12
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "b": "2",
+        "x5": [
+          31,
+          9.5
+        ],
+        "x2": [
+          41,
+          22
+        ]
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "x5 reste derrière 5 : la passe est autorisée.",
+            "en": "x5 stays behind 5: the pass is allowed."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              30,
+              11,
+              "d"
+            ],
+            "x5": [
+              28.5,
+              9,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 attaque : x5 garde la position et contient.",
+            "en": "5 attacks: x5 holds position and contains."
+          }
+        }
+      ]
+    },
+    {
+      "id": "post-double-team",
+      "cat": "defense",
+      "family": "defense-poste",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Prise à deux au poste",
+        "en": "Post double team"
+      },
+      "sum": {
+        "fr": "Après la passe au poste, le défenseur du passeur vient prendre le pivot à deux ; les autres tournent pour couvrir.",
+        "en": "After the post entry, the passer's defender comes to double the post; the others rotate to cover."
+      },
+      "why": {
+        "fr": "Le pivot doit ressortir le ballon sous pression ; la défense intercepte ou force un tir moins bon.",
+        "en": "The post has to kick it out under pressure; the defense steals it or forces a worse shot."
+      },
+      "counter": {
+        "fr": "Ressortir vers le joueur du côté opposé, le plus loin de l'aide.",
+        "en": "Kick out to the far-side player, the farthest from help."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se battre pour la position avant la passe",
+          "Bras dans la ligne de passe",
+          "Aide du côté faible prête pour la passe lobée",
+          "Ne pas faire faute en poussant"
+        ],
+        "en": [
+          "Fight for position before the pass",
+          "Arm in the passing lane",
+          "Weak-side help ready for the lob",
+          "Do not foul by pushing"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "b": "2",
+        "x5": [
+          30,
+          10
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x1": [
+          27,
+          27
+        ],
+        "x3": [
+          14,
+          18
+        ]
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe à 5 au poste bas.",
+            "en": "2 feeds 5 on the block."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              34,
+              11,
+              "m"
+            ],
+            "x1": [
+              34,
+              26,
+              "m"
+            ],
+            "x3": [
+              17,
+              20,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 descend prendre 5 à deux ; x1 glisse entre 1 et 2, x3 surveille la passe longue.",
+            "en": "x2 drops to double 5; x1 slides between 1 and 2, x3 watches the skip pass."
+          }
+        }
+      ]
+    },
+    {
+      "id": "baseline-post-double",
+      "cat": "defense",
+      "family": "defense-poste",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Prise à deux au poste depuis la ligne de fond",
+        "en": "Baseline post double"
+      },
+      "sum": {
+        "fr": "La prise à deux sur le pivot vient de la ligne de fond (défenseur du corner) au lieu du haut, du côté où le pivot ne regarde pas.",
+        "en": "The post double team comes from the baseline (the corner defender) instead of from the top, on the side the post cannot see."
+      },
+      "why": {
+        "fr": "Le pivot dos au panier ne voit pas arriver le défenseur de la ligne de fond.",
+        "en": "The post with his back to the basket cannot see the baseline defender coming."
+      },
+      "counter": {
+        "fr": "Placer un joueur au corner prêt à recevoir et à tirer.",
+        "en": "Keep a player in the corner ready to catch and shoot."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Se battre pour la position avant la passe",
+          "Bras dans la ligne de passe",
+          "Aide du côté faible prête pour la passe lobée",
+          "Ne pas faire faute en poussant"
+        ],
+        "en": [
+          "Fight for position before the pass",
+          "Arm in the passing lane",
+          "Weak-side help ready for the lob",
+          "Do not foul by pushing"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "b": "2",
+        "x5": [
+          30,
+          10
+        ],
+        "x4": [
+          44,
+          7
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x1": [
+          27,
+          27
+        ]
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe à 5 au poste bas.",
+            "en": "2 feeds 5 on the block."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              33,
+              6,
+              "m"
+            ],
+            "x2": [
+              43,
+              15,
+              "m"
+            ],
+            "x1": [
+              33,
+              25,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x4 quitte le corner et prend 5 à deux par la ligne de fond ; x2 glisse vers le corner.",
+            "en": "x4 leaves the corner and doubles 5 from the baseline; x2 slides toward the corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-high-low",
+      "cat": "defense",
+      "family": "defense-poste",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre le haut-bas",
+        "en": "Defending the high-low"
+      },
+      "sum": {
+        "fr": "Contre le jeu haut-bas, on presse le joueur du poste haut et un défenseur du côté faible descend derrière le pivot du poste bas.",
+        "en": "Against high-low play, pressure the high-post player and drop a weak-side defender behind the low post."
+      },
+      "why": {
+        "fr": "La passe haut-bas devient lobée et l'aide du côté faible l'attend.",
+        "en": "The high-low pass becomes a lob and weak-side help is waiting for it."
+      },
+      "counter": {
+        "fr": "Renverser vers le côté faible quand l'aide descend.",
+        "en": "Swing to the weak side when the help drops."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se battre pour la position avant la passe",
+          "Bras dans la ligne de passe",
+          "Aide du côté faible prête pour la passe lobée",
+          "Ne pas faire faute en poussant"
+        ],
+        "en": [
+          "Fight for position before the pass",
+          "Arm in the passing lane",
+          "Weak-side help ready for the lob",
+          "Do not foul by pushing"
+        ]
+      },
+      "start": {
+        "4": [
+          25,
+          19
+        ],
+        "5": [
+          28,
+          8
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "b": "4",
+        "x4": [
+          25,
+          16.5
+        ],
+        "x5": [
+          27,
+          10.5
+        ],
+        "x3": [
+          12,
+          17
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "x4": [
+              25,
+              17,
+              "m"
+            ],
+            "x5": [
+              27.5,
+              10.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x4 presse le poste haut ; x5 joue devant 5.",
+            "en": "x4 pressures the high post; x5 fronts 5."
+          }
+        },
+        {
+          "m": {
+            "x3": [
+              25,
+              6,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x3 descend derrière 5 pour couper la passe lobée.",
+            "en": "x3 drops behind 5 to take away the lob."
+          }
+        }
+      ]
     }
   ]
 }
