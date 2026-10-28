@@ -1427,7 +1427,7 @@
       "fr": "Isolation au poste bas",
       "en": "Low-post isolation"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "cut-after-the-post-entry",
@@ -1438,7 +1438,7 @@
       "fr": "Coupe du passeur après entrée au poste",
       "en": "Cut after the post entry"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "high-post-face-up",
@@ -1449,7 +1449,7 @@
       "fr": "Poste haut face au panier",
       "en": "High-post face-up"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "screen-for-the-post",
@@ -1457,10 +1457,10 @@
     "family": "poste",
     "lvl": 2,
     "name": {
-      "fr": "Écran pour le pivot (back screen pour le poste)",
+      "fr": "Écran pour le pivot (écran retour)",
       "en": "Screen for the post"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "weak-side-post-flash",
@@ -1471,7 +1471,7 @@
       "fr": "Poste bas côté faible (flash)",
       "en": "Weak-side post flash"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "top-isolation",
@@ -1482,7 +1482,7 @@
       "fr": "Isolation en haut",
       "en": "Top isolation"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "wing-isolation-clear-out",
@@ -1493,7 +1493,7 @@
       "fr": "Isolation sur l'aile (côté vidé)",
       "en": "Wing isolation (clear-out)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "1-4-high-pick-and-roll",
@@ -1504,7 +1504,7 @@
       "fr": "1-4 haut : pick-and-roll",
       "en": "1-4 high: pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "1-4-high-backdoor",
@@ -1515,7 +1515,7 @@
       "fr": "1-4 haut : coupe dans le dos",
       "en": "1-4 high: backdoor"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "1-4-low-isolation",
@@ -1526,7 +1526,7 @@
       "fr": "1-4 bas : isolation",
       "en": "1-4 low: isolation"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "box-cross-screens",
@@ -1537,7 +1537,7 @@
       "fr": "Boîte (box) : écrans croisés",
       "en": "Box: cross screens"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "box-screen-the-screener",
@@ -1548,7 +1548,7 @@
       "fr": "Boîte (box) : écran pour l'écraneur",
       "en": "Box: screen the screener"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "diamond-high-post-screen",
@@ -1559,7 +1559,7 @@
       "fr": "Losange (diamond) : écran du poste haut",
       "en": "Diamond: high-post screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "line-set",
@@ -1570,7 +1570,7 @@
       "fr": "Placement en ligne",
       "en": "Line set"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "double-high",
@@ -1581,7 +1581,7 @@
       "fr": "Double poste haut (high)",
       "en": "Double high"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "wing-triangle",
@@ -1592,7 +1592,7 @@
       "fr": "Triangle sur l'aile",
       "en": "Wing triangle"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-3-high-set",
@@ -1603,7 +1603,7 @@
       "fr": "Placement 2-3 haut",
       "en": "2-3 high set"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "double-elbow-set",
@@ -1614,7 +1614,7 @@
       "fr": "Double coude (elbow)",
       "en": "Double elbow set"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "half-court-stack-set",
@@ -1625,7 +1625,7 @@
       "fr": "Placement en colonne (stack) sur demi-terrain",
       "en": "Half-court stack set"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "clear-side-for-the-best-player",
@@ -1636,7 +1636,7 @@
       "fr": "Côté vidé pour le meilleur joueur",
       "en": "Clear side for the best player"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "high-post-pass-into-shooter-screen",
