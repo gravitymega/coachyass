@@ -2362,7 +2362,7 @@
       "fr": "Attaque rapide : passe au traîneur et renversement",
       "en": "Trailer reversal"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "early-offense-pin-down",
@@ -2373,7 +2373,7 @@
       "fr": "Attaque rapide : écran retour en transition",
       "en": "Early-offense pin-down"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "early-offense-handoff",
@@ -2384,7 +2384,7 @@
       "fr": "Attaque rapide : remise main à main en transition",
       "en": "Early-offense handoff"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "early-side-pick-and-roll",
@@ -2395,7 +2395,7 @@
       "fr": "Attaque rapide : pick-and-roll latéral immédiat",
       "en": "Early side pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "drag-and-pop",
@@ -2406,7 +2406,7 @@
       "fr": "Attaque rapide : « Drag » avec pop",
       "en": "Drag and pop"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "early-post-seal",
@@ -2417,7 +2417,7 @@
       "fr": "Attaque rapide : pivot au poste dès l'arrivée",
       "en": "Early post seal"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "trailer-dive",
@@ -2428,7 +2428,7 @@
       "fr": "Attaque rapide : coupe du traîneur vers le panier",
       "en": "Trailer dive"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "early-corner-three",
@@ -2439,7 +2439,7 @@
       "fr": "Attaque rapide : passe directe au corner",
       "en": "Early corner three"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-rules",
@@ -2461,7 +2461,7 @@
       "fr": "Courir les couloirs",
       "en": "Running the lanes"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "when-to-pull-it-out",
@@ -2472,18 +2472,18 @@
       "fr": "Transition : quand ralentir",
       "en": "When to pull it out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
-    "id": "push-after-a-make",
+    "id": "pass-ahead-in-transition",
     "cat": "transition",
     "family": "principes-transition",
-    "lvl": 2,
+    "lvl": 1,
     "name": {
-      "fr": "Transition : jouer après un panier encaissé",
-      "en": "Push after a make"
+      "fr": "Transition : avancer le ballon par la passe",
+      "en": "Pass ahead in transition"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "role-of-the-trailer",
@@ -2494,7 +2494,7 @@
       "fr": "Transition : rôle du traîneur",
       "en": "Role of the trailer"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-defense-protect-the-rim",
@@ -2505,7 +2505,7 @@
       "fr": "Retour défensif : protéger le panier",
       "en": "Transition defense: protect the rim"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-defense-stop-the-ball",
@@ -2516,7 +2516,7 @@
       "fr": "Retour défensif : arrêter le ballon",
       "en": "Transition defense: stop the ball"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-defense-1-vs-2",
@@ -2527,7 +2527,7 @@
       "fr": "Retour défensif : 1 contre 2",
       "en": "Transition defense: 1 vs 2"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-defense-2-vs-3-tandem",
@@ -2538,7 +2538,7 @@
       "fr": "Retour défensif : 2 contre 3 (tandem)",
       "en": "Transition defense: 2 vs 3 tandem"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-defense-matching-up",
@@ -2549,7 +2549,7 @@
       "fr": "Retour défensif : communication et appariement",
       "en": "Transition defense: matching up"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "crash-or-get-back",
@@ -2560,7 +2560,7 @@
       "fr": "Retour défensif : qui va au rebond, qui revient",
       "en": "Crash or get back"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slow-the-outlet",
@@ -2571,7 +2571,7 @@
       "fr": "Retour défensif : ralentir la première passe",
       "en": "Slow the outlet"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "guarding-the-trailer",
@@ -2582,7 +2582,7 @@
       "fr": "Retour défensif : défendre le traîneur",
       "en": "Guarding the trailer"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-switching",

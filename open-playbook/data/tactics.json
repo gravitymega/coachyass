@@ -27631,6 +27631,2408 @@
           }
         }
       ]
+    },
+    {
+      "id": "trailer-reversal",
+      "cat": "transition",
+      "family": "attaque-rapide",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque rapide : passe au traîneur et renversement",
+        "en": "Trailer reversal"
+      },
+      "sum": {
+        "fr": "En attaque rapide, le meneur passe au traîneur qui arrive en haut, et celui-ci renverse tout de suite le ballon vers l'aile opposée.",
+        "en": "In early offense, the guard passes to the trailer arriving up top, who reverses the ball right away to the far wing."
+      },
+      "why": {
+        "fr": "La défense s'est placée du côté du ballon : le renversement par le traîneur l'oblige à traverser tout le terrain.",
+        "en": "The defense set up on the ball side: the trailer's reversal forces it to cross the whole floor."
+      },
+      "counter": {
+        "fr": "Anticiper le renversement et refuser la passe au traîneur.",
+        "en": "Anticipate the reversal and deny the pass to the trailer."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Courir vite dans les couloirs",
+          "Lever la tête avant de dribbler",
+          "Attaquer avant que la défense soit placée",
+          "Décider tôt : passe, tir ou ralentir"
+        ],
+        "en": [
+          "Sprint the lanes",
+          "Look up before dribbling",
+          "Attack before the defense is set",
+          "Decide early: pass, shoot or pull it out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          20,
+          47
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              38,
+              28,
+              "d"
+            ],
+            "2": [
+              5,
+              22,
+              "c"
+            ],
+            "3": [
+              46,
+              8,
+              "c"
+            ],
+            "5": [
+              30,
+              10,
+              "c"
+            ],
+            "4": [
+              22,
+              38,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 remonte côté droit ; 2 et 3 courent dans les couloirs, 5 vers le cercle.",
+            "en": "1 pushes on the right; 2 and 3 run the lanes, 5 to the rim."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              24,
+              31,
+              "c"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "4 arrive en haut et reçoit de 1.",
+            "en": "4 arrives up top and catches from 1."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "4 renverse aussitôt vers 2.",
+            "en": "4 reverses right away to 2."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              19,
+              8,
+              "c"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "5 se place au poste côté ballon : 2 lui passe.",
+            "en": "5 posts up on the ball side: 2 feeds him."
+          }
+        }
+      ]
+    },
+    {
+      "id": "early-offense-pin-down",
+      "cat": "transition",
+      "family": "attaque-rapide",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque rapide : écran retour en transition",
+        "en": "Early-offense pin-down"
+      },
+      "sum": {
+        "fr": "En attaque rapide, un grand qui arrive pose un écran retour pour l'ailier du corner, avant que la défense soit appariée.",
+        "en": "In early offense, an arriving big sets a pin-down for the corner wing before the defense has matched up."
+      },
+      "why": {
+        "fr": "Les défenseurs viennent d'arriver et regardent le ballon : l'écran les surprend.",
+        "en": "The defenders have just arrived and are watching the ball: the screen catches them."
+      },
+      "counter": {
+        "fr": "Communiquer en revenant et changer sur l'écran.",
+        "en": "Talk on the way back and switch the screen."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Courir vite dans les couloirs",
+          "Lever la tête avant de dribbler",
+          "Attaquer avant que la défense soit placée",
+          "Décider tôt : passe, tir ou ralentir"
+        ],
+        "en": [
+          "Sprint the lanes",
+          "Look up before dribbling",
+          "Attack before the defense is set",
+          "Decide early: pass, shoot or pull it out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          20,
+          47
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              31,
+              "d"
+            ],
+            "2": [
+              3,
+              6,
+              "c"
+            ],
+            "3": [
+              47,
+              6,
+              "c"
+            ],
+            "4": [
+              36,
+              22,
+              "c"
+            ],
+            "5": [
+              22,
+              12,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 remonte au centre ; 2 et 3 courent aux corners ; 4 arrive à droite.",
+            "en": "1 pushes up the middle; 2 and 3 run to the corners; 4 arrives on the right."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              42,
+              10,
+              "s"
+            ],
+            "3": [
+              43,
+              23,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 descend poser un écran retour ; 3 remonte sur l'aile.",
+            "en": "4 goes down to set a pin-down; 3 comes up to the wing."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3.",
+            "en": "1 passes to 3."
+          }
+        }
+      ]
+    },
+    {
+      "id": "early-offense-handoff",
+      "cat": "transition",
+      "family": "attaque-rapide",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque rapide : remise main à main en transition",
+        "en": "Early-offense handoff"
+      },
+      "sum": {
+        "fr": "En attaque rapide, le meneur passe au grand qui arrive en haut, et celui-ci enchaîne une remise main à main avec l'ailier.",
+        "en": "In early offense, the guard passes to the big arriving up top, who flows into a handoff with the wing."
+      },
+      "why": {
+        "fr": "La remise arrive pendant que la défense revient encore : l'ailier attaque une défense non placée.",
+        "en": "The handoff comes while the defense is still getting back: the wing attacks an unset defense."
+      },
+      "counter": {
+        "fr": "Passer sous la remise et protéger la raquette.",
+        "en": "Go under the handoff and protect the paint."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Courir vite dans les couloirs",
+          "Lever la tête avant de dribbler",
+          "Attaquer avant que la défense soit placée",
+          "Décider tôt : passe, tir ou ralentir"
+        ],
+        "en": [
+          "Sprint the lanes",
+          "Look up before dribbling",
+          "Attack before the defense is set",
+          "Decide early: pass, shoot or pull it out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          20,
+          47
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              17,
+              30,
+              "d"
+            ],
+            "5": [
+              26,
+              33,
+              "c"
+            ],
+            "2": [
+              5,
+              22,
+              "c"
+            ],
+            "3": [
+              44,
+              24,
+              "c"
+            ],
+            "4": [
+              22,
+              12,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 remonte ; 5 arrive en haut, 2 et 3 sur les ailes.",
+            "en": "1 pushes; 5 arrives up top, 2 and 3 on the wings."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5.",
+            "en": "1 passes to 5."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              37,
+              26,
+              "d"
+            ],
+            "3": [
+              39.5,
+              24,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "5 dribble vers 3 et lui remet le ballon.",
+            "en": "5 dribbles at 3 and hands off."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              31,
+              14,
+              "d"
+            ],
+            "5": [
+              33,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 attaque ; 5 roule.",
+            "en": "3 attacks; 5 rolls."
+          }
+        }
+      ]
+    },
+    {
+      "id": "early-side-pick-and-roll",
+      "cat": "transition",
+      "family": "attaque-rapide",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque rapide : pick-and-roll latéral immédiat",
+        "en": "Early side pick-and-roll"
+      },
+      "sum": {
+        "fr": "Le meneur remonte vers une aile et le grand qui arrive lui pose aussitôt un écran latéral.",
+        "en": "The guard pushes toward a wing and the arriving big sets a side screen right away."
+      },
+      "why": {
+        "fr": "Le pick-and-roll arrive avant que la défense ait choisi comment le défendre.",
+        "en": "The pick-and-roll comes before the defense has chosen how to guard it."
+      },
+      "counter": {
+        "fr": "Forcer vers la ligne de fond (ICE) dès le retour.",
+        "en": "Force baseline (ICE) as soon as you get back."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Courir vite dans les couloirs",
+          "Lever la tête avant de dribbler",
+          "Attaquer avant que la défense soit placée",
+          "Décider tôt : passe, tir ou ralentir"
+        ],
+        "en": [
+          "Sprint the lanes",
+          "Look up before dribbling",
+          "Attack before the defense is set",
+          "Decide early: pass, shoot or pull it out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          20,
+          47
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              40,
+              28,
+              "d"
+            ],
+            "5": [
+              35,
+              35,
+              "c"
+            ],
+            "2": [
+              3,
+              6,
+              "c"
+            ],
+            "3": [
+              47,
+              6,
+              "c"
+            ],
+            "4": [
+              22,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 remonte vers l'aile droite ; 5 arrive derrière lui.",
+            "en": "1 pushes toward the right wing; 5 trails behind him."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              37.5,
+              26,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran latéral.",
+            "en": "5 sets the side screen."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              30,
+              18,
+              "d"
+            ],
+            "5": [
+              33,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque le milieu ; 5 roule.",
+            "en": "1 attacks the middle; 5 rolls."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5.",
+            "en": "Pass to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "drag-and-pop",
+      "cat": "transition",
+      "family": "attaque-rapide",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque rapide : « Drag » avec pop",
+        "en": "Drag and pop"
+      },
+      "sum": {
+        "fr": "Écran porteur en transition par un grand qui tire bien, qui s'écarte à 3 points après l'écran pendant que l'autre grand court au cercle.",
+        "en": "A transition ball screen by a big who can shoot, who pops to the arc after the screen while the other big runs to the rim."
+      },
+      "why": {
+        "fr": "Le défenseur de l'écraneur aide sur le meneur ; personne ne revient sur le tireur.",
+        "en": "The screener's defender helps on the guard; nobody gets back to the shooter."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran et ne pas aider avec le défenseur de l'écraneur.",
+        "en": "Switch the screen and do not help with the screener's defender."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Courir vite dans les couloirs",
+          "Lever la tête avant de dribbler",
+          "Attaquer avant que la défense soit placée",
+          "Décider tôt : passe, tir ou ralentir"
+        ],
+        "en": [
+          "Sprint the lanes",
+          "Look up before dribbling",
+          "Attack before the defense is set",
+          "Decide early: pass, shoot or pull it out"
+        ]
+      },
+      "start": {
+        "1": [
+          30,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          22,
+          38
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              28,
+              41.5,
+              "s"
+            ],
+            "5": [
+              28,
+              10,
+              "c"
+            ],
+            "2": [
+              3,
+              6,
+              "c"
+            ],
+            "3": [
+              47,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran en transition ; 5 file au cercle ; 2 et 3 aux corners.",
+            "en": "4 sets the drag screen; 5 runs to the rim; 2 and 3 go to the corners."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              21,
+              28,
+              "d"
+            ],
+            "4": [
+              33,
+              31,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque à gauche ; 4 s'écarte à 3 points.",
+            "en": "1 attacks left; 4 pops to the arc."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 renvoie à 4 pour le tir.",
+            "en": "1 kicks it back to 4 for the shot."
+          }
+        }
+      ]
+    },
+    {
+      "id": "early-post-seal",
+      "cat": "transition",
+      "family": "attaque-rapide",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque rapide : pivot au poste dès l'arrivée",
+        "en": "Early post seal"
+      },
+      "sum": {
+        "fr": "Le pivot qui court en premier vers le cercle scelle tout de suite son défenseur au poste bas et reçoit avant que l'aide arrive.",
+        "en": "The big who runs first to the rim seals his defender on the block right away and catches before help arrives."
+      },
+      "why": {
+        "fr": "Le défenseur du pivot arrive en courant et en retard : il se retrouve dans le dos du pivot.",
+        "en": "The big's defender arrives running and late: he ends up behind the post."
+      },
+      "counter": {
+        "fr": "Le pivot défenseur sprinte et prend position devant le pivot.",
+        "en": "The defending big sprints and gets in front of the post."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Courir vite dans les couloirs",
+          "Lever la tête avant de dribbler",
+          "Attaquer avant que la défense soit placée",
+          "Décider tôt : passe, tir ou ralentir"
+        ],
+        "en": [
+          "Sprint the lanes",
+          "Look up before dribbling",
+          "Attack before the defense is set",
+          "Decide early: pass, shoot or pull it out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          20,
+          47
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              31,
+              9,
+              "c"
+            ],
+            "1": [
+              40,
+              27,
+              "d"
+            ],
+            "2": [
+              5,
+              22,
+              "c"
+            ],
+            "3": [
+              46,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 court vers le poste bas ; 1 remonte vers l'aile droite.",
+            "en": "5 runs to the block; 1 pushes toward the right wing."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "5 scelle son défenseur : 1 lui passe tout de suite.",
+            "en": "5 seals his defender: 1 feeds him right away."
+          }
+        }
+      ]
+    },
+    {
+      "id": "trailer-dive",
+      "cat": "transition",
+      "family": "attaque-rapide",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque rapide : coupe du traîneur vers le panier",
+        "en": "Trailer dive"
+      },
+      "sum": {
+        "fr": "Le traîneur, au lieu de s'arrêter en haut, coupe vers le panier quand son défenseur regarde le ballon.",
+        "en": "Instead of stopping up top, the trailer cuts to the basket when his defender watches the ball."
+      },
+      "why": {
+        "fr": "Le défenseur du traîneur se place pour défendre un tir en haut ; la coupe vers le cercle le prend de vitesse.",
+        "en": "The trailer's defender sets up to guard a shot up top; the dive to the rim beats him."
+      },
+      "counter": {
+        "fr": "Le défenseur du traîneur reste entre lui et le panier.",
+        "en": "The trailer's defender stays between him and the basket."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Courir vite dans les couloirs",
+          "Lever la tête avant de dribbler",
+          "Attaquer avant que la défense soit placée",
+          "Décider tôt : passe, tir ou ralentir"
+        ],
+        "en": [
+          "Sprint the lanes",
+          "Look up before dribbling",
+          "Attack before the defense is set",
+          "Decide early: pass, shoot or pull it out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          20,
+          47
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              33,
+              28,
+              "d"
+            ],
+            "2": [
+              5,
+              22,
+              "c"
+            ],
+            "3": [
+              46,
+              8,
+              "c"
+            ],
+            "4": [
+              24,
+              36,
+              "c"
+            ],
+            "5": [
+              12,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 remonte ; 4 traîne derrière lui.",
+            "en": "1 pushes; 4 trails behind him."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              25,
+              10,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 coupe vers le panier par le milieu.",
+            "en": "4 dives to the rim through the middle."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4.",
+            "en": "1 passes to 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "early-corner-three",
+      "cat": "transition",
+      "family": "attaque-rapide",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque rapide : passe directe au corner",
+        "en": "Early corner three"
+      },
+      "sum": {
+        "fr": "En transition, un ailier sprinte directement au corner et reçoit pour un tir à 3 points avant que la défense revienne.",
+        "en": "In transition, a wing sprints straight to the corner and catches for a three before the defense gets back."
+      },
+      "why": {
+        "fr": "La défense revient vers le cercle ; le corner est le dernier endroit qu'elle couvre.",
+        "en": "The defense retreats to the rim; the corner is the last spot it covers."
+      },
+      "counter": {
+        "fr": "Désigner tôt un défenseur pour le corner.",
+        "en": "Assign a defender to the corner early."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Courir vite dans les couloirs",
+          "Lever la tête avant de dribbler",
+          "Attaquer avant que la défense soit placée",
+          "Décider tôt : passe, tir ou ralentir"
+        ],
+        "en": [
+          "Sprint the lanes",
+          "Look up before dribbling",
+          "Attack before the defense is set",
+          "Decide early: pass, shoot or pull it out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          20,
+          47
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              3,
+              5,
+              "c"
+            ],
+            "1": [
+              22,
+              30,
+              "d"
+            ],
+            "3": [
+              45,
+              22,
+              "c"
+            ],
+            "5": [
+              28,
+              10,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 sprinte au corner gauche ; 1 remonte.",
+            "en": "2 sprints to the left corner; 1 pushes."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 au corner pour le tir.",
+            "en": "1 passes to 2 in the corner for the shot."
+          }
+        }
+      ]
+    },
+    {
+      "id": "running-the-lanes",
+      "cat": "transition",
+      "family": "principes-transition",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Courir les couloirs",
+        "en": "Running the lanes"
+      },
+      "sum": {
+        "fr": "Les ailiers courent le long des lignes de touche jusqu'à la ligne des lancers francs prolongée, puis coupent vers le panier.",
+        "en": "The wings run along the sidelines to the free-throw line extended, then cut to the basket."
+      },
+      "why": {
+        "fr": "Des couloirs larges écartent la défense ; la coupe tardive arrive au moment où le meneur attire un défenseur.",
+        "en": "Wide lanes spread the defense; the late cut arrives as the guard draws a defender."
+      },
+      "counter": {
+        "fr": "Faire revenir la défense au centre et protéger le cercle.",
+        "en": "Bring the defense back to the middle and protect the rim."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Courir vite dans les couloirs",
+          "Lever la tête avant de dribbler",
+          "Attaquer avant que la défense soit placée",
+          "Décider tôt : passe, tir ou ralentir"
+        ],
+        "en": [
+          "Sprint the lanes",
+          "Look up before dribbling",
+          "Attack before the defense is set",
+          "Decide early: pass, shoot or pull it out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          20,
+          47
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              3,
+              22,
+              "c"
+            ],
+            "3": [
+              47,
+              22,
+              "c"
+            ],
+            "1": [
+              25,
+              30,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "2 et 3 courent le long des lignes, 1 au centre.",
+            "en": "2 and 3 run along the sidelines, 1 in the middle."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              31,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "À la ligne des lancers francs prolongée, 3 coupe vers le panier.",
+            "en": "At the free-throw line extended, 3 cuts to the rim."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3.",
+            "en": "1 passes to 3."
+          }
+        }
+      ]
+    },
+    {
+      "id": "when-to-pull-it-out",
+      "cat": "transition",
+      "family": "principes-transition",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Transition : quand ralentir",
+        "en": "When to pull it out"
+      },
+      "sum": {
+        "fr": "Si la contre-attaque ne crée aucun avantage, le meneur ralentit, ressort le ballon et l'équipe se place pour une attaque placée.",
+        "en": "If the fast break creates no advantage, the guard slows down, pulls the ball out and the team sets up a half-court offense."
+      },
+      "why": {
+        "fr": "Forcer un mauvais tir en transition donne une contre-attaque à l'adversaire ; ralentir garde la possession.",
+        "en": "Forcing a bad shot in transition gives the opponent a fast break; pulling out keeps the possession."
+      },
+      "counter": {
+        "fr": "Revenir vite et nombreux pour obliger l'attaque à ralentir.",
+        "en": "Get back fast and in numbers to force the offense to slow down."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Courir vite dans les couloirs",
+          "Lever la tête avant de dribbler",
+          "Attaquer avant que la défense soit placée",
+          "Décider tôt : passe, tir ou ralentir"
+        ],
+        "en": [
+          "Sprint the lanes",
+          "Look up before dribbling",
+          "Attack before the defense is set",
+          "Decide early: pass, shoot or pull it out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          20,
+          47
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          25
+        ],
+        "x2": [
+          12,
+          14
+        ],
+        "x3": [
+          38,
+          14
+        ],
+        "x4": [
+          20,
+          8
+        ],
+        "x5": [
+          30,
+          8
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              30,
+              "d"
+            ],
+            "2": [
+              5,
+              22,
+              "c"
+            ],
+            "3": [
+              45,
+              22,
+              "c"
+            ],
+            "x1": [
+              25,
+              27,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 remonte : la défense est déjà revenue à cinq.",
+            "en": "1 pushes: the defense is already back with five."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              25,
+              36,
+              "d"
+            ],
+            "4": [
+              18,
+              21,
+              "c"
+            ],
+            "5": [
+              32,
+              21,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Pas d'avantage : 1 ralentit et ressort ; les autres se placent.",
+            "en": "No advantage: 1 slows down and pulls out; the others set up."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "L'attaque placée commence : passe à 2.",
+            "en": "The half-court offense starts: pass to 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "pass-ahead-in-transition",
+      "cat": "transition",
+      "family": "principes-transition",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Transition : avancer le ballon par la passe",
+        "en": "Pass ahead in transition"
+      },
+      "sum": {
+        "fr": "En transition, on fait avancer le ballon par la passe plutôt qu'en dribble : la passe va plus vite que n'importe quel joueur.",
+        "en": "In transition, move the ball ahead with the pass rather than the dribble: the pass is faster than any player."
+      },
+      "why": {
+        "fr": "Chaque passe en avant fait gagner une ou deux secondes et attaque la défense avant qu'elle se replace.",
+        "en": "Every pass ahead saves a second or two and attacks the defense before it resets."
+      },
+      "counter": {
+        "fr": "Couper les lignes de passe en avant en revenant.",
+        "en": "Cut off the forward passing lanes while getting back."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Courir vite dans les couloirs",
+          "Lever la tête avant de dribbler",
+          "Attaquer avant que la défense soit placée",
+          "Décider tôt : passe, tir ou ralentir"
+        ],
+        "en": [
+          "Sprint the lanes",
+          "Look up before dribbling",
+          "Attack before the defense is set",
+          "Decide early: pass, shoot or pull it out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          20,
+          47
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              6,
+              20,
+              "c"
+            ],
+            "3": [
+              44,
+              24,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 et 3 sprintent devant le ballon.",
+            "en": "2 and 3 sprint ahead of the ball."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 passe tout de suite en avant à 3 au lieu de dribbler.",
+            "en": "1 passes ahead right away to 3 instead of dribbling."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              20,
+              8,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "3 trouve 2 qui coupe vers le panier.",
+            "en": "3 finds 2 cutting to the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "role-of-the-trailer",
+      "cat": "transition",
+      "family": "principes-transition",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Transition : rôle du traîneur",
+        "en": "Role of the trailer"
+      },
+      "sum": {
+        "fr": "Le traîneur (le dernier attaquant à revenir) a trois options : s'arrêter en haut pour tirer, renverser le jeu, ou couper vers le panier.",
+        "en": "The trailer (the last attacker up the floor) has three options: stop up top to shoot, reverse the ball, or dive to the rim."
+      },
+      "why": {
+        "fr": "Le traîneur arrive quand la défense s'est occupée des autres : il est souvent le joueur le plus libre.",
+        "en": "The trailer arrives once the defense has dealt with the others: he is often the most open player."
+      },
+      "counter": {
+        "fr": "Désigner le dernier défenseur revenu pour le traîneur.",
+        "en": "Assign the last defender back to the trailer."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Courir vite dans les couloirs",
+          "Lever la tête avant de dribbler",
+          "Attaquer avant que la défense soit placée",
+          "Décider tôt : passe, tir ou ralentir"
+        ],
+        "en": [
+          "Sprint the lanes",
+          "Look up before dribbling",
+          "Attack before the defense is set",
+          "Decide early: pass, shoot or pull it out"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          20,
+          47
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              36,
+              28,
+              "d"
+            ],
+            "2": [
+              5,
+              22,
+              "c"
+            ],
+            "3": [
+              46,
+              8,
+              "c"
+            ],
+            "4": [
+              24,
+              38,
+              "c"
+            ],
+            "5": [
+              29,
+              10,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1, 2 et 3 remontent ; 4 traîne derrière.",
+            "en": "1, 2 and 3 push; 4 trails."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              24,
+              31,
+              "c"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "Option 1 : 4 s'arrête en haut et reçoit pour tirer.",
+            "en": "Option 1: 4 stops up top and catches to shoot."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "Option 2 : il renverse vers 2.",
+            "en": "Option 2: he reverses to 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "transition-defense-protect-the-rim",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : protéger le panier",
+        "en": "Transition defense: protect the rim"
+      },
+      "sum": {
+        "fr": "Le premier défenseur qui revient court directement sous le panier, avant de s'occuper du ballon ou d'un joueur.",
+        "en": "The first defender back runs straight under the basket, before worrying about the ball or a player."
+      },
+      "why": {
+        "fr": "Une contre-attaque cherche d'abord le lay-up : protéger le cercle la ralentit tout de suite.",
+        "en": "A fast break looks for the layup first: protecting the rim slows it down right away."
+      },
+      "counter": {
+        "fr": "Attaquer vite et passer avant que le défenseur arrive au cercle.",
+        "en": "Attack fast and pass before the defender gets to the rim."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          42
+        ],
+        "2": [
+          6,
+          42
+        ],
+        "3": [
+          44,
+          42
+        ],
+        "x5": [
+          30,
+          38
+        ],
+        "x1": [
+          22,
+          44
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x5": [
+              25,
+              9,
+              "m"
+            ],
+            "1": [
+              25,
+              32,
+              "d"
+            ],
+            "2": [
+              5,
+              24,
+              "c"
+            ],
+            "3": [
+              45,
+              24,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "x5 sprinte directement sous le panier.",
+            "en": "x5 sprints straight under the basket."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              25,
+              28,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 arrête le ballon avant la ligne des lancers francs.",
+            "en": "x1 stops the ball before the free-throw line."
+          }
+        },
+        {
+          "m": {
+            "x5": [
+              39,
+              18,
+              "m"
+            ],
+            "x1": [
+              26,
+              12,
+              "m"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3 : x5 sort sur lui depuis le cercle, x1 redescend.",
+            "en": "1 passes to 3: x5 steps out from the rim, x1 drops back."
+          }
+        }
+      ]
+    },
+    {
+      "id": "transition-defense-stop-the-ball",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : arrêter le ballon",
+        "en": "Transition defense: stop the ball"
+      },
+      "sum": {
+        "fr": "Le deuxième défenseur qui revient arrête le porteur du ballon le plus haut possible, pour que l'attaque ne puisse pas accélérer.",
+        "en": "The second defender back stops the ball handler as high as possible so the offense cannot keep its speed."
+      },
+      "why": {
+        "fr": "Un porteur ralenti laisse le temps aux autres défenseurs de revenir.",
+        "en": "A slowed ball handler gives the other defenders time to get back."
+      },
+      "counter": {
+        "fr": "Passer en avant avant d'être arrêté.",
+        "en": "Pass ahead before being stopped."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "x5": [
+          25,
+          12
+        ],
+        "x1": [
+          30,
+          40
+        ],
+        "x2": [
+          14,
+          44
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              34,
+              "d"
+            ],
+            "x1": [
+              25,
+              31,
+              "m"
+            ],
+            "2": [
+              5,
+              30,
+              "c"
+            ],
+            "3": [
+              45,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "x1 vient se placer devant 1 et l'oblige à ralentir.",
+            "en": "x1 gets in front of 1 and forces him to slow down."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              10,
+              22,
+              "m"
+            ],
+            "2": [
+              5,
+              24,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Les autres défenseurs reviennent : x2 rejoint son côté.",
+            "en": "The other defenders get back: x2 reaches his side."
+          }
+        }
+      ]
+    },
+    {
+      "id": "transition-defense-1-vs-2",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : 1 contre 2",
+        "en": "Transition defense: 1 vs 2"
+      },
+      "sum": {
+        "fr": "Seul contre deux attaquants, le défenseur recule vers le panier en feintant de sortir sur le porteur, pour gagner du temps.",
+        "en": "Alone against two attackers, the defender backpedals to the rim while faking at the ball handler, to buy time."
+      },
+      "why": {
+        "fr": "Chaque feinte fait hésiter le porteur ; chaque seconde gagnée permet à un coéquipier de revenir.",
+        "en": "Every fake makes the ball handler hesitate; every second gained lets a teammate get back."
+      },
+      "counter": {
+        "fr": "Attaquer vite et passer tôt pour ne pas laisser le défenseur feinter.",
+        "en": "Attack fast and pass early so the defender cannot fake."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          42
+        ],
+        "2": [
+          10,
+          42
+        ],
+        "x1": [
+          25,
+          24
+        ],
+        "x2": [
+          30,
+          46
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              31,
+              "d"
+            ],
+            "2": [
+              10,
+              24,
+              "c"
+            ],
+            "x1": [
+              24,
+              22,
+              "m"
+            ],
+            "x2": [
+              28,
+              36,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 recule et feinte de sortir sur 1.",
+            "en": "x1 backpedals and fakes at 1."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              24,
+              26,
+              "d"
+            ],
+            "2": [
+              14,
+              16,
+              "c"
+            ],
+            "x1": [
+              21,
+              14,
+              "m"
+            ],
+            "x2": [
+              26,
+              30,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 hésite ; x1 se place entre les deux, près du cercle.",
+            "en": "1 hesitates; x1 sets up between the two, near the rim."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              24,
+              22,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 est revenu : la défense est à deux contre deux.",
+            "en": "x2 is back: it is now two-on-two."
+          }
+        }
+      ]
+    },
+    {
+      "id": "transition-defense-2-vs-3-tandem",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : 2 contre 3 (tandem)",
+        "en": "Transition defense: 2 vs 3 tandem"
+      },
+      "sum": {
+        "fr": "À deux contre trois, les défenseurs se placent l'un devant l'autre : le premier arrête le ballon, le second garde le cercle et prend la première passe.",
+        "en": "Two against three, the defenders line up in tandem: the first stops the ball, the second guards the rim and takes the first pass."
+      },
+      "why": {
+        "fr": "Le tandem protège d'abord le lay-up et oblige l'attaque à faire deux passes, le temps que l'aide arrive.",
+        "en": "The tandem protects the layup first and forces the offense to make two passes while help arrives."
+      },
+      "counter": {
+        "fr": "Passer vite à l'aile, puis renverser vers le côté opposé.",
+        "en": "Pass quickly to the wing, then swing it to the far side."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "x1": [
+          25,
+          26
+        ],
+        "x2": [
+          25,
+          11
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              31,
+              "d"
+            ],
+            "2": [
+              5,
+              24,
+              "c"
+            ],
+            "3": [
+              45,
+              24,
+              "c"
+            ],
+            "x1": [
+              25,
+              27.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 arrête le ballon ; x2 garde le cercle.",
+            "en": "x1 stops the ball; x2 guards the rim."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "Passe à l'aile.",
+            "en": "Pass to the wing."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              41,
+              19,
+              "m"
+            ],
+            "x1": [
+              25,
+              11,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 sort sur 3, x1 descend au cercle.",
+            "en": "x2 steps out to 3, x1 drops to the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "transition-defense-matching-up",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : communication et appariement",
+        "en": "Transition defense: matching up"
+      },
+      "sum": {
+        "fr": "Une fois le cercle protégé et le ballon arrêté, les défenseurs s'apparient : chacun désigne à voix haute le joueur qu'il prend.",
+        "en": "Once the rim is protected and the ball stopped, the defenders match up: each one calls out the player he takes."
+      },
+      "why": {
+        "fr": "En transition, chacun prend le joueur le plus proche, pas forcément le sien : la communication évite les oublis.",
+        "en": "In transition, each takes the closest player, not necessarily his own: communication prevents leaks."
+      },
+      "counter": {
+        "fr": "Attaquer pendant que la défense s'apparie, avant les appels.",
+        "en": "Attack while the defense is matching up, before the calls."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          6,
+          24
+        ],
+        "3": [
+          44,
+          24
+        ],
+        "4": [
+          22,
+          40
+        ],
+        "5": [
+          30,
+          12
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          26,
+          9
+        ],
+        "x3": [
+          16,
+          20
+        ],
+        "x4": [
+          36,
+          30
+        ],
+        "x5": [
+          40,
+          40
+        ]
+      },
+      "steps": [
+        {
+          "c": {
+            "fr": "Le ballon est arrêté et le cercle protégé ; les autres arrivent.",
+            "en": "The ball is stopped and the rim is protected; the others arrive."
+          }
+        },
+        {
+          "m": {
+            "x3": [
+              9,
+              22,
+              "m"
+            ],
+            "x2": [
+              28,
+              10,
+              "m"
+            ],
+            "x4": [
+              41,
+              22,
+              "m"
+            ],
+            "x5": [
+              23,
+              36,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Chacun prend le plus proche : x3 sur 2, x2 sur 5, x4 sur 3, x5 sur 4.",
+            "en": "Each takes the closest: x3 on 2, x2 on 5, x4 on 3, x5 on 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "crash-or-get-back",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : qui va au rebond, qui revient",
+        "en": "Crash or get back"
+      },
+      "sum": {
+        "fr": "Sur chaque tir, l'équipe sait d'avance qui va au rebond offensif et qui repart tout de suite en défense.",
+        "en": "On every shot, the team knows ahead of time who crashes the offensive glass and who sprints back on defense."
+      },
+      "why": {
+        "fr": "Des rôles fixes donnent des rebonds offensifs sans laisser de contre-attaque facile.",
+        "en": "Fixed roles win offensive rebounds without giving up easy fast breaks."
+      },
+      "counter": {
+        "fr": "Bloquer les rebondeurs et lancer vite la contre-attaque vers ceux qui ne sont pas revenus.",
+        "en": "Box out the crashers and run quickly at those who did not get back."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "c": {
+            "fr": "2 tire de l'aile.",
+            "en": "2 shoots from the wing."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              22,
+              6,
+              "c"
+            ],
+            "5": [
+              29,
+              5,
+              "c"
+            ],
+            "3": [
+              15,
+              9,
+              "c"
+            ],
+            "1": [
+              25,
+              45,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 et 5 foncent au rebond, 3 va au rebond côté faible ; 1 repart en défense.",
+            "en": "4 and 5 crash, 3 crashes from the weak side; 1 sprints back."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              38,
+              44,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 repart lui aussi en défense après son tir.",
+            "en": "2 also gets back after his shot."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slow-the-outlet",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : ralentir la première passe",
+        "en": "Slow the outlet"
+      },
+      "sum": {
+        "fr": "En défense, on gêne le rebondeur adverse et on refuse la première passe pour ralentir leur contre-attaque.",
+        "en": "On defense, bother the opposing rebounder and deny the outlet to slow down their fast break."
+      },
+      "why": {
+        "fr": "Sans première passe rapide, la contre-attaque adverse ne démarre pas et la défense a le temps de revenir.",
+        "en": "Without a quick outlet, the opponent's break never starts and the defense has time to get back."
+      },
+      "counter": {
+        "fr": "Le rebondeur pivote vers l'extérieur et le meneur se démarque plus haut.",
+        "en": "The rebounder pivots outside and the guard gets open higher up."
+      },
+      "used": {
+        "fr": "Le schéma montre la moitié de terrain où le rebond est pris ; l'attaque repart vers la ligne médiane (en bas).",
+        "en": "The diagram shows the half where the rebound is taken; the offense heads toward half court (bottom)."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "5": [
+          25,
+          7
+        ],
+        "1": [
+          9,
+          18
+        ],
+        "2": [
+          40,
+          18
+        ],
+        "x5": [
+          25,
+          10
+        ],
+        "x1": [
+          11,
+          20
+        ],
+        "b": "5"
+      },
+      "steps": [
+        {
+          "m": {
+            "x5": [
+              23,
+              9.5,
+              "m"
+            ],
+            "x1": [
+              8,
+              21,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 (adverse) prend le rebond : x5 lui met les bras devant, x1 refuse la passe à 1.",
+            "en": "5 (opponent) grabs the rebound: x5 gets his arms up, x1 denies the pass to 1."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              12,
+              30,
+              "c"
+            ],
+            "x1": [
+              12,
+              33,
+              "m"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "1 doit remonter plus haut pour recevoir : la contre-attaque perd du temps.",
+            "en": "1 has to go higher to catch: the break loses time."
+          }
+        }
+      ]
+    },
+    {
+      "id": "guarding-the-trailer",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : défendre le traîneur",
+        "en": "Guarding the trailer"
+      },
+      "sum": {
+        "fr": "Le dernier défenseur qui revient prend le traîneur adverse, qui arrive en haut pour tirer ou renverser.",
+        "en": "The last defender back picks up the opposing trailer, who arrives up top to shoot or reverse."
+      },
+      "why": {
+        "fr": "Le traîneur est souvent oublié : le désigner d'avance supprime un tir ouvert facile.",
+        "en": "The trailer often gets forgotten: assigning him ahead of time removes an easy open shot."
+      },
+      "counter": {
+        "fr": "Le traîneur coupe vers le panier si son défenseur arrive trop vite sur lui.",
+        "en": "The trailer dives to the rim if his defender rushes at him."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "1": [
+          38,
+          26
+        ],
+        "2": [
+          5,
+          22
+        ],
+        "3": [
+          46,
+          8
+        ],
+        "5": [
+          30,
+          10
+        ],
+        "4": [
+          23,
+          38
+        ],
+        "b": "1",
+        "x1": [
+          35,
+          23
+        ],
+        "x2": [
+          9,
+          20
+        ],
+        "x3": [
+          42,
+          9
+        ],
+        "x5": [
+          27,
+          8
+        ],
+        "x4": [
+          30,
+          46
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              24,
+              31,
+              "c"
+            ],
+            "x4": [
+              25,
+              34,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "4 arrive en haut : x4, le dernier revenu, court vers lui.",
+            "en": "4 arrives up top: x4, the last one back, runs at him."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              24.5,
+              28.5,
+              "m"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4 : x4 est déjà là pour contester.",
+            "en": "1 passes to 4: x4 is already there to contest."
+          }
+        }
+      ]
     }
   ]
 }
