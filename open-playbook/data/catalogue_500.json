@@ -4254,7 +4254,7 @@
       "fr": "Lay-up après passe en course",
       "en": "Layups off the pass"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "reverse-layups",
@@ -4265,7 +4265,7 @@
       "fr": "Finitions en reverse",
       "en": "Reverse layups"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "layups-out-of-the-pick-and-roll",
@@ -4276,7 +4276,7 @@
       "fr": "Lay-up en sortie de pick-and-roll",
       "en": "Layups out of the pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "two-hand-power-finishes",
@@ -4287,7 +4287,7 @@
       "fr": "Finitions à deux mains sous le panier",
       "en": "Two-hand power finishes"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-minute-shooting",
@@ -4309,7 +4309,7 @@
       "fr": "Tir de près en étoile",
       "en": "Form shooting star"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "around-the-world",
@@ -4320,7 +4320,7 @@
       "fr": "Tir du coin au coin (around the world)",
       "en": "Around the world"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shooting-off-screens",
@@ -4331,7 +4331,7 @@
       "fr": "Tir en sortie d'écran",
       "en": "Shooting off screens"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pull-up-shooting",
@@ -4342,7 +4342,7 @@
       "fr": "Tir en sortie de dribble",
       "en": "Pull-up shooting"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "three-point-contest",
@@ -4353,7 +4353,7 @@
       "fr": "Concours de tirs à 3 points",
       "en": "Three-point contest"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "free-throws-when-tired",
@@ -4364,7 +4364,7 @@
       "fr": "Lancers francs sous fatigue",
       "en": "Free throws when tired"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shot-fake-and-shoot",
@@ -4375,7 +4375,7 @@
       "fr": "Tir après feinte (pump fake)",
       "en": "Shot fake and shoot"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "five-spots-five-makes",
@@ -4386,7 +4386,7 @@
       "fr": "Tir « 5 positions, 5 paniers »",
       "en": "Five spots, five makes"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "catch-and-shoot-vs-close-out",
@@ -4397,7 +4397,7 @@
       "fr": "Tir en catch-and-shoot avec close-out",
       "en": "Catch-and-shoot vs close-out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "step-back-shooting",
@@ -4408,7 +4408,7 @@
       "fr": "Tir en step-back",
       "en": "Step-back shooting"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "team-free-throw-challenge",
@@ -4419,7 +4419,7 @@
       "fr": "Lancers francs en compétition par équipe",
       "en": "Team free-throw challenge"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "trailer-three-shooting",
@@ -4430,7 +4430,7 @@
       "fr": "Tir en transition (trailer three)",
       "en": "Trailer three shooting"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shooting-off-the-handoff",
@@ -4441,7 +4441,7 @@
       "fr": "Tir en sortie de remise main à main",
       "en": "Shooting off the handoff"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shooting-over-a-contest",
@@ -4452,7 +4452,7 @@
       "fr": "Tir avec main gênante (contest pad)",
       "en": "Shooting over a contest"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "mirror-dribbling",
@@ -4463,7 +4463,7 @@
       "fr": "Dribble en miroir",
       "en": "Mirror dribbling"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "cone-dribbling-course",
@@ -4474,7 +4474,7 @@
       "fr": "Parcours de dribble entre plots",
       "en": "Cone dribbling course"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "two-ball-dribbling",
@@ -4818,13 +4818,13 @@
     "status": "todo"
   },
   {
-    "id": "3-on-2-2-on-1",
+    "id": "3-on-3-with-a-joker",
     "cat": "exercices",
     "family": "surnombre",
     "lvl": 2,
     "name": {
-      "fr": "3 contre 2 puis 2 contre 1",
-      "en": "3-on-2, 2-on-1"
+      "fr": "3 contre 3 avec un joker",
+      "en": "3-on-3 with a joker"
     },
     "status": "todo"
   },
@@ -5434,13 +5434,13 @@
     "status": "todo"
   },
   {
-    "id": "cut-after-you-pass",
+    "id": "attack-the-rim-first",
     "cat": "principes",
     "family": "principes-attaque",
     "lvl": 1,
     "name": {
-      "fr": "Couper après la passe",
-      "en": "Cut after you pass"
+      "fr": "Attaquer le cercle en premier",
+      "en": "Attack the rim first"
     },
     "status": "todo"
   },
@@ -5456,13 +5456,13 @@
     "status": "todo"
   },
   {
-    "id": "give-and-go",
+    "id": "get-open-without-the-ball",
     "cat": "principes",
     "family": "principes-attaque",
     "lvl": 1,
     "name": {
-      "fr": "Jouer à deux : passe et va",
-      "en": "Two-man game: give and go"
+      "fr": "Se démarquer sans ballon",
+      "en": "Get open without the ball"
     },
     "status": "todo"
   },

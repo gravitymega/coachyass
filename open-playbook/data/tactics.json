@@ -46592,6 +46592,2227 @@
           "Out of a pick-and-roll"
         ]
       }
+    },
+    {
+      "id": "layups-off-the-pass",
+      "cat": "exercices",
+      "family": "finition",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Lay-up après passe en course",
+        "en": "Layups off the pass"
+      },
+      "sum": {
+        "fr": "Le joueur court vers le panier, reçoit une passe en pleine course et finit en lay-up sans dribbler.",
+        "en": "The player runs to the basket, catches a pass at full speed and finishes with a layup without dribbling."
+      },
+      "why": {
+        "fr": "En match, beaucoup de lay-ups arrivent après une passe en mouvement : il faut recevoir sans ralentir.",
+        "en": "In games, many layups come off a pass on the move: you have to catch without slowing down."
+      },
+      "counter": {
+        "fr": "Le passeur varie la hauteur et le moment de la passe.",
+        "en": "The passer varies the height and timing of the pass."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pied d'appel opposé à la main de tir",
+          "Protéger le ballon avec le corps",
+          "Viser le carré de la planche",
+          "Finir des deux mains selon le côté"
+        ],
+        "en": [
+          "Take off from the foot opposite the shooting hand",
+          "Protect the ball with your body",
+          "Aim for the square on the backboard",
+          "Finish with either hand depending on the side"
+        ]
+      },
+      "start": {
+        "1": [
+          8,
+          28
+        ],
+        "2": [
+          25,
+          31
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              17,
+              14,
+              "c"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "1 court vers le panier ; 2 lui passe en course.",
+            "en": "1 runs to the basket; 2 hits him on the move."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              22,
+              7,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 finit sans dribbler.",
+            "en": "1 finishes without a dribble."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 2 ballons",
+        "en": "1 basket, 2 balls"
+      },
+      "players": "4-12",
+      "age": [
+        "U11",
+        "U13"
+      ],
+      "variants": {
+        "fr": [
+          "Passe à terre",
+          "Passe lobée",
+          "Finir main faible"
+        ],
+        "en": [
+          "Bounce pass",
+          "Lob pass",
+          "Finish with the weak hand"
+        ]
+      }
+    },
+    {
+      "id": "reverse-layups",
+      "cat": "exercices",
+      "family": "finition",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Finitions en reverse",
+        "en": "Reverse layups"
+      },
+      "sum": {
+        "fr": "Le joueur attaque par la ligne de fond, passe sous le panier et finit de l'autre côté, en se servant du cercle pour se protéger.",
+        "en": "The player drives baseline, goes under the basket and finishes on the other side, using the rim to protect the ball."
+      },
+      "why": {
+        "fr": "Le cercle se place entre le ballon et le défenseur qui arrive : le contre devient très difficile.",
+        "en": "The rim gets between the ball and the arriving defender: the block becomes very hard."
+      },
+      "counter": {
+        "fr": "Le défenseur reste du côté de la finition, sous le panier.",
+        "en": "The defender stays on the finishing side, under the basket."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pied d'appel opposé à la main de tir",
+          "Protéger le ballon avec le corps",
+          "Viser le carré de la planche",
+          "Finir des deux mains selon le côté"
+        ],
+        "en": [
+          "Take off from the foot opposite the shooting hand",
+          "Protect the ball with your body",
+          "Aim for the square on the backboard",
+          "Finish with either hand depending on the side"
+        ]
+      },
+      "start": {
+        "1": [
+          47,
+          6
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              32,
+              5,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque la ligne de fond.",
+            "en": "1 drives baseline."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              21,
+              5,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Il passe sous le panier et finit de l'autre côté.",
+            "en": "He goes under the basket and finishes on the other side."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par joueur",
+        "en": "1 basket, 1 ball per player"
+      },
+      "players": "2-10",
+      "age": [
+        "U13",
+        "U15",
+        "U17"
+      ],
+      "variants": {
+        "fr": [
+          "Depuis les deux corners",
+          "Avec un défenseur passif",
+          "Reverse main faible"
+        ],
+        "en": [
+          "From both corners",
+          "With a passive defender",
+          "Weak-hand reverse"
+        ]
+      }
+    },
+    {
+      "id": "layups-out-of-the-pick-and-roll",
+      "cat": "exercices",
+      "family": "finition",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Lay-up en sortie de pick-and-roll",
+        "en": "Layups out of the pick-and-roll"
+      },
+      "sum": {
+        "fr": "Le porteur utilise l'écran d'un partenaire, attaque le panier en descente et finit en lay-up.",
+        "en": "The ball handler uses a partner's screen, attacks downhill and finishes with a layup."
+      },
+      "why": {
+        "fr": "Prépare la finition la plus fréquente en match : après un écran, à pleine vitesse.",
+        "en": "Prepares the most frequent finish in games: off a screen, at full speed."
+      },
+      "counter": {
+        "fr": "Ajouter le défenseur de l'écraneur qui recule (drop).",
+        "en": "Add the screener's defender dropping back."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pied d'appel opposé à la main de tir",
+          "Protéger le ballon avec le corps",
+          "Viser le carré de la planche",
+          "Finir des deux mains selon le côté"
+        ],
+        "en": [
+          "Take off from the foot opposite the shooting hand",
+          "Protect the ball with your body",
+          "Aim for the square on the backboard",
+          "Finish with either hand depending on the side"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran.",
+            "en": "5 screens."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              31,
+              18,
+              "d"
+            ],
+            "5": [
+              27,
+              12,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 utilise l'écran et attaque le cercle.",
+            "en": "1 uses the screen and attacks the rim."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              28,
+              8,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 finit en lay-up.",
+            "en": "1 finishes with a layup."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "2-8",
+      "age": [
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Finir en floater",
+          "Passer au roll",
+          "Ajouter le défenseur du porteur"
+        ],
+        "en": [
+          "Finish with a floater",
+          "Hit the roll",
+          "Add the ball handler's defender"
+        ]
+      }
+    },
+    {
+      "id": "two-hand-power-finishes",
+      "cat": "exercices",
+      "family": "finition",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Finitions à deux mains sous le panier",
+        "en": "Two-hand power finishes"
+      },
+      "sum": {
+        "fr": "Sous le panier, le joueur reçoit, fait un arrêt deux temps et monte au cercle à deux mains, avec puissance.",
+        "en": "Under the basket, the player catches, makes a jump stop and goes up strong with two hands."
+      },
+      "why": {
+        "fr": "La finition à deux mains protège le ballon au contact et provoque des fautes.",
+        "en": "The two-hand finish protects the ball through contact and draws fouls."
+      },
+      "counter": {
+        "fr": "Le défenseur saute droit sans faute.",
+        "en": "The defender jumps straight up without fouling."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pied d'appel opposé à la main de tir",
+          "Protéger le ballon avec le corps",
+          "Viser le carré de la planche",
+          "Finir des deux mains selon le côté"
+        ],
+        "en": [
+          "Take off from the foot opposite the shooting hand",
+          "Protect the ball with your body",
+          "Aim for the square on the backboard",
+          "Finish with either hand depending on the side"
+        ]
+      },
+      "start": {
+        "1": [
+          22,
+          10
+        ],
+        "2": [
+          32,
+          14
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "1",
+          "c": {
+            "fr": "2 passe à 1 près du cercle.",
+            "en": "2 passes to 1 near the rim."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              24,
+              7,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 fait un arrêt deux temps et monte à deux mains.",
+            "en": "1 jump-stops and goes up with two hands."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "2-8",
+      "age": [
+        "U11",
+        "U13",
+        "U15"
+      ],
+      "variants": {
+        "fr": [
+          "Avec un bouclier de contact",
+          "Après une feinte",
+          "Des deux côtés"
+        ],
+        "en": [
+          "With a contact pad",
+          "After a fake",
+          "From both sides"
+        ]
+      }
+    },
+    {
+      "id": "form-shooting-star",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Tir de près en étoile",
+        "en": "Form shooting star"
+      },
+      "sum": {
+        "fr": "Le joueur tire près du panier depuis cinq points en étoile, en se concentrant sur la mécanique de tir.",
+        "en": "The player shoots close to the basket from five spots in a star, focusing on shooting form."
+      },
+      "why": {
+        "fr": "Près du panier, le joueur réussit beaucoup et peut corriger son geste sans fatigue.",
+        "en": "Close to the basket, the player makes a lot and can correct his form without fatigue."
+      },
+      "counter": {
+        "fr": "Reculer d'un pas à chaque série réussie.",
+        "en": "Step back one step after each successful round."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "1": [
+          20,
+          7
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              20,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Tir au point 1, à gauche du panier.",
+            "en": "Shot from spot 1, left of the basket."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              21,
+              12,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Point 2.",
+            "en": "Spot 2."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              25,
+              13,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Point 3, face au panier.",
+            "en": "Spot 3, facing the basket."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              30,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Points 4 et 5, à droite.",
+            "en": "Spots 4 and 5, on the right."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "1+",
+      "age": [
+        "U11",
+        "U13"
+      ],
+      "variants": {
+        "fr": [
+          "Main faible uniquement",
+          "Sans planche",
+          "En une minute"
+        ],
+        "en": [
+          "Weak hand only",
+          "No backboard",
+          "In one minute"
+        ]
+      }
+    },
+    {
+      "id": "around-the-world",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Tir du coin au coin (around the world)",
+        "en": "Around the world"
+      },
+      "sum": {
+        "fr": "Le joueur tire depuis cinq positions autour de la raquette, du corner au corner ; il n'avance que s'il marque.",
+        "en": "The player shoots from five spots around the lane, corner to corner; he only moves on after a make."
+      },
+      "why": {
+        "fr": "Le jeu crée de la pression et fait travailler tous les angles de tir.",
+        "en": "The game creates pressure and works every shooting angle."
+      },
+      "counter": {
+        "fr": "Recommencer au début après deux échecs de suite.",
+        "en": "Start over after two misses in a row."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "1": [
+          8,
+          6
+        ],
+        "2": [
+          25,
+          9
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "1",
+          "c": {
+            "fr": "2 passe, 1 tire du corner gauche.",
+            "en": "2 passes, 1 shoots from the left corner."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              10,
+              16,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "Panier : 1 avance sur l'aile ; 2 récupère.",
+            "en": "Make: 1 moves to the wing; 2 rebounds."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "Tir de l'aile.",
+            "en": "Shot from the wing."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              25,
+              19,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 avance en haut ; 2 récupère.",
+            "en": "1 moves to the top; 2 rebounds."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "Tir en haut, puis l'autre côté.",
+            "en": "Shot from the top, then the other side."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "2-6",
+      "age": [
+        "U11",
+        "U13",
+        "U15"
+      ],
+      "variants": {
+        "fr": [
+          "À 3 points",
+          "En duel",
+          "Avec un dribble avant le tir"
+        ],
+        "en": [
+          "From three",
+          "As a duel",
+          "With one dribble before the shot"
+        ]
+      }
+    },
+    {
+      "id": "shooting-off-screens",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Tir en sortie d'écran",
+        "en": "Shooting off screens"
+      },
+      "sum": {
+        "fr": "Le tireur sort d'un écran retour pour recevoir et tirer, d'un côté puis de l'autre.",
+        "en": "The shooter comes off a pin-down to catch and shoot, on one side, then the other."
+      },
+      "why": {
+        "fr": "Reproduit les tirs les plus courants en match : en sortie d'écran, pieds en mouvement.",
+        "en": "Reproduces the most common game shots: off screens, feet on the move."
+      },
+      "counter": {
+        "fr": "L'écraneur devient défenseur et conteste.",
+        "en": "The screener becomes a defender and contests."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          19,
+          8
+        ],
+        "4": [
+          17,
+          14
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              16,
+              10,
+              "s"
+            ],
+            "2": [
+              8,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran ; 2 remonte vers l'aile.",
+            "en": "4 screens; 2 comes up to the wing."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 qui tire.",
+            "en": "1 passes to 2, who shoots."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              30,
+              7,
+              "c"
+            ],
+            "4": [
+              33,
+              13,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 repart vers l'autre côté pour la répétition suivante.",
+            "en": "2 heads to the other side for the next rep."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "1 panier, 2 ballons",
+        "en": "1 basket, 2 balls"
+      },
+      "players": "3-6",
+      "age": [
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Boucle vers le panier (curl)",
+          "Sortie en fade",
+          "Avec un défenseur qui suit"
+        ],
+        "en": [
+          "Curl to the rim",
+          "Fade off the screen",
+          "With a trailing defender"
+        ]
+      }
+    },
+    {
+      "id": "pull-up-shooting",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Tir en sortie de dribble",
+        "en": "Pull-up shooting"
+      },
+      "sum": {
+        "fr": "Le joueur attaque en dribble, s'arrête en deux temps et tire à mi-distance.",
+        "en": "The player attacks off the dribble, makes a two-step stop and shoots from mid-range."
+      },
+      "why": {
+        "fr": "Contre une défense qui recule, le tir en sortie de dribble est une arme indispensable.",
+        "en": "Against a dropping defense, the pull-up is an essential weapon."
+      },
+      "counter": {
+        "fr": "Le défenseur ferme l'espace avant l'arrêt.",
+        "en": "The defender closes the space before the stop."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              32,
+              20,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque vers le coude droit.",
+            "en": "1 attacks toward the right elbow."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              18,
+              20,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Arrêt en deux temps et tir ; puis même chose à gauche.",
+            "en": "Two-step stop and shot; then the same on the left."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par joueur",
+        "en": "1 basket, 1 ball per player"
+      },
+      "players": "1-6",
+      "age": [
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Après un changement de main",
+          "Sur un écran",
+          "Tir à 3 points en sortie de dribble"
+        ],
+        "en": [
+          "After a crossover",
+          "Off a screen",
+          "Pull-up three"
+        ]
+      }
+    },
+    {
+      "id": "three-point-contest",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Concours de tirs à 3 points",
+        "en": "Three-point contest"
+      },
+      "sum": {
+        "fr": "Le joueur tire depuis cinq postes (corners, ailes, haut) avec cinq ballons par poste, le plus vite possible.",
+        "en": "The player shoots from five racks (corners, wings, top) with five balls per rack, as fast as possible."
+      },
+      "why": {
+        "fr": "Tirer vite et juste, en se déplaçant entre les postes, prépare aux tirs sous fatigue.",
+        "en": "Shooting fast and accurately while moving between racks prepares for shots under fatigue."
+      },
+      "counter": {
+        "fr": "Fixer un temps limite.",
+        "en": "Set a time limit."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "1": [
+          2,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              6,
+              23,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Cinq tirs du corner gauche, puis l'aile gauche.",
+            "en": "Five shots from the left corner, then the left wing."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              25,
+              31,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Le haut.",
+            "en": "The top."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              44,
+              23,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "L'aile droite puis le corner droit.",
+            "en": "The right wing, then the right corner."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              48,
+              5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Dernier poste.",
+            "en": "Last rack."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "1 panier, 25 ballons (ou 5 avec des passeurs)",
+        "en": "1 basket, 25 balls (or 5 with feeders)"
+      },
+      "players": "1-6",
+      "age": [
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Ballon bonus sur un poste",
+          "Équipe contre équipe",
+          "Depuis la ligne à 3 points FIBA ou NBA"
+        ],
+        "en": [
+          "A bonus ball on one rack",
+          "Team versus team",
+          "From the FIBA or NBA line"
+        ]
+      }
+    },
+    {
+      "id": "free-throws-when-tired",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Lancers francs sous fatigue",
+        "en": "Free throws when tired"
+      },
+      "sum": {
+        "fr": "Le joueur fait un aller-retour en sprint, puis tire deux lancers francs avec le cœur qui bat vite.",
+        "en": "The player runs a sprint down and back, then shoots two free throws with his heart racing."
+      },
+      "why": {
+        "fr": "En match, les lancers francs arrivent souvent après un effort : il faut garder sa routine.",
+        "en": "In games, free throws often come after an effort: you have to keep your routine."
+      },
+      "counter": {
+        "fr": "Sanction en sprint pour chaque lancer raté.",
+        "en": "A sprint penalty for each miss."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          19
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              46,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 sprinte jusqu'à la ligne médiane et revient.",
+            "en": "1 sprints to half court and back."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              25,
+              19,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Retour à la ligne des lancers francs : routine, puis deux lancers.",
+            "en": "Back to the free-throw line: routine, then two shots."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "1-8",
+      "age": [
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Après une défense en glissements",
+          "Objectif d'équipe",
+          "Avec bruit du public"
+        ],
+        "en": [
+          "After defensive slides",
+          "Team target",
+          "With crowd noise"
+        ]
+      }
+    },
+    {
+      "id": "shot-fake-and-shoot",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Tir après feinte (pump fake)",
+        "en": "Shot fake and shoot"
+      },
+      "sum": {
+        "fr": "Le tireur reçoit face à un défenseur qui arrive en courant, feinte le tir, le laisse passer, fait un dribble et tire.",
+        "en": "The shooter catches facing a defender running at him, pump-fakes, lets him fly by, takes one dribble and shoots."
+      },
+      "why": {
+        "fr": "Un défenseur qui sort trop vite saute sur la feinte : le tir suivant est libre.",
+        "en": "A defender closing out too fast jumps at the fake: the next shot is open."
+      },
+      "counter": {
+        "fr": "Le défenseur sort en contrôle, sans sauter.",
+        "en": "The defender closes out under control, without jumping."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "x2": [
+          31,
+          14
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x2": [
+              41,
+              22,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 ; x2 sort en courant.",
+            "en": "1 passes to 2; x2 runs out at him."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              45,
+              26,
+              "m"
+            ],
+            "2": [
+              39,
+              20,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "2 feinte : x2 saute et passe à côté ; un dribble et tir.",
+            "en": "2 fakes: x2 jumps past; one dribble and shot."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par trio",
+        "en": "1 basket, 1 ball per group of 3"
+      },
+      "players": "3-9",
+      "age": [
+        "U13",
+        "U15",
+        "U17",
+        "seniors"
+      ],
+      "variants": {
+        "fr": [
+          "Feinte puis pénétration",
+          "Feinte puis passe",
+          "Défenseur actif"
+        ],
+        "en": [
+          "Fake then drive",
+          "Fake then pass",
+          "Live defender"
+        ]
+      }
+    },
+    {
+      "id": "five-spots-five-makes",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Tir « 5 positions, 5 paniers »",
+        "en": "Five spots, five makes"
+      },
+      "sum": {
+        "fr": "Le joueur doit réussir cinq tirs à chacun des cinq postes avant de passer au suivant.",
+        "en": "The player must make five shots at each of five spots before moving to the next."
+      },
+      "why": {
+        "fr": "Compter les réussites plutôt que les tentatives oblige à se concentrer sur chaque tir.",
+        "en": "Counting makes rather than attempts forces focus on every shot."
+      },
+      "counter": {
+        "fr": "Limiter le temps total.",
+        "en": "Limit the total time."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "1": [
+          10,
+          8
+        ],
+        "2": [
+          25,
+          9
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "1",
+          "c": {
+            "fr": "Poste 1 : cinq paniers depuis la ligne de fond gauche.",
+            "en": "Spot 1: five makes from the left baseline."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              17,
+              19,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "Poste 2 : le coude gauche.",
+            "en": "Spot 2: the left elbow."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "Tir du coude, puis les postes suivants à droite.",
+            "en": "Shot from the elbow, then the next spots on the right."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "2",
+      "age": [
+        "U11",
+        "U13",
+        "U15"
+      ],
+      "variants": {
+        "fr": [
+          "À 3 points",
+          "En duel chronométré",
+          "Main faible près du cercle"
+        ],
+        "en": [
+          "From three",
+          "As a timed duel",
+          "Weak hand near the rim"
+        ]
+      }
+    },
+    {
+      "id": "catch-and-shoot-vs-close-out",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Tir en catch-and-shoot avec close-out",
+        "en": "Catch-and-shoot vs close-out"
+      },
+      "sum": {
+        "fr": "Le tireur reçoit et tire tout de suite pendant qu'un défenseur arrive en courant pour contester.",
+        "en": "The shooter catches and shoots right away while a defender runs at him to contest."
+      },
+      "why": {
+        "fr": "Prépare au tir réel de match : peu de temps et une main devant les yeux.",
+        "en": "Prepares for the real game shot: little time and a hand in front of the eyes."
+      },
+      "counter": {
+        "fr": "Le défenseur part plus tôt pour réduire le temps de tir.",
+        "en": "The defender starts earlier to cut the shooting time."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "x2": [
+          30,
+          12
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x2": [
+              38,
+              19,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 ; x2 part au même moment.",
+            "en": "1 passes to 2; x2 leaves at the same moment."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              41.5,
+              22,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 tire avant l'arrivée de x2.",
+            "en": "2 shoots before x2 arrives."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par trio",
+        "en": "1 basket, 1 ball per group of 3"
+      },
+      "players": "3-9",
+      "age": [
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Défenseur qui part de plus près",
+          "Tir en sortie d'écran",
+          "Points bonus si le défenseur touche le ballon"
+        ],
+        "en": [
+          "Defender starting closer",
+          "Shot off a screen",
+          "Bonus points if the defender touches the ball"
+        ]
+      }
+    },
+    {
+      "id": "step-back-shooting",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Tir en step-back",
+        "en": "Step-back shooting"
+      },
+      "sum": {
+        "fr": "Le joueur attaque son défenseur, puis fait un pas en arrière pour créer de l'espace et tire.",
+        "en": "The player attacks his defender, then steps back to create space and shoots."
+      },
+      "why": {
+        "fr": "Le défenseur recule pour contenir la pénétration : le pas en arrière ouvre l'espace du tir.",
+        "en": "The defender backs up to contain the drive: the step-back opens the shooting space."
+      },
+      "counter": {
+        "fr": "Le défenseur reste au contact sans reculer trop tôt.",
+        "en": "The defender stays close without backing off too early."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "x1": [
+          25,
+          28
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              29,
+              26,
+              "d"
+            ],
+            "x1": [
+              29,
+              22.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque à droite ; x1 recule pour le contenir.",
+            "en": "1 attacks right; x1 backs up to contain him."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              30,
+              30,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Pas en arrière et tir.",
+            "en": "Step-back and shot."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par joueur",
+        "en": "1 basket, 1 ball per player"
+      },
+      "players": "1-6",
+      "age": [
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Pas en arrière latéral",
+          "Après un changement de main",
+          "À 3 points"
+        ],
+        "en": [
+          "Side step-back",
+          "After a crossover",
+          "From three"
+        ]
+      }
+    },
+    {
+      "id": "team-free-throw-challenge",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Lancers francs en compétition par équipe",
+        "en": "Team free-throw challenge"
+      },
+      "sum": {
+        "fr": "Deux équipes tirent des lancers francs à tour de rôle ; la première à un nombre de paniers gagne.",
+        "en": "Two teams take turns shooting free throws; the first to a target number of makes wins."
+      },
+      "why": {
+        "fr": "La compétition et l'attente entre les tirs recréent la pression d'un match.",
+        "en": "Competition and waiting between shots recreate game pressure."
+      },
+      "counter": {
+        "fr": "L'équipe adverse fait du bruit pendant le tir.",
+        "en": "The other team makes noise during the shot."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          19
+        ],
+        "2": [
+          25,
+          24
+        ],
+        "3": [
+          25,
+          28
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              30,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 tire, puis va à la fin de la file.",
+            "en": "1 shoots, then goes to the back of the line."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              25,
+              19,
+              "c"
+            ],
+            "3": [
+              25,
+              24,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 avance et tire à son tour.",
+            "en": "2 steps up and shoots in turn."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "2 paniers, 1 ballon par équipe",
+        "en": "2 baskets, 1 ball per team"
+      },
+      "players": "6-14",
+      "age": [
+        "U11",
+        "U13",
+        "U15"
+      ],
+      "variants": {
+        "fr": [
+          "Deux tirs chacun",
+          "Sprint pour l'équipe perdante",
+          "Lancers sous fatigue"
+        ],
+        "en": [
+          "Two shots each",
+          "Sprint for the losing team",
+          "Free throws when tired"
+        ]
+      }
+    },
+    {
+      "id": "trailer-three-shooting",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Tir en transition (trailer three)",
+        "en": "Trailer three shooting"
+      },
+      "sum": {
+        "fr": "Le joueur arrive de la ligne médiane en courant comme un traîneur de contre-attaque, reçoit en haut et tire à 3 points.",
+        "en": "The player runs in from half court like a fast-break trailer, catches up top and shoots a three."
+      },
+      "why": {
+        "fr": "Le tir du traîneur est un des tirs ouverts les plus fréquents en transition.",
+        "en": "The trailer three is one of the most common open shots in transition."
+      },
+      "counter": {
+        "fr": "Un défenseur part du cercle et sort sur lui.",
+        "en": "A defender starts at the rim and closes out."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "4": [
+          22,
+          46
+        ],
+        "1": [
+          40,
+          26
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              24,
+              31,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 arrive en courant de la ligne médiane.",
+            "en": "4 runs in from half court."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 lui passe : 4 tire à 3 points.",
+            "en": "1 hits him: 4 shoots the three."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 2 ballons",
+        "en": "1 basket, 2 balls"
+      },
+      "players": "2-8",
+      "age": [
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Faire la passe à la place du tir",
+          "Pénétrer sur le close-out",
+          "Depuis les deux côtés"
+        ],
+        "en": [
+          "Swing the pass instead of shooting",
+          "Drive the close-out",
+          "From both sides"
+        ]
+      }
+    },
+    {
+      "id": "shooting-off-the-handoff",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Tir en sortie de remise main à main",
+        "en": "Shooting off the handoff"
+      },
+      "sum": {
+        "fr": "Un partenaire dribble vers le tireur et lui remet le ballon main à main ; le tireur tire tout de suite derrière la remise.",
+        "en": "A partner dribbles at the shooter and hands him the ball; the shooter fires right behind the handoff."
+      },
+      "why": {
+        "fr": "Le passeur fait écran avec son corps : le tir derrière la remise est très difficile à contester.",
+        "en": "The passer screens with his body: the shot behind the handoff is very hard to contest."
+      },
+      "counter": {
+        "fr": "Ajouter un défenseur qui suit le tireur.",
+        "en": "Add a defender trailing the shooter."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "5": [
+          32,
+          29
+        ],
+        "2": [
+          42,
+          20
+        ],
+        "b": "5"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              38,
+              26,
+              "d"
+            ],
+            "2": [
+              40,
+              25,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "5 dribble vers 2 ; 2 vient chercher la remise.",
+            "en": "5 dribbles at 2; 2 comes for the handoff."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              38,
+              28,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 tire tout de suite derrière 5.",
+            "en": "2 shoots right behind 5."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 2 ballons",
+        "en": "1 basket, 2 balls"
+      },
+      "players": "2-6",
+      "age": [
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Remise puis pénétration",
+          "Fausse remise (keep)",
+          "Avec défenseur"
+        ],
+        "en": [
+          "Handoff then drive",
+          "Fake handoff (keep)",
+          "With a defender"
+        ]
+      }
+    },
+    {
+      "id": "shooting-over-a-contest",
+      "cat": "exercices",
+      "family": "tir",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Tir avec main gênante (contest pad)",
+        "en": "Shooting over a contest"
+      },
+      "sum": {
+        "fr": "Le tireur tire face à un partenaire qui lève la main (ou un bouclier) devant ses yeux, sans le toucher.",
+        "en": "The shooter shoots with a partner raising a hand (or a pad) in front of his eyes, without touching him."
+      },
+      "why": {
+        "fr": "En match, la plupart des tirs sont contestés : il faut garder son geste malgré la main.",
+        "en": "In games, most shots are contested: you have to keep your form despite the hand."
+      },
+      "counter": {
+        "fr": "Le défenseur saute avec le tireur.",
+        "en": "The defender jumps with the shooter."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Pieds prêts avant la réception",
+          "Même geste à chaque tir",
+          "Coude sous le ballon, poignet cassé à la fin",
+          "Compter les paniers réussis"
+        ],
+        "en": [
+          "Feet ready before the catch",
+          "Same motion on every shot",
+          "Elbow under the ball, snap the wrist at the end",
+          "Count the makes"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x2": [
+              42,
+              23,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 ; x2 lève la main devant ses yeux.",
+            "en": "1 passes to 2; x2 raises a hand in front of his eyes."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              42.5,
+              23.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 tire en gardant son geste.",
+            "en": "2 shoots, keeping his form."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon, 1 bouclier (facultatif)",
+        "en": "1 basket, 1 ball, 1 pad (optional)"
+      },
+      "players": "3-6",
+      "age": [
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Tir avec un dribble",
+          "Main gauche puis droite du défenseur",
+          "Fadeaway"
+        ],
+        "en": [
+          "Shot off one dribble",
+          "Defender's left then right hand",
+          "Fadeaway"
+        ]
+      }
+    },
+    {
+      "id": "mirror-dribbling",
+      "cat": "exercices",
+      "family": "dribble",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Dribble en miroir",
+        "en": "Mirror dribbling"
+      },
+      "sum": {
+        "fr": "Deux joueurs face à face : le meneur dribble et change de direction, le second copie ses déplacements.",
+        "en": "Two players face to face: the leader dribbles and changes direction, the other copies his moves."
+      },
+      "why": {
+        "fr": "Oblige à dribbler tête haute pour voir le partenaire ; travaille aussi les appuis.",
+        "en": "Forces players to dribble with their head up to see the partner; also works footwork."
+      },
+      "counter": {
+        "fr": "Le suiveur essaie de rester devant le meneur, comme un défenseur.",
+        "en": "The follower tries to stay in front of the leader, like a defender."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Tête haute, regarder devant soi",
+          "Dribble bas et fort",
+          "Protéger le ballon avec le bras libre",
+          "Changer de rythme autant que de direction"
+        ],
+        "en": [
+          "Head up, eyes forward",
+          "Low, hard dribble",
+          "Protect the ball with the off arm",
+          "Change pace as much as direction"
+        ]
+      },
+      "start": {
+        "1": [
+          20,
+          28
+        ],
+        "2": [
+          20,
+          22
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              30,
+              28,
+              "d"
+            ],
+            "2": [
+              30,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 dribble vers la droite ; 2 copie le déplacement.",
+            "en": "1 dribbles right; 2 copies the move."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              22,
+              30,
+              "d"
+            ],
+            "2": [
+              22,
+              24,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 change de direction ; 2 suit.",
+            "en": "1 changes direction; 2 follows."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 ballon pour 2 joueurs",
+        "en": "1 ball per 2 players"
+      },
+      "players": "2-20",
+      "age": [
+        "U11",
+        "U13"
+      ],
+      "variants": {
+        "fr": [
+          "Les deux dribblent",
+          "Main faible uniquement",
+          "Changer de meneur au signal"
+        ],
+        "en": [
+          "Both players dribble",
+          "Weak hand only",
+          "Switch leader on the signal"
+        ]
+      }
+    },
+    {
+      "id": "cone-dribbling-course",
+      "cat": "exercices",
+      "family": "dribble",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Parcours de dribble entre plots",
+        "en": "Cone dribbling course"
+      },
+      "sum": {
+        "fr": "Le joueur dribble en zigzag entre des plots, en changeant de main à chaque plot, puis finit en lay-up.",
+        "en": "The player dribbles in a zigzag between cones, changing hands at each cone, then finishes with a layup."
+      },
+      "why": {
+        "fr": "Enchaîner les changements de main à vitesse de match, sans regarder le ballon.",
+        "en": "Chaining hand changes at game speed, without looking at the ball."
+      },
+      "counter": {
+        "fr": "Chronométrer et ajouter un défenseur à la fin.",
+        "en": "Time it and add a defender at the end."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Tête haute, regarder devant soi",
+          "Dribble bas et fort",
+          "Protéger le ballon avec le bras libre",
+          "Changer de rythme autant que de direction"
+        ],
+        "en": [
+          "Head up, eyes forward",
+          "Low, hard dribble",
+          "Protect the ball with the off arm",
+          "Change pace as much as direction"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          46
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              18,
+              38,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Changement de main au premier plot.",
+            "en": "Hand change at the first cone."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              32,
+              30,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Changement au deuxième plot.",
+            "en": "Change at the second cone."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              18,
+              22,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Troisième plot.",
+            "en": "Third cone."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              23,
+              8,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Lay-up pour finir.",
+            "en": "Layup to finish."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par joueur, 4 à 6 plots",
+        "en": "1 basket, 1 ball per player, 4 to 6 cones"
+      },
+      "players": "1-12",
+      "age": [
+        "U11",
+        "U13"
+      ],
+      "variants": {
+        "fr": [
+          "Changement dans le dos",
+          "Entre les jambes",
+          "Chronométré"
+        ],
+        "en": [
+          "Behind-the-back change",
+          "Between the legs",
+          "Timed"
+        ]
+      }
     }
   ]
 }
