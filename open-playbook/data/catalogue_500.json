@@ -3308,7 +3308,7 @@
       "fr": "Zone 1-3-1 : pièges sur l'aile",
       "en": "1-3-1 zone: wing traps"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "zone-rebounding",
@@ -3319,7 +3319,7 @@
       "fr": "Zone : rebond défensif",
       "en": "Zone rebounding"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "changing-zones",
@@ -3330,7 +3330,7 @@
       "fr": "Zone qui change de forme (2-3 puis 1-3-1)",
       "en": "Changing zones"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "amoeba-zone",
@@ -3341,7 +3341,7 @@
       "fr": "Zone « Amoeba »",
       "en": "Amoeba zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-3-zone-vs-pick-and-roll",
@@ -3352,7 +3352,7 @@
       "fr": "Zone 2-3 contre pick-and-roll",
       "en": "2-3 zone vs pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "hedge",
@@ -3407,7 +3407,7 @@
       "fr": "Défense reculée (drop)",
       "en": "Drop coverage"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "show",
@@ -3418,7 +3418,7 @@
       "fr": "Montrer (show)",
       "en": "Show"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "go-under",
@@ -3429,7 +3429,7 @@
       "fr": "Passer sous l'écran (under)",
       "en": "Go under"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "go-over",
@@ -3440,7 +3440,7 @@
       "fr": "Passer par-dessus l'écran (over)",
       "en": "Go over"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "weak-force-to-the-weak-hand",
@@ -3451,7 +3451,7 @@
       "fr": "Défense « weak » (forcer vers la main faible)",
       "en": "Weak (force to the weak hand)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "at-the-level",
@@ -3462,7 +3462,7 @@
       "fr": "Défense « at the level »",
       "en": "At the level"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "tag-the-roller",
@@ -3473,7 +3473,7 @@
       "fr": "Aide sur le roll (tag)",
       "en": "Tag the roller"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "scramble-switch",
@@ -3484,7 +3484,7 @@
       "fr": "Changement « scramble » après un décalage",
       "en": "Scramble switch"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-pick-and-pop",
@@ -3495,7 +3495,7 @@
       "fr": "Défense du pick-and-pop",
       "en": "Defending the pick-and-pop"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-spain-pick-and-roll",
@@ -3506,7 +3506,7 @@
       "fr": "Défense du Spain pick-and-roll",
       "en": "Defending the Spain pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-double-drag",
@@ -3517,7 +3517,7 @@
       "fr": "Défense du double drag",
       "en": "Defending the double drag"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "press-2-2-1",
@@ -3539,7 +3539,7 @@
       "fr": "Presse 1-2-1-1 (losange)",
       "en": "1-2-1-1 diamond press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "1-2-2-press",
@@ -3550,7 +3550,7 @@
       "fr": "Presse 1-2-2",
       "en": "1-2-2 press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-1-2-press",
@@ -3561,7 +3561,7 @@
       "fr": "Presse 2-1-2",
       "en": "2-1-2 press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "full-court-man-press",
@@ -3572,7 +3572,7 @@
       "fr": "Presse homme à homme tout terrain",
       "en": "Full-court man press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "run-and-jump-press",

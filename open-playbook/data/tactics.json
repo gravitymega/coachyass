@@ -36687,6 +36687,2763 @@
           }
         }
       ]
+    },
+    {
+      "id": "1-3-1-zone-wing-traps",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Zone 1-3-1 : pièges sur l'aile",
+        "en": "1-3-1 zone: wing traps"
+      },
+      "sum": {
+        "fr": "Dans la zone 1-3-1, quand le ballon arrive sur l'aile, l'ailier de la zone et le défenseur de la ligne de fond piègent le porteur.",
+        "en": "In the 1-3-1 zone, when the ball reaches the wing, the zone's wing and the baseline defender trap the ball handler."
+      },
+      "why": {
+        "fr": "La ligne de touche sert de troisième défenseur : le porteur piégé a peu de solutions.",
+        "en": "The sideline acts as a third defender: the trapped ball handler has few options."
+      },
+      "counter": {
+        "fr": "Passer vite au milieu ou au corner opposé avant que le piège se ferme.",
+        "en": "Pass quickly to the middle or the far corner before the trap closes."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          43,
+          22
+        ],
+        "3": [
+          7,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          21
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          37,
+          20
+        ],
+        "x3": [
+          13,
+          20
+        ],
+        "x5": [
+          25,
+          17
+        ],
+        "x4": [
+          25,
+          6.5
+        ]
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "Passe à l'aile droite.",
+            "en": "Pass to the right wing."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              41,
+              21.5,
+              "m"
+            ],
+            "x4": [
+              43,
+              18,
+              "m"
+            ],
+            "x5": [
+              30,
+              18,
+              "m"
+            ],
+            "x1": [
+              31,
+              26,
+              "m"
+            ],
+            "x3": [
+              26,
+              9,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 et x4 piègent 2 ; x5 coupe la passe au milieu, x1 le renversement, x3 protège le cercle.",
+            "en": "x2 and x4 trap 2; x5 cuts off the middle, x1 the reversal, x3 protects the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "zone-rebounding",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Zone : rebond défensif",
+        "en": "Zone rebounding"
+      },
+      "sum": {
+        "fr": "En zone, dès le tir, chaque défenseur cherche l'attaquant le plus proche de sa zone et le bloque.",
+        "en": "In a zone, as soon as the shot goes up, each defender finds the closest attacker in his area and boxes him out."
+      },
+      "why": {
+        "fr": "Une zone n'a pas d'adversaire attitré : sans règle claire, les rebondeurs adverses arrivent sans contact.",
+        "en": "A zone has no assigned opponents: without a clear rule, the opposing rebounders arrive untouched."
+      },
+      "counter": {
+        "fr": "Foncer au rebond depuis le côté faible, là où la zone bloque mal.",
+        "en": "Crash from the weak side, where the zone boxes out poorly."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          43,
+          22
+        ],
+        "3": [
+          7,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "2",
+        "x1": [
+          20,
+          25
+        ],
+        "x2": [
+          39,
+          21
+        ],
+        "x3": [
+          12,
+          12
+        ],
+        "x4": [
+          40,
+          10
+        ],
+        "x5": [
+          29,
+          8
+        ]
+      },
+      "steps": [
+        {
+          "c": {
+            "fr": "2 tire de l'aile.",
+            "en": "2 shoots from the wing."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              26,
+              12,
+              "c"
+            ],
+            "3": [
+              14,
+              14,
+              "c"
+            ],
+            "x5": [
+              26,
+              9.5,
+              "m"
+            ],
+            "x3": [
+              15,
+              11,
+              "m"
+            ],
+            "x4": [
+              44,
+              7,
+              "m"
+            ],
+            "x1": [
+              24,
+              16,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Chacun bloque l'attaquant le plus proche : x5 sur 5, x3 sur 3, x4 sur 4.",
+            "en": "Each one boxes out the closest attacker: x5 on 5, x3 on 3, x4 on 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "changing-zones",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Zone qui change de forme (2-3 puis 1-3-1)",
+        "en": "Changing zones"
+      },
+      "sum": {
+        "fr": "La défense change de forme pendant le match (zone 2-3 puis 1-3-1) sur un signal, pour perturber l'attaque.",
+        "en": "The defense changes shape during the game (2-3 zone, then 1-3-1) on a signal, to throw the offense off."
+      },
+      "why": {
+        "fr": "L'attaque prépare ses options contre une zone : le changement les rend inutiles le temps qu'elle s'adapte.",
+        "en": "The offense sets up its options against one zone: the change makes them useless until it adapts."
+      },
+      "counter": {
+        "fr": "Lire la forme de la zone avant chaque possession et garder des principes simples.",
+        "en": "Read the zone's shape before every possession and keep simple principles."
+      },
+      "used": {
+        "fr": "Utilisé par des équipes universitaires et européennes ; difficile à bien enseigner.",
+        "en": "Used by college and European teams; hard to teach well."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          43,
+          22
+        ],
+        "3": [
+          7,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1",
+        "x1": [
+          20,
+          25
+        ],
+        "x2": [
+          30,
+          25
+        ],
+        "x3": [
+          12,
+          12
+        ],
+        "x4": [
+          38,
+          12
+        ],
+        "x5": [
+          25,
+          8
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "x1": [
+              25,
+              28,
+              "m"
+            ],
+            "x2": [
+              37,
+              20,
+              "m"
+            ],
+            "x3": [
+              13,
+              20,
+              "m"
+            ],
+            "x5": [
+              25,
+              16,
+              "m"
+            ],
+            "x4": [
+              25,
+              6.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Au signal, la zone 2-3 devient une zone 1-3-1.",
+            "en": "On the signal, the 2-3 zone turns into a 1-3-1."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "Passe à l'aile : la 1-3-1 piège.",
+            "en": "Pass to the wing: the 1-3-1 traps."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              41,
+              21.5,
+              "m"
+            ],
+            "x4": [
+              43,
+              18,
+              "m"
+            ],
+            "x5": [
+              31,
+              18,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 et x4 piègent 2.",
+            "en": "x2 and x4 trap 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "amoeba-zone",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Zone « Amoeba »",
+        "en": "Amoeba zone"
+      },
+      "sum": {
+        "fr": "Zone qui change de forme selon le placement de l'attaque et cherche les pièges, au lieu de garder des positions fixes.",
+        "en": "A zone that changes shape with the offense's alignment and hunts traps instead of holding fixed spots."
+      },
+      "why": {
+        "fr": "L'attaque ne reconnaît pas la zone et la défense piège là où elle ne l'attend pas.",
+        "en": "The offense cannot identify the zone, and the defense traps where it is not expected."
+      },
+      "counter": {
+        "fr": "Attaquer avec des principes simples (poste haut, corners) plutôt qu'un système.",
+        "en": "Attack with simple principles (high post, corners) rather than a set."
+      },
+      "used": {
+        "fr": "Défense associée à Jerry Tarkanian, à l'université de Nevada-Las Vegas (UNLV).",
+        "en": "Defense associated with Jerry Tarkanian at the University of Nevada, Las Vegas (UNLV)."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          43,
+          22
+        ],
+        "3": [
+          7,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          27
+        ],
+        "x2": [
+          34,
+          21
+        ],
+        "x3": [
+          16,
+          21
+        ],
+        "x5": [
+          25,
+          15
+        ],
+        "x4": [
+          25,
+          7
+        ]
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "Passe à l'aile : x1 et x2 piègent tout de suite au-dessus de la ligne à 3 points.",
+            "en": "Pass to the wing: x1 and x2 trap right away above the arc."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              40,
+              25,
+              "m"
+            ],
+            "x2": [
+              44,
+              19,
+              "m"
+            ],
+            "x5": [
+              32,
+              15,
+              "m"
+            ],
+            "x3": [
+              21,
+              18,
+              "m"
+            ],
+            "x4": [
+              35,
+              7,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 et x2 piègent ; x5, x3 et x4 se placent en triangle derrière le piège.",
+            "en": "x1 and x2 trap; x5, x3 and x4 form a triangle behind the trap."
+          }
+        }
+      ]
+    },
+    {
+      "id": "2-3-zone-vs-pick-and-roll",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Zone 2-3 contre pick-and-roll",
+        "en": "2-3 zone vs pick-and-roll"
+      },
+      "sum": {
+        "fr": "Contre un pick-and-roll joué face à la zone 2-3, le défenseur du haut passe au-dessus de l'écran, le défenseur du milieu contient le porteur et les deux du bas glissent sur le roll.",
+        "en": "Against a pick-and-roll run at the 2-3 zone, the top defender goes over the screen, the middle defender contains the ball, and the two low defenders slide onto the roll."
+      },
+      "why": {
+        "fr": "La zone garde sa forme : elle n'a pas besoin de changer et le roll trouve toujours un défenseur.",
+        "en": "The zone keeps its shape: it does not need to switch, and the roll always meets a defender."
+      },
+      "counter": {
+        "fr": "Faire s'écarter l'écraneur (pop) et attaquer les tireurs.",
+        "en": "Have the screener pop and attack the shooters."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          34,
+          29
+        ],
+        "3": [
+          5,
+          18
+        ],
+        "4": [
+          45,
+          18
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1",
+        "x1": [
+          20,
+          25
+        ],
+        "x2": [
+          30,
+          25
+        ],
+        "x3": [
+          12,
+          12
+        ],
+        "x4": [
+          38,
+          12
+        ],
+        "x5": [
+          25,
+          8
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              19.5,
+              27.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 monte poser l'écran sur x1.",
+            "en": "5 comes up to screen x1."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              26,
+              22,
+              "d"
+            ],
+            "x5": [
+              25,
+              16,
+              "m"
+            ],
+            "x1": [
+              23,
+              25,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque le milieu ; x5 monte le contenir, x1 passe au-dessus.",
+            "en": "1 attacks the middle; x5 steps up to contain, x1 goes over."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              19,
+              13,
+              "c"
+            ],
+            "x3": [
+              18,
+              10.5,
+              "m"
+            ],
+            "x4": [
+              29,
+              9,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 roule : x3 glisse sur lui, x4 protège le cercle.",
+            "en": "5 rolls: x3 slides onto him, x4 protects the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "drop-coverage",
+      "cat": "defense",
+      "family": "defense-pick-and-roll",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défense reculée (drop)",
+        "en": "Drop coverage"
+      },
+      "sum": {
+        "fr": "Le défenseur de l'écraneur recule vers la raquette pour protéger le cercle, pendant que le défenseur du porteur passe par-dessus l'écran et le poursuit.",
+        "en": "The screener's defender drops toward the paint to protect the rim while the ball handler's defender goes over the screen and chases."
+      },
+      "why": {
+        "fr": "Le cercle reste protégé sans rotation : on concède seulement le tir à mi-distance.",
+        "en": "The rim stays protected without rotating: only the mid-range shot is conceded."
+      },
+      "counter": {
+        "fr": "Tirer en sortie de dribble à mi-distance, ou faire s'écarter l'écraneur à 3 points.",
+        "en": "Pull up from mid-range, or have the screener pop to the arc."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran tôt",
+          "Les deux défenseurs savent la couverture avant l'écran",
+          "Un défenseur du côté faible surveille le roll",
+          "Revenir sur son joueur dès que le danger est passé"
+        ],
+        "en": [
+          "The screener's defender calls the screen early",
+          "Both defenders know the coverage before the screen",
+          "A weak-side defender watches the roll",
+          "Get back to your man as soon as the danger is gone"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          3,
+          5
+        ],
+        "5": [
+          25,
+          20
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          29
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x3": [
+          9,
+          22
+        ],
+        "x4": [
+          7,
+          7
+        ],
+        "x5": [
+          25,
+          16
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x5": [
+              25,
+              17,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran ; x5 recule vers la ligne des lancers francs.",
+            "en": "5 screens; x5 drops to the free-throw line."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              31,
+              22,
+              "d"
+            ],
+            "x1": [
+              30,
+              26,
+              "m"
+            ],
+            "5": [
+              28,
+              11,
+              "c"
+            ],
+            "x5": [
+              27,
+              15,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque : x1 passe par-dessus l'écran et le poursuit, x5 reste entre 1 et le cercle.",
+            "en": "1 attacks: x1 goes over the screen and chases, x5 stays between 1 and the rim."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              30,
+              19.5,
+              "m"
+            ],
+            "x5": [
+              27,
+              13,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 revient devant 1 ; x5 retourne sur 5.",
+            "en": "x1 gets back in front of 1; x5 returns to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "show",
+      "cat": "defense",
+      "family": "defense-pick-and-roll",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Montrer (show)",
+        "en": "Show"
+      },
+      "sum": {
+        "fr": "Le défenseur de l'écraneur sort brièvement devant le porteur (il « se montre ») pour le ralentir, puis revient tout de suite vers son joueur.",
+        "en": "The screener's defender steps out briefly in front of the ball handler (he \"shows\") to slow him, then gets right back to his man."
+      },
+      "why": {
+        "fr": "Moins risqué que le hedge : le porteur hésite le temps que son défenseur revienne, sans laisser le roll seul longtemps.",
+        "en": "Less risky than a hedge: the ball handler hesitates while his defender recovers, without leaving the roll alone for long."
+      },
+      "counter": {
+        "fr": "Passer tôt au roll pendant la sortie.",
+        "en": "Hit the roll early during the show."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran tôt",
+          "Les deux défenseurs savent la couverture avant l'écran",
+          "Un défenseur du côté faible surveille le roll",
+          "Revenir sur son joueur dès que le danger est passé"
+        ],
+        "en": [
+          "The screener's defender calls the screen early",
+          "Both defenders know the coverage before the screen",
+          "A weak-side defender watches the roll",
+          "Get back to your man as soon as the danger is gone"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          3,
+          5
+        ],
+        "5": [
+          25,
+          20
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          29
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x3": [
+          9,
+          22
+        ],
+        "x4": [
+          7,
+          7
+        ],
+        "x5": [
+          25,
+          16
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x5": [
+              28,
+              25.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran.",
+            "en": "5 screens."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              31,
+              28,
+              "d"
+            ],
+            "x5": [
+              32,
+              25,
+              "m"
+            ],
+            "x1": [
+              29.5,
+              31,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x5 se montre devant 1 un instant ; x1 passe par-dessus.",
+            "en": "x5 shows in front of 1 for a moment; x1 goes over."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              28,
+              12,
+              "c"
+            ],
+            "x5": [
+              28,
+              15,
+              "m"
+            ],
+            "x1": [
+              32,
+              25.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x5 revient sur 5 qui roule ; x1 a retrouvé 1.",
+            "en": "x5 gets back to 5, who rolls; x1 is back on 1."
+          }
+        }
+      ]
+    },
+    {
+      "id": "go-under",
+      "cat": "defense",
+      "family": "defense-pick-and-roll",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Passer sous l'écran (under)",
+        "en": "Go under"
+      },
+      "sum": {
+        "fr": "Le défenseur du porteur passe sous l'écran, entre l'écraneur et le panier, contre un porteur qui tire mal de loin.",
+        "en": "The ball handler's defender goes under the screen, between the screener and the basket, against a poor outside shooter."
+      },
+      "why": {
+        "fr": "Il ne se fait jamais bloquer et reste devant le porteur ; on accepte le tir de loin.",
+        "en": "He never gets screened and stays in front of the ball handler; the outside shot is accepted."
+      },
+      "counter": {
+        "fr": "Tirer à 3 points derrière l'écran, ou faire reposer l'écran plus haut.",
+        "en": "Shoot the three behind the screen, or re-screen higher."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran tôt",
+          "Les deux défenseurs savent la couverture avant l'écran",
+          "Un défenseur du côté faible surveille le roll",
+          "Revenir sur son joueur dès que le danger est passé"
+        ],
+        "en": [
+          "The screener's defender calls the screen early",
+          "Both defenders know the coverage before the screen",
+          "A weak-side defender watches the roll",
+          "Get back to your man as soon as the danger is gone"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          3,
+          5
+        ],
+        "5": [
+          25,
+          20
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          29
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x3": [
+          9,
+          22
+        ],
+        "x4": [
+          7,
+          7
+        ],
+        "x5": [
+          25,
+          16
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x5": [
+              26.5,
+              24,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran.",
+            "en": "5 screens."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              31,
+              30,
+              "d"
+            ],
+            "x1": [
+              28,
+              26,
+              "m"
+            ],
+            "x5": [
+              24.5,
+              23.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 passe sous l'écran, entre 5 et le panier ; x5 lui laisse le passage.",
+            "en": "x1 goes under the screen, between 5 and the basket; x5 lets him through."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              31,
+              26.5,
+              "m"
+            ],
+            "x5": [
+              26,
+              25,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 retrouve 1 devant lui ; x5 reprend 5.",
+            "en": "x1 meets 1 in front of him; x5 picks 5 back up."
+          }
+        }
+      ]
+    },
+    {
+      "id": "go-over",
+      "cat": "defense",
+      "family": "defense-pick-and-roll",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Passer par-dessus l'écran (over)",
+        "en": "Go over"
+      },
+      "sum": {
+        "fr": "Le défenseur du porteur passe par-dessus l'écran (côté ballon) et reste collé au porteur, contre un bon tireur.",
+        "en": "The ball handler's defender goes over the top of the screen (ball side) and stays attached to the ball handler, against a good shooter."
+      },
+      "why": {
+        "fr": "Aucun tir de loin n'est concédé ; le défenseur de l'écraneur contient la pénétration le temps du retour.",
+        "en": "No outside shot is given up; the screener's defender contains the drive during the recovery."
+      },
+      "counter": {
+        "fr": "Attaquer le défenseur qui poursuit et viser le roll.",
+        "en": "Attack the chasing defender and look for the roll."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran tôt",
+          "Les deux défenseurs savent la couverture avant l'écran",
+          "Un défenseur du côté faible surveille le roll",
+          "Revenir sur son joueur dès que le danger est passé"
+        ],
+        "en": [
+          "The screener's defender calls the screen early",
+          "Both defenders know the coverage before the screen",
+          "A weak-side defender watches the roll",
+          "Get back to your man as soon as the danger is gone"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          3,
+          5
+        ],
+        "5": [
+          25,
+          20
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          29
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x3": [
+          9,
+          22
+        ],
+        "x4": [
+          7,
+          7
+        ],
+        "x5": [
+          25,
+          16
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x5": [
+              27.5,
+              25.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran.",
+            "en": "5 screens."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              32,
+              27,
+              "d"
+            ],
+            "x1": [
+              30,
+              30,
+              "m"
+            ],
+            "x5": [
+              32,
+              23.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 passe par-dessus l'écran, collé à 1 ; x5 contient.",
+            "en": "x1 goes over the screen, attached to 1; x5 contains."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              33,
+              24.5,
+              "m"
+            ],
+            "5": [
+              28,
+              12,
+              "c"
+            ],
+            "x5": [
+              28,
+              15,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 est revenu devant 1 : x5 retourne sur 5.",
+            "en": "x1 is back in front of 1: x5 returns to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "weak-force-to-the-weak-hand",
+      "cat": "defense",
+      "family": "defense-pick-and-roll",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Défense « weak » (forcer vers la main faible)",
+        "en": "Weak (force to the weak hand)"
+      },
+      "sum": {
+        "fr": "Le défenseur du porteur se place du côté de sa main forte pour l'obliger à refuser l'écran et à partir sur sa main faible.",
+        "en": "The ball handler's defender plays his strong-hand side to force him to reject the screen and go to his weak hand."
+      },
+      "why": {
+        "fr": "Un porteur sur sa main faible est moins dangereux ; l'écran posé du côté fort devient inutile.",
+        "en": "A ball handler on his weak hand is less dangerous; a screen set on the strong side becomes useless."
+      },
+      "counter": {
+        "fr": "Reposer l'écran de l'autre côté, ou faire jouer un porteur ambidextre.",
+        "en": "Re-screen on the other side, or use an ambidextrous ball handler."
+      },
+      "used": {
+        "fr": "Terminologie variable ; courant en NBA.",
+        "en": "Terminology varies; common in the NBA."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran tôt",
+          "Les deux défenseurs savent la couverture avant l'écran",
+          "Un défenseur du côté faible surveille le roll",
+          "Revenir sur son joueur dès que le danger est passé"
+        ],
+        "en": [
+          "The screener's defender calls the screen early",
+          "Both defenders know the coverage before the screen",
+          "A weak-side defender watches the roll",
+          "Get back to your man as soon as the danger is gone"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          3,
+          5
+        ],
+        "5": [
+          25,
+          20
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          29
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x3": [
+          9,
+          22
+        ],
+        "x4": [
+          7,
+          7
+        ],
+        "x5": [
+          25,
+          16
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x1": [
+              27,
+              31.5,
+              "m"
+            ],
+            "x5": [
+              25,
+              18,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 vient poser l'écran du côté de la main forte de 1 ; x1 se place de ce côté.",
+            "en": "5 comes to screen on 1's strong-hand side; x1 jumps to that side."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              19,
+              23,
+              "d"
+            ],
+            "x1": [
+              21,
+              26,
+              "m"
+            ],
+            "x5": [
+              21,
+              17,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 part sur sa main faible ; x5 l'attend en reculant.",
+            "en": "1 goes to his weak hand; x5 waits for him, backing up."
+          }
+        }
+      ]
+    },
+    {
+      "id": "at-the-level",
+      "cat": "defense",
+      "family": "defense-pick-and-roll",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Défense « at the level »",
+        "en": "At the level"
+      },
+      "sum": {
+        "fr": "Le défenseur de l'écraneur monte au niveau de l'écran pour contenir le porteur jusqu'au retour de son défenseur.",
+        "en": "The screener's defender steps up to the level of the screen to contain the ball handler until his defender recovers."
+      },
+      "why": {
+        "fr": "Pas de tir à mi-distance facile ni de pénétration : le porteur est contenu haut.",
+        "en": "No easy mid-range shot and no drive: the ball handler is contained high."
+      },
+      "counter": {
+        "fr": "Passer tôt au roll ou faire s'écarter l'écraneur.",
+        "en": "Hit the roll early or have the screener pop."
+      },
+      "used": {
+        "fr": "Terminologie variable ; courant en NBA.",
+        "en": "Terminology varies; common in the NBA."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran tôt",
+          "Les deux défenseurs savent la couverture avant l'écran",
+          "Un défenseur du côté faible surveille le roll",
+          "Revenir sur son joueur dès que le danger est passé"
+        ],
+        "en": [
+          "The screener's defender calls the screen early",
+          "Both defenders know the coverage before the screen",
+          "A weak-side defender watches the roll",
+          "Get back to your man as soon as the danger is gone"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          3,
+          5
+        ],
+        "5": [
+          25,
+          20
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          29
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x3": [
+          9,
+          22
+        ],
+        "x4": [
+          7,
+          7
+        ],
+        "x5": [
+          25,
+          16
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x5": [
+              29,
+              27,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran ; x5 monte au niveau de l'écran.",
+            "en": "5 screens; x5 steps up to the level of the screen."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              32,
+              28,
+              "d"
+            ],
+            "x5": [
+              32.5,
+              25.5,
+              "m"
+            ],
+            "x1": [
+              30,
+              31,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 sort de l'écran : x5 le contient, x1 passe par-dessus.",
+            "en": "1 comes off the screen: x5 contains him, x1 goes over."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              33,
+              25,
+              "m"
+            ],
+            "5": [
+              28,
+              11,
+              "c"
+            ],
+            "x5": [
+              28,
+              15,
+              "m"
+            ],
+            "x4": [
+              22,
+              9,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 reprend 1 ; x5 revient sur 5 qui roule, aidé par x4.",
+            "en": "x1 picks 1 back up; x5 recovers to the rolling 5, helped by x4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "tag-the-roller",
+      "cat": "defense",
+      "family": "defense-pick-and-roll",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Aide sur le roll (tag)",
+        "en": "Tag the roller"
+      },
+      "sum": {
+        "fr": "Pendant que les deux défenseurs du pick-and-roll gèrent le porteur, un défenseur du côté faible arrête le roll, puis revient sur son joueur.",
+        "en": "While the two pick-and-roll defenders handle the ball, a weak-side defender stops the roll, then recovers to his man."
+      },
+      "why": {
+        "fr": "Le roll est arrêté avant d'arriver au cercle ; le temps de revenir, le défenseur de l'écraneur reprend son joueur.",
+        "en": "The roll is stopped before it reaches the rim; meanwhile the screener's defender gets back to his man."
+      },
+      "counter": {
+        "fr": "Passer au joueur que l'aideur a quitté (souvent le corner).",
+        "en": "Pass to the player the helper left (often the corner)."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran tôt",
+          "Les deux défenseurs savent la couverture avant l'écran",
+          "Un défenseur du côté faible surveille le roll",
+          "Revenir sur son joueur dès que le danger est passé"
+        ],
+        "en": [
+          "The screener's defender calls the screen early",
+          "Both defenders know the coverage before the screen",
+          "A weak-side defender watches the roll",
+          "Get back to your man as soon as the danger is gone"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          3,
+          5
+        ],
+        "5": [
+          25,
+          20
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          29
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x3": [
+          9,
+          22
+        ],
+        "x4": [
+          7,
+          7
+        ],
+        "x5": [
+          25,
+          16
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x5": [
+              29,
+              26,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran ; x5 sort sur le porteur.",
+            "en": "5 screens; x5 steps out on the ball."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              32,
+              27,
+              "d"
+            ],
+            "x5": [
+              33,
+              25,
+              "m"
+            ],
+            "x1": [
+              30,
+              30,
+              "m"
+            ],
+            "5": [
+              27,
+              12,
+              "c"
+            ],
+            "x4": [
+              24,
+              10,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 roule : x4 quitte le corner pour l'arrêter.",
+            "en": "5 rolls: x4 leaves the corner to stop him."
+          }
+        },
+        {
+          "m": {
+            "x5": [
+              28,
+              15,
+              "m"
+            ],
+            "x4": [
+              8,
+              8,
+              "m"
+            ],
+            "x1": [
+              33,
+              24.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x5 revient sur 5 ; x4 retourne vers le corner.",
+            "en": "x5 recovers to 5; x4 goes back to the corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "scramble-switch",
+      "cat": "defense",
+      "family": "defense-pick-and-roll",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Changement « scramble » après un décalage",
+        "en": "Scramble switch"
+      },
+      "sum": {
+        "fr": "Après un changement qui laisse un petit défenseur sur un grand au poste, un défenseur du côté faible vient échanger pour corriger le décalage.",
+        "en": "After a switch leaves a small defender on a big in the post, a weak-side defender comes over to swap and fix the mismatch."
+      },
+      "why": {
+        "fr": "Le décalage est corrigé avant que le ballon arrive au poste.",
+        "en": "The mismatch is fixed before the ball gets into the post."
+      },
+      "counter": {
+        "fr": "Passer au poste avant l'échange, ou au joueur que l'échange laisse libre.",
+        "en": "Feed the post before the swap, or the player the swap leaves open."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran tôt",
+          "Les deux défenseurs savent la couverture avant l'écran",
+          "Un défenseur du côté faible surveille le roll",
+          "Revenir sur son joueur dès que le danger est passé"
+        ],
+        "en": [
+          "The screener's defender calls the screen early",
+          "Both defenders know the coverage before the screen",
+          "A weak-side defender watches the roll",
+          "Get back to your man as soon as the danger is gone"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          3,
+          5
+        ],
+        "5": [
+          30,
+          10
+        ],
+        "b": "1",
+        "x1": [
+          31,
+          12
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x3": [
+          9,
+          22
+        ],
+        "x4": [
+          7,
+          7
+        ],
+        "x5": [
+          28,
+          26
+        ]
+      },
+      "steps": [
+        {
+          "c": {
+            "fr": "Après un changement, x1 (petit) se retrouve sur 5 au poste.",
+            "en": "After a switch, x1 (small) ends up on 5 in the post."
+          }
+        },
+        {
+          "m": {
+            "x3": [
+              28.5,
+              8.5,
+              "m"
+            ],
+            "x1": [
+              11,
+              21,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x3 vient prendre 5 ; x1 part sur 3, à l'aile.",
+            "en": "x3 comes to take 5; x1 goes out to 3 on the wing."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-pick-and-pop",
+      "cat": "defense",
+      "family": "defense-pick-and-roll",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Défense du pick-and-pop",
+        "en": "Defending the pick-and-pop"
+      },
+      "sum": {
+        "fr": "Contre un écraneur qui tire de loin, son défenseur aide brièvement sur le porteur puis revient tout de suite sur lui, ou la défense change.",
+        "en": "Against a screener who shoots from outside, his defender helps briefly on the ball, then gets right back to him, or the defense switches."
+      },
+      "why": {
+        "fr": "Le tireur ne reçoit pas seul et le porteur ne passe pas l'écran librement.",
+        "en": "The shooter does not catch open and the ball handler does not get past the screen freely."
+      },
+      "counter": {
+        "fr": "Faire rouler l'écraneur quand son défenseur revient trop vite.",
+        "en": "Have the screener roll when his defender recovers too early."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran tôt",
+          "Les deux défenseurs savent la couverture avant l'écran",
+          "Un défenseur du côté faible surveille le roll",
+          "Revenir sur son joueur dès que le danger est passé"
+        ],
+        "en": [
+          "The screener's defender calls the screen early",
+          "Both defenders know the coverage before the screen",
+          "A weak-side defender watches the roll",
+          "Get back to your man as soon as the danger is gone"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          25,
+          19
+        ],
+        "5": [
+          20,
+          6
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          29
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x3": [
+          9,
+          22
+        ],
+        "x4": [
+          25,
+          16
+        ],
+        "x5": [
+          22,
+          8
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x4": [
+              30,
+              26,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran ; x4 se montre devant 1.",
+            "en": "4 screens; x4 shows in front of 1."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              33,
+              26,
+              "d"
+            ],
+            "4": [
+              19,
+              30,
+              "c"
+            ],
+            "x4": [
+              20.5,
+              27,
+              "m"
+            ],
+            "x1": [
+              31,
+              24,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "4 s'écarte à 3 points : x4 revient sur lui pendant que x1 reprend 1.",
+            "en": "4 pops to the arc: x4 recovers to him while x1 picks 1 back up."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-spain-pick-and-roll",
+      "cat": "defense",
+      "family": "defense-pick-and-roll",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Défense du Spain pick-and-roll",
+        "en": "Defending the Spain pick-and-roll"
+      },
+      "sum": {
+        "fr": "Contre le Spain pick-and-roll, le défenseur du joueur qui pose l'écran dans le dos change avec le défenseur du pivot : il prend le roll, l'autre prend le tireur.",
+        "en": "Against the Spain pick-and-roll, the back-screener's defender switches with the big's defender: he takes the roll, the other takes the shooter."
+      },
+      "why": {
+        "fr": "Le changement annule l'écran dans le dos : le roll ne reste jamais seul.",
+        "en": "The switch cancels the back screen: the roll is never left alone."
+      },
+      "counter": {
+        "fr": "Exploiter le décalage créé par le changement.",
+        "en": "Exploit the mismatch created by the switch."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran tôt",
+          "Les deux défenseurs savent la couverture avant l'écran",
+          "Un défenseur du côté faible surveille le roll",
+          "Revenir sur son joueur dès que le danger est passé"
+        ],
+        "en": [
+          "The screener's defender calls the screen early",
+          "Both defenders know the coverage before the screen",
+          "A weak-side defender watches the roll",
+          "Get back to your man as soon as the danger is gone"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          3,
+          5
+        ],
+        "5": [
+          25,
+          20
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          29
+        ],
+        "x2": [
+          41,
+          22
+        ],
+        "x3": [
+          9,
+          22
+        ],
+        "x4": [
+          7,
+          7
+        ],
+        "x5": [
+          25,
+          16
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x5": [
+              27.5,
+              25.5,
+              "m"
+            ],
+            "2": [
+              29,
+              22,
+              "c"
+            ],
+            "x2": [
+              31,
+              20,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran ; 2 vient dans le dos de x5, suivi par x2.",
+            "en": "5 screens; 2 moves behind x5, followed by x2."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              33,
+              26,
+              "d"
+            ],
+            "x1": [
+              31,
+              28,
+              "m"
+            ],
+            "5": [
+              27,
+              11,
+              "c"
+            ],
+            "x2": [
+              27,
+              14,
+              "m"
+            ],
+            "2": [
+              24,
+              30,
+              "c"
+            ],
+            "x5": [
+              25,
+              27,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Changement : x2 prend 5 qui roule, x5 prend 2 qui ressort.",
+            "en": "Switch: x2 takes the rolling 5, x5 takes 2 popping out."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-double-drag",
+      "cat": "defense",
+      "family": "defense-pick-and-roll",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Défense du double drag",
+        "en": "Defending the double drag"
+      },
+      "sum": {
+        "fr": "En transition contre le double drag, le défenseur du meneur refuse le premier écran et pousse vers la touche ; le défenseur du roll recule, celui du pop sort sur le tireur.",
+        "en": "In transition against the double drag, the guard's defender refuses the first screen and pushes to the sideline; the roller's defender drops, the popper's defender closes out."
+      },
+      "why": {
+        "fr": "Refuser le premier écran casse l'enchaînement ; chaque grand défenseur a une seule tâche.",
+        "en": "Refusing the first screen breaks the chain; each defending big has one job."
+      },
+      "counter": {
+        "fr": "Rejeter les écrans et attaquer le milieu.",
+        "en": "Reject the screens and attack the middle."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le défenseur de l'écraneur annonce l'écran tôt",
+          "Les deux défenseurs savent la couverture avant l'écran",
+          "Un défenseur du côté faible surveille le roll",
+          "Revenir sur son joueur dès que le danger est passé"
+        ],
+        "en": [
+          "The screener's defender calls the screen early",
+          "Both defenders know the coverage before the screen",
+          "A weak-side defender watches the roll",
+          "Get back to your man as soon as the danger is gone"
+        ]
+      },
+      "start": {
+        "1": [
+          30,
+          44
+        ],
+        "4": [
+          28,
+          41.5
+        ],
+        "5": [
+          23,
+          38.5
+        ],
+        "2": [
+          47,
+          6
+        ],
+        "3": [
+          3,
+          6
+        ],
+        "b": "1",
+        "x1": [
+          29,
+          40
+        ],
+        "x4": [
+          30,
+          38
+        ],
+        "x5": [
+          21,
+          35
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "x1": [
+              27,
+              43,
+              "m"
+            ],
+            "1": [
+              37,
+              37,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "x1 se place du côté des écrans et pousse 1 vers la ligne de touche.",
+            "en": "x1 jumps to the screen side and pushes 1 toward the sideline."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              27,
+              14,
+              "c"
+            ],
+            "x4": [
+              27,
+              18,
+              "m"
+            ],
+            "5": [
+              17,
+              30,
+              "c"
+            ],
+            "x5": [
+              19,
+              27,
+              "m"
+            ],
+            "x1": [
+              35,
+              34,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "4 roule, 5 s'écarte : x4 recule devant le roll, x5 sort sur 5.",
+            "en": "4 rolls, 5 pops: x4 drops in front of the roll, x5 closes out to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "1-2-1-1-diamond-press",
+      "cat": "defense",
+      "family": "presses",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Presse 1-2-1-1 (losange)",
+        "en": "1-2-1-1 diamond press"
+      },
+      "sum": {
+        "fr": "Presse tout terrain en losange : un défenseur sur le passeur, deux sur les côtés, un au milieu, un dernier rempart ; on piège dès la remise.",
+        "en": "Full-court diamond press: one defender on the inbounder, two on the sides, one in the middle, one safety; trap right after the inbound."
+      },
+      "why": {
+        "fr": "Le défenseur sur le passeur gêne la remise et rejoint le piège tout de suite.",
+        "en": "The defender on the inbounder bothers the pass and joins the trap right away."
+      },
+      "counter": {
+        "fr": "Passer tout de suite au milieu, derrière le premier défenseur.",
+        "en": "Pass right away to the middle, behind the first defender."
+      },
+      "used": {
+        "fr": "Le schéma montre la moitié de terrain où l'adversaire remet en jeu et remonte (vers le bas). Courant à tous les niveaux.",
+        "en": "The diagram shows the half where the opponent inbounds and brings the ball up (toward the bottom). Common at every level."
+      },
+      "keys": {
+        "fr": [
+          "Piéger près des lignes de touche et de la ligne médiane",
+          "Couper la passe au milieu",
+          "Le dernier défenseur ne laisse jamais de lay-up",
+          "Revenir en défense placée si la presse est battue"
+        ],
+        "en": [
+          "Trap near the sidelines and the half-court line",
+          "Cut off the pass to the middle",
+          "The last defender never gives up a layup",
+          "Retreat into the half-court defense if the press is beaten"
+        ]
+      },
+      "start": {
+        "4": [
+          30,
+          -2
+        ],
+        "1": [
+          20,
+          10
+        ],
+        "2": [
+          40,
+          12
+        ],
+        "3": [
+          10,
+          30
+        ],
+        "5": [
+          36,
+          34
+        ],
+        "b": "4",
+        "x1": [
+          30,
+          1.5
+        ],
+        "x2": [
+          17,
+          13
+        ],
+        "x3": [
+          36,
+          15
+        ],
+        "x4": [
+          25,
+          28
+        ],
+        "x5": [
+          25,
+          42
+        ]
+      },
+      "steps": [
+        {
+          "p": "1",
+          "c": {
+            "fr": "La remise va à 1 dans le coin.",
+            "en": "The inbound goes to 1 in the corner."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              23,
+              9,
+              "m"
+            ],
+            "x2": [
+              17,
+              12,
+              "m"
+            ],
+            "x3": [
+              27,
+              6,
+              "m"
+            ],
+            "x4": [
+              17,
+              25,
+              "m"
+            ],
+            "x5": [
+              22,
+              40,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 et x2 piègent 1 ; x3 coupe le renversement, x4 le milieu, x5 reste en dernier rempart.",
+            "en": "x1 and x2 trap 1; x3 cuts off the reversal, x4 the middle, x5 stays back."
+          }
+        }
+      ]
+    },
+    {
+      "id": "1-2-2-press",
+      "cat": "defense",
+      "family": "presses",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Presse 1-2-2",
+        "en": "1-2-2 press"
+      },
+      "sum": {
+        "fr": "Presse 1-2-2 : un défenseur en pointe, deux au milieu, deux en arrière ; elle laisse entrer le ballon puis piège le long de la ligne de touche.",
+        "en": "1-2-2 press: one defender at the point, two in the middle, two back; it lets the ball in, then traps along the sideline."
+      },
+      "why": {
+        "fr": "Avec deux défenseurs en arrière, la presse ne laisse pas de lay-up facile.",
+        "en": "With two defenders back, the press gives up no easy layup."
+      },
+      "counter": {
+        "fr": "Passer au milieu ou renverser avant le piège.",
+        "en": "Pass to the middle or reverse before the trap."
+      },
+      "used": {
+        "fr": "Le schéma montre la moitié de terrain où l'adversaire remet en jeu et remonte (vers le bas). Courant à tous les niveaux.",
+        "en": "The diagram shows the half where the opponent inbounds and brings the ball up (toward the bottom). Common at every level."
+      },
+      "keys": {
+        "fr": [
+          "Piéger près des lignes de touche et de la ligne médiane",
+          "Couper la passe au milieu",
+          "Le dernier défenseur ne laisse jamais de lay-up",
+          "Revenir en défense placée si la presse est battue"
+        ],
+        "en": [
+          "Trap near the sidelines and the half-court line",
+          "Cut off the pass to the middle",
+          "The last defender never gives up a layup",
+          "Retreat into the half-court defense if the press is beaten"
+        ]
+      },
+      "start": {
+        "4": [
+          30,
+          -2
+        ],
+        "1": [
+          20,
+          10
+        ],
+        "2": [
+          40,
+          12
+        ],
+        "3": [
+          10,
+          30
+        ],
+        "5": [
+          36,
+          34
+        ],
+        "b": "4",
+        "x1": [
+          25,
+          14
+        ],
+        "x2": [
+          14,
+          24
+        ],
+        "x3": [
+          36,
+          24
+        ],
+        "x4": [
+          16,
+          38
+        ],
+        "x5": [
+          34,
+          38
+        ]
+      },
+      "steps": [
+        {
+          "p": "1",
+          "c": {
+            "fr": "La remise entre à 1.",
+            "en": "The ball comes in to 1."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              10,
+              20,
+              "d"
+            ],
+            "x1": [
+              13,
+              18,
+              "m"
+            ],
+            "x2": [
+              9,
+              23.5,
+              "m"
+            ],
+            "x3": [
+              24,
+              24,
+              "m"
+            ],
+            "x4": [
+              12,
+              34,
+              "m"
+            ],
+            "x5": [
+              28,
+              40,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 remonte le long de la ligne : x1 et x2 piègent, x3 coupe le milieu, x4 et x5 restent en arrière.",
+            "en": "1 dribbles up the sideline: x1 and x2 trap, x3 cuts off the middle, x4 and x5 stay back."
+          }
+        }
+      ]
+    },
+    {
+      "id": "2-1-2-press",
+      "cat": "defense",
+      "family": "presses",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Presse 2-1-2",
+        "en": "2-1-2 press"
+      },
+      "sum": {
+        "fr": "Presse 2-1-2 : deux défenseurs devant, un au milieu, deux en arrière ; les deux premiers piègent dès la réception.",
+        "en": "2-1-2 press: two defenders in front, one in the middle, two back; the first two trap as soon as the ball is caught."
+      },
+      "why": {
+        "fr": "Le piège arrive tout de suite, avant que le receveur ait tourné la tête.",
+        "en": "The trap comes immediately, before the receiver can turn his head."
+      },
+      "counter": {
+        "fr": "Placer un joueur au milieu et passer par-dessus le piège.",
+        "en": "Put a player in the middle and pass over the trap."
+      },
+      "used": {
+        "fr": "Le schéma montre la moitié de terrain où l'adversaire remet en jeu et remonte (vers le bas). Courant à tous les niveaux.",
+        "en": "The diagram shows the half where the opponent inbounds and brings the ball up (toward the bottom). Common at every level."
+      },
+      "keys": {
+        "fr": [
+          "Piéger près des lignes de touche et de la ligne médiane",
+          "Couper la passe au milieu",
+          "Le dernier défenseur ne laisse jamais de lay-up",
+          "Revenir en défense placée si la presse est battue"
+        ],
+        "en": [
+          "Trap near the sidelines and the half-court line",
+          "Cut off the pass to the middle",
+          "The last defender never gives up a layup",
+          "Retreat into the half-court defense if the press is beaten"
+        ]
+      },
+      "start": {
+        "4": [
+          30,
+          -2
+        ],
+        "1": [
+          20,
+          10
+        ],
+        "2": [
+          40,
+          12
+        ],
+        "3": [
+          10,
+          30
+        ],
+        "5": [
+          36,
+          34
+        ],
+        "b": "4",
+        "x1": [
+          17,
+          13
+        ],
+        "x2": [
+          33,
+          13
+        ],
+        "x3": [
+          25,
+          25
+        ],
+        "x4": [
+          14,
+          38
+        ],
+        "x5": [
+          36,
+          38
+        ]
+      },
+      "steps": [
+        {
+          "p": "1",
+          "c": {
+            "fr": "La remise entre à 1.",
+            "en": "The ball comes in to 1."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              18,
+              7.5,
+              "m"
+            ],
+            "x2": [
+              22,
+              12,
+              "m"
+            ],
+            "x3": [
+              26,
+              20,
+              "m"
+            ],
+            "x4": [
+              12,
+              32,
+              "m"
+            ],
+            "x5": [
+              30,
+              38,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 et x2 piègent 1 ; x3 coupe la passe au milieu.",
+            "en": "x1 and x2 trap 1; x3 cuts off the middle pass."
+          }
+        }
+      ]
+    },
+    {
+      "id": "full-court-man-press",
+      "cat": "defense",
+      "family": "presses",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Presse homme à homme tout terrain",
+        "en": "Full-court man press"
+      },
+      "sum": {
+        "fr": "Presse homme à homme sur tout le terrain : chacun refuse la passe à son joueur et le défenseur du passeur gêne la remise.",
+        "en": "Full-court man-to-man press: everyone denies his man and the inbounder's defender bothers the pass."
+      },
+      "why": {
+        "fr": "Chaque passe est contestée : l'adversaire perd du temps et fait des erreurs.",
+        "en": "Every pass is contested: the opponent wastes time and makes mistakes."
+      },
+      "counter": {
+        "fr": "Écrans et coupes vers le ballon, puis passe longue derrière la défense.",
+        "en": "Screens and cuts toward the ball, then a long pass behind the defense."
+      },
+      "used": {
+        "fr": "Le schéma montre la moitié de terrain où l'adversaire remet en jeu et remonte (vers le bas). Courant à tous les niveaux.",
+        "en": "The diagram shows the half where the opponent inbounds and brings the ball up (toward the bottom). Common at every level."
+      },
+      "keys": {
+        "fr": [
+          "Piéger près des lignes de touche et de la ligne médiane",
+          "Couper la passe au milieu",
+          "Le dernier défenseur ne laisse jamais de lay-up",
+          "Revenir en défense placée si la presse est battue"
+        ],
+        "en": [
+          "Trap near the sidelines and the half-court line",
+          "Cut off the pass to the middle",
+          "The last defender never gives up a layup",
+          "Retreat into the half-court defense if the press is beaten"
+        ]
+      },
+      "start": {
+        "4": [
+          30,
+          -2
+        ],
+        "1": [
+          20,
+          10
+        ],
+        "2": [
+          40,
+          12
+        ],
+        "3": [
+          10,
+          30
+        ],
+        "5": [
+          36,
+          34
+        ],
+        "b": "4",
+        "x4": [
+          30,
+          1.5
+        ],
+        "x1": [
+          21,
+          7.5
+        ],
+        "x2": [
+          40,
+          9
+        ],
+        "x3": [
+          10,
+          27
+        ],
+        "x5": [
+          35,
+          30
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              16,
+              14,
+              "c"
+            ],
+            "x1": [
+              17,
+              11,
+              "m"
+            ],
+            "2": [
+              44,
+              16,
+              "c"
+            ],
+            "x2": [
+              42,
+              13,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Chacun refuse la passe à son joueur, côté ballon.",
+            "en": "Everyone denies his man on the ball side."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              24,
+              5,
+              "c"
+            ],
+            "x1": [
+              24,
+              8,
+              "m"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "1 coupe vers le ballon et reçoit : x1 reste collé.",
+            "en": "1 cuts toward the ball and catches: x1 stays attached."
+          }
+        }
+      ]
     }
   ]
 }
