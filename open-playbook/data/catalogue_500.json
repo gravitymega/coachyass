@@ -3583,7 +3583,7 @@
       "fr": "Presse « run and jump »",
       "en": "Run and jump press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "three-quarter-court-press",
@@ -3594,7 +3594,7 @@
       "fr": "Presse 3/4 de terrain",
       "en": "Three-quarter-court press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "half-court-1-3-1-trap",
@@ -3605,7 +3605,7 @@
       "fr": "Piège sur demi-terrain 1-3-1",
       "en": "Half-court 1-3-1 trap"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "press-after-free-throws",
@@ -3616,7 +3616,7 @@
       "fr": "Presse après lancer franc",
       "en": "Press after free throws"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "denying-the-inbound",
@@ -3627,7 +3627,7 @@
       "fr": "Presse : refuser la remise en jeu",
       "en": "Denying the inbound"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "press-retreat",
@@ -3638,7 +3638,7 @@
       "fr": "Presse : retour en défense placée",
       "en": "Press retreat"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "full-court-1-3-1-press",
@@ -3649,7 +3649,7 @@
       "fr": "Presse 1-3-1 tout terrain",
       "en": "Full-court 1-3-1 press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pack-line-defense",
@@ -3660,7 +3660,7 @@
       "fr": "Défense « pack line »",
       "en": "Pack line defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pressure-man-denial-defense",
@@ -3671,7 +3671,7 @@
       "fr": "Défense de pression (refus des passes)",
       "en": "Pressure man (denial) defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "on-ball-stance",
@@ -3682,7 +3682,7 @@
       "fr": "Position sur le porteur",
       "en": "On-ball stance"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "deny-one-pass-away",
@@ -3693,7 +3693,7 @@
       "fr": "Refuser la passe à une passe du ballon",
       "en": "Deny one pass away"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "help-side-two-passes-away",
@@ -3704,7 +3704,7 @@
       "fr": "Position d'aide à deux passes",
       "en": "Help side, two passes away"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "help-and-recover",
@@ -3715,7 +3715,7 @@
       "fr": "Aider et revenir",
       "en": "Help and recover"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "stopping-middle-penetration",
@@ -3726,7 +3726,7 @@
       "fr": "Défense de la pénétration au milieu",
       "en": "Stopping middle penetration"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "force-baseline",
@@ -3737,7 +3737,7 @@
       "fr": "Forcer vers la ligne de fond",
       "en": "Force baseline"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "force-middle",
@@ -3748,7 +3748,7 @@
       "fr": "Forcer vers le milieu",
       "en": "Force middle"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-backdoor-cuts",
@@ -3759,7 +3759,7 @@
       "fr": "Défense contre les coupes dans le dos",
       "en": "Defending backdoor cuts"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-basket-cuts",
@@ -3770,7 +3770,7 @@
       "fr": "Défense contre les coupes au panier",
       "en": "Defending basket cuts"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "containing-the-dribble",
@@ -3781,7 +3781,7 @@
       "fr": "Défense du dribble (contenir)",
       "en": "Containing the dribble"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "switch-everything",
@@ -3792,7 +3792,7 @@
       "fr": "Défense en changement systématique",
       "en": "Switch everything"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "jump-to-the-ball",
