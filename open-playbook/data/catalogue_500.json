@@ -5170,24 +5170,24 @@
     "status": "todo"
   },
   {
-    "id": "agility-ladder-footwork",
+    "id": "shuttle-run-with-the-ball",
     "cat": "exercices",
     "family": "physique",
     "lvl": 1,
     "name": {
-      "fr": "Échelle de rythme et appuis",
-      "en": "Agility ladder footwork"
+      "fr": "Navette avec ballon",
+      "en": "Shuttle run with the ball"
     },
     "status": "todo"
   },
   {
-    "id": "jump-and-land-injury-prevention",
+    "id": "defensive-mirror-agility",
     "cat": "exercices",
     "family": "physique",
-    "lvl": 1,
+    "lvl": 2,
     "name": {
-      "fr": "Sauts et réceptions (prévention des blessures)",
-      "en": "Jump and land (injury prevention)"
+      "fr": "Miroir défensif (agilité)",
+      "en": "Defensive mirror (agility)"
     },
     "status": "todo"
   },
@@ -5203,13 +5203,13 @@
     "status": "todo"
   },
   {
-    "id": "core-stability-for-basketball",
+    "id": "transition-sprints-with-a-finish",
     "cat": "exercices",
     "family": "physique",
-    "lvl": 1,
+    "lvl": 2,
     "name": {
-      "fr": "Gainage du basketteur",
-      "en": "Core stability for basketball"
+      "fr": "Sprints de transition avec finition",
+      "en": "Transition sprints with a finish"
     },
     "status": "todo"
   },
@@ -5258,24 +5258,24 @@
     "status": "todo"
   },
   {
-    "id": "scout-team-running-the-opponent-s-set",
+    "id": "2-on-2-pick-and-roll-reading-the-help",
     "cat": "exercices",
     "family": "seance-pro",
     "lvl": 3,
     "name": {
-      "fr": "Scouting : jouer contre le système adverse",
-      "en": "Scout team: running the opponent's set"
+      "fr": "2 contre 2 pick-and-roll avec lecture de l'aide",
+      "en": "2-on-2 pick-and-roll reading the help"
     },
     "status": "todo"
   },
   {
-    "id": "load-management-walk-through",
+    "id": "shooting-rotation-with-post-passes",
     "cat": "exercices",
     "family": "seance-pro",
     "lvl": 3,
     "name": {
-      "fr": "Gestion de la charge (veille de match)",
-      "en": "Load management walk-through"
+      "fr": "Rotation de tir avec passe du pivot",
+      "en": "Shooting rotation with post passes"
     },
     "status": "todo"
   },
@@ -5423,79 +5423,79 @@
     "status": "todo"
   },
   {
-    "id": "building-a-practice-plan",
+    "id": "attack-the-close-out",
     "cat": "principes",
-    "family": "principes-coaching",
+    "family": "principes-attaque",
     "lvl": 2,
     "name": {
-      "fr": "Construire une séance d'entraînement",
-      "en": "Building a practice plan"
+      "fr": "Attaquer le close-out",
+      "en": "Attack the close-out"
     },
     "status": "todo"
   },
   {
-    "id": "using-timeouts",
+    "id": "cut-after-you-pass",
     "cat": "principes",
-    "family": "principes-coaching",
-    "lvl": 2,
-    "name": {
-      "fr": "Utiliser les temps morts",
-      "en": "Using timeouts"
-    },
-    "status": "todo"
-  },
-  {
-    "id": "managing-foul-trouble",
-    "cat": "principes",
-    "family": "principes-coaching",
-    "lvl": 2,
-    "name": {
-      "fr": "Gérer les fautes de ses joueurs",
-      "en": "Managing foul trouble"
-    },
-    "status": "todo"
-  },
-  {
-    "id": "developing-young-players",
-    "cat": "principes",
-    "family": "principes-coaching",
+    "family": "principes-attaque",
     "lvl": 1,
     "name": {
-      "fr": "Faire progresser les jeunes joueurs",
-      "en": "Developing young players"
+      "fr": "Couper après la passe",
+      "en": "Cut after you pass"
     },
     "status": "todo"
   },
   {
-    "id": "reading-the-box-score",
+    "id": "weak-side-spacing",
     "cat": "principes",
-    "family": "principes-coaching",
+    "family": "principes-attaque",
     "lvl": 2,
     "name": {
-      "fr": "Lire les statistiques d'un match",
-      "en": "Reading the box score"
+      "fr": "Écarter le côté faible",
+      "en": "Weak-side spacing"
     },
     "status": "todo"
   },
   {
-    "id": "preparing-for-an-opponent",
+    "id": "give-and-go",
     "cat": "principes",
-    "family": "principes-coaching",
-    "lvl": 3,
+    "family": "principes-attaque",
+    "lvl": 1,
     "name": {
-      "fr": "Préparer un match (scouting)",
-      "en": "Preparing for an opponent"
+      "fr": "Jouer à deux : passe et va",
+      "en": "Two-man game: give and go"
     },
     "status": "todo"
   },
   {
-    "id": "rotations-and-playing-time",
+    "id": "nearest-man-takes-the-ball",
     "cat": "principes",
-    "family": "principes-coaching",
+    "family": "principes-defense",
     "lvl": 2,
     "name": {
-      "fr": "Rotation des joueurs et temps de jeu",
-      "en": "Rotations and playing time"
+      "fr": "Le plus proche prend le ballon",
+      "en": "Nearest man takes the ball"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "protect-the-baseline",
+    "cat": "principes",
+    "family": "principes-defense",
+    "lvl": 2,
+    "name": {
+      "fr": "Défendre la ligne de fond",
+      "en": "Protect the baseline"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "get-back-before-you-press",
+    "cat": "principes",
+    "family": "principes-defense",
+    "lvl": 2,
+    "name": {
+      "fr": "Revenir avant de presser",
+      "en": "Get back before you press"
     },
     "status": "todo"
   }

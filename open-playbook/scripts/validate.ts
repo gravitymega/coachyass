@@ -71,14 +71,15 @@ function checkTactic(t: Tactic, cats: Set<string>) {
   if (!cats.has(t.cat)) err(id, `catégorie inconnue « ${t.cat} »`);
   if (t.keys.fr.length !== t.keys.en.length) warnings.push(`${id} : ${t.keys.fr.length} points clés FR pour ${t.keys.en.length} EN`);
   if (t.variants && t.variants.fr.length !== t.variants.en.length) warnings.push(`${id} : variantes FR et EN en nombre différent`);
-  if (!t.start) {
-    if (t.steps) err(id, "des étapes sans placement de départ");
+  // Objectif du projet : toutes les fiches sont animées.
+  if (!t.start || !t.steps?.length) {
+    err(id, "fiche non animée (placement de départ et étapes obligatoires)");
     return;
   }
   const s = t.start;
   if (s.b !== undefined && !s[s.b as PlayerId]) err(id, `le porteur du ballon « ${s.b} » n'est pas sur le terrain`);
-  if (SYSTEM_CATS.includes(t.cat) && (t.steps?.length ?? 0) < 2) {
-    err(id, `un système doit avoir au moins 2 étapes (${t.steps?.length ?? 0})`);
+  if (SYSTEM_CATS.includes(t.cat) && t.steps.length < 2) {
+    err(id, `un système doit avoir au moins 2 étapes (${t.steps.length})`);
   }
   checkPositions(`${id} › départ`, Object.fromEntries(PLAYER_IDS.filter((p) => s[p]).map((p) => [p, s[p]])));
 
