@@ -987,7 +987,7 @@
       "fr": "Tresse (weave)",
       "en": "Weave"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "handoff-into-pick-and-roll",
@@ -998,7 +998,7 @@
       "fr": "Remise main à main puis pick-and-roll",
       "en": "Handoff into pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "spain-handoff",
@@ -1009,7 +1009,7 @@
       "fr": "Remise main à main « Spain »",
       "en": "Spain handoff"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "reject-the-handoff",
@@ -1020,7 +1020,7 @@
       "fr": "Refuser la remise",
       "en": "Reject the handoff"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "handoff-into-back-cut",
@@ -1031,7 +1031,7 @@
       "fr": "Remise main à main puis coupe dans le dos",
       "en": "Handoff into back cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pitch-and-run",
@@ -1042,7 +1042,7 @@
       "fr": "Passe à la main et course (pitch)",
       "en": "Pitch and run"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "double-handoff",
@@ -1053,7 +1053,7 @@
       "fr": "Double remise main à main",
       "en": "Double handoff"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "flex",
@@ -1064,7 +1064,7 @@
       "fr": "Flex",
       "en": "Flex"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shuffle-offense",
@@ -1075,7 +1075,7 @@
       "fr": "Shuffle",
       "en": "Shuffle offense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "swing-offense",
@@ -1086,7 +1086,7 @@
       "fr": "Swing",
       "en": "Swing offense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "princeton-backdoor",
@@ -1097,7 +1097,7 @@
       "fr": "Princeton : coupe dans le dos",
       "en": "Princeton backdoor"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "princeton-chin",
@@ -1108,7 +1108,7 @@
       "fr": "Princeton : menton (chin)",
       "en": "Princeton chin"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "wheel-offense",
@@ -1119,7 +1119,7 @@
       "fr": "Roue (wheel)",
       "en": "Wheel offense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "4-out-1-in-motion",
@@ -1130,7 +1130,7 @@
       "fr": "Motion 4 dehors 1 dedans",
       "en": "4-out 1-in motion"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "5-out-motion",
@@ -1141,7 +1141,7 @@
       "fr": "Motion 5 dehors",
       "en": "5-out motion"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "dribble-drive-motion",
@@ -1152,7 +1152,7 @@
       "fr": "Attaque en pénétration (dribble drive)",
       "en": "Dribble drive motion"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "read-and-react",
@@ -1163,7 +1163,7 @@
       "fr": "Lire et réagir (read and react)",
       "en": "Read and react"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blocker-mover",
@@ -1174,7 +1174,7 @@
       "fr": "Bloqueur-coureur (blocker-mover)",
       "en": "Blocker-mover"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ucla-high-post-offense",
@@ -1185,7 +1185,7 @@
       "fr": "Attaque UCLA (poste haut)",
       "en": "UCLA high-post offense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "triangle-offense-sideline-triangle",
@@ -1196,7 +1196,7 @@
       "fr": "Triangle offensif (triangle latéral)",
       "en": "Triangle offense (sideline triangle)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "corner-series",

@@ -13529,6 +13529,2355 @@
           }
         }
       ]
+    },
+    {
+      "id": "weave",
+      "cat": "attaque",
+      "family": "main-a-main",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Tresse (weave)",
+        "en": "Weave"
+      },
+      "sum": {
+        "fr": "Trois joueurs se remettent le ballon de la main à la main en se croisant le long de la ligne à 3 points.",
+        "en": "Three players hand the ball off to each other while crisscrossing along the arc."
+      },
+      "why": {
+        "fr": "Chaque remise est aussi un écran ; les défenseurs doivent sans cesse changer ou passer au-dessus.",
+        "en": "Every handoff is also a screen; defenders must keep switching or fighting over."
+      },
+      "counter": {
+        "fr": "Changer sur toutes les remises, ou sauter dans la trajectoire du receveur.",
+        "en": "Switch every handoff, or jump into the receiver's path."
+      },
+      "used": {
+        "fr": "Courant chez les jeunes et en amateur.",
+        "en": "Common in youth and amateur basketball."
+      },
+      "keys": {
+        "fr": [
+          "Remise à hauteur de hanche",
+          "Le passeur fait écran avec son corps",
+          "Le receveur passe épaule contre épaule",
+          "Attaquer tout de suite après la remise"
+        ],
+        "en": [
+          "Hand off at hip height",
+          "The passer screens with his body",
+          "The receiver goes shoulder to shoulder",
+          "Attack right after the handoff"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          19,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              36,
+              27,
+              "d"
+            ],
+            "2": [
+              38.5,
+              25,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 dribble vers 2 et lui remet le ballon.",
+            "en": "1 dribbles at 2 and hands off."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              44,
+              22,
+              "c"
+            ],
+            "2": [
+              17,
+              27,
+              "d"
+            ],
+            "3": [
+              13,
+              25.5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 prend la place de l'aile ; 2 dribble vers 3.",
+            "en": "1 takes the wing; 2 dribbles at 3."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "2 remet le ballon à 3.",
+            "en": "2 hands off to 3."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              22,
+              13,
+              "d"
+            ],
+            "2": [
+              6,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 attaque le panier ; 2 remplace sur l'aile.",
+            "en": "3 drives to the rim; 2 fills the wing."
+          }
+        }
+      ]
+    },
+    {
+      "id": "handoff-into-pick-and-roll",
+      "cat": "attaque",
+      "family": "main-a-main",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise main à main puis pick-and-roll",
+        "en": "Handoff into pick-and-roll"
+      },
+      "sum": {
+        "fr": "Le grand remet le ballon main à main au meneur, puis se retourne aussitôt pour lui poser un écran porteur.",
+        "en": "The big hands the ball off to the guard, then turns right away to set a ball screen for him."
+      },
+      "why": {
+        "fr": "La défense gère la remise puis doit défendre un pick-and-roll sans avoir eu le temps de se replacer.",
+        "en": "The defense handles the handoff, then has to guard a pick-and-roll before it can reset."
+      },
+      "counter": {
+        "fr": "Changer sur la remise et sur l'écran.",
+        "en": "Switch the handoff and the screen."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Remise à hauteur de hanche",
+          "Le passeur fait écran avec son corps",
+          "Le receveur passe épaule contre épaule",
+          "Attaquer tout de suite après la remise"
+        ],
+        "en": [
+          "Hand off at hip height",
+          "The passer screens with his body",
+          "The receiver goes shoulder to shoulder",
+          "Attack right after the handoff"
+        ]
+      },
+      "start": {
+        "5": [
+          34,
+          29
+        ],
+        "1": [
+          44,
+          24
+        ],
+        "2": [
+          6,
+          24
+        ],
+        "3": [
+          2,
+          4
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "b": "5"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              36,
+              27,
+              "d"
+            ],
+            "1": [
+              38,
+              25,
+              "c"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "5 dribble vers 1 et lui remet le ballon.",
+            "en": "5 dribbles toward 1 and hands off."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              35.5,
+              23,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 se retourne et pose l'écran porteur.",
+            "en": "5 turns and sets the ball screen."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              27,
+              18,
+              "d"
+            ],
+            "5": [
+              31,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque le milieu ; 5 roule.",
+            "en": "1 attacks the middle; 5 rolls."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5 au cercle.",
+            "en": "Pass to 5 at the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "spain-handoff",
+      "cat": "attaque",
+      "family": "main-a-main",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Remise main à main « Spain »",
+        "en": "Spain handoff"
+      },
+      "sum": {
+        "fr": "Remise main à main pendant laquelle un troisième joueur pose un écran dans le dos du défenseur du grand qui remet le ballon.",
+        "en": "A handoff during which a third player back-screens the defender of the big handing the ball off."
+      },
+      "why": {
+        "fr": "Le défenseur du grand est bloqué : le grand roule seul vers le cercle après la remise.",
+        "en": "The big's defender gets screened: the big rolls alone to the rim after the handoff."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran dans le dos et garder un protecteur du cercle.",
+        "en": "Switch the back screen and keep a rim protector home."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Remise à hauteur de hanche",
+          "Le passeur fait écran avec son corps",
+          "Le receveur passe épaule contre épaule",
+          "Attaquer tout de suite après la remise"
+        ],
+        "en": [
+          "Hand off at hip height",
+          "The passer screens with his body",
+          "The receiver goes shoulder to shoulder",
+          "Attack right after the handoff"
+        ]
+      },
+      "start": {
+        "5": [
+          36,
+          28
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          16,
+          29
+        ],
+        "1": [
+          2,
+          4
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "x5": [
+          36,
+          25
+        ],
+        "b": "5"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              40,
+              26,
+              "d"
+            ],
+            "2": [
+              42,
+              23.5,
+              "c"
+            ],
+            "x5": [
+              39,
+              23,
+              "m"
+            ],
+            "3": [
+              36,
+              19,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "5 dribble vers 2 et lui remet le ballon ; 3 vient derrière x5.",
+            "en": "5 dribbles at 2 and hands off; 3 moves behind x5."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              34,
+              17,
+              "d"
+            ],
+            "3": [
+              37.5,
+              20.5,
+              "s"
+            ],
+            "5": [
+              31,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 attaque ; 3 pose l'écran dans le dos de x5 et 5 roule.",
+            "en": "2 attacks; 3 back-screens x5 and 5 rolls."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              32,
+              29,
+              "c"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5 ; 3 ressort à 3 points en deuxième option.",
+            "en": "Pass to 5; 3 pops to the arc as the second option."
+          }
+        }
+      ]
+    },
+    {
+      "id": "reject-the-handoff",
+      "cat": "attaque",
+      "family": "main-a-main",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Refuser la remise",
+        "en": "Reject the handoff"
+      },
+      "sum": {
+        "fr": "Quand son défenseur saute dans la trajectoire de la remise, le receveur refuse le ballon et coupe dans le dos vers le panier.",
+        "en": "When his defender jumps into the handoff path, the receiver refuses the ball and cuts backdoor to the rim."
+      },
+      "why": {
+        "fr": "Le défenseur qui anticipe la remise se place au-dessus : la ligne de fond derrière lui est libre.",
+        "en": "The defender anticipating the handoff sits high: the baseline behind him is open."
+      },
+      "counter": {
+        "fr": "Ne pas sauter trop tôt ; protéger la ligne de fond.",
+        "en": "Do not jump too early; protect the baseline."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Remise à hauteur de hanche",
+          "Le passeur fait écran avec son corps",
+          "Le receveur passe épaule contre épaule",
+          "Attaquer tout de suite après la remise"
+        ],
+        "en": [
+          "Hand off at hip height",
+          "The passer screens with his body",
+          "The receiver goes shoulder to shoulder",
+          "Attack right after the handoff"
+        ]
+      },
+      "start": {
+        "5": [
+          30,
+          29
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "1": [
+          6,
+          24
+        ],
+        "3": [
+          2,
+          4
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "x2": [
+          41.9,
+          21.9
+        ],
+        "b": "5"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              38,
+              27,
+              "d"
+            ],
+            "x2": [
+              41,
+              27,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 dribble vers 2 ; x2 saute dans la trajectoire de la remise.",
+            "en": "5 dribbles at 2; x2 jumps into the handoff path."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              32,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 refuse la remise et coupe dans le dos de x2.",
+            "en": "2 rejects the handoff and cuts behind x2."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "5 passe à 2 sous le panier.",
+            "en": "5 hits 2 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "handoff-into-back-cut",
+      "cat": "attaque",
+      "family": "main-a-main",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise main à main puis coupe dans le dos",
+        "en": "Handoff into back cut"
+      },
+      "sum": {
+        "fr": "Après avoir remis le ballon main à main, le passeur coupe aussitôt vers le panier dans le dos de son défenseur.",
+        "en": "After handing the ball off, the passer cuts straight to the rim behind his defender."
+      },
+      "why": {
+        "fr": "Les défenseurs regardent le receveur de la remise ; le passeur qui coupe est oublié.",
+        "en": "Defenders watch the handoff receiver; the cutting passer gets forgotten."
+      },
+      "counter": {
+        "fr": "Le défenseur du passeur reste entre lui et le panier après la remise.",
+        "en": "The passer's defender stays between him and the rim after the handoff."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Remise à hauteur de hanche",
+          "Le passeur fait écran avec son corps",
+          "Le receveur passe épaule contre épaule",
+          "Attaquer tout de suite après la remise"
+        ],
+        "en": [
+          "Hand off at hip height",
+          "The passer screens with his body",
+          "The receiver goes shoulder to shoulder",
+          "Attack right after the handoff"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          20,
+          6
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              36,
+              27,
+              "d"
+            ],
+            "2": [
+              38.5,
+              25,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 dribble vers 2 et lui remet le ballon.",
+            "en": "1 dribbles at 2 and hands off."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              30,
+              27,
+              "d"
+            ],
+            "1": [
+              33,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 repart vers le haut ; 1 coupe dans le dos vers le panier.",
+            "en": "2 heads back up top; 1 cuts backdoor to the rim."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "2 passe à 1 sous le panier.",
+            "en": "2 hits 1 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "pitch-and-run",
+      "cat": "attaque",
+      "family": "main-a-main",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Passe à la main et course (pitch)",
+        "en": "Pitch and run"
+      },
+      "sum": {
+        "fr": "Passe courte à la main à un coéquipier lancé, puis le passeur court vers le panier.",
+        "en": "A short toss to a teammate on the run, then the passer sprints to the rim."
+      },
+      "why": {
+        "fr": "Le receveur arrive en pleine vitesse et le passeur coupe aussitôt : deux menaces en même temps.",
+        "en": "The receiver arrives at full speed and the passer cuts right away: two threats at once."
+      },
+      "counter": {
+        "fr": "Rester entre le coupeur et le panier et contenir le receveur à deux défenseurs si besoin.",
+        "en": "Stay between the cutter and the rim and contain the receiver with two defenders if needed."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Remise à hauteur de hanche",
+          "Le passeur fait écran avec son corps",
+          "Le receveur passe épaule contre épaule",
+          "Attaquer tout de suite après la remise"
+        ],
+        "en": [
+          "Hand off at hip height",
+          "The passer screens with his body",
+          "The receiver goes shoulder to shoulder",
+          "Attack right after the handoff"
+        ]
+      },
+      "start": {
+        "1": [
+          34,
+          29
+        ],
+        "2": [
+          48,
+          4
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          19,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              39,
+              25,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 remonte du corner en courant ; 1 lui donne le ballon d'une passe courte.",
+            "en": "2 runs up from the corner; 1 tosses him the ball."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              31,
+              8,
+              "c"
+            ],
+            "2": [
+              35,
+              19,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 court vers le panier ; 2 attaque en dribble.",
+            "en": "1 sprints to the rim; 2 attacks on the dribble."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "2 passe à 1 sous le panier.",
+            "en": "2 hits 1 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "double-handoff",
+      "cat": "attaque",
+      "family": "main-a-main",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Double remise main à main",
+        "en": "Double handoff"
+      },
+      "sum": {
+        "fr": "Deux remises main à main de suite : un grand donne le ballon à un ailier, qui le remet aussitôt à un autre ailier de l'autre côté.",
+        "en": "Two handoffs in a row: a big gives the ball to a wing, who immediately hands it to another wing on the other side."
+      },
+      "why": {
+        "fr": "Les deux remises déplacent la défense d'un côté à l'autre ; le dernier receveur attaque une défense en mouvement.",
+        "en": "The two handoffs move the defense side to side; the last receiver attacks a defense on the move."
+      },
+      "counter": {
+        "fr": "Changer sur les deux remises et protéger le milieu.",
+        "en": "Switch both handoffs and protect the middle."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Remise à hauteur de hanche",
+          "Le passeur fait écran avec son corps",
+          "Le receveur passe épaule contre épaule",
+          "Attaquer tout de suite après la remise"
+        ],
+        "en": [
+          "Hand off at hip height",
+          "The passer screens with his body",
+          "The receiver goes shoulder to shoulder",
+          "Attack right after the handoff"
+        ]
+      },
+      "start": {
+        "4": [
+          17,
+          28
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "1": [
+          44,
+          24
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "4"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              19,
+              26,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 remonte du corner ; 4 lui remet le ballon.",
+            "en": "2 comes up from the corner; 4 hands off."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              34,
+              27,
+              "d"
+            ],
+            "1": [
+              36,
+              25,
+              "c"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "2 dribble vers 1 et lui remet à son tour le ballon.",
+            "en": "2 dribbles at 1 and hands off in turn."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              30,
+              14,
+              "d"
+            ],
+            "4": [
+              21,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque le panier ; 4 plonge.",
+            "en": "1 drives to the rim; 4 dives."
+          }
+        }
+      ]
+    },
+    {
+      "id": "flex",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Flex",
+        "en": "Flex"
+      },
+      "sum": {
+        "fr": "Attaque en continuité : le joueur du corner opposé coupe le long de la ligne de fond sur un écran (coupe flex), puis l'écraneur reçoit un écran retour.",
+        "en": "A continuity offense: the far-corner player cuts along the baseline off a screen (flex cut), then the screener gets a down screen."
+      },
+      "why": {
+        "fr": "La séquence se répète d'un côté à l'autre : la défense doit gérer sans arrêt écrans et coupes.",
+        "en": "The pattern repeats side to side: the defense must handle screens and cuts nonstop."
+      },
+      "counter": {
+        "fr": "Changer sur les écrans, ou passer devant l'écran flex côté ballon.",
+        "en": "Switch the screens, or go over the flex screen on the ball side."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          34,
+          29
+        ],
+        "3": [
+          46,
+          7
+        ],
+        "4": [
+          6,
+          24
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4 sur l'aile.",
+            "en": "1 passes to 4 on the wing."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              31,
+              7.5,
+              "s"
+            ],
+            "3": [
+              19,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran flex ; 3 coupe le long de la ligne de fond.",
+            "en": "5 sets the flex screen; 3 cuts along the baseline."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "4 passe à 3 au poste bas.",
+            "en": "4 feeds 3 on the block."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              31,
+              12,
+              "s"
+            ],
+            "5": [
+              34,
+              28,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Sinon, 2 descend poser un écran pour 5, qui remonte en haut.",
+            "en": "Otherwise, 2 comes down to screen for 5, who comes up top."
+          }
+        }
+      ]
+    },
+    {
+      "id": "shuffle-offense",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Shuffle",
+        "en": "Shuffle offense"
+      },
+      "sum": {
+        "fr": "Attaque en continuité : l'ailier du côté faible coupe en frôlant l'écran du poste haut (coupe shuffle), puis on renverse et on recommence.",
+        "en": "A continuity offense: the weak-side wing cuts off the high-post screen (shuffle cut), then the ball is reversed and it starts again."
+      },
+      "why": {
+        "fr": "Tous les joueurs passent à tous les postes : la défense ne peut pas cacher un défenseur faible.",
+        "en": "Every player rotates through every spot: the defense cannot hide a weak defender."
+      },
+      "counter": {
+        "fr": "Passer devant l'écran du poste haut et protéger le cercle côté ballon.",
+        "en": "Go over the high-post screen and protect the ball-side rim."
+      },
+      "used": {
+        "fr": "Attaque historique des années 1950, popularisée par l'université d'Auburn.",
+        "en": "A historic 1950s offense, popularized by Auburn University."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 sur l'aile droite.",
+            "en": "1 passes to 2 on the right wing."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              13,
+              19,
+              "s"
+            ],
+            "3": [
+              27,
+              5,
+              "c"
+            ],
+            "5": [
+              40,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran ; 3 coupe en shuffle vers le panier ; 5 libère le poste bas.",
+            "en": "4 screens; 3 shuffle-cuts to the rim; 5 clears the block."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              8,
+              26,
+              "c"
+            ],
+            "4": [
+              24,
+              29,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "2 passe à 3 ; sinon 1 remplace l'aile et 4 remonte en haut.",
+            "en": "2 hits 3; otherwise 1 fills the wing and 4 comes up top."
+          }
+        }
+      ]
+    },
+    {
+      "id": "swing-offense",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Swing",
+        "en": "Swing offense"
+      },
+      "sum": {
+        "fr": "Attaque de renversement : le ballon passe d'un côté à l'autre et, à chaque renversement, un écran retour libère un joueur du côté opposé.",
+        "en": "A reversal offense: the ball swings side to side and, on every swing, a down screen frees a player on the far side."
+      },
+      "why": {
+        "fr": "La défense doit sans cesse se déplacer ; le joueur libéré reçoit au moment où elle est en mouvement.",
+        "en": "The defense keeps shifting; the freed player catches while it is moving."
+      },
+      "counter": {
+        "fr": "Anticiper le renversement en refusant la passe en haut.",
+        "en": "Anticipate the reversal by denying the pass up top."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          34,
+          29
+        ],
+        "3": [
+          44,
+          24
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          17,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              16,
+              11,
+              "s"
+            ],
+            "4": [
+              8,
+              23,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "2 passe à 3 ; côté opposé, 5 descend poser un écran pour 4.",
+            "en": "2 passes to 3; on the far side, 5 comes down to screen for 4."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "Renversement : 3 renvoie à 2.",
+            "en": "Reversal: 3 swings it back to 2."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "2 passe à 1, qui trouve 4 libéré sur l'aile.",
+            "en": "2 passes to 1, who finds 4 open on the wing."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "Passe à 4.",
+            "en": "Pass to 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "princeton-backdoor",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Princeton : coupe dans le dos",
+        "en": "Princeton backdoor"
+      },
+      "sum": {
+        "fr": "Attaque Princeton : le meneur passe au poste haut et l'ailier dont le défenseur refuse la passe coupe aussitôt dans son dos.",
+        "en": "Princeton offense: the guard passes to the high post and the wing whose defender is denying cuts backdoor right away."
+      },
+      "why": {
+        "fr": "Le poste haut voit tout le terrain : il punit chaque défenseur qui refuse la passe trop fort.",
+        "en": "The high post sees the whole floor: he punishes every defender who overplays."
+      },
+      "counter": {
+        "fr": "Relâcher la pression sur les ailes quand le ballon est au poste haut.",
+        "en": "Release wing pressure when the ball is at the high post."
+      },
+      "used": {
+        "fr": "Attaque associée à l'entraîneur Pete Carril, de l'université de Princeton.",
+        "en": "Offense associated with coach Pete Carril of Princeton University."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "x2": [
+          41,
+          25.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5 au poste haut.",
+            "en": "1 passes to 5 at the high post."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              31,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "x2 refuse la passe : 2 coupe dans son dos.",
+            "en": "x2 is denying: 2 cuts behind him."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "5 passe à 2 sous le panier.",
+            "en": "5 hits 2 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "princeton-chin",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Princeton : menton (chin)",
+        "en": "Princeton chin"
+      },
+      "sum": {
+        "fr": "Attaque Princeton, série « chin » : après la passe à l'aile, le meneur coupe sur l'écran du poste haut, puis le poste haut remonte recevoir.",
+        "en": "Princeton offense, \"chin\" series: after the pass to the wing, the guard cuts off the high post's screen, then the high post pops up to catch."
+      },
+      "why": {
+        "fr": "Chaque option prépare la suivante : coupe, puis passe en haut, puis coupe dans le dos du côté opposé.",
+        "en": "Each option sets up the next: a cut, then a pass up top, then a backdoor on the far side."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran du poste haut et ne pas surjouer les lignes de passe.",
+        "en": "Switch the high-post screen and do not overplay the passing lanes."
+      },
+      "used": {
+        "fr": "Attaque associée à l'entraîneur Pete Carril, de l'université de Princeton ; terminologie variable.",
+        "en": "Offense associated with coach Pete Carril of Princeton University; terminology varies."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 sur l'aile.",
+            "en": "1 passes to 2 on the wing."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              29,
+              24,
+              "s"
+            ],
+            "1": [
+              31,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran dans le dos du défenseur de 1, qui coupe vers le panier.",
+            "en": "5 back-screens 1's defender; 1 cuts to the rim."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              25,
+              30,
+              "c"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "5 remonte en haut et reçoit de 2.",
+            "en": "5 pops up top and catches from 2."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              20,
+              7,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "3 coupe dans le dos de son défenseur ; 5 lui passe.",
+            "en": "3 cuts behind his defender; 5 hits him."
+          }
+        }
+      ]
+    },
+    {
+      "id": "wheel-offense",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Roue (wheel)",
+        "en": "Wheel offense"
+      },
+      "sum": {
+        "fr": "Attaque en continuité proche du shuffle : coupe shuffle, puis écran retour pour l'écraneur, et la rotation recommence de l'autre côté.",
+        "en": "A continuity offense close to the shuffle: shuffle cut, then a down screen for the screener, and the rotation starts again on the other side."
+      },
+      "why": {
+        "fr": "La rotation fait passer chaque joueur par chaque poste et enchaîne deux écrans à chaque tour.",
+        "en": "The rotation takes every player through every spot and chains two screens each time."
+      },
+      "counter": {
+        "fr": "Changer sur les écrans et anticiper le renversement.",
+        "en": "Switch the screens and anticipate the reversal."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              13,
+              19,
+              "s"
+            ],
+            "3": [
+              27,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran ; 3 coupe en shuffle vers le panier.",
+            "en": "4 screens; 3 shuffle-cuts to the rim."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              15,
+              15,
+              "s"
+            ],
+            "4": [
+              24,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 descend poser un écran pour 4, qui remonte en haut.",
+            "en": "1 comes down to screen for 4, who comes up top."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "2 renverse vers 4.",
+            "en": "2 reverses to 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "4-out-1-in-motion",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Motion 4 dehors 1 dedans",
+        "en": "4-out 1-in motion"
+      },
+      "sum": {
+        "fr": "Quatre joueurs dehors et un pivot dedans : après chaque passe, on coupe vers le panier et les autres remplissent les places.",
+        "en": "Four players outside and one post inside: after each pass, cut to the rim and the others fill the spots."
+      },
+      "why": {
+        "fr": "Simple à apprendre, elle crée des coupes et des passes au poste sans système à mémoriser.",
+        "en": "Simple to learn, it creates cuts and post feeds without a set play to memorize."
+      },
+      "counter": {
+        "fr": "Refuser les passes et rester entre son joueur et le panier sur chaque coupe.",
+        "en": "Deny passes and stay between your man and the rim on every cut."
+      },
+      "used": {
+        "fr": "Courant chez les jeunes et en amateur.",
+        "en": "Common in youth and amateur basketball."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          34,
+          29
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          44,
+          24
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3 sur l'aile.",
+            "en": "1 passes to 3 on the wing."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              21,
+              7,
+              "c"
+            ],
+            "2": [
+              16,
+              29,
+              "c"
+            ],
+            "4": [
+              34,
+              29,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 coupe vers le panier ; 2 et 4 remplissent vers la gauche.",
+            "en": "1 cuts to the rim; 2 and 4 fill to the left."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              44,
+              24,
+              "c"
+            ],
+            "5": [
+              19,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 ressort sur l'aile droite ; 5 vient au poste bas côté ballon.",
+            "en": "1 exits to the right wing; 5 comes to the ball-side block."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "3 passe à 5 au poste bas.",
+            "en": "3 feeds 5 on the block."
+          }
+        }
+      ]
+    },
+    {
+      "id": "5-out-motion",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Motion 5 dehors",
+        "en": "5-out motion"
+      },
+      "sum": {
+        "fr": "Les cinq joueurs dehors : passe, coupe vers le panier, puis chacun remplit la place laissée libre.",
+        "en": "All five players outside: pass, cut to the rim, then everyone fills the open spot."
+      },
+      "why": {
+        "fr": "La raquette reste vide : chaque coupe arrive au cercle et chaque défenseur aidant laisse un tireur.",
+        "en": "The paint stays empty: every cut reaches the rim and every helper leaves a shooter."
+      },
+      "counter": {
+        "fr": "Refuser les coupes et défendre la ligne à 3 points sans laisser la raquette.",
+        "en": "Deny the cuts and guard the arc without giving up the paint."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              27,
+              7,
+              "c"
+            ],
+            "3": [
+              25,
+              30,
+              "c"
+            ],
+            "5": [
+              6,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 coupe vers le panier ; 3 remonte en haut, 5 remonte sur l'aile.",
+            "en": "1 cuts to the rim; 3 lifts to the top, 5 lifts to the wing."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              3,
+              5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 ressort au corner gauche.",
+            "en": "1 exits to the left corner."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "2 renverse vers 3 en haut.",
+            "en": "2 reverses to 3 up top."
+          }
+        }
+      ]
+    },
+    {
+      "id": "dribble-drive-motion",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque en pénétration (dribble drive)",
+        "en": "Dribble drive motion"
+      },
+      "sum": {
+        "fr": "Attaque en pénétration : quatre joueurs écartés, un pivot du côté opposé ; chaque pénétration crée une passe vers un joueur libre.",
+        "en": "A drive-first offense: four players spaced, one post on the far side; every drive creates a pass to an open man."
+      },
+      "why": {
+        "fr": "La raquette est vide : le dribbleur va au cercle ou attire l'aide, puis ressort vers le corner ou le pivot.",
+        "en": "The paint is empty: the driver gets to the rim or draws help, then kicks to the corner or dumps to the post."
+      },
+      "counter": {
+        "fr": "Défendre la pénétration avec des aides courtes et des close-out rapides.",
+        "en": "Guard the drive with short helps and quick close-outs."
+      },
+      "used": {
+        "fr": "Attaque conçue par Vance Walberg et popularisée par John Calipari.",
+        "en": "Offense created by Vance Walberg and popularized by John Calipari."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          20,
+          5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              29,
+              12,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 pénètre ; 5 reste sur la ligne de fond côté opposé.",
+            "en": "1 drives; 5 stays on the baseline on the far side."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "L'aide vient du corner : 1 ressort vers 4.",
+            "en": "Help comes from the corner: 1 kicks out to 4."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              38,
+              9,
+              "d"
+            ],
+            "1": [
+              25,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 attaque le close-out ; 1 ressort en haut.",
+            "en": "4 attacks the close-out; 1 goes back up top."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Le pivot défenseur aide : 4 passe à 5.",
+            "en": "The defending big helps: 4 dumps it to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "read-and-react",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Lire et réagir (read and react)",
+        "en": "Read and react"
+      },
+      "sum": {
+        "fr": "Attaque par règles simples : à chaque action du porteur (passe, pénétration), les autres réagissent toujours de la même façon.",
+        "en": "An offense built on simple rules: for every action by the ball handler (pass, drive), the others always react the same way."
+      },
+      "why": {
+        "fr": "Les joueurs n'apprennent pas de systèmes mais des réactions : l'attaque s'adapte à n'importe quelle défense.",
+        "en": "Players learn reactions instead of set plays: the offense adapts to any defense."
+      },
+      "counter": {
+        "fr": "Casser les règles en refusant les passes et en forçant des pénétrations vers la ligne de fond.",
+        "en": "Break the rules by denying passes and forcing baseline drives."
+      },
+      "used": {
+        "fr": "Concept développé par l'entraîneur américain Rick Torbett.",
+        "en": "Concept developed by American coach Rick Torbett."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              27,
+              7,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "Règle 1 : je passe, je coupe vers le panier.",
+            "en": "Rule 1: I pass, I cut to the rim."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              25,
+              30,
+              "c"
+            ],
+            "5": [
+              6,
+              22,
+              "c"
+            ],
+            "1": [
+              3,
+              5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Les autres remplissent dans le même sens.",
+            "en": "The others fill in the same direction."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              38,
+              8,
+              "d"
+            ],
+            "4": [
+              44,
+              20,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Règle 2 : 2 pénètre par la ligne de fond, les autres tournent.",
+            "en": "Rule 2: 2 drives baseline, the others rotate."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "2 ressort vers 4 remonté.",
+            "en": "2 kicks out to 4, who lifted."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blocker-mover",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Bloqueur-coureur (blocker-mover)",
+        "en": "Blocker-mover"
+      },
+      "sum": {
+        "fr": "Deux « bloqueurs » posent les écrans, trois « coureurs » les utilisent : chacun a un rôle fixe.",
+        "en": "Two \"blockers\" set the screens, three \"movers\" use them: everyone has a set role."
+      },
+      "why": {
+        "fr": "Les meilleurs tireurs courent sans arrêt sur des écrans ; les grands ne font que poser des écrans et jouer au rebond.",
+        "en": "The best shooters run off screens nonstop; the bigs only screen and rebound."
+      },
+      "counter": {
+        "fr": "Changer sur les écrans des bloqueurs et ne jamais laisser un coureur seul.",
+        "en": "Switch the blockers' screens and never leave a mover alone."
+      },
+      "used": {
+        "fr": "Attaque de mouvement utilisée dans le basket universitaire américain.",
+        "en": "A motion offense used in American college basketball."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          19,
+          8
+        ],
+        "3": [
+          31,
+          8
+        ],
+        "4": [
+          15,
+          15
+        ],
+        "5": [
+          35,
+          15
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              16,
+              10,
+              "s"
+            ],
+            "2": [
+              7,
+              23,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran retour ; 2 sort vers l'aile gauche.",
+            "en": "4 sets a pin-down; 2 comes out to the left wing."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              34,
+              10,
+              "s"
+            ],
+            "3": [
+              43,
+              23,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 pose un écran retour ; 3 sort vers l'aile droite.",
+            "en": "5 sets a pin-down; 3 comes out to the right wing."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "2 renvoie à 1 qui renverse vers 3.",
+            "en": "2 swings it back to 1, who reverses to 3."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "Passe à 3.",
+            "en": "Pass to 3."
+          }
+        }
+      ]
+    },
+    {
+      "id": "ucla-high-post-offense",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque UCLA (poste haut)",
+        "en": "UCLA high-post offense"
+      },
+      "sum": {
+        "fr": "Attaque UCLA : coupe UCLA du meneur sur l'écran du poste haut, puis le poste haut remonte en haut pour renverser.",
+        "en": "UCLA offense: the guard's UCLA cut off the high post's screen, then the high post pops up top to reverse."
+      },
+      "why": {
+        "fr": "Deux options enchaînées : la coupe au panier, puis le renversement avec un écran retour pour le coupeur.",
+        "en": "Two options in a row: the cut to the rim, then the reversal with a down screen for the cutter."
+      },
+      "counter": {
+        "fr": "Passer devant l'écran du poste haut et refuser la passe en haut.",
+        "en": "Go over the high-post screen and deny the pass up top."
+      },
+      "used": {
+        "fr": "Attaque associée à l'UCLA de John Wooden.",
+        "en": "Offense associated with John Wooden's UCLA."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 sur l'aile.",
+            "en": "1 passes to 2 on the wing."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              29,
+              24,
+              "s"
+            ],
+            "1": [
+              31,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran, 1 coupe vers le panier.",
+            "en": "5 screens, 1 cuts to the rim."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              25,
+              30,
+              "c"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "5 remonte en haut et reçoit de 2.",
+            "en": "5 pops up top and catches from 2."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              38,
+              12,
+              "s"
+            ],
+            "1": [
+              43,
+              23,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 descend poser un écran pour 1, qui remonte sur l'aile.",
+            "en": "2 comes down to screen for 1, who comes up to the wing."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "5 passe à 1.",
+            "en": "5 passes to 1."
+          }
+        }
+      ]
+    },
+    {
+      "id": "triangle-offense-sideline-triangle",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Triangle offensif (triangle latéral)",
+        "en": "Triangle offense (sideline triangle)"
+      },
+      "sum": {
+        "fr": "Attaque en triangle : un pivot au poste bas, un ailier sur l'aile et un joueur au corner forment un triangle du côté du ballon.",
+        "en": "Triangle offense: a post on the block, a wing on the wing and a player in the corner form a triangle on the ball side."
+      },
+      "why": {
+        "fr": "Le triangle offre trois passes à chaque joueur et des coupes automatiques selon la réaction de la défense.",
+        "en": "The triangle gives every player three passing options and automatic cuts based on the defense."
+      },
+      "counter": {
+        "fr": "Refuser l'entrée au poste et changer sur les coupes croisées.",
+        "en": "Deny the post entry and switch the split cuts."
+      },
+      "used": {
+        "fr": "Attaque de Tex Winter, utilisée par les Chicago Bulls et les Los Angeles Lakers de Phil Jackson.",
+        "en": "Tex Winter's offense, used by Phil Jackson's Chicago Bulls and Los Angeles Lakers."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          16,
+          29
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 sur l'aile.",
+            "en": "1 passes to 2 on the wing."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              46,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 coupe au corner : le triangle corner, aile, poste est formé.",
+            "en": "1 cuts to the corner: the corner-wing-post triangle is formed."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe à 5 au poste bas.",
+            "en": "2 feeds 5 on the block."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              33,
+              14,
+              "c"
+            ],
+            "1": [
+              42,
+              22,
+              "c"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "2 et 1 se croisent (coupe split) ; 5 lit les deux coupeurs.",
+            "en": "2 and 1 crisscross (split cut); 5 reads both cutters."
+          }
+        }
+      ]
     }
   ]
 }
