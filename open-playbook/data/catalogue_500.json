@@ -2593,7 +2593,7 @@
       "fr": "Retour défensif : changement en transition",
       "en": "Transition switching"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "tactical-foul-rules-vary-by-competition",
@@ -2604,7 +2604,7 @@
       "fr": "Retour défensif : faute tactique (règles selon la compétition)",
       "en": "Tactical foul (rules vary by competition)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "sprint-to-the-paint",
@@ -2615,7 +2615,7 @@
       "fr": "Retour défensif : courir vers la raquette",
       "en": "Sprint to the paint"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-drag-screen",
@@ -2626,7 +2626,7 @@
       "fr": "Retour défensif : défendre le drag",
       "en": "Defending the drag screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-home-run-pass",
@@ -2637,7 +2637,7 @@
       "fr": "Retour défensif : défendre la passe longue",
       "en": "Defending the home-run pass"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-stack",
@@ -2670,7 +2670,7 @@
       "fr": "Remise ligne de fond : boîte (Box)",
       "en": "BLOB Box"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-box-cross",
@@ -2681,7 +2681,7 @@
       "fr": "Remise ligne de fond : boîte, écran croisé",
       "en": "BLOB Box cross"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-box-screen-the-screener",
@@ -2692,7 +2692,7 @@
       "fr": "Remise ligne de fond : boîte, écran pour l'écraneur",
       "en": "BLOB Box screen the screener"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-diamond",
@@ -2703,7 +2703,7 @@
       "fr": "Remise ligne de fond : losange",
       "en": "BLOB Diamond"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-vs-zone",
@@ -2714,7 +2714,7 @@
       "fr": "Remise ligne de fond : contre zone",
       "en": "BLOB vs zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-return-to-inbounder",
@@ -2725,7 +2725,7 @@
       "fr": "Remise ligne de fond : passe au passeur",
       "en": "BLOB return to inbounder"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-corner-three",
@@ -2736,7 +2736,7 @@
       "fr": "Remise ligne de fond : tir du corner",
       "en": "BLOB corner three"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-lob",
@@ -2747,7 +2747,7 @@
       "fr": "Remise ligne de fond : lob",
       "en": "BLOB lob"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-stagger",
@@ -2758,7 +2758,7 @@
       "fr": "Remise ligne de fond : écran en escalier",
       "en": "BLOB stagger"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-floppy",
@@ -2769,7 +2769,7 @@
       "fr": "Remise ligne de fond : Floppy",
       "en": "BLOB Floppy"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-pick-and-roll",
@@ -2780,7 +2780,7 @@
       "fr": "Remise ligne de fond : pick-and-roll",
       "en": "BLOB pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-safety",
@@ -2791,7 +2791,7 @@
       "fr": "Remise ligne de fond : sécurité (ballon en jeu)",
       "en": "BLOB safety"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-reverse-stack",
@@ -2802,7 +2802,7 @@
       "fr": "Remise ligne de fond : colonne inversée",
       "en": "BLOB reverse stack"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-vs-switching",
@@ -2813,7 +2813,7 @@
       "fr": "Remise ligne de fond : contre changement",
       "en": "BLOB vs switching"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-with-2-seconds-left",
@@ -2824,7 +2824,7 @@
       "fr": "Remise ligne de fond : deux secondes à jouer",
       "en": "BLOB with 2 seconds left"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-post-seal",

@@ -30033,6 +30033,2167 @@
           }
         }
       ]
+    },
+    {
+      "id": "transition-switching",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : changement en transition",
+        "en": "Transition switching"
+      },
+      "sum": {
+        "fr": "En transition, deux défenseurs échangent leurs joueurs quand les attaquants se croisent, au lieu de les poursuivre.",
+        "en": "In transition, two defenders swap assignments when the attackers crisscross, instead of chasing them."
+      },
+      "why": {
+        "fr": "Poursuivre un attaquant qui traverse le terrain crée du retard ; changer garde chaque défenseur entre son joueur et le panier.",
+        "en": "Chasing an attacker across the floor creates delays; switching keeps every defender between his man and the basket."
+      },
+      "counter": {
+        "fr": "Chercher le décalage de taille créé par le changement.",
+        "en": "Hunt the size mismatch created by the switch."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          36
+        ],
+        "2": [
+          8,
+          34
+        ],
+        "3": [
+          42,
+          34
+        ],
+        "x1": [
+          25,
+          31
+        ],
+        "x2": [
+          11,
+          28
+        ],
+        "x3": [
+          39,
+          28
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              40,
+              18,
+              "c"
+            ],
+            "3": [
+              10,
+              18,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 et 3 se croisent devant le ballon.",
+            "en": "2 and 3 crisscross in front of the ball."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              13,
+              16,
+              "m"
+            ],
+            "x3": [
+              37,
+              16,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Changement : x2 prend 3, x3 prend 2, sans poursuivre.",
+            "en": "Switch: x2 takes 3, x3 takes 2, without chasing."
+          }
+        }
+      ]
+    },
+    {
+      "id": "tactical-foul-rules-vary-by-competition",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : faute tactique (règles selon la compétition)",
+        "en": "Tactical foul (rules vary by competition)"
+      },
+      "sum": {
+        "fr": "Quand l'adversaire part en surnombre, un défenseur fait faute sur le porteur avant que l'avantage devienne un panier facile.",
+        "en": "When the opponent breaks with a numbers advantage, a defender fouls the ball handler before the advantage becomes an easy basket."
+      },
+      "why": {
+        "fr": "Une faute ordinaire coûte moins qu'un lay-up, si l'équipe n'est pas dans la pénalité et si le règlement la sanctionne peu.",
+        "en": "A regular foul costs less than a layup, if the team is not in the penalty and if the rules punish it lightly."
+      },
+      "counter": {
+        "fr": "Avancer le ballon par la passe pour ne pas laisser le temps de faire faute.",
+        "en": "Move the ball ahead with passes so there is no time to foul."
+      },
+      "used": {
+        "fr": "Plusieurs règlements (FIBA, NBA) sanctionnent désormais plus lourdement ces fautes en transition : vérifier les règles de la compétition.",
+        "en": "Several rulebooks (FIBA, NBA) now punish these transition fouls more heavily: check your competition's rules."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          42
+        ],
+        "2": [
+          8,
+          42
+        ],
+        "3": [
+          42,
+          42
+        ],
+        "x1": [
+          27,
+          46
+        ],
+        "x2": [
+          25,
+          20
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              31,
+              "d"
+            ],
+            "2": [
+              6,
+              24,
+              "c"
+            ],
+            "3": [
+              44,
+              24,
+              "c"
+            ],
+            "x1": [
+              26.5,
+              34,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 part en contre-attaque à trois contre un.",
+            "en": "1 leads a three-on-one break."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              26,
+              32,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 rattrape 1 et fait faute avant la ligne à 3 points : le jeu s'arrête.",
+            "en": "x1 catches 1 and fouls before the arc: play stops."
+          }
+        }
+      ]
+    },
+    {
+      "id": "sprint-to-the-paint",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : courir vers la raquette",
+        "en": "Sprint to the paint"
+      },
+      "sum": {
+        "fr": "Au changement de possession, tous les défenseurs sprintent d'abord jusqu'à la raquette, puis ressortent vers les attaquants.",
+        "en": "On the change of possession, every defender first sprints to the paint, then comes out to the attackers."
+      },
+      "why": {
+        "fr": "Une raquette remplie arrête les lay-ups ; il est plus facile de sortir sur un tireur que de revenir d'une course perdue.",
+        "en": "A packed paint stops layups; it is easier to close out on a shooter than to recover from a lost race."
+      },
+      "counter": {
+        "fr": "Attaquer avant que la défense soit dans la raquette, ou tirer vite à 3 points.",
+        "en": "Attack before the defense fills the paint, or shoot early threes."
+      },
+      "used": {
+        "fr": "Courant chez les jeunes et en amateur.",
+        "en": "Common in youth and amateur basketball."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          40
+        ],
+        "2": [
+          8,
+          40
+        ],
+        "3": [
+          42,
+          40
+        ],
+        "x1": [
+          25,
+          46
+        ],
+        "x2": [
+          12,
+          46
+        ],
+        "x3": [
+          38,
+          46
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x1": [
+              25,
+              17,
+              "m"
+            ],
+            "x2": [
+              20,
+              10,
+              "m"
+            ],
+            "x3": [
+              30,
+              10,
+              "m"
+            ],
+            "1": [
+              25,
+              32,
+              "d"
+            ],
+            "2": [
+              6,
+              26,
+              "c"
+            ],
+            "3": [
+              44,
+              26,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Les trois défenseurs sprintent jusqu'à la raquette.",
+            "en": "The three defenders sprint to the paint."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              25,
+              28,
+              "m"
+            ],
+            "x2": [
+              10,
+              21,
+              "m"
+            ],
+            "x3": [
+              40,
+              21,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Ils ressortent : x1 sur le ballon, x2 et x3 vers les ailes.",
+            "en": "They come out: x1 on the ball, x2 and x3 to the wings."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-drag-screen",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : défendre le drag",
+        "en": "Defending the drag screen"
+      },
+      "sum": {
+        "fr": "En transition, le défenseur du meneur refuse l'écran du grand (il se place du côté de l'écran) et pousse le meneur vers la ligne de touche.",
+        "en": "In transition, the guard's defender refuses the big's drag screen (he jumps to the screen side) and pushes the guard toward the sideline."
+      },
+      "why": {
+        "fr": "Le drag veut attaquer une défense pas encore placée : refuser l'écran l'annule et donne le temps aux autres de revenir.",
+        "en": "The drag wants to attack an unset defense: refusing the screen cancels it and buys time for the others."
+      },
+      "counter": {
+        "fr": "Rejeter l'écran et attaquer le milieu, ou reposer l'écran sous un autre angle.",
+        "en": "Reject the screen and attack the middle, or re-screen at a new angle."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "1": [
+          30,
+          44
+        ],
+        "5": [
+          22,
+          38
+        ],
+        "2": [
+          45,
+          40
+        ],
+        "x1": [
+          29,
+          40
+        ],
+        "x5": [
+          20,
+          44
+        ],
+        "x2": [
+          42,
+          44
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              41,
+              "s"
+            ],
+            "x1": [
+              28.5,
+              42.5,
+              "m"
+            ],
+            "x5": [
+              23,
+              34,
+              "m"
+            ],
+            "2": [
+              46,
+              22,
+              "c"
+            ],
+            "x2": [
+              42,
+              26,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 vient poser l'écran ; x1 se place du côté de l'écran.",
+            "en": "5 comes to screen; x1 jumps to the screen side."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              38,
+              34,
+              "d"
+            ],
+            "x1": [
+              35,
+              36,
+              "m"
+            ],
+            "5": [
+              26,
+              15,
+              "c"
+            ],
+            "x5": [
+              26,
+              19,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 est poussé vers la ligne de touche ; x5 recule devant le roll.",
+            "en": "1 is pushed toward the sideline; x5 drops in front of the roll."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defending-the-home-run-pass",
+      "cat": "transition",
+      "family": "defense-transition",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Retour défensif : défendre la passe longue",
+        "en": "Defending the home-run pass"
+      },
+      "sum": {
+        "fr": "Quand l'adversaire prend le rebond, un défenseur reste toujours plus loin que le plus avancé des attaquants pour empêcher la passe longue.",
+        "en": "When the opponent rebounds, one defender always stays deeper than the most advanced attacker to stop the long pass."
+      },
+      "why": {
+        "fr": "La passe longue est la contre-attaque la plus rapide : un défenseur en sécurité la supprime.",
+        "en": "The long pass is the fastest break there is: a safety defender takes it away."
+      },
+      "counter": {
+        "fr": "Faire courir deux attaquants loin pour obliger le défenseur de sécurité à choisir.",
+        "en": "Send two attackers deep to force the safety to choose."
+      },
+      "used": {
+        "fr": "Le schéma montre la moitié de terrain où l'adversaire prend le rebond et repart vers la ligne médiane (en bas).",
+        "en": "The diagram shows the half where the opponent rebounds and heads toward half court (bottom)."
+      },
+      "keys": {
+        "fr": [
+          "Le premier revenu protège le cercle",
+          "Le deuxième arrête le ballon avant la ligne des lancers francs",
+          "Parler : « ballon », « cercle », désigner son joueur",
+          "Revenir en sprint, en regardant le ballon"
+        ],
+        "en": [
+          "The first back protects the rim",
+          "The second stops the ball before the free-throw line",
+          "Talk: \"ball\", \"rim\", point at your man",
+          "Sprint back while watching the ball"
+        ]
+      },
+      "start": {
+        "5": [
+          25,
+          7
+        ],
+        "2": [
+          38,
+          26
+        ],
+        "1": [
+          10,
+          18
+        ],
+        "x2": [
+          36,
+          28
+        ],
+        "x5": [
+          27,
+          10
+        ],
+        "x1": [
+          12,
+          21
+        ],
+        "b": "5"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              40,
+              42,
+              "c"
+            ],
+            "x2": [
+              38,
+              45,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 sprinte vers l'avant ; x2 court avec lui en restant plus loin.",
+            "en": "2 sprints ahead; x2 runs with him, staying deeper."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              8,
+              22,
+              "c"
+            ],
+            "x1": [
+              10,
+              25,
+              "m"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "Pas de passe longue possible : 5 doit faire une passe courte à 1.",
+            "en": "No long pass available: 5 has to make a short pass to 1."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-box",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : boîte (Box)",
+        "en": "BLOB Box"
+      },
+      "sum": {
+        "fr": "Remise en boîte sous le panier : les deux joueurs du haut descendent bloquer pour les deux du bas, puis plongent vers le cercle.",
+        "en": "Box set under the basket: the two high players screen down for the two low players, then dive to the rim."
+      },
+      "why": {
+        "fr": "Quatre mouvements en même temps : la défense ne peut pas suivre les écrans et les plongées des écraneurs.",
+        "en": "Four movements at once: the defense cannot follow the screens and the screeners' dives."
+      },
+      "counter": {
+        "fr": "Changer sur tous les écrans et garder un défenseur devant le cercle.",
+        "en": "Switch every screen and keep one defender in front of the rim."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "2": [
+          17,
+          19.5
+        ],
+        "3": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              18,
+              11,
+              "s"
+            ],
+            "3": [
+              32,
+              11,
+              "s"
+            ],
+            "4": [
+              8,
+              16,
+              "c"
+            ],
+            "5": [
+              42,
+              16,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 et 3 descendent bloquer ; 4 et 5 sortent vers les ailes.",
+            "en": "2 and 3 screen down; 4 and 5 pop out to the wings."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              22,
+              7,
+              "c"
+            ],
+            "3": [
+              28,
+              7,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 et 3 plongent vers le cercle après leur écran.",
+            "en": "2 and 3 dive to the rim after their screens."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3, le plus proche.",
+            "en": "1 passes to 3, the closest one."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-box-cross",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : boîte, écran croisé",
+        "en": "BLOB Box cross"
+      },
+      "sum": {
+        "fr": "Remise en boîte : écran croisé entre les deux joueurs du bas pour amener le pivot sous le panier, côté ballon.",
+        "en": "Box set: a cross screen between the two low players brings the post under the basket on the ball side."
+      },
+      "why": {
+        "fr": "Le défenseur du pivot est bloqué dans la raquette ; le pivot reçoit à un mètre du cercle.",
+        "en": "The post's defender is screened in the lane; the post catches three feet from the rim."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran croisé et jouer devant le pivot.",
+        "en": "Switch the cross screen and front the post."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          19,
+          -2
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "2": [
+          17,
+          19.5
+        ],
+        "3": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              27,
+              7.5,
+              "s"
+            ],
+            "5": [
+              20,
+              6,
+              "c"
+            ],
+            "2": [
+              6,
+              20,
+              "c"
+            ],
+            "3": [
+              26,
+              29,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran croisé ; 5 coupe vers le poste bas côté ballon ; 2 sort vers l'aile, 3 remonte en sécurité.",
+            "en": "4 cross-screens; 5 cuts to the ball-side block; 2 pops to the wing, 3 goes up as the safety."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5 sous le panier.",
+            "en": "1 hits 5 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-box-screen-the-screener",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : boîte, écran pour l'écraneur",
+        "en": "BLOB Box screen the screener"
+      },
+      "sum": {
+        "fr": "Remise en boîte : écran croisé en bas, puis écran pour l'écraneur, qui remonte et reçoit.",
+        "en": "Box set: a low cross screen, then a screen for the screener, who comes up and catches."
+      },
+      "why": {
+        "fr": "La défense gère l'écran croisé ; le second écran libère le premier écraneur.",
+        "en": "The defense handles the cross screen; the second screen frees the first screener."
+      },
+      "counter": {
+        "fr": "Changer sur les deux écrans.",
+        "en": "Switch both screens."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          19,
+          -2
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "2": [
+          17,
+          19.5
+        ],
+        "3": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              27,
+              7.5,
+              "s"
+            ],
+            "5": [
+              20,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran croisé pour 5.",
+            "en": "4 cross-screens for 5."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              30,
+              11,
+              "s"
+            ],
+            "4": [
+              33,
+              20,
+              "c"
+            ],
+            "2": [
+              8,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 descend poser un écran pour 4, qui remonte.",
+            "en": "3 comes down to screen for 4, who comes up."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4 libéré.",
+            "en": "1 passes to 4, who is open."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-diamond",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : losange",
+        "en": "BLOB Diamond"
+      },
+      "sum": {
+        "fr": "Remise en losange : un joueur en haut, deux sur les côtés, un sous le panier ; chacun part dans une direction différente.",
+        "en": "Diamond inbound: one player up top, two on the sides, one under the basket; each breaks in a different direction."
+      },
+      "why": {
+        "fr": "Le losange occupe toute la raquette : le joueur du bas reçoit souvent seul quand les autres partent.",
+        "en": "The diamond fills the whole lane: the bottom player often catches open when the others break away."
+      },
+      "counter": {
+        "fr": "Défendre en zone pour ne pas suivre les quatre courses.",
+        "en": "Play zone so you do not have to chase four runs."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "3": [
+          25,
+          19
+        ],
+        "2": [
+          17,
+          12
+        ],
+        "4": [
+          33,
+          12
+        ],
+        "5": [
+          25,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "3": [
+              25,
+              30,
+              "c"
+            ],
+            "2": [
+              3,
+              6,
+              "c"
+            ],
+            "4": [
+              27.5,
+              8.5,
+              "s"
+            ],
+            "5": [
+              31,
+              5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 remonte en sécurité ; 2 file au corner ; 4 pose un écran pour 5.",
+            "en": "3 goes up as the safety; 2 runs to the corner; 4 screens for 5."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5 sous le panier.",
+            "en": "1 hits 5 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-vs-zone",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : contre zone",
+        "en": "BLOB vs zone"
+      },
+      "sum": {
+        "fr": "Contre une zone sous le panier, on pose un écran sur un défenseur du bas pour libérer le corner ou le petit corner.",
+        "en": "Against a zone under the basket, screen a low defender to free the corner or the short corner."
+      },
+      "why": {
+        "fr": "La zone ne suit pas les joueurs : un écran sur un défenseur immobile ouvre tout un espace.",
+        "en": "The zone does not follow players: screening a stationary defender opens a whole area."
+      },
+      "counter": {
+        "fr": "Communiquer l'écran et faire glisser le défenseur du milieu.",
+        "en": "Call out the screen and slide the middle defender."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "2": [
+          47,
+          8
+        ],
+        "3": [
+          3,
+          8
+        ],
+        "4": [
+          31,
+          14
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1",
+        "x1": [
+          20,
+          21
+        ],
+        "x2": [
+          30,
+          21
+        ],
+        "x3": [
+          15,
+          10
+        ],
+        "x4": [
+          35,
+          10
+        ],
+        "x5": [
+          25,
+          7.5
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              36,
+              12.5,
+              "s"
+            ],
+            "2": [
+              44,
+              5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran sur x4 ; 2 descend vers le corner.",
+            "en": "4 screens x4; 2 drops toward the corner."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2, libéré au corner.",
+            "en": "1 hits 2, open in the corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-return-to-inbounder",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : passe au passeur",
+        "en": "BLOB return to inbounder"
+      },
+      "sum": {
+        "fr": "Le passeur remet en jeu, entre sur le terrain et récupère aussitôt le ballon sur un écran, près du panier.",
+        "en": "The inbounder passes in, steps onto the floor and immediately gets the ball back off a screen near the basket."
+      },
+      "why": {
+        "fr": "Le défenseur du passeur se détend après la remise : le passeur est souvent le joueur le plus libre.",
+        "en": "The inbounder's defender relaxes after the pass: the inbounder is often the most open player."
+      },
+      "counter": {
+        "fr": "Le défenseur du passeur reste entre lui et le panier après la remise.",
+        "en": "The inbounder's defender stays between him and the basket after the pass."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "2": [
+          17,
+          19.5
+        ],
+        "3": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "3": [
+              30,
+              24,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "3 remonte et reçoit la remise.",
+            "en": "3 lifts and catches the inbound."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              29,
+              5,
+              "s"
+            ],
+            "1": [
+              23,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 entre sur le terrain ; 5 bloque son défenseur.",
+            "en": "1 steps in; 5 screens his defender."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "3 rend le ballon à 1 sous le panier.",
+            "en": "3 gives it back to 1 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-corner-three",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : tir du corner",
+        "en": "BLOB corner three"
+      },
+      "sum": {
+        "fr": "Remise sous le panier conçue pour un tir à 3 points au corner, après un écran sur le défenseur du tireur.",
+        "en": "An under-the-basket inbound designed for a corner three after a screen on the shooter's defender."
+      },
+      "why": {
+        "fr": "Le corner est le tir à 3 points le plus court et il est tout près du passeur.",
+        "en": "The corner is the shortest three and it is right next to the inbounder."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran et garder un défenseur sur le tireur au corner.",
+        "en": "Switch the screen and keep a defender on the corner shooter."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          19,
+          -2
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "2": [
+          20,
+          13
+        ],
+        "3": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              15,
+              9,
+              "s"
+            ],
+            "2": [
+              3,
+              5,
+              "c"
+            ],
+            "3": [
+              25,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran ; 2 sort vers le corner gauche ; 3 remonte en sécurité.",
+            "en": "4 screens; 2 pops to the left corner; 3 goes up as the safety."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 pour le tir au corner.",
+            "en": "1 passes to 2 for the corner three."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-lob",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : lob",
+        "en": "BLOB lob"
+      },
+      "sum": {
+        "fr": "Remise sous le panier : un écran dans le dos libère un joueur qui coupe vers le cercle pour une passe lobée.",
+        "en": "Under-the-basket inbound: a back screen frees a player cutting to the rim for a lob."
+      },
+      "why": {
+        "fr": "Le défenseur regarde le ballon hors du terrain : l'écran dans son dos le surprend.",
+        "en": "The defender is watching the ball out of bounds: the back screen surprises him."
+      },
+      "counter": {
+        "fr": "Se placer côté panier et changer sur l'écran dans le dos.",
+        "en": "Play on the basket side and switch the back screen."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "2": [
+          17,
+          19.5
+        ],
+        "3": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              31,
+              16,
+              "s"
+            ],
+            "2": [
+              8,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran dans le dos du défenseur de 3 au coude.",
+            "en": "4 back-screens 3's defender at the elbow."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              27,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 coupe vers le cercle.",
+            "en": "3 cuts to the rim."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "Passe lobée de 1 à 3.",
+            "en": "Lob from 1 to 3."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-stagger",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : écran en escalier",
+        "en": "BLOB stagger"
+      },
+      "sum": {
+        "fr": "Remise sous le panier : le tireur part de sous le panier et traverse deux écrans en escalier vers l'aile.",
+        "en": "Under-the-basket inbound: the shooter starts under the basket and runs off two staggered screens to the wing."
+      },
+      "why": {
+        "fr": "Le défenseur doit franchir deux écrans pendant que le passeur attend : le tireur reçoit libre.",
+        "en": "The defender has to fight through two screens while the inbounder waits: the shooter catches open."
+      },
+      "counter": {
+        "fr": "Changer sur le second écran.",
+        "en": "Switch the second screen."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "2": [
+          25,
+          7
+        ],
+        "4": [
+          20,
+          11
+        ],
+        "5": [
+          15,
+          17
+        ],
+        "3": [
+          33,
+          20
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              19,
+              10,
+              "s"
+            ],
+            "5": [
+              13,
+              16.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "4 et 5 se placent en escalier vers l'aile gauche.",
+            "en": "4 and 5 set staggered screens toward the left wing."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              7,
+              24,
+              "c"
+            ],
+            "3": [
+              30,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 traverse les deux écrans ; 3 remonte en sécurité.",
+            "en": "2 runs off both screens; 3 goes up as the safety."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 sur l'aile.",
+            "en": "1 passes to 2 on the wing."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-floppy",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : Floppy",
+        "en": "BLOB Floppy"
+      },
+      "sum": {
+        "fr": "Remise sous le panier en Floppy : le tireur sous le panier choisit entre un écran simple d'un côté et un double écran de l'autre.",
+        "en": "Floppy under the basket: the shooter under the basket chooses between a single screen on one side and a double screen on the other."
+      },
+      "why": {
+        "fr": "La défense ne sait pas de quel côté il sortira.",
+        "en": "The defense cannot know which side he will use."
+      },
+      "counter": {
+        "fr": "Suivre le tireur au plus près et changer sur le double écran.",
+        "en": "Trail the shooter tight and switch on the double screen."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "2": [
+          25,
+          8
+        ],
+        "5": [
+          18,
+          11
+        ],
+        "4": [
+          32,
+          11
+        ],
+        "3": [
+          33,
+          15
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              31.5,
+              11.5,
+              "s"
+            ],
+            "3": [
+              33,
+              15,
+              "s"
+            ],
+            "2": [
+              41,
+              21,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 lit son défenseur et sort par le double écran de 4 et 3.",
+            "en": "2 reads his defender and comes off the double screen of 4 and 3."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-pick-and-roll",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : pick-and-roll",
+        "en": "BLOB pick-and-roll"
+      },
+      "sum": {
+        "fr": "Remise sous le panier vers un joueur en sécurité, puis pick-and-roll immédiat avec un grand.",
+        "en": "Inbound to a player in the safety spot, then an immediate pick-and-roll with a big."
+      },
+      "why": {
+        "fr": "La défense est encore placée pour défendre la remise : le pick-and-roll arrive avant qu'elle se replace.",
+        "en": "The defense is still set to guard the inbound: the pick-and-roll arrives before it resets."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran, la défense étant déjà proche du cercle.",
+        "en": "Switch the screen, since the defense is already near the rim."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "2": [
+          17,
+          19.5
+        ],
+        "3": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "3": [
+              30,
+              25,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "3 remonte et reçoit la remise.",
+            "en": "3 lifts and catches the inbound."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              32,
+              22,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 monte poser l'écran porteur pour 3.",
+            "en": "5 comes up to set the ball screen for 3."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              24,
+              15,
+              "d"
+            ],
+            "5": [
+              29,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 attaque ; 5 roule.",
+            "en": "3 attacks; 5 rolls."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5.",
+            "en": "Pass to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-safety",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : sécurité (ballon en jeu)",
+        "en": "BLOB safety"
+      },
+      "sum": {
+        "fr": "Remise sous le panier quand il faut seulement remettre le ballon en jeu sans le perdre : les options vont vers l'extérieur.",
+        "en": "An under-the-basket inbound when all you need is to get the ball in safely: the options move away from the basket."
+      },
+      "why": {
+        "fr": "Contre une défense qui presse, les options loin du panier sont plus sûres que les passes dans la raquette.",
+        "en": "Against a pressing defense, options away from the basket are safer than passes into the lane."
+      },
+      "counter": {
+        "fr": "Refuser les options extérieures et forcer une passe lobée.",
+        "en": "Deny the outside options and force a lob."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "2": [
+          17,
+          19.5
+        ],
+        "3": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              17,
+              13,
+              "s"
+            ],
+            "2": [
+              6,
+              22,
+              "c"
+            ],
+            "3": [
+              32,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran pour 2 qui sort sur l'aile ; 3 remonte loin.",
+            "en": "4 screens for 2 who pops to the wing; 3 runs deep."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3, loin du panier.",
+            "en": "1 passes to 3, far from the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-reverse-stack",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : colonne inversée",
+        "en": "BLOB reverse stack"
+      },
+      "sum": {
+        "fr": "Colonne inversée : les extérieurs sont en bas de la colonne et les grands en haut ; les grands bloquent vers le bas.",
+        "en": "Reverse stack: the guards are at the bottom of the stack and the bigs at the top; the bigs screen down."
+      },
+      "why": {
+        "fr": "La défense s'attend aux grands près du panier : ce sont les tireurs qui en sortent, sur les écrans des grands.",
+        "en": "The defense expects the bigs near the basket: it is the shooters who come out, off the bigs' screens."
+      },
+      "counter": {
+        "fr": "Changer sur les écrans et rester entre les tireurs et le corner.",
+        "en": "Switch the screens and stay between the shooters and the corner."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "2": [
+          19,
+          5
+        ],
+        "3": [
+          19,
+          9
+        ],
+        "4": [
+          19,
+          13
+        ],
+        "5": [
+          19,
+          17
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              3,
+              6,
+              "c"
+            ],
+            "4": [
+              17,
+              10,
+              "s"
+            ],
+            "3": [
+              9,
+              17,
+              "c"
+            ],
+            "5": [
+              25,
+              29,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 file au corner ; 3 sort derrière l'écran de 4 ; 5 remonte en sécurité.",
+            "en": "2 runs to the corner; 3 comes out behind 4's screen; 5 goes up as the safety."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              24,
+              7,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 plonge vers le cercle après l'écran.",
+            "en": "4 dives to the rim after the screen."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4, sinon à 3 ou au corner.",
+            "en": "1 hits 4, otherwise 3 or the corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-vs-switching",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : contre changement",
+        "en": "BLOB vs switching"
+      },
+      "sum": {
+        "fr": "Contre une défense qui change sur tous les écrans, l'écraneur file vers le cercle (slip) avant le contact.",
+        "en": "Against a defense that switches every screen, the screener slips to the rim before contact."
+      },
+      "why": {
+        "fr": "En changeant, les défenseurs se croisent : l'écraneur qui part tôt passe entre eux.",
+        "en": "When switching, the defenders cross paths: the early-leaving screener goes right between them."
+      },
+      "counter": {
+        "fr": "Changer au contact seulement et garder un défenseur au cercle.",
+        "en": "Only switch at contact and keep a defender at the rim."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "2": [
+          17,
+          12
+        ],
+        "3": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              18,
+              10,
+              "c"
+            ],
+            "2": [
+              7,
+              21,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 vient comme pour poser un écran à 2 ; 2 sort vers l'aile.",
+            "en": "4 comes as if to screen for 2; 2 pops to the wing."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              24,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Avant le contact, 4 file vers le cercle.",
+            "en": "Before contact, 4 slips to the rim."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4.",
+            "en": "1 hits 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blob-with-2-seconds-left",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : deux secondes à jouer",
+        "en": "BLOB with 2 seconds left"
+      },
+      "sum": {
+        "fr": "Remise sous le panier avec deux secondes à jouer : un seul écran, une seule passe, un tir immédiat.",
+        "en": "Under-the-basket inbound with two seconds left: one screen, one pass, an immediate shot."
+      },
+      "why": {
+        "fr": "Deux secondes permettent une réception et un tir, pas plus : tout doit être prévu et simple.",
+        "en": "Two seconds allow one catch and one shot, nothing more: everything must be planned and simple."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran et contester sans faute.",
+        "en": "Switch the screen and contest without fouling."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "4": [
+          11,
+          15
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "2": [
+          13,
+          11
+        ],
+        "3": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              10,
+              16,
+              "s"
+            ],
+            "2": [
+              7,
+              23,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran ; 2 sort vers l'aile pour recevoir face au panier.",
+            "en": "4 screens; 2 pops to the wing to catch facing the basket."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 qui tire tout de suite.",
+            "en": "1 passes to 2, who shoots right away."
+          }
+        }
+      ]
     }
   ]
 }
