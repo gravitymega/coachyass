@@ -2835,7 +2835,7 @@
       "fr": "Remise ligne de fond : poste bas",
       "en": "BLOB post seal"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-back-screen",
@@ -2857,7 +2857,7 @@
       "fr": "Remise ligne de touche : boîte",
       "en": "SLOB Box"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-line",
@@ -2868,7 +2868,7 @@
       "fr": "Remise ligne de touche : ligne",
       "en": "SLOB Line"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-stack",
@@ -2879,7 +2879,7 @@
       "fr": "Remise ligne de touche : colonne",
       "en": "SLOB Stack"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-safety",
@@ -2890,7 +2890,7 @@
       "fr": "Remise ligne de touche : sécurité",
       "en": "SLOB safety"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-return-pass",
@@ -2901,7 +2901,7 @@
       "fr": "Remise ligne de touche : passe au passeur",
       "en": "SLOB return pass"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-into-pick-and-roll",
@@ -2912,7 +2912,7 @@
       "fr": "Remise ligne de touche : pick-and-roll immédiat",
       "en": "SLOB into pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-lob",
@@ -2923,7 +2923,7 @@
       "fr": "Remise ligne de touche : lob",
       "en": "SLOB lob"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-stagger",
@@ -2934,7 +2934,7 @@
       "fr": "Remise ligne de touche : écran en escalier",
       "en": "SLOB stagger"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-three",
@@ -2945,7 +2945,7 @@
       "fr": "Remise ligne de touche : tir à 3 points",
       "en": "SLOB three"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-vs-press",
@@ -2956,7 +2956,7 @@
       "fr": "Remise ligne de touche : contre presse",
       "en": "SLOB vs press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-zipper",
@@ -2967,7 +2967,7 @@
       "fr": "Remise ligne de touche : Zipper",
       "en": "SLOB Zipper"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-floppy",
@@ -2978,7 +2978,7 @@
       "fr": "Remise ligne de touche : Floppy",
       "en": "SLOB Floppy"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-end-of-quarter",
@@ -2989,7 +2989,7 @@
       "fr": "Remise ligne de touche : fin de quart-temps",
       "en": "SLOB end of quarter"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "frontcourt-slob-after-a-timeout",
@@ -3000,7 +3000,7 @@
       "fr": "Remise ligne de touche : en zone avant après temps mort",
       "en": "Frontcourt SLOB after a timeout"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ato-three-to-tie",
@@ -3022,7 +3022,7 @@
       "fr": "Fin de match : panier à 2 points en moins de 3 secondes",
       "en": "Late game: quick two"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "full-court-play-in-3-seconds",
@@ -3033,7 +3033,7 @@
       "fr": "Fin de match : tout le terrain en 3 secondes",
       "en": "Full-court play in 3 seconds"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "full-court-heave",
@@ -3044,7 +3044,7 @@
       "fr": "Fin de match : passe longue (« Hail Mary »)",
       "en": "Full-court heave"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "catch-and-shoot-under-one-second",
@@ -3055,18 +3055,18 @@
       "fr": "Fin de match : catch-and-shoot en 0,9 seconde",
       "en": "Catch and shoot under one second"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
-    "id": "tip-in-with-under-half-a-second",
+    "id": "tip-in-under-0-3-seconds",
     "cat": "remises",
     "family": "fin-de-match",
     "lvl": 3,
     "name": {
-      "fr": "Fin de match : lob en 0,4 seconde (tip)",
-      "en": "Tip-in with under half a second"
+      "fr": "Fin de match : claquette à moins de 0,3 seconde",
+      "en": "Tip-in with under 0.3 seconds"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "late-game-isolation",

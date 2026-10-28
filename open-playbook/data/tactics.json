@@ -32194,6 +32194,2008 @@
           }
         }
       ]
+    },
+    {
+      "id": "blob-post-seal",
+      "cat": "remises",
+      "family": "remise-ligne-de-fond",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de fond : poste bas",
+        "en": "BLOB post seal"
+      },
+      "sum": {
+        "fr": "Remise sous le panier : le pivot bloque son défenseur derrière lui, tout près du cercle, et reçoit une passe directe.",
+        "en": "Under-the-basket inbound: the post pins his defender behind him right next to the rim and gets a direct pass."
+      },
+      "why": {
+        "fr": "Sous le panier, une seule position gagnée suffit pour marquer.",
+        "en": "Under the basket, winning position once is enough to score."
+      },
+      "counter": {
+        "fr": "Jouer devant le pivot, côté passeur.",
+        "en": "Front the post on the inbounder's side."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Départ au signal du passeur",
+          "Le passeur a 5 secondes : il compte",
+          "Toujours une option de sécurité loin du panier",
+          "Passe à deux mains, au-dessus de la tête"
+        ],
+        "en": [
+          "Break on the inbounder's signal",
+          "The inbounder has 5 seconds: he counts",
+          "Always a safety option away from the basket",
+          "Two-hand overhead pass"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "5": [
+          29,
+          9
+        ],
+        "x5": [
+          28,
+          7
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          25,
+          31
+        ],
+        "4": [
+          36,
+          18
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              29,
+              5.5,
+              "c"
+            ],
+            "x5": [
+              27,
+              8.5,
+              "m"
+            ],
+            "3": [
+              25,
+              31,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 se retourne et bloque x5 derrière lui, côté ligne de fond.",
+            "en": "5 turns and pins x5 behind him, on the baseline side."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5, collé au cercle.",
+            "en": "1 hits 5, right at the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-box",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : boîte",
+        "en": "SLOB Box"
+      },
+      "sum": {
+        "fr": "Remise ligne de touche en boîte : deux écrans simultanés libèrent un joueur vers le ballon et un autre en sécurité.",
+        "en": "Sideline inbound from a box: two simultaneous screens free one player toward the ball and another as the safety."
+      },
+      "why": {
+        "fr": "Deux écrans en même temps : la défense ne peut pas changer sur les deux sans erreur.",
+        "en": "Two screens at once: the defense cannot switch both without a mistake."
+      },
+      "counter": {
+        "fr": "Changer sur les écrans et refuser l'option proche du ballon.",
+        "en": "Switch the screens and deny the option close to the ball."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le passeur a 5 secondes : il compte",
+          "Une option vers le panier, une option de sécurité",
+          "Écrans posés sur le défenseur, sans pousser",
+          "Recevoir face au panier"
+        ],
+        "en": [
+          "The inbounder has 5 seconds: he counts",
+          "One option to the rim, one safety option",
+          "Screen the defender without pushing",
+          "Catch facing the basket"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "4": [
+          12,
+          24
+        ],
+        "5": [
+          20,
+          24
+        ],
+        "2": [
+          12,
+          34
+        ],
+        "3": [
+          20,
+          34
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              12,
+              30,
+              "s"
+            ],
+            "2": [
+              6,
+              21,
+              "c"
+            ],
+            "5": [
+              20,
+              30,
+              "s"
+            ],
+            "3": [
+              27,
+              42,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 bloque pour 2, qui vient vers l'aile ; 5 bloque pour 3, qui part en sécurité.",
+            "en": "4 screens for 2, who comes to the wing; 5 screens for 3, who goes deep as the safety."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              21,
+              8,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 ; 4 plonge vers le cercle.",
+            "en": "1 passes to 2; 4 dives to the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-line",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : ligne",
+        "en": "SLOB Line"
+      },
+      "sum": {
+        "fr": "Remise ligne de touche en ligne : quatre joueurs alignés depuis le passeur partent chacun dans une direction.",
+        "en": "Sideline inbound from a line: four players lined up from the inbounder each break in a different direction."
+      },
+      "why": {
+        "fr": "Une ligne cache les intentions ; quatre courses différentes ouvrent toujours une passe.",
+        "en": "A line hides the intentions; four different runs always open a pass."
+      },
+      "counter": {
+        "fr": "Défendre côté ballon et refuser la coupe vers le panier.",
+        "en": "Play ball side and deny the cut to the rim."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le passeur a 5 secondes : il compte",
+          "Une option vers le panier, une option de sécurité",
+          "Écrans posés sur le défenseur, sans pousser",
+          "Recevoir face au panier"
+        ],
+        "en": [
+          "The inbounder has 5 seconds: he counts",
+          "One option to the rim, one safety option",
+          "Screen the defender without pushing",
+          "Catch facing the basket"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          6,
+          30
+        ],
+        "3": [
+          12,
+          30
+        ],
+        "4": [
+          18,
+          30
+        ],
+        "5": [
+          24,
+          30
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              5,
+              22,
+              "c"
+            ],
+            "3": [
+              10,
+              42,
+              "c"
+            ],
+            "4": [
+              22,
+              9,
+              "c"
+            ],
+            "5": [
+              34,
+              28,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 vient au ballon, 3 part en sécurité, 4 coupe vers le panier, 5 s'écarte.",
+            "en": "2 comes to the ball, 3 goes deep as the safety, 4 cuts to the rim, 5 spaces out."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 ; 4 reste une option sous le panier.",
+            "en": "1 passes to 2; 4 stays an option under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-stack",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : colonne",
+        "en": "SLOB Stack"
+      },
+      "sum": {
+        "fr": "Remise ligne de touche en colonne : les joueurs sont alignés vers le milieu du terrain et sortent l'un après l'autre.",
+        "en": "Sideline inbound from a stack: players lined up toward the middle of the floor break out one after another."
+      },
+      "why": {
+        "fr": "Le premier de la colonne fait écran pour les autres ; la défense ne voit pas qui part.",
+        "en": "The first in the stack screens for the others; the defense cannot see who is leaving."
+      },
+      "counter": {
+        "fr": "Défendre en se plaçant du côté du panier de chaque joueur.",
+        "en": "Guard each player from the basket side."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le passeur a 5 secondes : il compte",
+          "Une option vers le panier, une option de sécurité",
+          "Écrans posés sur le défenseur, sans pousser",
+          "Recevoir face au panier"
+        ],
+        "en": [
+          "The inbounder has 5 seconds: he counts",
+          "One option to the rim, one safety option",
+          "Screen the defender without pushing",
+          "Catch facing the basket"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "5": [
+          7,
+          30
+        ],
+        "4": [
+          11,
+          30
+        ],
+        "3": [
+          15,
+          30
+        ],
+        "2": [
+          19,
+          30
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              5,
+              23,
+              "c"
+            ],
+            "3": [
+              16,
+              42,
+              "c"
+            ],
+            "4": [
+              18,
+              12,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 scelle ; 2 contourne la colonne vers le ballon ; 3 part en sécurité ; 4 coupe.",
+            "en": "5 seals; 2 curls around the stack toward the ball; 3 goes deep; 4 cuts."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-safety",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : sécurité",
+        "en": "SLOB safety"
+      },
+      "sum": {
+        "fr": "Remise ligne de touche quand il faut seulement garder le ballon : options loin du panier et sécurité très profonde.",
+        "en": "Sideline inbound when you only need to keep the ball: options away from the basket and a very deep safety."
+      },
+      "why": {
+        "fr": "En fin de match avec de l'avance, perdre le ballon coûte plus que de ne pas marquer.",
+        "en": "Late in the game with a lead, a turnover costs more than not scoring."
+      },
+      "counter": {
+        "fr": "Presser chaque option et forcer une passe lobée.",
+        "en": "Pressure every option and force a lob."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le passeur a 5 secondes : il compte",
+          "Une option vers le panier, une option de sécurité",
+          "Écrans posés sur le défenseur, sans pousser",
+          "Recevoir face au panier"
+        ],
+        "en": [
+          "The inbounder has 5 seconds: he counts",
+          "One option to the rim, one safety option",
+          "Screen the defender without pushing",
+          "Catch facing the basket"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          10,
+          24
+        ],
+        "3": [
+          10,
+          36
+        ],
+        "4": [
+          20,
+          28
+        ],
+        "5": [
+          30,
+          30
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              4,
+              24,
+              "c"
+            ],
+            "3": [
+              16,
+              45,
+              "c"
+            ],
+            "4": [
+              30,
+              22,
+              "c"
+            ],
+            "5": [
+              40,
+              36,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 vient au ballon, 3 part en sécurité profonde ; 4 et 5 s'écartent.",
+            "en": "2 comes to the ball, 3 runs deep as the safety; 4 and 5 space out."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3, loin de la défense.",
+            "en": "1 passes to 3, away from the defense."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-return-pass",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : passe au passeur",
+        "en": "SLOB return pass"
+      },
+      "sum": {
+        "fr": "Le passeur remet en jeu, entre sur le terrain et récupère tout de suite le ballon, avec de l'espace pour attaquer.",
+        "en": "The inbounder passes in, steps onto the floor and gets the ball right back, with space to attack."
+      },
+      "why": {
+        "fr": "Le défenseur du passeur se détend après la remise : le passeur reçoit en mouvement.",
+        "en": "The inbounder's defender relaxes after the pass: the inbounder catches on the move."
+      },
+      "counter": {
+        "fr": "Rester collé au passeur après la remise.",
+        "en": "Stay attached to the inbounder after the pass."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le passeur a 5 secondes : il compte",
+          "Une option vers le panier, une option de sécurité",
+          "Écrans posés sur le défenseur, sans pousser",
+          "Recevoir face au panier"
+        ],
+        "en": [
+          "The inbounder has 5 seconds: he counts",
+          "One option to the rim, one safety option",
+          "Screen the defender without pushing",
+          "Catch facing the basket"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          10,
+          26
+        ],
+        "4": [
+          8,
+          34
+        ],
+        "3": [
+          28,
+          30
+        ],
+        "5": [
+          30,
+          10
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              5,
+              31,
+              "s"
+            ],
+            "1": [
+              8,
+              36,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 entre sur le terrain ; 4 bloque son défenseur.",
+            "en": "1 steps in; 4 screens his defender."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "2 rend le ballon à 1, qui attaque.",
+            "en": "2 gives it back to 1, who attacks."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-into-pick-and-roll",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : pick-and-roll immédiat",
+        "en": "SLOB into pick-and-roll"
+      },
+      "sum": {
+        "fr": "Remise ligne de touche vers un meneur, puis pick-and-roll latéral immédiat avec un grand.",
+        "en": "Sideline inbound to a guard, then an immediate side pick-and-roll with a big."
+      },
+      "why": {
+        "fr": "La défense est placée pour défendre la remise : l'écran arrive avant qu'elle se replace.",
+        "en": "The defense is set to guard the inbound: the screen arrives before it resets."
+      },
+      "counter": {
+        "fr": "Forcer vers la ligne de fond (ICE) dès la remise.",
+        "en": "Force baseline (ICE) as soon as the ball comes in."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le passeur a 5 secondes : il compte",
+          "Une option vers le panier, une option de sécurité",
+          "Écrans posés sur le défenseur, sans pousser",
+          "Recevoir face au panier"
+        ],
+        "en": [
+          "The inbounder has 5 seconds: he counts",
+          "One option to the rim, one safety option",
+          "Screen the defender without pushing",
+          "Catch facing the basket"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          10,
+          28
+        ],
+        "5": [
+          20,
+          20
+        ],
+        "3": [
+          40,
+          26
+        ],
+        "4": [
+          42,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              6,
+              25,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 se démarque et reçoit.",
+            "en": "2 gets open and catches."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              9,
+              23,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran porteur.",
+            "en": "5 sets the ball screen."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              18,
+              18,
+              "d"
+            ],
+            "5": [
+              16,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 attaque le milieu ; 5 roule.",
+            "en": "2 attacks the middle; 5 rolls."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5.",
+            "en": "Pass to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-lob",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : lob",
+        "en": "SLOB lob"
+      },
+      "sum": {
+        "fr": "Remise ligne de touche : un écran dans le dos libère un joueur qui coupe vers le cercle pour une passe lobée.",
+        "en": "Sideline inbound: a back screen frees a player cutting to the rim for a lob."
+      },
+      "why": {
+        "fr": "Les défenseurs regardent le passeur ; l'écran dans le dos arrive là où ils ne regardent pas.",
+        "en": "Defenders watch the inbounder; the back screen comes where they are not looking."
+      },
+      "counter": {
+        "fr": "Se placer côté panier et changer sur l'écran dans le dos.",
+        "en": "Play on the basket side and switch the back screen."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le passeur a 5 secondes : il compte",
+          "Une option vers le panier, une option de sécurité",
+          "Écrans posés sur le défenseur, sans pousser",
+          "Recevoir face au panier"
+        ],
+        "en": [
+          "The inbounder has 5 seconds: he counts",
+          "One option to the rim, one safety option",
+          "Screen the defender without pushing",
+          "Catch facing the basket"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "5": [
+          16,
+          18
+        ],
+        "4": [
+          16,
+          24
+        ],
+        "2": [
+          8,
+          30
+        ],
+        "3": [
+          30,
+          30
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              15,
+              15,
+              "s"
+            ],
+            "2": [
+              5,
+              24,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran dans le dos du défenseur de 5 ; 2 vient au ballon.",
+            "en": "4 back-screens 5's defender; 2 comes to the ball."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              23,
+              7,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 coupe vers le cercle.",
+            "en": "5 cuts to the rim."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe lobée de 1 à 5.",
+            "en": "Lob from 1 to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-stagger",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : écran en escalier",
+        "en": "SLOB stagger"
+      },
+      "sum": {
+        "fr": "Remise ligne de touche : le tireur part de sous le panier et remonte vers le passeur sur deux écrans en escalier.",
+        "en": "Sideline inbound: the shooter starts under the basket and comes toward the inbounder off two staggered screens."
+      },
+      "why": {
+        "fr": "Le tireur reçoit près du passeur, face au panier, après deux écrans.",
+        "en": "The shooter catches near the inbounder, facing the basket, after two screens."
+      },
+      "counter": {
+        "fr": "Changer sur le second écran.",
+        "en": "Switch the second screen."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le passeur a 5 secondes : il compte",
+          "Une option vers le panier, une option de sécurité",
+          "Écrans posés sur le défenseur, sans pousser",
+          "Recevoir face au panier"
+        ],
+        "en": [
+          "The inbounder has 5 seconds: he counts",
+          "One option to the rim, one safety option",
+          "Screen the defender without pushing",
+          "Catch facing the basket"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          25,
+          8
+        ],
+        "4": [
+          21,
+          12
+        ],
+        "5": [
+          15,
+          18
+        ],
+        "3": [
+          32,
+          30
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              20,
+              11,
+              "s"
+            ],
+            "5": [
+              14,
+              17,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "4 et 5 se placent pour les deux écrans.",
+            "en": "4 and 5 set up the two screens."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              6,
+              24,
+              "c"
+            ],
+            "3": [
+              26,
+              40,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 traverse les deux écrans vers l'aile ; 3 part en sécurité.",
+            "en": "2 runs off both screens to the wing; 3 goes deep."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-three",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : tir à 3 points",
+        "en": "SLOB three"
+      },
+      "sum": {
+        "fr": "Remise ligne de touche dessinée pour un tir à 3 points : le tireur sort d'un écran flare vers le haut.",
+        "en": "A sideline inbound designed for a three: the shooter comes off a flare screen toward the top."
+      },
+      "why": {
+        "fr": "L'écran flare éloigne le tireur du ballon : son défenseur doit passer derrière l'écran.",
+        "en": "The flare screen takes the shooter away from the ball: his defender has to go behind it."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran flare et contester sans faute.",
+        "en": "Switch the flare screen and contest without fouling."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le passeur a 5 secondes : il compte",
+          "Une option vers le panier, une option de sécurité",
+          "Écrans posés sur le défenseur, sans pousser",
+          "Recevoir face au panier"
+        ],
+        "en": [
+          "The inbounder has 5 seconds: he counts",
+          "One option to the rim, one safety option",
+          "Screen the defender without pushing",
+          "Catch facing the basket"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          12,
+          25
+        ],
+        "4": [
+          16,
+          22
+        ],
+        "3": [
+          8,
+          34
+        ],
+        "5": [
+          32,
+          10
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              14,
+              27,
+              "s"
+            ],
+            "2": [
+              24,
+              31,
+              "c"
+            ],
+            "3": [
+              4,
+              32,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran flare ; 2 s'écarte vers le haut ; 3 vient au ballon.",
+            "en": "4 sets the flare screen; 2 fades toward the top; 3 comes to the ball."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3 qui renvoie à 2 pour le tir.",
+            "en": "1 passes to 3, who swings it to 2 for the shot."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "Passe à 2.",
+            "en": "Pass to 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-vs-press",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : contre presse",
+        "en": "SLOB vs press"
+      },
+      "sum": {
+        "fr": "Remise ligne de touche contre une presse, dans la moitié de terrain où l'attaque remonte : une option courte, une option au milieu, une option longue.",
+        "en": "Sideline inbound against a press, in the half where the offense brings the ball up: a short option, a middle option, a long option."
+      },
+      "why": {
+        "fr": "Trois distances de passe : la presse ne peut pas couvrir les trois sans laisser un joueur seul.",
+        "en": "Three passing distances: the press cannot cover all three without leaving someone open."
+      },
+      "counter": {
+        "fr": "Refuser l'option courte et garder un défenseur sur l'option longue.",
+        "en": "Deny the short option and keep a defender on the long option."
+      },
+      "used": {
+        "fr": "Le schéma montre la moitié de terrain où l'attaque remonte le ballon (vers le bas).",
+        "en": "The diagram shows the half where the offense brings the ball up (toward the bottom)."
+      },
+      "keys": {
+        "fr": [
+          "Le passeur a 5 secondes : il compte",
+          "Une option vers le panier, une option de sécurité",
+          "Écrans posés sur le défenseur, sans pousser",
+          "Recevoir face au panier"
+        ],
+        "en": [
+          "The inbounder has 5 seconds: he counts",
+          "One option to the rim, one safety option",
+          "Screen the defender without pushing",
+          "Catch facing the basket"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          18
+        ],
+        "2": [
+          8,
+          12
+        ],
+        "3": [
+          10,
+          26
+        ],
+        "4": [
+          24,
+          22
+        ],
+        "5": [
+          30,
+          38
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              4,
+              14,
+              "c"
+            ],
+            "4": [
+              20,
+              26,
+              "c"
+            ],
+            "5": [
+              22,
+              45,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 vient au ballon, 4 se montre au milieu, 5 part en profondeur.",
+            "en": "2 comes to the ball, 4 shows in the middle, 5 runs deep."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 ; 2 cherche tout de suite 4 au milieu.",
+            "en": "1 passes to 2; 2 looks right away for 4 in the middle."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "Passe au milieu à 4.",
+            "en": "Pass to 4 in the middle."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-zipper",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : Zipper",
+        "en": "SLOB Zipper"
+      },
+      "sum": {
+        "fr": "Remise ligne de touche : un joueur part du poste bas et remonte vers le passeur sur l'écran d'un coéquipier.",
+        "en": "Sideline inbound: a player starts on the block and comes up toward the inbounder off a teammate's screen."
+      },
+      "why": {
+        "fr": "La coupe verticale part de loin : son défenseur doit traverser l'écran pour suivre.",
+        "en": "The vertical cut starts deep: his defender has to fight through the screen."
+      },
+      "counter": {
+        "fr": "Refuser la coupe en passant au-dessus de l'écran.",
+        "en": "Deny the cut by going over the screen."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le passeur a 5 secondes : il compte",
+          "Une option vers le panier, une option de sécurité",
+          "Écrans posés sur le défenseur, sans pousser",
+          "Recevoir face au panier"
+        ],
+        "en": [
+          "The inbounder has 5 seconds: he counts",
+          "One option to the rim, one safety option",
+          "Screen the defender without pushing",
+          "Catch facing the basket"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          19,
+          8
+        ],
+        "4": [
+          14,
+          17
+        ],
+        "3": [
+          28,
+          30
+        ],
+        "5": [
+          32,
+          9
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              15,
+              14,
+              "s"
+            ],
+            "2": [
+              8,
+              25,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran ; 2 remonte vers l'aile.",
+            "en": "4 screens; 2 comes up to the wing."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              20,
+              7,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 ; 4 plonge.",
+            "en": "1 passes to 2; 4 dives."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-floppy",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : Floppy",
+        "en": "SLOB Floppy"
+      },
+      "sum": {
+        "fr": "Remise ligne de touche en Floppy : le tireur sous le panier choisit entre un écran simple et un double écran.",
+        "en": "Sideline Floppy: the shooter under the basket chooses between a single screen and a double screen."
+      },
+      "why": {
+        "fr": "La défense ne sait pas de quel côté il sortira.",
+        "en": "The defense cannot know which side he will use."
+      },
+      "counter": {
+        "fr": "Suivre au plus près et changer sur le double écran.",
+        "en": "Trail tight and switch on the double screen."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Le passeur a 5 secondes : il compte",
+          "Une option vers le panier, une option de sécurité",
+          "Écrans posés sur le défenseur, sans pousser",
+          "Recevoir face au panier"
+        ],
+        "en": [
+          "The inbounder has 5 seconds: he counts",
+          "One option to the rim, one safety option",
+          "Screen the defender without pushing",
+          "Catch facing the basket"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          25,
+          8
+        ],
+        "5": [
+          19,
+          10.5
+        ],
+        "4": [
+          31,
+          10.5
+        ],
+        "3": [
+          32.5,
+          14
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              19,
+              11,
+              "s"
+            ],
+            "2": [
+              8,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 sort du côté de l'écran simple de 5, vers le passeur.",
+            "en": "2 comes off 5's single screen, toward the inbounder."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "slob-end-of-quarter",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : fin de quart-temps",
+        "en": "SLOB end of quarter"
+      },
+      "sum": {
+        "fr": "Remise ligne de touche en fin de quart-temps : on garde le ballon jusqu'aux dernières secondes pour tirer en dernier.",
+        "en": "Sideline inbound at the end of a quarter: hold the ball until the last seconds so you take the last shot."
+      },
+      "why": {
+        "fr": "Tirer en dernier empêche l'adversaire d'avoir une possession avant la fin du quart-temps.",
+        "en": "Shooting last keeps the opponent from getting a possession before the end of the quarter."
+      },
+      "counter": {
+        "fr": "Mettre la pression tôt pour forcer un tir trop rapide.",
+        "en": "Pressure early to force a rushed shot."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          10,
+          26
+        ],
+        "3": [
+          6,
+          8
+        ],
+        "4": [
+          44,
+          8
+        ],
+        "5": [
+          36,
+          26
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              6,
+              26,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 reçoit la remise.",
+            "en": "2 catches the inbound."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              25,
+              32,
+              "d"
+            ],
+            "1": [
+              10,
+              20,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 garde le ballon en haut ; les autres s'écartent.",
+            "en": "2 holds the ball up top; the others space out."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              23,
+              12,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Il reste 5 secondes : 2 attaque le panier.",
+            "en": "5 seconds left: 2 drives to the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "frontcourt-slob-after-a-timeout",
+      "cat": "remises",
+      "family": "remise-ligne-de-touche",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Remise ligne de touche : en zone avant après temps mort",
+        "en": "Frontcourt SLOB after a timeout"
+      },
+      "sum": {
+        "fr": "Après un temps mort, remise ligne de touche en zone avant : écran pour l'écraneur, avec une passe au cercle ou un tir.",
+        "en": "After a timeout, a frontcourt sideline inbound: screen the screener, with a pass at the rim or a shot."
+      },
+      "why": {
+        "fr": "Le temps mort permet de dessiner une action précise que la défense n'a pas vue.",
+        "en": "The timeout lets you draw up a precise action the defense has not seen."
+      },
+      "counter": {
+        "fr": "Changer sur tous les écrans.",
+        "en": "Switch every screen."
+      },
+      "used": {
+        "fr": "Situation courante après temps mort à tous les niveaux.",
+        "en": "A common after-timeout situation at every level."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          26
+        ],
+        "2": [
+          10,
+          30
+        ],
+        "3": [
+          8,
+          12
+        ],
+        "4": [
+          16,
+          22
+        ],
+        "5": [
+          24,
+          14
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              11,
+              15,
+              "s"
+            ],
+            "3": [
+              21,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran pour 3, qui coupe vers le panier.",
+            "en": "4 screens for 3, who cuts to the rim."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              13,
+              18,
+              "s"
+            ],
+            "4": [
+              7,
+              25,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 pose un écran pour 4, qui remonte vers le ballon.",
+            "en": "5 screens for 4, who comes up to the ball."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 3 si libre, sinon à 4.",
+            "en": "1 hits 3 if open, otherwise 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "late-game-quick-two",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : panier à 2 points en moins de 3 secondes",
+        "en": "Late game: quick two"
+      },
+      "sum": {
+        "fr": "Moins de 3 secondes et deux points à marquer : une coupe vers le cercle sur un écran, et une passe directe.",
+        "en": "Under 3 seconds and two points needed: a cut to the rim off a screen, and a direct pass."
+      },
+      "why": {
+        "fr": "Un lay-up est le tir le plus sûr ; la défense, qui protège souvent le tir à 3 points, laisse parfois le cercle.",
+        "en": "A layup is the safest shot; the defense, often guarding the three, sometimes leaves the rim open."
+      },
+      "counter": {
+        "fr": "Protéger le cercle avant tout quand l'adversaire n'a besoin que de deux points.",
+        "en": "Protect the rim first when the opponent only needs two."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          10,
+          10
+        ],
+        "4": [
+          14,
+          16
+        ],
+        "3": [
+          30,
+          30
+        ],
+        "5": [
+          36,
+          12
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              12,
+              14,
+              "s"
+            ],
+            "2": [
+              21,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran ; 2 tourne vers le cercle.",
+            "en": "4 screens; 2 curls to the rim."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe directement à 2 pour le lay-up.",
+            "en": "1 passes straight to 2 for the layup."
+          }
+        }
+      ]
+    },
+    {
+      "id": "full-court-play-in-3-seconds",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : tout le terrain en 3 secondes",
+        "en": "Full-court play in 3 seconds"
+      },
+      "sum": {
+        "fr": "Trois secondes, tout le terrain à traverser : passe longue vers un grand près de la ligne médiane, qui remet tout de suite à un tireur lancé.",
+        "en": "Three seconds and the whole floor to cover: a long pass to a big near half court, who immediately gives it to a shooter on the run."
+      },
+      "why": {
+        "fr": "Deux passes vont plus vite que n'importe quel dribble ; le tireur reçoit déjà lancé.",
+        "en": "Two passes are faster than any dribble; the shooter catches already moving."
+      },
+      "counter": {
+        "fr": "Garder un grand défenseur sur le receveur de la passe longue et un défenseur sur le tireur.",
+        "en": "Keep a tall defender on the long-pass target and a defender on the shooter."
+      },
+      "used": {
+        "fr": "Le schéma montre la moitié de terrain où l'action se termine ; la passe longue part de la ligne de fond opposée.",
+        "en": "The diagram shows the half where the play ends; the long pass comes from the far baseline."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "4": [
+          25,
+          45
+        ],
+        "2": [
+          38,
+          42
+        ],
+        "3": [
+          10,
+          40
+        ],
+        "5": [
+          30,
+          34
+        ],
+        "b": "4"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              40,
+              26,
+              "c"
+            ],
+            "3": [
+              8,
+              26,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 vient de recevoir la passe longue ; 2 court vers l'aile.",
+            "en": "4 has just caught the long pass; 2 runs to the wing."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "4 remet tout de suite à 2, qui tire.",
+            "en": "4 gives it right away to 2, who shoots."
+          }
+        }
+      ]
+    },
+    {
+      "id": "full-court-heave",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : passe longue (« Hail Mary »)",
+        "en": "Full-court heave"
+      },
+      "sum": {
+        "fr": "Dernière seconde, tout le terrain : une passe très longue vers le panier, avec plusieurs joueurs prêts à sauter et à claquer le ballon.",
+        "en": "Last second, full court: a very long pass toward the basket, with several players ready to jump and tip it."
+      },
+      "why": {
+        "fr": "Avec trois joueurs au rebond près du panier, une passe imprécise peut encore finir en claquette.",
+        "en": "With three players near the basket, an off-target pass can still become a tip-in."
+      },
+      "counter": {
+        "fr": "Mettre les plus grands devant les receveurs et ne pas faire faute.",
+        "en": "Put your tallest players in front of the receivers and do not foul."
+      },
+      "used": {
+        "fr": "Le schéma montre la moitié où la passe arrive ; elle part de la ligne de fond opposée.",
+        "en": "The diagram shows the half where the pass lands; it comes from the far baseline."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          47
+        ],
+        "5": [
+          25,
+          14
+        ],
+        "4": [
+          19,
+          16
+        ],
+        "2": [
+          31,
+          16
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              25,
+              10,
+              "c"
+            ],
+            "4": [
+              20,
+              9,
+              "c"
+            ],
+            "2": [
+              30,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5, 4 et 2 se placent devant le panier, prêts à sauter.",
+            "en": "5, 4 and 2 set up in front of the basket, ready to jump."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "La passe longue arrive : 5 saute pour la claquer vers le panier.",
+            "en": "The long pass arrives: 5 jumps to tip it toward the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "catch-and-shoot-under-one-second",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : catch-and-shoot en 0,9 seconde",
+        "en": "Catch and shoot under one second"
+      },
+      "sum": {
+        "fr": "Moins d'une seconde : le tireur doit recevoir et tirer en un seul geste, sur une passe arrivant à l'endroit exact du tir.",
+        "en": "Under one second: the shooter must catch and shoot in a single motion, on a pass arriving exactly where he will shoot."
+      },
+      "why": {
+        "fr": "Le chronomètre démarre au contact du ballon : une réception déjà en position de tir laisse le temps de lâcher le ballon.",
+        "en": "The clock starts on the touch: catching already in shooting position leaves time to release."
+      },
+      "counter": {
+        "fr": "Contester sans faute et refuser la réception face au panier.",
+        "en": "Contest without fouling and deny the catch facing the basket."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          10,
+          12
+        ],
+        "4": [
+          8,
+          16
+        ],
+        "3": [
+          30,
+          30
+        ],
+        "5": [
+          28,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              7,
+              12,
+              "s"
+            ],
+            "2": [
+              3,
+              5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran ; 2 s'écarte vers le corner, pieds déjà prêts.",
+            "en": "4 screens; 2 fades to the corner, feet already set."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 qui tire en un geste.",
+            "en": "1 passes to 2, who catches and shoots in one motion."
+          }
+        }
+      ]
+    },
+    {
+      "id": "tip-in-under-0-3-seconds",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : claquette à moins de 0,3 seconde",
+        "en": "Tip-in with under 0.3 seconds"
+      },
+      "sum": {
+        "fr": "Avec moins de 0,3 seconde, la plupart des règlements n'autorisent qu'une claquette : on fait une passe lobée près du cercle que le joueur dévie dans le panier.",
+        "en": "With under 0.3 seconds, most rulebooks only allow a tip: throw a lob near the rim that the player deflects into the basket."
+      },
+      "why": {
+        "fr": "Un tir après réception est impossible dans ce temps : la claquette est la seule option légale.",
+        "en": "A catch-and-shoot is impossible in that time: the tip is the only legal option."
+      },
+      "counter": {
+        "fr": "Placer un défenseur entre le receveur et le cercle et sauter avec lui.",
+        "en": "Put a defender between the receiver and the rim and jump with him."
+      },
+      "used": {
+        "fr": "Règle de la claquette obligatoire (NBA et FIBA) : vérifier le seuil exact de la compétition.",
+        "en": "Tip-only rule (NBA and FIBA): check your competition's exact threshold."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          31,
+          -2
+        ],
+        "5": [
+          26,
+          14
+        ],
+        "4": [
+          22,
+          12
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          25,
+          31
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              24,
+              15,
+              "s"
+            ],
+            "5": [
+              25,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran dans le dos du défenseur de 5 ; 5 coupe vers le cercle.",
+            "en": "4 back-screens 5's defender; 5 cuts to the rim."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 lobe le ballon près du cercle : 5 le claque dans le panier sans le contrôler.",
+            "en": "1 lobs the ball near the rim: 5 tips it in without controlling it."
+          }
+        }
+      ]
     }
   ]
 }
