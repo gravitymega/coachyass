@@ -492,7 +492,7 @@
       "fr": "Horns Chicago",
       "en": "Horns Chicago"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-stagger",
@@ -503,7 +503,7 @@
       "fr": "Horns Stagger",
       "en": "Horns Stagger"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-punch",
@@ -514,7 +514,7 @@
       "fr": "Horns Punch",
       "en": "Horns Punch"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-through",
@@ -525,7 +525,7 @@
       "fr": "Horns Through",
       "en": "Horns Through"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-hammer",
@@ -536,7 +536,7 @@
       "fr": "Horns Hammer",
       "en": "Horns Hammer"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-split",
@@ -547,7 +547,7 @@
       "fr": "Horns Split",
       "en": "Horns Split"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "chicago",
@@ -602,7 +602,7 @@
       "fr": "Floppy",
       "en": "Floppy"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "hammer",
@@ -613,7 +613,7 @@
       "fr": "Hammer",
       "en": "Hammer"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pin-down",
@@ -624,7 +624,7 @@
       "fr": "Écran retour (pin-down)",
       "en": "Pin-down"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "flare-screen",
@@ -635,7 +635,7 @@
       "fr": "Écran flare",
       "en": "Flare screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "back-screen",
@@ -646,7 +646,7 @@
       "fr": "Écran dans le dos (back screen)",
       "en": "Back screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "cross-screen",
@@ -657,7 +657,7 @@
       "fr": "Écran croisé (cross screen)",
       "en": "Cross screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "iverson-cut",
@@ -668,7 +668,7 @@
       "fr": "Coupe Iverson",
       "en": "Iverson cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "curl-cut",
@@ -679,7 +679,7 @@
       "fr": "Boucle (curl)",
       "en": "Curl cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "rip-screen",
@@ -690,7 +690,7 @@
       "fr": "Écran Rip",
       "en": "Rip screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "screen-the-screener",
@@ -701,7 +701,7 @@
       "fr": "Écran pour l'écraneur",
       "en": "Screen the screener"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "double-stagger",
@@ -712,7 +712,7 @@
       "fr": "Double stagger",
       "en": "Double stagger"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ram-screen",
@@ -723,7 +723,7 @@
       "fr": "Écran Ram (écran pour l'écraneur avant l'écran porteur)",
       "en": "Ram screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "away-screen",
@@ -734,7 +734,7 @@
       "fr": "Écran loin du ballon",
       "en": "Away screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "brush-screen",
@@ -745,7 +745,7 @@
       "fr": "Écran frôlé (brush)",
       "en": "Brush screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "fade-cut",
