@@ -89,6 +89,9 @@ export const COLORS = {
   offense: "#1F5FD1",
   defense: "#D7263D",
   ball: "#F08A24",
+  court: "#E9C89B",
+  plank: "#DDB886",
+  paint: "#C98E5A",
 };
 
 export const TIMELINE = timelineJson as {

@@ -1900,7 +1900,7 @@
       "fr": "Passe en lob par-dessus la zone",
       "en": "Lob over the 2-3 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "corner-three-vs-2-3-zone",
@@ -1911,7 +1911,7 @@
       "fr": "Tir du corner contre zone 2-3",
       "en": "Corner three vs 2-3 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "drive-and-kick-vs-2-3-zone",
@@ -1922,7 +1922,7 @@
       "fr": "Pénétration et ressortie contre zone 2-3",
       "en": "Drive and kick vs 2-3 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-1-2-alignment-vs-3-2-zone",
@@ -1933,7 +1933,7 @@
       "fr": "Placement 2-1-2 contre zone 3-2",
       "en": "2-1-2 alignment vs 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "low-post-vs-3-2-zone",
@@ -1944,7 +1944,7 @@
       "fr": "Poste bas contre zone 3-2",
       "en": "Low post vs 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "overload-vs-3-2-zone",
@@ -1955,7 +1955,7 @@
       "fr": "Surcharge contre zone 3-2",
       "en": "Overload vs 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "cut-behind-the-3-2-zone",
@@ -1966,7 +1966,7 @@
       "fr": "Coupe dans le dos de la zone 3-2",
       "en": "Cut behind the 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "corner-attack-vs-3-2-zone",
@@ -1977,7 +1977,7 @@
       "fr": "Corner contre zone 3-2",
       "en": "Corner attack vs 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "screen-the-low-defender-3-2-zone",
@@ -1988,7 +1988,7 @@
       "fr": "Écran sur le défenseur du bas (zone 3-2)",
       "en": "Screen the low defender (3-2 zone)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "high-low-vs-3-2-zone",
@@ -1999,7 +1999,7 @@
       "fr": "Haut-bas contre zone 3-2",
       "en": "High-low vs 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "middle-drive-vs-3-2-zone",
@@ -2010,7 +2010,7 @@
       "fr": "Pénétration au milieu contre zone 3-2",
       "en": "Middle drive vs 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "baseline-attack-vs-1-3-1-zone",
@@ -2021,7 +2021,7 @@
       "fr": "Attaque de la ligne de fond contre zone 1-3-1",
       "en": "Baseline attack vs 1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "corners-vs-1-3-1-zone",
@@ -2032,7 +2032,7 @@
       "fr": "Corners contre zone 1-3-1",
       "en": "Corners vs 1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-1-2-alignment-vs-1-3-1-zone",
@@ -2043,7 +2043,7 @@
       "fr": "Placement 2-1-2 contre zone 1-3-1",
       "en": "2-1-2 alignment vs 1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "high-post-vs-1-3-1-zone",
@@ -2054,7 +2054,7 @@
       "fr": "Poste haut contre zone 1-3-1",
       "en": "High post vs 1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "baseline-reversal-vs-1-3-1-zone",
@@ -2065,7 +2065,7 @@
       "fr": "Renversement par la ligne de fond (zone 1-3-1)",
       "en": "Baseline reversal vs 1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "screen-the-wing-1-3-1-zone",
@@ -2076,7 +2076,7 @@
       "fr": "Écran sur l'ailier de la zone 1-3-1",
       "en": "Screen the wing (1-3-1 zone)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "beating-the-1-3-1-trap",
@@ -2087,7 +2087,7 @@
       "fr": "Attaque du piège de la zone 1-3-1",
       "en": "Beating the 1-3-1 trap"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "weak-side-cut-vs-1-3-1-zone",
@@ -2098,7 +2098,7 @@
       "fr": "Coupe du côté faible contre zone 1-3-1",
       "en": "Weak-side cut vs 1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "screening-the-match-up-zone",
@@ -2109,7 +2109,7 @@
       "fr": "Attaque de la zone match-up : écrans",
       "en": "Screening the match-up zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "cutters-through-the-match-up-zone",
@@ -2120,7 +2120,7 @@
       "fr": "Attaque de la zone match-up : coupes traversantes",
       "en": "Cutters through the match-up zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "overloading-the-match-up-zone",
@@ -2131,7 +2131,7 @@
       "fr": "Attaque de la zone match-up : surcharge",
       "en": "Overloading the match-up zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "dribble-rotation-vs-match-up",
@@ -2142,7 +2142,7 @@
       "fr": "Attaque de la zone match-up : dribble de déplacement",
       "en": "Dribble rotation vs match-up"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "quick-reversal-vs-match-up",
@@ -2153,7 +2153,7 @@
       "fr": "Attaque de la zone match-up : renversement rapide",
       "en": "Quick reversal vs match-up"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "attacking-the-box-and-1",
@@ -2164,7 +2164,7 @@
       "fr": "Attaque contre boîte et 1 (box-and-1)",
       "en": "Attacking the box-and-1"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "attacking-the-triangle-and-2",
@@ -2175,7 +2175,7 @@
       "fr": "Attaque contre triangle et 2",
       "en": "Attacking the triangle-and-2"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "attacking-the-diamond-and-1",
@@ -2186,7 +2186,7 @@
       "fr": "Attaque contre losange et 1",
       "en": "Attacking the diamond-and-1"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "freeing-the-face-guarded-player",
@@ -2197,7 +2197,7 @@
       "fr": "Libérer le joueur marqué individuellement",
       "en": "Freeing the face-guarded player"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "fast-break-3-lanes",
@@ -2219,7 +2219,7 @@
       "fr": "Contre-attaque à 2 contre 1",
       "en": "2-on-1 fast break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-2-fast-break",
@@ -2230,7 +2230,7 @@
       "fr": "Contre-attaque à 3 contre 2",
       "en": "3-on-2 fast break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "4-on-3-fast-break",
@@ -2241,7 +2241,7 @@
       "fr": "Contre-attaque à 4 contre 3",
       "en": "4-on-3 fast break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "fast-break-after-a-steal",
@@ -2252,7 +2252,7 @@
       "fr": "Contre-attaque après interception",
       "en": "Fast break after a steal"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "fast-break-after-a-made-basket",
@@ -2263,7 +2263,7 @@
       "fr": "Contre-attaque après panier encaissé",
       "en": "Fast break after a made basket"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "outlet-pass",
@@ -2274,7 +2274,7 @@
       "fr": "Première passe (outlet)",
       "en": "Outlet pass"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "home-run-pass",
@@ -2285,7 +2285,7 @@
       "fr": "Passe longue en avant (home run)",
       "en": "Home-run pass"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "trailer-fast-break",
@@ -2296,7 +2296,7 @@
       "fr": "Contre-attaque avec le traîneur (trailer)",
       "en": "Trailer fast break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "rim-run",
@@ -2307,7 +2307,7 @@
       "fr": "Contre-attaque : course du pivot vers le cercle (rim run)",
       "en": "Rim run"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "wing-led-fast-break",
@@ -2318,7 +2318,7 @@
       "fr": "Contre-attaque par les ailes",
       "en": "Wing-led fast break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "double-drag",
@@ -2332,15 +2332,15 @@
     "status": "done"
   },
   {
-    "id": "drag-screen",
+    "id": "re-drag-screen",
     "cat": "transition",
     "family": "attaque-rapide",
-    "lvl": 1,
+    "lvl": 2,
     "name": {
-      "fr": "Drag simple",
-      "en": "Drag screen"
+      "fr": "Drag avec double écran (re-drag)",
+      "en": "Re-drag screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pistol-action",
@@ -2351,7 +2351,7 @@
       "fr": "Transition « Pistol »",
       "en": "Pistol action"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "trailer-reversal",
@@ -2362,7 +2362,7 @@
       "fr": "Attaque rapide : passe au traîneur et renversement",
       "en": "Trailer reversal"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "early-offense-pin-down",
@@ -2373,7 +2373,7 @@
       "fr": "Attaque rapide : écran retour en transition",
       "en": "Early-offense pin-down"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "early-offense-handoff",
@@ -2384,7 +2384,7 @@
       "fr": "Attaque rapide : remise main à main en transition",
       "en": "Early-offense handoff"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "early-side-pick-and-roll",
@@ -2395,7 +2395,7 @@
       "fr": "Attaque rapide : pick-and-roll latéral immédiat",
       "en": "Early side pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "drag-and-pop",
@@ -2406,7 +2406,7 @@
       "fr": "Attaque rapide : « Drag » avec pop",
       "en": "Drag and pop"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "early-post-seal",
@@ -2417,7 +2417,7 @@
       "fr": "Attaque rapide : pivot au poste dès l'arrivée",
       "en": "Early post seal"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "trailer-dive",
@@ -2428,7 +2428,7 @@
       "fr": "Attaque rapide : coupe du traîneur vers le panier",
       "en": "Trailer dive"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "early-corner-three",
@@ -2439,7 +2439,7 @@
       "fr": "Attaque rapide : passe directe au corner",
       "en": "Early corner three"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-rules",
@@ -2461,7 +2461,7 @@
       "fr": "Courir les couloirs",
       "en": "Running the lanes"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "when-to-pull-it-out",
@@ -2472,18 +2472,18 @@
       "fr": "Transition : quand ralentir",
       "en": "When to pull it out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
-    "id": "push-after-a-make",
+    "id": "pass-ahead-in-transition",
     "cat": "transition",
     "family": "principes-transition",
-    "lvl": 2,
+    "lvl": 1,
     "name": {
-      "fr": "Transition : jouer après un panier encaissé",
-      "en": "Push after a make"
+      "fr": "Transition : avancer le ballon par la passe",
+      "en": "Pass ahead in transition"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "role-of-the-trailer",
@@ -2494,7 +2494,7 @@
       "fr": "Transition : rôle du traîneur",
       "en": "Role of the trailer"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-defense-protect-the-rim",
@@ -2505,7 +2505,7 @@
       "fr": "Retour défensif : protéger le panier",
       "en": "Transition defense: protect the rim"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-defense-stop-the-ball",
@@ -2516,7 +2516,7 @@
       "fr": "Retour défensif : arrêter le ballon",
       "en": "Transition defense: stop the ball"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-defense-1-vs-2",
@@ -2527,7 +2527,7 @@
       "fr": "Retour défensif : 1 contre 2",
       "en": "Transition defense: 1 vs 2"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-defense-2-vs-3-tandem",
@@ -2538,7 +2538,7 @@
       "fr": "Retour défensif : 2 contre 3 (tandem)",
       "en": "Transition defense: 2 vs 3 tandem"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-defense-matching-up",
@@ -2549,7 +2549,7 @@
       "fr": "Retour défensif : communication et appariement",
       "en": "Transition defense: matching up"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "crash-or-get-back",
@@ -2560,7 +2560,7 @@
       "fr": "Retour défensif : qui va au rebond, qui revient",
       "en": "Crash or get back"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slow-the-outlet",
@@ -2571,7 +2571,7 @@
       "fr": "Retour défensif : ralentir la première passe",
       "en": "Slow the outlet"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "guarding-the-trailer",
@@ -2582,7 +2582,7 @@
       "fr": "Retour défensif : défendre le traîneur",
       "en": "Guarding the trailer"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-switching",
@@ -2593,7 +2593,7 @@
       "fr": "Retour défensif : changement en transition",
       "en": "Transition switching"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "tactical-foul-rules-vary-by-competition",
@@ -2604,7 +2604,7 @@
       "fr": "Retour défensif : faute tactique (règles selon la compétition)",
       "en": "Tactical foul (rules vary by competition)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "sprint-to-the-paint",
@@ -2615,7 +2615,7 @@
       "fr": "Retour défensif : courir vers la raquette",
       "en": "Sprint to the paint"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-drag-screen",
@@ -2626,7 +2626,7 @@
       "fr": "Retour défensif : défendre le drag",
       "en": "Defending the drag screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-home-run-pass",
@@ -2637,7 +2637,7 @@
       "fr": "Retour défensif : défendre la passe longue",
       "en": "Defending the home-run pass"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-stack",
@@ -2670,7 +2670,7 @@
       "fr": "Remise ligne de fond : boîte (Box)",
       "en": "BLOB Box"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-box-cross",
@@ -2681,7 +2681,7 @@
       "fr": "Remise ligne de fond : boîte, écran croisé",
       "en": "BLOB Box cross"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-box-screen-the-screener",
@@ -2692,7 +2692,7 @@
       "fr": "Remise ligne de fond : boîte, écran pour l'écraneur",
       "en": "BLOB Box screen the screener"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-diamond",
@@ -2703,7 +2703,7 @@
       "fr": "Remise ligne de fond : losange",
       "en": "BLOB Diamond"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-vs-zone",
@@ -2714,7 +2714,7 @@
       "fr": "Remise ligne de fond : contre zone",
       "en": "BLOB vs zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-return-to-inbounder",
@@ -2725,7 +2725,7 @@
       "fr": "Remise ligne de fond : passe au passeur",
       "en": "BLOB return to inbounder"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-corner-three",
@@ -2736,7 +2736,7 @@
       "fr": "Remise ligne de fond : tir du corner",
       "en": "BLOB corner three"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-lob",
@@ -2747,7 +2747,7 @@
       "fr": "Remise ligne de fond : lob",
       "en": "BLOB lob"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-stagger",
@@ -2758,7 +2758,7 @@
       "fr": "Remise ligne de fond : écran en escalier",
       "en": "BLOB stagger"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-floppy",
@@ -2769,7 +2769,7 @@
       "fr": "Remise ligne de fond : Floppy",
       "en": "BLOB Floppy"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-pick-and-roll",
@@ -2780,7 +2780,7 @@
       "fr": "Remise ligne de fond : pick-and-roll",
       "en": "BLOB pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-safety",
@@ -2791,7 +2791,7 @@
       "fr": "Remise ligne de fond : sécurité (ballon en jeu)",
       "en": "BLOB safety"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-reverse-stack",
@@ -2802,7 +2802,7 @@
       "fr": "Remise ligne de fond : colonne inversée",
       "en": "BLOB reverse stack"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-vs-switching",
@@ -2813,7 +2813,7 @@
       "fr": "Remise ligne de fond : contre changement",
       "en": "BLOB vs switching"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-with-2-seconds-left",
@@ -2824,7 +2824,7 @@
       "fr": "Remise ligne de fond : deux secondes à jouer",
       "en": "BLOB with 2 seconds left"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blob-post-seal",
@@ -2835,7 +2835,7 @@
       "fr": "Remise ligne de fond : poste bas",
       "en": "BLOB post seal"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-back-screen",
@@ -2857,7 +2857,7 @@
       "fr": "Remise ligne de touche : boîte",
       "en": "SLOB Box"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-line",
@@ -2868,7 +2868,7 @@
       "fr": "Remise ligne de touche : ligne",
       "en": "SLOB Line"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-stack",
@@ -2879,7 +2879,7 @@
       "fr": "Remise ligne de touche : colonne",
       "en": "SLOB Stack"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-safety",
@@ -2890,7 +2890,7 @@
       "fr": "Remise ligne de touche : sécurité",
       "en": "SLOB safety"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-return-pass",
@@ -2901,7 +2901,7 @@
       "fr": "Remise ligne de touche : passe au passeur",
       "en": "SLOB return pass"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-into-pick-and-roll",
@@ -2912,7 +2912,7 @@
       "fr": "Remise ligne de touche : pick-and-roll immédiat",
       "en": "SLOB into pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-lob",
@@ -2923,7 +2923,7 @@
       "fr": "Remise ligne de touche : lob",
       "en": "SLOB lob"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-stagger",
@@ -2934,7 +2934,7 @@
       "fr": "Remise ligne de touche : écran en escalier",
       "en": "SLOB stagger"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-three",
@@ -2945,7 +2945,7 @@
       "fr": "Remise ligne de touche : tir à 3 points",
       "en": "SLOB three"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-vs-press",
@@ -2956,7 +2956,7 @@
       "fr": "Remise ligne de touche : contre presse",
       "en": "SLOB vs press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-zipper",
@@ -2967,7 +2967,7 @@
       "fr": "Remise ligne de touche : Zipper",
       "en": "SLOB Zipper"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-floppy",
@@ -2978,7 +2978,7 @@
       "fr": "Remise ligne de touche : Floppy",
       "en": "SLOB Floppy"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slob-end-of-quarter",
@@ -2989,7 +2989,7 @@
       "fr": "Remise ligne de touche : fin de quart-temps",
       "en": "SLOB end of quarter"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "frontcourt-slob-after-a-timeout",
@@ -3000,7 +3000,7 @@
       "fr": "Remise ligne de touche : en zone avant après temps mort",
       "en": "Frontcourt SLOB after a timeout"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ato-three-to-tie",
@@ -3022,7 +3022,7 @@
       "fr": "Fin de match : panier à 2 points en moins de 3 secondes",
       "en": "Late game: quick two"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "full-court-play-in-3-seconds",
@@ -3033,7 +3033,7 @@
       "fr": "Fin de match : tout le terrain en 3 secondes",
       "en": "Full-court play in 3 seconds"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "full-court-heave",
@@ -3044,7 +3044,7 @@
       "fr": "Fin de match : passe longue (« Hail Mary »)",
       "en": "Full-court heave"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "catch-and-shoot-under-one-second",
@@ -3055,18 +3055,18 @@
       "fr": "Fin de match : catch-and-shoot en 0,9 seconde",
       "en": "Catch and shoot under one second"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
-    "id": "tip-in-with-under-half-a-second",
+    "id": "tip-in-under-0-3-seconds",
     "cat": "remises",
     "family": "fin-de-match",
     "lvl": 3,
     "name": {
-      "fr": "Fin de match : lob en 0,4 seconde (tip)",
-      "en": "Tip-in with under half a second"
+      "fr": "Fin de match : claquette à moins de 0,3 seconde",
+      "en": "Tip-in with under 0.3 seconds"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "late-game-isolation",
@@ -3077,7 +3077,7 @@
       "fr": "Fin de match : isolation du meilleur joueur",
       "en": "Late game isolation"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "two-for-one",
@@ -3088,7 +3088,7 @@
       "fr": "Fin de match : 2 pour 1",
       "en": "Two-for-one"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "holding-for-the-last-shot",
@@ -3099,7 +3099,7 @@
       "fr": "Fin de match : jouer la dernière possession",
       "en": "Holding for the last shot"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "beating-the-intentional-foul",
@@ -3110,7 +3110,7 @@
       "fr": "Fin de match : contre une faute intentionnelle",
       "en": "Beating the intentional foul"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ato-shooter-screen",
@@ -3121,7 +3121,7 @@
       "fr": "Fin de match : écran pour le tireur après temps mort",
       "en": "ATO shooter screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "inbound-with-a-decoy",
@@ -3132,7 +3132,7 @@
       "fr": "Fin de match : remise en jeu avec feinte",
       "en": "Inbound with a decoy"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "choosing-the-shooter-vs-the-defense",
@@ -3143,7 +3143,7 @@
       "fr": "Fin de match : choix du tireur selon la défense",
       "en": "Choosing the shooter vs the defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "intentional-free-throw-miss",
@@ -3154,7 +3154,7 @@
       "fr": "Fin de match : rater volontairement un lancer franc",
       "en": "Intentional free-throw miss"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "game-winning-pick-and-roll",
@@ -3165,7 +3165,7 @@
       "fr": "Fin de match : pick-and-roll pour gagner",
       "en": "Game-winning pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "late-game-vs-switching",
@@ -3176,7 +3176,7 @@
       "fr": "Fin de match : jouer contre un changement",
       "en": "Late game vs switching"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "breaking-pressure-late",
@@ -3187,7 +3187,7 @@
       "fr": "Fin de match : sortir de la presse",
       "en": "Breaking pressure late"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "zone-3-2",
@@ -3209,7 +3209,7 @@
       "fr": "Zone 2-3",
       "en": "2-3 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "1-3-1-zone",
@@ -3220,7 +3220,7 @@
       "fr": "Zone 1-3-1",
       "en": "1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "1-2-2-zone",
@@ -3231,7 +3231,7 @@
       "fr": "Zone 1-2-2",
       "en": "1-2-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "match-up-zone",
@@ -3242,7 +3242,7 @@
       "fr": "Zone match-up",
       "en": "Match-up zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "box-and-1",
@@ -3253,7 +3253,7 @@
       "fr": "Boîte et 1 (box-and-1)",
       "en": "Box-and-1"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "triangle-and-2",
@@ -3264,7 +3264,7 @@
       "fr": "Triangle et 2",
       "en": "Triangle-and-2"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "diamond-and-1",
@@ -3275,7 +3275,7 @@
       "fr": "Losange et 1",
       "en": "Diamond-and-1"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-3-zone-guarding-the-high-post",
@@ -3286,7 +3286,7 @@
       "fr": "Zone 2-3 : défense du poste haut",
       "en": "2-3 zone: guarding the high post"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-3-zone-guarding-the-corners",
@@ -3297,7 +3297,7 @@
       "fr": "Zone 2-3 : défense des corners",
       "en": "2-3 zone: guarding the corners"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "1-3-1-zone-wing-traps",
@@ -3308,7 +3308,7 @@
       "fr": "Zone 1-3-1 : pièges sur l'aile",
       "en": "1-3-1 zone: wing traps"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "zone-rebounding",
@@ -3319,7 +3319,7 @@
       "fr": "Zone : rebond défensif",
       "en": "Zone rebounding"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "changing-zones",
@@ -3330,7 +3330,7 @@
       "fr": "Zone qui change de forme (2-3 puis 1-3-1)",
       "en": "Changing zones"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "amoeba-zone",
@@ -3341,7 +3341,7 @@
       "fr": "Zone « Amoeba »",
       "en": "Amoeba zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-3-zone-vs-pick-and-roll",
@@ -3352,7 +3352,7 @@
       "fr": "Zone 2-3 contre pick-and-roll",
       "en": "2-3 zone vs pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "hedge",
@@ -3407,7 +3407,7 @@
       "fr": "Défense reculée (drop)",
       "en": "Drop coverage"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "show",
@@ -3418,7 +3418,7 @@
       "fr": "Montrer (show)",
       "en": "Show"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "go-under",
@@ -3429,7 +3429,7 @@
       "fr": "Passer sous l'écran (under)",
       "en": "Go under"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "go-over",
@@ -3440,7 +3440,7 @@
       "fr": "Passer par-dessus l'écran (over)",
       "en": "Go over"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "weak-force-to-the-weak-hand",
@@ -3451,7 +3451,7 @@
       "fr": "Défense « weak » (forcer vers la main faible)",
       "en": "Weak (force to the weak hand)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "at-the-level",
@@ -3462,7 +3462,7 @@
       "fr": "Défense « at the level »",
       "en": "At the level"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "tag-the-roller",
@@ -3473,7 +3473,7 @@
       "fr": "Aide sur le roll (tag)",
       "en": "Tag the roller"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "scramble-switch",
@@ -3484,7 +3484,7 @@
       "fr": "Changement « scramble » après un décalage",
       "en": "Scramble switch"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-pick-and-pop",
@@ -3495,7 +3495,7 @@
       "fr": "Défense du pick-and-pop",
       "en": "Defending the pick-and-pop"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-spain-pick-and-roll",
@@ -3506,7 +3506,7 @@
       "fr": "Défense du Spain pick-and-roll",
       "en": "Defending the Spain pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-double-drag",
@@ -3517,7 +3517,7 @@
       "fr": "Défense du double drag",
       "en": "Defending the double drag"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "press-2-2-1",
@@ -3539,7 +3539,7 @@
       "fr": "Presse 1-2-1-1 (losange)",
       "en": "1-2-1-1 diamond press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "1-2-2-press",
@@ -3550,7 +3550,7 @@
       "fr": "Presse 1-2-2",
       "en": "1-2-2 press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-1-2-press",
@@ -3561,7 +3561,7 @@
       "fr": "Presse 2-1-2",
       "en": "2-1-2 press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "full-court-man-press",
@@ -3572,7 +3572,7 @@
       "fr": "Presse homme à homme tout terrain",
       "en": "Full-court man press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "run-and-jump-press",
@@ -3583,7 +3583,7 @@
       "fr": "Presse « run and jump »",
       "en": "Run and jump press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "three-quarter-court-press",
@@ -3594,7 +3594,7 @@
       "fr": "Presse 3/4 de terrain",
       "en": "Three-quarter-court press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "half-court-1-3-1-trap",
@@ -3605,7 +3605,7 @@
       "fr": "Piège sur demi-terrain 1-3-1",
       "en": "Half-court 1-3-1 trap"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "press-after-free-throws",
@@ -3616,7 +3616,7 @@
       "fr": "Presse après lancer franc",
       "en": "Press after free throws"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "denying-the-inbound",
@@ -3627,7 +3627,7 @@
       "fr": "Presse : refuser la remise en jeu",
       "en": "Denying the inbound"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "press-retreat",
@@ -3638,7 +3638,7 @@
       "fr": "Presse : retour en défense placée",
       "en": "Press retreat"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "full-court-1-3-1-press",
@@ -3649,7 +3649,7 @@
       "fr": "Presse 1-3-1 tout terrain",
       "en": "Full-court 1-3-1 press"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pack-line-defense",
@@ -3660,7 +3660,7 @@
       "fr": "Défense « pack line »",
       "en": "Pack line defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pressure-man-denial-defense",
@@ -3671,7 +3671,7 @@
       "fr": "Défense de pression (refus des passes)",
       "en": "Pressure man (denial) defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "on-ball-stance",
@@ -3682,7 +3682,7 @@
       "fr": "Position sur le porteur",
       "en": "On-ball stance"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "deny-one-pass-away",
@@ -3693,7 +3693,7 @@
       "fr": "Refuser la passe à une passe du ballon",
       "en": "Deny one pass away"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "help-side-two-passes-away",
@@ -3704,7 +3704,7 @@
       "fr": "Position d'aide à deux passes",
       "en": "Help side, two passes away"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "help-and-recover",
@@ -3715,7 +3715,7 @@
       "fr": "Aider et revenir",
       "en": "Help and recover"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "stopping-middle-penetration",
@@ -3726,7 +3726,7 @@
       "fr": "Défense de la pénétration au milieu",
       "en": "Stopping middle penetration"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "force-baseline",
@@ -3737,7 +3737,7 @@
       "fr": "Forcer vers la ligne de fond",
       "en": "Force baseline"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "force-middle",
@@ -3748,7 +3748,7 @@
       "fr": "Forcer vers le milieu",
       "en": "Force middle"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-backdoor-cuts",
@@ -3759,7 +3759,7 @@
       "fr": "Défense contre les coupes dans le dos",
       "en": "Defending backdoor cuts"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-basket-cuts",
@@ -3770,7 +3770,7 @@
       "fr": "Défense contre les coupes au panier",
       "en": "Defending basket cuts"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "containing-the-dribble",
@@ -3781,7 +3781,7 @@
       "fr": "Défense du dribble (contenir)",
       "en": "Containing the dribble"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "switch-everything",
@@ -3792,7 +3792,7 @@
       "fr": "Défense en changement systématique",
       "en": "Switch everything"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "jump-to-the-ball",
@@ -3803,7 +3803,7 @@
       "fr": "Défense du joueur sans ballon : sauter vers le ballon",
       "en": "Jump to the ball"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-isolation",
@@ -3814,7 +3814,7 @@
       "fr": "Défense contre l'isolation",
       "en": "Defending the isolation"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-pin-down",
@@ -3825,7 +3825,7 @@
       "fr": "Défendre l'écran retour (pin-down)",
       "en": "Defending the pin-down"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-flare-screen",
@@ -3836,7 +3836,7 @@
       "fr": "Défendre l'écran flare",
       "en": "Defending the flare screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-back-screen",
@@ -3847,7 +3847,7 @@
       "fr": "Défendre l'écran dans le dos",
       "en": "Defending the back screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-stagger-screens",
@@ -3858,7 +3858,7 @@
       "fr": "Défendre les écrans en escalier",
       "en": "Defending stagger screens"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-handoff",
@@ -3869,7 +3869,7 @@
       "fr": "Défendre la remise main à main",
       "en": "Defending the handoff"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-iverson-cut",
@@ -3880,7 +3880,7 @@
       "fr": "Défendre la coupe Iverson",
       "en": "Defending the Iverson cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-floppy",
@@ -3891,7 +3891,7 @@
       "fr": "Défendre le Floppy",
       "en": "Defending Floppy"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-elevator-doors",
@@ -3902,7 +3902,7 @@
       "fr": "Défendre les portes d'ascenseur",
       "en": "Defending elevator doors"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-cross-screen",
@@ -3913,7 +3913,7 @@
       "fr": "Défendre l'écran croisé",
       "en": "Defending the cross screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-zipper-cut",
@@ -3924,7 +3924,7 @@
       "fr": "Défendre la coupe Zipper",
       "en": "Defending the Zipper cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "switching-off-ball-screens",
@@ -3935,7 +3935,7 @@
       "fr": "Changer sur les écrans sans ballon",
       "en": "Switching off-ball screens"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-chicago-action",
@@ -3946,7 +3946,7 @@
       "fr": "Défendre le Chicago",
       "en": "Defending Chicago action"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "fronting-the-post",
@@ -3957,7 +3957,7 @@
       "fr": "Défense devant le poste (front)",
       "en": "Fronting the post"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "three-quarter-post-defense",
@@ -3968,7 +3968,7 @@
       "fr": "Défense aux trois quarts",
       "en": "Three-quarter post defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "playing-behind-the-post",
@@ -3979,7 +3979,7 @@
       "fr": "Défense derrière le poste",
       "en": "Playing behind the post"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "post-double-team",
@@ -3990,7 +3990,7 @@
       "fr": "Prise à deux au poste",
       "en": "Post double team"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "baseline-post-double",
@@ -4001,7 +4001,7 @@
       "fr": "Prise à deux au poste depuis la ligne de fond",
       "en": "Baseline post double"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-high-low",
@@ -4012,7 +4012,7 @@
       "fr": "Défendre le haut-bas",
       "en": "Defending the high-low"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-the-duck-in",
@@ -4023,7 +4023,7 @@
       "fr": "Défendre la rentrée au poste (duck-in)",
       "en": "Defending the duck-in"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "post-defense-after-a-switch",
@@ -4034,7 +4034,7 @@
       "fr": "Défendre le poste après changement",
       "en": "Post defense after a switch"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "sink-and-fill",
@@ -4045,7 +4045,7 @@
       "fr": "Rotation « sink and fill »",
       "en": "Sink and fill"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "x-out-rotation",
@@ -4056,7 +4056,7 @@
       "fr": "Rotation « X-out »",
       "en": "X-out rotation"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "scramble-defense",
@@ -4067,7 +4067,7 @@
       "fr": "Défense en infériorité (scramble)",
       "en": "Scramble defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "close-out-rules",
@@ -4078,7 +4078,7 @@
       "fr": "Règles du close-out",
       "en": "Close-out rules"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "baseline-drive-rotation",
@@ -4089,7 +4089,7 @@
       "fr": "Rotation sur la pénétration de la ligne de fond",
       "en": "Baseline drive rotation"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "rotation-after-a-trap",
@@ -4100,7 +4100,7 @@
       "fr": "Rotation après une prise à deux",
       "en": "Rotation after a trap"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defensive-communication",
@@ -4111,7 +4111,7 @@
       "fr": "Communication défensive",
       "en": "Defensive communication"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defensive-box-out",
@@ -4122,7 +4122,7 @@
       "fr": "Rebond défensif : bloquer (box-out)",
       "en": "Defensive box-out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-a-3-point-lead",
@@ -4133,7 +4133,7 @@
       "fr": "Fin de match : défendre avec 3 points d'avance",
       "en": "Defending a 3-point lead"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "late-game-switch-everything",
@@ -4144,7 +4144,7 @@
       "fr": "Fin de match : changer sur tous les écrans",
       "en": "Late game: switch everything"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "late-game-defending-the-inbound",
@@ -4155,7 +4155,7 @@
       "fr": "Fin de match : défendre la remise en jeu",
       "en": "Late game: defending the inbound"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "late-game-fouling-on-purpose",
@@ -4166,7 +4166,7 @@
       "fr": "Fin de match : faire faute intentionnellement",
       "en": "Late game: fouling on purpose"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "late-game-protect-the-rim-without-fouling",
@@ -4177,7 +4177,7 @@
       "fr": "Fin de match : protéger le cercle sans faute",
       "en": "Late game: protect the rim without fouling"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "layup-two-lines",
@@ -4199,7 +4199,7 @@
       "fr": "Lay-up main faible",
       "en": "Weak-hand layups"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "mikan-drill",
@@ -4210,7 +4210,7 @@
       "fr": "Mikan",
       "en": "Mikan drill"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "contact-finishes-with-pad",
@@ -4221,7 +4221,7 @@
       "fr": "Finitions au contact (avec bouclier)",
       "en": "Contact finishes (with pad)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "euro-step-layups",
@@ -4232,7 +4232,7 @@
       "fr": "Lay-up euro-step",
       "en": "Euro-step layups"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "floater-finishing",
@@ -4243,7 +4243,7 @@
       "fr": "Finition en floater",
       "en": "Floater finishing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "layups-off-the-pass",
@@ -4254,7 +4254,7 @@
       "fr": "Lay-up après passe en course",
       "en": "Layups off the pass"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "reverse-layups",
@@ -4265,7 +4265,7 @@
       "fr": "Finitions en reverse",
       "en": "Reverse layups"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "layups-out-of-the-pick-and-roll",
@@ -4276,7 +4276,7 @@
       "fr": "Lay-up en sortie de pick-and-roll",
       "en": "Layups out of the pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "two-hand-power-finishes",
@@ -4287,7 +4287,7 @@
       "fr": "Finitions à deux mains sous le panier",
       "en": "Two-hand power finishes"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-minute-shooting",
@@ -4309,7 +4309,7 @@
       "fr": "Tir de près en étoile",
       "en": "Form shooting star"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "around-the-world",
@@ -4320,7 +4320,7 @@
       "fr": "Tir du coin au coin (around the world)",
       "en": "Around the world"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shooting-off-screens",
@@ -4331,7 +4331,7 @@
       "fr": "Tir en sortie d'écran",
       "en": "Shooting off screens"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pull-up-shooting",
@@ -4342,7 +4342,7 @@
       "fr": "Tir en sortie de dribble",
       "en": "Pull-up shooting"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "three-point-contest",
@@ -4353,7 +4353,7 @@
       "fr": "Concours de tirs à 3 points",
       "en": "Three-point contest"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "free-throws-when-tired",
@@ -4364,7 +4364,7 @@
       "fr": "Lancers francs sous fatigue",
       "en": "Free throws when tired"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shot-fake-and-shoot",
@@ -4375,7 +4375,7 @@
       "fr": "Tir après feinte (pump fake)",
       "en": "Shot fake and shoot"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "five-spots-five-makes",
@@ -4386,7 +4386,7 @@
       "fr": "Tir « 5 positions, 5 paniers »",
       "en": "Five spots, five makes"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "catch-and-shoot-vs-close-out",
@@ -4397,7 +4397,7 @@
       "fr": "Tir en catch-and-shoot avec close-out",
       "en": "Catch-and-shoot vs close-out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "step-back-shooting",
@@ -4408,7 +4408,7 @@
       "fr": "Tir en step-back",
       "en": "Step-back shooting"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "team-free-throw-challenge",
@@ -4419,7 +4419,7 @@
       "fr": "Lancers francs en compétition par équipe",
       "en": "Team free-throw challenge"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "trailer-three-shooting",
@@ -4430,7 +4430,7 @@
       "fr": "Tir en transition (trailer three)",
       "en": "Trailer three shooting"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shooting-off-the-handoff",
@@ -4441,7 +4441,7 @@
       "fr": "Tir en sortie de remise main à main",
       "en": "Shooting off the handoff"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shooting-over-a-contest",
@@ -4452,7 +4452,7 @@
       "fr": "Tir avec main gênante (contest pad)",
       "en": "Shooting over a contest"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "mirror-dribbling",
@@ -4463,7 +4463,7 @@
       "fr": "Dribble en miroir",
       "en": "Mirror dribbling"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "cone-dribbling-course",
@@ -4474,7 +4474,7 @@
       "fr": "Parcours de dribble entre plots",
       "en": "Cone dribbling course"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "two-ball-dribbling",
@@ -4485,7 +4485,7 @@
       "fr": "Dribble à deux ballons",
       "en": "Two-ball dribbling"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "crossover-moves",
@@ -4496,7 +4496,7 @@
       "fr": "Changements de direction (crossover)",
       "en": "Crossover moves"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "dribbling-under-pressure",
@@ -4507,7 +4507,7 @@
       "fr": "Dribble sous pression (2 contre 1)",
       "en": "Dribbling under pressure"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "timed-full-court-dribble",
@@ -4518,7 +4518,7 @@
       "fr": "Dribble en tout terrain chronométré",
       "en": "Timed full-court dribble"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "king-of-the-court-protect-your-ball",
@@ -4529,7 +4529,7 @@
       "fr": "Jeu « le roi du terrain » (protéger son ballon)",
       "en": "King of the court (protect your ball)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "change-of-pace-dribbling",
@@ -4540,7 +4540,7 @@
       "fr": "Dribble et changement de rythme",
       "en": "Change-of-pace dribbling"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "hesitation-dribble",
@@ -4551,7 +4551,7 @@
       "fr": "Dribble « hesitation »",
       "en": "Hesitation dribble"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "dribbling-off-a-screen",
@@ -4562,7 +4562,7 @@
       "fr": "Dribble en sortie d'écran",
       "en": "Dribbling off a screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "eyes-up-dribbling-read-the-coach-s-fingers",
@@ -4573,7 +4573,7 @@
       "fr": "Dribble tête haute (lire les doigts du coach)",
       "en": "Eyes-up dribbling (read the coach's fingers)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "snake-dribble-vs-a-defender",
@@ -4584,7 +4584,7 @@
       "fr": "Dribble « snake » contre défenseur",
       "en": "Snake dribble vs a defender"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "two-ball-passing",
@@ -4595,7 +4595,7 @@
       "fr": "Passes à deux ballons",
       "en": "Two-ball passing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "star-passing",
@@ -4606,7 +4606,7 @@
       "fr": "Passes en étoile",
       "en": "Star passing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pass-and-follow",
@@ -4617,7 +4617,7 @@
       "fr": "Passe et suit",
       "en": "Pass and follow"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "full-court-passing-on-the-move",
@@ -4628,7 +4628,7 @@
       "fr": "Passes en mouvement tout terrain",
       "en": "Full-court passing on the move"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ten-pass-game",
@@ -4639,7 +4639,7 @@
       "fr": "Passes contre défenseur (jeu des 10 passes)",
       "en": "Ten-pass game"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "passing-off-the-dribble",
@@ -4650,7 +4650,7 @@
       "fr": "Passe en sortie de dribble",
       "en": "Passing off the dribble"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "post-entry-passing",
@@ -4661,7 +4661,7 @@
       "fr": "Passe au poste",
       "en": "Post-entry passing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "outlet-and-long-passing",
@@ -4672,7 +4672,7 @@
       "fr": "Passe longue de contre-attaque",
       "en": "Outlet and long passing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "drive-and-kick-passing",
@@ -4683,7 +4683,7 @@
       "fr": "Passe en pénétration-ressortie (drive and kick)",
       "en": "Drive-and-kick passing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "lob-passing",
@@ -4694,7 +4694,7 @@
       "fr": "Passe lobée par-dessus la défense",
       "en": "Lob passing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-wing",
@@ -4716,7 +4716,7 @@
       "fr": "1 contre 1 tout terrain",
       "en": "Full-court one-on-one"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "post-one-on-one",
@@ -4727,7 +4727,7 @@
       "fr": "1 contre 1 au poste",
       "en": "Post one-on-one"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-three-dribbles-max",
@@ -4738,7 +4738,7 @@
       "fr": "1 contre 1 en trois dribbles",
       "en": "One-on-one, three dribbles max"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-off-the-close-out",
@@ -4749,7 +4749,7 @@
       "fr": "1 contre 1 après close-out",
       "en": "One-on-one off the close-out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-off-a-screen",
@@ -4760,7 +4760,7 @@
       "fr": "1 contre 1 en sortie d'écran",
       "en": "One-on-one off a screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-from-the-high-post",
@@ -4771,7 +4771,7 @@
       "fr": "1 contre 1 depuis le poste haut",
       "en": "One-on-one from the high post"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-with-a-shot-clock",
@@ -4782,7 +4782,7 @@
       "fr": "1 contre 1 avec limite de temps",
       "en": "One-on-one with a shot clock"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "three-on-two-continuous",
@@ -4804,7 +4804,7 @@
       "fr": "2 contre 1 en continu",
       "en": "Continuous 2-on-1"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "4-on-3-with-a-trailer",
@@ -4815,18 +4815,18 @@
       "fr": "4 contre 3 avec retour",
       "en": "4-on-3 with a trailer"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
-    "id": "3-on-2-2-on-1",
+    "id": "3-on-3-with-a-joker",
     "cat": "exercices",
     "family": "surnombre",
     "lvl": 2,
     "name": {
-      "fr": "3 contre 2 puis 2 contre 1",
-      "en": "3-on-2, 2-on-1"
+      "fr": "3 contre 3 avec un joker",
+      "en": "3-on-3 with a joker"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "5-on-4-advantage",
@@ -4837,7 +4837,7 @@
       "fr": "5 contre 4 avantage",
       "en": "5-on-4 advantage"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-on-2-from-advantage",
@@ -4848,7 +4848,7 @@
       "fr": "2 contre 2 depuis le surnombre",
       "en": "2-on-2 from advantage"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "closeout-contest",
@@ -4870,7 +4870,7 @@
       "fr": "Glissements défensifs (slides)",
       "en": "Defensive slides"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defensive-zigzag",
@@ -4881,7 +4881,7 @@
       "fr": "Zigzag défensif",
       "en": "Defensive zigzag"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "lane-defense-on-the-ball",
@@ -4892,7 +4892,7 @@
       "fr": "Défense sur le porteur en couloir",
       "en": "Lane defense on the ball"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "denial-drill",
@@ -4903,7 +4903,7 @@
       "fr": "Refus de passe (deny)",
       "en": "Denial drill"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "taking-a-charge",
@@ -4914,7 +4914,7 @@
       "fr": "Charge (prendre le passage en force)",
       "en": "Taking a charge"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shell-drill",
@@ -4936,7 +4936,7 @@
       "fr": "Aide et reprise 2 contre 2",
       "en": "2-on-2 help and recover"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-3-pick-and-roll-defense",
@@ -4947,7 +4947,7 @@
       "fr": "3 contre 3 défense du pick-and-roll",
       "en": "3-on-3 pick-and-roll defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "4-on-3-rotation-drill",
@@ -4958,7 +4958,7 @@
       "fr": "Rotation défensive en 4 contre 3",
       "en": "4-on-3 rotation drill"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-3-off-ball-screen-defense",
@@ -4969,7 +4969,7 @@
       "fr": "Défense des écrans sans ballon 3 contre 3",
       "en": "3-on-3 off-ball screen defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "talk-drill-ball-help-screen",
@@ -4980,7 +4980,7 @@
       "fr": "Communication : « ballon, aide, écran »",
       "en": "Talk drill: ball, help, screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-4-scramble-drill",
@@ -4991,7 +4991,7 @@
       "fr": "Défense en infériorité 3 contre 4",
       "en": "3-on-4 scramble drill"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-3-zone-shell-drill",
@@ -5002,7 +5002,7 @@
       "fr": "Défense de zone 2-3 contre 5 attaquants",
       "en": "2-3 zone shell drill"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-box-out",
@@ -5013,7 +5013,7 @@
       "fr": "Bloquer et prendre le rebond 1 contre 1",
       "en": "One-on-one box-out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-3-rebounding",
@@ -5024,7 +5024,7 @@
       "fr": "Rebond 3 contre 3",
       "en": "3-on-3 rebounding"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "offensive-rebound-battle",
@@ -5035,7 +5035,7 @@
       "fr": "Rebond offensif : se battre pour la position",
       "en": "Offensive rebound battle"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "rebound-and-outlet",
@@ -5046,7 +5046,7 @@
       "fr": "Rebond et première passe",
       "en": "Rebound and outlet"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "weak-side-triangle-rebounding",
@@ -5057,7 +5057,7 @@
       "fr": "Rebond en triangle (3 contre 3 côté faible)",
       "en": "Weak-side triangle rebounding"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "superman-rebounding",
@@ -5068,7 +5068,7 @@
       "fr": "Rebond « super-man » (aller-retour sur la planche)",
       "en": "Superman rebounding"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "eleven-man-break",
@@ -5079,7 +5079,7 @@
       "fr": "Contre-attaque à 11 joueurs (11 man break)",
       "en": "Eleven-man break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-3-transition-defense",
@@ -5090,7 +5090,7 @@
       "fr": "Retour défensif à 3 contre 3",
       "en": "3-on-3 transition defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "three-pass-fast-break",
@@ -5101,7 +5101,7 @@
       "fr": "Contre-attaque à 3 passes",
       "en": "Three-pass fast break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "5-on-5-transition",
@@ -5112,7 +5112,7 @@
       "fr": "5 contre 5 avec retour en défense",
       "en": "5-on-5 transition"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "clock-shooting-game",
@@ -5123,7 +5123,7 @@
       "fr": "Jeu de l'horloge (tir)",
       "en": "Clock shooting game"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "cat-and-mouse-dribbling",
@@ -5134,7 +5134,7 @@
       "fr": "Jeu du dribbleur chat et souris",
       "en": "Cat-and-mouse dribbling"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "layup-relay",
@@ -5145,7 +5145,7 @@
       "fr": "Relais de lay-up",
       "en": "Layup relay"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "twenty-one",
@@ -5156,7 +5156,7 @@
       "fr": "Jeu du « 21 »",
       "en": "Twenty-one"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "three-team-passing-game",
@@ -5167,7 +5167,7 @@
       "fr": "Jeu des passes à 3 équipes",
       "en": "Three-team passing game"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shuttle-run-with-the-ball",
@@ -5178,7 +5178,7 @@
       "fr": "Navette avec ballon",
       "en": "Shuttle run with the ball"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defensive-mirror-agility",
@@ -5189,7 +5189,7 @@
       "fr": "Miroir défensif (agilité)",
       "en": "Defensive mirror (agility)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "suicide-sprints",
@@ -5200,7 +5200,7 @@
       "fr": "Sprints suicides",
       "en": "Suicide sprints"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-sprints-with-a-finish",
@@ -5211,7 +5211,7 @@
       "fr": "Sprints de transition avec finition",
       "en": "Transition sprints with a finish"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "reactive-change-of-direction",
@@ -5222,7 +5222,7 @@
       "fr": "Changements de direction en réaction",
       "en": "Reactive change of direction"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "team-shooting-rotation-pre-game",
@@ -5233,7 +5233,7 @@
       "fr": "Rotation de tir en équipe (pré-match)",
       "en": "Team shooting rotation (pre-game)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "controlled-5-on-5-pick-and-roll-reads",
@@ -5244,7 +5244,7 @@
       "fr": "Lecture du pick-and-roll 5 contre 5 contrôlé",
       "en": "Controlled 5-on-5 pick-and-roll reads"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "timed-late-game-situations",
@@ -5255,7 +5255,7 @@
       "fr": "Situations de fin de match chronométrées",
       "en": "Timed late-game situations"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-on-2-pick-and-roll-reading-the-help",
@@ -5266,7 +5266,7 @@
       "fr": "2 contre 2 pick-and-roll avec lecture de l'aide",
       "en": "2-on-2 pick-and-roll reading the help"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shooting-rotation-with-post-passes",
@@ -5277,7 +5277,7 @@
       "fr": "Rotation de tir avec passe du pivot",
       "en": "Shooting rotation with post passes"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "spacing-5-out",
@@ -5310,7 +5310,7 @@
       "fr": "Règle des 0,5 seconde (décider vite)",
       "en": "The 0.5-second rule"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ball-movement",
@@ -5321,7 +5321,7 @@
       "fr": "Partage du ballon",
       "en": "Ball movement"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pace-and-change-of-speed",
@@ -5332,7 +5332,7 @@
       "fr": "Rythme et changement de vitesse",
       "en": "Pace and change of speed"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "read-the-defense-first",
@@ -5343,7 +5343,7 @@
       "fr": "Lire la défense avant d'attaquer",
       "en": "Read the defense first"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "fill-the-open-spots",
@@ -5354,7 +5354,7 @@
       "fr": "Remplir les places vides",
       "en": "Fill the open spots"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ball-you-man",
@@ -5376,7 +5376,7 @@
       "fr": "Protéger la raquette d'abord",
       "en": "Protect the paint first"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defend-without-fouling",
@@ -5387,7 +5387,7 @@
       "fr": "Défendre sans faute",
       "en": "Defend without fouling"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "contest-every-shot",
@@ -5398,7 +5398,7 @@
       "fr": "Contester chaque tir",
       "en": "Contest every shot"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "finish-with-the-rebound",
@@ -5409,7 +5409,7 @@
       "fr": "Finir la possession par le rebond",
       "en": "Finish with the rebound"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defense-talk-all-the-time",
@@ -5420,7 +5420,7 @@
       "fr": "Défense : parler tout le temps",
       "en": "Defense: talk all the time"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "attack-the-close-out",
@@ -5431,18 +5431,18 @@
       "fr": "Attaquer le close-out",
       "en": "Attack the close-out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
-    "id": "cut-after-you-pass",
+    "id": "attack-the-rim-first",
     "cat": "principes",
     "family": "principes-attaque",
     "lvl": 1,
     "name": {
-      "fr": "Couper après la passe",
-      "en": "Cut after you pass"
+      "fr": "Attaquer le cercle en premier",
+      "en": "Attack the rim first"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "weak-side-spacing",
@@ -5453,18 +5453,18 @@
       "fr": "Écarter le côté faible",
       "en": "Weak-side spacing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
-    "id": "give-and-go",
+    "id": "get-open-without-the-ball",
     "cat": "principes",
     "family": "principes-attaque",
     "lvl": 1,
     "name": {
-      "fr": "Jouer à deux : passe et va",
-      "en": "Two-man game: give and go"
+      "fr": "Se démarquer sans ballon",
+      "en": "Get open without the ball"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "nearest-man-takes-the-ball",
@@ -5475,7 +5475,7 @@
       "fr": "Le plus proche prend le ballon",
       "en": "Nearest man takes the ball"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "protect-the-baseline",
@@ -5486,7 +5486,7 @@
       "fr": "Défendre la ligne de fond",
       "en": "Protect the baseline"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "get-back-before-you-press",
@@ -5497,6 +5497,6 @@
       "fr": "Revenir avant de presser",
       "en": "Get back before you press"
     },
-    "status": "todo"
+    "status": "done"
   }
 ]

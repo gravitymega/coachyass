@@ -5,6 +5,7 @@ Bibliothèque libre de tactiques de basket FR/EN, avec schémas animés et vidé
 ## Historique
 
 - 28 oct. 2026 : les fichiers d'origine de l'utilisateur (`tactics.json`, `render.py`, `catalogue_500.json`) étaient perdus. Ils ont été **recréés** d'après son cahier des charges. Toutes les fiches sont en `"review": "pending"`, à faire relire par des coachs.
+- 28 oct. 2026 : phase 5 terminée, **500/500 fiches animées** (lots 0 à 24). Doublons fusionnés et entrées impossibles à dessiner remplacées dans le catalogue. Restent les plans de séance par niveau (jeunes, amateurs, pro, pré-saison, veille de match), qui demandent une extension du format avec un script de migration.
 
 ## Cahier des charges (résumé)
 
@@ -26,6 +27,7 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 - Champs propres aux exercices : `duration`, `equipment`, `players`, `age[]`, `variants`.
 - Timeline, dans `data/timeline.json`, lue par le site et par `render.py` : déplacements 1,5 s, passe 0,85 s, puis lecture = max(2,2 s ; 0,13 s × mots FR+EN).
 - Couleurs : attaque #1F5FD1 (ronds), défense #D7263D (X), ballon #F08A24.
+- Terrain (demande du 28 octobre 2026, remplace le « tableau blanc » du cahier des charges) : parquet clair #E9C89B, lattes #DDB886, raquette peinte #C98E5A, lignes foncées. Valeurs dans `render.py` (BOARD, PLANK, PAINT) et `COLORS` de `src/engine.ts`.
 
 ## Choix techniques
 
