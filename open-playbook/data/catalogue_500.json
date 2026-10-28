@@ -4969,7 +4969,7 @@
       "fr": "Défense des écrans sans ballon 3 contre 3",
       "en": "3-on-3 off-ball screen defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "talk-drill-ball-help-screen",
@@ -4980,7 +4980,7 @@
       "fr": "Communication : « ballon, aide, écran »",
       "en": "Talk drill: ball, help, screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-4-scramble-drill",
@@ -4991,7 +4991,7 @@
       "fr": "Défense en infériorité 3 contre 4",
       "en": "3-on-4 scramble drill"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-3-zone-shell-drill",
@@ -5002,7 +5002,7 @@
       "fr": "Défense de zone 2-3 contre 5 attaquants",
       "en": "2-3 zone shell drill"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-box-out",
@@ -5013,7 +5013,7 @@
       "fr": "Bloquer et prendre le rebond 1 contre 1",
       "en": "One-on-one box-out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-3-rebounding",
@@ -5024,7 +5024,7 @@
       "fr": "Rebond 3 contre 3",
       "en": "3-on-3 rebounding"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "offensive-rebound-battle",
@@ -5035,7 +5035,7 @@
       "fr": "Rebond offensif : se battre pour la position",
       "en": "Offensive rebound battle"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "rebound-and-outlet",
@@ -5046,7 +5046,7 @@
       "fr": "Rebond et première passe",
       "en": "Rebound and outlet"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "weak-side-triangle-rebounding",
@@ -5057,7 +5057,7 @@
       "fr": "Rebond en triangle (3 contre 3 côté faible)",
       "en": "Weak-side triangle rebounding"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "superman-rebounding",
@@ -5068,7 +5068,7 @@
       "fr": "Rebond « super-man » (aller-retour sur la planche)",
       "en": "Superman rebounding"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "eleven-man-break",
@@ -5079,7 +5079,7 @@
       "fr": "Contre-attaque à 11 joueurs (11 man break)",
       "en": "Eleven-man break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "3-on-3-transition-defense",
@@ -5090,7 +5090,7 @@
       "fr": "Retour défensif à 3 contre 3",
       "en": "3-on-3 transition defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "three-pass-fast-break",
@@ -5101,7 +5101,7 @@
       "fr": "Contre-attaque à 3 passes",
       "en": "Three-pass fast break"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "5-on-5-transition",
@@ -5112,7 +5112,7 @@
       "fr": "5 contre 5 avec retour en défense",
       "en": "5-on-5 transition"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "clock-shooting-game",
@@ -5123,7 +5123,7 @@
       "fr": "Jeu de l'horloge (tir)",
       "en": "Clock shooting game"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "cat-and-mouse-dribbling",
@@ -5134,7 +5134,7 @@
       "fr": "Jeu du dribbleur chat et souris",
       "en": "Cat-and-mouse dribbling"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "layup-relay",
@@ -5145,7 +5145,7 @@
       "fr": "Relais de lay-up",
       "en": "Layup relay"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "twenty-one",
@@ -5156,7 +5156,7 @@
       "fr": "Jeu du « 21 »",
       "en": "Twenty-one"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "three-team-passing-game",
@@ -5167,7 +5167,7 @@
       "fr": "Jeu des passes à 3 équipes",
       "en": "Three-team passing game"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shuttle-run-with-the-ball",
@@ -5178,7 +5178,7 @@
       "fr": "Navette avec ballon",
       "en": "Shuttle run with the ball"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defensive-mirror-agility",
