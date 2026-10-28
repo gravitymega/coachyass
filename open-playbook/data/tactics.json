@@ -7100,6 +7100,2231 @@
           }
         }
       ]
+    },
+    {
+      "id": "high-pick-and-roll-vs-stunt",
+      "cat": "attaque",
+      "family": "pick-and-roll",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Pick-and-roll central avec feinte d'aide (stunt)",
+        "en": "High pick-and-roll vs stunt"
+      },
+      "sum": {
+        "fr": "Pick-and-roll central où le porteur lit la feinte d'aide (stunt) d'un défenseur de l'aile et continue son attaque au lieu de passer.",
+        "en": "A high pick-and-roll where the ball handler reads a wing defender's fake help (stunt) and keeps attacking instead of passing."
+      },
+      "why": {
+        "fr": "La feinte veut provoquer une passe précipitée ; si le porteur continue, le défenseur qui a feinté est loin du ballon et du roll.",
+        "en": "The stunt wants to bait a rushed pass; if the ball handler keeps going, the stunting defender is far from both ball and roller."
+      },
+      "counter": {
+        "fr": "Varier : feinter parfois, aider vraiment d'autres fois, pour que le porteur ne puisse pas lire.",
+        "en": "Mix it up: stunt sometimes, really help other times, so the ball handler cannot read it."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Regarder les hanches de l'aideur, pas ses mains",
+          "Ne pas passer sur une feinte",
+          "Continuer en descente vers le cercle",
+          "Passer au roll si le pivot défenseur sort"
+        ],
+        "en": [
+          "Watch the helper's hips, not his hands",
+          "Do not pass on a fake",
+          "Keep going downhill to the rim",
+          "Hit the roll if the big steps up"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1",
+        "x2": [
+          41.9,
+          21.9
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran.",
+            "en": "5 screens."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              32,
+              24,
+              "d"
+            ],
+            "5": [
+              28,
+              10,
+              "c"
+            ],
+            "x2": [
+              38,
+              22,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque à droite, 5 roule ; x2 fait mine d'aider (stunt).",
+            "en": "1 attacks right, 5 rolls; x2 fakes help (stunt)."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              41.5,
+              22,
+              "m"
+            ],
+            "1": [
+              30,
+              15,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "x2 revient sur 2 : 1 ne passe pas et continue vers le cercle.",
+            "en": "x2 recovers to 2: 1 does not pass and keeps attacking."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Le pivot défenseur sort sur 1 : passe à 5.",
+            "en": "The big steps up to 1: pass to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "single-drag-screen",
+      "cat": "attaque",
+      "family": "pick-and-roll",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Pick-and-roll en transition (drag simple)",
+        "en": "Single drag screen"
+      },
+      "sum": {
+        "fr": "En transition, le pivot qui arrive pose un écran porteur au meneur avant que la défense soit placée.",
+        "en": "In transition, the trailing big sets a ball screen for the guard before the defense is set."
+      },
+      "why": {
+        "fr": "La défense revient en courant et n'a pas le temps de s'organiser contre l'écran.",
+        "en": "The defense is sprinting back and has no time to organize against the screen."
+      },
+      "counter": {
+        "fr": "Communiquer en revenant, ou faire attaquer le meneur avant l'écran.",
+        "en": "Talk on the way back, or pressure the guard before the screen."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "L'écraneur arrive en courant, sans s'arrêter loin",
+          "Écran posé avant la ligne à 3 points",
+          "Les ailiers courent jusqu'aux corners",
+          "Le pivot roule fort"
+        ],
+        "en": [
+          "The screener arrives on the run",
+          "Screen set before the arc",
+          "Wings run to the corners",
+          "The big rolls hard"
+        ]
+      },
+      "start": {
+        "1": [
+          30,
+          44
+        ],
+        "5": [
+          22,
+          38
+        ],
+        "2": [
+          45,
+          40
+        ],
+        "3": [
+          5,
+          40
+        ],
+        "4": [
+          18,
+          46
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              28,
+              41.5,
+              "s"
+            ],
+            "2": [
+              47,
+              6,
+              "c"
+            ],
+            "3": [
+              3,
+              6,
+              "c"
+            ],
+            "4": [
+              20,
+              38,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 arrive et pose l'écran ; 2 et 3 courent aux corners.",
+            "en": "5 arrives and screens; 2 and 3 run to the corners."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              22,
+              30,
+              "d"
+            ],
+            "5": [
+              25,
+              12,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque à gauche ; 5 roule.",
+            "en": "1 attacks left; 5 rolls."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5 au cercle.",
+            "en": "Pass to 5 at the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "21-series",
+      "cat": "attaque",
+      "family": "pick-and-roll",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Pick-and-roll « 21 » (passe à l'aile, coupe, écran)",
+        "en": "21 series"
+      },
+      "sum": {
+        "fr": "Le meneur passe à l'aile et coupe au corner ; le pivot enchaîne tout de suite un pick-and-roll latéral avec l'ailier.",
+        "en": "The guard passes to the wing and cuts to the corner; the big immediately sets a side pick-and-roll for the wing."
+      },
+      "why": {
+        "fr": "La coupe du meneur vide l'aile et occupe son défenseur ; le pick-and-roll arrive avant que la défense se replace.",
+        "en": "The guard's cut clears the wing and occupies his defender; the pick-and-roll arrives before the defense resets."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran latéral, ou forcer l'ailier vers la ligne de fond (ICE).",
+        "en": "Switch the side screen, or force the wing baseline (ICE)."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Passe à l'aile puis coupe immédiate",
+          "Le pivot arrive pendant la coupe",
+          "L'ailier attaque le milieu",
+          "Le coupeur reste au corner, prêt à tirer"
+        ],
+        "en": [
+          "Pass to the wing, then cut right away",
+          "The big arrives during the cut",
+          "The wing attacks the middle",
+          "The cutter stays in the corner, ready to shoot"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 sur l'aile.",
+            "en": "1 passes to 2 on the wing."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              47,
+              6,
+              "c"
+            ],
+            "5": [
+              40.5,
+              25,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "1 coupe au corner ; 5 vient poser l'écran sur l'aile.",
+            "en": "1 cuts to the corner; 5 comes to screen on the wing."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              31,
+              20,
+              "d"
+            ],
+            "5": [
+              33,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 attaque le milieu ; 5 roule.",
+            "en": "2 attacks the middle; 5 rolls."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5, ou à 1 au corner si son défenseur aide.",
+            "en": "Pass to 5, or to 1 in the corner if his defender helps."
+          }
+        }
+      ]
+    },
+    {
+      "id": "wing-wing-pick-and-roll",
+      "cat": "attaque",
+      "family": "pick-and-roll",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Pick-and-roll 3-4 (deux ailiers)",
+        "en": "Wing-wing pick-and-roll"
+      },
+      "sum": {
+        "fr": "Pick-and-roll entre deux joueurs extérieurs : l'écraneur, un ailier, s'écarte à 3 points après l'écran.",
+        "en": "A pick-and-roll between two perimeter players: the screener, a wing, pops to the arc after the screen."
+      },
+      "why": {
+        "fr": "Le défenseur de l'écraneur n'est pas habitué à défendre un écran : il aide trop ou pas assez, et un changement ne crée aucun avantage défensif.",
+        "en": "The screener's defender is not used to guarding screens: he over- or under-helps, and switching gives the defense nothing."
+      },
+      "counter": {
+        "fr": "Changer systématiquement entre joueurs de même taille.",
+        "en": "Switch every time between players of the same size."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "L'écraneur est un bon tireur",
+          "Écran court, puis s'écarter",
+          "Le porteur attaque le défenseur qui hésite",
+          "Les grands restent loin, près du cercle"
+        ],
+        "en": [
+          "The screener is a good shooter",
+          "Short screen, then pop",
+          "The ball handler attacks the hesitating defender",
+          "The bigs stay away, near the rim"
+        ]
+      },
+      "start": {
+        "2": [
+          25,
+          32
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "1": [
+          48,
+          4
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          30,
+          6
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "m": {
+            "3": [
+              22.5,
+              29.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "3 quitte l'aile pour poser l'écran à gauche de 2.",
+            "en": "3 leaves the wing to screen on 2's left."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              17,
+              23,
+              "d"
+            ],
+            "3": [
+              33,
+              29,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 attaque à gauche ; 3 s'écarte à 3 points à droite.",
+            "en": "2 attacks left; 3 pops to the arc on the right."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "2 renvoie à 3, seul pour le tir.",
+            "en": "2 kicks it to 3, open for the shot."
+          }
+        }
+      ]
+    },
+    {
+      "id": "rub-pick-and-roll",
+      "cat": "attaque",
+      "family": "pick-and-roll",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Pick-and-roll « Rub » (le pivot frotte puis repose l'écran)",
+        "en": "Rub pick-and-roll"
+      },
+      "sum": {
+        "fr": "Le pivot passe d'abord tout près du porteur (frottement) comme pour couper, puis revient poser l'écran de l'autre côté.",
+        "en": "The big first brushes right past the ball handler as if cutting, then comes back to screen on the other side."
+      },
+      "why": {
+        "fr": "Le premier passage déplace le défenseur du porteur ; l'écran arrive alors qu'il est déséquilibré.",
+        "en": "The first brush moves the ball handler's defender; the screen arrives while he is off balance."
+      },
+      "counter": {
+        "fr": "Défendre l'écran au contact et changer si le défenseur est pris de vitesse.",
+        "en": "Defend the screen at contact and switch if the defender is beaten."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Le premier passage doit être crédible",
+          "Revenir poser l'écran en un pas",
+          "Le porteur attend le contact",
+          "Roll fort vers le cercle"
+        ],
+        "en": [
+          "The first brush must be believable",
+          "Come back to screen in one step",
+          "The ball handler waits for contact",
+          "Hard roll to the rim"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              21,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 monte et frôle 1 en passant à sa droite.",
+            "en": "5 comes up and brushes past 1's right side."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              22.5,
+              29.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 revient poser l'écran à gauche de 1.",
+            "en": "5 comes back to screen on 1's left."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              17,
+              24,
+              "d"
+            ],
+            "5": [
+              22,
+              11,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque à gauche ; 5 roule.",
+            "en": "1 attacks left; 5 rolls."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5 au cercle.",
+            "en": "Pass to 5 at the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "flat-ball-screen",
+      "cat": "attaque",
+      "family": "pick-and-roll",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Écran porteur à plat (flat)",
+        "en": "Flat ball screen"
+      },
+      "sum": {
+        "fr": "Écran porteur posé à plat, juste derrière le défenseur du porteur, ce qui laisse au porteur le choix d'aller à droite ou à gauche.",
+        "en": "A flat ball screen set right behind the ball handler's defender, giving the ball handler the choice to go right or left."
+      },
+      "why": {
+        "fr": "Le défenseur ne sait pas de quel côté se placer : le porteur part du côté qu'il laisse libre.",
+        "en": "The defender cannot tell which side to cheat to: the ball handler goes to whichever side he leaves open."
+      },
+      "counter": {
+        "fr": "Changer, ou faire monter le pivot au niveau de l'écran des deux côtés.",
+        "en": "Switch, or bring the big up to the level on both sides."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Écraneur dos au panier, derrière le défenseur",
+          "Le porteur lit le pied avant du défenseur",
+          "Partir du côté libre",
+          "Le pivot roule dans l'axe"
+        ],
+        "en": [
+          "Screener facing the ball handler, behind the defender",
+          "The ball handler reads the defender's lead foot",
+          "Go to the open side",
+          "The big rolls straight down the middle"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              25,
+              28.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran à plat, juste derrière le défenseur de 1.",
+            "en": "5 sets a flat screen right behind 1's defender."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              33,
+              25,
+              "d"
+            ],
+            "5": [
+              25,
+              11,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 part à droite ; 5 roule dans l'axe.",
+            "en": "1 goes right; 5 rolls straight down the middle."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5 au cercle.",
+            "en": "Pass to 5 at the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "baseline-ball-screen",
+      "cat": "attaque",
+      "family": "pick-and-roll",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Écran porteur à la ligne de fond",
+        "en": "Baseline ball screen"
+      },
+      "sum": {
+        "fr": "Écran porteur posé près de la ligne de fond pour un porteur qui part du corner et entre dans la raquette.",
+        "en": "A ball screen set near the baseline for a ball handler starting in the corner and driving into the paint."
+      },
+      "why": {
+        "fr": "La défense n'a pas l'habitude de défendre un écran aussi bas : l'aide est déjà sous le panier et le pivot s'écarte librement.",
+        "en": "Defenses rarely guard a screen this low: help is already under the basket and the big pops freely."
+      },
+      "counter": {
+        "fr": "Forcer le porteur vers la ligne de fond, contre le pivot défenseur qui reste près du cercle.",
+        "en": "Force the ball handler baseline into a big who stays near the rim."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Le porteur part du corner",
+          "Écran près de la ligne de fond",
+          "Attaquer vers le milieu de la raquette",
+          "Le pivot s'écarte sur l'aile"
+        ],
+        "en": [
+          "The ball handler starts in the corner",
+          "Screen near the baseline",
+          "Drive toward the middle of the paint",
+          "The big pops to the wing"
+        ]
+      },
+      "start": {
+        "1": [
+          47,
+          5
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "2": [
+          25,
+          31
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              44,
+              7.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 sort du poste bas pour poser l'écran près du corner.",
+            "en": "5 comes out of the block to screen near the corner."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              33,
+              12,
+              "d"
+            ],
+            "5": [
+              44,
+              17,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 entre dans la raquette ; 5 s'écarte sur l'aile.",
+            "en": "1 drives into the paint; 5 pops to the wing."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "L'aide ferme la raquette : passe à 5.",
+            "en": "Help closes the paint: pass to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "double-ball-screen",
+      "cat": "attaque",
+      "family": "pick-and-roll",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Pick-and-roll avec double écraneur (double ball screen)",
+        "en": "Double ball screen"
+      },
+      "sum": {
+        "fr": "Deux grands posent ensemble l'écran porteur ; après l'écran, l'un roule vers le cercle et l'autre s'écarte à 3 points.",
+        "en": "Two bigs screen for the ball handler together; afterwards one rolls to the rim and the other pops to the arc."
+      },
+      "why": {
+        "fr": "Deux défenseurs de grands doivent gérer à la fois le porteur, un roll et un tir : la défense est en infériorité.",
+        "en": "Two big defenders must handle the ball, a roll and a shot at once: the defense is outnumbered."
+      },
+      "counter": {
+        "fr": "Changer sur le premier écraneur et faire rester le second défenseur près du cercle.",
+        "en": "Switch the first screener and keep the second big defender near the rim."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Les deux écraneurs côte à côte",
+          "Le premier roule, le second s'écarte",
+          "Le porteur passe au ras des deux écrans",
+          "Le côté faible reste écarté"
+        ],
+        "en": [
+          "Both screeners side by side",
+          "The first rolls, the second pops",
+          "The ball handler runs tight to both screens",
+          "The weak side stays spaced"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          48,
+          4
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          17,
+          22
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              27.5,
+              30,
+              "s"
+            ],
+            "5": [
+              27.5,
+              27,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "4 et 5 posent ensemble l'écran à droite de 1.",
+            "en": "4 and 5 screen together on 1's right."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              34,
+              24,
+              "d"
+            ],
+            "5": [
+              27,
+              10,
+              "c"
+            ],
+            "4": [
+              18,
+              29,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque à droite ; 5 roule, 4 s'écarte à gauche.",
+            "en": "1 attacks right; 5 rolls, 4 pops to the left."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "Passe à 4 pour le tir ou à 5 au cercle.",
+            "en": "Pass to 4 for the shot or to 5 at the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "horns-pop",
+      "cat": "attaque",
+      "family": "horns",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Horns Pop",
+        "en": "Horns Pop"
+      },
+      "sum": {
+        "fr": "Horns : un grand pose l'écran porteur puis s'écarte à 3 points, pendant que l'autre grand plonge vers le cercle.",
+        "en": "Horns: one big sets the ball screen and pops to the arc while the other big dives to the rim."
+      },
+      "why": {
+        "fr": "Le défenseur de l'écraneur aide sur le porteur et ne peut pas revenir sur un tireur ; l'autre pivot occupe la protection du cercle.",
+        "en": "The screener's defender helps on the ball and cannot recover to a shooter; the other big occupies the rim protector."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran ; ne pas aider sur le porteur avec le défenseur de l'écraneur.",
+        "en": "Switch the screen; do not help on the ball with the screener's defender."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Les deux grands exactement aux coudes",
+          "Les corners restent écartés",
+          "Lire le défenseur avant de choisir l'option",
+          "Jouer vite après la première passe"
+        ],
+        "en": [
+          "Both bigs exactly at the elbows",
+          "The corners stay spaced",
+          "Read the defender before choosing the option",
+          "Play fast after the first pass"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran à droite de 1.",
+            "en": "5 screens on 1's right."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              33,
+              24,
+              "d"
+            ],
+            "5": [
+              19,
+              30,
+              "c"
+            ],
+            "4": [
+              21,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque à droite ; 5 s'écarte à 3 points, 4 plonge.",
+            "en": "1 attacks right; 5 pops to the arc, 4 dives."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 renvoie à 5 pour le tir.",
+            "en": "1 kicks it to 5 for the shot."
+          }
+        }
+      ]
+    },
+    {
+      "id": "horns-pick-and-roll",
+      "cat": "attaque",
+      "family": "horns",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Horns pick-and-roll",
+        "en": "Horns pick-and-roll"
+      },
+      "sum": {
+        "fr": "Horns de base : un grand pose l'écran porteur et roule, l'autre remonte en haut pour offrir une passe.",
+        "en": "Basic Horns: one big sets the ball screen and rolls, the other lifts to the top as an outlet."
+      },
+      "why": {
+        "fr": "Avec les corners occupés et un grand en haut, l'aide sur le roll laisse toujours un tireur seul.",
+        "en": "With both corners filled and a big up top, helping on the roll always leaves a shooter open."
+      },
+      "counter": {
+        "fr": "Défendre le pick-and-roll à deux sans aide des corners, ou changer.",
+        "en": "Guard the pick-and-roll two-on-two without corner help, or switch."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Les deux grands exactement aux coudes",
+          "Les corners restent écartés",
+          "Lire le défenseur avant de choisir l'option",
+          "Jouer vite après la première passe"
+        ],
+        "en": [
+          "Both bigs exactly at the elbows",
+          "The corners stay spaced",
+          "Read the defender before choosing the option",
+          "Play fast after the first pass"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran.",
+            "en": "5 screens."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              33,
+              24,
+              "d"
+            ],
+            "5": [
+              28,
+              10,
+              "c"
+            ],
+            "4": [
+              23,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque à droite, 5 roule ; 4 remonte en haut.",
+            "en": "1 attacks right, 5 rolls; 4 lifts to the top."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5 au cercle.",
+            "en": "Pass to 5 at the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "horns-rip",
+      "cat": "attaque",
+      "family": "horns",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Horns Rip",
+        "en": "Horns Rip"
+      },
+      "sum": {
+        "fr": "Horns : le meneur passe au coude, puis coupe vers le panier en se servant de l'écran dans le dos posé par l'autre grand.",
+        "en": "Horns: the guard passes to an elbow, then cuts to the rim off a back screen from the other big."
+      },
+      "why": {
+        "fr": "Le défenseur du meneur se détend après la passe ; l'écran dans son dos le surprend.",
+        "en": "The guard's defender relaxes after the pass; the back screen catches him."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran dans le dos, ou refuser la coupe en passant devant l'écran.",
+        "en": "Switch the back screen, or deny the cut by going over it."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Les deux grands exactement aux coudes",
+          "Les corners restent écartés",
+          "Lire le défenseur avant de choisir l'option",
+          "Jouer vite après la première passe"
+        ],
+        "en": [
+          "Both bigs exactly at the elbows",
+          "The corners stay spaced",
+          "Read the defender before choosing the option",
+          "Play fast after the first pass"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5 au coude droit.",
+            "en": "1 passes to 5 at the right elbow."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              22,
+              25,
+              "s"
+            ],
+            "1": [
+              23,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran dans le dos du défenseur de 1, qui coupe vers le panier.",
+            "en": "4 back-screens 1's defender; 1 cuts to the rim."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "5 passe à 1 sous le panier.",
+            "en": "5 hits 1 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "horns-elbow",
+      "cat": "attaque",
+      "family": "horns",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Horns Coude (jeu au coude)",
+        "en": "Horns Elbow"
+      },
+      "sum": {
+        "fr": "Horns : passe au grand du coude, qui enchaîne une remise main à main avec l'ailier qui remonte du corner.",
+        "en": "Horns: pass to the elbow big, who flows into a handoff with the wing coming up from the corner."
+      },
+      "why": {
+        "fr": "Le grand au coude est un relais : la remise main à main attaque une défense qui vient de se déplacer.",
+        "en": "The elbow big is a hub: the handoff attacks a defense that just shifted."
+      },
+      "counter": {
+        "fr": "Passer sous la remise contre un non-tireur, ou changer.",
+        "en": "Go under the handoff against a non-shooter, or switch."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Les deux grands exactement aux coudes",
+          "Les corners restent écartés",
+          "Lire le défenseur avant de choisir l'option",
+          "Jouer vite après la première passe"
+        ],
+        "en": [
+          "Both bigs exactly at the elbows",
+          "The corners stay spaced",
+          "Read the defender before choosing the option",
+          "Play fast after the first pass"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4 au coude gauche.",
+            "en": "1 passes to 4 at the left elbow."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              10,
+              23,
+              "c"
+            ],
+            "4": [
+              13,
+              21,
+              "d"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 remonte du corner ; 4 dribble vers lui et lui remet le ballon.",
+            "en": "2 comes up from the corner; 4 dribbles at him and hands off."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              19,
+              12,
+              "d"
+            ],
+            "4": [
+              22,
+              7,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 attaque le panier ; 4 roule après la remise.",
+            "en": "2 drives to the rim; 4 rolls after the handoff."
+          }
+        }
+      ]
+    },
+    {
+      "id": "horns-out",
+      "cat": "attaque",
+      "family": "horns",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Horns Out",
+        "en": "Horns Out"
+      },
+      "sum": {
+        "fr": "Horns : le meneur passe au coude, puis l'autre grand pose un écran retour pour faire sortir l'ailier du corner.",
+        "en": "Horns: the guard passes to the elbow, then the other big sets a pin-down to bring the wing out of the corner."
+      },
+      "why": {
+        "fr": "Après la passe au coude, la défense regarde le grand ; le tireur sort du corner sur un écran inattendu.",
+        "en": "After the elbow pass, the defense watches the big; the shooter comes out of the corner off an unexpected screen."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran retour, ou faire passer le défenseur du tireur au ras de l'écran.",
+        "en": "Switch the pin-down, or have the shooter's defender trail tight."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Les deux grands exactement aux coudes",
+          "Les corners restent écartés",
+          "Lire le défenseur avant de choisir l'option",
+          "Jouer vite après la première passe"
+        ],
+        "en": [
+          "Both bigs exactly at the elbows",
+          "The corners stay spaced",
+          "Read the defender before choosing the option",
+          "Play fast after the first pass"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5 au coude droit.",
+            "en": "1 passes to 5 at the right elbow."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              8,
+              10,
+              "s"
+            ],
+            "2": [
+              7,
+              23,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 descend poser un écran retour ; 2 sort du corner vers l'aile.",
+            "en": "4 goes down to set a pin-down; 2 comes out of the corner to the wing."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "5 passe à 2 pour le tir.",
+            "en": "5 passes to 2 for the shot."
+          }
+        }
+      ]
+    },
+    {
+      "id": "horns-away",
+      "cat": "attaque",
+      "family": "horns",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Horns Away",
+        "en": "Horns Away"
+      },
+      "sum": {
+        "fr": "Horns : le meneur passe au coude puis pose un écran loin du ballon pour libérer le tireur du corner opposé.",
+        "en": "Horns: the guard passes to the elbow, then screens away from the ball to free the far-corner shooter."
+      },
+      "why": {
+        "fr": "Le défenseur du meneur ne s'attend pas à poser un écran ; le tireur sort pendant que le grand a le ballon.",
+        "en": "The guard's defender does not expect to defend a screen; the shooter pops while the big holds the ball."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran loin du ballon.",
+        "en": "Switch the away screen."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Les deux grands exactement aux coudes",
+          "Les corners restent écartés",
+          "Lire le défenseur avant de choisir l'option",
+          "Jouer vite après la première passe"
+        ],
+        "en": [
+          "Both bigs exactly at the elbows",
+          "The corners stay spaced",
+          "Read the defender before choosing the option",
+          "Play fast after the first pass"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4 au coude gauche.",
+            "en": "1 passes to 4 at the left elbow."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              42,
+              10,
+              "s"
+            ],
+            "3": [
+              41,
+              23,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 descend poser un écran pour 3, qui remonte du corner droit.",
+            "en": "1 goes down to screen for 3, who comes up from the right corner."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "4 passe à 5 (haut-haut).",
+            "en": "4 passes to 5 (high-high)."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "5 trouve 3 sur l'aile.",
+            "en": "5 finds 3 on the wing."
+          }
+        }
+      ]
+    },
+    {
+      "id": "horns-down",
+      "cat": "attaque",
+      "family": "horns",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Horns Down",
+        "en": "Horns Down"
+      },
+      "sum": {
+        "fr": "Horns : les deux grands descendent poser des écrans retour pour les deux joueurs des corners, qui remontent sur les ailes.",
+        "en": "Horns: both bigs go down to set pin-downs for the two corner players, who come up to the wings."
+      },
+      "why": {
+        "fr": "Deux écrans en même temps : la défense ne peut pas aider sur les deux côtés.",
+        "en": "Two screens at once: the defense cannot help on both sides."
+      },
+      "counter": {
+        "fr": "Changer sur les deux écrans retour.",
+        "en": "Switch both pin-downs."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Les deux grands exactement aux coudes",
+          "Les corners restent écartés",
+          "Lire le défenseur avant de choisir l'option",
+          "Jouer vite après la première passe"
+        ],
+        "en": [
+          "Both bigs exactly at the elbows",
+          "The corners stay spaced",
+          "Read the defender before choosing the option",
+          "Play fast after the first pass"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              8,
+              10,
+              "s"
+            ],
+            "5": [
+              42,
+              10,
+              "s"
+            ],
+            "2": [
+              7,
+              23,
+              "c"
+            ],
+            "3": [
+              43,
+              23,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 et 5 descendent poser des écrans retour ; 2 et 3 remontent sur les ailes.",
+            "en": "4 and 5 go down to set pin-downs; 2 and 3 come up to the wings."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3, sorti du côté droit.",
+            "en": "1 passes to 3, who came out on the right."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              33,
+              8,
+              "c"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "5 se place au poste bas : passe à 5.",
+            "en": "5 posts up on the block: pass to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "horns-get",
+      "cat": "attaque",
+      "family": "horns",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Horns Get",
+        "en": "Horns Get"
+      },
+      "sum": {
+        "fr": "Horns : le meneur passe au coude et récupère tout de suite le ballon par une remise main à main, puis joue le pick-and-roll avec le même grand.",
+        "en": "Horns: the guard passes to the elbow and immediately gets it back on a handoff, then plays pick-and-roll with the same big."
+      },
+      "why": {
+        "fr": "La passe déplace la défense ; la remise main à main sert d'écran et le grand roule juste après.",
+        "en": "The pass moves the defense; the handoff acts as a screen and the big rolls right after."
+      },
+      "counter": {
+        "fr": "Passer sous la remise ou changer.",
+        "en": "Go under the handoff or switch."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Les deux grands exactement aux coudes",
+          "Les corners restent écartés",
+          "Lire le défenseur avant de choisir l'option",
+          "Jouer vite après la première passe"
+        ],
+        "en": [
+          "Both bigs exactly at the elbows",
+          "The corners stay spaced",
+          "Read the defender before choosing the option",
+          "Play fast after the first pass"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4 au coude gauche.",
+            "en": "1 passes to 4 at the left elbow."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              21,
+              26,
+              "c"
+            ],
+            "4": [
+              18.5,
+              23,
+              "d"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "1 revient vers 4 qui lui remet le ballon main à main.",
+            "en": "1 comes back to 4, who hands it off."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              26,
+              15,
+              "d"
+            ],
+            "4": [
+              19,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque le milieu ; 4 roule.",
+            "en": "1 attacks the middle; 4 rolls."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "Passe à 4 au cercle.",
+            "en": "Pass to 4 at the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "horns-fist",
+      "cat": "attaque",
+      "family": "horns",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Horns Fist",
+        "en": "Horns Fist"
+      },
+      "sum": {
+        "fr": "Horns joué en haut-bas : après la passe à un coude, l'autre grand plonge au poste bas et reçoit la passe de son partenaire.",
+        "en": "Horns played high-low: after the pass to one elbow, the other big dives to the block and gets the pass from his partner."
+      },
+      "why": {
+        "fr": "Le défenseur du grand qui plonge est seul : personne ne peut aider sans quitter un tireur du corner.",
+        "en": "The diving big's defender is alone: nobody can help without leaving a corner shooter."
+      },
+      "counter": {
+        "fr": "Jouer devant le grand qui plonge et aider depuis le côté faible.",
+        "en": "Front the diving big and help from the weak side."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Les deux grands exactement aux coudes",
+          "Les corners restent écartés",
+          "Lire le défenseur avant de choisir l'option",
+          "Jouer vite après la première passe"
+        ],
+        "en": [
+          "Both bigs exactly at the elbows",
+          "The corners stay spaced",
+          "Read the defender before choosing the option",
+          "Play fast after the first pass"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4 au coude gauche.",
+            "en": "1 passes to 4 at the left elbow."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              28,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 plonge et scelle son défenseur au poste bas.",
+            "en": "5 dives and seals his defender on the block."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe haut-bas de 4 à 5.",
+            "en": "High-low pass from 4 to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "horns-iverson",
+      "cat": "attaque",
+      "family": "horns",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Horns Iverson",
+        "en": "Horns Iverson"
+      },
+      "sum": {
+        "fr": "Horns : l'ailier traverse le haut de la raquette en frôlant les deux grands des coudes (coupe Iverson) pour recevoir sur l'aile opposée.",
+        "en": "Horns: the wing runs across the top of the key, brushing both elbow bigs (Iverson cut), to catch on the far wing."
+      },
+      "why": {
+        "fr": "Deux écrans d'affilée sur la course : le défenseur de l'ailier est forcément en retard.",
+        "en": "Two screens in a row on the run: the wing's defender is always late."
+      },
+      "counter": {
+        "fr": "Changer sur le second grand ou passer devant les écrans.",
+        "en": "Switch on the second big or go over the screens."
+      },
+      "used": {
+        "fr": "Coupe nommée d'après Allen Iverson, pour qui les Philadelphia 76ers l'utilisaient beaucoup.",
+        "en": "Cut named after Allen Iverson, for whom the Philadelphia 76ers ran it a lot."
+      },
+      "keys": {
+        "fr": [
+          "Les deux grands exactement aux coudes",
+          "Les corners restent écartés",
+          "Lire le défenseur avant de choisir l'option",
+          "Jouer vite après la première passe"
+        ],
+        "en": [
+          "Both bigs exactly at the elbows",
+          "The corners stay spaced",
+          "Read the defender before choosing the option",
+          "Play fast after the first pass"
+        ]
+      },
+      "start": {
+        "1": [
+          34,
+          29
+        ],
+        "2": [
+          6,
+          24
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              40,
+              22,
+              "c"
+            ],
+            "4": [
+              17,
+              21.5,
+              "s"
+            ],
+            "5": [
+              33,
+              21.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "2 traverse en frôlant 4 puis 5, qui s'avancent pour faire écran.",
+            "en": "2 runs across, brushing 4 then 5, who step up to screen."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 sur l'aile droite.",
+            "en": "1 passes to 2 on the right wing."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              31,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 plonge : 2 choisit entre tir et passe au cercle.",
+            "en": "5 dives: 2 picks between the shot and the pass to the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "horns-spain",
+      "cat": "attaque",
+      "family": "horns",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Horns Spain",
+        "en": "Horns Spain"
+      },
+      "sum": {
+        "fr": "Horns combiné au Spain pick-and-roll : un grand pose l'écran porteur et roule, l'autre pose un écran dans le dos du défenseur de l'écraneur.",
+        "en": "Horns combined with the Spain pick-and-roll: one big screens and rolls, the other back-screens the screener's defender."
+      },
+      "why": {
+        "fr": "Le défenseur du rouleur est bloqué : le roll arrive seul, et l'écraneur du dos ressort ouvert à 3 points.",
+        "en": "The roller's defender gets screened: the roll arrives alone and the back-screener pops open."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran dans le dos et garder un protecteur du cercle.",
+        "en": "Switch the back screen and keep a rim protector home."
+      },
+      "used": {
+        "fr": "Variante Horns du Spain pick-and-roll, courante en EuroLeague.",
+        "en": "Horns version of the Spain pick-and-roll, common in the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Les deux grands exactement aux coudes",
+          "Les corners restent écartés",
+          "Lire le défenseur avant de choisir l'option",
+          "Jouer vite après la première passe"
+        ],
+        "en": [
+          "Both bigs exactly at the elbows",
+          "The corners stay spaced",
+          "Read the defender before choosing the option",
+          "Play fast after the first pass"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1",
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "x5": [
+          31.8,
+          17.3
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x5": [
+              28,
+              25.5,
+              "m"
+            ],
+            "4": [
+              26,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran ; 4 se place dans le dos de x5.",
+            "en": "5 screens; 4 moves behind x5."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              33,
+              25,
+              "d"
+            ],
+            "x1": [
+              31,
+              27.5,
+              "m"
+            ],
+            "5": [
+              28,
+              10,
+              "c"
+            ],
+            "4": [
+              26.5,
+              23,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque à droite, 5 roule ; 4 pose l'écran dans le dos de x5.",
+            "en": "1 attacks right, 5 rolls; 4 back-screens x5."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              20,
+              30,
+              "c"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5 au cercle ; 4 ressort à 3 points en deuxième option.",
+            "en": "Pass to 5 at the rim; 4 pops to the arc as the second option."
+          }
+        }
+      ]
+    },
+    {
+      "id": "horns-zipper",
+      "cat": "attaque",
+      "family": "horns",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Horns Zipper",
+        "en": "Horns Zipper"
+      },
+      "sum": {
+        "fr": "Horns : l'ailier part du poste bas et remonte la raquette sur l'écran du grand du coude pour recevoir en haut.",
+        "en": "Horns: the wing starts on the block and sprints up the lane off the elbow big's screen to catch up top."
+      },
+      "why": {
+        "fr": "La coupe verticale part de sous le panier : le défenseur doit traverser l'écran pour suivre.",
+        "en": "The vertical cut starts under the basket: the defender has to fight through the screen."
+      },
+      "counter": {
+        "fr": "Refuser la coupe en passant au-dessus de l'écran, ou changer.",
+        "en": "Deny the cut by going over the screen, or switch."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Les deux grands exactement aux coudes",
+          "Les corners restent écartés",
+          "Lire le défenseur avant de choisir l'option",
+          "Jouer vite après la première passe"
+        ],
+        "en": [
+          "Both bigs exactly at the elbows",
+          "The corners stay spaced",
+          "Read the defender before choosing the option",
+          "Play fast after the first pass"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          19,
+          7
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              38,
+              27,
+              "d"
+            ],
+            "4": [
+              18,
+              15,
+              "s"
+            ],
+            "2": [
+              19,
+              29,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 dribble vers l'aile droite ; 4 descend faire écran, 2 remonte la raquette.",
+            "en": "1 dribbles to the right wing; 4 steps down to screen, 2 sprints up the lane."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 en haut.",
+            "en": "1 passes to 2 up top."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              21,
+              8,
+              "c"
+            ],
+            "2": [
+              24,
+              21,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "4 plonge ; 2 attaque le défenseur en retard.",
+            "en": "4 dives; 2 attacks the late defender."
+          }
+        }
+      ]
     }
   ]
 }

@@ -250,7 +250,7 @@
       "fr": "Pick-and-roll central avec feinte d'aide (stunt)",
       "en": "High pick-and-roll vs stunt"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "single-drag-screen",
@@ -261,7 +261,7 @@
       "fr": "Pick-and-roll en transition (drag simple)",
       "en": "Single drag screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "21-series",
@@ -269,10 +269,10 @@
     "family": "pick-and-roll",
     "lvl": 3,
     "name": {
-      "fr": "Pick-and-roll « 21 » (passe du corner puis écran)",
+      "fr": "Pick-and-roll « 21 » (passe à l'aile, coupe, écran)",
       "en": "21 series"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "wing-wing-pick-and-roll",
@@ -283,7 +283,7 @@
       "fr": "Pick-and-roll 3-4 (deux ailiers)",
       "en": "Wing-wing pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "rub-pick-and-roll",
@@ -294,7 +294,7 @@
       "fr": "Pick-and-roll « Rub » (le pivot frotte puis repose l'écran)",
       "en": "Rub pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "flat-ball-screen",
@@ -305,7 +305,7 @@
       "fr": "Écran porteur à plat (flat)",
       "en": "Flat ball screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "baseline-ball-screen",
@@ -316,7 +316,7 @@
       "fr": "Écran porteur à la ligne de fond",
       "en": "Baseline ball screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "double-ball-screen",
@@ -327,7 +327,7 @@
       "fr": "Pick-and-roll avec double écraneur (double ball screen)",
       "en": "Double ball screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-flare",
@@ -360,7 +360,7 @@
       "fr": "Horns Pop",
       "en": "Horns Pop"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-pick-and-roll",
@@ -371,7 +371,7 @@
       "fr": "Horns pick-and-roll",
       "en": "Horns pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-rip",
@@ -382,7 +382,7 @@
       "fr": "Horns Rip",
       "en": "Horns Rip"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-elbow",
@@ -393,7 +393,7 @@
       "fr": "Horns Coude (jeu au coude)",
       "en": "Horns Elbow"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-out",
@@ -404,7 +404,7 @@
       "fr": "Horns Out",
       "en": "Horns Out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-away",
@@ -415,7 +415,7 @@
       "fr": "Horns Away",
       "en": "Horns Away"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-down",
@@ -426,7 +426,7 @@
       "fr": "Horns Down",
       "en": "Horns Down"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-get",
@@ -437,7 +437,7 @@
       "fr": "Horns Get",
       "en": "Horns Get"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-fist",
@@ -448,7 +448,7 @@
       "fr": "Horns Fist",
       "en": "Horns Fist"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-iverson",
@@ -459,7 +459,7 @@
       "fr": "Horns Iverson",
       "en": "Horns Iverson"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-spain",
@@ -470,7 +470,7 @@
       "fr": "Horns Spain",
       "en": "Horns Spain"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-zipper",
@@ -481,7 +481,7 @@
       "fr": "Horns Zipper",
       "en": "Horns Zipper"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "horns-chicago",
