@@ -5189,7 +5189,7 @@
       "fr": "Miroir défensif (agilité)",
       "en": "Defensive mirror (agility)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "suicide-sprints",
@@ -5200,7 +5200,7 @@
       "fr": "Sprints suicides",
       "en": "Suicide sprints"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "transition-sprints-with-a-finish",
@@ -5211,7 +5211,7 @@
       "fr": "Sprints de transition avec finition",
       "en": "Transition sprints with a finish"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "reactive-change-of-direction",
@@ -5222,7 +5222,7 @@
       "fr": "Changements de direction en réaction",
       "en": "Reactive change of direction"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "team-shooting-rotation-pre-game",
@@ -5233,7 +5233,7 @@
       "fr": "Rotation de tir en équipe (pré-match)",
       "en": "Team shooting rotation (pre-game)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "controlled-5-on-5-pick-and-roll-reads",
@@ -5244,7 +5244,7 @@
       "fr": "Lecture du pick-and-roll 5 contre 5 contrôlé",
       "en": "Controlled 5-on-5 pick-and-roll reads"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "timed-late-game-situations",
@@ -5255,7 +5255,7 @@
       "fr": "Situations de fin de match chronométrées",
       "en": "Timed late-game situations"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-on-2-pick-and-roll-reading-the-help",
@@ -5266,7 +5266,7 @@
       "fr": "2 contre 2 pick-and-roll avec lecture de l'aide",
       "en": "2-on-2 pick-and-roll reading the help"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shooting-rotation-with-post-passes",
@@ -5277,7 +5277,7 @@
       "fr": "Rotation de tir avec passe du pivot",
       "en": "Shooting rotation with post passes"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "spacing-5-out",
@@ -5310,7 +5310,7 @@
       "fr": "Règle des 0,5 seconde (décider vite)",
       "en": "The 0.5-second rule"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ball-movement",
@@ -5321,7 +5321,7 @@
       "fr": "Partage du ballon",
       "en": "Ball movement"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pace-and-change-of-speed",
@@ -5332,7 +5332,7 @@
       "fr": "Rythme et changement de vitesse",
       "en": "Pace and change of speed"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "read-the-defense-first",
@@ -5343,7 +5343,7 @@
       "fr": "Lire la défense avant d'attaquer",
       "en": "Read the defense first"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "fill-the-open-spots",
@@ -5354,7 +5354,7 @@
       "fr": "Remplir les places vides",
       "en": "Fill the open spots"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ball-you-man",
@@ -5376,7 +5376,7 @@
       "fr": "Protéger la raquette d'abord",
       "en": "Protect the paint first"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defend-without-fouling",
@@ -5387,7 +5387,7 @@
       "fr": "Défendre sans faute",
       "en": "Defend without fouling"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "contest-every-shot",

@@ -56303,6 +56303,1888 @@
           "Finish with a layup"
         ]
       }
+    },
+    {
+      "id": "defensive-mirror-agility",
+      "cat": "exercices",
+      "family": "physique",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Miroir défensif (agilité)",
+        "en": "Defensive mirror (agility)"
+      },
+      "sum": {
+        "fr": "Deux joueurs face à face : l'attaquant se déplace latéralement entre deux plots, le défenseur le suit en miroir sans croiser les pieds.",
+        "en": "Two players face each other: the attacker shuffles side to side between two cones, the defender mirrors him without crossing his feet."
+      },
+      "why": {
+        "fr": "Développe l'appui latéral et la réaction, les qualités de base du défenseur.",
+        "en": "Builds lateral footwork and reaction, the defender's core qualities."
+      },
+      "counter": {
+        "fr": "L'attaquant change de rythme et feinte pour décrocher le défenseur.",
+        "en": "The attacker changes pace and fakes to lose the defender."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Qualité avant quantité",
+          "Récupération active entre les séries",
+          "Rester bas dans les changements de direction",
+          "S'hydrater et s'arrêter en cas de douleur"
+        ],
+        "en": [
+          "Quality before quantity",
+          "Active recovery between sets",
+          "Stay low on changes of direction",
+          "Hydrate and stop if anything hurts"
+        ]
+      },
+      "start": {
+        "1": [
+          20,
+          22
+        ],
+        "x1": [
+          20,
+          18.5
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              30,
+              22,
+              "c"
+            ],
+            "x1": [
+              30,
+              18.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 glisse vers la droite ; x1 le suit en miroir.",
+            "en": "1 shuffles right; x1 mirrors him."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              22,
+              22,
+              "c"
+            ],
+            "x1": [
+              22.5,
+              18.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 change de sens ; x1 réagit sans croiser les pieds.",
+            "en": "1 changes direction; x1 reacts without crossing his feet."
+          }
+        }
+      ],
+      "duration": 6,
+      "equipment": {
+        "fr": "2 plots par paire",
+        "en": "2 cones per pair"
+      },
+      "players": "2-20",
+      "age": [
+        "U13",
+        "U15",
+        "U17",
+        "seniors"
+      ],
+      "variants": {
+        "fr": [
+          "Séries de 15 secondes",
+          "Avec un ballon pour l'attaquant",
+          "Le défenseur réagit à un signal visuel"
+        ],
+        "en": [
+          "15-second sets",
+          "Attacker with a ball",
+          "Defender reacts to a visual signal"
+        ]
+      }
+    },
+    {
+      "id": "suicide-sprints",
+      "cat": "exercices",
+      "family": "physique",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Sprints suicides",
+        "en": "Suicide sprints"
+      },
+      "sum": {
+        "fr": "Course aller-retour vers des lignes de plus en plus éloignées : lancer franc, milieu, lancer franc opposé, ligne de fond opposée.",
+        "en": "Out-and-back sprints to lines farther and farther away: free-throw line, half court, far free-throw line, far baseline."
+      },
+      "why": {
+        "fr": "Travaille la vitesse, les démarrages et la récupération courte, comme en match.",
+        "en": "Works speed, starts and short recovery, as in a game."
+      },
+      "counter": {
+        "fr": "Exercice sans opposition : on remplace parfois la course par un dribble pour garder le ballon en main.",
+        "en": "No opposition: replace the run with a dribble sometimes to keep the ball involved."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Qualité avant quantité",
+          "Récupération active entre les séries",
+          "Rester bas dans les changements de direction",
+          "S'hydrater et s'arrêter en cas de douleur"
+        ],
+        "en": [
+          "Quality before quantity",
+          "Active recovery between sets",
+          "Stay low on changes of direction",
+          "Hydrate and stop if anything hurts"
+        ]
+      },
+      "start": {
+        "1": [
+          10,
+          0.5
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              10,
+              19,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Sprint jusqu'à la ligne de lancer franc.",
+            "en": "Sprint to the free-throw line."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              10,
+              1,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Retour à la ligne de fond.",
+            "en": "Back to the baseline."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              10,
+              46.5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Sprint au milieu du terrain.",
+            "en": "Sprint to half court."
+          }
+        }
+      ],
+      "duration": 5,
+      "equipment": {
+        "fr": "Terrain complet, chronomètre",
+        "en": "Full court, stopwatch"
+      },
+      "players": "1-15",
+      "age": [
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Temps cible selon l'âge",
+          "Toucher la ligne avec la main",
+          "Avec un ballon"
+        ],
+        "en": [
+          "Target time by age",
+          "Touch the line with the hand",
+          "With a ball"
+        ]
+      }
+    },
+    {
+      "id": "transition-sprints-with-a-finish",
+      "cat": "exercices",
+      "family": "physique",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Sprints de transition avec finition",
+        "en": "Transition sprints with a finish"
+      },
+      "sum": {
+        "fr": "Le joueur sprinte le long de la ligne de touche, reçoit une passe en course et finit par un lay-up.",
+        "en": "The player sprints along the sideline, catches a pass on the run and finishes with a layup."
+      },
+      "why": {
+        "fr": "Mêle travail physique et finition à pleine vitesse, comme en contre-attaque.",
+        "en": "Combines conditioning with finishing at full speed, as on a fast break."
+      },
+      "counter": {
+        "fr": "On ajoute un défenseur qui part en retard pour gêner la finition.",
+        "en": "Add a trailing defender to bother the finish."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Qualité avant quantité",
+          "Récupération active entre les séries",
+          "Rester bas dans les changements de direction",
+          "S'hydrater et s'arrêter en cas de douleur"
+        ],
+        "en": [
+          "Quality before quantity",
+          "Active recovery between sets",
+          "Stay low on changes of direction",
+          "Hydrate and stop if anything hurts"
+        ]
+      },
+      "start": {
+        "2": [
+          46,
+          44
+        ],
+        "1": [
+          25,
+          30
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              45,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 sprinte le long de la ligne de touche.",
+            "en": "2 sprints down the sideline."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 lui passe en course.",
+            "en": "1 hits him on the run."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              29,
+              7,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "2 attaque le cercle et finit.",
+            "en": "2 attacks the rim and finishes."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 panier, 2 ballons",
+        "en": "1 basket, 2 balls"
+      },
+      "players": "3-12",
+      "age": [
+        "U13",
+        "U15",
+        "U17",
+        "seniors"
+      ],
+      "variants": {
+        "fr": [
+          "Des deux côtés",
+          "Finition main faible",
+          "Tir à 3 points au corner"
+        ],
+        "en": [
+          "Both sides",
+          "Weak-hand finish",
+          "Corner three"
+        ]
+      }
+    },
+    {
+      "id": "reactive-change-of-direction",
+      "cat": "exercices",
+      "family": "physique",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Changements de direction en réaction",
+        "en": "Reactive change of direction"
+      },
+      "sum": {
+        "fr": "Le joueur part en sprint ; l'entraîneur montre une direction et il doit changer de sens tout de suite.",
+        "en": "The player starts sprinting; the coach points in a direction and he must change course immediately."
+      },
+      "why": {
+        "fr": "Le basket demande de réagir à ce qu'on voit, pas de suivre un parcours appris.",
+        "en": "Basketball asks you to react to what you see, not to follow a memorized pattern."
+      },
+      "counter": {
+        "fr": "L'entraîneur varie le moment du signal pour éviter l'anticipation.",
+        "en": "The coach varies the timing of the signal to prevent guessing."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Qualité avant quantité",
+          "Récupération active entre les séries",
+          "Rester bas dans les changements de direction",
+          "S'hydrater et s'arrêter en cas de douleur"
+        ],
+        "en": [
+          "Quality before quantity",
+          "Active recovery between sets",
+          "Stay low on changes of direction",
+          "Hydrate and stop if anything hurts"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          40
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              26,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 sprinte vers le panier.",
+            "en": "1 sprints toward the basket."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              12,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Signal à gauche : il plante son pied et repart.",
+            "en": "Signal left: he plants his foot and cuts."
+          }
+        }
+      ],
+      "duration": 6,
+      "equipment": {
+        "fr": "Demi-terrain, plots",
+        "en": "Half court, cones"
+      },
+      "players": "1-12",
+      "age": [
+        "U13",
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Signal sonore au lieu de visuel",
+          "Avec ballon",
+          "Finir par un tir"
+        ],
+        "en": [
+          "Sound signal instead of visual",
+          "With a ball",
+          "Finish with a shot"
+        ]
+      }
+    },
+    {
+      "id": "team-shooting-rotation-pre-game",
+      "cat": "exercices",
+      "family": "seance-pro",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Rotation de tir en équipe (pré-match)",
+        "en": "Team shooting rotation (pre-game)"
+      },
+      "sum": {
+        "fr": "Avant le match, les joueurs tournent sur trois positions (corner, aile, haut) avec deux passeurs et deux ballons.",
+        "en": "Before the game, players rotate through three spots (corner, wing, top) with two passers and two balls."
+      },
+      "why": {
+        "fr": "Beaucoup de tirs de qualité en peu de temps, aux positions utilisées en match.",
+        "en": "Lots of quality shots in little time, from the spots used in games."
+      },
+      "counter": {
+        "fr": "Pas de défense : on ajoute des close-outs pour simuler la pression.",
+        "en": "No defense: add close-outs to simulate pressure."
+      },
+      "used": {
+        "fr": "Format courant dans les séances professionnelles et universitaires.",
+        "en": "Common format in professional and college practices."
+      },
+      "keys": {
+        "fr": [
+          "Rythme de match",
+          "Consignes courtes, beaucoup de répétitions",
+          "Communication constante",
+          "Corriger pendant les temps morts, pas pendant l'action"
+        ],
+        "en": [
+          "Game speed",
+          "Short instructions, lots of reps",
+          "Constant communication",
+          "Correct during breaks, not during the action"
+        ]
+      },
+      "start": {
+        "5": [
+          25,
+          12
+        ],
+        "2": [
+          48,
+          4
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "b": "5"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "5 passe à 2 au corner, qui tire.",
+            "en": "5 passes to 2 in the corner, who shoots."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              42,
+              22,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "2 remonte à l'aile ; 5 récupère et passe à 3.",
+            "en": "2 moves up to the wing; 5 rebounds and passes to 3."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              22,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 tire puis glisse vers le haut.",
+            "en": "3 shoots, then slides to the top."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "1 panier, 2 ballons",
+        "en": "1 basket, 2 balls"
+      },
+      "players": "4-6",
+      "age": [
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Tirs en sortie de dribble",
+          "Compte des réussites par position",
+          "Tirs de lancer franc entre les séries"
+        ],
+        "en": [
+          "Shots off the dribble",
+          "Count makes per spot",
+          "Free throws between sets"
+        ]
+      }
+    },
+    {
+      "id": "controlled-5-on-5-pick-and-roll-reads",
+      "cat": "exercices",
+      "family": "seance-pro",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Lecture du pick-and-roll 5 contre 5 contrôlé",
+        "en": "Controlled 5-on-5 pick-and-roll reads"
+      },
+      "sum": {
+        "fr": "5 contre 5 où chaque possession commence par un pick-and-roll ; la défense change de couverture à l'annonce de l'entraîneur.",
+        "en": "5-on-5 where every possession starts with a pick-and-roll; the defense changes coverage when the coach calls it."
+      },
+      "why": {
+        "fr": "Oblige le porteur et le poseur d'écran à lire la couverture plutôt que d'appliquer une action apprise.",
+        "en": "Forces the ball handler and screener to read the coverage instead of running a memorized action."
+      },
+      "counter": {
+        "fr": "La défense varie : passage en dessous, prise à deux, changement ou lâcher en retrait.",
+        "en": "The defense varies: go under, blitz, switch or drop."
+      },
+      "used": {
+        "fr": "Format courant dans les séances professionnelles et universitaires.",
+        "en": "Common format in professional and college practices."
+      },
+      "keys": {
+        "fr": [
+          "Rythme de match",
+          "Consignes courtes, beaucoup de répétitions",
+          "Communication constante",
+          "Corriger pendant les temps morts, pas pendant l'action"
+        ],
+        "en": [
+          "Game speed",
+          "Short instructions, lots of reps",
+          "Constant communication",
+          "Correct during breaks, not during the action"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          30,
+          22
+        ],
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "x2": [
+          41.9,
+          21.9
+        ],
+        "x3": [
+          8.1,
+          21.9
+        ],
+        "x4": [
+          45.0,
+          4.2
+        ],
+        "x5": [
+          30,
+          19
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              28,
+              29,
+              "s"
+            ],
+            "x5": [
+              28,
+              25,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 monte poser l'écran pour 1.",
+            "en": "5 comes up to screen for 1."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              31,
+              21,
+              "d"
+            ],
+            "x1": [
+              27,
+              25,
+              "m"
+            ],
+            "x5": [
+              29,
+              16,
+              "m"
+            ],
+            "5": [
+              26,
+              14,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "x5 recule (drop) : 1 attaque en dribble vers le coude.",
+            "en": "x5 drops: 1 drives toward the elbow."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 tire à mi-distance ou trouve 5 qui plonge.",
+            "en": "1 pulls up or finds 5 rolling."
+          }
+        }
+      ],
+      "duration": 15,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "10",
+      "age": [
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Couverture imposée par l'entraîneur",
+          "Lecture libre de la défense",
+          "Avec chronomètre de possession"
+        ],
+        "en": [
+          "Coverage called by the coach",
+          "Defense free to choose",
+          "With a shot clock"
+        ]
+      }
+    },
+    {
+      "id": "timed-late-game-situations",
+      "cat": "exercices",
+      "family": "seance-pro",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Situations de fin de match chronométrées",
+        "en": "Timed late-game situations"
+      },
+      "sum": {
+        "fr": "L'entraîneur fixe un score et un temps (par exemple −2, 24 secondes) ; les équipes jouent la fin de match.",
+        "en": "The coach sets a score and time (for example down 2, 24 seconds left); the teams play out the end of the game."
+      },
+      "why": {
+        "fr": "Prépare les décisions de fin de match : temps mort, faute, tir à 2 ou à 3 points.",
+        "en": "Prepares late-game decisions: timeout, foul, two or three."
+      },
+      "counter": {
+        "fr": "La défense choisit de faire faute ou non selon le score.",
+        "en": "The defense decides whether to foul based on the score."
+      },
+      "used": {
+        "fr": "Format courant dans les séances professionnelles et universitaires.",
+        "en": "Common format in professional and college practices."
+      },
+      "keys": {
+        "fr": [
+          "Rythme de match",
+          "Consignes courtes, beaucoup de répétitions",
+          "Communication constante",
+          "Corriger pendant les temps morts, pas pendant l'action"
+        ],
+        "en": [
+          "Game speed",
+          "Short instructions, lots of reps",
+          "Constant communication",
+          "Correct during breaks, not during the action"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "x2": [
+          41.9,
+          21.9
+        ],
+        "x3": [
+          8.1,
+          21.9
+        ],
+        "x4": [
+          45.0,
+          4.2
+        ],
+        "x5": [
+          5.0,
+          4.2
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              24,
+              12,
+              "d"
+            ],
+            "x1": [
+              25,
+              15,
+              "m"
+            ],
+            "x5": [
+              10,
+              8,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "−2, 24 secondes : 1 attaque le cercle.",
+            "en": "Down 2, 24 seconds: 1 attacks the rim."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "L'aide arrive : 1 ressort vers 5 au corner pour 3 points.",
+            "en": "Help comes: 1 kicks out to 5 in the corner for three."
+          }
+        }
+      ],
+      "duration": 15,
+      "equipment": {
+        "fr": "1 panier, 1 ballon, chronomètre",
+        "en": "1 basket, 1 ball, stopwatch"
+      },
+      "players": "10",
+      "age": [
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Avec un temps mort",
+          "+3 avec 10 secondes",
+          "Remise en jeu ligne de fond"
+        ],
+        "en": [
+          "With one timeout",
+          "Up 3 with 10 seconds",
+          "Baseline inbound"
+        ]
+      }
+    },
+    {
+      "id": "2-on-2-pick-and-roll-reading-the-help",
+      "cat": "exercices",
+      "family": "seance-pro",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "2 contre 2 pick-and-roll avec lecture de l'aide",
+        "en": "2-on-2 pick-and-roll reading the help"
+      },
+      "sum": {
+        "fr": "Pick-and-roll 2 contre 2 avec un défenseur d'aide côté faible : le porteur lit l'aide et choisit tir, passe au plongeur ou ressortie.",
+        "en": "2-on-2 pick-and-roll with a weak-side help defender: the ball handler reads the help and chooses shot, pass to the roller or kick-out."
+      },
+      "why": {
+        "fr": "Ajoute la troisième décision du pick-and-roll : l'aide qui arrive.",
+        "en": "Adds the third pick-and-roll decision: the help coming over."
+      },
+      "counter": {
+        "fr": "L'aide fait semblant de venir puis reste, pour tromper le porteur.",
+        "en": "The helper fakes coming over and then stays, to fool the ball handler."
+      },
+      "used": {
+        "fr": "Format courant dans les séances professionnelles et universitaires.",
+        "en": "Common format in professional and college practices."
+      },
+      "keys": {
+        "fr": [
+          "Rythme de match",
+          "Consignes courtes, beaucoup de répétitions",
+          "Communication constante",
+          "Corriger pendant les temps morts, pas pendant l'action"
+        ],
+        "en": [
+          "Game speed",
+          "Short instructions, lots of reps",
+          "Constant communication",
+          "Correct during breaks, not during the action"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "5": [
+          30,
+          21
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "x5": [
+          30,
+          18
+        ],
+        "x3": [
+          12,
+          17
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              28,
+              29,
+              "s"
+            ],
+            "1": [
+              33,
+              21,
+              "d"
+            ],
+            "x1": [
+              30,
+              25,
+              "m"
+            ],
+            "x5": [
+              31,
+              18,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran ; 1 attaque à droite.",
+            "en": "5 sets the screen; 1 drives right."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              26,
+              10,
+              "c"
+            ],
+            "x3": [
+              22,
+              9,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 plonge ; x3 vient aider sur lui.",
+            "en": "5 rolls; x3 comes over to help on him."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 sert 3, laissé seul par l'aide.",
+            "en": "1 hits 3, left open by the help."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "5-8",
+      "age": [
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "L'aide vient du corner",
+          "Deux aides",
+          "Live jusqu'au panier"
+        ],
+        "en": [
+          "Help comes from the corner",
+          "Two helpers",
+          "Live to a basket"
+        ]
+      }
+    },
+    {
+      "id": "shooting-rotation-with-post-passes",
+      "cat": "exercices",
+      "family": "seance-pro",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Rotation de tir avec passe du pivot",
+        "en": "Shooting rotation with post passes"
+      },
+      "sum": {
+        "fr": "Les arrières tirent après une passe ressortie du pivot (intérieur-extérieur), en tournant entre l'aile et le haut.",
+        "en": "The guards shoot off kick-outs from the post (inside-out), rotating between the wing and the top."
+      },
+      "why": {
+        "fr": "Le tir après une passe du poste bas est plus facile : la défense est tournée vers l'intérieur.",
+        "en": "Shots off a post pass are easier: the defense is turned toward the paint."
+      },
+      "counter": {
+        "fr": "Sans défense : on ajoute un défenseur qui prend à deux le pivot puis ressort.",
+        "en": "No defense: add a defender who doubles the post and then recovers."
+      },
+      "used": {
+        "fr": "Format courant dans les séances professionnelles et universitaires.",
+        "en": "Common format in professional and college practices."
+      },
+      "keys": {
+        "fr": [
+          "Rythme de match",
+          "Consignes courtes, beaucoup de répétitions",
+          "Communication constante",
+          "Corriger pendant les temps morts, pas pendant l'action"
+        ],
+        "en": [
+          "Game speed",
+          "Short instructions, lots of reps",
+          "Constant communication",
+          "Correct during breaks, not during the action"
+        ]
+      },
+      "start": {
+        "5": [
+          31,
+          9
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 entre le ballon au poste bas.",
+            "en": "2 feeds the post."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              46,
+              12,
+              "c"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "2 se replace ; 5 ressort à 1 pour le tir.",
+            "en": "2 relocates; 5 kicks out to 1 for the shot."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              43,
+              24,
+              "c"
+            ],
+            "2": [
+              26,
+              31,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 retourne à l'aile, 2 au haut : on recommence.",
+            "en": "1 goes to the wing, 2 to the top: repeat."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 2 ballons",
+        "en": "1 basket, 2 balls"
+      },
+      "players": "3-6",
+      "age": [
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Ressortie vers le côté opposé",
+          "Tir en sortie de feinte",
+          "Pivot qui tire s'il n'est pas doublé"
+        ],
+        "en": [
+          "Kick-out to the far side",
+          "Shot after a pump fake",
+          "Post scores if not doubled"
+        ]
+      }
+    },
+    {
+      "id": "the-0-5-second-rule",
+      "cat": "principes",
+      "family": "principes-attaque",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Règle des 0,5 seconde (décider vite)",
+        "en": "The 0.5-second rule"
+      },
+      "sum": {
+        "fr": "Dès la réception, le joueur décide en une demi-seconde : tirer, passer ou attaquer. Il ne garde pas le ballon.",
+        "en": "On the catch, the player decides within half a second: shoot, pass or drive. He doesn't hold the ball."
+      },
+      "why": {
+        "fr": "Une défense en rotation n'a pas le temps de se replacer si le ballon ne s'arrête jamais.",
+        "en": "A rotating defense never gets time to reset if the ball never stops."
+      },
+      "counter": {
+        "fr": "Défendre en avance (pré-rotation) et sortir vite sur le receveur.",
+        "en": "Pre-rotate and close out fast on the catcher."
+      },
+      "used": {
+        "fr": "Principe souvent associé aux San Antonio Spurs des années 2010 ; enseigné dans de nombreuses formations.",
+        "en": "A principle often associated with the 2010s San Antonio Spurs; taught in many coaching programs."
+      },
+      "keys": {
+        "fr": [
+          "Lire la défense avant de recevoir",
+          "Recevoir prêt à tirer",
+          "Décider en une demi-seconde",
+          "Ne jamais tenir le ballon"
+        ],
+        "en": [
+          "Read the defense before the catch",
+          "Catch ready to shoot",
+          "Decide within half a second",
+          "Never hold the ball"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "x2": [
+          41.9,
+          21.9
+        ],
+        "x3": [
+          8.1,
+          21.9
+        ],
+        "x4": [
+          45.0,
+          4.2
+        ],
+        "x5": [
+          5.0,
+          4.2
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x2": [
+              40,
+              20,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 : x2 arrive en retard.",
+            "en": "1 passes to 2: x2 arrives late."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              35,
+              13,
+              "d"
+            ],
+            "x4": [
+              38,
+              10,
+              "m"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "2 attaque tout de suite le close-out et trouve 4.",
+            "en": "2 drives the close-out right away and finds 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "ball-movement",
+      "cat": "principes",
+      "family": "principes-attaque",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Partage du ballon",
+        "en": "Ball movement"
+      },
+      "sum": {
+        "fr": "L'équipe fait circuler le ballon d'un côté à l'autre par des passes rapides plutôt que par des dribbles.",
+        "en": "The team moves the ball side to side with quick passes rather than dribbles."
+      },
+      "why": {
+        "fr": "Le ballon va plus vite que les défenseurs : chaque passe les oblige à se déplacer, jusqu'au tir ouvert.",
+        "en": "The ball moves faster than defenders: every pass makes them move, until an open shot appears."
+      },
+      "counter": {
+        "fr": "Rester compact et couper les lignes de passe en avance.",
+        "en": "Stay compact and get into passing lanes early."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Passes au niveau de la poitrine, rapides",
+          "Recevoir prêt à passer à nouveau",
+          "Renverser le jeu",
+          "Un bon tir vaut mieux qu'un tir rapide"
+        ],
+        "en": [
+          "Quick chest-level passes",
+          "Catch ready to pass again",
+          "Swing the ball",
+          "A good shot beats a quick shot"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "x2": [
+          41.9,
+          21.9
+        ],
+        "x3": [
+          8.1,
+          21.9
+        ],
+        "x4": [
+          45.0,
+          4.2
+        ],
+        "x5": [
+          5.0,
+          4.2
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "m": {
+            "x2": [
+              38,
+              22,
+              "m"
+            ],
+            "x3": [
+              10,
+              22,
+              "m"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "2 passe à 1 ; la défense glisse.",
+            "en": "2 passes to 1; the defense shifts."
+          }
+        },
+        {
+          "m": {
+            "x3": [
+              8.1,
+              21.9,
+              "m"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "1 renverse vers 3.",
+            "en": "1 swings it to 3."
+          }
+        },
+        {
+          "m": {
+            "x5": [
+              8,
+              8,
+              "m"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "3 trouve 5 au corner, laissé seul.",
+            "en": "3 finds 5 in the corner, left open."
+          }
+        }
+      ]
+    },
+    {
+      "id": "pace-and-change-of-speed",
+      "cat": "principes",
+      "family": "principes-attaque",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Rythme et changement de vitesse",
+        "en": "Pace and change of speed"
+      },
+      "sum": {
+        "fr": "Le porteur alterne lenteur et accélération : il endort son défenseur puis le dépasse d'un coup.",
+        "en": "The ball handler alternates slow and fast: he lulls his defender, then blows past him."
+      },
+      "why": {
+        "fr": "Le défenseur s'adapte à la vitesse du porteur ; un changement brusque lui fait perdre un pas.",
+        "en": "The defender matches the ball handler's speed; a sudden change costs him a step."
+      },
+      "counter": {
+        "fr": "Garder de la distance et rester sur les talons, pas sur la pointe des pieds.",
+        "en": "Give space and stay balanced rather than leaning forward."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Changer de vitesse plus que de direction",
+          "Lent pour préparer, rapide pour attaquer",
+          "Rester bas en accélérant",
+          "Lire les pieds du défenseur"
+        ],
+        "en": [
+          "Change speed more than direction",
+          "Slow to set up, fast to attack",
+          "Stay low when accelerating",
+          "Read the defender's feet"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              27,
+              27,
+              "d"
+            ],
+            "x1": [
+              26.5,
+              24,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 avance lentement, x1 se relâche.",
+            "en": "1 walks it up slowly, x1 relaxes."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              27,
+              9,
+              "d"
+            ],
+            "x1": [
+              24,
+              18,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Accélération : 1 le dépasse et file au cercle.",
+            "en": "Burst: 1 gets by him and heads to the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "read-the-defense-first",
+      "cat": "principes",
+      "family": "principes-attaque",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Lire la défense avant d'attaquer",
+        "en": "Read the defense first"
+      },
+      "sum": {
+        "fr": "Avant d'attaquer, le porteur regarde où sont les défenseurs (aide, écrans, couverture) et choisit l'option qu'ils laissent ouverte.",
+        "en": "Before attacking, the ball handler looks at where the defenders are (help, screens, coverage) and takes the option they leave open."
+      },
+      "why": {
+        "fr": "Attaquer là où la défense n'est pas évite les pertes de balle et les tirs forcés.",
+        "en": "Attacking where the defense isn't avoids turnovers and forced shots."
+      },
+      "counter": {
+        "fr": "Déguiser la couverture et changer de défense pendant le match.",
+        "en": "Disguise coverages and change defenses during the game."
+      },
+      "used": {
+        "fr": "Principe enseigné dans la plupart des formations d'entraîneurs.",
+        "en": "A principle taught in most coaching education programs."
+      },
+      "keys": {
+        "fr": [
+          "Lever la tête avant de dribbler",
+          "Repérer l'aide",
+          "Attaquer l'espace libre",
+          "Ne pas décider avant de voir"
+        ],
+        "en": [
+          "Look up before dribbling",
+          "Locate the help",
+          "Attack the open space",
+          "Don't decide before you see"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "x2": [
+          41.9,
+          21.9
+        ],
+        "x3": [
+          16,
+          17
+        ],
+        "x4": [
+          45.0,
+          4.2
+        ],
+        "x5": [
+          5.0,
+          4.2
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              24,
+              27,
+              "d"
+            ],
+            "x1": [
+              24,
+              24,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 voit que x3 aide déjà au milieu.",
+            "en": "1 sees x3 already helping in the middle."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "Il ne force pas : passe à 3, seul.",
+            "en": "He doesn't force it: pass to 3, open."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fill-the-open-spots",
+      "cat": "principes",
+      "family": "principes-attaque",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Remplir les places vides",
+        "en": "Fill the open spots"
+      },
+      "sum": {
+        "fr": "Quand un coéquipier coupe ou pénètre, les autres se déplacent pour occuper les places libérées et garder l'espacement.",
+        "en": "When a teammate cuts or drives, the others move to fill the spots he left and keep the spacing."
+      },
+      "why": {
+        "fr": "Sans remplacement, les attaquants se retrouvent groupés et un seul défenseur en surveille deux.",
+        "en": "Without filling, attackers bunch up and one defender can guard two."
+      },
+      "counter": {
+        "fr": "Profiter du moment où l'attaque se replace pour aider et récupérer.",
+        "en": "Use the moment when the offense is refilling to help and recover."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Une place vide se remplit",
+          "Rester à 4-5 m les uns des autres",
+          "Remplir en arrière du ballon pour une passe sûre",
+          "Bouger quand le ballon bouge"
+        ],
+        "en": [
+          "An empty spot gets filled",
+          "Stay 12-15 feet apart",
+          "Fill behind the ball for a safe pass",
+          "Move when the ball moves"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              26,
+              8,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 et coupe vers le cercle.",
+            "en": "1 passes to 2 and cuts to the rim."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              24,
+              30,
+              "c"
+            ],
+            "5": [
+              6,
+              23,
+              "c"
+            ],
+            "1": [
+              3,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 monte remplir le haut, 5 remonte à l'aile.",
+            "en": "3 lifts to fill the top, 5 lifts to the wing."
+          }
+        }
+      ]
+    },
+    {
+      "id": "protect-the-paint-first",
+      "cat": "principes",
+      "family": "principes-defense",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Protéger la raquette d'abord",
+        "en": "Protect the paint first"
+      },
+      "sum": {
+        "fr": "La défense ferme d'abord la raquette ; les tirs extérieurs sont contestés ensuite, en sortant sur le tireur.",
+        "en": "The defense closes the paint first; outside shots are contested next, by closing out on the shooter."
+      },
+      "why": {
+        "fr": "Les tirs près du cercle sont les plus faciles et provoquent des fautes.",
+        "en": "Shots near the rim are the easiest and draw fouls."
+      },
+      "counter": {
+        "fr": "Écarter le jeu et punir l'aide par des tirs à 3 points.",
+        "en": "Space the floor and punish help with three-pointers."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Le ballon ne passe pas par le milieu",
+          "Les défenseurs côté faible sont dans la raquette",
+          "Sortir en contrôle sur les tireurs",
+          "Pas de lay-up facile"
+        ],
+        "en": [
+          "The ball doesn't get through the middle",
+          "Weak-side defenders sit in the paint",
+          "Close out under control on shooters",
+          "No easy layups"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "x1": [
+          25.0,
+          28.0
+        ],
+        "x2": [
+          41.9,
+          21.9
+        ],
+        "x3": [
+          8.1,
+          21.9
+        ],
+        "x4": [
+          45.0,
+          4.2
+        ],
+        "x5": [
+          5.0,
+          4.2
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x3": [
+              15,
+              15,
+              "m"
+            ],
+            "x5": [
+              17,
+              7,
+              "m"
+            ],
+            "x4": [
+              38,
+              7,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Les défenseurs côté faible rentrent dans la raquette.",
+            "en": "Weak-side defenders sink into the paint."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              24,
+              18,
+              "d"
+            ],
+            "x1": [
+              24.5,
+              15,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 pénètre : il trouve un mur.",
+            "en": "1 drives: he runs into a wall."
+          }
+        }
+      ]
+    },
+    {
+      "id": "defend-without-fouling",
+      "cat": "principes",
+      "family": "principes-defense",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Défendre sans faute",
+        "en": "Defend without fouling"
+      },
+      "sum": {
+        "fr": "Le défenseur conteste avec les pieds et les bras verticaux, sans tendre la main vers le ballon ni pousser.",
+        "en": "The defender contests with his feet and vertical arms, without reaching for the ball or pushing."
+      },
+      "why": {
+        "fr": "Chaque faute donne des points faciles et met des joueurs sur le banc.",
+        "en": "Every foul gives up easy points and sends players to the bench."
+      },
+      "counter": {
+        "fr": "L'attaque cherche le contact pour obtenir des lancers francs.",
+        "en": "The offense seeks contact to get to the line."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se déplacer avec les pieds, pas avec les mains",
+          "Bras verticaux au contact",
+          "Ne pas sauter sur les feintes",
+          "Prendre la position avant le porteur"
+        ],
+        "en": [
+          "Move your feet, not your hands",
+          "Vertical arms on contact",
+          "Don't bite on fakes",
+          "Beat the ball handler to the spot"
+        ]
+      },
+      "start": {
+        "1": [
+          44,
+          24
+        ],
+        "x1": [
+          41.9,
+          21.9
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              41,
+              13,
+              "d"
+            ],
+            "x1": [
+              40,
+              10,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque la ligne de fond ; x1 glisse et prend la place.",
+            "en": "1 drives baseline; x1 slides and beats him to the spot."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              40.5,
+              11,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 tire ; x1 monte bras verticaux, sans faute.",
+            "en": "1 shoots; x1 goes straight up, no foul."
+          }
+        }
+      ]
     }
   ]
 }
