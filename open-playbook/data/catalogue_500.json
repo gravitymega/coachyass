@@ -756,7 +756,7 @@
       "fr": "Coupe en fade",
       "en": "Fade cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "shallow-cut",
@@ -767,7 +767,7 @@
       "fr": "Coupe peu profonde (shallow)",
       "en": "Shallow cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ucla-cut",
@@ -778,7 +778,7 @@
       "fr": "Coupe UCLA",
       "en": "UCLA cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "double-pin-down",
@@ -789,7 +789,7 @@
       "fr": "Double écran retour",
       "en": "Double pin-down"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "wide-pin-down",
@@ -800,7 +800,7 @@
       "fr": "Écran retour large",
       "en": "Wide pin-down"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "loop-action",
@@ -811,7 +811,7 @@
       "fr": "Action en boucle (loop)",
       "en": "Loop action"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "hawk-cut",
@@ -822,7 +822,7 @@
       "fr": "Coupe Hawk",
       "en": "Hawk cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "cross-screen-into-pin-down",
@@ -833,7 +833,7 @@
       "fr": "Écran croisé puis écran retour",
       "en": "Cross screen into pin-down"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "thumb-down-screen",
@@ -844,7 +844,7 @@
       "fr": "Écran retour vers le corner",
       "en": "Thumb-down screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "l-cut",
@@ -852,10 +852,10 @@
     "family": "ecrans-sans-ballon",
     "lvl": 1,
     "name": {
-      "fr": "Écran en L",
+      "fr": "Coupe en L",
       "en": "L-cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "v-cut",
@@ -866,7 +866,7 @@
       "fr": "Coupe en V",
       "en": "V-cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "floppy-double",
@@ -874,10 +874,10 @@
     "family": "ecrans-sans-ballon",
     "lvl": 3,
     "name": {
-      "fr": "Écran vertical double (Floppy double)",
-      "en": "Floppy double"
+      "fr": "Floppy en boucle (curl sur le double écran)",
+      "en": "Floppy double curl"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pin-in-screen",
@@ -888,7 +888,7 @@
       "fr": "Écran pour le tireur au poste haut (pin-in)",
       "en": "Pin-in screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "blind-pig",
@@ -899,7 +899,7 @@
       "fr": "Écran à l'aveugle (blind pig)",
       "en": "Blind pig"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "backdoor-cut",
@@ -910,7 +910,7 @@
       "fr": "Coupe dans le dos (backdoor)",
       "en": "Backdoor cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "reverse-stagger",
@@ -921,7 +921,7 @@
       "fr": "Écran en escalier inversé",
       "en": "Reverse stagger"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "get-dho",
@@ -943,7 +943,7 @@
       "fr": "Remise main à main large",
       "en": "Wide handoff"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "chase-action",
@@ -954,7 +954,7 @@
       "fr": "Action Chase",
       "en": "Chase action"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "keep-fake-handoff",
@@ -965,7 +965,7 @@
       "fr": "Fausse remise (keep)",
       "en": "Keep (fake handoff)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "dribble-at-wave",
@@ -976,7 +976,7 @@
       "fr": "Dribble vers (wave)",
       "en": "Dribble at (wave)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "weave",

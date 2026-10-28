@@ -11469,6 +11469,2066 @@
           }
         }
       ]
+    },
+    {
+      "id": "fade-cut",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Coupe en fade",
+        "en": "Fade cut"
+      },
+      "sum": {
+        "fr": "Pendant une pénétration, l'attaquant du côté faible s'écarte vers le corner quand son défenseur part aider.",
+        "en": "During a drive, the weak-side attacker drifts to the corner as his defender leaves to help."
+      },
+      "why": {
+        "fr": "Le défenseur qui aide perd de vue son joueur ; en s'écartant, le tireur allonge la distance de retour.",
+        "en": "The helper loses sight of his man; by fading, the shooter lengthens the recovery distance."
+      },
+      "counter": {
+        "fr": "Aider en gardant un œil sur son joueur et revenir en close-out contrôlé.",
+        "en": "Help while keeping an eye on your man, then recover with a controlled close-out."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Lire son défenseur avant de couper",
+          "Changer de vitesse au moment de couper",
+          "Mains prêtes pendant la coupe",
+          "Le passeur attend que le coupeur soit démarqué"
+        ],
+        "en": [
+          "Read your defender before cutting",
+          "Change speed as you cut",
+          "Hands ready during the cut",
+          "The passer waits until the cutter is open"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          30,
+          6
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              27,
+              17,
+              "d"
+            ],
+            "3": [
+              3,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 pénètre au milieu ; 3 s'écarte de l'aile vers le corner.",
+            "en": "1 drives the middle; 3 fades from the wing to the corner."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 ressort vers 3, seul au corner.",
+            "en": "1 kicks out to 3, open in the corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "shallow-cut",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Coupe peu profonde (shallow)",
+        "en": "Shallow cut"
+      },
+      "sum": {
+        "fr": "Quand le porteur dribble vers l'aile, l'ailier coupe peu profond vers le haut pour reprendre la place du porteur et recevoir.",
+        "en": "As the ball handler dribbles toward the wing, the wing makes a shallow cut up top to replace him and catch."
+      },
+      "why": {
+        "fr": "L'échange de places garde l'espacement et donne une passe sûre pour renverser le jeu.",
+        "en": "Swapping spots keeps the spacing and gives a safe pass to reverse the ball."
+      },
+      "counter": {
+        "fr": "Refuser la passe en haut et forcer le porteur vers la ligne de touche.",
+        "en": "Deny the pass up top and force the ball handler toward the sideline."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Lire son défenseur avant de couper",
+          "Changer de vitesse au moment de couper",
+          "Mains prêtes pendant la coupe",
+          "Le passeur attend que le coupeur soit démarqué"
+        ],
+        "en": [
+          "Read your defender before cutting",
+          "Change speed as you cut",
+          "Hands ready during the cut",
+          "The passer waits until the cutter is open"
+        ]
+      },
+      "start": {
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          6,
+          24
+        ],
+        "3": [
+          44,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          19,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              8,
+              25,
+              "d"
+            ],
+            "2": [
+              24,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 dribble vers l'aile ; 2 coupe peu profond vers le haut.",
+            "en": "1 dribbles to the wing; 2 makes a shallow cut to the top."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 en haut.",
+            "en": "1 passes to 2 up top."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "2 renverse vers 3 sur l'aile droite.",
+            "en": "2 reverses to 3 on the right wing."
+          }
+        }
+      ]
+    },
+    {
+      "id": "ucla-cut",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Coupe UCLA",
+        "en": "UCLA cut"
+      },
+      "sum": {
+        "fr": "Le meneur passe à l'aile puis coupe vers le panier en frôlant l'écran dans le dos du grand placé au poste haut.",
+        "en": "The guard passes to the wing, then cuts to the rim off a back screen from the big at the high post."
+      },
+      "why": {
+        "fr": "Le défenseur du meneur se relâche après la passe ; l'écran du poste haut le bloque.",
+        "en": "The guard's defender relaxes after the pass; the high-post screen catches him."
+      },
+      "counter": {
+        "fr": "Sauter vers le ballon et passer devant l'écran, ou changer.",
+        "en": "Jump to the ball and go over the screen, or switch."
+      },
+      "used": {
+        "fr": "Coupe popularisée par l'UCLA de John Wooden ; courante à tous les niveaux.",
+        "en": "Cut popularized by John Wooden's UCLA; common at every level."
+      },
+      "keys": {
+        "fr": [
+          "Préparer la coupe en emmenant son défenseur",
+          "Couper épaule contre l'écran",
+          "L'écraneur vise le défenseur, pas l'espace",
+          "L'écraneur enchaîne : plonger ou ressortir"
+        ],
+        "en": [
+          "Set up the cut by taking your defender away",
+          "Cut shoulder to shoulder with the screen",
+          "The screener targets the defender, not space",
+          "The screener flows: dive or pop"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 sur l'aile.",
+            "en": "1 passes to 2 on the wing."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              29,
+              24,
+              "s"
+            ],
+            "1": [
+              31,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran dans le dos du défenseur de 1, qui coupe vers le panier.",
+            "en": "5 back-screens 1's defender; 1 cuts to the rim."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "2 passe à 1 sous le panier.",
+            "en": "2 hits 1 under the basket."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              25,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Sinon, 5 remonte en haut pour renverser le jeu.",
+            "en": "Otherwise, 5 pops up top to reverse the ball."
+          }
+        }
+      ]
+    },
+    {
+      "id": "double-pin-down",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Double écran retour",
+        "en": "Double pin-down"
+      },
+      "sum": {
+        "fr": "Deux joueurs posent ensemble un écran retour pour le tireur, qui remonte vers l'aile.",
+        "en": "Two players set a pin-down together for the shooter, who comes up to the wing."
+      },
+      "why": {
+        "fr": "Le double écran est très large : le défenseur ne peut ni passer devant ni passer derrière à temps.",
+        "en": "The double screen is very wide: the defender cannot get over or under in time."
+      },
+      "counter": {
+        "fr": "Suivre au ras de l'écran et faire sortir le défenseur du premier écraneur.",
+        "en": "Trail tight and have the first screener's defender show."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Préparer la coupe en emmenant son défenseur",
+          "Couper épaule contre l'écran",
+          "L'écraneur vise le défenseur, pas l'espace",
+          "L'écraneur enchaîne : plonger ou ressortir"
+        ],
+        "en": [
+          "Set up the cut by taking your defender away",
+          "Cut shoulder to shoulder with the screen",
+          "The screener targets the defender, not space",
+          "The screener flows: dive or pop"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          19,
+          8
+        ],
+        "4": [
+          17,
+          15
+        ],
+        "5": [
+          14,
+          18
+        ],
+        "3": [
+          44,
+          24
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              16,
+              10,
+              "s"
+            ],
+            "5": [
+              13.5,
+              12.5,
+              "s"
+            ],
+            "2": [
+              7,
+              23,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 et 5 descendent poser un double écran retour ; 2 remonte vers l'aile.",
+            "en": "4 and 5 come down to set a double pin-down; 2 comes up to the wing."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 pour le tir.",
+            "en": "1 passes to 2 for the shot."
+          }
+        }
+      ]
+    },
+    {
+      "id": "wide-pin-down",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Écran retour large",
+        "en": "Wide pin-down"
+      },
+      "sum": {
+        "fr": "Écran retour posé loin de la raquette, près de la ligne de touche, pour que le tireur reçoive loin de toute aide.",
+        "en": "A pin-down set far from the lane, near the sideline, so the shooter catches far from any help."
+      },
+      "why": {
+        "fr": "Plus l'écran est large, plus l'aide est loin : le tireur a du temps et de l'espace.",
+        "en": "The wider the screen, the farther the help: the shooter gets time and space."
+      },
+      "counter": {
+        "fr": "Changer, ou suivre au ras de l'écran sans compter sur l'aide.",
+        "en": "Switch, or trail tight without counting on help."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Préparer la coupe en emmenant son défenseur",
+          "Couper épaule contre l'écran",
+          "L'écraneur vise le défenseur, pas l'espace",
+          "L'écraneur enchaîne : plonger ou ressortir"
+        ],
+        "en": [
+          "Set up the cut by taking your defender away",
+          "Cut shoulder to shoulder with the screen",
+          "The screener targets the defender, not space",
+          "The screener flows: dive or pop"
+        ]
+      },
+      "start": {
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          10,
+          6
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "3": [
+          44,
+          24
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              7,
+              11,
+              "s"
+            ],
+            "2": [
+              4,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 descend poser l'écran près de la ligne de touche ; 2 remonte vers l'aile.",
+            "en": "4 comes down to screen near the sideline; 2 comes up to the wing."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2, loin de toute aide.",
+            "en": "1 passes to 2, far from any help."
+          }
+        }
+      ]
+    },
+    {
+      "id": "loop-action",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Action en boucle (loop)",
+        "en": "Loop action"
+      },
+      "sum": {
+        "fr": "Le joueur passe sous le panier d'un côté à l'autre, puis remonte en boucle sur un écran pour recevoir sur l'aile opposée.",
+        "en": "The player runs under the basket from one side to the other, then loops up off a screen to catch on the far wing."
+      },
+      "why": {
+        "fr": "Le long trajet use le défenseur ; l'écran arrive au moment où il essaie de rattraper son retard.",
+        "en": "The long run wears the defender down; the screen arrives just as he tries to catch up."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran final, ou couper la boucle en passant sous l'écran.",
+        "en": "Switch the final screen, or cut off the loop by going under."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Préparer la coupe en emmenant son défenseur",
+          "Couper épaule contre l'écran",
+          "L'écraneur vise le défenseur, pas l'espace",
+          "L'écraneur enchaîne : plonger ou ressortir"
+        ],
+        "en": [
+          "Set up the cut by taking your defender away",
+          "Cut shoulder to shoulder with the screen",
+          "The screener targets the defender, not space",
+          "The screener flows: dive or pop"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          6,
+          24
+        ],
+        "3": [
+          2,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              24,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 descend et passe sous le panier.",
+            "en": "2 goes down and runs under the basket."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              32,
+              11,
+              "s"
+            ],
+            "2": [
+              41,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran ; 2 remonte en boucle vers l'aile droite.",
+            "en": "5 screens; 2 loops up to the right wing."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "hawk-cut",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Coupe Hawk",
+        "en": "Hawk cut"
+      },
+      "sum": {
+        "fr": "Après la passe à l'aile, le meneur coupe par-dessus le grand du poste haut (et non derrière lui) vers le poste bas côté ballon.",
+        "en": "After the pass to the wing, the guard cuts over the top of the high-post big (not behind him) to the ball-side block."
+      },
+      "why": {
+        "fr": "La coupe change de trajectoire par rapport à la coupe UCLA : le défenseur qui l'anticipe se retrouve du mauvais côté.",
+        "en": "The cut takes a different path from the UCLA cut: a defender who anticipates ends up on the wrong side."
+      },
+      "counter": {
+        "fr": "Rester entre le coupeur et le ballon, quel que soit le côté de l'écran.",
+        "en": "Stay between the cutter and the ball, whichever side of the screen he uses."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Préparer la coupe en emmenant son défenseur",
+          "Couper épaule contre l'écran",
+          "L'écraneur vise le défenseur, pas l'espace",
+          "L'écraneur enchaîne : plonger ou ressortir"
+        ],
+        "en": [
+          "Set up the cut by taking your defender away",
+          "Cut shoulder to shoulder with the screen",
+          "The screener targets the defender, not space",
+          "The screener flows: dive or pop"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 sur l'aile.",
+            "en": "1 passes to 2 on the wing."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              31.5,
+              21,
+              "s"
+            ],
+            "1": [
+              33,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 coupe par-dessus 5, côté haut, vers le poste bas.",
+            "en": "1 cuts over the top of 5 toward the block."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "2 passe à 1 au poste bas.",
+            "en": "2 hits 1 on the block."
+          }
+        }
+      ]
+    },
+    {
+      "id": "cross-screen-into-pin-down",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Écran croisé puis écran retour",
+        "en": "Cross screen into pin-down"
+      },
+      "sum": {
+        "fr": "Un grand pose un écran croisé au poste bas, puis reçoit lui-même un écran retour pour remonter : deux écrans, deux options.",
+        "en": "A big sets a cross screen on the block, then gets a pin-down himself to come up: two screens, two options."
+      },
+      "why": {
+        "fr": "La défense gère le premier écran ; le second libère l'écraneur dont le défenseur aidait.",
+        "en": "The defense handles the first screen; the second frees the screener whose defender was helping."
+      },
+      "counter": {
+        "fr": "Changer sur les deux écrans.",
+        "en": "Switch both screens."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Préparer la coupe en emmenant son défenseur",
+          "Couper épaule contre l'écran",
+          "L'écraneur vise le défenseur, pas l'espace",
+          "L'écraneur enchaîne : plonger ou ressortir"
+        ],
+        "en": [
+          "Set up the cut by taking your defender away",
+          "Cut shoulder to shoulder with the screen",
+          "The screener targets the defender, not space",
+          "The screener flows: dive or pop"
+        ]
+      },
+      "start": {
+        "1": [
+          6,
+          24
+        ],
+        "2": [
+          25,
+          31
+        ],
+        "3": [
+          34,
+          29
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              27,
+              7.5,
+              "s"
+            ],
+            "5": [
+              18,
+              9.5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran croisé ; 5 vient au poste bas côté ballon.",
+            "en": "4 cross-screens; 5 comes to the ball-side block."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              30,
+              12,
+              "s"
+            ],
+            "4": [
+              34,
+              24,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 descend poser un écran retour pour 4, qui remonte.",
+            "en": "3 comes down to pin-down for 4, who comes up."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2, qui trouve 4 libéré.",
+            "en": "1 passes to 2, who finds 4 open."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "Passe à 4 pour le tir.",
+            "en": "Pass to 4 for the shot."
+          }
+        }
+      ]
+    },
+    {
+      "id": "thumb-down-screen",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Écran retour vers le corner",
+        "en": "Thumb-down screen"
+      },
+      "sum": {
+        "fr": "Écran retour orienté vers le corner : le tireur sort de l'écran pour recevoir au corner, là où le tir à 3 points est le plus court.",
+        "en": "A pin-down angled toward the corner: the shooter comes off it to catch in the corner, where the three is shortest."
+      },
+      "why": {
+        "fr": "Le corner est loin de l'aide et le tir y est plus court ; l'angle de l'écran coupe la route du défenseur.",
+        "en": "The corner is far from help and the shot is shorter; the screen's angle cuts off the defender's path."
+      },
+      "counter": {
+        "fr": "Suivre au ras de l'écran et faire sortir le défenseur de l'écraneur sur le corner.",
+        "en": "Trail tight and have the screener's defender show to the corner."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Préparer la coupe en emmenant son défenseur",
+          "Couper épaule contre l'écran",
+          "L'écraneur vise le défenseur, pas l'espace",
+          "L'écraneur enchaîne : plonger ou ressortir"
+        ],
+        "en": [
+          "Set up the cut by taking your defender away",
+          "Cut shoulder to shoulder with the screen",
+          "The screener targets the defender, not space",
+          "The screener flows: dive or pop"
+        ]
+      },
+      "start": {
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          13,
+          10
+        ],
+        "4": [
+          9,
+          15
+        ],
+        "3": [
+          44,
+          24
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              7.5,
+              10,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran, orienté vers le corner.",
+            "en": "4 sets the screen, angled toward the corner."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              2,
+              5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 sort de l'écran vers le corner.",
+            "en": "2 comes off the screen to the corner."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 au corner.",
+            "en": "1 passes to 2 in the corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "l-cut",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Coupe en L",
+        "en": "L-cut"
+      },
+      "sum": {
+        "fr": "Le joueur remonte le long de la raquette jusqu'au coude, puis part à angle droit vers l'aile pour recevoir (trajet en L).",
+        "en": "The player runs up the lane line to the elbow, then cuts out at a right angle to the wing to catch (an L-shaped path)."
+      },
+      "why": {
+        "fr": "Le changement de direction brusque crée la séparation avec le défenseur.",
+        "en": "The sharp change of direction creates separation from the defender."
+      },
+      "counter": {
+        "fr": "Refuser la passe sur l'aile et forcer une coupe dans le dos.",
+        "en": "Deny the wing pass and force a backdoor cut."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Lire son défenseur avant de couper",
+          "Changer de vitesse au moment de couper",
+          "Mains prêtes pendant la coupe",
+          "Le passeur attend que le coupeur soit démarqué"
+        ],
+        "en": [
+          "Read your defender before cutting",
+          "Change speed as you cut",
+          "Hands ready during the cut",
+          "The passer waits until the cutter is open"
+        ]
+      },
+      "start": {
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          19,
+          8
+        ],
+        "3": [
+          44,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              17,
+              18,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 remonte le long de la raquette jusqu'au coude.",
+            "en": "2 runs up the lane line to the elbow."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              6,
+              21,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 part à angle droit vers l'aile ; 1 lui passe.",
+            "en": "2 cuts out at a right angle to the wing; 1 passes to him."
+          }
+        }
+      ]
+    },
+    {
+      "id": "v-cut",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Coupe en V",
+        "en": "V-cut"
+      },
+      "sum": {
+        "fr": "L'ailier emmène son défenseur vers le panier, puis repart brusquement vers l'aile pour recevoir (trajet en V).",
+        "en": "The wing walks his defender toward the basket, then explodes back out to the wing to catch (a V-shaped path)."
+      },
+      "why": {
+        "fr": "Le défenseur suit vers le bas ; le changement de direction lui fait perdre un pas.",
+        "en": "The defender follows down; the change of direction costs him a step."
+      },
+      "counter": {
+        "fr": "Refuser la passe et rester entre le joueur et le ballon.",
+        "en": "Deny the pass and stay between the player and the ball."
+      },
+      "used": {
+        "fr": "Courant chez les jeunes et en amateur.",
+        "en": "Common in youth and amateur basketball."
+      },
+      "keys": {
+        "fr": [
+          "Lire son défenseur avant de couper",
+          "Changer de vitesse au moment de couper",
+          "Mains prêtes pendant la coupe",
+          "Le passeur attend que le coupeur soit démarqué"
+        ],
+        "en": [
+          "Read your defender before cutting",
+          "Change speed as you cut",
+          "Hands ready during the cut",
+          "The passer waits until the cutter is open"
+        ]
+      },
+      "start": {
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          6,
+          24
+        ],
+        "3": [
+          44,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              12,
+              12,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 emmène son défenseur vers le panier.",
+            "en": "2 walks his defender toward the basket."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              6,
+              23,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 repart brusquement vers l'aile ; 1 lui passe.",
+            "en": "2 explodes back out to the wing; 1 passes to him."
+          }
+        }
+      ]
+    },
+    {
+      "id": "floppy-double",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Floppy en boucle (curl sur le double écran)",
+        "en": "Floppy double curl"
+      },
+      "sum": {
+        "fr": "Variante du Floppy : le tireur part de sous le panier et, si son défenseur suit derrière, tourne en boucle autour du double écran vers la raquette.",
+        "en": "A Floppy variation: the shooter starts under the basket and, if his defender trails, curls around the double screen into the lane."
+      },
+      "why": {
+        "fr": "Le défenseur qui suit pour empêcher le tir laisse la boucle vers le panier ouverte.",
+        "en": "The defender trailing to stop the shot leaves the curl to the rim open."
+      },
+      "counter": {
+        "fr": "Passer sous le double écran pour couper la boucle, avec un défenseur d'écraneur prêt à sortir.",
+        "en": "Go under the double screen to cut off the curl, with a screener's defender ready to show."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Préparer la coupe en emmenant son défenseur",
+          "Couper épaule contre l'écran",
+          "L'écraneur vise le défenseur, pas l'espace",
+          "L'écraneur enchaîne : plonger ou ressortir"
+        ],
+        "en": [
+          "Set up the cut by taking your defender away",
+          "Cut shoulder to shoulder with the screen",
+          "The screener targets the defender, not space",
+          "The screener flows: dive or pop"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          25,
+          8
+        ],
+        "5": [
+          19,
+          10
+        ],
+        "4": [
+          31,
+          10.5
+        ],
+        "3": [
+          32.5,
+          14
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              34,
+              17,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 monte vers le double écran de 4 et 3.",
+            "en": "2 heads up to the double screen of 4 and 3."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              27,
+              14,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Son défenseur suit derrière : 2 tourne en boucle vers la raquette.",
+            "en": "His defender trails: 2 curls into the lane."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 en mouvement.",
+            "en": "1 hits 2 on the move."
+          }
+        }
+      ]
+    },
+    {
+      "id": "pin-in-screen",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Écran pour le tireur au poste haut (pin-in)",
+        "en": "Pin-in screen"
+      },
+      "sum": {
+        "fr": "Un écran pousse le tireur vers l'intérieur, au coude, pour un tir à mi-distance ou une attaque du milieu.",
+        "en": "A screen sends the shooter inside, to the elbow, for a mid-range shot or a drive through the middle."
+      },
+      "why": {
+        "fr": "La défense protège la ligne à 3 points ; le coude, au milieu du terrain, est moins surveillé.",
+        "en": "The defense guards the arc; the elbow, in the middle of the floor, is watched less."
+      },
+      "counter": {
+        "fr": "Défendre le coude comme une zone de tir et changer sur l'écran.",
+        "en": "Defend the elbow as a shooting spot and switch the screen."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Préparer la coupe en emmenant son défenseur",
+          "Couper épaule contre l'écran",
+          "L'écraneur vise le défenseur, pas l'espace",
+          "L'écraneur enchaîne : plonger ou ressortir"
+        ],
+        "en": [
+          "Set up the cut by taking your defender away",
+          "Cut shoulder to shoulder with the screen",
+          "The screener targets the defender, not space",
+          "The screener flows: dive or pop"
+        ]
+      },
+      "start": {
+        "1": [
+          34,
+          29
+        ],
+        "2": [
+          6,
+          24
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          10,
+          18
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              9,
+              21,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "4 pose l'écran sur le défenseur de 2, côté extérieur.",
+            "en": "4 screens 2's defender on the outside."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              17,
+              21,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 coupe vers l'intérieur, jusqu'au coude.",
+            "en": "2 cuts inside, to the elbow."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 au coude.",
+            "en": "1 hits 2 at the elbow."
+          }
+        }
+      ]
+    },
+    {
+      "id": "blind-pig",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Écran à l'aveugle (blind pig)",
+        "en": "Blind pig"
+      },
+      "sum": {
+        "fr": "Quand l'ailier est privé de ballon, le pivot monte au poste haut, reçoit, et l'ailier coupe dans le dos de son défenseur.",
+        "en": "When the wing is denied, the post flashes to the high post, catches, and the wing cuts behind his defender."
+      },
+      "why": {
+        "fr": "Le défenseur qui refuse la passe est collé au ballon : il ne voit pas la coupe dans son dos.",
+        "en": "The denying defender is glued to the ball: he cannot see the cut behind him."
+      },
+      "counter": {
+        "fr": "Relâcher la pression sur l'aile quand le pivot monte et protéger la ligne de fond.",
+        "en": "Release the wing pressure when the post flashes and protect the baseline."
+      },
+      "used": {
+        "fr": "Action classique du basket universitaire américain.",
+        "en": "Classic action from American college basketball."
+      },
+      "keys": {
+        "fr": [
+          "Lire son défenseur avant de couper",
+          "Changer de vitesse au moment de couper",
+          "Mains prêtes pendant la coupe",
+          "Le passeur attend que le coupeur soit démarqué"
+        ],
+        "en": [
+          "Read your defender before cutting",
+          "Change speed as you cut",
+          "Hands ready during the cut",
+          "The passer waits until the cutter is open"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "x2": [
+          41,
+          25.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              31,
+              20,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 est privé de ballon ; 5 monte au poste haut.",
+            "en": "2 is denied; 5 flashes to the high post."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5.",
+            "en": "1 passes to 5."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              32,
+              7,
+              "c"
+            ],
+            "x2": [
+              40,
+              23,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 coupe dans le dos de x2.",
+            "en": "2 cuts behind x2."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "5 passe à 2 sous le panier.",
+            "en": "5 hits 2 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "backdoor-cut",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Coupe dans le dos (backdoor)",
+        "en": "Backdoor cut"
+      },
+      "sum": {
+        "fr": "Quand son défenseur refuse la passe en se plaçant entre lui et le ballon, l'attaquant coupe dans son dos vers le panier.",
+        "en": "When his defender denies by sitting between him and the ball, the attacker cuts behind him to the basket."
+      },
+      "why": {
+        "fr": "Le défenseur qui refuse la passe tourne le dos au panier : la coupe dans son dos est libre.",
+        "en": "The denying defender has his back to the basket: the cut behind him is open."
+      },
+      "counter": {
+        "fr": "Refuser la passe sans trop s'avancer et garder la vision du joueur.",
+        "en": "Deny without overplaying and keep sight of your man."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Lire son défenseur avant de couper",
+          "Changer de vitesse au moment de couper",
+          "Mains prêtes pendant la coupe",
+          "Le passeur attend que le coupeur soit démarqué"
+        ],
+        "en": [
+          "Read your defender before cutting",
+          "Change speed as you cut",
+          "Hands ready during the cut",
+          "The passer waits until the cutter is open"
+        ]
+      },
+      "start": {
+        "1": [
+          34,
+          29
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          19,
+          8
+        ],
+        "x2": [
+          41.5,
+          26
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              44,
+              28,
+              "c"
+            ],
+            "x2": [
+              41,
+              28.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 remonte pour réclamer ; x2 refuse la passe.",
+            "en": "2 comes up to call for the ball; x2 denies."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              30,
+              8,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 plante son pied et coupe dans le dos de x2 ; passe à terre de 1.",
+            "en": "2 plants and cuts behind x2; bounce pass from 1."
+          }
+        }
+      ]
+    },
+    {
+      "id": "reverse-stagger",
+      "cat": "attaque",
+      "family": "ecrans-sans-ballon",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Écran en escalier inversé",
+        "en": "Reverse stagger"
+      },
+      "sum": {
+        "fr": "Écrans en escalier dans le sens inverse : le tireur part du haut et descend vers le corner en traversant deux écrans.",
+        "en": "Staggered screens in reverse: the shooter starts up top and goes down to the corner through two screens."
+      },
+      "why": {
+        "fr": "La défense attend les écrans en escalier vers le haut ; le sens inverse amène le tir au corner, loin de l'aide.",
+        "en": "The defense expects staggers going up; the reverse direction leads to a corner shot far from help."
+      },
+      "counter": {
+        "fr": "Changer sur le dernier écran et garder un défenseur prêt à sortir au corner.",
+        "en": "Switch the last screen and keep a defender ready to close out to the corner."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Préparer la coupe en emmenant son défenseur",
+          "Couper épaule contre l'écran",
+          "L'écraneur vise le défenseur, pas l'espace",
+          "L'écraneur enchaîne : plonger ou ressortir"
+        ],
+        "en": [
+          "Set up the cut by taking your defender away",
+          "Cut shoulder to shoulder with the screen",
+          "The screener targets the defender, not space",
+          "The screener flows: dive or pop"
+        ]
+      },
+      "start": {
+        "1": [
+          34,
+          29
+        ],
+        "2": [
+          25,
+          30
+        ],
+        "4": [
+          16,
+          23
+        ],
+        "5": [
+          10,
+          15
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              14,
+              20,
+              "s"
+            ],
+            "5": [
+              8,
+              13,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "4 et 5 se placent pour les deux écrans vers le corner gauche.",
+            "en": "4 and 5 set up the two screens toward the left corner."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              2,
+              5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 descend vers le corner en traversant les deux écrans.",
+            "en": "2 goes down to the corner through both screens."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 au corner.",
+            "en": "1 passes to 2 in the corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "wide-handoff",
+      "cat": "attaque",
+      "family": "main-a-main",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Remise main à main large",
+        "en": "Wide handoff"
+      },
+      "sum": {
+        "fr": "Remise main à main jouée loin de la raquette, près de la ligne de touche, pour que le receveur ait de la place pour attaquer.",
+        "en": "A handoff played far from the lane, near the sideline, so the receiver has room to attack."
+      },
+      "why": {
+        "fr": "Loin de la raquette, l'aide ne peut pas venir vite : le receveur attaque un seul défenseur.",
+        "en": "Far from the lane, help cannot arrive quickly: the receiver attacks one defender."
+      },
+      "counter": {
+        "fr": "Passer sous la remise, ou changer avec le défenseur du passeur.",
+        "en": "Go under the handoff, or switch with the passer's defender."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Remise à hauteur de hanche",
+          "Le passeur fait écran avec son corps",
+          "Le receveur passe épaule contre épaule",
+          "Attaquer tout de suite après la remise"
+        ],
+        "en": [
+          "Hand off at hip height",
+          "The passer screens with his body",
+          "The receiver goes shoulder to shoulder",
+          "Attack right after the handoff"
+        ]
+      },
+      "start": {
+        "5": [
+          36,
+          28
+        ],
+        "2": [
+          48,
+          4
+        ],
+        "1": [
+          16,
+          29
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "b": "5"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              42,
+              25,
+              "d"
+            ],
+            "2": [
+              45,
+              16,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 dribble vers la ligne de touche ; 2 remonte du corner.",
+            "en": "5 dribbles toward the sideline; 2 comes up from the corner."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              44,
+              22,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 prend le ballon de la main à la main.",
+            "en": "2 takes the handoff."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              36,
+              14,
+              "d"
+            ],
+            "5": [
+              31,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 attaque le milieu ; 5 roule.",
+            "en": "2 attacks the middle; 5 rolls."
+          }
+        }
+      ]
+    },
+    {
+      "id": "chase-action",
+      "cat": "attaque",
+      "family": "main-a-main",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Action Chase",
+        "en": "Chase action"
+      },
+      "sum": {
+        "fr": "Après une remise main à main, le passeur suit le receveur (il le « chasse ») pour récupérer le ballon sur une seconde remise.",
+        "en": "After a handoff, the passer chases the receiver to get the ball back on a second handoff."
+      },
+      "why": {
+        "fr": "Deux remises de suite : les défenseurs doivent passer deux écrans mobiles en quelques secondes.",
+        "en": "Two handoffs in a row: the defenders must get through two moving screens in a few seconds."
+      },
+      "counter": {
+        "fr": "Changer sur la seconde remise.",
+        "en": "Switch the second handoff."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Remise à hauteur de hanche",
+          "Le passeur fait écran avec son corps",
+          "Le receveur passe épaule contre épaule",
+          "Attaquer tout de suite après la remise"
+        ],
+        "en": [
+          "Hand off at hip height",
+          "The passer screens with his body",
+          "The receiver goes shoulder to shoulder",
+          "Attack right after the handoff"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          20,
+          6
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              36,
+              27,
+              "d"
+            ],
+            "2": [
+              39,
+              25,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 dribble vers 2 et lui remet le ballon.",
+            "en": "1 dribbles at 2 and hands off."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              32,
+              24,
+              "d"
+            ],
+            "1": [
+              33,
+              21.5,
+              "c"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "1 suit 2 ; 2 lui remet le ballon à son tour.",
+            "en": "1 chases 2; 2 hands it back."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              27,
+              11,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque le panier.",
+            "en": "1 drives to the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "keep-fake-handoff",
+      "cat": "attaque",
+      "family": "main-a-main",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Fausse remise (keep)",
+        "en": "Keep (fake handoff)"
+      },
+      "sum": {
+        "fr": "Le porteur fait semblant de remettre le ballon main à main, le garde et attaque lui-même le panier.",
+        "en": "The ball handler fakes the handoff, keeps the ball and attacks the rim himself."
+      },
+      "why": {
+        "fr": "Les défenseurs se préparent à la remise : le porteur passe dans l'espace qu'ils laissent.",
+        "en": "The defenders set up for the handoff: the ball handler goes through the space they leave."
+      },
+      "counter": {
+        "fr": "Défendre le porteur jusqu'au bout sans anticiper la remise.",
+        "en": "Guard the ball handler to the end without anticipating the handoff."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Remise à hauteur de hanche",
+          "Le passeur fait écran avec son corps",
+          "Le receveur passe épaule contre épaule",
+          "Attaquer tout de suite après la remise"
+        ],
+        "en": [
+          "Hand off at hip height",
+          "The passer screens with his body",
+          "The receiver goes shoulder to shoulder",
+          "Attack right after the handoff"
+        ]
+      },
+      "start": {
+        "5": [
+          28,
+          30
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "1": [
+          6,
+          24
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "b": "5"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              38,
+              26,
+              "d"
+            ],
+            "2": [
+              41,
+              24.5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 dribble vers 2 comme pour une remise.",
+            "en": "5 dribbles at 2 as if to hand off."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              29,
+              13,
+              "d"
+            ],
+            "2": [
+              44,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 garde le ballon et attaque le panier ; 2 ressort sur l'aile.",
+            "en": "5 keeps it and drives to the rim; 2 steps back out to the wing."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "Si l'aide vient de l'aile, 5 passe à 2.",
+            "en": "If help comes from the wing, 5 passes to 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "dribble-at-wave",
+      "cat": "attaque",
+      "family": "main-a-main",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Dribble vers (wave)",
+        "en": "Dribble at (wave)"
+      },
+      "sum": {
+        "fr": "Quand le porteur dribble vers lui, l'ailier coupe dans le dos vers le panier ; les autres remplissent les places laissées.",
+        "en": "When the ball handler dribbles at him, the wing cuts backdoor to the rim; the others fill the empty spots."
+      },
+      "why": {
+        "fr": "La règle simple « dribble vers moi = je coupe » crée des coupes automatiques difficiles à défendre.",
+        "en": "The simple rule \"dribble at me = I cut\" creates automatic cuts that are hard to defend."
+      },
+      "counter": {
+        "fr": "Ne pas refuser la passe trop haut ; protéger la ligne de fond.",
+        "en": "Do not deny too high; protect the baseline."
+      },
+      "used": {
+        "fr": "Courant chez les jeunes et en amateur.",
+        "en": "Common in youth and amateur basketball."
+      },
+      "keys": {
+        "fr": [
+          "Lire son défenseur avant de couper",
+          "Changer de vitesse au moment de couper",
+          "Mains prêtes pendant la coupe",
+          "Le passeur attend que le coupeur soit démarqué"
+        ],
+        "en": [
+          "Read your defender before cutting",
+          "Change speed as you cut",
+          "Hands ready during the cut",
+          "The passer waits until the cutter is open"
+        ]
+      },
+      "start": {
+        "1": [
+          34,
+          29
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          20,
+          6
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              39,
+              26,
+              "d"
+            ],
+            "2": [
+              31,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 dribble vers 2 ; 2 coupe dans le dos vers le panier.",
+            "en": "1 dribbles at 2; 2 cuts backdoor to the rim."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "Passe à terre de 1 à 2.",
+            "en": "Bounce pass from 1 to 2."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              25,
+              30,
+              "c"
+            ],
+            "4": [
+              6,
+              22,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Les autres remplissent : 3 remonte en haut, 4 remonte sur l'aile.",
+            "en": "The others fill: 3 lifts to the top, 4 lifts to the wing."
+          }
+        }
+      ]
     }
   ]
 }
