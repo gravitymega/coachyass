@@ -4023,7 +4023,7 @@
       "fr": "Défendre la rentrée au poste (duck-in)",
       "en": "Defending the duck-in"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "post-defense-after-a-switch",
@@ -4034,7 +4034,7 @@
       "fr": "Défendre le poste après changement",
       "en": "Post defense after a switch"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "sink-and-fill",
@@ -4045,7 +4045,7 @@
       "fr": "Rotation « sink and fill »",
       "en": "Sink and fill"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "x-out-rotation",
@@ -4056,7 +4056,7 @@
       "fr": "Rotation « X-out »",
       "en": "X-out rotation"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "scramble-defense",
@@ -4067,7 +4067,7 @@
       "fr": "Défense en infériorité (scramble)",
       "en": "Scramble defense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "close-out-rules",
@@ -4078,7 +4078,7 @@
       "fr": "Règles du close-out",
       "en": "Close-out rules"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "baseline-drive-rotation",
@@ -4089,7 +4089,7 @@
       "fr": "Rotation sur la pénétration de la ligne de fond",
       "en": "Baseline drive rotation"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "rotation-after-a-trap",
@@ -4100,7 +4100,7 @@
       "fr": "Rotation après une prise à deux",
       "en": "Rotation after a trap"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defensive-communication",
@@ -4111,7 +4111,7 @@
       "fr": "Communication défensive",
       "en": "Defensive communication"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defensive-box-out",
@@ -4122,7 +4122,7 @@
       "fr": "Rebond défensif : bloquer (box-out)",
       "en": "Defensive box-out"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "defending-a-3-point-lead",
@@ -4133,7 +4133,7 @@
       "fr": "Fin de match : défendre avec 3 points d'avance",
       "en": "Defending a 3-point lead"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "late-game-switch-everything",
@@ -4144,7 +4144,7 @@
       "fr": "Fin de match : changer sur tous les écrans",
       "en": "Late game: switch everything"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "late-game-defending-the-inbound",
@@ -4155,7 +4155,7 @@
       "fr": "Fin de match : défendre la remise en jeu",
       "en": "Late game: defending the inbound"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "late-game-fouling-on-purpose",
@@ -4166,7 +4166,7 @@
       "fr": "Fin de match : faire faute intentionnellement",
       "en": "Late game: fouling on purpose"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "late-game-protect-the-rim-without-fouling",
@@ -4177,7 +4177,7 @@
       "fr": "Fin de match : protéger le cercle sans faute",
       "en": "Late game: protect the rim without fouling"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "layup-two-lines",
@@ -4199,7 +4199,7 @@
       "fr": "Lay-up main faible",
       "en": "Weak-hand layups"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "mikan-drill",
@@ -4210,7 +4210,7 @@
       "fr": "Mikan",
       "en": "Mikan drill"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "contact-finishes-with-pad",
@@ -4221,7 +4221,7 @@
       "fr": "Finitions au contact (avec bouclier)",
       "en": "Contact finishes (with pad)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "euro-step-layups",
@@ -4232,7 +4232,7 @@
       "fr": "Lay-up euro-step",
       "en": "Euro-step layups"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "floater-finishing",
@@ -4243,7 +4243,7 @@
       "fr": "Finition en floater",
       "en": "Floater finishing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "layups-off-the-pass",
