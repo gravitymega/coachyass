@@ -4485,7 +4485,7 @@
       "fr": "Dribble à deux ballons",
       "en": "Two-ball dribbling"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "crossover-moves",
@@ -4496,7 +4496,7 @@
       "fr": "Changements de direction (crossover)",
       "en": "Crossover moves"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "dribbling-under-pressure",
@@ -4507,7 +4507,7 @@
       "fr": "Dribble sous pression (2 contre 1)",
       "en": "Dribbling under pressure"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "timed-full-court-dribble",
@@ -4518,7 +4518,7 @@
       "fr": "Dribble en tout terrain chronométré",
       "en": "Timed full-court dribble"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "king-of-the-court-protect-your-ball",
@@ -4529,7 +4529,7 @@
       "fr": "Jeu « le roi du terrain » (protéger son ballon)",
       "en": "King of the court (protect your ball)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "change-of-pace-dribbling",
@@ -4540,7 +4540,7 @@
       "fr": "Dribble et changement de rythme",
       "en": "Change-of-pace dribbling"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "hesitation-dribble",
@@ -4551,7 +4551,7 @@
       "fr": "Dribble « hesitation »",
       "en": "Hesitation dribble"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "dribbling-off-a-screen",
@@ -4562,7 +4562,7 @@
       "fr": "Dribble en sortie d'écran",
       "en": "Dribbling off a screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "eyes-up-dribbling-read-the-coach-s-fingers",
@@ -4573,7 +4573,7 @@
       "fr": "Dribble tête haute (lire les doigts du coach)",
       "en": "Eyes-up dribbling (read the coach's fingers)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "snake-dribble-vs-a-defender",
@@ -4584,7 +4584,7 @@
       "fr": "Dribble « snake » contre défenseur",
       "en": "Snake dribble vs a defender"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "two-ball-passing",
@@ -4595,7 +4595,7 @@
       "fr": "Passes à deux ballons",
       "en": "Two-ball passing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "star-passing",
@@ -4606,7 +4606,7 @@
       "fr": "Passes en étoile",
       "en": "Star passing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pass-and-follow",
@@ -4617,7 +4617,7 @@
       "fr": "Passe et suit",
       "en": "Pass and follow"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "full-court-passing-on-the-move",
@@ -4628,7 +4628,7 @@
       "fr": "Passes en mouvement tout terrain",
       "en": "Full-court passing on the move"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ten-pass-game",
@@ -4639,7 +4639,7 @@
       "fr": "Passes contre défenseur (jeu des 10 passes)",
       "en": "Ten-pass game"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "passing-off-the-dribble",
@@ -4650,7 +4650,7 @@
       "fr": "Passe en sortie de dribble",
       "en": "Passing off the dribble"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "post-entry-passing",
@@ -4661,7 +4661,7 @@
       "fr": "Passe au poste",
       "en": "Post-entry passing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "outlet-and-long-passing",
@@ -4672,7 +4672,7 @@
       "fr": "Passe longue de contre-attaque",
       "en": "Outlet and long passing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "drive-and-kick-passing",
@@ -4683,7 +4683,7 @@
       "fr": "Passe en pénétration-ressortie (drive and kick)",
       "en": "Drive-and-kick passing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "lob-passing",
@@ -4694,7 +4694,7 @@
       "fr": "Passe lobée par-dessus la défense",
       "en": "Lob passing"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "one-on-one-wing",

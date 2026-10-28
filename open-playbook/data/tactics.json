@@ -48813,6 +48813,2309 @@
           "Timed"
         ]
       }
+    },
+    {
+      "id": "two-ball-dribbling",
+      "cat": "exercices",
+      "family": "dribble",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Dribble à deux ballons",
+        "en": "Two-ball dribbling"
+      },
+      "sum": {
+        "fr": "Le joueur dribble deux ballons en même temps (ensemble, puis en alterné) en avançant et en reculant.",
+        "en": "The player dribbles two balls at once (together, then alternating) while moving forward and backward."
+      },
+      "why": {
+        "fr": "Oblige la main faible à travailler autant que la main forte et améliore la coordination.",
+        "en": "Forces the weak hand to work as much as the strong hand and improves coordination."
+      },
+      "counter": {
+        "fr": "Ajouter un partenaire qui essaie de toucher un des ballons.",
+        "en": "Add a partner trying to tap one of the balls."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Tête haute, regarder devant soi",
+          "Dribble bas et fort",
+          "Protéger le ballon avec le bras libre",
+          "Changer de rythme autant que de direction"
+        ],
+        "en": [
+          "Head up, eyes forward",
+          "Low, hard dribble",
+          "Protect the ball with the off arm",
+          "Change pace as much as direction"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              28,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 avance en dribblant deux ballons ensemble (un seul ballon est dessiné).",
+            "en": "1 moves forward dribbling two balls together (only one ball is drawn)."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              25,
+              40,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Il recule en dribble alterné.",
+            "en": "He backs up with an alternating dribble."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "2 ballons par joueur",
+        "en": "2 balls per player"
+      },
+      "players": "1-20",
+      "age": [
+        "U13",
+        "U15",
+        "U17"
+      ],
+      "variants": {
+        "fr": [
+          "Un dribble haut, un dribble bas",
+          "Changements de main à deux ballons",
+          "En marchant puis en courant"
+        ],
+        "en": [
+          "One high, one low dribble",
+          "Two-ball crossovers",
+          "Walking then running"
+        ]
+      }
+    },
+    {
+      "id": "crossover-moves",
+      "cat": "exercices",
+      "family": "dribble",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Changements de direction (crossover)",
+        "en": "Crossover moves"
+      },
+      "sum": {
+        "fr": "Le joueur attaque un plot ou un défenseur passif, fait un changement de main devant lui (crossover) et accélère de l'autre côté.",
+        "en": "The player attacks a cone or passive defender, crosses the ball over in front of him and accelerates the other way."
+      },
+      "why": {
+        "fr": "Le changement de main déplace le défenseur ; l'accélération juste après crée l'avantage.",
+        "en": "The crossover moves the defender; the acceleration right after creates the advantage."
+      },
+      "counter": {
+        "fr": "Le défenseur reste au milieu et attend le changement.",
+        "en": "The defender stays in the middle and waits for the crossover."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Tête haute, regarder devant soi",
+          "Dribble bas et fort",
+          "Protéger le ballon avec le bras libre",
+          "Changer de rythme autant que de direction"
+        ],
+        "en": [
+          "Head up, eyes forward",
+          "Low, hard dribble",
+          "Protect the ball with the off arm",
+          "Change pace as much as direction"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          40
+        ],
+        "x1": [
+          25,
+          27
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              28,
+              31,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque vers la droite du défenseur.",
+            "en": "1 attacks toward the defender's right."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              22,
+              29,
+              "d"
+            ],
+            "x1": [
+              26.5,
+              26,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Changement de main bas et rapide vers la gauche.",
+            "en": "Low, quick crossover to the left."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              21,
+              10,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Il accélère vers le panier.",
+            "en": "He accelerates to the basket."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 ballon par joueur, plots",
+        "en": "1 ball per player, cones"
+      },
+      "players": "1-12",
+      "age": [
+        "U11",
+        "U13"
+      ],
+      "variants": {
+        "fr": [
+          "Entre les jambes",
+          "Dans le dos",
+          "Double changement"
+        ],
+        "en": [
+          "Between the legs",
+          "Behind the back",
+          "Double crossover"
+        ]
+      }
+    },
+    {
+      "id": "dribbling-under-pressure",
+      "cat": "exercices",
+      "family": "dribble",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Dribble sous pression (2 contre 1)",
+        "en": "Dribbling under pressure"
+      },
+      "sum": {
+        "fr": "Le dribbleur doit garder le ballon et avancer malgré deux défenseurs qui le piègent.",
+        "en": "The dribbler must keep the ball and move forward despite two defenders trapping him."
+      },
+      "why": {
+        "fr": "Prépare à battre une presse : reculer pour voir, puis sortir du piège par le côté.",
+        "en": "Prepares to beat a press: back out to see, then escape the trap to the side."
+      },
+      "counter": {
+        "fr": "Les défenseurs ferment la sortie et forcent la ligne de touche.",
+        "en": "The defenders close the exit and force the sideline."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Tête haute, regarder devant soi",
+          "Dribble bas et fort",
+          "Protéger le ballon avec le bras libre",
+          "Changer de rythme autant que de direction"
+        ],
+        "en": [
+          "Head up, eyes forward",
+          "Low, hard dribble",
+          "Protect the ball with the off arm",
+          "Change pace as much as direction"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          36
+        ],
+        "x1": [
+          22,
+          33
+        ],
+        "x2": [
+          28,
+          33
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              42,
+              "d"
+            ],
+            "x1": [
+              22.5,
+              39,
+              "m"
+            ],
+            "x2": [
+              27.5,
+              39,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 et x2 piègent 1 : il recule en dribble pour voir le terrain.",
+            "en": "x1 and x2 trap 1: he backs out to see the floor."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              36,
+              36,
+              "d"
+            ],
+            "x2": [
+              31,
+              37,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 sort du piège par le côté et repart vers l'avant.",
+            "en": "1 escapes the trap to the side and heads forward again."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 ballon par trio",
+        "en": "1 ball per group of 3"
+      },
+      "players": "3-12",
+      "age": [
+        "U13",
+        "U15",
+        "U17"
+      ],
+      "variants": {
+        "fr": [
+          "Passer au lieu de dribbler",
+          "Limite de 5 secondes",
+          "Sur tout le terrain"
+        ],
+        "en": [
+          "Pass instead of dribbling",
+          "5-second limit",
+          "Full court"
+        ]
+      }
+    },
+    {
+      "id": "timed-full-court-dribble",
+      "cat": "exercices",
+      "family": "dribble",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Dribble en tout terrain chronométré",
+        "en": "Timed full-court dribble"
+      },
+      "sum": {
+        "fr": "Aller-retour chronométré en dribble, avec lay-up à chaque panier ; le schéma montre la moitié de terrain d'arrivée.",
+        "en": "A timed full-court dribble with a layup at each basket; the diagram shows the arrival half."
+      },
+      "why": {
+        "fr": "Dribbler vite et sous contrôle, puis finir, comme en contre-attaque.",
+        "en": "Dribbling fast and under control, then finishing, as on a fast break."
+      },
+      "counter": {
+        "fr": "Ajouter un défenseur qui poursuit.",
+        "en": "Add a chasing defender."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Tête haute, regarder devant soi",
+          "Dribble bas et fort",
+          "Protéger le ballon avec le bras libre",
+          "Changer de rythme autant que de direction"
+        ],
+        "en": [
+          "Head up, eyes forward",
+          "Low, hard dribble",
+          "Protect the ball with the off arm",
+          "Change pace as much as direction"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          46
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              24,
+              18,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 arrive de la ligne médiane en dribble de vitesse.",
+            "en": "1 comes from half court with a speed dribble."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              23,
+              8,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Lay-up, puis retour vers l'autre panier.",
+            "en": "Layup, then back to the other basket."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 ballon par joueur, chronomètre",
+        "en": "1 ball per player, stopwatch"
+      },
+      "players": "1-12",
+      "age": [
+        "U11",
+        "U13"
+      ],
+      "variants": {
+        "fr": [
+          "Main faible uniquement",
+          "Trois dribbles maximum par moitié",
+          "Relais par équipe"
+        ],
+        "en": [
+          "Weak hand only",
+          "Three dribbles max per half",
+          "Team relay"
+        ]
+      }
+    },
+    {
+      "id": "king-of-the-court-protect-your-ball",
+      "cat": "exercices",
+      "family": "dribble",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Jeu « le roi du terrain » (protéger son ballon)",
+        "en": "King of the court (protect your ball)"
+      },
+      "sum": {
+        "fr": "Tous les joueurs dribblent dans une zone limitée ; chacun protège son ballon et essaie de faire sortir celui des autres.",
+        "en": "All players dribble in a limited area; each protects his ball and tries to knock the others' out."
+      },
+      "why": {
+        "fr": "Le jeu oblige à dribbler tête haute, à protéger le ballon et à changer de direction.",
+        "en": "The game forces dribbling with the head up, protecting the ball and changing direction."
+      },
+      "counter": {
+        "fr": "Réduire la zone pour augmenter la pression.",
+        "en": "Shrink the area to increase the pressure."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Tête haute, regarder devant soi",
+          "Dribble bas et fort",
+          "Protéger le ballon avec le bras libre",
+          "Changer de rythme autant que de direction"
+        ],
+        "en": [
+          "Head up, eyes forward",
+          "Low, hard dribble",
+          "Protect the ball with the off arm",
+          "Change pace as much as direction"
+        ]
+      },
+      "start": {
+        "1": [
+          20,
+          18
+        ],
+        "2": [
+          30,
+          18
+        ],
+        "3": [
+          25,
+          26
+        ],
+        "4": [
+          25,
+          12
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              27,
+              22,
+              "d"
+            ],
+            "2": [
+              21,
+              14,
+              "c"
+            ],
+            "3": [
+              30,
+              26,
+              "c"
+            ],
+            "4": [
+              19,
+              11,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Chacun dribble dans la raquette agrandie (un seul ballon dessiné).",
+            "en": "Everyone dribbles in the enlarged lane (only one ball drawn)."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              24,
+              20,
+              "d"
+            ],
+            "3": [
+              27,
+              23,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 protège son ballon du corps quand 3 s'approche.",
+            "en": "1 shields his ball with his body as 3 approaches."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 ballon par joueur, plots pour la zone",
+        "en": "1 ball per player, cones for the area"
+      },
+      "players": "6-20",
+      "age": [
+        "U11",
+        "U13"
+      ],
+      "variants": {
+        "fr": [
+          "Zone de plus en plus petite",
+          "Main faible uniquement",
+          "Équipes"
+        ],
+        "en": [
+          "Smaller and smaller area",
+          "Weak hand only",
+          "Teams"
+        ]
+      }
+    },
+    {
+      "id": "change-of-pace-dribbling",
+      "cat": "exercices",
+      "family": "dribble",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Dribble et changement de rythme",
+        "en": "Change-of-pace dribbling"
+      },
+      "sum": {
+        "fr": "Le joueur ralentit en dribble, puis accélère brusquement pour dépasser un défenseur.",
+        "en": "The player slows down on the dribble, then explodes to get past a defender."
+      },
+      "why": {
+        "fr": "Le changement de vitesse surprend le défenseur plus qu'un changement de direction.",
+        "en": "A change of speed surprises the defender more than a change of direction."
+      },
+      "counter": {
+        "fr": "Le défenseur garde une distance et ne se relâche pas quand le dribbleur ralentit.",
+        "en": "The defender keeps his distance and does not relax when the dribbler slows down."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Tête haute, regarder devant soi",
+          "Dribble bas et fort",
+          "Protéger le ballon avec le bras libre",
+          "Changer de rythme autant que de direction"
+        ],
+        "en": [
+          "Head up, eyes forward",
+          "Low, hard dribble",
+          "Protect the ball with the off arm",
+          "Change pace as much as direction"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "x1": [
+          25,
+          34
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              38,
+              "d"
+            ],
+            "x1": [
+              25,
+              35,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 avance lentement ; x1 se relâche.",
+            "en": "1 moves slowly; x1 relaxes."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              29,
+              16,
+              "d"
+            ],
+            "x1": [
+              27,
+              30,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 accélère brusquement et dépasse x1.",
+            "en": "1 explodes and gets past x1."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 ballon par paire",
+        "en": "1 ball per pair"
+      },
+      "players": "2-12",
+      "age": [
+        "U13",
+        "U15",
+        "U17"
+      ],
+      "variants": {
+        "fr": [
+          "Ralentir avec feinte de tête",
+          "Défenseur actif",
+          "Finir en lay-up"
+        ],
+        "en": [
+          "Slow down with a head fake",
+          "Live defender",
+          "Finish with a layup"
+        ]
+      }
+    },
+    {
+      "id": "hesitation-dribble",
+      "cat": "exercices",
+      "family": "dribble",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Dribble « hesitation »",
+        "en": "Hesitation dribble"
+      },
+      "sum": {
+        "fr": "Le joueur fait semblant de s'arrêter (hésitation), relève la tête comme pour tirer ou passer, puis repart.",
+        "en": "The player fakes a stop (hesitation), lifts his head as if to shoot or pass, then goes."
+      },
+      "why": {
+        "fr": "Le défenseur se redresse sur la feinte : le départ suivant le prend de vitesse.",
+        "en": "The defender straightens up on the fake: the next burst beats him."
+      },
+      "counter": {
+        "fr": "Rester bas et ne pas réagir à la tête du dribbleur.",
+        "en": "Stay low and do not react to the dribbler's head."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Tête haute, regarder devant soi",
+          "Dribble bas et fort",
+          "Protéger le ballon avec le bras libre",
+          "Changer de rythme autant que de direction"
+        ],
+        "en": [
+          "Head up, eyes forward",
+          "Low, hard dribble",
+          "Protect the ball with the off arm",
+          "Change pace as much as direction"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          40
+        ],
+        "x1": [
+          25,
+          29
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              32,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque vers x1.",
+            "en": "1 attacks toward x1."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              25.5,
+              31.5,
+              "d"
+            ],
+            "x1": [
+              25,
+              28,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Hésitation : 1 freine et relève la tête ; x1 se redresse.",
+            "en": "Hesitation: 1 brakes and lifts his head; x1 straightens up."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              29,
+              13,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 repart et dépasse x1.",
+            "en": "1 goes and beats x1."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 ballon par paire",
+        "en": "1 ball per pair"
+      },
+      "players": "2-12",
+      "age": [
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Hésitation puis changement de main",
+          "Hésitation puis tir",
+          "En transition"
+        ],
+        "en": [
+          "Hesitation into a crossover",
+          "Hesitation into a pull-up",
+          "In transition"
+        ]
+      }
+    },
+    {
+      "id": "dribbling-off-a-screen",
+      "cat": "exercices",
+      "family": "dribble",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Dribble en sortie d'écran",
+        "en": "Dribbling off a screen"
+      },
+      "sum": {
+        "fr": "Le porteur utilise un écran porteur en passant au ras de l'écraneur, épaule contre épaule, puis attaque.",
+        "en": "The ball handler uses a ball screen by running tight to the screener, shoulder to shoulder, then attacks."
+      },
+      "why": {
+        "fr": "Passer au ras de l'écran empêche le défenseur de se glisser entre les deux.",
+        "en": "Running tight off the screen keeps the defender from slipping between the two."
+      },
+      "counter": {
+        "fr": "Le défenseur essaie de passer entre le porteur et l'écraneur.",
+        "en": "The defender tries to get between the ball handler and the screener."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Tête haute, regarder devant soi",
+          "Dribble bas et fort",
+          "Protéger le ballon avec le bras libre",
+          "Changer de rythme autant que de direction"
+        ],
+        "en": [
+          "Head up, eyes forward",
+          "Low, hard dribble",
+          "Protect the ball with the off arm",
+          "Change pace as much as direction"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "x1": [
+          25,
+          29
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran.",
+            "en": "5 screens."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              32,
+              26,
+              "d"
+            ],
+            "x1": [
+              28,
+              31.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 passe épaule contre épaule avec 5 ; x1 est bloqué.",
+            "en": "1 goes shoulder to shoulder with 5; x1 gets caught."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              29,
+              12,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque le panier.",
+            "en": "1 attacks the rim."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "3-9",
+      "age": [
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Refuser l'écran",
+          "Snake après l'écran",
+          "Ajouter le défenseur de l'écraneur"
+        ],
+        "en": [
+          "Reject the screen",
+          "Snake after the screen",
+          "Add the screener's defender"
+        ]
+      }
+    },
+    {
+      "id": "eyes-up-dribbling-read-the-coach-s-fingers",
+      "cat": "exercices",
+      "family": "dribble",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Dribble tête haute (lire les doigts du coach)",
+        "en": "Eyes-up dribbling (read the coach's fingers)"
+      },
+      "sum": {
+        "fr": "Le joueur dribble vers l'entraîneur en annonçant à voix haute le nombre de doigts qu'il montre.",
+        "en": "The player dribbles toward the coach, calling out loud the number of fingers he shows."
+      },
+      "why": {
+        "fr": "Oblige à dribbler sans regarder le ballon, pour voir le jeu.",
+        "en": "Forces dribbling without looking at the ball, so you can see the game."
+      },
+      "counter": {
+        "fr": "Changer les doigts plus vite.",
+        "en": "Change the fingers faster."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Tête haute, regarder devant soi",
+          "Dribble bas et fort",
+          "Protéger le ballon avec le bras libre",
+          "Changer de rythme autant que de direction"
+        ],
+        "en": [
+          "Head up, eyes forward",
+          "Low, hard dribble",
+          "Protect the ball with the off arm",
+          "Change pace as much as direction"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "5": [
+          25,
+          7
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              26,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 dribble vers l'entraîneur (5) et annonce les doigts montrés.",
+            "en": "1 dribbles toward the coach (5) and calls out the fingers shown."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              21,
+              18,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Changement de main sans baisser la tête.",
+            "en": "Crossover without dropping the head."
+          }
+        }
+      ],
+      "duration": 6,
+      "equipment": {
+        "fr": "1 ballon par joueur",
+        "en": "1 ball per player"
+      },
+      "players": "1-20",
+      "age": [
+        "U11",
+        "U13"
+      ],
+      "variants": {
+        "fr": [
+          "Avec deux ballons",
+          "Annoncer une couleur",
+          "En reculant"
+        ],
+        "en": [
+          "With two balls",
+          "Call out a color",
+          "Backing up"
+        ]
+      }
+    },
+    {
+      "id": "snake-dribble-vs-a-defender",
+      "cat": "exercices",
+      "family": "dribble",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Dribble « snake » contre défenseur",
+        "en": "Snake dribble vs a defender"
+      },
+      "sum": {
+        "fr": "2 contre 2 sur pick-and-roll : après l'écran, le porteur revient vers le milieu en gardant son défenseur dans le dos.",
+        "en": "2-on-2 pick-and-roll: after the screen, the ball handler snakes back to the middle, keeping his defender on his back."
+      },
+      "why": {
+        "fr": "Travaille la lecture du pivot qui recule : tir, floater ou passe au roll.",
+        "en": "Works the read of the dropping big: shot, floater or pass to the roll."
+      },
+      "counter": {
+        "fr": "Le pivot défenseur monte au niveau de l'écran.",
+        "en": "The defending big steps up to the level of the screen."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Tête haute, regarder devant soi",
+          "Dribble bas et fort",
+          "Protéger le ballon avec le bras libre",
+          "Changer de rythme autant que de direction"
+        ],
+        "en": [
+          "Head up, eyes forward",
+          "Low, hard dribble",
+          "Protect the ball with the off arm",
+          "Change pace as much as direction"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "x1": [
+          25,
+          29
+        ],
+        "x5": [
+          25,
+          16
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x5": [
+              25,
+              16,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran ; x5 recule.",
+            "en": "5 screens; x5 drops."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              32,
+              25,
+              "d"
+            ],
+            "x1": [
+              30.5,
+              28,
+              "m"
+            ],
+            "5": [
+              28,
+              11,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 sort à droite ; 5 roule.",
+            "en": "1 comes off right; 5 rolls."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              25,
+              21,
+              "d"
+            ],
+            "x1": [
+              29,
+              24,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 revient vers le milieu, x1 dans son dos.",
+            "en": "1 snakes back to the middle, x1 on his back."
+          }
+        },
+        {
+          "m": {
+            "x5": [
+              25,
+              17.5,
+              "m"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "Lecture : x5 sort, passe à 5.",
+            "en": "Read: x5 steps up, pass to 5."
+          }
+        }
+      ],
+      "duration": 12,
+      "equipment": {
+        "fr": "1 panier, 1 ballon",
+        "en": "1 basket, 1 ball"
+      },
+      "players": "4-8",
+      "age": [
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Le pivot défenseur change",
+          "Ajouter un aideur",
+          "Finir en floater"
+        ],
+        "en": [
+          "The big switches",
+          "Add a helper",
+          "Finish with a floater"
+        ]
+      }
+    },
+    {
+      "id": "two-ball-passing",
+      "cat": "exercices",
+      "family": "passes",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Passes à deux ballons",
+        "en": "Two-ball passing"
+      },
+      "sum": {
+        "fr": "Deux joueurs face à face se passent deux ballons en même temps : l'un à hauteur de poitrine, l'autre à terre.",
+        "en": "Two players face to face pass two balls at once: one at chest height, the other a bounce pass."
+      },
+      "why": {
+        "fr": "Demande des passes précises et une réception rapide, mains prêtes.",
+        "en": "Requires accurate passes and quick catches with ready hands."
+      },
+      "counter": {
+        "fr": "Augmenter la distance et la vitesse.",
+        "en": "Increase the distance and speed."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Passer au partenaire, pas à l'endroit où il était",
+          "Passe tendue, à hauteur de poitrine",
+          "Le receveur montre ses mains",
+          "Faire un pas vers le ballon pour recevoir"
+        ],
+        "en": [
+          "Pass to the teammate, not to where he was",
+          "Firm pass at chest height",
+          "The receiver shows his hands",
+          "Step toward the ball to catch"
+        ]
+      },
+      "start": {
+        "1": [
+          18,
+          25
+        ],
+        "2": [
+          32,
+          25
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 (le second ballon part à terre en même temps).",
+            "en": "1 passes to 2 (the second ball goes as a bounce pass at the same time)."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "2 renvoie aussitôt.",
+            "en": "2 sends it right back."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              18,
+              18,
+              "c"
+            ],
+            "2": [
+              32,
+              18,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "On recommence en se déplaçant latéralement.",
+            "en": "Repeat while sliding sideways."
+          }
+        }
+      ],
+      "duration": 6,
+      "equipment": {
+        "fr": "2 ballons pour 2 joueurs",
+        "en": "2 balls per 2 players"
+      },
+      "players": "2-20",
+      "age": [
+        "U11",
+        "U13"
+      ],
+      "variants": {
+        "fr": [
+          "Passes à une main",
+          "En glissant latéralement",
+          "Avec un troisième joueur"
+        ],
+        "en": [
+          "One-hand passes",
+          "Sliding sideways",
+          "With a third player"
+        ]
+      }
+    },
+    {
+      "id": "star-passing",
+      "cat": "exercices",
+      "family": "passes",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Passes en étoile",
+        "en": "Star passing"
+      },
+      "sum": {
+        "fr": "Cinq colonnes placées en étoile : chaque joueur passe à une colonne en sautant la voisine, puis suit sa passe.",
+        "en": "Five lines set in a star: each player passes to a line skipping the neighbor, then follows his pass."
+      },
+      "why": {
+        "fr": "Travaille la passe, le déplacement après la passe et la concentration en groupe.",
+        "en": "Works passing, moving after the pass and group focus."
+      },
+      "counter": {
+        "fr": "Ajouter un second ballon.",
+        "en": "Add a second ball."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Passer au partenaire, pas à l'endroit où il était",
+          "Passe tendue, à hauteur de poitrine",
+          "Le receveur montre ses mains",
+          "Faire un pas vers le ballon pour recevoir"
+        ],
+        "en": [
+          "Pass to the teammate, not to where he was",
+          "Firm pass at chest height",
+          "The receiver shows his hands",
+          "Step toward the ball to catch"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          30
+        ],
+        "2": [
+          36,
+          22
+        ],
+        "3": [
+          32,
+          10
+        ],
+        "4": [
+          18,
+          10
+        ],
+        "5": [
+          14,
+          22
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3 et va prendre la place de 3.",
+            "en": "1 passes to 3 and goes to 3's spot."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              31,
+              12,
+              "c"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "3 passe à 5.",
+            "en": "3 passes to 5."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              15,
+              20,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "5 passe à 2 ; on continue en étoile.",
+            "en": "5 passes to 2; keep going in a star."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 ou 2 ballons",
+        "en": "1 or 2 balls"
+      },
+      "players": "8-15",
+      "age": [
+        "U11",
+        "U13",
+        "U15"
+      ],
+      "variants": {
+        "fr": [
+          "Deux ballons",
+          "Passes à terre uniquement",
+          "Chronométré"
+        ],
+        "en": [
+          "Two balls",
+          "Bounce passes only",
+          "Timed"
+        ]
+      }
+    },
+    {
+      "id": "pass-and-follow",
+      "cat": "exercices",
+      "family": "passes",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Passe et suit",
+        "en": "Pass and follow"
+      },
+      "sum": {
+        "fr": "Le joueur passe au premier d'une colonne, puis court se placer derrière cette colonne.",
+        "en": "The player passes to the first player in a line, then runs to the back of that line."
+      },
+      "why": {
+        "fr": "Simple et rythmé : beaucoup de passes et de réceptions en peu de temps.",
+        "en": "Simple and rhythmic: lots of passes and catches in little time."
+      },
+      "counter": {
+        "fr": "Imposer le type de passe.",
+        "en": "Impose the type of pass."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Passer au partenaire, pas à l'endroit où il était",
+          "Passe tendue, à hauteur de poitrine",
+          "Le receveur montre ses mains",
+          "Faire un pas vers le ballon pour recevoir"
+        ],
+        "en": [
+          "Pass to the teammate, not to where he was",
+          "Firm pass at chest height",
+          "The receiver shows his hands",
+          "Step toward the ball to catch"
+        ]
+      },
+      "start": {
+        "1": [
+          16,
+          28
+        ],
+        "3": [
+          16,
+          32
+        ],
+        "2": [
+          34,
+          28
+        ],
+        "4": [
+          34,
+          32
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 en face.",
+            "en": "1 passes to 2 across."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              34,
+              36,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "1 suit sa passe et se place derrière la colonne d'en face ; 2 passe à 3.",
+            "en": "1 follows his pass to the back of the other line; 2 passes to 3."
+          }
+        }
+      ],
+      "duration": 6,
+      "equipment": {
+        "fr": "1 ballon pour 4 à 8 joueurs",
+        "en": "1 ball per 4 to 8 players"
+      },
+      "players": "4-12",
+      "age": [
+        "U11",
+        "U13"
+      ],
+      "variants": {
+        "fr": [
+          "Passe à terre",
+          "Passe par-dessus la tête",
+          "Deux ballons"
+        ],
+        "en": [
+          "Bounce pass",
+          "Overhead pass",
+          "Two balls"
+        ]
+      }
+    },
+    {
+      "id": "full-court-passing-on-the-move",
+      "cat": "exercices",
+      "family": "passes",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Passes en mouvement tout terrain",
+        "en": "Full-court passing on the move"
+      },
+      "sum": {
+        "fr": "Deux joueurs remontent le terrain en courant et en se faisant des passes sans dribbler, jusqu'au lay-up.",
+        "en": "Two players run up the floor passing to each other without dribbling, all the way to a layup."
+      },
+      "why": {
+        "fr": "Travaille la passe devant le receveur en course, comme en contre-attaque.",
+        "en": "Works passing ahead of a running receiver, as on a fast break."
+      },
+      "counter": {
+        "fr": "Ajouter un défenseur qui revient.",
+        "en": "Add a defender getting back."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Passer au partenaire, pas à l'endroit où il était",
+          "Passe tendue, à hauteur de poitrine",
+          "Le receveur montre ses mains",
+          "Faire un pas vers le ballon pour recevoir"
+        ],
+        "en": [
+          "Pass to the teammate, not to where he was",
+          "Firm pass at chest height",
+          "The receiver shows his hands",
+          "Step toward the ball to catch"
+        ]
+      },
+      "start": {
+        "1": [
+          18,
+          46
+        ],
+        "2": [
+          32,
+          46
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              17,
+              36,
+              "c"
+            ],
+            "2": [
+              33,
+              34,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "Les deux courent ; 1 passe devant 2.",
+            "en": "Both run; 1 passes ahead of 2."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              33,
+              24,
+              "c"
+            ],
+            "1": [
+              17,
+              22,
+              "c"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "2 renvoie devant 1.",
+            "en": "2 passes ahead of 1."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              22,
+              7,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 finit en lay-up.",
+            "en": "1 finishes with a layup."
+          }
+        }
+      ],
+      "duration": 8,
+      "equipment": {
+        "fr": "1 ballon par paire",
+        "en": "1 ball per pair"
+      },
+      "players": "2-14",
+      "age": [
+        "U11",
+        "U13",
+        "U15"
+      ],
+      "variants": {
+        "fr": [
+          "À trois (tresse)",
+          "Avec un défenseur",
+          "Passes à terre uniquement"
+        ],
+        "en": [
+          "Three players (weave)",
+          "With a defender",
+          "Bounce passes only"
+        ]
+      }
+    },
+    {
+      "id": "ten-pass-game",
+      "cat": "exercices",
+      "family": "passes",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Passes contre défenseur (jeu des 10 passes)",
+        "en": "Ten-pass game"
+      },
+      "sum": {
+        "fr": "Jeu à 3 contre 3 (ou plus) : l'équipe qui a le ballon doit réussir dix passes de suite sans le perdre.",
+        "en": "3-on-3 (or more): the team with the ball has to complete ten passes in a row without losing it."
+      },
+      "why": {
+        "fr": "Oblige à se démarquer, à passer sous pression et à protéger le ballon.",
+        "en": "Forces players to get open, pass under pressure and protect the ball."
+      },
+      "counter": {
+        "fr": "Les défenseurs refusent les passes courtes.",
+        "en": "The defenders deny the short passes."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Passer au partenaire, pas à l'endroit où il était",
+          "Passe tendue, à hauteur de poitrine",
+          "Le receveur montre ses mains",
+          "Faire un pas vers le ballon pour recevoir"
+        ],
+        "en": [
+          "Pass to the teammate, not to where he was",
+          "Firm pass at chest height",
+          "The receiver shows his hands",
+          "Step toward the ball to catch"
+        ]
+      },
+      "start": {
+        "1": [
+          20,
+          28
+        ],
+        "2": [
+          32,
+          24
+        ],
+        "3": [
+          24,
+          16
+        ],
+        "x1": [
+          21,
+          25
+        ],
+        "x2": [
+          30,
+          22
+        ],
+        "x3": [
+          24,
+          19
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              35,
+              28,
+              "c"
+            ],
+            "x2": [
+              33,
+              25,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 qui s'est démarqué.",
+            "en": "1 passes to 2, who got open."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              17,
+              14,
+              "c"
+            ],
+            "x3": [
+              20,
+              17,
+              "m"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "3 se démarque à l'opposé ; 2 lui passe.",
+            "en": "3 gets open on the far side; 2 passes to him."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 ballon, chasubles",
+        "en": "1 ball, bibs"
+      },
+      "players": "6-12",
+      "age": [
+        "U11",
+        "U13",
+        "U15"
+      ],
+      "variants": {
+        "fr": [
+          "Sans dribble",
+          "Passe au retour interdite",
+          "But à 3 points après 10 passes"
+        ],
+        "en": [
+          "No dribbling",
+          "No pass back to the passer",
+          "A point after 10 passes"
+        ]
+      }
+    },
+    {
+      "id": "passing-off-the-dribble",
+      "cat": "exercices",
+      "family": "passes",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Passe en sortie de dribble",
+        "en": "Passing off the dribble"
+      },
+      "sum": {
+        "fr": "Le joueur dribble et passe sans arrêter son dribble, d'une seule main, vers un partenaire en mouvement.",
+        "en": "The player dribbles and passes without stopping his dribble, with one hand, to a teammate on the move."
+      },
+      "why": {
+        "fr": "La passe sans arrêt de dribble ne prévient pas la défense.",
+        "en": "A pass without picking up the dribble gives the defense no warning."
+      },
+      "counter": {
+        "fr": "Le défenseur lit les épaules du dribbleur.",
+        "en": "The defender reads the dribbler's shoulders."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Passer au partenaire, pas à l'endroit où il était",
+          "Passe tendue, à hauteur de poitrine",
+          "Le receveur montre ses mains",
+          "Faire un pas vers le ballon pour recevoir"
+        ],
+        "en": [
+          "Pass to the teammate, not to where he was",
+          "Firm pass at chest height",
+          "The receiver shows his hands",
+          "Step toward the ball to catch"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          48,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              31,
+              19,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 pénètre vers le coude droit.",
+            "en": "1 drives toward the right elbow."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "Sans arrêter son dribble, 1 passe à une main à 2 au corner.",
+            "en": "Without stopping his dribble, 1 passes one-handed to 2 in the corner."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par paire",
+        "en": "1 basket, 1 ball per pair"
+      },
+      "players": "2-10",
+      "age": [
+        "U15",
+        "U17",
+        "seniors",
+        "pro"
+      ],
+      "variants": {
+        "fr": [
+          "Passe à terre",
+          "Passe main faible",
+          "Avec un défenseur au corner"
+        ],
+        "en": [
+          "Bounce pass",
+          "Weak-hand pass",
+          "With a defender in the corner"
+        ]
+      }
+    },
+    {
+      "id": "post-entry-passing",
+      "cat": "exercices",
+      "family": "passes",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Passe au poste",
+        "en": "Post-entry passing"
+      },
+      "sum": {
+        "fr": "Le joueur de l'aile fait entrer le ballon au poste bas en choisissant le bon type de passe selon la position du défenseur.",
+        "en": "The wing feeds the post on the block, choosing the right pass for the defender's position."
+      },
+      "why": {
+        "fr": "La passe au poste est souvent interceptée : il faut choisir l'angle et le type de passe.",
+        "en": "Post entries often get stolen: the angle and type of pass matter."
+      },
+      "counter": {
+        "fr": "Le défenseur change sa position (devant, côté, derrière).",
+        "en": "The defender changes his position (front, side, behind)."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Passer au partenaire, pas à l'endroit où il était",
+          "Passe tendue, à hauteur de poitrine",
+          "Le receveur montre ses mains",
+          "Faire un pas vers le ballon pour recevoir"
+        ],
+        "en": [
+          "Pass to the teammate, not to where he was",
+          "Firm pass at chest height",
+          "The receiver shows his hands",
+          "Step toward the ball to catch"
+        ]
+      },
+      "start": {
+        "2": [
+          42,
+          20
+        ],
+        "5": [
+          32,
+          10
+        ],
+        "x5": [
+          33,
+          12
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              42,
+              15,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "x5 défend côté haut : 2 descend pour changer l'angle.",
+            "en": "x5 plays the high side: 2 drops to change the angle."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à terre du côté opposé au défenseur.",
+            "en": "Bounce pass away from the defender."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par trio",
+        "en": "1 basket, 1 ball per group of 3"
+      },
+      "players": "3-9",
+      "age": [
+        "U13",
+        "U15",
+        "U17"
+      ],
+      "variants": {
+        "fr": [
+          "Passe lobée contre un défenseur devant",
+          "Passe directe contre un défenseur derrière",
+          "Depuis le haut"
+        ],
+        "en": [
+          "Lob against a fronting defender",
+          "Direct pass against a defender behind",
+          "From the top"
+        ]
+      }
+    },
+    {
+      "id": "outlet-and-long-passing",
+      "cat": "exercices",
+      "family": "passes",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Passe longue de contre-attaque",
+        "en": "Outlet and long passing"
+      },
+      "sum": {
+        "fr": "Le rebondeur fait la première passe vers l'aile, puis l'ailier envoie une passe longue au joueur qui sprinte.",
+        "en": "The rebounder throws the outlet to the wing, then the wing throws a long pass to the sprinter."
+      },
+      "why": {
+        "fr": "Travaille les deux passes qui lancent la contre-attaque.",
+        "en": "Works the two passes that start the fast break."
+      },
+      "counter": {
+        "fr": "Un défenseur reste en sécurité pour couper la passe longue.",
+        "en": "A defender stays back to cut off the long pass."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Passer au partenaire, pas à l'endroit où il était",
+          "Passe tendue, à hauteur de poitrine",
+          "Le receveur montre ses mains",
+          "Faire un pas vers le ballon pour recevoir"
+        ],
+        "en": [
+          "Pass to the teammate, not to where he was",
+          "Firm pass at chest height",
+          "The receiver shows his hands",
+          "Step toward the ball to catch"
+        ]
+      },
+      "start": {
+        "5": [
+          25,
+          7
+        ],
+        "1": [
+          8,
+          18
+        ],
+        "2": [
+          40,
+          26
+        ],
+        "b": "5"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              6,
+              21,
+              "c"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "5 prend le rebond et passe à 1 sur l'aile.",
+            "en": "5 grabs the rebound and outlets to 1 on the wing."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              40,
+              45,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 sprinte vers la ligne médiane ; 1 lui envoie la passe longue.",
+            "en": "2 sprints toward half court; 1 throws him the long pass."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 ballon pour 3 joueurs",
+        "en": "1 ball per 3 players"
+      },
+      "players": "3-12",
+      "age": [
+        "U13",
+        "U15",
+        "U17"
+      ],
+      "variants": {
+        "fr": [
+          "Passe à deux mains par-dessus la tête",
+          "Avec un défenseur en sécurité",
+          "Des deux côtés"
+        ],
+        "en": [
+          "Two-hand overhead pass",
+          "With a safety defender",
+          "From both sides"
+        ]
+      }
+    },
+    {
+      "id": "drive-and-kick-passing",
+      "cat": "exercices",
+      "family": "passes",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Passe en pénétration-ressortie (drive and kick)",
+        "en": "Drive-and-kick passing"
+      },
+      "sum": {
+        "fr": "Le joueur pénètre, attire un aideur et ressort le ballon vers le partenaire que l'aideur a quitté.",
+        "en": "The player drives, draws a helper and kicks the ball out to the teammate the helper left."
+      },
+      "why": {
+        "fr": "Lire l'aideur et passer au bon moment crée les meilleurs tirs ouverts.",
+        "en": "Reading the helper and passing at the right time creates the best open shots."
+      },
+      "counter": {
+        "fr": "L'aideur fait une feinte d'aide puis revient.",
+        "en": "The helper fakes help, then recovers."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Passer au partenaire, pas à l'endroit où il était",
+          "Passe tendue, à hauteur de poitrine",
+          "Le receveur montre ses mains",
+          "Faire un pas vers le ballon pour recevoir"
+        ],
+        "en": [
+          "Pass to the teammate, not to where he was",
+          "Firm pass at chest height",
+          "The receiver shows his hands",
+          "Step toward the ball to catch"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "x3": [
+          15,
+          18
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              21,
+              16,
+              "d"
+            ],
+            "x3": [
+              18,
+              15,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 pénètre ; x3 vient aider.",
+            "en": "1 drives; x3 comes to help."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 ressort vers 3.",
+            "en": "1 kicks out to 3."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par trio",
+        "en": "1 basket, 1 ball per group of 3"
+      },
+      "players": "3-9",
+      "age": [
+        "U13",
+        "U15",
+        "U17",
+        "seniors"
+      ],
+      "variants": {
+        "fr": [
+          "Ressortie au corner",
+          "Aideur qui feinte",
+          "Le receveur attaque le close-out"
+        ],
+        "en": [
+          "Kick to the corner",
+          "Helper who fakes",
+          "The receiver attacks the close-out"
+        ]
+      }
+    },
+    {
+      "id": "lob-passing",
+      "cat": "exercices",
+      "family": "passes",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Passe lobée par-dessus la défense",
+        "en": "Lob passing"
+      },
+      "sum": {
+        "fr": "Passe lobée par-dessus un défenseur placé devant le receveur, vers l'endroit où le receveur va courir.",
+        "en": "A lob pass over a defender fronting the receiver, to where the receiver is going to run."
+      },
+      "why": {
+        "fr": "Contre un défenseur qui joue devant, la passe lobée est la seule passe possible.",
+        "en": "Against a fronting defender, the lob is the only pass available."
+      },
+      "counter": {
+        "fr": "Un aideur du côté faible vient couper la passe lobée.",
+        "en": "A weak-side helper comes to take the lob away."
+      },
+      "used": {
+        "fr": "Exercice classique, utilisé dans les clubs du monde entier.",
+        "en": "Classic drill used by clubs all over the world."
+      },
+      "keys": {
+        "fr": [
+          "Passer au partenaire, pas à l'endroit où il était",
+          "Passe tendue, à hauteur de poitrine",
+          "Le receveur montre ses mains",
+          "Faire un pas vers le ballon pour recevoir"
+        ],
+        "en": [
+          "Pass to the teammate, not to where he was",
+          "Firm pass at chest height",
+          "The receiver shows his hands",
+          "Step toward the ball to catch"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "5": [
+          32,
+          10
+        ],
+        "x5": [
+          33.5,
+          12
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              31,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "x5 joue devant 5 : 5 le garde dans son dos.",
+            "en": "x5 fronts 5: 5 keeps him on his back."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe lobée de 2 vers le cercle, côté opposé au défenseur.",
+            "en": "Lob from 2 toward the rim, away from the defender."
+          }
+        }
+      ],
+      "duration": 10,
+      "equipment": {
+        "fr": "1 panier, 1 ballon par trio",
+        "en": "1 basket, 1 ball per group of 3"
+      },
+      "players": "3-9",
+      "age": [
+        "U15",
+        "U17",
+        "seniors"
+      ],
+      "variants": {
+        "fr": [
+          "Lob depuis le haut",
+          "Avec un aideur",
+          "Lob en transition"
+        ],
+        "en": [
+          "Lob from the top",
+          "With a helper",
+          "Lob in transition"
+        ]
+      }
     }
   ]
 }
