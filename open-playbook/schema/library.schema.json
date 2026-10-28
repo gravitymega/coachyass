@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "library.schema.json",
+  "title": "tactics.json : catégories, glossaire, séance type et fiches",
+  "type": "object",
+  "required": ["cats", "glossary", "plan", "tactics"],
+  "additionalProperties": false,
+  "properties": {
+    "cats": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "fr", "en"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z_]+$" },
+          "fr": { "type": "string", "pattern": "\\S" },
+          "en": { "type": "string", "pattern": "\\S" }
+        }
+      }
+    },
+    "glossary": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": { "type": "string", "pattern": "\\S" },
+        "minItems": 4,
+        "maxItems": 4
+      }
+    },
+    "plan": { "$ref": "#/definitions/plan" },
+    "tactics": { "type": "array", "items": { "$ref": "tactic.schema.json" } }
+  },
+  "definitions": {
+    "text": { "$ref": "tactic.schema.json#/definitions/text" },
+    "plan": {
+      "type": "object",
+      "required": ["name", "duration", "blocks"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "$ref": "#/definitions/text" },
+        "duration": { "type": "integer", "minimum": 1 },
+        "blocks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["min", "title", "desc"],
+            "additionalProperties": false,
+            "properties": {
+              "min": { "type": "integer", "minimum": 1 },
+              "title": { "$ref": "#/definitions/text" },
+              "desc": { "$ref": "#/definitions/text" },
+              "ids": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    }
+  }
+}

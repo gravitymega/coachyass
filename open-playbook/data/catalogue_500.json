@@ -1,0 +1,5502 @@
+[
+  {
+    "id": "pick-and-roll-central",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 1,
+    "name": {
+      "fr": "Pick-and-roll central",
+      "en": "High pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "side-pick-and-roll",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 1,
+    "name": {
+      "fr": "Pick-and-roll latéral",
+      "en": "Side pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "spain-pick-and-roll",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Pick-and-roll « Spain » (écran dans le dos du défenseur du pivot)",
+      "en": "Spain pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "step-up-screen",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Écran de remontée (step-up)",
+      "en": "Step-up screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "re-screen-flip",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Double écran porteur (re-screen)",
+      "en": "Re-screen (flip)"
+    },
+    "status": "done"
+  },
+  {
+    "id": "slip-screen",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Écran glissé (slip)",
+      "en": "Slip screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "pick-and-pop",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 1,
+    "name": {
+      "fr": "Pick-and-pop",
+      "en": "Pick-and-pop"
+    },
+    "status": "done"
+  },
+  {
+    "id": "short-roll",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Roll court (short roll)",
+      "en": "Short roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "ghost-screen",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran fantôme (ghost screen)",
+      "en": "Ghost screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "snake-dribble",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Dribble serpent (snake)",
+      "en": "Snake dribble"
+    },
+    "status": "done"
+  },
+  {
+    "id": "reject-the-screen",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Refuser l'écran (reject)",
+      "en": "Reject the screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "empty-side-pick-and-roll",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Pick-and-roll côté vide",
+      "en": "Empty-side pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "angle-pick-and-roll",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Pick-and-roll en angle",
+      "en": "Angle pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "pick-and-roll-with-corner-lift",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Pick-and-roll avec remontée du corner (lift)",
+      "en": "Pick-and-roll with corner lift"
+    },
+    "status": "done"
+  },
+  {
+    "id": "pick-and-roll-with-weak-side-shake",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Pick-and-roll avec glissement côté faible (shake)",
+      "en": "Pick-and-roll with weak-side shake"
+    },
+    "status": "done"
+  },
+  {
+    "id": "inverted-pick-and-roll",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Pick-and-roll inversé (le meneur pose l'écran)",
+      "en": "Inverted pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "stack-pick-and-roll",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Pick-and-roll en colonne (stack)",
+      "en": "Stack pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "veer-screen",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran en biais (veer)",
+      "en": "Veer screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "hostage-dribble",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Dribble « otage » (garder le défenseur dans le dos)",
+      "en": "Hostage dribble"
+    },
+    "status": "done"
+  },
+  {
+    "id": "split-the-hedge",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Passer entre les deux défenseurs (split)",
+      "en": "Split the hedge"
+    },
+    "status": "done"
+  },
+  {
+    "id": "pull-up-vs-drop-coverage",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Pick-and-roll contre défense reculée : tir en sortie de dribble",
+      "en": "Pull-up vs drop coverage"
+    },
+    "status": "done"
+  },
+  {
+    "id": "seal-the-switch",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Pick-and-roll contre changement : sceller le petit",
+      "en": "Seal the switch"
+    },
+    "status": "done"
+  },
+  {
+    "id": "high-pick-and-roll-vs-stunt",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Pick-and-roll central avec feinte d'aide (stunt)",
+      "en": "High pick-and-roll vs stunt"
+    },
+    "status": "done"
+  },
+  {
+    "id": "single-drag-screen",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 1,
+    "name": {
+      "fr": "Pick-and-roll en transition (drag simple)",
+      "en": "Single drag screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "21-series",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Pick-and-roll « 21 » (passe à l'aile, coupe, écran)",
+      "en": "21 series"
+    },
+    "status": "done"
+  },
+  {
+    "id": "wing-wing-pick-and-roll",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Pick-and-roll 3-4 (deux ailiers)",
+      "en": "Wing-wing pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "rub-pick-and-roll",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Pick-and-roll « Rub » (le pivot frotte puis repose l'écran)",
+      "en": "Rub pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "flat-ball-screen",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Écran porteur à plat (flat)",
+      "en": "Flat ball screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "baseline-ball-screen",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran porteur à la ligne de fond",
+      "en": "Baseline ball screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "double-ball-screen",
+    "cat": "attaque",
+    "family": "pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Pick-and-roll avec double écraneur (double ball screen)",
+      "en": "Double ball screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-flare",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Flare",
+      "en": "Horns Flare"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-twist",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 3,
+    "name": {
+      "fr": "Horns Twist",
+      "en": "Horns Twist"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-pop",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Pop",
+      "en": "Horns Pop"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-pick-and-roll",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 1,
+    "name": {
+      "fr": "Horns pick-and-roll",
+      "en": "Horns pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-rip",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Rip",
+      "en": "Horns Rip"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-elbow",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Coude (jeu au coude)",
+      "en": "Horns Elbow"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-out",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Out",
+      "en": "Horns Out"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-away",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Away",
+      "en": "Horns Away"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-down",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Down",
+      "en": "Horns Down"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-get",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Get",
+      "en": "Horns Get"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-fist",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Fist",
+      "en": "Horns Fist"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-iverson",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Iverson",
+      "en": "Horns Iverson"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-spain",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 3,
+    "name": {
+      "fr": "Horns Spain",
+      "en": "Horns Spain"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-zipper",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Zipper",
+      "en": "Horns Zipper"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-chicago",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 3,
+    "name": {
+      "fr": "Horns Chicago",
+      "en": "Horns Chicago"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-stagger",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 3,
+    "name": {
+      "fr": "Horns Stagger",
+      "en": "Horns Stagger"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-punch",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Punch",
+      "en": "Horns Punch"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-through",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Through",
+      "en": "Horns Through"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-hammer",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 3,
+    "name": {
+      "fr": "Horns Hammer",
+      "en": "Horns Hammer"
+    },
+    "status": "done"
+  },
+  {
+    "id": "horns-split",
+    "cat": "attaque",
+    "family": "horns",
+    "lvl": 2,
+    "name": {
+      "fr": "Horns Split",
+      "en": "Horns Split"
+    },
+    "status": "done"
+  },
+  {
+    "id": "chicago",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Chicago",
+      "en": "Chicago action"
+    },
+    "status": "done"
+  },
+  {
+    "id": "zipper",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 1,
+    "name": {
+      "fr": "Zipper",
+      "en": "Zipper cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "stagger",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Écrans en escalier (Stagger)",
+      "en": "Stagger screens"
+    },
+    "status": "done"
+  },
+  {
+    "id": "elevator",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Portes d'ascenseur (Elevator)",
+      "en": "Elevator doors"
+    },
+    "status": "done"
+  },
+  {
+    "id": "floppy",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Floppy",
+      "en": "Floppy"
+    },
+    "status": "done"
+  },
+  {
+    "id": "hammer",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Hammer",
+      "en": "Hammer"
+    },
+    "status": "done"
+  },
+  {
+    "id": "pin-down",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 1,
+    "name": {
+      "fr": "Écran retour (pin-down)",
+      "en": "Pin-down"
+    },
+    "status": "done"
+  },
+  {
+    "id": "flare-screen",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Écran flare",
+      "en": "Flare screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "back-screen",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 1,
+    "name": {
+      "fr": "Écran dans le dos (back screen)",
+      "en": "Back screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "cross-screen",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 1,
+    "name": {
+      "fr": "Écran croisé (cross screen)",
+      "en": "Cross screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "iverson-cut",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 1,
+    "name": {
+      "fr": "Coupe Iverson",
+      "en": "Iverson cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "curl-cut",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Boucle (curl)",
+      "en": "Curl cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "rip-screen",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Écran Rip",
+      "en": "Rip screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "screen-the-screener",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Écran pour l'écraneur",
+      "en": "Screen the screener"
+    },
+    "status": "done"
+  },
+  {
+    "id": "double-stagger",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Double stagger",
+      "en": "Double stagger"
+    },
+    "status": "done"
+  },
+  {
+    "id": "ram-screen",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran Ram (écran pour l'écraneur avant l'écran porteur)",
+      "en": "Ram screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "away-screen",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 1,
+    "name": {
+      "fr": "Écran loin du ballon",
+      "en": "Away screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "brush-screen",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Écran frôlé (brush)",
+      "en": "Brush screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "fade-cut",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Coupe en fade",
+      "en": "Fade cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "shallow-cut",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Coupe peu profonde (shallow)",
+      "en": "Shallow cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "ucla-cut",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 1,
+    "name": {
+      "fr": "Coupe UCLA",
+      "en": "UCLA cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "double-pin-down",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Double écran retour",
+      "en": "Double pin-down"
+    },
+    "status": "done"
+  },
+  {
+    "id": "wide-pin-down",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Écran retour large",
+      "en": "Wide pin-down"
+    },
+    "status": "done"
+  },
+  {
+    "id": "loop-action",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Action en boucle (loop)",
+      "en": "Loop action"
+    },
+    "status": "done"
+  },
+  {
+    "id": "hawk-cut",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Coupe Hawk",
+      "en": "Hawk cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "cross-screen-into-pin-down",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran croisé puis écran retour",
+      "en": "Cross screen into pin-down"
+    },
+    "status": "done"
+  },
+  {
+    "id": "thumb-down-screen",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran retour vers le corner",
+      "en": "Thumb-down screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "l-cut",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 1,
+    "name": {
+      "fr": "Coupe en L",
+      "en": "L-cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "v-cut",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 1,
+    "name": {
+      "fr": "Coupe en V",
+      "en": "V-cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "floppy-double",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Floppy en boucle (curl sur le double écran)",
+      "en": "Floppy double curl"
+    },
+    "status": "done"
+  },
+  {
+    "id": "pin-in-screen",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran pour le tireur au poste haut (pin-in)",
+      "en": "Pin-in screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "blind-pig",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran à l'aveugle (blind pig)",
+      "en": "Blind pig"
+    },
+    "status": "done"
+  },
+  {
+    "id": "backdoor-cut",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 1,
+    "name": {
+      "fr": "Coupe dans le dos (backdoor)",
+      "en": "Backdoor cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "reverse-stagger",
+    "cat": "attaque",
+    "family": "ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran en escalier inversé",
+      "en": "Reverse stagger"
+    },
+    "status": "done"
+  },
+  {
+    "id": "get-dho",
+    "cat": "attaque",
+    "family": "main-a-main",
+    "lvl": 1,
+    "name": {
+      "fr": "Get / remise main à main (DHO)",
+      "en": "Get / dribble handoff (DHO)"
+    },
+    "status": "done"
+  },
+  {
+    "id": "wide-handoff",
+    "cat": "attaque",
+    "family": "main-a-main",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise main à main large",
+      "en": "Wide handoff"
+    },
+    "status": "done"
+  },
+  {
+    "id": "chase-action",
+    "cat": "attaque",
+    "family": "main-a-main",
+    "lvl": 2,
+    "name": {
+      "fr": "Action Chase",
+      "en": "Chase action"
+    },
+    "status": "done"
+  },
+  {
+    "id": "keep-fake-handoff",
+    "cat": "attaque",
+    "family": "main-a-main",
+    "lvl": 2,
+    "name": {
+      "fr": "Fausse remise (keep)",
+      "en": "Keep (fake handoff)"
+    },
+    "status": "done"
+  },
+  {
+    "id": "dribble-at-wave",
+    "cat": "attaque",
+    "family": "main-a-main",
+    "lvl": 1,
+    "name": {
+      "fr": "Dribble vers (wave)",
+      "en": "Dribble at (wave)"
+    },
+    "status": "done"
+  },
+  {
+    "id": "weave",
+    "cat": "attaque",
+    "family": "main-a-main",
+    "lvl": 1,
+    "name": {
+      "fr": "Tresse (weave)",
+      "en": "Weave"
+    },
+    "status": "done"
+  },
+  {
+    "id": "handoff-into-pick-and-roll",
+    "cat": "attaque",
+    "family": "main-a-main",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise main à main puis pick-and-roll",
+      "en": "Handoff into pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "spain-handoff",
+    "cat": "attaque",
+    "family": "main-a-main",
+    "lvl": 3,
+    "name": {
+      "fr": "Remise main à main « Spain »",
+      "en": "Spain handoff"
+    },
+    "status": "done"
+  },
+  {
+    "id": "reject-the-handoff",
+    "cat": "attaque",
+    "family": "main-a-main",
+    "lvl": 2,
+    "name": {
+      "fr": "Refuser la remise",
+      "en": "Reject the handoff"
+    },
+    "status": "done"
+  },
+  {
+    "id": "handoff-into-back-cut",
+    "cat": "attaque",
+    "family": "main-a-main",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise main à main puis coupe dans le dos",
+      "en": "Handoff into back cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "pitch-and-run",
+    "cat": "attaque",
+    "family": "main-a-main",
+    "lvl": 2,
+    "name": {
+      "fr": "Passe à la main et course (pitch)",
+      "en": "Pitch and run"
+    },
+    "status": "done"
+  },
+  {
+    "id": "double-handoff",
+    "cat": "attaque",
+    "family": "main-a-main",
+    "lvl": 3,
+    "name": {
+      "fr": "Double remise main à main",
+      "en": "Double handoff"
+    },
+    "status": "done"
+  },
+  {
+    "id": "flex",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 2,
+    "name": {
+      "fr": "Flex",
+      "en": "Flex"
+    },
+    "status": "done"
+  },
+  {
+    "id": "shuffle-offense",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 2,
+    "name": {
+      "fr": "Shuffle",
+      "en": "Shuffle offense"
+    },
+    "status": "done"
+  },
+  {
+    "id": "swing-offense",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 2,
+    "name": {
+      "fr": "Swing",
+      "en": "Swing offense"
+    },
+    "status": "done"
+  },
+  {
+    "id": "princeton-backdoor",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 2,
+    "name": {
+      "fr": "Princeton : coupe dans le dos",
+      "en": "Princeton backdoor"
+    },
+    "status": "done"
+  },
+  {
+    "id": "princeton-chin",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 3,
+    "name": {
+      "fr": "Princeton : menton (chin)",
+      "en": "Princeton chin"
+    },
+    "status": "done"
+  },
+  {
+    "id": "wheel-offense",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 2,
+    "name": {
+      "fr": "Roue (wheel)",
+      "en": "Wheel offense"
+    },
+    "status": "done"
+  },
+  {
+    "id": "4-out-1-in-motion",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 1,
+    "name": {
+      "fr": "Motion 4 dehors 1 dedans",
+      "en": "4-out 1-in motion"
+    },
+    "status": "done"
+  },
+  {
+    "id": "5-out-motion",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 1,
+    "name": {
+      "fr": "Motion 5 dehors",
+      "en": "5-out motion"
+    },
+    "status": "done"
+  },
+  {
+    "id": "dribble-drive-motion",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque en pénétration (dribble drive)",
+      "en": "Dribble drive motion"
+    },
+    "status": "done"
+  },
+  {
+    "id": "read-and-react",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 2,
+    "name": {
+      "fr": "Lire et réagir (read and react)",
+      "en": "Read and react"
+    },
+    "status": "done"
+  },
+  {
+    "id": "blocker-mover",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 3,
+    "name": {
+      "fr": "Bloqueur-coureur (blocker-mover)",
+      "en": "Blocker-mover"
+    },
+    "status": "done"
+  },
+  {
+    "id": "ucla-high-post-offense",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque UCLA (poste haut)",
+      "en": "UCLA high-post offense"
+    },
+    "status": "done"
+  },
+  {
+    "id": "triangle-offense-sideline-triangle",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 3,
+    "name": {
+      "fr": "Triangle offensif (triangle latéral)",
+      "en": "Triangle offense (sideline triangle)"
+    },
+    "status": "done"
+  },
+  {
+    "id": "corner-series",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 3,
+    "name": {
+      "fr": "Série corner",
+      "en": "Corner series"
+    },
+    "status": "done"
+  },
+  {
+    "id": "pass-and-cut",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 1,
+    "name": {
+      "fr": "Passer et couper",
+      "en": "Pass and cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "pass-and-screen-away",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 1,
+    "name": {
+      "fr": "Passer et écran loin",
+      "en": "Pass and screen away"
+    },
+    "status": "done"
+  },
+  {
+    "id": "1-4-spread-offense",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque d'écartement 1-4",
+      "en": "1-4 spread offense"
+    },
+    "status": "done"
+  },
+  {
+    "id": "open-post-motion",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 1,
+    "name": {
+      "fr": "Poste ouvert (open post)",
+      "en": "Open post motion"
+    },
+    "status": "done"
+  },
+  {
+    "id": "ball-screen-continuity",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 3,
+    "name": {
+      "fr": "Continuité sur écrans porteurs",
+      "en": "Ball-screen continuity"
+    },
+    "status": "done"
+  },
+  {
+    "id": "delay-offense",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 3,
+    "name": {
+      "fr": "Attaque de retardement (delay)",
+      "en": "Delay offense"
+    },
+    "status": "done"
+  },
+  {
+    "id": "3-out-2-in-motion",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 1,
+    "name": {
+      "fr": "Motion 3 dehors 2 dedans",
+      "en": "3-out 2-in motion"
+    },
+    "status": "done"
+  },
+  {
+    "id": "4-out-vs-pressure",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque « 4 dehors » contre pression",
+      "en": "4-out vs pressure"
+    },
+    "status": "done"
+  },
+  {
+    "id": "reversal-offense",
+    "cat": "attaque",
+    "family": "motion",
+    "lvl": 2,
+    "name": {
+      "fr": "Ballon côté fort, renversement rapide",
+      "en": "Reversal offense"
+    },
+    "status": "done"
+  },
+  {
+    "id": "high-low",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 1,
+    "name": {
+      "fr": "Haut-bas (high-low)",
+      "en": "High-low"
+    },
+    "status": "done"
+  },
+  {
+    "id": "wing-post-entry",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 1,
+    "name": {
+      "fr": "Entrée au poste depuis l'aile",
+      "en": "Wing post entry"
+    },
+    "status": "done"
+  },
+  {
+    "id": "duck-in",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 1,
+    "name": {
+      "fr": "Rentrée au poste (duck-in)",
+      "en": "Duck-in"
+    },
+    "status": "done"
+  },
+  {
+    "id": "post-split",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Coupe croisée après passe au poste (split)",
+      "en": "Post split"
+    },
+    "status": "done"
+  },
+  {
+    "id": "seal-and-pin",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Sceller et bloquer (seal)",
+      "en": "Seal and pin"
+    },
+    "status": "done"
+  },
+  {
+    "id": "post-up-after-a-switch",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Jeu au poste après changement",
+      "en": "Post-up after a switch"
+    },
+    "status": "done"
+  },
+  {
+    "id": "low-low-double-post",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Double poste bas",
+      "en": "Low-low double post"
+    },
+    "status": "done"
+  },
+  {
+    "id": "re-post",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Repasser au poste (re-post)",
+      "en": "Re-post"
+    },
+    "status": "done"
+  },
+  {
+    "id": "post-double-team-response",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Réponse à la prise à deux au poste",
+      "en": "Post double-team response"
+    },
+    "status": "done"
+  },
+  {
+    "id": "elbow-series",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 3,
+    "name": {
+      "fr": "Série au coude",
+      "en": "Elbow series"
+    },
+    "status": "done"
+  },
+  {
+    "id": "low-post-isolation",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 1,
+    "name": {
+      "fr": "Isolation au poste bas",
+      "en": "Low-post isolation"
+    },
+    "status": "done"
+  },
+  {
+    "id": "cut-after-the-post-entry",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 1,
+    "name": {
+      "fr": "Coupe du passeur après entrée au poste",
+      "en": "Cut after the post entry"
+    },
+    "status": "done"
+  },
+  {
+    "id": "high-post-face-up",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Poste haut face au panier",
+      "en": "High-post face-up"
+    },
+    "status": "done"
+  },
+  {
+    "id": "screen-for-the-post",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Écran pour le pivot (écran retour)",
+      "en": "Screen for the post"
+    },
+    "status": "done"
+  },
+  {
+    "id": "weak-side-post-flash",
+    "cat": "attaque",
+    "family": "poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Poste bas côté faible (flash)",
+      "en": "Weak-side post flash"
+    },
+    "status": "done"
+  },
+  {
+    "id": "top-isolation",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 1,
+    "name": {
+      "fr": "Isolation en haut",
+      "en": "Top isolation"
+    },
+    "status": "done"
+  },
+  {
+    "id": "wing-isolation-clear-out",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 1,
+    "name": {
+      "fr": "Isolation sur l'aile (côté vidé)",
+      "en": "Wing isolation (clear-out)"
+    },
+    "status": "done"
+  },
+  {
+    "id": "1-4-high-pick-and-roll",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 1,
+    "name": {
+      "fr": "1-4 haut : pick-and-roll",
+      "en": "1-4 high: pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "1-4-high-backdoor",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 1,
+    "name": {
+      "fr": "1-4 haut : coupe dans le dos",
+      "en": "1-4 high: backdoor"
+    },
+    "status": "done"
+  },
+  {
+    "id": "1-4-low-isolation",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 1,
+    "name": {
+      "fr": "1-4 bas : isolation",
+      "en": "1-4 low: isolation"
+    },
+    "status": "done"
+  },
+  {
+    "id": "box-cross-screens",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Boîte (box) : écrans croisés",
+      "en": "Box: cross screens"
+    },
+    "status": "done"
+  },
+  {
+    "id": "box-screen-the-screener",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Boîte (box) : écran pour l'écraneur",
+      "en": "Box: screen the screener"
+    },
+    "status": "done"
+  },
+  {
+    "id": "diamond-high-post-screen",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Losange (diamond) : écran du poste haut",
+      "en": "Diamond: high-post screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "line-set",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Placement en ligne",
+      "en": "Line set"
+    },
+    "status": "done"
+  },
+  {
+    "id": "double-high",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Double poste haut (high)",
+      "en": "Double high"
+    },
+    "status": "done"
+  },
+  {
+    "id": "wing-triangle",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Triangle sur l'aile",
+      "en": "Wing triangle"
+    },
+    "status": "done"
+  },
+  {
+    "id": "2-3-high-set",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Placement 2-3 haut",
+      "en": "2-3 high set"
+    },
+    "status": "done"
+  },
+  {
+    "id": "double-elbow-set",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Double coude (elbow)",
+      "en": "Double elbow set"
+    },
+    "status": "done"
+  },
+  {
+    "id": "half-court-stack-set",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Placement en colonne (stack) sur demi-terrain",
+      "en": "Half-court stack set"
+    },
+    "status": "done"
+  },
+  {
+    "id": "clear-side-for-the-best-player",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 1,
+    "name": {
+      "fr": "Côté vidé pour le meilleur joueur",
+      "en": "Clear side for the best player"
+    },
+    "status": "done"
+  },
+  {
+    "id": "high-post-pass-into-shooter-screen",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran pour le tireur après passe au poste haut",
+      "en": "High post pass into shooter screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "elbow-entry-and-passer-cut",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Passe au coude puis coupe du passeur",
+      "en": "Elbow entry and passer cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "three-man-action",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Action à trois (meneur, ailier, pivot)",
+      "en": "Three-man action"
+    },
+    "status": "done"
+  },
+  {
+    "id": "pick-and-roll-after-reversal",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Pick-and-roll après renversement",
+      "en": "Pick-and-roll after reversal"
+    },
+    "status": "done"
+  },
+  {
+    "id": "end-of-shot-clock-8-second-action",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Fin de possession : action à 8 secondes",
+      "en": "End of shot clock: 8-second action"
+    },
+    "status": "done"
+  },
+  {
+    "id": "4-out-with-elbow-big",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Placement 4 dehors avec pivot au coude",
+      "en": "4-out with elbow big"
+    },
+    "status": "done"
+  },
+  {
+    "id": "double-side-ball-screens-77",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 3,
+    "name": {
+      "fr": "Placement « 77 » (deux écrans porteurs simultanés)",
+      "en": "Double side ball screens (77)"
+    },
+    "status": "done"
+  },
+  {
+    "id": "half-court-pistol",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 3,
+    "name": {
+      "fr": "Placement « Pistol » sur demi-terrain",
+      "en": "Half-court Pistol"
+    },
+    "status": "done"
+  },
+  {
+    "id": "floppy-into-pick-and-roll",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 3,
+    "name": {
+      "fr": "Placement « Floppy-pick » (Floppy puis pick-and-roll)",
+      "en": "Floppy into pick-and-roll"
+    },
+    "status": "done"
+  },
+  {
+    "id": "line-set-shooter-cut",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 2,
+    "name": {
+      "fr": "Placement en ligne : coupe du meilleur tireur",
+      "en": "Line set: shooter cut"
+    },
+    "status": "done"
+  },
+  {
+    "id": "5-out-vs-switching-defense",
+    "cat": "attaque",
+    "family": "systemes",
+    "lvl": 3,
+    "name": {
+      "fr": "Contre la défense en changement : jeu à 5 dehors",
+      "en": "5-out vs switching defense"
+    },
+    "status": "done"
+  },
+  {
+    "id": "overload-vs-2-3",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 2,
+    "name": {
+      "fr": "Surcharge contre zone 2-3",
+      "en": "Overload vs 2-3 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "short-corner-vs-2-3",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 2,
+    "name": {
+      "fr": "Petit corner contre zone 2-3",
+      "en": "Short corner vs 2-3 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "gap-attack-vs-2-3",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 1,
+    "name": {
+      "fr": "Attaque des intervalles contre zone 2-3",
+      "en": "Gap attack vs 2-3 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "high-post-vs-2-3-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 1,
+    "name": {
+      "fr": "Poste haut contre zone 2-3",
+      "en": "High post vs 2-3 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "1-3-1-alignment-vs-2-3-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 2,
+    "name": {
+      "fr": "Placement 1-3-1 contre zone 2-3",
+      "en": "1-3-1 alignment vs 2-3 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "screening-the-2-3-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran sur la zone (screen the zone)",
+      "en": "Screening the 2-3 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "baseline-runner-vs-2-3-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 2,
+    "name": {
+      "fr": "Passe à la ligne de fond (baseline runner)",
+      "en": "Baseline runner vs 2-3 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "quick-reversal-vs-2-3-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 1,
+    "name": {
+      "fr": "Renversement rapide contre zone 2-3",
+      "en": "Quick reversal vs 2-3 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "weak-side-cut-vs-2-3-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 2,
+    "name": {
+      "fr": "Coupe du côté faible contre zone 2-3",
+      "en": "Weak-side cut vs 2-3 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "pick-and-roll-vs-2-3-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 3,
+    "name": {
+      "fr": "Pick-and-roll contre zone 2-3",
+      "en": "Pick-and-roll vs 2-3 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "offensive-rebounding-vs-2-3-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 2,
+    "name": {
+      "fr": "Rebond offensif contre zone 2-3",
+      "en": "Offensive rebounding vs 2-3 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "2-1-2-alignment-vs-2-3-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 2,
+    "name": {
+      "fr": "Placement 2-1-2 contre zone 2-3",
+      "en": "2-1-2 alignment vs 2-3 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "lob-over-the-2-3-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 3,
+    "name": {
+      "fr": "Passe en lob par-dessus la zone",
+      "en": "Lob over the 2-3 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "corner-three-vs-2-3-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 1,
+    "name": {
+      "fr": "Tir du corner contre zone 2-3",
+      "en": "Corner three vs 2-3 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "drive-and-kick-vs-2-3-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-2-3",
+    "lvl": 1,
+    "name": {
+      "fr": "Pénétration et ressortie contre zone 2-3",
+      "en": "Drive and kick vs 2-3 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "2-1-2-alignment-vs-3-2-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-3-2",
+    "lvl": 2,
+    "name": {
+      "fr": "Placement 2-1-2 contre zone 3-2",
+      "en": "2-1-2 alignment vs 3-2 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "low-post-vs-3-2-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-3-2",
+    "lvl": 1,
+    "name": {
+      "fr": "Poste bas contre zone 3-2",
+      "en": "Low post vs 3-2 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "overload-vs-3-2-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-3-2",
+    "lvl": 2,
+    "name": {
+      "fr": "Surcharge contre zone 3-2",
+      "en": "Overload vs 3-2 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "cut-behind-the-3-2-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-3-2",
+    "lvl": 2,
+    "name": {
+      "fr": "Coupe dans le dos de la zone 3-2",
+      "en": "Cut behind the 3-2 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "corner-attack-vs-3-2-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-3-2",
+    "lvl": 1,
+    "name": {
+      "fr": "Corner contre zone 3-2",
+      "en": "Corner attack vs 3-2 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "screen-the-low-defender-3-2-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-3-2",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran sur le défenseur du bas (zone 3-2)",
+      "en": "Screen the low defender (3-2 zone)"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "high-low-vs-3-2-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-3-2",
+    "lvl": 2,
+    "name": {
+      "fr": "Haut-bas contre zone 3-2",
+      "en": "High-low vs 3-2 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "middle-drive-vs-3-2-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-3-2",
+    "lvl": 1,
+    "name": {
+      "fr": "Pénétration au milieu contre zone 3-2",
+      "en": "Middle drive vs 3-2 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "baseline-attack-vs-1-3-1-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-1-3-1",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque de la ligne de fond contre zone 1-3-1",
+      "en": "Baseline attack vs 1-3-1 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "corners-vs-1-3-1-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-1-3-1",
+    "lvl": 1,
+    "name": {
+      "fr": "Corners contre zone 1-3-1",
+      "en": "Corners vs 1-3-1 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "2-1-2-alignment-vs-1-3-1-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-1-3-1",
+    "lvl": 2,
+    "name": {
+      "fr": "Placement 2-1-2 contre zone 1-3-1",
+      "en": "2-1-2 alignment vs 1-3-1 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "high-post-vs-1-3-1-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-1-3-1",
+    "lvl": 2,
+    "name": {
+      "fr": "Poste haut contre zone 1-3-1",
+      "en": "High post vs 1-3-1 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "baseline-reversal-vs-1-3-1-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-1-3-1",
+    "lvl": 3,
+    "name": {
+      "fr": "Renversement par la ligne de fond (zone 1-3-1)",
+      "en": "Baseline reversal vs 1-3-1 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "screen-the-wing-1-3-1-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-1-3-1",
+    "lvl": 3,
+    "name": {
+      "fr": "Écran sur l'ailier de la zone 1-3-1",
+      "en": "Screen the wing (1-3-1 zone)"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "beating-the-1-3-1-trap",
+    "cat": "zone_att",
+    "family": "attaque-zone-1-3-1",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque du piège de la zone 1-3-1",
+      "en": "Beating the 1-3-1 trap"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "weak-side-cut-vs-1-3-1-zone",
+    "cat": "zone_att",
+    "family": "attaque-zone-1-3-1",
+    "lvl": 2,
+    "name": {
+      "fr": "Coupe du côté faible contre zone 1-3-1",
+      "en": "Weak-side cut vs 1-3-1 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "screening-the-match-up-zone",
+    "cat": "zone_att",
+    "family": "attaque-match-up",
+    "lvl": 3,
+    "name": {
+      "fr": "Attaque de la zone match-up : écrans",
+      "en": "Screening the match-up zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "cutters-through-the-match-up-zone",
+    "cat": "zone_att",
+    "family": "attaque-match-up",
+    "lvl": 3,
+    "name": {
+      "fr": "Attaque de la zone match-up : coupes traversantes",
+      "en": "Cutters through the match-up zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "overloading-the-match-up-zone",
+    "cat": "zone_att",
+    "family": "attaque-match-up",
+    "lvl": 3,
+    "name": {
+      "fr": "Attaque de la zone match-up : surcharge",
+      "en": "Overloading the match-up zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "dribble-rotation-vs-match-up",
+    "cat": "zone_att",
+    "family": "attaque-match-up",
+    "lvl": 3,
+    "name": {
+      "fr": "Attaque de la zone match-up : dribble de déplacement",
+      "en": "Dribble rotation vs match-up"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "quick-reversal-vs-match-up",
+    "cat": "zone_att",
+    "family": "attaque-match-up",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque de la zone match-up : renversement rapide",
+      "en": "Quick reversal vs match-up"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "attacking-the-box-and-1",
+    "cat": "zone_att",
+    "family": "attaque-defenses-mixtes",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque contre boîte et 1 (box-and-1)",
+      "en": "Attacking the box-and-1"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "attacking-the-triangle-and-2",
+    "cat": "zone_att",
+    "family": "attaque-defenses-mixtes",
+    "lvl": 3,
+    "name": {
+      "fr": "Attaque contre triangle et 2",
+      "en": "Attacking the triangle-and-2"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "attacking-the-diamond-and-1",
+    "cat": "zone_att",
+    "family": "attaque-defenses-mixtes",
+    "lvl": 3,
+    "name": {
+      "fr": "Attaque contre losange et 1",
+      "en": "Attacking the diamond-and-1"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "freeing-the-face-guarded-player",
+    "cat": "zone_att",
+    "family": "attaque-defenses-mixtes",
+    "lvl": 3,
+    "name": {
+      "fr": "Libérer le joueur marqué individuellement",
+      "en": "Freeing the face-guarded player"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "fast-break-3-lanes",
+    "cat": "transition",
+    "family": "contre-attaque",
+    "lvl": 1,
+    "name": {
+      "fr": "Contre-attaque en 3 couloirs",
+      "en": "Three-lane fast break"
+    },
+    "status": "done"
+  },
+  {
+    "id": "2-on-1-fast-break",
+    "cat": "transition",
+    "family": "contre-attaque",
+    "lvl": 1,
+    "name": {
+      "fr": "Contre-attaque à 2 contre 1",
+      "en": "2-on-1 fast break"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "3-on-2-fast-break",
+    "cat": "transition",
+    "family": "contre-attaque",
+    "lvl": 1,
+    "name": {
+      "fr": "Contre-attaque à 3 contre 2",
+      "en": "3-on-2 fast break"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "4-on-3-fast-break",
+    "cat": "transition",
+    "family": "contre-attaque",
+    "lvl": 2,
+    "name": {
+      "fr": "Contre-attaque à 4 contre 3",
+      "en": "4-on-3 fast break"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "fast-break-after-a-steal",
+    "cat": "transition",
+    "family": "contre-attaque",
+    "lvl": 1,
+    "name": {
+      "fr": "Contre-attaque après interception",
+      "en": "Fast break after a steal"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "fast-break-after-a-made-basket",
+    "cat": "transition",
+    "family": "contre-attaque",
+    "lvl": 2,
+    "name": {
+      "fr": "Contre-attaque après panier encaissé",
+      "en": "Fast break after a made basket"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "outlet-pass",
+    "cat": "transition",
+    "family": "contre-attaque",
+    "lvl": 1,
+    "name": {
+      "fr": "Première passe (outlet)",
+      "en": "Outlet pass"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "home-run-pass",
+    "cat": "transition",
+    "family": "contre-attaque",
+    "lvl": 2,
+    "name": {
+      "fr": "Passe longue en avant (home run)",
+      "en": "Home-run pass"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "trailer-fast-break",
+    "cat": "transition",
+    "family": "contre-attaque",
+    "lvl": 2,
+    "name": {
+      "fr": "Contre-attaque avec le traîneur (trailer)",
+      "en": "Trailer fast break"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "rim-run",
+    "cat": "transition",
+    "family": "contre-attaque",
+    "lvl": 1,
+    "name": {
+      "fr": "Contre-attaque : course du pivot vers le cercle (rim run)",
+      "en": "Rim run"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "wing-led-fast-break",
+    "cat": "transition",
+    "family": "contre-attaque",
+    "lvl": 2,
+    "name": {
+      "fr": "Contre-attaque par les ailes",
+      "en": "Wing-led fast break"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "double-drag",
+    "cat": "transition",
+    "family": "attaque-rapide",
+    "lvl": 2,
+    "name": {
+      "fr": "Double drag",
+      "en": "Double drag"
+    },
+    "status": "done"
+  },
+  {
+    "id": "drag-screen",
+    "cat": "transition",
+    "family": "attaque-rapide",
+    "lvl": 1,
+    "name": {
+      "fr": "Drag simple",
+      "en": "Drag screen"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "pistol-action",
+    "cat": "transition",
+    "family": "attaque-rapide",
+    "lvl": 2,
+    "name": {
+      "fr": "Transition « Pistol »",
+      "en": "Pistol action"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "trailer-reversal",
+    "cat": "transition",
+    "family": "attaque-rapide",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque rapide : passe au traîneur et renversement",
+      "en": "Trailer reversal"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "early-offense-pin-down",
+    "cat": "transition",
+    "family": "attaque-rapide",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque rapide : écran retour en transition",
+      "en": "Early-offense pin-down"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "early-offense-handoff",
+    "cat": "transition",
+    "family": "attaque-rapide",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque rapide : remise main à main en transition",
+      "en": "Early-offense handoff"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "early-side-pick-and-roll",
+    "cat": "transition",
+    "family": "attaque-rapide",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque rapide : pick-and-roll latéral immédiat",
+      "en": "Early side pick-and-roll"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "drag-and-pop",
+    "cat": "transition",
+    "family": "attaque-rapide",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque rapide : « Drag » avec pop",
+      "en": "Drag and pop"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "early-post-seal",
+    "cat": "transition",
+    "family": "attaque-rapide",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque rapide : pivot au poste dès l'arrivée",
+      "en": "Early post seal"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "trailer-dive",
+    "cat": "transition",
+    "family": "attaque-rapide",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaque rapide : coupe du traîneur vers le panier",
+      "en": "Trailer dive"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "early-corner-three",
+    "cat": "transition",
+    "family": "attaque-rapide",
+    "lvl": 1,
+    "name": {
+      "fr": "Attaque rapide : passe directe au corner",
+      "en": "Early corner three"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "transition-rules",
+    "cat": "transition",
+    "family": "principes-transition",
+    "lvl": 1,
+    "name": {
+      "fr": "Règles de la transition offensive",
+      "en": "Offensive transition rules"
+    },
+    "status": "done"
+  },
+  {
+    "id": "running-the-lanes",
+    "cat": "transition",
+    "family": "principes-transition",
+    "lvl": 1,
+    "name": {
+      "fr": "Courir les couloirs",
+      "en": "Running the lanes"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "when-to-pull-it-out",
+    "cat": "transition",
+    "family": "principes-transition",
+    "lvl": 2,
+    "name": {
+      "fr": "Transition : quand ralentir",
+      "en": "When to pull it out"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "push-after-a-make",
+    "cat": "transition",
+    "family": "principes-transition",
+    "lvl": 2,
+    "name": {
+      "fr": "Transition : jouer après un panier encaissé",
+      "en": "Push after a make"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "role-of-the-trailer",
+    "cat": "transition",
+    "family": "principes-transition",
+    "lvl": 2,
+    "name": {
+      "fr": "Transition : rôle du traîneur",
+      "en": "Role of the trailer"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "transition-defense-protect-the-rim",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 1,
+    "name": {
+      "fr": "Retour défensif : protéger le panier",
+      "en": "Transition defense: protect the rim"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "transition-defense-stop-the-ball",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 1,
+    "name": {
+      "fr": "Retour défensif : arrêter le ballon",
+      "en": "Transition defense: stop the ball"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "transition-defense-1-vs-2",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 2,
+    "name": {
+      "fr": "Retour défensif : 1 contre 2",
+      "en": "Transition defense: 1 vs 2"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "transition-defense-2-vs-3-tandem",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 2,
+    "name": {
+      "fr": "Retour défensif : 2 contre 3 (tandem)",
+      "en": "Transition defense: 2 vs 3 tandem"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "transition-defense-matching-up",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 2,
+    "name": {
+      "fr": "Retour défensif : communication et appariement",
+      "en": "Transition defense: matching up"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "crash-or-get-back",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 2,
+    "name": {
+      "fr": "Retour défensif : qui va au rebond, qui revient",
+      "en": "Crash or get back"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slow-the-outlet",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 2,
+    "name": {
+      "fr": "Retour défensif : ralentir la première passe",
+      "en": "Slow the outlet"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "guarding-the-trailer",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 3,
+    "name": {
+      "fr": "Retour défensif : défendre le traîneur",
+      "en": "Guarding the trailer"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "transition-switching",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 3,
+    "name": {
+      "fr": "Retour défensif : changement en transition",
+      "en": "Transition switching"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "tactical-foul-rules-vary-by-competition",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 3,
+    "name": {
+      "fr": "Retour défensif : faute tactique (règles selon la compétition)",
+      "en": "Tactical foul (rules vary by competition)"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "sprint-to-the-paint",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 1,
+    "name": {
+      "fr": "Retour défensif : courir vers la raquette",
+      "en": "Sprint to the paint"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-drag-screen",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 3,
+    "name": {
+      "fr": "Retour défensif : défendre le drag",
+      "en": "Defending the drag screen"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-home-run-pass",
+    "cat": "transition",
+    "family": "defense-transition",
+    "lvl": 2,
+    "name": {
+      "fr": "Retour défensif : défendre la passe longue",
+      "en": "Defending the home-run pass"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-stack",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 1,
+    "name": {
+      "fr": "Remise ligne de fond : colonne (Stack)",
+      "en": "BLOB Stack"
+    },
+    "status": "done"
+  },
+  {
+    "id": "blob-line",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de fond : ligne",
+      "en": "BLOB Line"
+    },
+    "status": "done"
+  },
+  {
+    "id": "blob-box",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 1,
+    "name": {
+      "fr": "Remise ligne de fond : boîte (Box)",
+      "en": "BLOB Box"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-box-cross",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de fond : boîte, écran croisé",
+      "en": "BLOB Box cross"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-box-screen-the-screener",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de fond : boîte, écran pour l'écraneur",
+      "en": "BLOB Box screen the screener"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-diamond",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de fond : losange",
+      "en": "BLOB Diamond"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-vs-zone",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de fond : contre zone",
+      "en": "BLOB vs zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-return-to-inbounder",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de fond : passe au passeur",
+      "en": "BLOB return to inbounder"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-corner-three",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de fond : tir du corner",
+      "en": "BLOB corner three"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-lob",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 3,
+    "name": {
+      "fr": "Remise ligne de fond : lob",
+      "en": "BLOB lob"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-stagger",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de fond : écran en escalier",
+      "en": "BLOB stagger"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-floppy",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 3,
+    "name": {
+      "fr": "Remise ligne de fond : Floppy",
+      "en": "BLOB Floppy"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-pick-and-roll",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de fond : pick-and-roll",
+      "en": "BLOB pick-and-roll"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-safety",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 1,
+    "name": {
+      "fr": "Remise ligne de fond : sécurité (ballon en jeu)",
+      "en": "BLOB safety"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-reverse-stack",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de fond : colonne inversée",
+      "en": "BLOB reverse stack"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-vs-switching",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 3,
+    "name": {
+      "fr": "Remise ligne de fond : contre changement",
+      "en": "BLOB vs switching"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-with-2-seconds-left",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 3,
+    "name": {
+      "fr": "Remise ligne de fond : deux secondes à jouer",
+      "en": "BLOB with 2 seconds left"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "blob-post-seal",
+    "cat": "remises",
+    "family": "remise-ligne-de-fond",
+    "lvl": 1,
+    "name": {
+      "fr": "Remise ligne de fond : poste bas",
+      "en": "BLOB post seal"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-back-screen",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de touche : écran dans le dos",
+      "en": "SLOB back screen"
+    },
+    "status": "done"
+  },
+  {
+    "id": "slob-box",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 1,
+    "name": {
+      "fr": "Remise ligne de touche : boîte",
+      "en": "SLOB Box"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-line",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 1,
+    "name": {
+      "fr": "Remise ligne de touche : ligne",
+      "en": "SLOB Line"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-stack",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 1,
+    "name": {
+      "fr": "Remise ligne de touche : colonne",
+      "en": "SLOB Stack"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-safety",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 1,
+    "name": {
+      "fr": "Remise ligne de touche : sécurité",
+      "en": "SLOB safety"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-return-pass",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de touche : passe au passeur",
+      "en": "SLOB return pass"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-into-pick-and-roll",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de touche : pick-and-roll immédiat",
+      "en": "SLOB into pick-and-roll"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-lob",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 3,
+    "name": {
+      "fr": "Remise ligne de touche : lob",
+      "en": "SLOB lob"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-stagger",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de touche : écran en escalier",
+      "en": "SLOB stagger"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-three",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de touche : tir à 3 points",
+      "en": "SLOB three"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-vs-press",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de touche : contre presse",
+      "en": "SLOB vs press"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-zipper",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de touche : Zipper",
+      "en": "SLOB Zipper"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-floppy",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 3,
+    "name": {
+      "fr": "Remise ligne de touche : Floppy",
+      "en": "SLOB Floppy"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "slob-end-of-quarter",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 2,
+    "name": {
+      "fr": "Remise ligne de touche : fin de quart-temps",
+      "en": "SLOB end of quarter"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "frontcourt-slob-after-a-timeout",
+    "cat": "remises",
+    "family": "remise-ligne-de-touche",
+    "lvl": 3,
+    "name": {
+      "fr": "Remise ligne de touche : en zone avant après temps mort",
+      "en": "Frontcourt SLOB after a timeout"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "ato-three-to-tie",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : tir à 3 points pour égaliser",
+      "en": "Late game: three to tie"
+    },
+    "status": "done"
+  },
+  {
+    "id": "late-game-quick-two",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : panier à 2 points en moins de 3 secondes",
+      "en": "Late game: quick two"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "full-court-play-in-3-seconds",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : tout le terrain en 3 secondes",
+      "en": "Full-court play in 3 seconds"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "full-court-heave",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 2,
+    "name": {
+      "fr": "Fin de match : passe longue (« Hail Mary »)",
+      "en": "Full-court heave"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "catch-and-shoot-under-one-second",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : catch-and-shoot en 0,9 seconde",
+      "en": "Catch and shoot under one second"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "tip-in-with-under-half-a-second",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : lob en 0,4 seconde (tip)",
+      "en": "Tip-in with under half a second"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "late-game-isolation",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 2,
+    "name": {
+      "fr": "Fin de match : isolation du meilleur joueur",
+      "en": "Late game isolation"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "two-for-one",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 2,
+    "name": {
+      "fr": "Fin de match : 2 pour 1",
+      "en": "Two-for-one"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "holding-for-the-last-shot",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 2,
+    "name": {
+      "fr": "Fin de match : jouer la dernière possession",
+      "en": "Holding for the last shot"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "beating-the-intentional-foul",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : contre une faute intentionnelle",
+      "en": "Beating the intentional foul"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "ato-shooter-screen",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : écran pour le tireur après temps mort",
+      "en": "ATO shooter screen"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "inbound-with-a-decoy",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 2,
+    "name": {
+      "fr": "Fin de match : remise en jeu avec feinte",
+      "en": "Inbound with a decoy"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "choosing-the-shooter-vs-the-defense",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : choix du tireur selon la défense",
+      "en": "Choosing the shooter vs the defense"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "intentional-free-throw-miss",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : rater volontairement un lancer franc",
+      "en": "Intentional free-throw miss"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "game-winning-pick-and-roll",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 2,
+    "name": {
+      "fr": "Fin de match : pick-and-roll pour gagner",
+      "en": "Game-winning pick-and-roll"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "late-game-vs-switching",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : jouer contre un changement",
+      "en": "Late game vs switching"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "breaking-pressure-late",
+    "cat": "remises",
+    "family": "fin-de-match",
+    "lvl": 2,
+    "name": {
+      "fr": "Fin de match : sortir de la presse",
+      "en": "Breaking pressure late"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "zone-3-2",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 2,
+    "name": {
+      "fr": "Zone 3-2",
+      "en": "3-2 zone"
+    },
+    "status": "done"
+  },
+  {
+    "id": "2-3-zone",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 1,
+    "name": {
+      "fr": "Zone 2-3",
+      "en": "2-3 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "1-3-1-zone",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 2,
+    "name": {
+      "fr": "Zone 1-3-1",
+      "en": "1-3-1 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "1-2-2-zone",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 2,
+    "name": {
+      "fr": "Zone 1-2-2",
+      "en": "1-2-2 zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "match-up-zone",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 3,
+    "name": {
+      "fr": "Zone match-up",
+      "en": "Match-up zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "box-and-1",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 2,
+    "name": {
+      "fr": "Boîte et 1 (box-and-1)",
+      "en": "Box-and-1"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "triangle-and-2",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 3,
+    "name": {
+      "fr": "Triangle et 2",
+      "en": "Triangle-and-2"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "diamond-and-1",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 3,
+    "name": {
+      "fr": "Losange et 1",
+      "en": "Diamond-and-1"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "2-3-zone-guarding-the-high-post",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 2,
+    "name": {
+      "fr": "Zone 2-3 : défense du poste haut",
+      "en": "2-3 zone: guarding the high post"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "2-3-zone-guarding-the-corners",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 2,
+    "name": {
+      "fr": "Zone 2-3 : défense des corners",
+      "en": "2-3 zone: guarding the corners"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "1-3-1-zone-wing-traps",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 3,
+    "name": {
+      "fr": "Zone 1-3-1 : pièges sur l'aile",
+      "en": "1-3-1 zone: wing traps"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "zone-rebounding",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 1,
+    "name": {
+      "fr": "Zone : rebond défensif",
+      "en": "Zone rebounding"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "changing-zones",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 3,
+    "name": {
+      "fr": "Zone qui change de forme (2-3 puis 1-3-1)",
+      "en": "Changing zones"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "amoeba-zone",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 3,
+    "name": {
+      "fr": "Zone « Amoeba »",
+      "en": "Amoeba zone"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "2-3-zone-vs-pick-and-roll",
+    "cat": "defense",
+    "family": "zones",
+    "lvl": 3,
+    "name": {
+      "fr": "Zone 2-3 contre pick-and-roll",
+      "en": "2-3 zone vs pick-and-roll"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "hedge",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Hedge (sortie du pivot)",
+      "en": "Hedge"
+    },
+    "status": "done"
+  },
+  {
+    "id": "blitz",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Blitz (prise à deux sur le pick-and-roll)",
+      "en": "Blitz (trap the pick-and-roll)"
+    },
+    "status": "done"
+  },
+  {
+    "id": "ice",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "ICE (pick-and-roll latéral)",
+      "en": "ICE (side pick-and-roll)"
+    },
+    "status": "done"
+  },
+  {
+    "id": "switch",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 1,
+    "name": {
+      "fr": "Changement (switch)",
+      "en": "Switch"
+    },
+    "status": "done"
+  },
+  {
+    "id": "drop-coverage",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Défense reculée (drop)",
+      "en": "Drop coverage"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "show",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Montrer (show)",
+      "en": "Show"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "go-under",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 1,
+    "name": {
+      "fr": "Passer sous l'écran (under)",
+      "en": "Go under"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "go-over",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 1,
+    "name": {
+      "fr": "Passer par-dessus l'écran (over)",
+      "en": "Go over"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "weak-force-to-the-weak-hand",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Défense « weak » (forcer vers la main faible)",
+      "en": "Weak (force to the weak hand)"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "at-the-level",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Défense « at the level »",
+      "en": "At the level"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "tag-the-roller",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Aide sur le roll (tag)",
+      "en": "Tag the roller"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "scramble-switch",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Changement « scramble » après un décalage",
+      "en": "Scramble switch"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-pick-and-pop",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 2,
+    "name": {
+      "fr": "Défense du pick-and-pop",
+      "en": "Defending the pick-and-pop"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-spain-pick-and-roll",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Défense du Spain pick-and-roll",
+      "en": "Defending the Spain pick-and-roll"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-double-drag",
+    "cat": "defense",
+    "family": "defense-pick-and-roll",
+    "lvl": 3,
+    "name": {
+      "fr": "Défense du double drag",
+      "en": "Defending the double drag"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "press-2-2-1",
+    "cat": "defense",
+    "family": "presses",
+    "lvl": 2,
+    "name": {
+      "fr": "Presse 2-2-1",
+      "en": "2-2-1 press"
+    },
+    "status": "done"
+  },
+  {
+    "id": "1-2-1-1-diamond-press",
+    "cat": "defense",
+    "family": "presses",
+    "lvl": 2,
+    "name": {
+      "fr": "Presse 1-2-1-1 (losange)",
+      "en": "1-2-1-1 diamond press"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "1-2-2-press",
+    "cat": "defense",
+    "family": "presses",
+    "lvl": 2,
+    "name": {
+      "fr": "Presse 1-2-2",
+      "en": "1-2-2 press"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "2-1-2-press",
+    "cat": "defense",
+    "family": "presses",
+    "lvl": 2,
+    "name": {
+      "fr": "Presse 2-1-2",
+      "en": "2-1-2 press"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "full-court-man-press",
+    "cat": "defense",
+    "family": "presses",
+    "lvl": 1,
+    "name": {
+      "fr": "Presse homme à homme tout terrain",
+      "en": "Full-court man press"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "run-and-jump-press",
+    "cat": "defense",
+    "family": "presses",
+    "lvl": 3,
+    "name": {
+      "fr": "Presse « run and jump »",
+      "en": "Run and jump press"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "three-quarter-court-press",
+    "cat": "defense",
+    "family": "presses",
+    "lvl": 2,
+    "name": {
+      "fr": "Presse 3/4 de terrain",
+      "en": "Three-quarter-court press"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "half-court-1-3-1-trap",
+    "cat": "defense",
+    "family": "presses",
+    "lvl": 3,
+    "name": {
+      "fr": "Piège sur demi-terrain 1-3-1",
+      "en": "Half-court 1-3-1 trap"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "press-after-free-throws",
+    "cat": "defense",
+    "family": "presses",
+    "lvl": 2,
+    "name": {
+      "fr": "Presse après lancer franc",
+      "en": "Press after free throws"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "denying-the-inbound",
+    "cat": "defense",
+    "family": "presses",
+    "lvl": 2,
+    "name": {
+      "fr": "Presse : refuser la remise en jeu",
+      "en": "Denying the inbound"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "press-retreat",
+    "cat": "defense",
+    "family": "presses",
+    "lvl": 2,
+    "name": {
+      "fr": "Presse : retour en défense placée",
+      "en": "Press retreat"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "full-court-1-3-1-press",
+    "cat": "defense",
+    "family": "presses",
+    "lvl": 3,
+    "name": {
+      "fr": "Presse 1-3-1 tout terrain",
+      "en": "Full-court 1-3-1 press"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "pack-line-defense",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 2,
+    "name": {
+      "fr": "Défense « pack line »",
+      "en": "Pack line defense"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "pressure-man-denial-defense",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 2,
+    "name": {
+      "fr": "Défense de pression (refus des passes)",
+      "en": "Pressure man (denial) defense"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "on-ball-stance",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 1,
+    "name": {
+      "fr": "Position sur le porteur",
+      "en": "On-ball stance"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "deny-one-pass-away",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 1,
+    "name": {
+      "fr": "Refuser la passe à une passe du ballon",
+      "en": "Deny one pass away"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "help-side-two-passes-away",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 1,
+    "name": {
+      "fr": "Position d'aide à deux passes",
+      "en": "Help side, two passes away"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "help-and-recover",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 1,
+    "name": {
+      "fr": "Aider et revenir",
+      "en": "Help and recover"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "stopping-middle-penetration",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 2,
+    "name": {
+      "fr": "Défense de la pénétration au milieu",
+      "en": "Stopping middle penetration"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "force-baseline",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 2,
+    "name": {
+      "fr": "Forcer vers la ligne de fond",
+      "en": "Force baseline"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "force-middle",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 2,
+    "name": {
+      "fr": "Forcer vers le milieu",
+      "en": "Force middle"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-backdoor-cuts",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 2,
+    "name": {
+      "fr": "Défense contre les coupes dans le dos",
+      "en": "Defending backdoor cuts"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-basket-cuts",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 1,
+    "name": {
+      "fr": "Défense contre les coupes au panier",
+      "en": "Defending basket cuts"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "containing-the-dribble",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 1,
+    "name": {
+      "fr": "Défense du dribble (contenir)",
+      "en": "Containing the dribble"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "switch-everything",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 3,
+    "name": {
+      "fr": "Défense en changement systématique",
+      "en": "Switch everything"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "jump-to-the-ball",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 1,
+    "name": {
+      "fr": "Défense du joueur sans ballon : sauter vers le ballon",
+      "en": "Jump to the ball"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-isolation",
+    "cat": "defense",
+    "family": "homme-a-homme",
+    "lvl": 2,
+    "name": {
+      "fr": "Défense contre l'isolation",
+      "en": "Defending the isolation"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-pin-down",
+    "cat": "defense",
+    "family": "defense-ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Défendre l'écran retour (pin-down)",
+      "en": "Defending the pin-down"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-flare-screen",
+    "cat": "defense",
+    "family": "defense-ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Défendre l'écran flare",
+      "en": "Defending the flare screen"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-back-screen",
+    "cat": "defense",
+    "family": "defense-ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Défendre l'écran dans le dos",
+      "en": "Defending the back screen"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-stagger-screens",
+    "cat": "defense",
+    "family": "defense-ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Défendre les écrans en escalier",
+      "en": "Defending stagger screens"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-handoff",
+    "cat": "defense",
+    "family": "defense-ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Défendre la remise main à main",
+      "en": "Defending the handoff"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-iverson-cut",
+    "cat": "defense",
+    "family": "defense-ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Défendre la coupe Iverson",
+      "en": "Defending the Iverson cut"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-floppy",
+    "cat": "defense",
+    "family": "defense-ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Défendre le Floppy",
+      "en": "Defending Floppy"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-elevator-doors",
+    "cat": "defense",
+    "family": "defense-ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Défendre les portes d'ascenseur",
+      "en": "Defending elevator doors"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-cross-screen",
+    "cat": "defense",
+    "family": "defense-ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Défendre l'écran croisé",
+      "en": "Defending the cross screen"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-zipper-cut",
+    "cat": "defense",
+    "family": "defense-ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Défendre la coupe Zipper",
+      "en": "Defending the Zipper cut"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "switching-off-ball-screens",
+    "cat": "defense",
+    "family": "defense-ecrans-sans-ballon",
+    "lvl": 2,
+    "name": {
+      "fr": "Changer sur les écrans sans ballon",
+      "en": "Switching off-ball screens"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-chicago-action",
+    "cat": "defense",
+    "family": "defense-ecrans-sans-ballon",
+    "lvl": 3,
+    "name": {
+      "fr": "Défendre le Chicago",
+      "en": "Defending Chicago action"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "fronting-the-post",
+    "cat": "defense",
+    "family": "defense-poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Défense devant le poste (front)",
+      "en": "Fronting the post"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "three-quarter-post-defense",
+    "cat": "defense",
+    "family": "defense-poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Défense aux trois quarts",
+      "en": "Three-quarter post defense"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "playing-behind-the-post",
+    "cat": "defense",
+    "family": "defense-poste",
+    "lvl": 1,
+    "name": {
+      "fr": "Défense derrière le poste",
+      "en": "Playing behind the post"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "post-double-team",
+    "cat": "defense",
+    "family": "defense-poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Prise à deux au poste",
+      "en": "Post double team"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "baseline-post-double",
+    "cat": "defense",
+    "family": "defense-poste",
+    "lvl": 3,
+    "name": {
+      "fr": "Prise à deux au poste depuis la ligne de fond",
+      "en": "Baseline post double"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-high-low",
+    "cat": "defense",
+    "family": "defense-poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Défendre le haut-bas",
+      "en": "Defending the high-low"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-the-duck-in",
+    "cat": "defense",
+    "family": "defense-poste",
+    "lvl": 2,
+    "name": {
+      "fr": "Défendre la rentrée au poste (duck-in)",
+      "en": "Defending the duck-in"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "post-defense-after-a-switch",
+    "cat": "defense",
+    "family": "defense-poste",
+    "lvl": 3,
+    "name": {
+      "fr": "Défendre le poste après changement",
+      "en": "Post defense after a switch"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "sink-and-fill",
+    "cat": "defense",
+    "family": "rotations",
+    "lvl": 2,
+    "name": {
+      "fr": "Rotation « sink and fill »",
+      "en": "Sink and fill"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "x-out-rotation",
+    "cat": "defense",
+    "family": "rotations",
+    "lvl": 3,
+    "name": {
+      "fr": "Rotation « X-out »",
+      "en": "X-out rotation"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "scramble-defense",
+    "cat": "defense",
+    "family": "rotations",
+    "lvl": 3,
+    "name": {
+      "fr": "Défense en infériorité (scramble)",
+      "en": "Scramble defense"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "close-out-rules",
+    "cat": "defense",
+    "family": "rotations",
+    "lvl": 1,
+    "name": {
+      "fr": "Règles du close-out",
+      "en": "Close-out rules"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "baseline-drive-rotation",
+    "cat": "defense",
+    "family": "rotations",
+    "lvl": 2,
+    "name": {
+      "fr": "Rotation sur la pénétration de la ligne de fond",
+      "en": "Baseline drive rotation"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "rotation-after-a-trap",
+    "cat": "defense",
+    "family": "rotations",
+    "lvl": 3,
+    "name": {
+      "fr": "Rotation après une prise à deux",
+      "en": "Rotation after a trap"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defensive-communication",
+    "cat": "defense",
+    "family": "rotations",
+    "lvl": 1,
+    "name": {
+      "fr": "Communication défensive",
+      "en": "Defensive communication"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defensive-box-out",
+    "cat": "defense",
+    "family": "rotations",
+    "lvl": 1,
+    "name": {
+      "fr": "Rebond défensif : bloquer (box-out)",
+      "en": "Defensive box-out"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defending-a-3-point-lead",
+    "cat": "defense",
+    "family": "fin-de-match-defense",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : défendre avec 3 points d'avance",
+      "en": "Defending a 3-point lead"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "late-game-switch-everything",
+    "cat": "defense",
+    "family": "fin-de-match-defense",
+    "lvl": 2,
+    "name": {
+      "fr": "Fin de match : changer sur tous les écrans",
+      "en": "Late game: switch everything"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "late-game-defending-the-inbound",
+    "cat": "defense",
+    "family": "fin-de-match-defense",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : défendre la remise en jeu",
+      "en": "Late game: defending the inbound"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "late-game-fouling-on-purpose",
+    "cat": "defense",
+    "family": "fin-de-match-defense",
+    "lvl": 3,
+    "name": {
+      "fr": "Fin de match : faire faute intentionnellement",
+      "en": "Late game: fouling on purpose"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "late-game-protect-the-rim-without-fouling",
+    "cat": "defense",
+    "family": "fin-de-match-defense",
+    "lvl": 2,
+    "name": {
+      "fr": "Fin de match : protéger le cercle sans faute",
+      "en": "Late game: protect the rim without fouling"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "layup-two-lines",
+    "cat": "exercices",
+    "family": "finition",
+    "lvl": 1,
+    "name": {
+      "fr": "Lay-up en deux colonnes",
+      "en": "Two-line layups"
+    },
+    "status": "done"
+  },
+  {
+    "id": "weak-hand-layups",
+    "cat": "exercices",
+    "family": "finition",
+    "lvl": 1,
+    "name": {
+      "fr": "Lay-up main faible",
+      "en": "Weak-hand layups"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "mikan-drill",
+    "cat": "exercices",
+    "family": "finition",
+    "lvl": 1,
+    "name": {
+      "fr": "Mikan",
+      "en": "Mikan drill"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "contact-finishes-with-pad",
+    "cat": "exercices",
+    "family": "finition",
+    "lvl": 2,
+    "name": {
+      "fr": "Finitions au contact (avec bouclier)",
+      "en": "Contact finishes (with pad)"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "euro-step-layups",
+    "cat": "exercices",
+    "family": "finition",
+    "lvl": 2,
+    "name": {
+      "fr": "Lay-up euro-step",
+      "en": "Euro-step layups"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "floater-finishing",
+    "cat": "exercices",
+    "family": "finition",
+    "lvl": 2,
+    "name": {
+      "fr": "Finition en floater",
+      "en": "Floater finishing"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "layups-off-the-pass",
+    "cat": "exercices",
+    "family": "finition",
+    "lvl": 1,
+    "name": {
+      "fr": "Lay-up après passe en course",
+      "en": "Layups off the pass"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "reverse-layups",
+    "cat": "exercices",
+    "family": "finition",
+    "lvl": 2,
+    "name": {
+      "fr": "Finitions en reverse",
+      "en": "Reverse layups"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "layups-out-of-the-pick-and-roll",
+    "cat": "exercices",
+    "family": "finition",
+    "lvl": 2,
+    "name": {
+      "fr": "Lay-up en sortie de pick-and-roll",
+      "en": "Layups out of the pick-and-roll"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "two-hand-power-finishes",
+    "cat": "exercices",
+    "family": "finition",
+    "lvl": 1,
+    "name": {
+      "fr": "Finitions à deux mains sous le panier",
+      "en": "Two-hand power finishes"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "one-minute-shooting",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 2,
+    "name": {
+      "fr": "Tir en une minute",
+      "en": "One-minute shooting"
+    },
+    "status": "done"
+  },
+  {
+    "id": "form-shooting-star",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 1,
+    "name": {
+      "fr": "Tir de près en étoile",
+      "en": "Form shooting star"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "around-the-world",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 1,
+    "name": {
+      "fr": "Tir du coin au coin (around the world)",
+      "en": "Around the world"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "shooting-off-screens",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 2,
+    "name": {
+      "fr": "Tir en sortie d'écran",
+      "en": "Shooting off screens"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "pull-up-shooting",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 2,
+    "name": {
+      "fr": "Tir en sortie de dribble",
+      "en": "Pull-up shooting"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "three-point-contest",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 2,
+    "name": {
+      "fr": "Concours de tirs à 3 points",
+      "en": "Three-point contest"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "free-throws-when-tired",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 2,
+    "name": {
+      "fr": "Lancers francs sous fatigue",
+      "en": "Free throws when tired"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "shot-fake-and-shoot",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 2,
+    "name": {
+      "fr": "Tir après feinte (pump fake)",
+      "en": "Shot fake and shoot"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "five-spots-five-makes",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 1,
+    "name": {
+      "fr": "Tir « 5 positions, 5 paniers »",
+      "en": "Five spots, five makes"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "catch-and-shoot-vs-close-out",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 3,
+    "name": {
+      "fr": "Tir en catch-and-shoot avec close-out",
+      "en": "Catch-and-shoot vs close-out"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "step-back-shooting",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 3,
+    "name": {
+      "fr": "Tir en step-back",
+      "en": "Step-back shooting"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "team-free-throw-challenge",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 1,
+    "name": {
+      "fr": "Lancers francs en compétition par équipe",
+      "en": "Team free-throw challenge"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "trailer-three-shooting",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 3,
+    "name": {
+      "fr": "Tir en transition (trailer three)",
+      "en": "Trailer three shooting"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "shooting-off-the-handoff",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 2,
+    "name": {
+      "fr": "Tir en sortie de remise main à main",
+      "en": "Shooting off the handoff"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "shooting-over-a-contest",
+    "cat": "exercices",
+    "family": "tir",
+    "lvl": 2,
+    "name": {
+      "fr": "Tir avec main gênante (contest pad)",
+      "en": "Shooting over a contest"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "mirror-dribbling",
+    "cat": "exercices",
+    "family": "dribble",
+    "lvl": 1,
+    "name": {
+      "fr": "Dribble en miroir",
+      "en": "Mirror dribbling"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "cone-dribbling-course",
+    "cat": "exercices",
+    "family": "dribble",
+    "lvl": 1,
+    "name": {
+      "fr": "Parcours de dribble entre plots",
+      "en": "Cone dribbling course"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "two-ball-dribbling",
+    "cat": "exercices",
+    "family": "dribble",
+    "lvl": 2,
+    "name": {
+      "fr": "Dribble à deux ballons",
+      "en": "Two-ball dribbling"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "crossover-moves",
+    "cat": "exercices",
+    "family": "dribble",
+    "lvl": 1,
+    "name": {
+      "fr": "Changements de direction (crossover)",
+      "en": "Crossover moves"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "dribbling-under-pressure",
+    "cat": "exercices",
+    "family": "dribble",
+    "lvl": 2,
+    "name": {
+      "fr": "Dribble sous pression (2 contre 1)",
+      "en": "Dribbling under pressure"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "timed-full-court-dribble",
+    "cat": "exercices",
+    "family": "dribble",
+    "lvl": 1,
+    "name": {
+      "fr": "Dribble en tout terrain chronométré",
+      "en": "Timed full-court dribble"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "king-of-the-court-protect-your-ball",
+    "cat": "exercices",
+    "family": "dribble",
+    "lvl": 1,
+    "name": {
+      "fr": "Jeu « le roi du terrain » (protéger son ballon)",
+      "en": "King of the court (protect your ball)"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "change-of-pace-dribbling",
+    "cat": "exercices",
+    "family": "dribble",
+    "lvl": 2,
+    "name": {
+      "fr": "Dribble et changement de rythme",
+      "en": "Change-of-pace dribbling"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "hesitation-dribble",
+    "cat": "exercices",
+    "family": "dribble",
+    "lvl": 2,
+    "name": {
+      "fr": "Dribble « hesitation »",
+      "en": "Hesitation dribble"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "dribbling-off-a-screen",
+    "cat": "exercices",
+    "family": "dribble",
+    "lvl": 2,
+    "name": {
+      "fr": "Dribble en sortie d'écran",
+      "en": "Dribbling off a screen"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "eyes-up-dribbling-read-the-coach-s-fingers",
+    "cat": "exercices",
+    "family": "dribble",
+    "lvl": 1,
+    "name": {
+      "fr": "Dribble tête haute (lire les doigts du coach)",
+      "en": "Eyes-up dribbling (read the coach's fingers)"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "snake-dribble-vs-a-defender",
+    "cat": "exercices",
+    "family": "dribble",
+    "lvl": 3,
+    "name": {
+      "fr": "Dribble « snake » contre défenseur",
+      "en": "Snake dribble vs a defender"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "two-ball-passing",
+    "cat": "exercices",
+    "family": "passes",
+    "lvl": 1,
+    "name": {
+      "fr": "Passes à deux ballons",
+      "en": "Two-ball passing"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "star-passing",
+    "cat": "exercices",
+    "family": "passes",
+    "lvl": 1,
+    "name": {
+      "fr": "Passes en étoile",
+      "en": "Star passing"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "pass-and-follow",
+    "cat": "exercices",
+    "family": "passes",
+    "lvl": 1,
+    "name": {
+      "fr": "Passe et suit",
+      "en": "Pass and follow"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "full-court-passing-on-the-move",
+    "cat": "exercices",
+    "family": "passes",
+    "lvl": 1,
+    "name": {
+      "fr": "Passes en mouvement tout terrain",
+      "en": "Full-court passing on the move"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "ten-pass-game",
+    "cat": "exercices",
+    "family": "passes",
+    "lvl": 1,
+    "name": {
+      "fr": "Passes contre défenseur (jeu des 10 passes)",
+      "en": "Ten-pass game"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "passing-off-the-dribble",
+    "cat": "exercices",
+    "family": "passes",
+    "lvl": 2,
+    "name": {
+      "fr": "Passe en sortie de dribble",
+      "en": "Passing off the dribble"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "post-entry-passing",
+    "cat": "exercices",
+    "family": "passes",
+    "lvl": 2,
+    "name": {
+      "fr": "Passe au poste",
+      "en": "Post-entry passing"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "outlet-and-long-passing",
+    "cat": "exercices",
+    "family": "passes",
+    "lvl": 2,
+    "name": {
+      "fr": "Passe longue de contre-attaque",
+      "en": "Outlet and long passing"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "drive-and-kick-passing",
+    "cat": "exercices",
+    "family": "passes",
+    "lvl": 2,
+    "name": {
+      "fr": "Passe en pénétration-ressortie (drive and kick)",
+      "en": "Drive-and-kick passing"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "lob-passing",
+    "cat": "exercices",
+    "family": "passes",
+    "lvl": 2,
+    "name": {
+      "fr": "Passe lobée par-dessus la défense",
+      "en": "Lob passing"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "one-on-one-wing",
+    "cat": "exercices",
+    "family": "un-contre-un",
+    "lvl": 1,
+    "name": {
+      "fr": "1 contre 1 depuis l'aile",
+      "en": "One-on-one from the wing"
+    },
+    "status": "done"
+  },
+  {
+    "id": "full-court-one-on-one",
+    "cat": "exercices",
+    "family": "un-contre-un",
+    "lvl": 2,
+    "name": {
+      "fr": "1 contre 1 tout terrain",
+      "en": "Full-court one-on-one"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "post-one-on-one",
+    "cat": "exercices",
+    "family": "un-contre-un",
+    "lvl": 2,
+    "name": {
+      "fr": "1 contre 1 au poste",
+      "en": "Post one-on-one"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "one-on-one-three-dribbles-max",
+    "cat": "exercices",
+    "family": "un-contre-un",
+    "lvl": 1,
+    "name": {
+      "fr": "1 contre 1 en trois dribbles",
+      "en": "One-on-one, three dribbles max"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "one-on-one-off-the-close-out",
+    "cat": "exercices",
+    "family": "un-contre-un",
+    "lvl": 2,
+    "name": {
+      "fr": "1 contre 1 après close-out",
+      "en": "One-on-one off the close-out"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "one-on-one-off-a-screen",
+    "cat": "exercices",
+    "family": "un-contre-un",
+    "lvl": 3,
+    "name": {
+      "fr": "1 contre 1 en sortie d'écran",
+      "en": "One-on-one off a screen"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "one-on-one-from-the-high-post",
+    "cat": "exercices",
+    "family": "un-contre-un",
+    "lvl": 2,
+    "name": {
+      "fr": "1 contre 1 depuis le poste haut",
+      "en": "One-on-one from the high post"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "one-on-one-with-a-shot-clock",
+    "cat": "exercices",
+    "family": "un-contre-un",
+    "lvl": 2,
+    "name": {
+      "fr": "1 contre 1 avec limite de temps",
+      "en": "One-on-one with a shot clock"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "three-on-two-continuous",
+    "cat": "exercices",
+    "family": "surnombre",
+    "lvl": 2,
+    "name": {
+      "fr": "3 contre 2 en continu",
+      "en": "Continuous 3-on-2"
+    },
+    "status": "done"
+  },
+  {
+    "id": "continuous-2-on-1",
+    "cat": "exercices",
+    "family": "surnombre",
+    "lvl": 1,
+    "name": {
+      "fr": "2 contre 1 en continu",
+      "en": "Continuous 2-on-1"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "4-on-3-with-a-trailer",
+    "cat": "exercices",
+    "family": "surnombre",
+    "lvl": 2,
+    "name": {
+      "fr": "4 contre 3 avec retour",
+      "en": "4-on-3 with a trailer"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "3-on-2-2-on-1",
+    "cat": "exercices",
+    "family": "surnombre",
+    "lvl": 2,
+    "name": {
+      "fr": "3 contre 2 puis 2 contre 1",
+      "en": "3-on-2, 2-on-1"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "5-on-4-advantage",
+    "cat": "exercices",
+    "family": "surnombre",
+    "lvl": 3,
+    "name": {
+      "fr": "5 contre 4 avantage",
+      "en": "5-on-4 advantage"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "2-on-2-from-advantage",
+    "cat": "exercices",
+    "family": "surnombre",
+    "lvl": 2,
+    "name": {
+      "fr": "2 contre 2 depuis le surnombre",
+      "en": "2-on-2 from advantage"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "closeout-contest",
+    "cat": "exercices",
+    "family": "defense-individuelle",
+    "lvl": 2,
+    "name": {
+      "fr": "Close-out et contestation",
+      "en": "Close-out and contest"
+    },
+    "status": "done"
+  },
+  {
+    "id": "defensive-slides",
+    "cat": "exercices",
+    "family": "defense-individuelle",
+    "lvl": 1,
+    "name": {
+      "fr": "Glissements défensifs (slides)",
+      "en": "Defensive slides"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defensive-zigzag",
+    "cat": "exercices",
+    "family": "defense-individuelle",
+    "lvl": 1,
+    "name": {
+      "fr": "Zigzag défensif",
+      "en": "Defensive zigzag"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "lane-defense-on-the-ball",
+    "cat": "exercices",
+    "family": "defense-individuelle",
+    "lvl": 2,
+    "name": {
+      "fr": "Défense sur le porteur en couloir",
+      "en": "Lane defense on the ball"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "denial-drill",
+    "cat": "exercices",
+    "family": "defense-individuelle",
+    "lvl": 2,
+    "name": {
+      "fr": "Refus de passe (deny)",
+      "en": "Denial drill"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "taking-a-charge",
+    "cat": "exercices",
+    "family": "defense-individuelle",
+    "lvl": 2,
+    "name": {
+      "fr": "Charge (prendre le passage en force)",
+      "en": "Taking a charge"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "shell-drill",
+    "cat": "exercices",
+    "family": "defense-collective",
+    "lvl": 2,
+    "name": {
+      "fr": "Shell drill 4 contre 4",
+      "en": "4-on-4 shell drill"
+    },
+    "status": "done"
+  },
+  {
+    "id": "2-on-2-help-and-recover",
+    "cat": "exercices",
+    "family": "defense-collective",
+    "lvl": 2,
+    "name": {
+      "fr": "Aide et reprise 2 contre 2",
+      "en": "2-on-2 help and recover"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "3-on-3-pick-and-roll-defense",
+    "cat": "exercices",
+    "family": "defense-collective",
+    "lvl": 3,
+    "name": {
+      "fr": "3 contre 3 défense du pick-and-roll",
+      "en": "3-on-3 pick-and-roll defense"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "4-on-3-rotation-drill",
+    "cat": "exercices",
+    "family": "defense-collective",
+    "lvl": 3,
+    "name": {
+      "fr": "Rotation défensive en 4 contre 3",
+      "en": "4-on-3 rotation drill"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "3-on-3-off-ball-screen-defense",
+    "cat": "exercices",
+    "family": "defense-collective",
+    "lvl": 3,
+    "name": {
+      "fr": "Défense des écrans sans ballon 3 contre 3",
+      "en": "3-on-3 off-ball screen defense"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "talk-drill-ball-help-screen",
+    "cat": "exercices",
+    "family": "defense-collective",
+    "lvl": 1,
+    "name": {
+      "fr": "Communication : « ballon, aide, écran »",
+      "en": "Talk drill: ball, help, screen"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "3-on-4-scramble-drill",
+    "cat": "exercices",
+    "family": "defense-collective",
+    "lvl": 3,
+    "name": {
+      "fr": "Défense en infériorité 3 contre 4",
+      "en": "3-on-4 scramble drill"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "2-3-zone-shell-drill",
+    "cat": "exercices",
+    "family": "defense-collective",
+    "lvl": 2,
+    "name": {
+      "fr": "Défense de zone 2-3 contre 5 attaquants",
+      "en": "2-3 zone shell drill"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "one-on-one-box-out",
+    "cat": "exercices",
+    "family": "rebond",
+    "lvl": 1,
+    "name": {
+      "fr": "Bloquer et prendre le rebond 1 contre 1",
+      "en": "One-on-one box-out"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "3-on-3-rebounding",
+    "cat": "exercices",
+    "family": "rebond",
+    "lvl": 2,
+    "name": {
+      "fr": "Rebond 3 contre 3",
+      "en": "3-on-3 rebounding"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "offensive-rebound-battle",
+    "cat": "exercices",
+    "family": "rebond",
+    "lvl": 2,
+    "name": {
+      "fr": "Rebond offensif : se battre pour la position",
+      "en": "Offensive rebound battle"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "rebound-and-outlet",
+    "cat": "exercices",
+    "family": "rebond",
+    "lvl": 1,
+    "name": {
+      "fr": "Rebond et première passe",
+      "en": "Rebound and outlet"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "weak-side-triangle-rebounding",
+    "cat": "exercices",
+    "family": "rebond",
+    "lvl": 2,
+    "name": {
+      "fr": "Rebond en triangle (3 contre 3 côté faible)",
+      "en": "Weak-side triangle rebounding"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "superman-rebounding",
+    "cat": "exercices",
+    "family": "rebond",
+    "lvl": 1,
+    "name": {
+      "fr": "Rebond « super-man » (aller-retour sur la planche)",
+      "en": "Superman rebounding"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "eleven-man-break",
+    "cat": "exercices",
+    "family": "transition-exercices",
+    "lvl": 2,
+    "name": {
+      "fr": "Contre-attaque à 11 joueurs (11 man break)",
+      "en": "Eleven-man break"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "3-on-3-transition-defense",
+    "cat": "exercices",
+    "family": "transition-exercices",
+    "lvl": 2,
+    "name": {
+      "fr": "Retour défensif à 3 contre 3",
+      "en": "3-on-3 transition defense"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "three-pass-fast-break",
+    "cat": "exercices",
+    "family": "transition-exercices",
+    "lvl": 1,
+    "name": {
+      "fr": "Contre-attaque à 3 passes",
+      "en": "Three-pass fast break"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "5-on-5-transition",
+    "cat": "exercices",
+    "family": "transition-exercices",
+    "lvl": 3,
+    "name": {
+      "fr": "5 contre 5 avec retour en défense",
+      "en": "5-on-5 transition"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "clock-shooting-game",
+    "cat": "exercices",
+    "family": "jeux-jeunes",
+    "lvl": 1,
+    "name": {
+      "fr": "Jeu de l'horloge (tir)",
+      "en": "Clock shooting game"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "cat-and-mouse-dribbling",
+    "cat": "exercices",
+    "family": "jeux-jeunes",
+    "lvl": 1,
+    "name": {
+      "fr": "Jeu du dribbleur chat et souris",
+      "en": "Cat-and-mouse dribbling"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "layup-relay",
+    "cat": "exercices",
+    "family": "jeux-jeunes",
+    "lvl": 1,
+    "name": {
+      "fr": "Relais de lay-up",
+      "en": "Layup relay"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "twenty-one",
+    "cat": "exercices",
+    "family": "jeux-jeunes",
+    "lvl": 1,
+    "name": {
+      "fr": "Jeu du « 21 »",
+      "en": "Twenty-one"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "three-team-passing-game",
+    "cat": "exercices",
+    "family": "jeux-jeunes",
+    "lvl": 1,
+    "name": {
+      "fr": "Jeu des passes à 3 équipes",
+      "en": "Three-team passing game"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "shuttle-run-with-the-ball",
+    "cat": "exercices",
+    "family": "physique",
+    "lvl": 1,
+    "name": {
+      "fr": "Navette avec ballon",
+      "en": "Shuttle run with the ball"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defensive-mirror-agility",
+    "cat": "exercices",
+    "family": "physique",
+    "lvl": 2,
+    "name": {
+      "fr": "Miroir défensif (agilité)",
+      "en": "Defensive mirror (agility)"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "suicide-sprints",
+    "cat": "exercices",
+    "family": "physique",
+    "lvl": 2,
+    "name": {
+      "fr": "Sprints suicides",
+      "en": "Suicide sprints"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "transition-sprints-with-a-finish",
+    "cat": "exercices",
+    "family": "physique",
+    "lvl": 2,
+    "name": {
+      "fr": "Sprints de transition avec finition",
+      "en": "Transition sprints with a finish"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "reactive-change-of-direction",
+    "cat": "exercices",
+    "family": "physique",
+    "lvl": 2,
+    "name": {
+      "fr": "Changements de direction en réaction",
+      "en": "Reactive change of direction"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "team-shooting-rotation-pre-game",
+    "cat": "exercices",
+    "family": "seance-pro",
+    "lvl": 3,
+    "name": {
+      "fr": "Rotation de tir en équipe (pré-match)",
+      "en": "Team shooting rotation (pre-game)"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "controlled-5-on-5-pick-and-roll-reads",
+    "cat": "exercices",
+    "family": "seance-pro",
+    "lvl": 3,
+    "name": {
+      "fr": "Lecture du pick-and-roll 5 contre 5 contrôlé",
+      "en": "Controlled 5-on-5 pick-and-roll reads"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "timed-late-game-situations",
+    "cat": "exercices",
+    "family": "seance-pro",
+    "lvl": 3,
+    "name": {
+      "fr": "Situations de fin de match chronométrées",
+      "en": "Timed late-game situations"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "2-on-2-pick-and-roll-reading-the-help",
+    "cat": "exercices",
+    "family": "seance-pro",
+    "lvl": 3,
+    "name": {
+      "fr": "2 contre 2 pick-and-roll avec lecture de l'aide",
+      "en": "2-on-2 pick-and-roll reading the help"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "shooting-rotation-with-post-passes",
+    "cat": "exercices",
+    "family": "seance-pro",
+    "lvl": 3,
+    "name": {
+      "fr": "Rotation de tir avec passe du pivot",
+      "en": "Shooting rotation with post passes"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "spacing-5-out",
+    "cat": "principes",
+    "family": "principes-attaque",
+    "lvl": 1,
+    "name": {
+      "fr": "Espacement : 5 joueurs dehors",
+      "en": "Spacing: five out"
+    },
+    "status": "done"
+  },
+  {
+    "id": "advantage-basketball",
+    "cat": "principes",
+    "family": "principes-attaque",
+    "lvl": 2,
+    "name": {
+      "fr": "Jouer l'avantage",
+      "en": "Play the advantage"
+    },
+    "status": "done"
+  },
+  {
+    "id": "the-0-5-second-rule",
+    "cat": "principes",
+    "family": "principes-attaque",
+    "lvl": 2,
+    "name": {
+      "fr": "Règle des 0,5 seconde (décider vite)",
+      "en": "The 0.5-second rule"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "ball-movement",
+    "cat": "principes",
+    "family": "principes-attaque",
+    "lvl": 1,
+    "name": {
+      "fr": "Partage du ballon",
+      "en": "Ball movement"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "pace-and-change-of-speed",
+    "cat": "principes",
+    "family": "principes-attaque",
+    "lvl": 2,
+    "name": {
+      "fr": "Rythme et changement de vitesse",
+      "en": "Pace and change of speed"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "read-the-defense-first",
+    "cat": "principes",
+    "family": "principes-attaque",
+    "lvl": 2,
+    "name": {
+      "fr": "Lire la défense avant d'attaquer",
+      "en": "Read the defense first"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "fill-the-open-spots",
+    "cat": "principes",
+    "family": "principes-attaque",
+    "lvl": 1,
+    "name": {
+      "fr": "Remplir les places vides",
+      "en": "Fill the open spots"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "ball-you-man",
+    "cat": "principes",
+    "family": "principes-defense",
+    "lvl": 1,
+    "name": {
+      "fr": "Défense : voir le ballon et son joueur",
+      "en": "Defense: ball-you-man"
+    },
+    "status": "done"
+  },
+  {
+    "id": "protect-the-paint-first",
+    "cat": "principes",
+    "family": "principes-defense",
+    "lvl": 1,
+    "name": {
+      "fr": "Protéger la raquette d'abord",
+      "en": "Protect the paint first"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defend-without-fouling",
+    "cat": "principes",
+    "family": "principes-defense",
+    "lvl": 1,
+    "name": {
+      "fr": "Défendre sans faute",
+      "en": "Defend without fouling"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "contest-every-shot",
+    "cat": "principes",
+    "family": "principes-defense",
+    "lvl": 1,
+    "name": {
+      "fr": "Contester chaque tir",
+      "en": "Contest every shot"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "finish-with-the-rebound",
+    "cat": "principes",
+    "family": "principes-defense",
+    "lvl": 1,
+    "name": {
+      "fr": "Finir la possession par le rebond",
+      "en": "Finish with the rebound"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "defense-talk-all-the-time",
+    "cat": "principes",
+    "family": "principes-defense",
+    "lvl": 1,
+    "name": {
+      "fr": "Défense : parler tout le temps",
+      "en": "Defense: talk all the time"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "attack-the-close-out",
+    "cat": "principes",
+    "family": "principes-attaque",
+    "lvl": 2,
+    "name": {
+      "fr": "Attaquer le close-out",
+      "en": "Attack the close-out"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "cut-after-you-pass",
+    "cat": "principes",
+    "family": "principes-attaque",
+    "lvl": 1,
+    "name": {
+      "fr": "Couper après la passe",
+      "en": "Cut after you pass"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "weak-side-spacing",
+    "cat": "principes",
+    "family": "principes-attaque",
+    "lvl": 2,
+    "name": {
+      "fr": "Écarter le côté faible",
+      "en": "Weak-side spacing"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "give-and-go",
+    "cat": "principes",
+    "family": "principes-attaque",
+    "lvl": 1,
+    "name": {
+      "fr": "Jouer à deux : passe et va",
+      "en": "Two-man game: give and go"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "nearest-man-takes-the-ball",
+    "cat": "principes",
+    "family": "principes-defense",
+    "lvl": 2,
+    "name": {
+      "fr": "Le plus proche prend le ballon",
+      "en": "Nearest man takes the ball"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "protect-the-baseline",
+    "cat": "principes",
+    "family": "principes-defense",
+    "lvl": 2,
+    "name": {
+      "fr": "Défendre la ligne de fond",
+      "en": "Protect the baseline"
+    },
+    "status": "todo"
+  },
+  {
+    "id": "get-back-before-you-press",
+    "cat": "principes",
+    "family": "principes-defense",
+    "lvl": 2,
+    "name": {
+      "fr": "Revenir avant de presser",
+      "en": "Get back before you press"
+    },
+    "status": "todo"
+  }
+]

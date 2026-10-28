@@ -1,0 +1,11 @@
+:root {
+  --bg: #ffffff;
+  --text: #14213d;
+  font-family: "Barlow", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0f1b2d; --text: #eef2f8; }
+}
+body { margin: 0; background: var(--bg); color: var(--text); }
+main { max-width: 40rem; margin: 0 auto; padding: 2rem 1rem; }
+h1 { font-family: "Barlow Condensed", sans-serif; font-weight: 700; }
