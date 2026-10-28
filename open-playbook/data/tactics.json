@@ -34196,6 +34196,2497 @@
           }
         }
       ]
+    },
+    {
+      "id": "late-game-isolation",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : isolation du meilleur joueur",
+        "en": "Late game isolation"
+      },
+      "sum": {
+        "fr": "En fin de match, le meilleur joueur garde le ballon en haut, attend environ 5 secondes avant la fin, puis attaque seul le panier.",
+        "en": "Late in the game, the best player holds the ball up top, waits until about 5 seconds are left, then attacks the rim alone."
+      },
+      "why": {
+        "fr": "Attaquer tard laisse le temps de tirer ou de faire une passe, sans laisser de temps à l'adversaire après le tir.",
+        "en": "Attacking late leaves time for a shot or a pass, without leaving time for the opponent after the shot."
+      },
+      "counter": {
+        "fr": "Prendre à deux le porteur juste avant son attaque, ou défendre sans faute en protégeant le cercle.",
+        "en": "Trap the ball handler just before he attacks, or defend without fouling while protecting the rim."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          48,
+          4
+        ],
+        "3": [
+          2,
+          4
+        ],
+        "4": [
+          12,
+          3
+        ],
+        "5": [
+          38,
+          3
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              32,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 garde le ballon en haut ; tout le monde est écarté.",
+            "en": "1 holds the ball up top; everyone is spaced out."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              23,
+              12,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "Il reste 5 secondes : 1 attaque le panier.",
+            "en": "5 seconds left: 1 drives to the rim."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "Si l'aide vient du corner, 1 passe à 3.",
+            "en": "If help comes from the corner, 1 passes to 3."
+          }
+        }
+      ]
+    },
+    {
+      "id": "two-for-one",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : 2 pour 1",
+        "en": "Two-for-one"
+      },
+      "sum": {
+        "fr": "Quand il reste un peu plus de deux fois la durée d'une possession, on tire vite pour récupérer une dernière possession avant la fin.",
+        "en": "When a little more than two possessions' worth of time is left, shoot quickly to get one last possession before the end."
+      },
+      "why": {
+        "fr": "Un tir rapide donne deux possessions contre une à l'adversaire avant la fin du quart-temps.",
+        "en": "A quick shot gives you two possessions to the opponent's one before the end of the quarter."
+      },
+      "counter": {
+        "fr": "Ralentir l'attaque adverse en défendant loin et sans faute.",
+        "en": "Slow down the opponent by picking up high without fouling."
+      },
+      "used": {
+        "fr": "Gestion du temps courante en NBA et en EuroLeague.",
+        "en": "Common clock management in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          44
+        ],
+        "2": [
+          6,
+          44
+        ],
+        "3": [
+          44,
+          44
+        ],
+        "4": [
+          20,
+          47
+        ],
+        "5": [
+          30,
+          47
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              31,
+              "d"
+            ],
+            "2": [
+              3,
+              6,
+              "c"
+            ],
+            "3": [
+              45,
+              22,
+              "c"
+            ],
+            "5": [
+              28,
+              10,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Il reste environ 35 secondes : 1 remonte vite.",
+            "en": "About 35 seconds left: 1 pushes fast."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "Premier tir ouvert en moins de 10 secondes : 1 passe à 2 au corner.",
+            "en": "First open shot in under 10 seconds: 1 passes to 2 in the corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "holding-for-the-last-shot",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : jouer la dernière possession",
+        "en": "Holding for the last shot"
+      },
+      "sum": {
+        "fr": "À égalité avec la dernière possession, on garde le ballon jusqu'à environ 6 secondes, puis on joue un pick-and-roll.",
+        "en": "Tied with the last possession, hold the ball until about 6 seconds are left, then run a pick-and-roll."
+      },
+      "why": {
+        "fr": "Tirer en dernier empêche l'adversaire de répondre ; 6 secondes laissent le temps d'un rebond offensif.",
+        "en": "Shooting last stops the opponent from answering; 6 seconds leave time for an offensive rebound."
+      },
+      "counter": {
+        "fr": "Mettre la pression tôt pour forcer l'attaque à démarrer plus tôt que prévu.",
+        "en": "Pressure early to force the offense to start sooner than planned."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          34
+        ],
+        "2": [
+          48,
+          4
+        ],
+        "3": [
+          2,
+          4
+        ],
+        "4": [
+          6,
+          24
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              33,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 garde le ballon loin du panier.",
+            "en": "1 holds the ball far from the basket."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              27.5,
+              30,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "Il reste 6 secondes : 5 monte poser l'écran.",
+            "en": "6 seconds left: 5 comes up to screen."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              32,
+              22,
+              "d"
+            ],
+            "5": [
+              28,
+              10,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque ; 5 roule.",
+            "en": "1 attacks; 5 rolls."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5, ou tir de 1.",
+            "en": "Pass to 5, or 1 shoots."
+          }
+        }
+      ]
+    },
+    {
+      "id": "beating-the-intentional-foul",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : contre une faute intentionnelle",
+        "en": "Beating the intentional foul"
+      },
+      "sum": {
+        "fr": "Quand l'adversaire fait faute exprès pour arrêter le chronomètre, on fait recevoir le ballon par le meilleur tireur de lancers francs.",
+        "en": "When the opponent fouls on purpose to stop the clock, get the ball to your best free-throw shooter."
+      },
+      "why": {
+        "fr": "Si la faute est inévitable, autant qu'elle tombe sur le joueur qui réussit ses lancers francs.",
+        "en": "If the foul is coming anyway, it should fall on the player who makes his free throws."
+      },
+      "counter": {
+        "fr": "Faire faute sur le plus mauvais tireur de lancers francs avant qu'il passe le ballon.",
+        "en": "Foul the worst free-throw shooter before he can pass."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          16,
+          18
+        ],
+        "4": [
+          12,
+          24
+        ],
+        "5": [
+          20,
+          24
+        ],
+        "3": [
+          30,
+          34
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              13,
+              21,
+              "s"
+            ],
+            "5": [
+              17,
+              21.5,
+              "s"
+            ],
+            "2": [
+              8,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 et 5 posent un double écran ; 2, le meilleur aux lancers francs, remonte vers le ballon.",
+            "en": "4 and 5 set a double screen; 2, the best free-throw shooter, comes up to the ball."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2, qui subira la faute.",
+            "en": "1 passes to 2, who will take the foul."
+          }
+        }
+      ]
+    },
+    {
+      "id": "ato-shooter-screen",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : écran pour le tireur après temps mort",
+        "en": "ATO shooter screen"
+      },
+      "sum": {
+        "fr": "Après un temps mort, un écran pour l'écraneur libère le meilleur tireur pour un tir à 3 points.",
+        "en": "After a timeout, a screen-the-screener action frees the best shooter for a three."
+      },
+      "why": {
+        "fr": "Deux écrans enchaînés : la défense se concentre sur le premier et perd le tireur sur le second.",
+        "en": "Two chained screens: the defense focuses on the first and loses the shooter on the second."
+      },
+      "counter": {
+        "fr": "Changer sur tous les écrans pour ne jamais laisser le tireur seul.",
+        "en": "Switch every screen so the shooter is never left alone."
+      },
+      "used": {
+        "fr": "Situation courante après temps mort à tous les niveaux.",
+        "en": "A common after-timeout situation at every level."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          52.5,
+          28
+        ],
+        "2": [
+          25,
+          9
+        ],
+        "4": [
+          31,
+          10
+        ],
+        "5": [
+          21,
+          12
+        ],
+        "3": [
+          25,
+          31
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              28,
+              10,
+              "s"
+            ],
+            "4": [
+              40,
+              16,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 pose un écran pour 4, qui coupe vers le ballon.",
+            "en": "2 screens for 4, who cuts toward the ball."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              27,
+              13,
+              "s"
+            ],
+            "2": [
+              43,
+              24,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 pose aussitôt un écran pour 2, qui sort vers l'aile.",
+            "en": "5 immediately screens for 2, who pops to the wing."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 pour le tir.",
+            "en": "1 passes to 2 for the shot."
+          }
+        }
+      ]
+    },
+    {
+      "id": "inbound-with-a-decoy",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : remise en jeu avec feinte",
+        "en": "Inbound with a decoy"
+      },
+      "sum": {
+        "fr": "Le meilleur joueur sert de leurre : il court fort vers le ballon et attire la défense, pendant qu'un coéquipier coupe dans son dos.",
+        "en": "The best player is the decoy: he runs hard toward the ball and draws the defense while a teammate cuts behind him."
+      },
+      "why": {
+        "fr": "La défense surveille la star : l'autre joueur est laissé seul.",
+        "en": "The defense watches the star: the other player is left alone."
+      },
+      "counter": {
+        "fr": "Rester avec son joueur sans regarder la star.",
+        "en": "Stay with your man without watching the star."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          -2,
+          30
+        ],
+        "2": [
+          16,
+          22
+        ],
+        "3": [
+          20,
+          14
+        ],
+        "4": [
+          30,
+          26
+        ],
+        "5": [
+          34,
+          10
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              5,
+              26,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 court fort vers le ballon et attire les regards.",
+            "en": "2 runs hard toward the ball and draws attention."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              24,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 coupe vers le panier dans le dos de la défense.",
+            "en": "3 cuts to the rim behind the defense."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3.",
+            "en": "1 hits 3."
+          }
+        }
+      ]
+    },
+    {
+      "id": "choosing-the-shooter-vs-the-defense",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : choix du tireur selon la défense",
+        "en": "Choosing the shooter vs the defense"
+      },
+      "sum": {
+        "fr": "En fin de match, l'action prévoit deux options selon la défense : si elle change sur l'écran, le grand joue contre le petit ; sinon, le tireur tire.",
+        "en": "Late in the game, the play has two options depending on the defense: if it switches the screen, the big posts the small defender; if not, the shooter shoots."
+      },
+      "why": {
+        "fr": "Quelle que soit la réponse de la défense, l'attaque a une bonne option prévue.",
+        "en": "Whatever the defense does, the offense has a planned good option."
+      },
+      "counter": {
+        "fr": "Varier : changer sur certaines possessions, pas sur d'autres.",
+        "en": "Mix it up: switch on some possessions, not on others."
+      },
+      "used": {
+        "fr": "Lecture courante dans le basket professionnel.",
+        "en": "A common read in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          32,
+          10
+        ],
+        "5": [
+          36,
+          15
+        ],
+        "3": [
+          2,
+          4
+        ],
+        "4": [
+          6,
+          24
+        ],
+        "x2": [
+          31,
+          12.5
+        ],
+        "x5": [
+          35,
+          13
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              33,
+              13,
+              "s"
+            ],
+            "2": [
+              42,
+              23,
+              "c"
+            ],
+            "x5": [
+              40,
+              21,
+              "m"
+            ],
+            "x2": [
+              32,
+              11,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose un écran pour 2 ; la défense change.",
+            "en": "5 screens for 2; the defense switches."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              30,
+              8,
+              "c"
+            ],
+            "x2": [
+              31.5,
+              11,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Le petit x2 est sur 5 : 5 scelle près du cercle.",
+            "en": "The small x2 is on 5: 5 seals near the rim."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5. Sans changement, la passe serait allée à 2.",
+            "en": "1 passes to 5. Without a switch, the pass would have gone to 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "intentional-free-throw-miss",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : rater volontairement un lancer franc",
+        "en": "Intentional free-throw miss"
+      },
+      "sum": {
+        "fr": "Sur le dernier lancer franc, quand il faut un panier, le tireur rate exprès en visant l'arceau et ses coéquipiers attaquent le rebond.",
+        "en": "On the last free throw, when you need a basket, the shooter misses on purpose by hitting the rim and his teammates attack the rebound."
+      },
+      "why": {
+        "fr": "Un rebond offensif ou une claquette donne une chance de marquer deux points au lieu d'un.",
+        "en": "An offensive rebound or a tip-in gives a chance to score two instead of one."
+      },
+      "counter": {
+        "fr": "Bloquer fort les rebondeurs adverses dès que le ballon quitte les mains du tireur.",
+        "en": "Box out hard as soon as the ball leaves the shooter's hands."
+      },
+      "used": {
+        "fr": "Situation rare ; les règles d'entrée dans la raquette varient selon le règlement : vérifier.",
+        "en": "A rare situation; lane-entry rules vary between rulebooks: check yours."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          19
+        ],
+        "4": [
+          17,
+          11
+        ],
+        "5": [
+          33,
+          11
+        ],
+        "x4": [
+          17,
+          7.5
+        ],
+        "x5": [
+          33,
+          7.5
+        ],
+        "2": [
+          25,
+          31
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              21,
+              8,
+              "c"
+            ],
+            "5": [
+              29,
+              8,
+              "c"
+            ],
+            "x4": [
+              19,
+              5,
+              "m"
+            ],
+            "x5": [
+              31,
+              5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 vise l'arceau ; 4 et 5 entrent dans la raquette au lâcher du ballon.",
+            "en": "1 aims for the rim; 4 and 5 step into the lane as the ball is released."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "5 récupère le rebond (la passe représente le rebond) pour marquer.",
+            "en": "5 grabs the rebound (the pass stands for the rebound) to score."
+          }
+        }
+      ]
+    },
+    {
+      "id": "game-winning-pick-and-roll",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : pick-and-roll pour gagner",
+        "en": "Game-winning pick-and-roll"
+      },
+      "sum": {
+        "fr": "Dernière possession : pick-and-roll latéral avec le côté faible écarté et un ailier qui remonte pour offrir une passe.",
+        "en": "Last possession: a side pick-and-roll with the weak side spaced and a wing lifting to give an outlet."
+      },
+      "why": {
+        "fr": "Le pick-and-roll donne trois options en quelques secondes : tir, roll ou passe au tireur.",
+        "en": "The pick-and-roll gives three options in a few seconds: shot, roll or kick-out."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran et ne pas aider depuis les tireurs.",
+        "en": "Switch the screen and do not help off the shooters."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          42,
+          26
+        ],
+        "2": [
+          48,
+          4
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              39.5,
+              25,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran sur l'aile.",
+            "en": "5 screens on the wing."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              31,
+              20,
+              "d"
+            ],
+            "5": [
+              32,
+              9,
+              "c"
+            ],
+            "2": [
+              45,
+              19,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque le milieu ; 5 roule ; 2 remonte du corner.",
+            "en": "1 attacks the middle; 5 rolls; 2 lifts from the corner."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5, ou à 2 si son défenseur aide.",
+            "en": "Pass to 5, or to 2 if his defender helps."
+          }
+        }
+      ]
+    },
+    {
+      "id": "late-game-vs-switching",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : jouer contre un changement",
+        "en": "Late game vs switching"
+      },
+      "sum": {
+        "fr": "Contre une défense qui change sur tout en fin de match, on provoque le changement pour mettre le grand défenseur sur le meneur, puis on l'isole.",
+        "en": "Against a switch-everything defense late in the game, force the switch to put the big defender on the guard, then isolate him."
+      },
+      "why": {
+        "fr": "Un grand défenseur seul contre un meneur rapide, loin du cercle, perd souvent le duel.",
+        "en": "A big defender alone against a quick guard, far from the rim, often loses the matchup."
+      },
+      "counter": {
+        "fr": "Refuser le changement en défendant l'écran, ou faire aider tôt.",
+        "en": "Refuse the switch by guarding the screen, or help early."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          48,
+          4
+        ],
+        "3": [
+          2,
+          4
+        ],
+        "4": [
+          6,
+          24
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "x1": [
+          25,
+          29
+        ],
+        "x5": [
+          25,
+          16
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x5": [
+              31,
+              27,
+              "m"
+            ],
+            "x1": [
+              27,
+              26,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran : la défense change, x5 se retrouve sur 1.",
+            "en": "5 screens: the defense switches, x5 ends up on 1."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              40,
+              26,
+              "c"
+            ],
+            "x1": [
+              37,
+              23,
+              "m"
+            ],
+            "1": [
+              28,
+              34,
+              "d"
+            ],
+            "x5": [
+              28,
+              30,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 s'écarte pour vider le terrain ; 1 recule pour isoler x5.",
+            "en": "5 spaces out to clear the floor; 1 backs up to isolate x5."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              22,
+              12,
+              "d"
+            ],
+            "x5": [
+              25,
+              17,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque x5 en vitesse.",
+            "en": "1 attacks x5 off the dribble."
+          }
+        }
+      ]
+    },
+    {
+      "id": "breaking-pressure-late",
+      "cat": "remises",
+      "family": "fin-de-match",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Fin de match : sortir de la presse",
+        "en": "Breaking pressure late"
+      },
+      "sum": {
+        "fr": "En fin de match, contre une défense qui refuse toutes les passes sur la remise en jeu, on enchaîne écrans et coupes pour faire entrer le ballon.",
+        "en": "Late in the game, against a defense denying every inbound pass, chain screens and cuts to get the ball in."
+      },
+      "why": {
+        "fr": "Plusieurs courses en même temps empêchent la défense de tout refuser.",
+        "en": "Several runs at once keep the defense from denying everything."
+      },
+      "counter": {
+        "fr": "Changer sur tous les écrans et garder un défenseur en profondeur.",
+        "en": "Switch every screen and keep a defender deep."
+      },
+      "used": {
+        "fr": "Le schéma montre la moitié de terrain où l'attaque remet en jeu, sous son propre panier.",
+        "en": "The diagram shows the half where the offense inbounds, under its own basket."
+      },
+      "keys": {
+        "fr": [
+          "Savoir exactement le temps restant",
+          "Chacun connaît son rôle avant le coup de sifflet",
+          "Un plan B si la première option est fermée",
+          "Pas de faute offensive sur l'écran"
+        ],
+        "en": [
+          "Know exactly how much time is left",
+          "Everyone knows his role before the whistle",
+          "A plan B if the first option is taken away",
+          "No offensive foul on the screen"
+        ]
+      },
+      "start": {
+        "1": [
+          30,
+          -2
+        ],
+        "2": [
+          20,
+          10
+        ],
+        "3": [
+          30,
+          12
+        ],
+        "4": [
+          24,
+          20
+        ],
+        "5": [
+          16,
+          26
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              21,
+              13,
+              "s"
+            ],
+            "2": [
+              14,
+              4,
+              "c"
+            ],
+            "3": [
+              40,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran pour 2, qui vient au ballon ; 3 coupe vers l'extérieur.",
+            "en": "4 screens for 2, who comes to the ball; 3 cuts outside."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              22,
+              42,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 part en profondeur comme dernière option.",
+            "en": "5 runs deep as the last option."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        }
+      ]
+    },
+    {
+      "id": "2-3-zone",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Zone 2-3",
+        "en": "2-3 zone"
+      },
+      "sum": {
+        "fr": "Zone 2-3 : deux défenseurs en haut, trois en bas ; elle protège la raquette et le rebond, au prix des tirs à 3 points.",
+        "en": "2-3 zone: two defenders up top, three down low; it protects the paint and the glass at the cost of three-point shots."
+      },
+      "why": {
+        "fr": "Trois grands près du cercle ferment la raquette ; les pénétrations rencontrent toujours deux défenseurs.",
+        "en": "Three bigs near the rim close the paint; every drive meets two defenders."
+      },
+      "counter": {
+        "fr": "Placer un joueur au poste haut, attaquer les corners et renverser vite.",
+        "en": "Put a player at the high post, attack the corners and reverse quickly."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          43,
+          22
+        ],
+        "3": [
+          7,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1",
+        "x1": [
+          20,
+          25
+        ],
+        "x2": [
+          30,
+          25
+        ],
+        "x3": [
+          12,
+          12
+        ],
+        "x4": [
+          38,
+          12
+        ],
+        "x5": [
+          25,
+          8
+        ]
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "Passe à l'aile droite.",
+            "en": "Pass to the right wing."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              39,
+              21,
+              "m"
+            ],
+            "x4": [
+              43,
+              9,
+              "m"
+            ],
+            "x5": [
+              31,
+              8,
+              "m"
+            ],
+            "x1": [
+              27,
+              22,
+              "m"
+            ],
+            "x3": [
+              21,
+              9,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 sort sur le ballon, x4 couvre le corner, x5 glisse côté ballon, x1 ferme le poste haut, x3 garde le cercle.",
+            "en": "x2 closes out, x4 covers the corner, x5 slides ball side, x1 closes the high post, x3 guards the rim."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "Passe au corner.",
+            "en": "Pass to the corner."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              45,
+              6.5,
+              "m"
+            ],
+            "x5": [
+              33,
+              8,
+              "m"
+            ],
+            "x2": [
+              40,
+              16,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x4 sort, x5 couvre le poste bas, x2 coupe la ligne de passe vers l'aile.",
+            "en": "x4 closes out, x5 covers the block, x2 cuts off the passing lane to the wing."
+          }
+        }
+      ]
+    },
+    {
+      "id": "1-3-1-zone",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Zone 1-3-1",
+        "en": "1-3-1 zone"
+      },
+      "sum": {
+        "fr": "Zone 1-3-1 : une pointe, trois défenseurs à hauteur de la ligne des lancers francs, un défenseur sur la ligne de fond ; elle piège sur les ailes.",
+        "en": "1-3-1 zone: a point, three defenders at free-throw-line height, one on the baseline; it traps on the wings."
+      },
+      "why": {
+        "fr": "Elle ferme le milieu et le poste haut et pousse l'attaque vers les ailes, où elle peut piéger.",
+        "en": "It closes the middle and the high post and pushes the offense to the wings, where it can trap."
+      },
+      "counter": {
+        "fr": "Attaquer la ligne de fond et les corners, où un seul défenseur couvre tout.",
+        "en": "Attack the baseline and the corners, where one defender covers everything."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          43,
+          22
+        ],
+        "3": [
+          7,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          21
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          37,
+          20
+        ],
+        "x3": [
+          13,
+          20
+        ],
+        "x5": [
+          25,
+          17
+        ],
+        "x4": [
+          25,
+          6.5
+        ]
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "Passe à l'aile droite.",
+            "en": "Pass to the right wing."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              40,
+              20,
+              "m"
+            ],
+            "x4": [
+              38,
+              7,
+              "m"
+            ],
+            "x5": [
+              30,
+              16,
+              "m"
+            ],
+            "x1": [
+              30,
+              25,
+              "m"
+            ],
+            "x3": [
+              22,
+              10,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 sort sur le ballon, x4 glisse vers le corner, x5 côté ballon, x1 coupe le renversement, x3 descend.",
+            "en": "x2 closes out, x4 slides toward the corner, x5 goes ball side, x1 cuts off the reversal, x3 drops."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "Passe au corner.",
+            "en": "Pass to the corner."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              45,
+              6.5,
+              "m"
+            ],
+            "x3": [
+              26,
+              8,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x4 sort au corner, x3 protège le cercle.",
+            "en": "x4 runs to the corner, x3 protects the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "1-2-2-zone",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Zone 1-2-2",
+        "en": "1-2-2 zone"
+      },
+      "sum": {
+        "fr": "Zone 1-2-2 : une pointe, deux défenseurs aux coudes prolongés, deux sur les postes bas ; elle protège bien les tirs extérieurs.",
+        "en": "1-2-2 zone: a point, two defenders at the extended elbows, two on the blocks; it guards outside shots well."
+      },
+      "why": {
+        "fr": "Quatre défenseurs sur le périmètre en haut et sur les côtés : les tireurs sont toujours contestés.",
+        "en": "Four defenders on the perimeter up top and on the sides: shooters are always contested."
+      },
+      "counter": {
+        "fr": "Attaquer le poste haut et le milieu de la raquette.",
+        "en": "Attack the high post and the middle of the paint."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          43,
+          22
+        ],
+        "3": [
+          7,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          27
+        ],
+        "x2": [
+          35,
+          21
+        ],
+        "x3": [
+          15,
+          21
+        ],
+        "x4": [
+          18,
+          8
+        ],
+        "x5": [
+          32,
+          8
+        ]
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "Passe à l'aile droite.",
+            "en": "Pass to the right wing."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              40,
+              20,
+              "m"
+            ],
+            "x1": [
+              29,
+              22,
+              "m"
+            ],
+            "x5": [
+              40,
+              9,
+              "m"
+            ],
+            "x4": [
+              26,
+              7,
+              "m"
+            ],
+            "x3": [
+              20,
+              15,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 sort, x1 ferme le milieu, x5 glisse vers le corner, x4 protège le cercle, x3 descend.",
+            "en": "x2 closes out, x1 closes the middle, x5 slides toward the corner, x4 protects the rim, x3 drops."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe au poste haut.",
+            "en": "Pass to the high post."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              27,
+              20,
+              "m"
+            ],
+            "x3": [
+              22,
+              17,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 et x3 se resserrent sur 5.",
+            "en": "x1 and x3 collapse on 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "match-up-zone",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Zone match-up",
+        "en": "Match-up zone"
+      },
+      "sum": {
+        "fr": "Zone match-up : on part d'une zone, puis chaque défenseur prend le joueur qui entre dans sa zone et le défend comme en homme à homme.",
+        "en": "Match-up zone: start from a zone, then each defender takes the player entering his area and guards him man-to-man."
+      },
+      "why": {
+        "fr": "L'attaque voit une zone mais affronte une défense individuelle : ses systèmes anti-zone ne marchent pas.",
+        "en": "The offense sees a zone but faces a man defense: its zone offense does not work."
+      },
+      "counter": {
+        "fr": "Utiliser des écrans et des coupes traversantes pour forcer les passages de relais.",
+        "en": "Use screens and cutters through the zone to force hand-offs."
+      },
+      "used": {
+        "fr": "Défense associée à la Temple University de John Chaney.",
+        "en": "Defense associated with John Chaney's Temple University."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1",
+        "x1": [
+          20,
+          25
+        ],
+        "x2": [
+          30,
+          25
+        ],
+        "x4": [
+          12,
+          11
+        ],
+        "x5": [
+          25,
+          7
+        ],
+        "x3": [
+          38,
+          11
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "x1": [
+              25,
+              28,
+              "m"
+            ],
+            "x3": [
+              41,
+              21.5,
+              "m"
+            ],
+            "x2": [
+              9.5,
+              21.5,
+              "m"
+            ],
+            "x4": [
+              5,
+              6.5,
+              "m"
+            ],
+            "x5": [
+              25,
+              15.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Au départ en 2-3, chaque défenseur prend le joueur qui entre dans sa zone.",
+            "en": "From the 2-3 start, each defender takes the player in his area."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "Passe à l'aile gauche.",
+            "en": "Pass to the left wing."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              21,
+              23,
+              "m"
+            ],
+            "x3": [
+              31,
+              15,
+              "m"
+            ],
+            "x5": [
+              23,
+              16.5,
+              "m"
+            ],
+            "x2": [
+              8.5,
+              21.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Défense individuelle avec aides de zone : x1 et x3 rentrent dans la raquette, x5 se place côté ballon.",
+            "en": "Man defense with zone help: x1 and x3 sink into the paint, x5 plays ball side."
+          }
+        }
+      ]
+    },
+    {
+      "id": "box-and-1",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Boîte et 1 (box-and-1)",
+        "en": "Box-and-1"
+      },
+      "sum": {
+        "fr": "Boîte et 1 : quatre défenseurs en boîte (deux aux coudes, deux aux postes bas) et un défenseur colle le meilleur attaquant partout.",
+        "en": "Box-and-1: four defenders in a box (two at the elbows, two on the blocks) and one defender shadows the best attacker everywhere."
+      },
+      "why": {
+        "fr": "Le meilleur attaquant ne reçoit presque jamais ; les autres doivent marquer contre une zone.",
+        "en": "The best attacker hardly ever catches; the others have to score against a zone."
+      },
+      "counter": {
+        "fr": "Placer un joueur au poste haut, au milieu de la boîte, et utiliser la star comme écraneur.",
+        "en": "Put a player at the high post, in the middle of the box, and use the star as a screener."
+      },
+      "used": {
+        "fr": "Défense de circonstance courante en NCAA et chez les jeunes.",
+        "en": "A situational defense common in the NCAA and youth basketball."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1",
+        "x2": [
+          41,
+          25.5
+        ],
+        "x1": [
+          19,
+          20
+        ],
+        "x3": [
+          31,
+          20
+        ],
+        "x4": [
+          19,
+          8
+        ],
+        "x5": [
+          31,
+          9.5
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              10,
+              6,
+              "c"
+            ],
+            "x2": [
+              12,
+              8,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 colle 2 qui coupe vers le côté gauche ; la boîte ne bouge pas.",
+            "en": "x2 shadows 2 as he cuts to the left side; the box stays put."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "Passe à 3 sur l'aile gauche : la boîte glisse vers le ballon.",
+            "en": "Pass to 3 on the left wing: the box slides toward the ball."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              10,
+              21,
+              "m"
+            ],
+            "x4": [
+              17,
+              9.5,
+              "m"
+            ],
+            "x3": [
+              24,
+              18,
+              "m"
+            ],
+            "x5": [
+              27,
+              9,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 sort sur 3, x4 couvre le poste bas, x3 et x5 rentrent.",
+            "en": "x1 closes out to 3, x4 covers the block, x3 and x5 sink."
+          }
+        }
+      ]
+    },
+    {
+      "id": "triangle-and-2",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Triangle et 2",
+        "en": "Triangle-and-2"
+      },
+      "sum": {
+        "fr": "Triangle et 2 : trois défenseurs en triangle (un au poste haut, deux aux postes bas) et deux défenseurs en individuel sur les deux meilleurs attaquants.",
+        "en": "Triangle-and-2: three defenders in a triangle (one at the high post, two on the blocks) and two defenders man-to-man on the two best attackers."
+      },
+      "why": {
+        "fr": "Les deux meilleurs attaquants sont contrôlés ; le triangle protège la raquette contre les trois autres.",
+        "en": "The two best attackers are controlled; the triangle protects the paint against the other three."
+      },
+      "counter": {
+        "fr": "Attaquer les corners et faire poser des écrans par les deux joueurs marqués.",
+        "en": "Attack the corners and have the two marked players set screens."
+      },
+      "used": {
+        "fr": "Défense de circonstance courante en NCAA et chez les jeunes.",
+        "en": "A situational defense common in the NCAA and youth basketball."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          19,
+          8
+        ],
+        "b": "1",
+        "x1": [
+          40,
+          22
+        ],
+        "x2": [
+          10,
+          22
+        ],
+        "x3": [
+          25,
+          19
+        ],
+        "x4": [
+          19,
+          6
+        ],
+        "x5": [
+          32,
+          8
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              24,
+              4,
+              "c"
+            ],
+            "x1": [
+              26,
+              7,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 coupe sous le panier : x1 le suit collé.",
+            "en": "2 cuts under the basket: x1 stays glued to him."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "Passe à 4, non marqué, au corner.",
+            "en": "Pass to 4, who is unmarked, in the corner."
+          }
+        },
+        {
+          "m": {
+            "x5": [
+              44,
+              7,
+              "m"
+            ],
+            "x3": [
+              29,
+              12,
+              "m"
+            ],
+            "x4": [
+              22,
+              8.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Le triangle glisse : x5 sort, x3 descend, x4 protège le cercle.",
+            "en": "The triangle slides: x5 closes out, x3 drops, x4 protects the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "diamond-and-1",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Losange et 1",
+        "en": "Diamond-and-1"
+      },
+      "sum": {
+        "fr": "Losange et 1 : quatre défenseurs en losange (pointe, deux ailes, un sous le panier) et un défenseur colle le meilleur attaquant.",
+        "en": "Diamond-and-1: four defenders in a diamond (point, two wings, one under the basket) and one defender shadows the best attacker."
+      },
+      "why": {
+        "fr": "Plus de défenseurs sur le périmètre qu'avec la boîte et 1 : utile contre une équipe de tireurs.",
+        "en": "More perimeter defenders than the box-and-1: useful against a shooting team."
+      },
+      "counter": {
+        "fr": "Attaquer les corners et les petits corners, où un seul défenseur couvre le bas.",
+        "en": "Attack the corners and short corners, where one defender covers the low area."
+      },
+      "used": {
+        "fr": "Défense de circonstance, plus rare que la boîte et 1.",
+        "en": "A situational defense, rarer than the box-and-1."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          38,
+          3
+        ],
+        "b": "1",
+        "x2": [
+          41,
+          25.5
+        ],
+        "x1": [
+          25,
+          27
+        ],
+        "x3": [
+          14,
+          16
+        ],
+        "x4": [
+          36,
+          16
+        ],
+        "x5": [
+          25,
+          7
+        ]
+      },
+      "steps": [
+        {
+          "p": "3",
+          "c": {
+            "fr": "Passe à l'aile gauche.",
+            "en": "Pass to the left wing."
+          }
+        },
+        {
+          "m": {
+            "x3": [
+              9,
+              21,
+              "m"
+            ],
+            "x1": [
+              19,
+              24,
+              "m"
+            ],
+            "x5": [
+              18,
+              7,
+              "m"
+            ],
+            "x4": [
+              29,
+              11,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x3 sort sur 3, x1 glisse, x5 couvre le côté ballon, x4 descend protéger le cercle.",
+            "en": "x3 closes out, x1 slides, x5 covers the ball side, x4 drops to protect the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "2-3-zone-guarding-the-high-post",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Zone 2-3 : défense du poste haut",
+        "en": "2-3 zone: guarding the high post"
+      },
+      "sum": {
+        "fr": "Dans la zone 2-3, quand le ballon entre au poste haut, le défenseur du milieu monte sur lui et les deux du bas se resserrent sous le panier.",
+        "en": "In the 2-3 zone, when the ball goes to the high post, the middle defender steps up on him and the two low defenders tighten under the basket."
+      },
+      "why": {
+        "fr": "Le poste haut est le point faible de la zone 2-3 : le défendre vite empêche la passe vers le cercle.",
+        "en": "The high post is the 2-3 zone's weak spot: guarding it quickly stops the pass to the rim."
+      },
+      "counter": {
+        "fr": "Passer tout de suite du poste haut vers le dessous ou vers le corner.",
+        "en": "Pass right away from the high post underneath or to the corner."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          43,
+          22
+        ],
+        "3": [
+          7,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          20
+        ],
+        "b": "1",
+        "x1": [
+          20,
+          25
+        ],
+        "x2": [
+          30,
+          25
+        ],
+        "x3": [
+          12,
+          12
+        ],
+        "x4": [
+          38,
+          12
+        ],
+        "x5": [
+          25,
+          8
+        ]
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe au poste haut.",
+            "en": "Pass to the high post."
+          }
+        },
+        {
+          "m": {
+            "x5": [
+              25,
+              17,
+              "m"
+            ],
+            "x3": [
+              20,
+              8,
+              "m"
+            ],
+            "x4": [
+              30,
+              8,
+              "m"
+            ],
+            "x1": [
+              21,
+              22,
+              "m"
+            ],
+            "x2": [
+              29,
+              22,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x5 monte sur 5 ; x3 et x4 se resserrent sous le panier ; x1 et x2 rentrent pour gêner.",
+            "en": "x5 steps up to 5; x3 and x4 tighten under the basket; x1 and x2 sink to bother him."
+          }
+        }
+      ]
+    },
+    {
+      "id": "2-3-zone-guarding-the-corners",
+      "cat": "defense",
+      "family": "zones",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Zone 2-3 : défense des corners",
+        "en": "2-3 zone: guarding the corners"
+      },
+      "sum": {
+        "fr": "Dans la zone 2-3, sur la passe au corner, le défenseur du bas côté ballon sort, le défenseur du milieu le remplace et le défenseur du haut descend.",
+        "en": "In the 2-3 zone, on the pass to the corner, the ball-side low defender closes out, the middle defender replaces him and the top defender drops."
+      },
+      "why": {
+        "fr": "Une rotation fixe évite le tir ouvert au corner sans laisser le poste bas libre.",
+        "en": "A fixed rotation stops the open corner shot without leaving the block open."
+      },
+      "counter": {
+        "fr": "Passer du corner au poste bas ou renverser vite vers le côté opposé.",
+        "en": "Pass from the corner to the block or reverse quickly to the far side."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Bras levés dans les lignes de passe",
+          "Glisser à chaque passe, avant la réception",
+          "Parler : annoncer le ballon et les coupes",
+          "Bloquer au rebond dans sa zone"
+        ],
+        "en": [
+          "Arms up in the passing lanes",
+          "Slide on every pass, before the catch",
+          "Talk: call the ball and the cuts",
+          "Box out in your area"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          43,
+          22
+        ],
+        "3": [
+          7,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1",
+        "x1": [
+          20,
+          25
+        ],
+        "x2": [
+          30,
+          25
+        ],
+        "x3": [
+          12,
+          12
+        ],
+        "x4": [
+          38,
+          12
+        ],
+        "x5": [
+          25,
+          8
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "x2": [
+              39,
+              21,
+              "m"
+            ],
+            "x1": [
+              27,
+              23,
+              "m"
+            ],
+            "x5": [
+              30,
+              8,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "Passe à l'aile, puis au corner.",
+            "en": "Pass to the wing, then to the corner."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "Passe au corner.",
+            "en": "Pass to the corner."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              45,
+              6.5,
+              "m"
+            ],
+            "x5": [
+              33,
+              8,
+              "m"
+            ],
+            "x3": [
+              24,
+              8,
+              "m"
+            ],
+            "x2": [
+              38,
+              16,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x4 sort au corner, x5 prend le poste bas, x3 protège le cercle, x2 descend au niveau de la ligne des lancers francs.",
+            "en": "x4 closes out to the corner, x5 takes the block, x3 protects the rim, x2 drops to free-throw-line level."
+          }
+        }
+      ]
     }
   ]
 }
