@@ -15878,6 +15878,2200 @@
           }
         }
       ]
+    },
+    {
+      "id": "corner-series",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Série corner",
+        "en": "Corner series"
+      },
+      "sum": {
+        "fr": "Série corner : passe au grand du coude, échange entre le meneur et l'ailier du corner, puis remise main à main du grand.",
+        "en": "Corner series: pass to the elbow big, a swap between the guard and the corner wing, then a handoff from the big."
+      },
+      "why": {
+        "fr": "L'échange occupe deux défenseurs juste avant la remise : celle-ci arrive sur une défense déjà en mouvement.",
+        "en": "The swap occupies two defenders right before the handoff, which then hits a defense already on the move."
+      },
+      "counter": {
+        "fr": "Changer sur l'échange et sur la remise.",
+        "en": "Switch the swap and the handoff."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          48,
+          4
+        ],
+        "3": [
+          2,
+          4
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5 au coude droit.",
+            "en": "1 passes to 5 at the right elbow."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              47,
+              6,
+              "c"
+            ],
+            "2": [
+              41,
+              21,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 descend au corner ; 2 remonte sur l'aile.",
+            "en": "1 goes down to the corner; 2 comes up to the wing."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              37,
+              23,
+              "d"
+            ],
+            "2": [
+              39,
+              25,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "5 dribble vers 2 et lui remet le ballon.",
+            "en": "5 dribbles at 2 and hands off."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              30,
+              17,
+              "d"
+            ],
+            "5": [
+              31,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 attaque le milieu ; 5 roule.",
+            "en": "2 attacks the middle; 5 rolls."
+          }
+        }
+      ]
+    },
+    {
+      "id": "pass-and-cut",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Passer et couper",
+        "en": "Pass and cut"
+      },
+      "sum": {
+        "fr": "Après chaque passe, le passeur coupe vers le panier ; s'il ne reçoit pas, il ressort et un coéquipier remplit sa place.",
+        "en": "After every pass, the passer cuts to the basket; if he does not get it back, he exits and a teammate fills his spot."
+      },
+      "why": {
+        "fr": "Le défenseur du passeur se relâche après la passe : la coupe immédiate le prend de vitesse.",
+        "en": "The passer's defender relaxes after the pass: the immediate cut beats him."
+      },
+      "counter": {
+        "fr": "Sauter vers le ballon après chaque passe pour couper la route du coupeur.",
+        "en": "Jump to the ball after every pass to cut off the cutter."
+      },
+      "used": {
+        "fr": "Courant chez les jeunes et en amateur.",
+        "en": "Common in youth and amateur basketball."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              28,
+              7,
+              "c"
+            ],
+            "3": [
+              25,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 coupe vers le panier ; 3 remonte remplir le haut.",
+            "en": "1 cuts to the rim; 3 lifts to fill the top."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "2 passe à 1 sous le panier.",
+            "en": "2 hits 1 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "pass-and-screen-away",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Passer et écran loin",
+        "en": "Pass and screen away"
+      },
+      "sum": {
+        "fr": "Après sa passe, le joueur pose un écran loin du ballon ; le joueur libéré vient recevoir et l'écraneur ressort.",
+        "en": "After passing, the player screens away from the ball; the freed player comes to catch and the screener steps back out."
+      },
+      "why": {
+        "fr": "Chaque passe déclenche un écran : la défense doit gérer ballon et écran en même temps.",
+        "en": "Every pass triggers a screen: the defense must handle the ball and a screen at once."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran loin du ballon et refuser la passe au joueur libéré.",
+        "en": "Switch the away screen and deny the freed player."
+      },
+      "used": {
+        "fr": "Courant chez les jeunes et en amateur.",
+        "en": "Common in youth and amateur basketball."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          34,
+          29
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          44,
+          24
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              9,
+              20,
+              "s"
+            ],
+            "3": [
+              16,
+              29,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 pose un écran pour 3, qui remonte au slot gauche.",
+            "en": "1 screens for 3, who comes up to the left slot."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              6,
+              24,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "2 passe à 3 ; 1 ressort sur l'aile.",
+            "en": "2 passes to 3; 1 steps back out to the wing."
+          }
+        }
+      ]
+    },
+    {
+      "id": "1-4-spread-offense",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque d'écartement 1-4",
+        "en": "1-4 spread offense"
+      },
+      "sum": {
+        "fr": "Placement 1-4 haut : le meneur en haut, deux grands aux coudes, deux ailiers sur les ailes ; la raquette est vide pour les coupes.",
+        "en": "1-4 high alignment: the guard up top, two bigs at the elbows, two wings on the wings; the paint is empty for cuts."
+      },
+      "why": {
+        "fr": "Avec quatre joueurs à la même hauteur, chaque coupe dans le dos ou plongée trouve une raquette vide.",
+        "en": "With four players at the same height, every backdoor cut or dive finds an empty paint."
+      },
+      "counter": {
+        "fr": "Défendre en reculant (pack line) pour garder la raquette fermée.",
+        "en": "Sag off (pack line) to keep the paint closed."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          25
+        ],
+        "3": [
+          6,
+          25
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          33,
+          19.5
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4 au coude gauche.",
+            "en": "1 passes to 4 at the left elbow."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              19,
+              7,
+              "c"
+            ],
+            "5": [
+              29,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 coupe dans le dos de son défenseur ; 5 plonge vers le cercle.",
+            "en": "3 cuts backdoor; 5 dives to the rim."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "4 choisit : 3 sous le panier ou 5 qui plonge.",
+            "en": "4 picks: 3 under the basket or 5 diving."
+          }
+        }
+      ]
+    },
+    {
+      "id": "open-post-motion",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Poste ouvert (open post)",
+        "en": "Open post motion"
+      },
+      "sum": {
+        "fr": "Attaque sans pivot fixe : la zone du poste haut reste vide et chaque joueur peut y couper pour recevoir.",
+        "en": "An offense with no fixed post: the high-post area stays empty and any player can cut into it to catch."
+      },
+      "why": {
+        "fr": "Le joueur qui coupe au poste haut reçoit face au panier, avec des coupes dans le dos tout autour.",
+        "en": "The player cutting to the high post catches facing the basket, with backdoor cuts all around him."
+      },
+      "counter": {
+        "fr": "Refuser la coupe au poste haut et protéger les coupes dans le dos.",
+        "en": "Deny the high-post flash and protect against backdoor cuts."
+      },
+      "used": {
+        "fr": "Courant chez les jeunes et en amateur.",
+        "en": "Common in youth and amateur basketball."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              25,
+              19,
+              "c"
+            ],
+            "1": [
+              12,
+              10,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 coupe au poste haut ; 1 descend vers le corner gauche.",
+            "en": "3 flashes to the high post; 1 goes down toward the left corner."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "2 passe à 3 au poste haut.",
+            "en": "2 hits 3 at the high post."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              30,
+              6,
+              "c"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "4 coupe dans le dos ; 3 lui passe.",
+            "en": "4 cuts backdoor; 3 hits him."
+          }
+        }
+      ]
+    },
+    {
+      "id": "ball-screen-continuity",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Continuité sur écrans porteurs",
+        "en": "Ball-screen continuity"
+      },
+      "sum": {
+        "fr": "Attaque en continuité de pick-and-roll : après chaque écran porteur, le ballon est renversé et un nouvel écran porteur arrive de l'autre côté.",
+        "en": "A pick-and-roll continuity: after each ball screen, the ball is reversed and a new ball screen comes on the other side."
+      },
+      "why": {
+        "fr": "La défense doit défendre plusieurs pick-and-roll de suite sans pouvoir se replacer.",
+        "en": "The defense has to guard several pick-and-rolls in a row without resetting."
+      },
+      "counter": {
+        "fr": "Changer systématiquement, ou défendre chaque écran sans aide pour ne pas tourner.",
+        "en": "Switch every time, or guard each screen without help so you never rotate."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran porteur.",
+            "en": "5 sets the ball screen."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              34,
+              25,
+              "d"
+            ],
+            "5": [
+              28,
+              10,
+              "c"
+            ],
+            "4": [
+              22,
+              30,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque à droite ; 5 roule ; 4 remonte en haut.",
+            "en": "1 attacks right; 5 rolls; 4 lifts up top."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 renverse vers 4.",
+            "en": "1 reverses to 4."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              19.5,
+              28,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 remonte poser un nouvel écran pour 4.",
+            "en": "5 comes back up to screen for 4."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              15,
+              21,
+              "d"
+            ],
+            "5": [
+              21,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 attaque à gauche ; 5 roule.",
+            "en": "4 attacks left; 5 rolls."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5 au cercle.",
+            "en": "Pass to 5 at the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "delay-offense",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque de retardement (delay)",
+        "en": "Delay offense"
+      },
+      "sum": {
+        "fr": "Attaque de retardement : les joueurs s'écartent aux quatre coins pour garder le ballon et ne tirer qu'en lay-up ou sur faute.",
+        "en": "A delay offense: players spread to the four corners to keep the ball and only shoot layups or draw fouls."
+      },
+      "why": {
+        "fr": "Le terrain est si écarté que chaque défenseur est seul : la moindre erreur donne un lay-up.",
+        "en": "The floor is so spread that each defender is on an island: any mistake gives up a layup."
+      },
+      "counter": {
+        "fr": "Prendre à deux le porteur au milieu et faire faute rapidement si le temps presse.",
+        "en": "Trap the ball handler in the middle and foul early if time is short."
+      },
+      "used": {
+        "fr": "La version la plus célèbre est le « Four Corners » de Dean Smith à North Carolina.",
+        "en": "The best-known version is Dean Smith's \"Four Corners\" at North Carolina."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          30
+        ],
+        "2": [
+          2,
+          4
+        ],
+        "3": [
+          48,
+          4
+        ],
+        "4": [
+          8,
+          34
+        ],
+        "5": [
+          42,
+          34
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              28,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "1 garde le ballon au milieu ; tout le monde est aux quatre coins.",
+            "en": "1 holds the ball in the middle; everyone sits in the four corners."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4 dans le coin haut.",
+            "en": "1 passes to 4 in the top corner."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              25,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "1 coupe vers le panier par le milieu vide.",
+            "en": "1 cuts to the rim through the empty middle."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "4 passe à 1 pour le lay-up, sinon on recommence.",
+            "en": "4 hits 1 for the layup, otherwise start again."
+          }
+        }
+      ]
+    },
+    {
+      "id": "3-out-2-in-motion",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Motion 3 dehors 2 dedans",
+        "en": "3-out 2-in motion"
+      },
+      "sum": {
+        "fr": "Trois joueurs dehors et deux pivots aux postes bas ; les pivots s'aident par des écrans et des passes haut-bas.",
+        "en": "Three players outside and two posts on the blocks; the posts help each other with screens and high-low passes."
+      },
+      "why": {
+        "fr": "Deux pivots occupent la raquette : quand l'un monte au poste haut, l'autre peut sceller son défenseur pour la passe haut-bas.",
+        "en": "Two posts occupy the paint: when one flashes high, the other can seal his defender for the high-low pass."
+      },
+      "counter": {
+        "fr": "Jouer devant le poste bas et aider depuis le côté faible.",
+        "en": "Front the low post and help from the weak side."
+      },
+      "used": {
+        "fr": "Courant chez les jeunes et en amateur.",
+        "en": "Common in youth and amateur basketball."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              25,
+              19,
+              "c"
+            ],
+            "1": [
+              16,
+              29,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "4 monte au poste haut ; 1 remplace au slot gauche.",
+            "en": "4 flashes to the high post; 1 fills the left slot."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "2 passe à 4 au poste haut.",
+            "en": "2 hits 4 at the high post."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              28,
+              8,
+              "c"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "5 scelle son défenseur : passe haut-bas de 4 à 5.",
+            "en": "5 seals his defender: high-low pass from 4 to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "4-out-vs-pressure",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque « 4 dehors » contre pression",
+        "en": "4-out vs pressure"
+      },
+      "sum": {
+        "fr": "Contre une défense qui refuse toutes les passes, un pivot monte au poste haut comme relais et les ailiers coupent dans le dos.",
+        "en": "Against a defense denying every pass, a post flashes to the high post as a release and the wings cut backdoor."
+      },
+      "why": {
+        "fr": "Plus la défense refuse les passes, plus elle laisse d'espace dans son dos : le poste haut sert de relais vers le panier.",
+        "en": "The harder the defense denies, the more space it leaves behind: the high post is the relay to the rim."
+      },
+      "counter": {
+        "fr": "Relâcher la pression quand le poste haut reçoit et protéger la ligne de fond.",
+        "en": "Release the pressure when the high post catches and protect the baseline."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              25,
+              20,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Les ailiers sont privés de ballon : 5 monte au poste haut.",
+            "en": "The wings are denied: 5 flashes to the high post."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5.",
+            "en": "1 passes to 5."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              32,
+              8,
+              "c"
+            ],
+            "3": [
+              18,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 et 3 coupent dans le dos de leurs défenseurs.",
+            "en": "2 and 3 cut behind their defenders."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "5 passe à 3 sous le panier.",
+            "en": "5 hits 3 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "reversal-offense",
+      "cat": "attaque",
+      "family": "motion",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Ballon côté fort, renversement rapide",
+        "en": "Reversal offense"
+      },
+      "sum": {
+        "fr": "Le ballon va d'abord d'un côté pour y attirer la défense, puis il est renversé très vite vers le côté opposé.",
+        "en": "The ball goes to one side first to draw the defense, then it is reversed quickly to the far side."
+      },
+      "why": {
+        "fr": "La défense se déplace vers le ballon ; un renversement rapide trouve le côté opposé avant qu'elle revienne.",
+        "en": "The defense shifts toward the ball; a quick reversal finds the far side before it recovers."
+      },
+      "counter": {
+        "fr": "Anticiper le renversement et refuser la passe au poste haut.",
+        "en": "Anticipate the reversal and deny the high-post pass."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Garder 4 à 5 m entre les joueurs",
+          "Après une passe : couper, écran ou remplacer",
+          "Lire le défenseur avant chaque décision",
+          "Le ballon bouge plus vite que les défenseurs"
+        ],
+        "en": [
+          "Keep 12 to 15 feet between players",
+          "After a pass: cut, screen or replace",
+          "Read the defender before every decision",
+          "The ball moves faster than the defenders"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 : la défense glisse vers la droite.",
+            "en": "1 passes to 2: the defense slides right."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              25,
+              20,
+              "c"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "5 monte au poste haut et reçoit de 2.",
+            "en": "5 flashes to the high post and catches from 2."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "5 renverse aussitôt vers 3.",
+            "en": "5 reverses right away to 3."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "3 trouve 4 au corner ou attaque.",
+            "en": "3 finds 4 in the corner or attacks."
+          }
+        }
+      ]
+    },
+    {
+      "id": "high-low",
+      "cat": "attaque",
+      "family": "poste",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Haut-bas (high-low)",
+        "en": "High-low"
+      },
+      "sum": {
+        "fr": "Passe d'un joueur placé au poste haut (ligne des lancers francs) vers un pivot qui a scellé son défenseur au poste bas.",
+        "en": "A pass from a player at the high post (free-throw line) to a post who has sealed his defender on the block."
+      },
+      "why": {
+        "fr": "Depuis le poste haut, l'angle de passe passe par-dessus le défenseur du poste bas, qui joue devant ou sur le côté.",
+        "en": "From the high post, the passing angle goes over the low-post defender who is fronting or playing the side."
+      },
+      "counter": {
+        "fr": "Aider depuis le côté faible sur la passe lobée, ou refuser la passe au poste haut.",
+        "en": "Help from the weak side on the lob, or deny the high-post catch."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Prendre position avant de réclamer le ballon",
+          "Bras large du côté de la passe",
+          "Passe du côté opposé au défenseur",
+          "Recevoir à deux mains, ballon protégé"
+        ],
+        "en": [
+          "Establish position before calling for the ball",
+          "Wide arm on the passing side",
+          "Pass away from the defender",
+          "Catch with two hands, ball protected"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          25,
+          19
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4 au poste haut.",
+            "en": "1 passes to 4 at the high post."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              28,
+              8,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 scelle son défenseur en se décalant vers le milieu.",
+            "en": "5 seals his defender by stepping toward the middle."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe haut-bas de 4 à 5.",
+            "en": "High-low pass from 4 to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "wing-post-entry",
+      "cat": "attaque",
+      "family": "poste",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Entrée au poste depuis l'aile",
+        "en": "Wing post entry"
+      },
+      "sum": {
+        "fr": "Passe au poste bas depuis l'aile, avec le bon angle : l'ailier descend à l'aile basse pour ouvrir la ligne de passe.",
+        "en": "A post entry from the wing with a good angle: the wing drops to the low wing to open the passing lane."
+      },
+      "why": {
+        "fr": "Plus l'angle est bas, plus il est difficile au défenseur de couper la passe.",
+        "en": "The lower the angle, the harder it is for the defender to get a hand on the pass."
+      },
+      "counter": {
+        "fr": "Défendre aux trois quarts côté ligne de fond et forcer une passe lobée.",
+        "en": "Play three-quarter on the baseline side and force a lob."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Prendre position avant de réclamer le ballon",
+          "Bras large du côté de la passe",
+          "Passe du côté opposé au défenseur",
+          "Recevoir à deux mains, ballon protégé"
+        ],
+        "en": [
+          "Establish position before calling for the ball",
+          "Wide arm on the passing side",
+          "Pass away from the defender",
+          "Catch with two hands, ball protected"
+        ]
+      },
+      "start": {
+        "2": [
+          42,
+          20
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              32,
+              9,
+              "c"
+            ],
+            "2": [
+              42,
+              16,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "5 prend position au poste bas ; 2 descend pour un meilleur angle.",
+            "en": "5 establishes post position; 2 drops for a better angle."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe à 5 du côté opposé au défenseur.",
+            "en": "2 passes to 5 away from the defender."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              27,
+              7,
+              "d"
+            ]
+          },
+          "c": {
+            "fr": "5 pivote vers le milieu et finit.",
+            "en": "5 drops toward the middle and finishes."
+          }
+        }
+      ]
+    },
+    {
+      "id": "duck-in",
+      "cat": "attaque",
+      "family": "poste",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Rentrée au poste (duck-in)",
+        "en": "Duck-in"
+      },
+      "sum": {
+        "fr": "Quand le ballon change de côté, le pivot du côté faible entre dans la raquette et bloque son défenseur derrière lui.",
+        "en": "When the ball changes sides, the weak-side post steps into the lane and pins his defender behind him."
+      },
+      "why": {
+        "fr": "Le défenseur, placé côté aide, se retrouve dans le dos du pivot : la passe est libre au milieu de la raquette.",
+        "en": "The defender, in help position, ends up behind the post: the pass into the middle of the lane is open."
+      },
+      "counter": {
+        "fr": "Anticiper le renversement et rester entre le pivot et le ballon.",
+        "en": "Anticipate the reversal and stay between the post and the ball."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Prendre position avant de réclamer le ballon",
+          "Bras large du côté de la passe",
+          "Passe du côté opposé au défenseur",
+          "Recevoir à deux mains, ballon protégé"
+        ],
+        "en": [
+          "Establish position before calling for the ball",
+          "Wide arm on the passing side",
+          "Pass away from the defender",
+          "Catch with two hands, ball protected"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 passe à 3 : le ballon change de côté.",
+            "en": "1 passes to 3: the ball changes sides."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              22,
+              10,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 entre dans la raquette et bloque son défenseur derrière lui.",
+            "en": "5 ducks into the lane and pins his defender behind him."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "3 passe à 5 au milieu de la raquette.",
+            "en": "3 feeds 5 in the middle of the lane."
+          }
+        }
+      ]
+    },
+    {
+      "id": "post-split",
+      "cat": "attaque",
+      "family": "poste",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Coupe croisée après passe au poste (split)",
+        "en": "Post split"
+      },
+      "sum": {
+        "fr": "Après la passe au poste bas, le passeur pose un écran pour un coéquipier extérieur, puis les deux se croisent autour du pivot.",
+        "en": "After the post entry, the passer screens for a perimeter teammate, then the two crisscross around the post."
+      },
+      "why": {
+        "fr": "Pendant que la défense regarde le pivot, deux coupes se croisent devant lui : il a toujours une passe facile.",
+        "en": "While the defense watches the post, two cuts cross in front of him: he always has an easy pass."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran et ne pas aider sur le pivot depuis les coupeurs.",
+        "en": "Switch the screen and do not help on the post from the cutters."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Prendre position avant de réclamer le ballon",
+          "Bras large du côté de la passe",
+          "Passe du côté opposé au défenseur",
+          "Recevoir à deux mains, ballon protégé"
+        ],
+        "en": [
+          "Establish position before calling for the ball",
+          "Wide arm on the passing side",
+          "Pass away from the defender",
+          "Catch with two hands, ball protected"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe à 5 au poste bas.",
+            "en": "2 feeds 5 on the block."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              31,
+              25,
+              "s"
+            ],
+            "1": [
+              42,
+              20,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 pose un écran pour 1 ; 1 coupe vers l'aile.",
+            "en": "2 screens for 1; 1 cuts to the wing."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              27,
+              12,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "2 coupe vers le panier après l'écran.",
+            "en": "2 cuts to the rim after the screen."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "5 passe à 1 sur l'aile, ou à 2 qui coupe.",
+            "en": "5 passes to 1 on the wing, or to 2 cutting."
+          }
+        }
+      ]
+    },
+    {
+      "id": "seal-and-pin",
+      "cat": "attaque",
+      "family": "poste",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Sceller et bloquer (seal)",
+        "en": "Seal and pin"
+      },
+      "sum": {
+        "fr": "Le pivot garde son défenseur dans son dos avec le corps et les bras, puis réclame le ballon là où le défenseur ne peut pas aller.",
+        "en": "The post keeps his defender on his back with body and arms, then calls for the ball where the defender cannot get to."
+      },
+      "why": {
+        "fr": "Quand le ballon change d'angle, le défenseur se retrouve du mauvais côté : le pivot le bloque et reçoit près du cercle.",
+        "en": "When the ball changes angle, the defender ends up on the wrong side: the post pins him and catches near the rim."
+      },
+      "counter": {
+        "fr": "Se replacer à chaque passe pour ne pas se faire bloquer.",
+        "en": "Readjust on every pass so you do not get pinned."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Prendre position avant de réclamer le ballon",
+          "Bras large du côté de la passe",
+          "Passe du côté opposé au défenseur",
+          "Recevoir à deux mains, ballon protégé"
+        ],
+        "en": [
+          "Establish position before calling for the ball",
+          "Wide arm on the passing side",
+          "Pass away from the defender",
+          "Catch with two hands, ball protected"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "5": [
+          31,
+          9
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "x5": [
+          33,
+          11
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "1",
+          "c": {
+            "fr": "x5 défend côté ballon ; 2 renvoie le ballon en haut.",
+            "en": "x5 plays the ball side; 2 swings the ball up top."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              29,
+              11,
+              "c"
+            ],
+            "x5": [
+              31,
+              8,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 se décale et garde x5 dans son dos, côté ligne de fond.",
+            "en": "5 steps across and keeps x5 on his back, on the baseline side."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5, seul côté milieu.",
+            "en": "1 hits 5, open on the middle side."
+          }
+        }
+      ]
+    },
+    {
+      "id": "post-up-after-a-switch",
+      "cat": "attaque",
+      "family": "poste",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Jeu au poste après changement",
+        "en": "Post-up after a switch"
+      },
+      "sum": {
+        "fr": "Après un changement sur un écran, le grand se retrouve contre un petit : on vide le côté et on lui donne le ballon au poste bas.",
+        "en": "After a switch on a screen, the big ends up on a small defender: clear the side and feed him on the block."
+      },
+      "why": {
+        "fr": "Le grand est plus fort et plus grand près du cercle ; le côté vidé empêche l'aide rapide.",
+        "en": "The big is stronger and taller near the rim; the cleared side prevents quick help."
+      },
+      "counter": {
+        "fr": "Jouer devant le grand et faire venir l'aide du côté faible, ou changer à nouveau.",
+        "en": "Front the big and bring weak-side help, or switch back."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Prendre position avant de réclamer le ballon",
+          "Bras large du côté de la passe",
+          "Passe du côté opposé au défenseur",
+          "Recevoir à deux mains, ballon protégé"
+        ],
+        "en": [
+          "Establish position before calling for the ball",
+          "Wide arm on the passing side",
+          "Pass away from the defender",
+          "Catch with two hands, ball protected"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          32
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "x1": [
+          25,
+          29
+        ],
+        "x5": [
+          25,
+          16
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              27.5,
+              29.5,
+              "s"
+            ],
+            "x1": [
+              27.5,
+              27,
+              "m"
+            ],
+            "x5": [
+              28.5,
+              31.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 pose l'écran ; la défense change : x1 (petit) se retrouve sur 5.",
+            "en": "5 screens; the defense switches: x1 (small) ends up on 5."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              32,
+              9,
+              "c"
+            ],
+            "x1": [
+              33,
+              11,
+              "m"
+            ],
+            "4": [
+              25,
+              30,
+              "c"
+            ],
+            "1": [
+              16,
+              29,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "5 descend au poste bas ; 4 quitte le corner pour vider le côté ; 1 passe à 2.",
+            "en": "5 goes down to the block; 4 leaves the corner to clear the side; 1 passes to 2."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe à 5 contre le petit défenseur.",
+            "en": "2 feeds 5 against the small defender."
+          }
+        }
+      ]
+    },
+    {
+      "id": "low-low-double-post",
+      "cat": "attaque",
+      "family": "poste",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Double poste bas",
+        "en": "Low-low double post"
+      },
+      "sum": {
+        "fr": "Deux pivots aux deux postes bas : quand le premier reçoit et attire l'aide, il passe à l'autre pivot (passe pivot à pivot).",
+        "en": "Two posts on both blocks: when the first one catches and draws help, he passes to the other post (post-to-post pass)."
+      },
+      "why": {
+        "fr": "L'aide sur le premier pivot vient souvent du défenseur de l'autre pivot : celui-ci est seul sous le panier.",
+        "en": "Help on the first post often comes from the other post's defender, who leaves his man alone under the basket."
+      },
+      "counter": {
+        "fr": "Aider avec un défenseur extérieur plutôt qu'avec l'autre défenseur intérieur.",
+        "en": "Help with a perimeter defender rather than the other post defender."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Prendre position avant de réclamer le ballon",
+          "Bras large du côté de la passe",
+          "Passe du côté opposé au défenseur",
+          "Recevoir à deux mains, ballon protégé"
+        ],
+        "en": [
+          "Establish position before calling for the ball",
+          "Wide arm on the passing side",
+          "Pass away from the defender",
+          "Catch with two hands, ball protected"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          19,
+          8
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe à 5 au poste bas.",
+            "en": "2 feeds 5 on the block."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              23,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Le défenseur de 4 aide sur 5 : 4 entre sous le panier.",
+            "en": "4's defender helps on 5: 4 steps in under the basket."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "Passe de pivot à pivot : 5 trouve 4.",
+            "en": "Post-to-post pass: 5 finds 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "re-post",
+      "cat": "attaque",
+      "family": "poste",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Repasser au poste (re-post)",
+        "en": "Re-post"
+      },
+      "sum": {
+        "fr": "Le pivot ressort le ballon quand il est gêné, puis reprend aussitôt position au poste bas pour une nouvelle passe.",
+        "en": "The post kicks the ball out when he is bothered, then immediately re-establishes post position for a new entry."
+      },
+      "why": {
+        "fr": "Après la passe de sortie, la défense se replace sur l'extérieur : le pivot reprend une position plus profonde.",
+        "en": "After the kick-out, the defense recovers outside: the post regains deeper position."
+      },
+      "counter": {
+        "fr": "Rester au contact du pivot après la passe de sortie.",
+        "en": "Stay in contact with the post after the kick-out."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Prendre position avant de réclamer le ballon",
+          "Bras large du côté de la passe",
+          "Passe du côté opposé au défenseur",
+          "Recevoir à deux mains, ballon protégé"
+        ],
+        "en": [
+          "Establish position before calling for the ball",
+          "Wide arm on the passing side",
+          "Pass away from the defender",
+          "Catch with two hands, ball protected"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          32,
+          10
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe à 5 au poste bas.",
+            "en": "2 feeds 5 on the block."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "5 est gêné : il ressort vers 2.",
+            "en": "5 is bothered: he kicks it back to 2."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              30,
+              7,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 reprend position plus près du cercle.",
+            "en": "5 re-posts closer to the rim."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 repasse à 5.",
+            "en": "2 feeds 5 again."
+          }
+        }
+      ]
+    },
+    {
+      "id": "post-double-team-response",
+      "cat": "attaque",
+      "family": "poste",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Réponse à la prise à deux au poste",
+        "en": "Post double-team response"
+      },
+      "sum": {
+        "fr": "Quand le pivot est pris à deux, les extérieurs se déplacent dans les espaces libres et le pivot ressort vers le joueur laissé seul.",
+        "en": "When the post is double-teamed, the perimeter players move into open spaces and the post kicks out to the man left alone."
+      },
+      "why": {
+        "fr": "Une prise à deux laisse forcément un attaquant libre : il faut le rendre visible et prêt à tirer.",
+        "en": "A double team always leaves someone open: make him visible and ready to shoot."
+      },
+      "counter": {
+        "fr": "Prendre à deux depuis le joueur le plus loin du ballon et tourner tout de suite.",
+        "en": "Double from the man farthest from the ball and rotate right away."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Prendre position avant de réclamer le ballon",
+          "Bras large du côté de la passe",
+          "Passe du côté opposé au défenseur",
+          "Recevoir à deux mains, ballon protégé"
+        ],
+        "en": [
+          "Establish position before calling for the ball",
+          "Wide arm on the passing side",
+          "Pass away from the defender",
+          "Catch with two hands, ball protected"
+        ]
+      },
+      "start": {
+        "2": [
+          44,
+          24
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "x5": [
+          30,
+          6
+        ],
+        "x1": [
+          25,
+          28
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe à 5 au poste bas.",
+            "en": "2 feeds 5 on the block."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              33,
+              11,
+              "m"
+            ],
+            "1": [
+              31,
+              29,
+              "c"
+            ],
+            "4": [
+              22,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "x1 descend prendre 5 à deux ; 1 se décale dans l'espace libre.",
+            "en": "x1 drops to double 5; 1 relocates into open space."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "5 ressort vers 1, laissé seul.",
+            "en": "5 kicks it out to 1, left alone."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 tire ou renverse vers 3.",
+            "en": "1 shoots or swings it to 3."
+          }
+        }
+      ]
+    },
+    {
+      "id": "elbow-series",
+      "cat": "attaque",
+      "family": "poste",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Série au coude",
+        "en": "Elbow series"
+      },
+      "sum": {
+        "fr": "Série d'actions à partir d'un grand qui reçoit au coude : coupe dans le dos, remise main à main ou passe haut-bas.",
+        "en": "A series of actions from a big catching at the elbow: backdoor cut, handoff or high-low pass."
+      },
+      "why": {
+        "fr": "Le coude est un point central : le grand y voit tout le terrain et chaque coéquipier a une action à jouer avec lui.",
+        "en": "The elbow is a hub: the big sees the whole floor and every teammate has an action to play with him."
+      },
+      "counter": {
+        "fr": "Refuser la passe au coude et protéger les coupes dans le dos.",
+        "en": "Deny the elbow catch and protect against backdoor cuts."
+      },
+      "used": {
+        "fr": "Terminologie variable selon les équipes ; courant dans le basket professionnel.",
+        "en": "Terminology varies between teams; common in professional basketball."
+      },
+      "keys": {
+        "fr": [
+          "Prendre position avant de réclamer le ballon",
+          "Bras large du côté de la passe",
+          "Passe du côté opposé au défenseur",
+          "Recevoir à deux mains, ballon protégé"
+        ],
+        "en": [
+          "Establish position before calling for the ball",
+          "Wide arm on the passing side",
+          "Pass away from the defender",
+          "Catch with two hands, ball protected"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          6,
+          24
+        ],
+        "3": [
+          44,
+          24
+        ],
+        "4": [
+          17,
+          19.5
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "1 passe à 4 au coude gauche.",
+            "en": "1 passes to 4 at the left elbow."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              20,
+              7,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "Option 1 : 2 coupe dans le dos vers le panier.",
+            "en": "Option 1: 2 cuts backdoor to the rim."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              3,
+              6,
+              "c"
+            ],
+            "1": [
+              15,
+              23,
+              "c"
+            ],
+            "4": [
+              17,
+              21.5,
+              "d"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "2 n'est pas libre : il ressort ; 1 vient chercher une remise main à main.",
+            "en": "2 is not open: he exits; 1 comes for a handoff."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              22,
+              14,
+              "d"
+            ],
+            "5": [
+              28,
+              8,
+              "c"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "1 attaque ; 5 scelle au poste bas pour la passe.",
+            "en": "1 attacks; 5 seals on the block for the pass."
+          }
+        }
+      ]
     }
   ]
 }

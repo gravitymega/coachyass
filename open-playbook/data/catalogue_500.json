@@ -1207,7 +1207,7 @@
       "fr": "Série corner",
       "en": "Corner series"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pass-and-cut",
@@ -1218,7 +1218,7 @@
       "fr": "Passer et couper",
       "en": "Pass and cut"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pass-and-screen-away",
@@ -1229,7 +1229,7 @@
       "fr": "Passer et écran loin",
       "en": "Pass and screen away"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "1-4-spread-offense",
@@ -1240,7 +1240,7 @@
       "fr": "Attaque d'écartement 1-4",
       "en": "1-4 spread offense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "open-post-motion",
@@ -1251,7 +1251,7 @@
       "fr": "Poste ouvert (open post)",
       "en": "Open post motion"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ball-screen-continuity",
@@ -1262,7 +1262,7 @@
       "fr": "Continuité sur écrans porteurs",
       "en": "Ball-screen continuity"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "delay-offense",
@@ -1273,18 +1273,18 @@
       "fr": "Attaque de retardement (delay)",
       "en": "Delay offense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
-    "id": "dribble-at-backdoor-rule",
+    "id": "3-out-2-in-motion",
     "cat": "attaque",
     "family": "motion",
-    "lvl": 2,
+    "lvl": 1,
     "name": {
-      "fr": "Motion avec règle du dribble vers",
-      "en": "Dribble-at backdoor rule"
+      "fr": "Motion 3 dehors 2 dedans",
+      "en": "3-out 2-in motion"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "4-out-vs-pressure",
@@ -1295,7 +1295,7 @@
       "fr": "Attaque « 4 dehors » contre pression",
       "en": "4-out vs pressure"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "reversal-offense",
@@ -1306,7 +1306,7 @@
       "fr": "Ballon côté fort, renversement rapide",
       "en": "Reversal offense"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "high-low",
@@ -1317,7 +1317,7 @@
       "fr": "Haut-bas (high-low)",
       "en": "High-low"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "wing-post-entry",
@@ -1328,7 +1328,7 @@
       "fr": "Entrée au poste depuis l'aile",
       "en": "Wing post entry"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "duck-in",
@@ -1339,7 +1339,7 @@
       "fr": "Rentrée au poste (duck-in)",
       "en": "Duck-in"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "post-split",
@@ -1350,7 +1350,7 @@
       "fr": "Coupe croisée après passe au poste (split)",
       "en": "Post split"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "seal-and-pin",
@@ -1361,7 +1361,7 @@
       "fr": "Sceller et bloquer (seal)",
       "en": "Seal and pin"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "post-up-after-a-switch",
@@ -1372,7 +1372,7 @@
       "fr": "Jeu au poste après changement",
       "en": "Post-up after a switch"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "low-low-double-post",
@@ -1383,7 +1383,7 @@
       "fr": "Double poste bas",
       "en": "Low-low double post"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "re-post",
@@ -1394,7 +1394,7 @@
       "fr": "Repasser au poste (re-post)",
       "en": "Re-post"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "post-double-team-response",
@@ -1405,7 +1405,7 @@
       "fr": "Réponse à la prise à deux au poste",
       "en": "Post double-team response"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "elbow-series",
@@ -1416,7 +1416,7 @@
       "fr": "Série au coude",
       "en": "Elbow series"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "low-post-isolation",
