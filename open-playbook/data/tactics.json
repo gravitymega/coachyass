@@ -22669,6 +22669,2549 @@
           }
         }
       ]
+    },
+    {
+      "id": "lob-over-the-2-3-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-2-3",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Passe en lob par-dessus la zone",
+        "en": "Lob over the 2-3 zone"
+      },
+      "sum": {
+        "fr": "Quand la zone 2-3 glisse vers le ballon, le pivot du côté opposé se place derrière elle et reçoit une passe lobée par-dessus.",
+        "en": "When the 2-3 zone slides toward the ball, the far-side post sets up behind it and gets a lob over the top."
+      },
+      "why": {
+        "fr": "Les défenseurs de zone regardent le ballon : le pivot derrière eux est seul près du cercle.",
+        "en": "Zone defenders watch the ball: the post behind them is alone near the rim."
+      },
+      "counter": {
+        "fr": "Le défenseur du bas côté faible reste en contact avec le pivot et les bras levés.",
+        "en": "The weak-side low defender stays in contact with the post, arms up."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          20,
+          25
+        ],
+        "x2": [
+          30,
+          25
+        ],
+        "x3": [
+          12,
+          12
+        ],
+        "x4": [
+          38,
+          12
+        ],
+        "x5": [
+          25,
+          8
+        ],
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          34,
+          29
+        ],
+        "3": [
+          5,
+          20
+        ],
+        "4": [
+          45,
+          20
+        ],
+        "5": [
+          19,
+          8
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "2 passe à 4 sur l'aile droite.",
+            "en": "2 passes to 4 on the right wing."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              40,
+              20,
+              "m"
+            ],
+            "x4": [
+              41,
+              10,
+              "m"
+            ],
+            "x5": [
+              30,
+              8,
+              "m"
+            ],
+            "x1": [
+              28,
+              23,
+              "m"
+            ],
+            "x3": [
+              18,
+              11,
+              "m"
+            ],
+            "5": [
+              21,
+              5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "La zone glisse ; 5 se place derrière elle, côté opposé.",
+            "en": "The zone slides; 5 sets up behind it on the far side."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe lobée de 4 à 5 par-dessus la zone.",
+            "en": "Lob from 4 to 5 over the zone."
+          }
+        }
+      ]
+    },
+    {
+      "id": "corner-three-vs-2-3-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-2-3",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Tir du corner contre zone 2-3",
+        "en": "Corner three vs 2-3 zone"
+      },
+      "sum": {
+        "fr": "Contre une zone 2-3, le corner est le point le plus éloigné : après la passe à l'aile, le défenseur du bas doit sortir loin.",
+        "en": "Against a 2-3 zone, the corner is the farthest spot: after the pass to the wing, the low defender has to run far out."
+      },
+      "why": {
+        "fr": "Le défenseur du bas quitte la raquette pour sortir au corner : il arrive en retard et ouvre le dessous.",
+        "en": "The low defender leaves the paint to close out to the corner: he arrives late and opens the area behind him."
+      },
+      "counter": {
+        "fr": "Faire sortir l'ailier de la zone au corner et descendre le défenseur du haut.",
+        "en": "Send the zone's wing defender to the corner and drop the top defender."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          20,
+          25
+        ],
+        "x2": [
+          30,
+          25
+        ],
+        "x3": [
+          12,
+          12
+        ],
+        "x4": [
+          38,
+          12
+        ],
+        "x5": [
+          25,
+          8
+        ],
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          34,
+          29
+        ],
+        "3": [
+          5,
+          20
+        ],
+        "4": [
+          44,
+          21
+        ],
+        "5": [
+          48,
+          5
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "2 passe à 4 sur l'aile.",
+            "en": "2 passes to 4 on the wing."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              41,
+              19,
+              "m"
+            ],
+            "x1": [
+              28,
+              23,
+              "m"
+            ],
+            "x5": [
+              30,
+              8,
+              "m"
+            ],
+            "x3": [
+              18,
+              11,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 sort sur 4 ; la zone glisse.",
+            "en": "x2 closes out to 4; the zone slides."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "4 passe à 5 au corner : x4 doit sortir de loin.",
+            "en": "4 passes to 5 in the corner: x4 has to close out from far away."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              45,
+              7,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x4 arrive en retard : 5 tire.",
+            "en": "x4 arrives late: 5 shoots."
+          }
+        }
+      ]
+    },
+    {
+      "id": "drive-and-kick-vs-2-3-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-2-3",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Pénétration et ressortie contre zone 2-3",
+        "en": "Drive and kick vs 2-3 zone"
+      },
+      "sum": {
+        "fr": "Le porteur pénètre dans un intervalle de la zone 2-3, attire deux défenseurs et ressort vers le corner laissé libre.",
+        "en": "The ball handler drives a gap of the 2-3 zone, draws two defenders and kicks to the open corner."
+      },
+      "why": {
+        "fr": "Chaque défenseur qui sort sur la pénétration quitte sa zone : le joueur de cette zone est libre.",
+        "en": "Every defender who steps up on the drive leaves his area: the player in that area is open."
+      },
+      "counter": {
+        "fr": "Contenir la pénétration avec un seul défenseur.",
+        "en": "Contain the drive with one defender."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          20,
+          25
+        ],
+        "x2": [
+          30,
+          25
+        ],
+        "x3": [
+          12,
+          12
+        ],
+        "x4": [
+          38,
+          12
+        ],
+        "x5": [
+          25,
+          8
+        ],
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          34,
+          29
+        ],
+        "3": [
+          5,
+          20
+        ],
+        "4": [
+          44,
+          20
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              15,
+              17,
+              "d"
+            ],
+            "x1": [
+              17,
+              21,
+              "m"
+            ],
+            "x3": [
+              12,
+              16,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 pénètre entre x1 et x3 ; les deux se resserrent.",
+            "en": "1 drives between x1 and x3; both close in."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "1 ressort vers 3 sur l'aile, puis 3 trouve 5 au corner.",
+            "en": "1 kicks to 3 on the wing, then 3 finds 5 in the corner."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe à 5 au corner.",
+            "en": "Pass to 5 in the corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "2-1-2-alignment-vs-3-2-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-3-2",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Placement 2-1-2 contre zone 3-2",
+        "en": "2-1-2 alignment vs 3-2 zone"
+      },
+      "sum": {
+        "fr": "Placement 2-1-2 contre une zone 3-2 : deux meneurs dans les intervalles du haut, un poste haut, deux joueurs aux petits corners.",
+        "en": "2-1-2 alignment against a 3-2 zone: two guards in the top gaps, a high post, two players in the short corners."
+      },
+      "why": {
+        "fr": "La zone 3-2 n'a que deux défenseurs en bas : le poste haut et les petits corners les mettent à trois contre deux.",
+        "en": "The 3-2 zone only has two low defenders: the high post and the short corners put them three-on-two."
+      },
+      "counter": {
+        "fr": "Faire descendre le défenseur du haut sur le poste haut.",
+        "en": "Drop the top defender onto the high post."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          26
+        ],
+        "x2": [
+          35,
+          22
+        ],
+        "x3": [
+          15,
+          22
+        ],
+        "x4": [
+          19,
+          7
+        ],
+        "x5": [
+          31,
+          7
+        ],
+        "1": [
+          19,
+          30
+        ],
+        "2": [
+          31,
+          30
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "3": [
+          10,
+          4
+        ],
+        "4": [
+          40,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5 au poste haut.",
+            "en": "1 passes to 5 at the high post."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              22,
+              14,
+              "m"
+            ],
+            "3": [
+              19,
+              6,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "x4 monte sur 5 : 3 plonge derrière lui.",
+            "en": "x4 steps up to 5: 3 dives behind him."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "5 passe à 3 sous le panier.",
+            "en": "5 hits 3 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "low-post-vs-3-2-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-3-2",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Poste bas contre zone 3-2",
+        "en": "Low post vs 3-2 zone"
+      },
+      "sum": {
+        "fr": "Contre une zone 3-2, seuls deux défenseurs gardent la raquette : un pivot au poste bas côté ballon y trouve de l'espace.",
+        "en": "Against a 3-2 zone, only two defenders guard the paint: a post on the ball-side block finds room there."
+      },
+      "why": {
+        "fr": "Les trois défenseurs du haut ne peuvent pas aider au poste bas sans laisser un tireur.",
+        "en": "The three top defenders cannot help on the block without leaving a shooter."
+      },
+      "counter": {
+        "fr": "Jouer devant le poste et faire descendre un défenseur du haut.",
+        "en": "Front the post and drop a top defender."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          26
+        ],
+        "x2": [
+          35,
+          22
+        ],
+        "x3": [
+          15,
+          22
+        ],
+        "x4": [
+          19,
+          7
+        ],
+        "x5": [
+          31,
+          7
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          22
+        ],
+        "3": [
+          6,
+          22
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          32,
+          11
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 sur l'aile.",
+            "en": "1 passes to 2 on the wing."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              40,
+              21,
+              "m"
+            ],
+            "x1": [
+              29,
+              24,
+              "m"
+            ],
+            "x5": [
+              34,
+              8,
+              "m"
+            ],
+            "x4": [
+              27,
+              7,
+              "m"
+            ],
+            "5": [
+              32,
+              11.5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "La zone glisse ; 5 scelle x5 au poste bas.",
+            "en": "The zone slides; 5 seals x5 on the block."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe à 5 au poste bas.",
+            "en": "2 feeds 5 on the block."
+          }
+        }
+      ]
+    },
+    {
+      "id": "overload-vs-3-2-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-3-2",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Surcharge contre zone 3-2",
+        "en": "Overload vs 3-2 zone"
+      },
+      "sum": {
+        "fr": "Trois attaquants du même côté (aile, corner, petit corner) contre les deux défenseurs de zone de ce côté.",
+        "en": "Three attackers on one side (wing, corner, short corner) against the two zone defenders on that side."
+      },
+      "why": {
+        "fr": "À trois contre deux d'un côté, une passe suffit pour trouver un joueur libre.",
+        "en": "Three-on-two on one side: one pass is enough to find an open man."
+      },
+      "counter": {
+        "fr": "Faire glisser toute la zone et défendre en homme à homme du côté chargé.",
+        "en": "Shift the whole zone and play man-to-man on the overloaded side."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          26
+        ],
+        "x2": [
+          35,
+          22
+        ],
+        "x3": [
+          15,
+          22
+        ],
+        "x4": [
+          19,
+          7
+        ],
+        "x5": [
+          31,
+          7
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          21
+        ],
+        "4": [
+          48,
+          5
+        ],
+        "5": [
+          38,
+          3
+        ],
+        "3": [
+          8,
+          24
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 : trois attaquants à droite.",
+            "en": "1 passes to 2: three attackers on the right."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              41,
+              20,
+              "m"
+            ],
+            "x5": [
+              44,
+              7,
+              "m"
+            ],
+            "x4": [
+              28,
+              7,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 sort sur 2, x5 sort au corner.",
+            "en": "x2 closes out to 2, x5 runs to the corner."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe à 5 au petit corner, seul.",
+            "en": "2 hits 5 in the short corner, open."
+          }
+        }
+      ]
+    },
+    {
+      "id": "cut-behind-the-3-2-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-3-2",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Coupe dans le dos de la zone 3-2",
+        "en": "Cut behind the 3-2 zone"
+      },
+      "sum": {
+        "fr": "L'ailier du côté faible coupe dans le dos des défenseurs du haut de la zone 3-2, vers le milieu de la raquette.",
+        "en": "The weak-side wing cuts behind the top defenders of the 3-2 zone into the middle of the paint."
+      },
+      "why": {
+        "fr": "Les trois défenseurs du haut regardent le ballon ; l'espace derrière eux, au-dessus des deux du bas, est vide.",
+        "en": "The three top defenders watch the ball; the space behind them, above the two low defenders, is empty."
+      },
+      "counter": {
+        "fr": "Le défenseur du haut côté faible descend dans la raquette quand le ballon est sur l'aile opposée.",
+        "en": "The weak-side top defender drops into the paint when the ball is on the far wing."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          26
+        ],
+        "x2": [
+          35,
+          22
+        ],
+        "x3": [
+          15,
+          22
+        ],
+        "x4": [
+          19,
+          7
+        ],
+        "x5": [
+          31,
+          7
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          22
+        ],
+        "3": [
+          6,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          19,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x2": [
+              40,
+              21,
+              "m"
+            ],
+            "x1": [
+              30,
+              24,
+              "m"
+            ],
+            "x3": [
+              21,
+              21,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 ; la zone glisse à droite.",
+            "en": "1 passes to 2; the zone slides right."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              24,
+              14,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 coupe dans le dos de x3 vers le milieu de la raquette.",
+            "en": "3 cuts behind x3 into the middle of the paint."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "2 passe à 3.",
+            "en": "2 hits 3."
+          }
+        }
+      ]
+    },
+    {
+      "id": "corner-attack-vs-3-2-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-3-2",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Corner contre zone 3-2",
+        "en": "Corner attack vs 3-2 zone"
+      },
+      "sum": {
+        "fr": "Contre une zone 3-2, ce sont les défenseurs du bas qui doivent sortir au corner : la passe au corner ouvre la raquette.",
+        "en": "Against a 3-2 zone, the low defenders must close out to the corner: the corner pass opens the paint."
+      },
+      "why": {
+        "fr": "Quand un défenseur du bas sort au corner, il ne reste qu'un défenseur pour protéger le cercle.",
+        "en": "When a low defender goes out to the corner, only one defender is left to protect the rim."
+      },
+      "counter": {
+        "fr": "Faire sortir l'ailier de la zone au corner plutôt que le défenseur du bas.",
+        "en": "Send the zone's wing defender to the corner instead of the low defender."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          26
+        ],
+        "x2": [
+          35,
+          22
+        ],
+        "x3": [
+          15,
+          22
+        ],
+        "x4": [
+          19,
+          7
+        ],
+        "x5": [
+          31,
+          7
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          22
+        ],
+        "3": [
+          6,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2.",
+            "en": "1 passes to 2."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              40,
+              21,
+              "m"
+            ],
+            "x5": [
+              44,
+              7,
+              "m"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "2 passe à 4 au corner : x5 sort.",
+            "en": "2 passes to 4 in the corner: x5 closes out."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              30,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "5 plonge du poste haut dans la raquette vide.",
+            "en": "5 dives from the high post into the empty paint."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "4 passe à 5.",
+            "en": "4 hits 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "screen-the-low-defender-3-2-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-3-2",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Écran sur le défenseur du bas (zone 3-2)",
+        "en": "Screen the low defender (3-2 zone)"
+      },
+      "sum": {
+        "fr": "Un attaquant pose un écran sur un défenseur du bas de la zone 3-2 pour libérer le corner ou le poste bas.",
+        "en": "An attacker screens a low defender of the 3-2 zone to free the corner or the block."
+      },
+      "why": {
+        "fr": "Avec seulement deux défenseurs en bas, en bloquer un laisse l'autre seul contre deux attaquants.",
+        "en": "With only two low defenders, screening one leaves the other alone against two attackers."
+      },
+      "counter": {
+        "fr": "Communiquer l'écran et faire descendre un défenseur du haut.",
+        "en": "Call out the screen and drop a top defender."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          26
+        ],
+        "x2": [
+          35,
+          22
+        ],
+        "x3": [
+          15,
+          22
+        ],
+        "x4": [
+          19,
+          7
+        ],
+        "x5": [
+          31,
+          7
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          22
+        ],
+        "3": [
+          6,
+          22
+        ],
+        "4": [
+          31,
+          8
+        ],
+        "5": [
+          36,
+          13
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "5": [
+              33,
+              9,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "5 pose un écran sur x5.",
+            "en": "5 screens x5."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              47,
+              6,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "4 sort au corner pendant que x5 est bloqué ; 1 passe à 2.",
+            "en": "4 pops to the corner while x5 is screened; 1 passes to 2."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "2 passe à 4, seul au corner.",
+            "en": "2 hits 4, open in the corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "high-low-vs-3-2-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-3-2",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Haut-bas contre zone 3-2",
+        "en": "High-low vs 3-2 zone"
+      },
+      "sum": {
+        "fr": "Passe au poste haut, au milieu des trois défenseurs du haut, puis passe haut-bas vers le pivot qui a scellé un défenseur du bas.",
+        "en": "Pass to the high post, between the three top defenders, then a high-low pass to the post who sealed a low defender."
+      },
+      "why": {
+        "fr": "Le poste haut est derrière la première ligne : les deux défenseurs du bas doivent choisir entre lui et le pivot.",
+        "en": "The high post is behind the first line: the two low defenders must choose between him and the post."
+      },
+      "counter": {
+        "fr": "Faire descendre le défenseur du haut sur le poste haut.",
+        "en": "Drop the top defender onto the high post."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          26
+        ],
+        "x2": [
+          35,
+          22
+        ],
+        "x3": [
+          15,
+          22
+        ],
+        "x4": [
+          19,
+          7
+        ],
+        "x5": [
+          31,
+          7
+        ],
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          34,
+          29
+        ],
+        "3": [
+          6,
+          20
+        ],
+        "4": [
+          25,
+          19
+        ],
+        "5": [
+          29,
+          10
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              25,
+              18,
+              "c"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "4 se place au poste haut et reçoit de 1.",
+            "en": "4 sets up at the high post and catches from 1."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              25,
+              9,
+              "c"
+            ],
+            "x4": [
+              22,
+              8,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 scelle x4 vers l'extérieur.",
+            "en": "5 seals x4 to the outside."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "Passe haut-bas de 4 à 5.",
+            "en": "High-low pass from 4 to 5."
+          }
+        }
+      ]
+    },
+    {
+      "id": "middle-drive-vs-3-2-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-3-2",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Pénétration au milieu contre zone 3-2",
+        "en": "Middle drive vs 3-2 zone"
+      },
+      "sum": {
+        "fr": "Le porteur attaque l'intervalle entre le défenseur de pointe et un ailier de la zone 3-2, puis ressort vers l'aile.",
+        "en": "The ball handler attacks the gap between the point defender and a wing of the 3-2 zone, then kicks to the wing."
+      },
+      "why": {
+        "fr": "Deux défenseurs se resserrent sur la pénétration : l'aile qu'ils gardaient est libre.",
+        "en": "Two defenders close in on the drive: the wing they were guarding is open."
+      },
+      "counter": {
+        "fr": "Fermer l'intervalle avant la pénétration en serrant la pointe et les ailes.",
+        "en": "Close the gap before the drive by tightening the point and wings."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          26
+        ],
+        "x2": [
+          35,
+          22
+        ],
+        "x3": [
+          15,
+          22
+        ],
+        "x4": [
+          19,
+          7
+        ],
+        "x5": [
+          31,
+          7
+        ],
+        "1": [
+          29,
+          32
+        ],
+        "2": [
+          44,
+          22
+        ],
+        "3": [
+          6,
+          22
+        ],
+        "4": [
+          2,
+          4
+        ],
+        "5": [
+          31,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              30,
+              21,
+              "d"
+            ],
+            "x1": [
+              27,
+              22,
+              "m"
+            ],
+            "x2": [
+              33,
+              19,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque l'intervalle entre x1 et x2.",
+            "en": "1 attacks the gap between x1 and x2."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 ressort vers 2 sur l'aile.",
+            "en": "1 kicks out to 2 on the wing."
+          }
+        }
+      ]
+    },
+    {
+      "id": "baseline-attack-vs-1-3-1-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-1-3-1",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque de la ligne de fond contre zone 1-3-1",
+        "en": "Baseline attack vs 1-3-1 zone"
+      },
+      "sum": {
+        "fr": "Contre une zone 1-3-1, un seul défenseur garde toute la ligne de fond : on y place deux attaquants.",
+        "en": "Against a 1-3-1 zone, a single defender guards the whole baseline: put two attackers there."
+      },
+      "why": {
+        "fr": "Le défenseur de la ligne de fond ne peut pas couvrir les deux corners : la passe opposée est toujours libre.",
+        "en": "The baseline defender cannot cover both corners: the opposite pass is always open."
+      },
+      "counter": {
+        "fr": "Faire descendre l'ailier de la zone côté opposé pour aider en bas.",
+        "en": "Drop the far-side wing defender to help low."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          37,
+          20
+        ],
+        "x3": [
+          13,
+          20
+        ],
+        "x5": [
+          25,
+          16
+        ],
+        "x4": [
+          25,
+          6.5
+        ],
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          34,
+          29
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "3": [
+          6,
+          4
+        ],
+        "4": [
+          44,
+          4
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "2 passe à 4 au corner droit : x4 sort.",
+            "en": "2 passes to 4 in the right corner: x4 runs out."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              40,
+              6,
+              "m"
+            ],
+            "x2": [
+              38,
+              14,
+              "m"
+            ],
+            "3": [
+              14,
+              4,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "x4 sort sur 4 ; 3 avance vers le petit corner gauche.",
+            "en": "x4 closes out to 4; 3 slides to the left short corner."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "Passe le long de la ligne de fond de 4 à 3.",
+            "en": "Baseline pass from 4 to 3."
+          }
+        }
+      ]
+    },
+    {
+      "id": "corners-vs-1-3-1-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-1-3-1",
+      "lvl": 1,
+      "review": "pending",
+      "name": {
+        "fr": "Corners contre zone 1-3-1",
+        "en": "Corners vs 1-3-1 zone"
+      },
+      "sum": {
+        "fr": "Deux attaquants aux corners étirent la zone 1-3-1, qui a peu de monde en bas, et attendent la passe longue.",
+        "en": "Two attackers in the corners stretch the 1-3-1 zone, which has few players low, and wait for the skip pass."
+      },
+      "why": {
+        "fr": "Les ailiers de la zone sont hauts : les corners sont loin de tout le monde.",
+        "en": "The zone's wings play high: the corners are far from everyone."
+      },
+      "counter": {
+        "fr": "Faire descendre l'ailier de la zone côté opposé dès que le ballon est d'un côté.",
+        "en": "Drop the far-side wing defender as soon as the ball is on one side."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          37,
+          20
+        ],
+        "x3": [
+          13,
+          20
+        ],
+        "x5": [
+          25,
+          16
+        ],
+        "x4": [
+          25,
+          6.5
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          22
+        ],
+        "3": [
+          6,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          2,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 sur l'aile droite.",
+            "en": "1 passes to 2 on the right wing."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              41,
+              21.5,
+              "m"
+            ],
+            "x4": [
+              42,
+              18,
+              "m"
+            ],
+            "x5": [
+              32,
+              15,
+              "m"
+            ],
+            "x1": [
+              30,
+              25,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "La zone piège 2 avec x2 et x4.",
+            "en": "The zone traps 2 with x2 and x4."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 envoie la passe longue à 5 au corner opposé.",
+            "en": "2 throws the skip pass to 5 in the far corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "2-1-2-alignment-vs-1-3-1-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-1-3-1",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Placement 2-1-2 contre zone 1-3-1",
+        "en": "2-1-2 alignment vs 1-3-1 zone"
+      },
+      "sum": {
+        "fr": "Placement 2-1-2 contre une zone 1-3-1 : deux meneurs de part et d'autre de la pointe, un poste haut et deux joueurs en bas.",
+        "en": "2-1-2 alignment against a 1-3-1 zone: two guards on either side of the point, a high post and two players low."
+      },
+      "why": {
+        "fr": "Les deux meneurs mettent la pointe à deux contre un ; les deux joueurs du bas mettent le défenseur de la ligne de fond à deux contre un.",
+        "en": "The two guards make the point defender play two-on-one; the two low players do the same to the baseline defender."
+      },
+      "counter": {
+        "fr": "Passer en zone 2-3 pour mettre deux défenseurs en haut.",
+        "en": "Switch to a 2-3 zone to put two defenders up top."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          37,
+          20
+        ],
+        "x3": [
+          13,
+          20
+        ],
+        "x5": [
+          25,
+          16
+        ],
+        "x4": [
+          25,
+          6.5
+        ],
+        "1": [
+          19,
+          30
+        ],
+        "2": [
+          31,
+          30
+        ],
+        "5": [
+          25,
+          21
+        ],
+        "3": [
+          12,
+          4
+        ],
+        "4": [
+          38,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 et 2 se placent de part et d'autre de x1 : 1 passe à 2.",
+            "en": "1 and 2 sit on either side of x1: 1 passes to 2."
+          }
+        },
+        {
+          "m": {
+            "x1": [
+              29,
+              27,
+              "m"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "x1 glisse ; 2 passe à 5 au poste haut.",
+            "en": "x1 slides; 2 hits 5 at the high post."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              21,
+              6,
+              "m"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "x4 ne peut couvrir qu'un côté : 5 trouve 4.",
+            "en": "x4 can only cover one side: 5 finds 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "high-post-vs-1-3-1-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-1-3-1",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Poste haut contre zone 1-3-1",
+        "en": "High post vs 1-3-1 zone"
+      },
+      "sum": {
+        "fr": "Contre une zone 1-3-1, le poste haut attire le défenseur du milieu vers le haut et ouvre les petits corners.",
+        "en": "Against a 1-3-1 zone, the high post pulls the middle defender up and opens the short corners."
+      },
+      "why": {
+        "fr": "Le défenseur du milieu est le pivot de la zone : le déplacer ouvre tout le dessous.",
+        "en": "The middle defender is the hub of the zone: moving him opens everything underneath."
+      },
+      "counter": {
+        "fr": "Garder le défenseur du milieu derrière le poste haut et faire monter la pointe.",
+        "en": "Keep the middle defender behind the high post and drop the point."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          37,
+          20
+        ],
+        "x3": [
+          13,
+          20
+        ],
+        "x5": [
+          25,
+          16
+        ],
+        "x4": [
+          25,
+          6.5
+        ],
+        "1": [
+          16,
+          29
+        ],
+        "2": [
+          34,
+          29
+        ],
+        "5": [
+          25,
+          21
+        ],
+        "3": [
+          6,
+          18
+        ],
+        "4": [
+          38,
+          4
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "5",
+          "c": {
+            "fr": "1 passe à 5 au poste haut.",
+            "en": "1 passes to 5 at the high post."
+          }
+        },
+        {
+          "m": {
+            "x5": [
+              25,
+              18,
+              "m"
+            ],
+            "4": [
+              30,
+              9,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "x5 monte sur 5 ; 4 plonge derrière lui.",
+            "en": "x5 steps up to 5; 4 dives behind him."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "5 passe à 4.",
+            "en": "5 hits 4."
+          }
+        }
+      ]
+    },
+    {
+      "id": "baseline-reversal-vs-1-3-1-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-1-3-1",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Renversement par la ligne de fond (zone 1-3-1)",
+        "en": "Baseline reversal vs 1-3-1 zone"
+      },
+      "sum": {
+        "fr": "Le ballon change de côté par la ligne de fond (corner, petit corner, corner) plutôt que par le haut, où la zone l'attend.",
+        "en": "The ball changes sides along the baseline (corner, short corner, corner) rather than up top, where the zone waits for it."
+      },
+      "why": {
+        "fr": "La zone 1-3-1 protège bien les renversements par le haut ; par le bas, un seul défenseur doit tout couvrir.",
+        "en": "The 1-3-1 zone protects reversals up top well; along the baseline, one defender has to cover everything."
+      },
+      "counter": {
+        "fr": "Faire descendre les ailiers de la zone pour aider sur la ligne de fond.",
+        "en": "Drop the zone's wings to help on the baseline."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          37,
+          20
+        ],
+        "x3": [
+          13,
+          20
+        ],
+        "x5": [
+          25,
+          16
+        ],
+        "x4": [
+          25,
+          6.5
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          20
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          3
+        ],
+        "3": [
+          2,
+          4
+        ],
+        "b": "2"
+      },
+      "steps": [
+        {
+          "p": "4",
+          "c": {
+            "fr": "2 passe à 4 au corner.",
+            "en": "2 passes to 4 in the corner."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              42,
+              7,
+              "m"
+            ],
+            "5": [
+              30,
+              3,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "x4 sort sur 4 ; 5 se décale sur la ligne de fond.",
+            "en": "x4 closes out to 4; 5 slides along the baseline."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "4 passe à 5 sous le panier…",
+            "en": "4 passes to 5 under the basket…"
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "…qui renverse vers 3 au corner opposé.",
+            "en": "…who reverses to 3 in the far corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "screen-the-wing-1-3-1-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-1-3-1",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Écran sur l'ailier de la zone 1-3-1",
+        "en": "Screen the wing (1-3-1 zone)"
+      },
+      "sum": {
+        "fr": "Un attaquant pose un écran sur l'ailier de la zone 1-3-1 pour libérer le joueur du corner ou de l'aile.",
+        "en": "An attacker screens the wing defender of the 1-3-1 zone to free the corner or wing player."
+      },
+      "why": {
+        "fr": "L'ailier de la zone couvre une large surface ; bloqué, il laisse tout son côté ouvert.",
+        "en": "The zone's wing covers a lot of ground; once screened, he leaves his whole side open."
+      },
+      "counter": {
+        "fr": "Communiquer l'écran et faire glisser la pointe pour aider.",
+        "en": "Call out the screen and slide the point defender to help."
+      },
+      "used": {
+        "fr": "Courant en NBA et en EuroLeague.",
+        "en": "Common in the NBA and the EuroLeague."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          37,
+          20
+        ],
+        "x3": [
+          13,
+          20
+        ],
+        "x5": [
+          25,
+          16
+        ],
+        "x4": [
+          25,
+          6.5
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          22
+        ],
+        "3": [
+          6,
+          22
+        ],
+        "4": [
+          38,
+          16
+        ],
+        "5": [
+          19,
+          8
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              38,
+              18.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran sur x2.",
+            "en": "4 screens x2."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2, libéré par l'écran.",
+            "en": "1 passes to 2, freed by the screen."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              30,
+              8,
+              "c"
+            ],
+            "x5": [
+              33,
+              18,
+              "m"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "4 plonge vers le cercle pendant que x5 sort.",
+            "en": "4 dives to the rim as x5 steps out."
+          }
+        }
+      ]
+    },
+    {
+      "id": "beating-the-1-3-1-trap",
+      "cat": "zone_att",
+      "family": "attaque-zone-1-3-1",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque du piège de la zone 1-3-1",
+        "en": "Beating the 1-3-1 trap"
+      },
+      "sum": {
+        "fr": "Contre le piège de la zone 1-3-1 sur l'aile ou au corner, le porteur passe vite au milieu, derrière le piège.",
+        "en": "Against the 1-3-1 trap on the wing or in the corner, the ball handler passes quickly to the middle, behind the trap."
+      },
+      "why": {
+        "fr": "Deux défenseurs sont sur le ballon : il reste quatre attaquants contre trois défenseurs.",
+        "en": "Two defenders are on the ball: four attackers are left against three defenders."
+      },
+      "counter": {
+        "fr": "Piéger seulement près de la ligne de touche et couper la passe au milieu.",
+        "en": "Only trap near the sideline and cut off the pass to the middle."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          37,
+          20
+        ],
+        "x3": [
+          13,
+          20
+        ],
+        "x5": [
+          25,
+          16
+        ],
+        "x4": [
+          25,
+          6.5
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          22
+        ],
+        "3": [
+          6,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          21
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 sur l'aile.",
+            "en": "1 passes to 2 on the wing."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              41,
+              21.5,
+              "m"
+            ],
+            "x4": [
+              43,
+              18,
+              "m"
+            ],
+            "5": [
+              30,
+              18,
+              "c"
+            ],
+            "x5": [
+              28,
+              15,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x2 et x4 piègent 2 ; 5 se montre au milieu.",
+            "en": "x2 and x4 trap 2; 5 shows in the middle."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe au milieu à 5 avant que le piège se ferme.",
+            "en": "2 passes to 5 in the middle before the trap closes."
+          }
+        },
+        {
+          "p": "4",
+          "c": {
+            "fr": "5 trouve 4 laissé seul au corner.",
+            "en": "5 finds 4 left alone in the corner."
+          }
+        }
+      ]
+    },
+    {
+      "id": "weak-side-cut-vs-1-3-1-zone",
+      "cat": "zone_att",
+      "family": "attaque-zone-1-3-1",
+      "lvl": 2,
+      "review": "pending",
+      "name": {
+        "fr": "Coupe du côté faible contre zone 1-3-1",
+        "en": "Weak-side cut vs 1-3-1 zone"
+      },
+      "sum": {
+        "fr": "Quand le ballon est sur une aile, le joueur du côté opposé coupe le long de la ligne de fond derrière la zone 1-3-1.",
+        "en": "When the ball is on one wing, the far-side player cuts along the baseline behind the 1-3-1 zone."
+      },
+      "why": {
+        "fr": "Le défenseur de la ligne de fond suit le ballon : le côté opposé, sous le panier, est vide.",
+        "en": "The baseline defender follows the ball: the far side, under the basket, is empty."
+      },
+      "counter": {
+        "fr": "L'ailier de la zone côté faible descend protéger le cercle.",
+        "en": "The weak-side wing defender drops to protect the rim."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "x1": [
+          25,
+          28
+        ],
+        "x2": [
+          37,
+          20
+        ],
+        "x3": [
+          13,
+          20
+        ],
+        "x5": [
+          25,
+          16
+        ],
+        "x4": [
+          25,
+          6.5
+        ],
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          22
+        ],
+        "3": [
+          6,
+          22
+        ],
+        "4": [
+          48,
+          4
+        ],
+        "5": [
+          25,
+          19
+        ],
+        "b": "1"
+      },
+      "steps": [
+        {
+          "m": {
+            "x2": [
+              40,
+              21,
+              "m"
+            ],
+            "x4": [
+              36,
+              7,
+              "m"
+            ],
+            "x5": [
+              30,
+              15,
+              "m"
+            ],
+            "x1": [
+              29,
+              25,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "1 passe à 2 ; la zone glisse à droite.",
+            "en": "1 passes to 2; the zone slides right."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              19,
+              5,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "3 coupe le long de la ligne de fond derrière la zone.",
+            "en": "3 cuts along the baseline behind the zone."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "2 passe à 5 au poste haut, qui trouve 3.",
+            "en": "2 passes to 5 at the high post, who finds 3."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "Passe à 3 sous le panier.",
+            "en": "Pass to 3 under the basket."
+          }
+        }
+      ]
+    },
+    {
+      "id": "screening-the-match-up-zone",
+      "cat": "zone_att",
+      "family": "attaque-match-up",
+      "lvl": 3,
+      "review": "pending",
+      "name": {
+        "fr": "Attaque de la zone match-up : écrans",
+        "en": "Screening the match-up zone"
+      },
+      "sum": {
+        "fr": "Contre une zone match-up, qui défend en homme à homme dans des zones, des écrans sur les défenseurs créent des décalages comme contre une défense individuelle.",
+        "en": "Against a match-up zone, which plays man-to-man inside zones, screens on defenders create advantages like against a man defense."
+      },
+      "why": {
+        "fr": "La zone match-up suit les joueurs comme en individuelle, mais sans habitude de passer les écrans.",
+        "en": "The match-up zone follows players like a man defense, but is not used to fighting through screens."
+      },
+      "counter": {
+        "fr": "Changer sur les écrans tout en gardant les zones de responsabilité.",
+        "en": "Switch screens while keeping the areas of responsibility."
+      },
+      "used": {
+        "fr": "Défense associée à la Temple University de John Chaney ; l'attaque par écrans est courante.",
+        "en": "Defense associated with John Chaney's Temple University; attacking it with screens is common."
+      },
+      "keys": {
+        "fr": [
+          "Se placer dans les intervalles de la zone",
+          "Passes rapides, peu de dribbles",
+          "Attaquer le milieu et la ligne de fond",
+          "Rebond offensif côté faible"
+        ],
+        "en": [
+          "Sit in the gaps of the zone",
+          "Quick passes, few dribbles",
+          "Attack the middle and the baseline",
+          "Crash the weak-side glass"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          31
+        ],
+        "2": [
+          44,
+          24
+        ],
+        "3": [
+          6,
+          24
+        ],
+        "4": [
+          36,
+          13
+        ],
+        "5": [
+          19,
+          8
+        ],
+        "b": "1",
+        "x1": [
+          25,
+          27
+        ],
+        "x2": [
+          40,
+          22
+        ],
+        "x3": [
+          10,
+          21
+        ],
+        "x4": [
+          34,
+          10
+        ],
+        "x5": [
+          21,
+          7
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              38.5,
+              19.5,
+              "s"
+            ]
+          },
+          "c": {
+            "fr": "4 pose un écran sur x2.",
+            "en": "4 screens x2."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              47,
+              8,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 descend vers le corner sur l'écran ; 1 lui passe.",
+            "en": "2 drops to the corner off the screen; 1 passes to him."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              30,
+              7,
+              "c"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "4 plonge vers le cercle.",
+            "en": "4 dives to the rim."
+          }
+        }
+      ]
     }
   ]
 }

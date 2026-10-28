@@ -1900,7 +1900,7 @@
       "fr": "Passe en lob par-dessus la zone",
       "en": "Lob over the 2-3 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "corner-three-vs-2-3-zone",
@@ -1911,7 +1911,7 @@
       "fr": "Tir du corner contre zone 2-3",
       "en": "Corner three vs 2-3 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "drive-and-kick-vs-2-3-zone",
@@ -1922,7 +1922,7 @@
       "fr": "Pénétration et ressortie contre zone 2-3",
       "en": "Drive and kick vs 2-3 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-1-2-alignment-vs-3-2-zone",
@@ -1933,7 +1933,7 @@
       "fr": "Placement 2-1-2 contre zone 3-2",
       "en": "2-1-2 alignment vs 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "low-post-vs-3-2-zone",
@@ -1944,7 +1944,7 @@
       "fr": "Poste bas contre zone 3-2",
       "en": "Low post vs 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "overload-vs-3-2-zone",
@@ -1955,7 +1955,7 @@
       "fr": "Surcharge contre zone 3-2",
       "en": "Overload vs 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "cut-behind-the-3-2-zone",
@@ -1966,7 +1966,7 @@
       "fr": "Coupe dans le dos de la zone 3-2",
       "en": "Cut behind the 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "corner-attack-vs-3-2-zone",
@@ -1977,7 +1977,7 @@
       "fr": "Corner contre zone 3-2",
       "en": "Corner attack vs 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "screen-the-low-defender-3-2-zone",
@@ -1988,7 +1988,7 @@
       "fr": "Écran sur le défenseur du bas (zone 3-2)",
       "en": "Screen the low defender (3-2 zone)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "high-low-vs-3-2-zone",
@@ -1999,7 +1999,7 @@
       "fr": "Haut-bas contre zone 3-2",
       "en": "High-low vs 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "middle-drive-vs-3-2-zone",
@@ -2010,7 +2010,7 @@
       "fr": "Pénétration au milieu contre zone 3-2",
       "en": "Middle drive vs 3-2 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "baseline-attack-vs-1-3-1-zone",
@@ -2021,7 +2021,7 @@
       "fr": "Attaque de la ligne de fond contre zone 1-3-1",
       "en": "Baseline attack vs 1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "corners-vs-1-3-1-zone",
@@ -2032,7 +2032,7 @@
       "fr": "Corners contre zone 1-3-1",
       "en": "Corners vs 1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "2-1-2-alignment-vs-1-3-1-zone",
@@ -2043,7 +2043,7 @@
       "fr": "Placement 2-1-2 contre zone 1-3-1",
       "en": "2-1-2 alignment vs 1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "high-post-vs-1-3-1-zone",
@@ -2054,7 +2054,7 @@
       "fr": "Poste haut contre zone 1-3-1",
       "en": "High post vs 1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "baseline-reversal-vs-1-3-1-zone",
@@ -2065,7 +2065,7 @@
       "fr": "Renversement par la ligne de fond (zone 1-3-1)",
       "en": "Baseline reversal vs 1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "screen-the-wing-1-3-1-zone",
@@ -2076,7 +2076,7 @@
       "fr": "Écran sur l'ailier de la zone 1-3-1",
       "en": "Screen the wing (1-3-1 zone)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "beating-the-1-3-1-trap",
@@ -2087,7 +2087,7 @@
       "fr": "Attaque du piège de la zone 1-3-1",
       "en": "Beating the 1-3-1 trap"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "weak-side-cut-vs-1-3-1-zone",
@@ -2098,7 +2098,7 @@
       "fr": "Coupe du côté faible contre zone 1-3-1",
       "en": "Weak-side cut vs 1-3-1 zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "screening-the-match-up-zone",
@@ -2109,7 +2109,7 @@
       "fr": "Attaque de la zone match-up : écrans",
       "en": "Screening the match-up zone"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "cutters-through-the-match-up-zone",
@@ -2332,13 +2332,13 @@
     "status": "done"
   },
   {
-    "id": "drag-screen",
+    "id": "re-drag-screen",
     "cat": "transition",
     "family": "attaque-rapide",
-    "lvl": 1,
+    "lvl": 2,
     "name": {
-      "fr": "Drag simple",
-      "en": "Drag screen"
+      "fr": "Drag avec double écran (re-drag)",
+      "en": "Re-drag screen"
     },
     "status": "todo"
   },
