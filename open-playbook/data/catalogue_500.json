@@ -30,7 +30,7 @@
       "fr": "Pick-and-roll « Spain » (écran dans le dos du défenseur du pivot)",
       "en": "Spain pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "step-up-screen",
@@ -41,7 +41,7 @@
       "fr": "Écran de remontée (step-up)",
       "en": "Step-up screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "re-screen-flip",
@@ -52,7 +52,7 @@
       "fr": "Double écran porteur (re-screen)",
       "en": "Re-screen (flip)"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "slip-screen",
@@ -63,7 +63,7 @@
       "fr": "Écran glissé (slip)",
       "en": "Slip screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pick-and-pop",
@@ -74,7 +74,7 @@
       "fr": "Pick-and-pop",
       "en": "Pick-and-pop"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "short-roll",
@@ -85,7 +85,7 @@
       "fr": "Roll court (short roll)",
       "en": "Short roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "ghost-screen",
@@ -96,7 +96,7 @@
       "fr": "Écran fantôme (ghost screen)",
       "en": "Ghost screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "snake-dribble",
@@ -107,7 +107,7 @@
       "fr": "Dribble serpent (snake)",
       "en": "Snake dribble"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "reject-the-screen",
@@ -118,7 +118,7 @@
       "fr": "Refuser l'écran (reject)",
       "en": "Reject the screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "empty-side-pick-and-roll",
@@ -129,7 +129,7 @@
       "fr": "Pick-and-roll côté vide",
       "en": "Empty-side pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "angle-pick-and-roll",
@@ -140,7 +140,7 @@
       "fr": "Pick-and-roll en angle",
       "en": "Angle pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pick-and-roll-with-corner-lift",
@@ -151,7 +151,7 @@
       "fr": "Pick-and-roll avec remontée du corner (lift)",
       "en": "Pick-and-roll with corner lift"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pick-and-roll-with-weak-side-shake",
@@ -162,7 +162,7 @@
       "fr": "Pick-and-roll avec glissement côté faible (shake)",
       "en": "Pick-and-roll with weak-side shake"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "inverted-pick-and-roll",
@@ -173,7 +173,7 @@
       "fr": "Pick-and-roll inversé (le meneur pose l'écran)",
       "en": "Inverted pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "stack-pick-and-roll",
@@ -184,7 +184,7 @@
       "fr": "Pick-and-roll en colonne (stack)",
       "en": "Stack pick-and-roll"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "veer-screen",
@@ -195,7 +195,7 @@
       "fr": "Écran en biais (veer)",
       "en": "Veer screen"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "hostage-dribble",
@@ -206,7 +206,7 @@
       "fr": "Dribble « otage » (garder le défenseur dans le dos)",
       "en": "Hostage dribble"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "split-the-hedge",
@@ -217,7 +217,7 @@
       "fr": "Passer entre les deux défenseurs (split)",
       "en": "Split the hedge"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "pull-up-vs-drop-coverage",
@@ -228,7 +228,7 @@
       "fr": "Pick-and-roll contre défense reculée : tir en sortie de dribble",
       "en": "Pull-up vs drop coverage"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "seal-the-switch",
@@ -239,7 +239,7 @@
       "fr": "Pick-and-roll contre changement : sceller le petit",
       "en": "Seal the switch"
     },
-    "status": "todo"
+    "status": "done"
   },
   {
     "id": "high-pick-and-roll-vs-stunt",
