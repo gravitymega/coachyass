@@ -3,8 +3,15 @@
 // est téléchargé une fois depuis Hugging Face puis gardé dans le cache du navigateur.
 import { freeVoice, modelPath, MODEL_BASES, freeChunks, scales, phonemeIds, joinPcm, pcmToWav } from './piper-core.js';
 
-const ORT_BASE = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/';
+// Moteur servi par le site lui-même (vendor/), les CDN restent en secours : sur iPhone,
+// jsDelivr/unpkg échouaient parfois avec « Load failed ».
+const local = dir => new URL(dir, document.baseURI).href;
+const ORT_BASES = [
+  local('vendor/ort/'),
+  'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/',
+];
 const PHONEMIZE_BASES = [
+  local('vendor/piper/'),
   'https://cdn.jsdelivr.net/npm/@diffusionstudio/piper-wasm@1.0.0/build/',
   'https://unpkg.com/@diffusionstudio/piper-wasm@1.0.0/build/',
 ];
@@ -34,7 +41,8 @@ async function fetchCached(urls, onBytes) {
     if (hit) return hit.arrayBuffer();
   }
   let lastErr;
-  for (const url of urls) {
+  // Chaque adresse est essayée deux fois : les réseaux mobiles coupent parfois un gros téléchargement.
+  for (const url of urls.flatMap(u => [u, u])) {
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -54,9 +62,11 @@ async function fetchCached(urls, onBytes) {
       return blob.arrayBuffer();
     } catch (err) {
       lastErr = err;
+      await new Promise(r => setTimeout(r, 800));
     }
   }
-  throw new Error('Téléchargement impossible (' + (lastErr && lastErr.message) + ')');
+  const file = decodeURIComponent(urls[0].split('/').pop());
+  throw new Error(`Téléchargement impossible de ${file} (${lastErr && lastErr.message}). Vérifie la connexion (Wi-Fi conseillé, ~80 Mo la première fois) et réessaie.`);
 }
 
 let phonemizeAssets = null;
@@ -68,11 +78,12 @@ function loadPhonemizer(onBytes) {
         try { await loadScript(b + 'piper_phonemize.js'); base = b; break; } catch { /* essai suivant */ }
       }
       if (!base) throw new Error('Moteur de phonétisation introuvable (réseau ?)');
+      const order = [base, ...PHONEMIZE_BASES.filter(b => b !== base)];
       const [wasm, data] = await Promise.all([
-        fetchCached(PHONEMIZE_BASES.map(b => b + 'piper_phonemize.wasm')),
-        fetchCached(PHONEMIZE_BASES.map(b => b + 'piper_phonemize.data'), onBytes),
+        fetchCached(order.map(b => b + 'piper_phonemize.wasm')),
+        fetchCached(order.map(b => b + 'piper_phonemize.data'), onBytes),
       ]);
-      return { wasm, data };
+      return { wasm, data, base };
     })().catch(err => { phonemizeAssets = null; throw err; });
   }
   return phonemizeAssets;
@@ -80,7 +91,7 @@ function loadPhonemizer(onBytes) {
 
 // Texte → phonèmes, un résultat par morceau (une seule instance du module).
 async function phonemize(chunks, espeakVoice) {
-  const { wasm, data } = await loadPhonemizer();
+  const { wasm, data, base } = await loadPhonemizer();
   const lines = [];
   const errors = [];
   const mod = await window.createPiperPhonemize({
@@ -88,7 +99,7 @@ async function phonemize(chunks, espeakVoice) {
     printErr: msg => errors.push(msg),
     wasmBinary: wasm.slice(0),
     getPreloadedPackage: () => data.slice(0),
-    locateFile: f => PHONEMIZE_BASES[0] + f,
+    locateFile: f => base + f,
   });
   mod.callMain(['-l', espeakVoice, '--input', JSON.stringify(chunks.map(text => ({ text }))), '--espeak_data', '/espeak-ng-data']);
   if (lines.length !== chunks.length) throw new Error('Phonétisation impossible' + (errors.length ? ' : ' + errors.slice(-1)[0] : ''));
@@ -98,12 +109,16 @@ async function phonemize(chunks, espeakVoice) {
 let ortReady = null;
 function loadOrt() {
   if (!ortReady) {
-    ortReady = loadScript(ORT_BASE + 'ort.wasm.min.js').then(() => {
-      const ort = window.ort;
-      ort.env.wasm.wasmPaths = ORT_BASE;
-      ort.env.wasm.numThreads = 1; // pas d'isolation cross-origin sur le site
-      return ort;
-    }).catch(err => { ortReady = null; throw err; });
+    ortReady = (async () => {
+      for (const base of ORT_BASES) {
+        try { await loadScript(base + 'ort.wasm.min.js'); } catch { continue; }
+        const ort = window.ort;
+        ort.env.wasm.wasmPaths = base;
+        ort.env.wasm.numThreads = 1; // pas d'isolation cross-origin sur le site
+        return ort;
+      }
+      throw new Error('Moteur de voix (ONNX Runtime) introuvable (réseau ?)');
+    })().catch(err => { ortReady = null; throw err; });
   }
   return ortReady;
 }
