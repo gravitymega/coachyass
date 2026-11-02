@@ -53,3 +53,11 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 - **Éditeur** `#editeur` : `src/editor.ts`, avec un brouillon dans `localStorage` (`op-editor-draft`). Les règles sont communes au validateur et à l'éditeur dans `src/checks.ts`. L'export est bloqué tant qu'il reste des erreurs. Le bouton « Télécharger » ne marche pas dans l'aperçu Artifact (« Copier le JSON » oui).
 - **Vidéos** : `render.py` produit, dans `videos/<id>/`, les formats vertical, square et horizontal, avec une miniature PNG par vidéo et `<id>-voix.txt`. Le nom de la chaîne se règle avec `--channel` ou `OP_CHANNEL`. `npm run videos` traite toutes les fiches.
 - **Publication** : `LICENSE` (MIT), `LICENSE-CONTENT.md` (CC BY 4.0), `README.md` et `CONTRIBUTING.md` en FR/EN, `.github/ISSUE_TEMPLATE/proposer-une-tactique.yml`.
+
+## Explications, audio et 3D d'accueil (demande du 2 nov. 2026)
+
+- Accueil : une tactique à la une (elle change chaque jour, liste `FEATURED` dans `src/main.ts`) en 3D three.js, qui tourne seule et s'anime en boucle. Les filtres ne mettent à jour que la liste (`renderResults`), donc la 3D continue.
+- Pendant la lecture, le bloc « coach » montre le principe au départ, un point clé par étape, puis « Pourquoi ça marche » à la dernière étape.
+- Explication audio : `src/voice.ts` (Web Speech API du navigateur, gratuite). Le bouton « Écouter l'explication » lit le titre et le résumé, anime chaque étape en lisant sa légende, puis lit « Pourquoi ça marche » et contre quelle défense. La voix suit la langue choisie.
+- `data/coaching.json` : `against` (contre quelle défense, par famille) et `practice` (progression d'entraînement par catégorie, `{n}` = nombre d'étapes). Le validateur vérifie que chaque famille et chaque catégorie y figurent.
+- Tir obtenu : `shotKind()` dans `src/engine.ts`, déduit de la position du dernier porteur du ballon (cercle à 8 pieds ou moins, 3 points au-delà de l'arc). Il n'est affiché que pour les fiches d'attaque.

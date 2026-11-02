@@ -64,7 +64,7 @@ export class Board3D {
   private raf = 0;
   private floorToken = 0;
 
-  constructor(private host: HTMLElement, private board: Board, ids: string[]) {
+  constructor(private host: HTMLElement, private board: Board, ids: string[], opts: { autoRotate?: boolean } = {}) {
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
     this.renderer.shadowMap.enabled = true;
@@ -80,6 +80,9 @@ export class Board3D {
     this.controls.maxPolarAngle = Math.PI * 0.47;
     this.controls.minDistance = 20;
     this.controls.maxDistance = 110;
+    this.controls.autoRotate = !!opts.autoRotate;
+    this.controls.autoRotateSpeed = 0.7;
+    this.controls.addEventListener("start", () => (this.controls.autoRotate = false));
     this.controls.update();
 
     this.scene.add(new THREE.HemisphereLight(0xffffff, 0x8a6a45, 1.6));

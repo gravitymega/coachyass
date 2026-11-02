@@ -164,6 +164,20 @@ export function frames(t: Tactic): BoardState[] {
   return out;
 }
 
+export type ShotKind = "rim" | "mid" | "three";
+
+/** Tir obtenu à la fin de la fiche, d'après la position du dernier porteur du ballon. */
+export function shotKind(t: Tactic): ShotKind | null {
+  const last = frames(t).at(-1);
+  const p = last?.ball ? last.pos[last.ball as PlayerId] : undefined;
+  if (!p) return null;
+  const dx = p[0] - COURT.basket[0], dy = p[1] - COURT.basket[1];
+  const d = Math.hypot(dx, dy);
+  if (d <= 8) return "rim";
+  const three = p[1] < 14 ? Math.abs(dx) >= 21.5 : d >= 23.25;
+  return three ? "three" : "mid";
+}
+
 /** Pour la recherche : minuscules, sans accents. */
 export const normalize = (s: string) =>
   s

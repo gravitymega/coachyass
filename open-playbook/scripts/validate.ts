@@ -60,6 +60,11 @@ const familyNames = readJson("data/families.json") as Record<string, unknown>;
 for (const f of new Set(lib.tactics.map((t) => t.family).filter(Boolean))) {
   if (!familyNames[f!]) err("families.json", `famille sans nom FR/EN « ${f} »`);
 }
+const coaching = readJson("data/coaching.json") as { against: Record<string, unknown>; practice: Record<string, unknown> };
+for (const f of new Set(lib.tactics.map((t) => t.family).filter(Boolean))) {
+  if (!coaching.against[f!]) err("coaching.json", `famille sans « contre quelle défense » : « ${f} »`);
+}
+for (const c of cats) if (!coaching.practice[c]) err("coaching.json", `catégorie sans progression d'entraînement : « ${c} »`);
 const terms = new Set<string>();
 for (const g of lib.glossary) {
   if (terms.has(g[0])) err("glossaire", `terme en double « ${g[0]} »`);

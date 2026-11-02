@@ -1,0 +1,270 @@
+{
+  "against": {
+    "ecrans-sans-ballon": {
+      "fr": "Homme à homme, surtout quand les défenseurs suivent derrière les écrans ou ne changent pas. Moins efficace contre une zone.",
+      "en": "Man-to-man, especially when defenders trail screens or don't switch. Less effective against a zone."
+    },
+    "pick-and-roll": {
+      "fr": "Homme à homme : drop (le grand recule), hedge ou passage en dessous. Contre le changement, cherche le décalage (grand sur petit).",
+      "en": "Man-to-man: drop coverage, hedge or going under. Against switching, hunt the mismatch (big on small)."
+    },
+    "systemes": {
+      "fr": "Homme à homme. Les systèmes à écrans multiples punissent une défense qui parle peu ou qui change mal.",
+      "en": "Man-to-man. Multi-screen sets punish a defense that talks little or switches poorly."
+    },
+    "motion": {
+      "fr": "Homme à homme, surtout une défense qui refuse fort les passes (coupes dans le dos) ou qui aide beaucoup.",
+      "en": "Man-to-man, especially a defense that denies hard (backdoor cuts) or helps a lot."
+    },
+    "horns": {
+      "fr": "Homme à homme, y compris quand la défense change : les deux grands aux coudes créent des lectures multiples.",
+      "en": "Man-to-man, including switching defenses: two bigs at the elbows create multiple reads."
+    },
+    "remise-ligne-de-fond": {
+      "fr": "Homme à homme près du panier ; certaines remises (zone) sont faites pour la zone.",
+      "en": "Man-to-man near the basket; some plays (vs zone) are built for zone defenses."
+    },
+    "remise-ligne-de-touche": {
+      "fr": "Homme à homme et défenses qui pressent la remise en jeu.",
+      "en": "Man-to-man and defenses that pressure the inbound pass."
+    },
+    "fin-de-match": {
+      "fr": "Homme à homme, souvent avec changements : l'action cherche un tir précis en peu de temps.",
+      "en": "Man-to-man, often switching: the action looks for a specific shot in little time."
+    },
+    "attaque-zone-2-3": {
+      "fr": "Défense de zone 2-3 : attaque le poste haut, les corners et le côté faible.",
+      "en": "2-3 zone: attack the high post, the corners and the weak side."
+    },
+    "attaque-zone-3-2": {
+      "fr": "Défense de zone 3-2 (ou 1-2-2) : attaque les bases et le poste bas.",
+      "en": "3-2 (or 1-2-2) zone: attack the short corners and the low post."
+    },
+    "attaque-zone-1-3-1": {
+      "fr": "Défense de zone 1-3-1 : attaque les corners et la ligne de fond.",
+      "en": "1-3-1 zone: attack the corners and the baseline."
+    },
+    "attaque-match-up": {
+      "fr": "Zone match-up : écrans et coupes pour casser les responsabilités.",
+      "en": "Match-up zone: screens and cuts to break the matchups."
+    },
+    "attaque-defenses-mixtes": {
+      "fr": "Boîte et 1, triangle et 2 : libère le joueur suivi et attaque les quatre en zone.",
+      "en": "Box-and-1, triangle-and-2: free the chased player and attack the four in zone."
+    },
+    "main-a-main": {
+      "fr": "Homme à homme, surtout quand le défenseur passe en dessous ou que l'aide est lente.",
+      "en": "Man-to-man, especially when the defender goes under or help is slow."
+    },
+    "contre-attaque": {
+      "fr": "Toute défense qui n'est pas encore repliée, en particulier après une perte de balle ou un rebond.",
+      "en": "Any defense that isn't back yet, especially after a turnover or a rebound."
+    },
+    "attaque-rapide": {
+      "fr": "Défense qui revient mais n'est pas encore placée : on attaque avant qu'elle soit organisée.",
+      "en": "A defense that is back but not yet set: attack before it gets organized."
+    },
+    "principes-attaque": {
+      "fr": "Toutes les défenses : ce principe s'applique contre l'homme à homme comme contre la zone.",
+      "en": "Every defense: this principle works against man-to-man and zone alike."
+    },
+    "principes-transition": {
+      "fr": "Toutes les défenses en repli.",
+      "en": "Any defense in transition."
+    },
+    "poste": {
+      "fr": "Homme à homme, surtout avec un avantage de taille ; contre la zone, le poste haut est la cible.",
+      "en": "Man-to-man, especially with a size advantage; against a zone, the high post is the target."
+    },
+    "tir": {
+      "fr": "Défense qui sort tard ou qui aide trop : le tir rapide punit le close-out lent.",
+      "en": "A defense that closes out late or over-helps: the quick shot punishes a slow close-out."
+    },
+    "finition": {
+      "fr": "Défense qui protège mal le cercle ; la finition au contact sert contre les grands.",
+      "en": "A defense that protects the rim poorly; contact finishes help against big defenders."
+    },
+    "dribble": {
+      "fr": "Pression sur le porteur : le dribble protégé résiste au prise à deux et à la défense serrée.",
+      "en": "Pressure on the ball: a protected dribble beats traps and tight defense."
+    },
+    "passes": {
+      "fr": "Défense qui coupe les lignes de passe et qui presse.",
+      "en": "Defenses that jump passing lanes and pressure."
+    },
+    "un-contre-un": {
+      "fr": "Défense individuelle : apprendre à battre son défenseur seul.",
+      "en": "On-ball defense: learn to beat your own defender."
+    },
+    "surnombre": {
+      "fr": "Défense en infériorité numérique : on apprend à punir l'aide.",
+      "en": "An outnumbered defense: learn to punish the help."
+    },
+    "zones": {
+      "fr": "Équipes qui pénètrent beaucoup ou qui tirent peu de loin ; fragile contre les bons tireurs.",
+      "en": "Teams that drive a lot or shoot poorly from outside; vulnerable to good shooters."
+    },
+    "defense-pick-and-roll": {
+      "fr": "Le pick-and-roll adverse : la couverture dépend du tireur et du poseur d'écran.",
+      "en": "The opponent's pick-and-roll: the coverage depends on the shooter and the screener."
+    },
+    "homme-a-homme": {
+      "fr": "Toutes les attaques ; c'est la base de la défense.",
+      "en": "Every offense; it is the base of defense."
+    },
+    "defense-transition": {
+      "fr": "Contre-attaque et attaque rapide adverses.",
+      "en": "The opponent's fast break and early offense."
+    },
+    "presses": {
+      "fr": "Équipes avec un seul bon dribbleur ou qui paniquent sous pression.",
+      "en": "Teams with only one good ball handler or that panic under pressure."
+    },
+    "defense-ecrans-sans-ballon": {
+      "fr": "Attaques à écrans sans ballon (écrans retours, flare, staggers).",
+      "en": "Offenses built on off-ball screens (pin-downs, flares, staggers)."
+    },
+    "principes-defense": {
+      "fr": "Toutes les attaques.",
+      "en": "Every offense."
+    },
+    "defense-poste": {
+      "fr": "Attaques qui jouent au poste bas.",
+      "en": "Offenses that play through the low post."
+    },
+    "rotations": {
+      "fr": "Attaques qui pénètrent et ressortent (drive and kick).",
+      "en": "Drive-and-kick offenses."
+    },
+    "fin-de-match-defense": {
+      "fr": "Situations de fin de match : protéger un avantage ou empêcher un tir précis.",
+      "en": "Late-game situations: protect a lead or take away a specific shot."
+    },
+    "defense-collective": {
+      "fr": "Attaques à pick-and-roll, écrans et pénétrations.",
+      "en": "Offenses built on pick-and-roll, screens and drives."
+    },
+    "defense-individuelle": {
+      "fr": "Le porteur du ballon et les joueurs qui veulent recevoir.",
+      "en": "The ball handler and players trying to get open."
+    },
+    "rebond": {
+      "fr": "Équipes qui vont fort au rebond offensif.",
+      "en": "Teams that crash the offensive glass."
+    },
+    "transition-exercices": {
+      "fr": "Prépare l'équipe à attaquer une défense non placée et à revenir vite.",
+      "en": "Prepares the team to attack an unset defense and to get back fast."
+    },
+    "jeux-jeunes": {
+      "fr": "Exercice de formation : pas de défense ciblée.",
+      "en": "Development drill: no specific defense targeted."
+    },
+    "physique": {
+      "fr": "Préparation physique : pas de défense ciblée.",
+      "en": "Conditioning: no specific defense targeted."
+    },
+    "seance-pro": {
+      "fr": "Selon le plan de match : la défense de l'adversaire de la semaine.",
+      "en": "Depends on the game plan: the defense of this week's opponent."
+    }
+  },
+  "practice": {
+    "attaque": {
+      "fr": [
+        "Marche-le à 5 contre 0 : chacun dit son rôle à voix haute ({n} étapes).",
+        "5 contre 0 à pleine vitesse, avec le tir à la fin.",
+        "5 contre 5 défense passive : la défense montre les aides, l'attaque fait les bonnes lectures.",
+        "5 contre 5 en direct : chaque possession commence par cette action.",
+        "Jeu à contrainte : le panier vaut double s'il vient de cette action."
+      ],
+      "en": [
+        "Walk it 5-on-0: everyone calls out their role ({n} steps).",
+        "5-on-0 at full speed, finishing with the shot.",
+        "5-on-5 with passive defense: the defense shows the help, the offense makes the right reads.",
+        "Live 5-on-5: every possession starts with this action.",
+        "Constraint game: a basket counts double when it comes from this action."
+      ]
+    },
+    "zone_att": {
+      "fr": [
+        "Place une zone 2-3 ou 3-2 avec des défenseurs passifs et marche l'action ({n} étapes).",
+        "Attaque à 5 contre 5 en zone passive : la zone glisse, l'attaque cherche le joueur libre.",
+        "Zone en direct : 3 passes minimum avant de tirer.",
+        "Change de zone à chaque possession pour apprendre à la reconnaître."
+      ],
+      "en": [
+        "Set a 2-3 or 3-2 zone with passive defenders and walk the action ({n} steps).",
+        "5-on-5 against a passive zone: the zone shifts, the offense finds the open man.",
+        "Live zone: at least 3 passes before a shot.",
+        "Change the zone every possession so players learn to recognize it."
+      ]
+    },
+    "transition": {
+      "fr": [
+        "3 contre 0 puis 5 contre 0 sur tout le terrain, à pleine vitesse.",
+        "Ajoute 2 défenseurs qui reviennent en retard.",
+        "5 contre 5 qui démarre sur un rebond ou une interception.",
+        "Compte les paniers marqués en moins de 7 secondes."
+      ],
+      "en": [
+        "3-on-0, then 5-on-0 full court at full speed.",
+        "Add 2 defenders who trail the play.",
+        "5-on-5 starting from a rebound or a steal.",
+        "Count the baskets scored within 7 seconds."
+      ]
+    },
+    "remises": {
+      "fr": [
+        "Marche la remise à 5 contre 0 avec le signal annoncé.",
+        "5 contre 5 défense passive, puis en direct.",
+        "Répète-la à chaque fin de séance, avec le chrono de remise (5 secondes).",
+        "Prépare une option de sécurité si la défense change."
+      ],
+      "en": [
+        "Walk the inbound 5-on-0 with the call.",
+        "5-on-5 against passive defense, then live.",
+        "Rehearse it at the end of every practice with the 5-second count.",
+        "Prepare a safety option in case the defense switches."
+      ]
+    },
+    "defense": {
+      "fr": [
+        "Marche la défense contre une attaque qui joue lentement ({n} étapes).",
+        "Shell drill 4 contre 4 : chaque défenseur annonce son rôle.",
+        "5 contre 5 où l'attaque joue l'action que cette défense doit stopper.",
+        "Points bonus pour la défense à chaque arrêt sans faute."
+      ],
+      "en": [
+        "Walk the defense against a slow-moving offense ({n} steps).",
+        "4-on-4 shell drill: every defender calls out their role.",
+        "5-on-5 where the offense runs the action this defense must stop.",
+        "Bonus points for the defense on every stop without a foul."
+      ]
+    },
+    "exercices": {
+      "fr": [
+        "Explique l'exercice en 30 secondes, puis fais-le d'abord à vitesse contrôlée.",
+        "Augmente la vitesse et ajoute une règle de score.",
+        "Termine par une variante en opposition réelle."
+      ],
+      "en": [
+        "Explain the drill in 30 seconds, then run it at a controlled pace first.",
+        "Increase the speed and add a scoring rule.",
+        "Finish with a variation against live opposition."
+      ]
+    },
+    "principes": {
+      "fr": [
+        "Montre le principe sur le terrain à 5 contre 0.",
+        "Petits jeux à 3 contre 3 où le principe rapporte des points.",
+        "5 contre 5 : arrête le jeu quand le principe n'est pas respecté et rejoue."
+      ],
+      "en": [
+        "Show the principle on the court 5-on-0.",
+        "3-on-3 small-sided games where the principle earns points.",
+        "5-on-5: stop play when the principle is broken and replay it."
+      ]
+    }
+  }
+}

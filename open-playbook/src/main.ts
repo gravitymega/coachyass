@@ -9,10 +9,13 @@ import familiesJson from "../data/families.json";
 import { Board } from "./board";
 import type { Board3D } from "./board3d";
 import { Editor } from "./editor";
-import { normalize, type Lang, type Library, type Tactic, type Text } from "./engine";
+import coachingJson from "../data/coaching.json";
+import { normalize, shotKind, type Lang, type Library, type ShotKind, type Tactic, type Text } from "./engine";
+import { speak, stopSpeaking, voiceSupported } from "./voice";
 
 const lib = library as Library;
 const families = familiesJson as Record<string, Text>;
+const coaching = coachingJson as { against: Record<string, Text>; practice: Record<string, Record<Lang, string[]>> };
 const byId = new Map(lib.tactics.map((t) => [t.id, t]));
 const CHANNEL = "Playbook Ouvert · Open Playbook";
 const PAGE = 48;
@@ -74,6 +77,9 @@ const app = document.querySelector<HTMLElement>("#app")!;
 let board: Board | null = null;
 let board3d: Board3D | null = null;
 let editor: Editor | null = null;
+let heroBoard: Board | null = null;
+let hero3d: Board3D | null = null;
+let cleanup: (() => void) | null = null;
 
 function header(active: string) {
   const nav = [
@@ -145,53 +151,78 @@ function card(t: Tactic) {
   </a></li>`;
 }
 
-function libraryView() {
-  const famsForCat = [...new Set(lib.tactics.filter((t) => !state.cat || t.cat === state.cat).map((t) => t.family!))].sort((a, b) =>
-    famName(a).localeCompare(famName(b), state.lang),
-  );
-  if (state.family && !famsForCat.includes(state.family)) state.family = "";
-  const list = filtered();
-  app.innerHTML = `${header("")}
-  <main class="wrap" id="main">
-    <section class="intro">
+const FEATURED = ["horns-flare", "spain-pick-and-roll", "pick-and-roll-central", "floppy", "hammer", "fast-break-3-lanes", "princeton-backdoor"];
+
+function heroHtml(t: Tactic) {
+  return `<section class="hero" aria-label="${tr("Tactique à la une", "Featured play")}">
+    <div class="hero-text">
       <h1>${tr("Tactiques de basket, dessinées et animées", "Basketball plays, drawn and animated")}</h1>
       <p>${tr(
-        `${lib.tactics.length} fiches libres : systèmes, défenses, remises en jeu, exercices et principes. Chaque fiche s'anime étape par étape, en français et en anglais.`,
-        `${lib.tactics.length} free cards: sets, defenses, inbounds, drills and principles. Every card animates step by step, in French and English.`,
+        `${lib.tactics.length} fiches libres : systèmes, défenses, remises en jeu, exercices et principes. Chaque fiche s'anime étape par étape, en 2D ou en 3D, avec une explication audio en français ou en anglais.`,
+        `${lib.tactics.length} free cards: sets, defenses, inbounds, drills and principles. Every card animates step by step, in 2D or 3D, with an audio explanation in French or English.`,
       )}</p>
-    </section>
+      <p class="hero-feat"><span class="card-meta">${tr("À la une", "Featured")} · ${esc(catName(t.cat))}</span><strong>${esc(txt(t.name))}</strong><span class="hero-cap" id="hero-cap" aria-live="off"></span></p>
+      <p class="hero-actions"><a class="btn" href="#${t.id}">${tr("Ouvrir la fiche", "Open the card")}</a><a class="chip hero-chip" href="#video-${t.id}">${tr("Mode vidéo", "Video mode")}</a></p>
+    </div>
+    <div class="hero-stage">
+      <div id="hero-3d" class="hero-3d"></div>
+      <div id="hero-2d" class="board-host" hidden></div>
+      <p class="hint3d">${tr("Vue 3D (three.js) : glisse pour tourner autour du terrain.", "3D view (three.js): drag to orbit the court.")}</p>
+    </div>
+  </section>`;
+}
+
+function startHero(t: Tactic) {
+  const h2 = document.getElementById("hero-2d")!, h3 = document.getElementById("hero-3d")!;
+  const cap = document.getElementById("hero-cap")!;
+  heroBoard = new Board(h2, t, { onStep: (k) => (cap.textContent = captionFor(t, k).main) }, txt(t.name));
+  heroBoard.loop = true;
+  const hb = heroBoard;
+  const reduce = reduceMotion();
+  const fallback = () => {
+    h3.hidden = true;
+    h2.hidden = false;
+  };
+  import("./board3d")
+    .then(({ Board3D }) => {
+      if (heroBoard !== hb) return;
+      hero3d = new Board3D(h3, hb, Object.keys(t.start ?? {}).filter((k) => k !== "b"), { autoRotate: !reduce });
+    })
+    .catch(fallback);
+  window.setTimeout(() => heroBoard === hb && (reduce ? hb.playStatic() : hb.play()), 900);
+}
+
+function libraryView() {
+  const today = Math.floor(Date.now() / 86400000);
+  const featured = byId.get(FEATURED[today % FEATURED.length]) ?? lib.tactics[0];
+  app.innerHTML = `${header("")}
+  <main class="wrap" id="main">
+    ${heroHtml(featured)}
     <form class="filters" id="filters" role="search">
       <label class="f-search"><span>${tr("Rechercher", "Search")}</span>
         <input id="f-q" type="search" value="${esc(state.q)}" placeholder="${tr("ex. horns, zone 2-3, rebond…", "e.g. horns, 2-3 zone, rebounding…")}" autocomplete="off" /></label>
       <label><span>${tr("Catégorie", "Category")}</span>
         <select id="f-cat"><option value="">${tr("Toutes", "All")}</option>${lib.cats.map((c) => `<option value="${c.id}"${state.cat === c.id ? " selected" : ""}>${esc(c[state.lang])}</option>`).join("")}</select></label>
-      <label><span>${tr("Famille", "Family")}</span>
-        <select id="f-family"><option value="">${tr("Toutes", "All")}</option>${famsForCat.map((f) => `<option value="${f}"${state.family === f ? " selected" : ""}>${esc(famName(f))}</option>`).join("")}</select></label>
+      <label><span>${tr("Famille", "Family")}</span><select id="f-family"></select></label>
       <label><span>${tr("Niveau", "Level")}</span>
         <select id="f-lvl"><option value="">${tr("Tous", "All")}</option>${[1, 2, 3].map((l) => `<option value="${l}"${state.lvl === String(l) ? " selected" : ""}>${txt(LEVELS[l])}</option>`).join("")}</select></label>
       <label class="f-check"><input id="f-pending" type="checkbox"${state.pending ? " checked" : ""} /> <span>${tr("Inclure les fiches à relire", "Include cards awaiting review")}</span></label>
     </form>
-    <p class="count" aria-live="polite">${list.length} ${tr(list.length > 1 ? "fiches" : "fiche", list.length > 1 ? "cards" : "card")}</p>
-    ${list.length ? `<ul class="grid">${list.slice(0, state.shown).map(card).join("")}</ul>` : `<p class="empty">${state.pending ? tr("Aucune fiche ne correspond. Essaie un autre mot ou retire un filtre.", "No card matches. Try another word or remove a filter.") : tr("Aucune fiche relue pour l'instant. Coche « Inclure les fiches à relire » pour tout voir.", "No reviewed card yet. Tick “Include cards awaiting review” to see them all.")}</p>`}
-    ${list.length > state.shown ? `<p class="more"><button type="button" id="more" class="btn">${tr("Afficher plus", "Show more")} (${list.length - state.shown})</button></p>` : ""}
+    <div id="results"></div>
   </main>${footer()}`;
   bindHeader();
-  const q = document.getElementById("f-q") as HTMLInputElement;
-  q.addEventListener("input", () => {
-    state.q = q.value;
+  startHero(featured);
+  renderResults();
+  document.getElementById("f-q")!.addEventListener("input", (e) => {
+    state.q = (e.target as HTMLInputElement).value;
     state.shown = PAGE;
-    const pos = q.selectionStart;
-    libraryView();
-    const nq = document.getElementById("f-q") as HTMLInputElement;
-    nq.focus();
-    nq.setSelectionRange(pos, pos);
+    renderResults();
   });
   const bindSelect = (id: string, key: "cat" | "family" | "lvl") =>
     document.getElementById(id)!.addEventListener("change", (e) => {
       state[key] = (e.target as HTMLSelectElement).value;
       state.shown = PAGE;
-      libraryView();
-      document.getElementById(id)?.focus();
+      renderResults();
     });
   bindSelect("f-cat", "cat");
   bindSelect("f-family", "family");
@@ -199,15 +230,30 @@ function libraryView() {
   document.getElementById("f-pending")!.addEventListener("change", (e) => {
     state.pending = (e.target as HTMLInputElement).checked;
     store.set("pending", state.pending ? "1" : "0");
-    libraryView();
-    document.getElementById("f-pending")?.focus();
+    renderResults();
   });
   document.getElementById("filters")!.addEventListener("submit", (e) => e.preventDefault());
-  document.getElementById("more")?.addEventListener("click", () => {
+  document.getElementById("results")!.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).id !== "more") return;
     state.shown += PAGE;
-    libraryView();
+    renderResults();
     document.getElementById("more")?.focus();
   });
+}
+
+/** Met à jour la liste et le filtre « famille » sans toucher au reste de la page (la 3D d'accueil continue). */
+function renderResults() {
+  const famsForCat = [...new Set(lib.tactics.filter((t) => !state.cat || t.cat === state.cat).map((t) => t.family!))].sort((a, b) =>
+    famName(a).localeCompare(famName(b), state.lang),
+  );
+  if (state.family && !famsForCat.includes(state.family)) state.family = "";
+  document.getElementById("f-family")!.innerHTML =
+    `<option value="">${tr("Toutes", "All")}</option>` + famsForCat.map((f) => `<option value="${f}"${state.family === f ? " selected" : ""}>${esc(famName(f))}</option>`).join("");
+  const list = filtered();
+  document.getElementById("results")!.innerHTML = `
+    <p class="count" aria-live="polite">${list.length} ${tr(list.length > 1 ? "fiches" : "fiche", list.length > 1 ? "cards" : "card")}</p>
+    ${list.length ? `<ul class="grid">${list.slice(0, state.shown).map(card).join("")}</ul>` : `<p class="empty">${state.pending ? tr("Aucune fiche ne correspond. Essaie un autre mot ou retire un filtre.", "No card matches. Try another word or remove a filter.") : tr("Aucune fiche relue pour l'instant. Coche « Inclure les fiches à relire » pour tout voir.", "No reviewed card yet. Tick “Include cards awaiting review” to see them all.")}</p>`}
+    ${list.length > state.shown ? `<p class="more"><button type="button" id="more" class="btn">${tr("Afficher plus", "Show more")} (${list.length - state.shown})</button></p>` : ""}`;
 }
 
 // ----------------------------------------------------------------------- fiche
@@ -222,11 +268,33 @@ function list(items: string[]) {
   return `<ul class="bullets">${items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>`;
 }
 
+const OFFENSE_CATS = ["attaque", "zone_att", "transition", "remises"];
+const SHOTS: Record<ShotKind, Text> = {
+  rim: { fr: "Tir près du cercle (lay-up, dunk ou tir dans la raquette)", en: "Shot at the rim (layup, dunk or paint shot)" },
+  mid: { fr: "Tir à mi-distance", en: "Mid-range shot" },
+  three: { fr: "Tir à 3 points", en: "Three-point shot" },
+};
+
+/** Explication affichée pendant la lecture : le principe, un point clé par étape, puis pourquoi ça marche. */
+function coachText(t: Tactic, k: number) {
+  const n = t.steps?.length ?? 0;
+  if (k < 0) return `<strong>${tr("Le principe", "The idea")}</strong> ${esc(txt(t.sum))}`;
+  const key = t.keys[state.lang][k];
+  const parts = [];
+  if (key) parts.push(`<strong>${tr("Point clé", "Key point")}</strong> ${esc(key)}`);
+  if (k === n - 1) parts.push(`<strong>${tr("Pourquoi ça marche", "Why it works")}</strong> ${esc(txt(t.why))}`);
+  return parts.join("<br>");
+}
+
 function ficheView(t: Tactic) {
   const drill = t.duration != null;
   const sameCat = lib.tactics.filter((x) => x.cat === t.cat);
   const i = sameCat.indexOf(t);
   const prevT = sameCat[i - 1], nextT = sameCat[i + 1];
+  const against = t.family ? coaching.against[t.family] : undefined;
+  const shot = OFFENSE_CATS.includes(t.cat) ? shotKind(t) : null;
+  const practice = coaching.practice[t.cat]?.[state.lang] ?? [];
+  const nSteps = t.steps?.length ?? 0;
   app.innerHTML = `${header("x")}
   <main class="wrap fiche" id="main">
     <p class="crumbs"><a href="#">← ${tr("Bibliothèque", "Library")}</a> · ${esc(catName(t.cat))} · ${esc(famName(t.family))}</p>
@@ -244,15 +312,20 @@ function ficheView(t: Tactic) {
           <span class="step-label" id="step-label"></span>
           <button type="button" class="chip view-toggle" id="b-3d" aria-pressed="false">${tr("Vue 3D", "3D view")}</button>
         </div>
+        ${voiceSupported() ? `<button type="button" class="btn voice-btn" id="b-voice" aria-pressed="false"><span aria-hidden="true">🔊</span> ${tr("Écouter l'explication", "Listen to the explanation")}</button>` : ""}
         <p class="hint3d" id="hint3d" hidden>${tr("Glisse pour tourner autour du terrain, pince ou molette pour zoomer.", "Drag to orbit the court, pinch or scroll to zoom.")}</p>
         <div class="caption" aria-live="polite"><p id="cap-main"></p><p id="cap-alt" class="cap-alt" lang="${other(state.lang)}"></p></div>
+        <p class="coach" id="coach"></p>
         <p class="legend"><span><i class="lg-o"></i>${tr("Attaque", "Offense")}</span><span><i class="lg-x"></i>${tr("Défense", "Defense")}</span><span><i class="lg-b"></i>${tr("Ballon", "Ball")}</span><span>${tr("Zigzag : dribble · pointillé : passe · barre : écran", "Zigzag: dribble · dotted: pass · bar: screen")}</span></p>
       </section>
       <article class="sections">
         <p class="lead">${esc(txt(t.sum))}</p>
         ${drill ? `<dl class="drill"><div><dt>${tr("Durée", "Duration")}</dt><dd>${t.duration} min</dd></div><div><dt>${tr("Joueurs", "Players")}</dt><dd>${esc(t.players ?? "")}</dd></div><div><dt>${tr("Matériel", "Equipment")}</dt><dd>${esc(txt(t.equipment))}</dd></div><div><dt>${tr("Âge", "Age")}</dt><dd>${(t.age ?? []).join(", ")}</dd></div></dl>` : ""}
         <h2>${tr("Pourquoi ça marche", "Why it works")}</h2><p>${esc(txt(t.why))}</p>
+        ${against || shot ? `<div class="facts">${against ? `<div><h3>${tr(OFFENSE_CATS.includes(t.cat) ? "Contre quelle défense ça marche" : "Efficace contre", OFFENSE_CATS.includes(t.cat) ? "Which defense it beats" : "Effective against")}</h3><p>${esc(txt(against))}</p></div>` : ""}${shot ? `<div><h3>${tr("Tir obtenu", "Shot created")}</h3><p>${esc(txt(SHOTS[shot]))}</p></div>` : ""}</div>` : ""}
         <h2>${tr("Points clés", "Key points")}</h2>${list(t.keys[state.lang])}
+        <h2>${tr("Comment l'entraîner", "How to practice it")}</h2>
+        <ol class="practice">${practice.map((x) => `<li>${esc(x.replace("{n}", String(nSteps)))}</li>`).join("")}</ol>
         ${t.variants ? `<h2>${tr("Variantes", "Variations")}</h2>${list(t.variants[state.lang])}` : ""}
         <h2>${tr("Comment la défendre", "How to defend it")}</h2><p>${esc(txt(t.counter))}</p>
         <h2>${tr("Qui l'utilise", "Who uses it")}</h2><p>${esc(txt(t.used))}</p>
@@ -270,18 +343,71 @@ function ficheView(t: Tactic) {
     document.getElementById("step-label")!.textContent = c.label;
     document.getElementById("cap-main")!.textContent = c.main;
     document.getElementById("cap-alt")!.textContent = c.alt;
+    document.getElementById("coach")!.innerHTML = coachText(t, k);
   };
-  board = new Board(document.getElementById("board-host")!, t, {
-    onStep: setStep,
-    onPlayState: (p) => {
-      playBtn.textContent = p ? "⏸" : "▶";
-      playBtn.setAttribute("aria-label", p ? tr("Pause", "Pause") : tr("Lecture", "Play"));
-    },
-  }, txt(t.name));
+  const showPlaying = (p: boolean) => {
+    playBtn.textContent = p ? "⏸" : "▶";
+    playBtn.setAttribute("aria-label", p ? tr("Pause", "Pause") : tr("Lecture", "Play"));
+  };
+  board = new Board(document.getElementById("board-host")!, t, { onStep: setStep, onPlayState: (p) => !narrating && showPlaying(p) }, txt(t.name));
   setStep(-1);
   const b = board;
-  playBtn.addEventListener("click", () => (b.playing ? b.pause() : reduceMotion() ? b.playStatic() : b.play()));
-  document.getElementById("b-prev")!.addEventListener("click", () => b.prev(reduceMotion()));
+
+  // ---- explication audio : anime chaque étape et lit sa légende, puis pourquoi ça marche
+  let narrating = false;
+  let token = 0;
+  const voiceBtn = document.getElementById("b-voice");
+  const setVoiceUi = (on: boolean) => {
+    if (!voiceBtn) return;
+    voiceBtn.setAttribute("aria-pressed", String(on));
+    voiceBtn.innerHTML = on ? `<span aria-hidden="true">■</span> ${tr("Arrêter l'audio", "Stop audio")}` : `<span aria-hidden="true">🔊</span> ${tr("Écouter l'explication", "Listen to the explanation")}`;
+  };
+  const stopNarration = () => {
+    token++;
+    narrating = false;
+    stopSpeaking();
+    setVoiceUi(false);
+    showPlaying(false);
+  };
+  const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  const narrate = async () => {
+    const my = ++token;
+    narrating = true;
+    setVoiceUi(true);
+    showPlaying(true);
+    const L = state.lang;
+    const alive = () => my === token && board === b;
+    b.goTo(-1, true);
+    await speak(`${t.name[L]}. ${t.sum[L]}`, L);
+    for (let k = 0; k < nSteps && alive(); k++) {
+      b.goTo(k, reduceMotion());
+      await Promise.all([speak(t.steps![k].c[L], L), wait(2400)]);
+    }
+    if (alive()) {
+      const extra = against ? ` ${L === "fr" ? "Contre quelle défense ça marche" : "Which defense it beats"} : ${against[L]}` : "";
+      await speak(`${L === "fr" ? "Pourquoi ça marche" : "Why it works"} : ${t.why[L]}${extra}`, L);
+    }
+    if (my === token) {
+      narrating = false;
+      setVoiceUi(false);
+      showPlaying(false);
+    }
+  };
+  voiceBtn?.addEventListener("click", () => (narrating ? stopNarration() : narrate()));
+  playBtn.addEventListener("click", () => {
+    if (narrating) return stopNarration();
+    b.playing ? b.pause() : reduceMotion() ? b.playStatic() : b.play();
+  });
+  document.getElementById("b-prev")!.addEventListener("click", () => {
+    if (narrating) stopNarration();
+    b.prev(reduceMotion());
+  });
+  document.getElementById("b-next")!.addEventListener("click", () => {
+    if (narrating) stopNarration();
+    b.next(reduceMotion());
+  });
+  cleanup = stopNarration;
+
   const btn3d = document.getElementById("b-3d")!;
   const set3d = async (on: boolean) => {
     const h2 = document.getElementById("board-host")!, h3 = document.getElementById("board3d-host")!;
@@ -306,7 +432,6 @@ function ficheView(t: Tactic) {
   };
   btn3d.addEventListener("click", () => set3d(!state.view3d));
   if (state.view3d) set3d(true);
-  document.getElementById("b-next")!.addEventListener("click", () => b.next(reduceMotion()));
 }
 
 // ------------------------------------------------------------------ mode vidéo
@@ -419,6 +544,12 @@ function editorView() {
 }
 
 function route() {
+  cleanup?.();
+  cleanup = null;
+  hero3d?.destroy();
+  hero3d = null;
+  heroBoard?.destroy();
+  heroBoard = null;
   editor?.destroy();
   editor = null;
   board3d?.destroy();

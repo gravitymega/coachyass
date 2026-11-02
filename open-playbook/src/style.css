@@ -101,6 +101,19 @@ nav a[aria-current="page"] { opacity: 1; box-shadow: inset 0 -2px 0 #e07a12; bor
 .chip span { opacity: 0.55; }
 .chip:hover { opacity: 1; }
 
+/* ---- accueil 3D ---- */
+.hero { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 2rem; align-items: center; padding-block: 1.75rem 1.5rem; }
+.hero-text { display: grid; gap: 0.8rem; min-width: 0; }
+.hero-text p { margin: 0; color: var(--muted); }
+.hero-feat { display: grid; gap: 0.2rem; padding: 0.8rem 1rem; border-left: 3px solid var(--ball); background: var(--surface); border-radius: 0 var(--radius) var(--radius) 0; }
+.hero-feat strong { font: 600 1.35rem var(--font-display); color: var(--fg); }
+.hero-cap { color: var(--fg); min-height: 2.6em; font-size: 0.95rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+.hero-actions .btn { text-decoration: none; display: inline-flex; align-items: center; }
+.hero-chip { color: var(--accent); min-height: 44px; display: inline-flex; align-items: center; }
+.hero-stage { display: grid; gap: 0.4rem; min-width: 0; }
+.hero-3d { min-height: 12rem; }
+
 /* ---- bibliothèque ---- */
 .intro { padding-block: 2rem 1rem; display: grid; gap: 0.6rem; max-width: 46rem; }
 .intro p { margin: 0; color: var(--muted); }
@@ -184,6 +197,16 @@ nav a[aria-current="page"] { opacity: 1; box-shadow: inset 0 -2px 0 #e07a12; bor
 .view-toggle[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
 .board3d-canvas { display: block; border-radius: var(--radius); background: linear-gradient(#20304d, #0f1a2b); touch-action: none; box-shadow: 0 6px 22px rgba(15, 26, 43, 0.18); }
 .hint3d { margin: 0; font-size: 0.8rem; color: var(--muted); }
+.voice-btn { justify-self: start; display: inline-flex; gap: 0.5rem; align-items: center; }
+.voice-btn[aria-pressed="true"] { background: var(--defense); }
+.coach { margin: 0; padding: 0.7rem 0.9rem; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--ball); border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.95rem; min-height: 3rem; }
+.coach strong { font: 700 0.8rem var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ball); margin-right: 0.35rem; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.6rem; margin-top: 0.6rem; }
+.facts > div { padding: 0.8rem 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.facts h3 { margin: 0 0 0.3rem; font: 700 0.8rem var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.facts p { margin: 0; }
+.practice { margin: 0; padding-left: 1.4rem; display: grid; gap: 0.35rem; }
+.practice li::marker { color: var(--ball); font-weight: 700; font-variant-numeric: tabular-nums; }
 .step-label { margin-left: 0.4rem; font: 700 0.95rem var(--font-display); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ball); font-variant-numeric: tabular-nums; }
 .caption { min-height: 5.5rem; }
 .caption p { margin: 0; }
@@ -303,6 +326,7 @@ body.is-video::before { background: #0f1a2b; }
 .video-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; color: #eef2f8; }
 
 @media (max-width: 860px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
   .ed-grid { grid-template-columns: minmax(0, 1fr); }
   .fiche-grid { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
   .player { position: static; }
