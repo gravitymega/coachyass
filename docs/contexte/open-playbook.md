@@ -37,3 +37,11 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
   - distance minimale entre deux joueurs : 1 pied ;
   - un « système » est une fiche dessinée hors `exercices` et `principes`, et il lui faut au moins 2 étapes.
 - `catalogue_500.json` : 500 entrées (attaque 160, exercices 100, défense 90, remises 50, zone_att 40, transition 40, principes 20). Les 34 fiches existantes y sont au statut `done`.
+
+## Site (phase 2, 2 nov. 2026)
+
+- `src/main.ts` (vues) et `src/board.ts` (terrain SVG animé, même timeline que `render.py`). Routes par ancre simple : `#` bibliothèque, `#<id>` fiche, `#video-<id>` mode vidéo 9:16, `#glossaire`, `#plans`.
+- Préférences gardées dans `localStorage` (`op-lang`, `op-theme`, `op-pending`) : langue FR/EN, thème auto/clair/sombre, affichage des fiches « à relire » (coché par défaut, car toutes le sont).
+- `data/families.json` : noms FR/EN des familles, hors du format des fiches.
+- `npm run build:single` crée `dist-single/index.html`, une page unique qui sert d'aperçu (publiée en Artifact privé : https://claude.ai/artifact/5YdHxgyQHSmdJazLqoMMGv).
+- `.github/workflows/open-playbook.yml` : validation et build sur chaque PR, publication sur GitHub Pages après fusion dans `main`. L'utilisateur doit activer une fois Settings → Pages → Source « GitHub Actions ». Adresse prévue : https://gravitymega.github.io/coachyass/

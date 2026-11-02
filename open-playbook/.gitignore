@@ -2,3 +2,4 @@ node_modules/
 dist/
 videos/
 __pycache__/
+dist-single/

@@ -1,0 +1,170 @@
+{
+  "ecrans-sans-ballon": {
+    "fr": "Écrans sans ballon",
+    "en": "Off-ball screens"
+  },
+  "pick-and-roll": {
+    "fr": "Pick-and-roll",
+    "en": "Pick-and-roll"
+  },
+  "systemes": {
+    "fr": "Systèmes",
+    "en": "Set plays"
+  },
+  "motion": {
+    "fr": "Attaque en mouvement",
+    "en": "Motion offense"
+  },
+  "horns": {
+    "fr": "Horns",
+    "en": "Horns"
+  },
+  "remise-ligne-de-fond": {
+    "fr": "Remise ligne de fond",
+    "en": "Baseline inbounds"
+  },
+  "fin-de-match": {
+    "fr": "Fin de match",
+    "en": "Late game"
+  },
+  "attaque-zone-2-3": {
+    "fr": "Contre la zone 2-3",
+    "en": "Vs 2-3 zone"
+  },
+  "remise-ligne-de-touche": {
+    "fr": "Remise ligne de touche",
+    "en": "Sideline inbounds"
+  },
+  "zones": {
+    "fr": "Défenses de zone",
+    "en": "Zone defenses"
+  },
+  "defense-pick-and-roll": {
+    "fr": "Défense du pick-and-roll",
+    "en": "Pick-and-roll defense"
+  },
+  "tir": {
+    "fr": "Tir",
+    "en": "Shooting"
+  },
+  "poste": {
+    "fr": "Jeu au poste",
+    "en": "Post play"
+  },
+  "homme-a-homme": {
+    "fr": "Homme à homme",
+    "en": "Man-to-man"
+  },
+  "defense-transition": {
+    "fr": "Repli défensif",
+    "en": "Transition defense"
+  },
+  "main-a-main": {
+    "fr": "Main à main",
+    "en": "Handoffs"
+  },
+  "presses": {
+    "fr": "Presses",
+    "en": "Presses"
+  },
+  "defense-ecrans-sans-ballon": {
+    "fr": "Défense des écrans sans ballon",
+    "en": "Off-ball screen defense"
+  },
+  "dribble": {
+    "fr": "Dribble",
+    "en": "Ball handling"
+  },
+  "contre-attaque": {
+    "fr": "Contre-attaque",
+    "en": "Fast break"
+  },
+  "attaque-rapide": {
+    "fr": "Attaque rapide",
+    "en": "Early offense"
+  },
+  "principes-attaque": {
+    "fr": "Principes offensifs",
+    "en": "Offensive principles"
+  },
+  "finition": {
+    "fr": "Finition",
+    "en": "Finishing"
+  },
+  "passes": {
+    "fr": "Passes",
+    "en": "Passing"
+  },
+  "principes-defense": {
+    "fr": "Principes défensifs",
+    "en": "Defensive principles"
+  },
+  "un-contre-un": {
+    "fr": "1 contre 1",
+    "en": "One-on-one"
+  },
+  "defense-collective": {
+    "fr": "Défense collective",
+    "en": "Team defense"
+  },
+  "attaque-zone-3-2": {
+    "fr": "Contre la zone 3-2",
+    "en": "Vs 3-2 zone"
+  },
+  "attaque-zone-1-3-1": {
+    "fr": "Contre la zone 1-3-1",
+    "en": "Vs 1-3-1 zone"
+  },
+  "defense-poste": {
+    "fr": "Défense du poste",
+    "en": "Post defense"
+  },
+  "rotations": {
+    "fr": "Rotations défensives",
+    "en": "Defensive rotations"
+  },
+  "surnombre": {
+    "fr": "Surnombre",
+    "en": "Advantage drills"
+  },
+  "defense-individuelle": {
+    "fr": "Défense individuelle",
+    "en": "On-ball defense"
+  },
+  "rebond": {
+    "fr": "Rebond",
+    "en": "Rebounding"
+  },
+  "principes-transition": {
+    "fr": "Principes de transition",
+    "en": "Transition principles"
+  },
+  "attaque-match-up": {
+    "fr": "Contre la match-up",
+    "en": "Vs match-up"
+  },
+  "fin-de-match-defense": {
+    "fr": "Défense de fin de match",
+    "en": "Late-game defense"
+  },
+  "jeux-jeunes": {
+    "fr": "Jeux pour les jeunes",
+    "en": "Youth games"
+  },
+  "physique": {
+    "fr": "Préparation physique",
+    "en": "Conditioning"
+  },
+  "seance-pro": {
+    "fr": "Séance pro",
+    "en": "Pro practice"
+  },
+  "attaque-defenses-mixtes": {
+    "fr": "Contre les défenses mixtes",
+    "en": "Vs junk defenses"
+  },
+  "transition-exercices": {
+    "fr": "Exercices de transition",
+    "en": "Transition drills"
+  }
+}
