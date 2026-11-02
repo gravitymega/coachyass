@@ -7,7 +7,7 @@ import {
 } from './common.js';
 import {
   sampleTimes, trackTimes, frameArgs, createStreamReader, isNetworkError, NETWORK_HINT, thinFrames, waitLabel, reportText, SECTIONS, fmtTime,
-  buildBeats, placeVoice, concatList, buildTacticArgs,
+  buildBeats, placeVoice, concatList, buildTacticArgs, keepInSequence,
 } from './analyse-core.js';
 import { boardFrames, normalizeTrack } from './board-core.js';
 import { drawBoard } from './board.js';
@@ -210,6 +210,7 @@ async function analyseYoutube() {
   state.analysis = await askCoach({
     youtube: state.youtube.url, team: $('team').value.trim(), context: $('context').value.trim(), start, dur,
   }, undefined, (n, sec) => setProgress('analyse-progress', 0.1 + Math.min(0.85, (n ? n / 9000 : sec / 150) * 0.85), `L'IA regarde la vidéo… ${waitLabel(n, sec)}`));
+  state.analysis = keepInSequence(state.analysis, start, dur);
   renderReport();
   setProgress('analyse-progress', 1, 'Analyse prête · vidéo YouTube regardée par l\'IA');
 }
@@ -257,6 +258,7 @@ $('btn-analyse').onclick = async () => {
       frames, team: $('team').value.trim(), context: $('context').value.trim(), start, dur,
     }, undefined, (n, sec) => setProgress('analyse-progress', 0.32 + Math.min(end - 0.33, (n ? n / 9000 : sec / 120) * (end - 0.33)), `L'IA analyse le jeu… ${waitLabel(n, sec)}`),
     p => ({ ...p, frames: thinFrames(p.frames, 14) }));
+    state.analysis = keepInSequence(state.analysis, start, dur);
     if (track) await trackMoments(ff, (r, label) => setProgress('analyse-progress', end + (0.99 - end) * r, label));
     renderReport();
     const tracked = state.analysis.moments.filter(m => m.track).length;
@@ -455,6 +457,8 @@ $('btn-render').onclick = async () => {
   showError('');
   $('result').hidden = true;
   const ff0 = [];
+  // Écran gardé allumé : sur téléphone, la mise en veille arrête la voix et le montage.
+  const release = await keepAwake();
   try {
     // 1. Voix off, phrase par phrase : sa durée fixe la longueur de chaque ralenti.
     const clips = [];
@@ -532,6 +536,7 @@ $('btn-render').onclick = async () => {
   } finally {
     const ff = await getFFmpeg('render-progress').catch(() => null);
     if (ff) for (const f of ff0) await ff.deleteFile(f).catch(() => {});
+    release();
     state.busy = false;
     $('btn-render').disabled = false;
   }
