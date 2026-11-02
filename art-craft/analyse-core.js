@@ -2,7 +2,7 @@
 // testable avec Node. Échantillonnage des images, lecture du flux de l'IA, rapport texte,
 // découpage en passages (actions au ralenti, jeu à vitesse normale), piste de voix off
 // et rendu ffmpeg de la vidéo commentée (vidéo en haut, tableau du coach en bas).
-import { normalizeBoard } from './board-core.js';
+import { normalizeBoard, POSITIONS } from './board-core.js';
 
 // 24 images de 640 px (~1 Mo en tout) : assez pour lire le jeu, et assez léger pour un téléphone
 // en 4G et pour le serveur gratuit (Cloudflare limite le temps de calcul par demande).
@@ -118,6 +118,9 @@ export function normalizeAnalysis(a) {
           titre: String(m.titre || '').trim(),
           explication: String(m.explication || '').trim(),
           narration: String(m.narration || m.explication || '').trim(),
+          // Mode joueur : bon coup ou coup à corriger, et le poste du joueur suivi sur le tableau.
+          verdict: m.verdict === 'bon' || m.verdict === 'mauvais' ? m.verdict : '',
+          joueur: POSITIONS.includes(m.joueur) ? m.joueur : '',
           board: normalizeBoard(m),
         };
       })
@@ -165,8 +168,25 @@ export function fmtTime(s) {
 }
 
 // Rapport écrit (texte brut, lisible partout : courriel, Notes, Word).
-export function reportText(a, { title = 'Analyse tactique', team = '', start = 0, dur = 0 } = {}) {
+export const VERDICTS = { bon: 'Bon coup', mauvais: 'À corriger' };
+
+// « Bon coup : Bonne aide » → « Bonne aide » (le verdict est déjà affiché à côté).
+export const stripVerdict = titre => {
+  const t = String(titre || '').replace(/^\s*(bon coup|à corriger|a corriger)\s*:\s*/i, '');
+  return t.charAt(0).toUpperCase() + t.slice(1);
+};
+
+// Bilan du mode joueur : « 3 bons coups · 2 à corriger ».
+export function verdictCount(moments) {
+  const bon = moments.filter(m => m.verdict === 'bon').length;
+  const mauvais = moments.filter(m => m.verdict === 'mauvais').length;
+  if (!bon && !mauvais) return '';
+  return `${bon} bon${bon > 1 ? 's' : ''} coup${bon > 1 ? 's' : ''} · ${mauvais} à corriger`;
+}
+
+export function reportText(a, { title = 'Analyse tactique', team = '', start = 0, dur = 0, numero = '' } = {}) {
   const out = [title.toUpperCase()];
+  if (numero) out.push(`Joueur analysé : numéro ${numero}${verdictCount(a.moments) ? ' · ' + verdictCount(a.moments) : ''}`);
   if (team) out.push(`Équipe analysée : ${team}`);
   if (dur) out.push(`Séquence : ${fmtTime(start)} à ${fmtTime(start + dur)}`);
   out.push('', 'RÉSUMÉ', a.resume || '—');
@@ -181,7 +201,7 @@ export function reportText(a, { title = 'Analyse tactique', team = '', start = 0
   });
   if (a.moments.length) {
     out.push('', 'MOMENTS CLÉS');
-    a.moments.forEach(m => out.push(`- ${fmtTime(m.t)} · ${m.titre}${m.explication ? ' : ' + m.explication : ''}`));
+    a.moments.forEach(m => out.push(`- ${fmtTime(m.t)} · ${m.verdict ? `[${VERDICTS[m.verdict]}] ${stripVerdict(m.titre)}` : m.titre}${m.explication ? ' : ' + m.explication : ''}`));
   }
   const voice = a.commentaire || commentaryOf(a);
   if (voice) out.push('', 'COMMENTAIRE (VOIX OFF)', voice);

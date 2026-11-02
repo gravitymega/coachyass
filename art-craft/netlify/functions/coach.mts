@@ -112,6 +112,27 @@ const ANALYSIS_SCHEMA = {
   additionalProperties: false,
 };
 
+// Mode joueur : mêmes champs, plus pour chaque moment le verdict (bon coup / à corriger)
+// et le poste occupé par le joueur suivi sur le tableau (pour surligner son pion).
+const PLAYER_SCHEMA = (() => {
+  const s = JSON.parse(JSON.stringify(ANALYSIS_SCHEMA));
+  const item = s.properties.moments.items;
+  item.properties.verdict = { type: "string", enum: ["bon", "mauvais"] };
+  item.properties.joueur = { type: "string", enum: POS };
+  item.required.push("verdict", "joueur");
+  return s;
+})();
+
+// Consigne ajoutée quand le coach demande l'analyse d'un joueur précis (numéro de maillot).
+const playerTask = (numero: string, team: string) => `ANALYSE INDIVIDUELLE : le joueur qui porte le numéro ${numero}${team ? ` (${team})` : ""}.
+- Repère-le par son numéro de maillot dans les images (dos ou devant). « moments » : 3 à 8 actions où LUI est impliqué (avec ou sans ballon, en attaque comme en défense), dans l'ordre. Garde seulement celles où tu es raisonnablement sûr que c'est bien le numéro ${numero}.
+- « verdict » : "bon" pour un bon coup (bonne décision, bon placement, bon effort), "mauvais" pour un coup à corriger. Montre les deux quand c'est visible.
+- « joueur » : le poste (PG, SG, SF, PF ou C) qu'il occupe sur le tableau de cette action. Il doit faire partie des 5 « joueurs » : si c'est un défenseur, dessine plutôt son équipe en attaque quand il attaque, sinon place-le dans « joueurs » au poste qu'il défend.
+- « titre » commence par « Bon coup : » ou « À corriger : ». « explication » : ce qu'il a fait et, pour un coup à corriger, ce qu'il aurait dû faire.
+- « narration » : parle de lui comme « le ${numero} » et nomme les autres par leur poste ; pour un coup à corriger, dis clairement la bonne option.
+- « resume » : le bilan du numéro ${numero} sur la séquence. « points_forts », « points_faibles » et « conseils » : les SIENS (conseils = exercices précis pour lui). « attaque », « defense », « transitions » : ce qu'il fait dans ces phases.
+- « intro » et « conclusion » s'adressent à lui (« le ${numero} »). S'il n'apparaît pas clairement dans les images, dis-le dans « resume » et renvoie peu de moments plutôt que d'en inventer.`;
+
 // Suivi image par image d'une action (2e passe) : positions réelles des joueurs à chaque instant.
 const TRACK_SCHEMA = {
   type: "object",
@@ -324,7 +345,7 @@ type Frame = { t: number; data: string; label?: string };
 type Body = {
   ping?: boolean; mode?: string; frames?: Frame[]; crops?: Frame[]; team?: string; context?: string;
   start?: number; dur?: number; moment?: Record<string, unknown>; roster?: unknown; player?: unknown;
-  facts?: unknown; prompt?: string; json?: boolean; youtube?: string;
+  facts?: unknown; prompt?: string; json?: boolean; youtube?: string; numero?: string | number;
 };
 
 const clip = (v: unknown, n: number) => String(v ?? "").slice(0, n);
@@ -346,6 +367,8 @@ function buildRequest(body: Body) {
   const frames = Array.isArray(body.frames) ? body.frames : [];
   const team = clip(body.team, 120);
   const context = clip(body.context, 1500);
+  // Numéro de maillot du joueur à analyser (mode joueur) : 1 à 3 chiffres.
+  const numero = /^\d{1,3}$/.test(String(body.numero ?? "").trim()) ? String(body.numero).trim() : "";
 
   if (mode === "devoirs") {
     return {
@@ -436,11 +459,11 @@ function buildRequest(body: Body) {
           : `Séquence : de ${Number(body.start || 0).toFixed(0)} s à ${(Number(body.start || 0) + Number(body.dur || 0)).toFixed(0)} s de la vidéo, ${frames.length} images.`,
         team ? `Équipe à analyser en priorité : ${team}.` : "Analyse les deux équipes.",
         context ? `Contexte donné par le coach : ${context}` : "",
-        "Fais l'analyse tactique complète, comme en séance vidéo avec l'équipe.",
+        numero ? playerTask(numero, team) : "Fais l'analyse tactique complète, comme en séance vidéo avec l'équipe.",
       ].filter(Boolean).join("\n"),
     });
   }
-  return { model: MODEL, system: SYSTEM, schema: track ? TRACK_SCHEMA : ANALYSIS_SCHEMA, maxTokens: 16000, minFrames: !track && youtubeUrl(body.youtube) ? 0 : 2, content };
+  return { model: MODEL, system: SYSTEM, schema: track ? TRACK_SCHEMA : numero ? PLAYER_SCHEMA : ANALYSIS_SCHEMA, maxTokens: 16000, minFrames: !track && youtubeUrl(body.youtube) ? 0 : 2, content };
 }
 
 // Cœur de la fonction, commun à Netlify (ci-dessous) et à Cloudflare Pages (functions/api/coach.ts).

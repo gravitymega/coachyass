@@ -7,7 +7,7 @@ import {
 } from './common.js';
 import {
   sampleTimes, trackTimes, frameArgs, createStreamReader, isNetworkError, NETWORK_HINT, thinFrames, waitLabel, reportText, SECTIONS, fmtTime,
-  buildBeats, placeVoice, concatList, buildTacticArgs, keepInSequence,
+  buildBeats, placeVoice, concatList, buildTacticArgs, keepInSequence, VERDICTS, stripVerdict, verdictCount,
 } from './analyse-core.js';
 import { boardFrames, normalizeTrack } from './board-core.js';
 import { drawBoard } from './board.js';
@@ -19,7 +19,10 @@ import { pcmToWav } from './piper-core.js';
 
 const STORE_KEY = 'artcraft-voice-password'; // nom historique (ancien Studio voix), gardé pour ne pas redemander le mot de passe
 const MOUNT = '/an';
-const state = { password: '', file: null, youtube: null, input: '', duration: 0, hasAudio: false, analysis: null, start: 0, dur: 0, busy: false };
+const state = { password: '', file: null, youtube: null, input: '', duration: 0, hasAudio: false, analysis: null, start: 0, dur: 0, busy: false, numero: '' };
+
+// Numéro de maillot du joueur à analyser (mode joueur), vide sinon.
+const numeroValue = () => { const v = $('numero').value.trim(); return /^\d{1,3}$/.test(v) ? v : ''; };
 
 // ---------- Accès ----------
 async function post(fn, payload) {
@@ -206,9 +209,10 @@ async function analyseYoutube() {
   const dur = +$('dur').value;
   state.start = start;
   state.dur = dur;
+  state.numero = numeroValue();
   setProgress('analyse-progress', 0.05, 'Envoi du lien à l\'IA… (Gemini regarde la vidéo, compte 1 à 2 minutes)');
   state.analysis = await askCoach({
-    youtube: state.youtube.url, team: $('team').value.trim(), context: $('context').value.trim(), start, dur,
+    youtube: state.youtube.url, team: $('team').value.trim(), context: $('context').value.trim(), start, dur, numero: state.numero,
   }, undefined, (n, sec) => setProgress('analyse-progress', 0.1 + Math.min(0.85, (n ? n / 9000 : sec / 150) * 0.85), `L'IA regarde la vidéo… ${waitLabel(n, sec)}`));
   state.analysis = keepInSequence(state.analysis, start, dur);
   renderReport();
@@ -246,6 +250,7 @@ $('btn-analyse').onclick = async () => {
     const dur = Math.min(+$('dur').value, (state.duration || Infinity) - start);
     state.start = start;
     state.dur = dur;
+    state.numero = numeroValue();
 
     const times = sampleTimes(start, dur);
     const frames = await grabFrames(ff, times, 640, i => setProgress('analyse-progress', (i / times.length) * 0.3, `Images clés… ${i + 1} / ${times.length}`));
@@ -255,14 +260,14 @@ $('btn-analyse').onclick = async () => {
     const track = $('track').checked;
     const end = track ? 0.6 : 0.95;
     state.analysis = await askCoach({
-      frames, team: $('team').value.trim(), context: $('context').value.trim(), start, dur,
+      frames, team: $('team').value.trim(), context: $('context').value.trim(), start, dur, numero: state.numero,
     }, undefined, (n, sec) => setProgress('analyse-progress', 0.32 + Math.min(end - 0.33, (n ? n / 9000 : sec / 120) * (end - 0.33)), `L'IA analyse le jeu… ${waitLabel(n, sec)}`),
     p => ({ ...p, frames: thinFrames(p.frames, 14) }));
     state.analysis = keepInSequence(state.analysis, start, dur);
     if (track) await trackMoments(ff, (r, label) => setProgress('analyse-progress', end + (0.99 - end) * r, label));
     renderReport();
     const tracked = state.analysis.moments.filter(m => m.track).length;
-    setProgress('analyse-progress', 1, `Analyse prête · ${frames.length} images étudiées${track ? ` · ${tracked} / ${state.analysis.moments.length} actions suivies image par image` : ''}`);
+    setProgress('analyse-progress', 1, `Analyse prête · ${frames.length} images étudiées${state.numero ? ` · n° ${state.numero} : ${verdictCount(state.analysis.moments) || 'aucune action repérée'}` : ''}${track ? ` · ${tracked} / ${state.analysis.moments.length} actions suivies image par image` : ''}`);
   } catch (err) {
     console.error(err);
     showError('Analyse impossible : ' + (err.message || err));
@@ -285,6 +290,11 @@ function renderReport() {
   const a = state.analysis;
   const box = $('report');
   box.innerHTML = '';
+  if (state.numero) {
+    const h = el('p', 'player-head');
+    h.append(el('b', '', `Joueur n° ${state.numero}`), document.createTextNode(verdictCount(a.moments) ? ' · ' + verdictCount(a.moments) : ' · aucune de ses actions repérée'));
+    box.append(h);
+  }
   box.append(el('p', 'resume', a.resume || '—'));
   if (a.systemes.length) {
     box.append(el('h3', '', 'Systèmes repérés'));
@@ -304,7 +314,7 @@ function renderReport() {
     box.append(ul);
   });
   if (a.moments.length) {
-    box.append(el('h3', '', 'Moments clés'));
+    box.append(el('h3', '', state.numero ? `Ses actions (n° ${state.numero})` : 'Moments clés'));
     const ul = el('ul', 'moments');
     a.moments.forEach(m => {
       const li = el('li');
@@ -320,7 +330,9 @@ function renderReport() {
         video.currentTime = m.t;
         video.scrollIntoView({ behavior: 'smooth', block: 'center' });
       };
-      li.append(t, ' ', el('b', '', m.titre), document.createTextNode(m.explication ? ' — ' + m.explication : ''));
+      if (m.verdict) li.append(t, ' ', el('span', 'verdict ' + m.verdict, VERDICTS[m.verdict]), ' ', el('b', '', stripVerdict(m.titre)));
+      else li.append(t, ' ', el('b', '', m.titre));
+      li.append(document.createTextNode(m.explication ? ' — ' + m.explication : ''));
       ul.append(li);
     });
     box.append(ul);
@@ -329,7 +341,7 @@ function renderReport() {
   const dl = $('btn-report-dl');
   if (dl.href) URL.revokeObjectURL(dl.href);
   dl.href = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
-  dl.download = `analyse-${slugify($('team').value, 'gravity')}-${fmtTime(state.start).replace(/:/g, 'h')}.txt`;
+  dl.download = `analyse-${state.numero ? 'joueur-' + state.numero + '-' : ''}${slugify($('team').value, 'gravity')}-${fmtTime(state.start).replace(/:/g, 'h')}.txt`;
   renderScript();
   $('step-report').hidden = false;
   // La vidéo commentée a besoin du fichier : avec un lien YouTube, seulement le rapport.
@@ -339,7 +351,7 @@ function renderReport() {
 }
 
 const currentReport = () => reportText({ ...state.analysis, commentaire: scriptTexts().filter(Boolean).join(' ') }, {
-  title: 'Analyse tactique — ' + BRAND.name, team: $('team').value.trim(), start: state.start, dur: state.dur,
+  title: (state.numero ? `Analyse du joueur n° ${state.numero} — ` : 'Analyse tactique — ') + BRAND.name, team: $('team').value.trim(), start: state.start, dur: state.dur, numero: state.numero,
 });
 
 $('btn-copy').onclick = async () => {
@@ -368,7 +380,7 @@ function renderScript() {
     box.append(l);
   };
   field('Intro (avant la première action)', a.intro);
-  a.moments.forEach((m, i) => field(`Action ${i + 1} · ${fmtTime(m.t)} · ${m.titre} (au ralenti)`, m.narration, 3));
+  a.moments.forEach((m, i) => field(`Action ${i + 1} · ${fmtTime(m.t)} · ${m.verdict ? VERDICTS[m.verdict] + ' : ' + stripVerdict(m.titre) : m.titre} (au ralenti)`, m.narration, 3));
   field('Conclusion (la leçon à retenir)', a.conclusion, 3);
   updateCount();
 }
@@ -387,6 +399,10 @@ $('audio-mode').addEventListener('change', () => { $('voice-wrap').hidden = $('a
 const BOARD_FPS = 10;
 
 // Texte et état du tableau pour chaque passage.
+// Mode joueur : son pion porte son numéro, en vert (bon coup) ou en rouge (à corriger).
+// Hors des actions (intro, jeu, conclusion), son pion reste aux couleurs Gravity.
+const focusOf = (m, withVerdict = false) => (state.numero && m && m.joueur ? { pos: m.joueur, label: state.numero, verdict: withVerdict ? m.verdict : '' } : null);
+
 function boardInfo(beat, idx, beats, u) {
   const a = state.analysis;
   const slowTxt = beat.speed < 0.999 ? `RALENTI × ${String(beat.speed).replace('.', ',')}` : 'VITESSE NORMALE';
@@ -394,16 +410,17 @@ function boardInfo(beat, idx, beats, u) {
   const n = a.moments.length;
   if (beat.kind === 'intro') {
     return {
-      tag: `Analyse tactique · ${BRAND.name}`, badge: 'AVANT L\'ACTION',
-      title: $('team').value.trim() || 'Séance vidéo', text: scriptTexts()[0] || a.resume,
-      board: m && m.board, u: 0, track: m && m.track, s: m && m.track ? m.track[0].t : null,
+      tag: state.numero ? `Analyse du joueur · ${BRAND.name}` : `Analyse tactique · ${BRAND.name}`, badge: 'AVANT L\'ACTION',
+      title: state.numero ? `Joueur n° ${state.numero}` : $('team').value.trim() || 'Séance vidéo', text: scriptTexts()[0] || a.resume,
+      board: m && m.board, u: 0, track: m && m.track, s: m && m.track ? m.track[0].t : null, focus: focusOf(m),
     };
   }
   if (beat.kind === 'action') {
     const frozen = u >= 1 && beat.freeze > 0.01;
     return {
-      tag: `Action ${beat.moment + 1} / ${n} · ${fmtTime(m.t)}`, badge: frozen ? 'IMAGE FIGÉE' : slowTxt, slow: beat.speed < 0.999,
-      title: m.titre, text: m.explication, board: m.board, u,
+      tag: `Action ${beat.moment + 1} / ${n} · ${fmtTime(m.t)}${m.verdict ? (frozen ? ' · image figée' : beat.speed < 0.999 ? ' · ralenti' : '') : ''}`,
+      badge: m.verdict ? VERDICTS[m.verdict].toUpperCase() : frozen ? 'IMAGE FIGÉE' : slowTxt, slow: beat.speed < 0.999, verdict: m.verdict,
+      title: m.verdict ? stripVerdict(m.titre) : m.titre, text: m.explication, board: m.board, u, focus: focusOf(m, true),
       // Suivi réel : l'instant de la vidéo affiché en haut, pour que les pions suivent l'image.
       track: m.track, s: beat.src[0] + Math.min(1, u) * (beat.src[1] - beat.src[0]),
     };
@@ -413,13 +430,13 @@ function boardInfo(beat, idx, beats, u) {
     const nm = next ? a.moments[next.moment] : null;
     return {
       tag: 'Jeu', badge: 'VITESSE NORMALE', title: nm ? 'Prochaine action : ' + nm.titre : 'Le jeu continue',
-      text: m ? m.explication : '', board: m && m.board, u: 1, track: m && m.track, s: m && m.track ? m.track[m.track.length - 1].t : null,
+      text: m ? m.explication : '', board: m && m.board, u: 1, track: m && m.track, s: m && m.track ? m.track[m.track.length - 1].t : null, focus: focusOf(m),
     };
   }
   return {
     tag: 'À retenir', badge: 'CONCLUSION', title: 'La leçon du coach',
     text: scriptTexts()[scriptTexts().length - 1] || a.conclusion, board: m && m.board, u: 1,
-    track: m && m.track, s: m && m.track ? m.track[m.track.length - 1].t : null,
+    track: m && m.track, s: m && m.track ? m.track[m.track.length - 1].t : null, focus: focusOf(m),
   };
 }
 
@@ -515,7 +532,7 @@ $('btn-render').onclick = async () => {
     if (code !== 0) throw new Error(errors.slice(-2).join(' · ') || `ffmpeg a échoué (code ${code})`);
     const data = await ff.readFile('/commentee.mp4');
     await ff.deleteFile('/commentee.mp4');
-    const name = `analyse-${slugify($('team').value, 'gravity')}.mp4`;
+    const name = `analyse-${state.numero ? 'joueur-' + state.numero + '-' : ''}${slugify($('team').value, 'gravity')}.mp4`;
     const url = offerFile(new Blob([data], { type: 'video/mp4' }), name, {
       download: 'btn-download', share: 'btn-share', title: 'Analyse tactique ' + BRAND.name, text: state.analysis.resume,
     });
