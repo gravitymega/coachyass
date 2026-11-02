@@ -116,5 +116,5 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 - L'utilisateur a donné en exemple un Short « Offense vs 2-3 zone » : terrain en fond, bande noire en diagonale, nom en très gros (première partie en orange, suite en blanc), nom de la chaîne en haut. On le reproduit sans reprendre ni logo ni marque.
 - `render.py` :
   - `draw_cover` dessine le parquet et le placement de départ, le bandeau rouge avec le nom de la chaîne, puis la bande noire inclinée avec le nom de la fiche. `split_title` coupe le nom sur « : », « contre » ou au milieu.
-  - La couverture sert à trois choses : la miniature PNG de chaque format, les 0,7 premières seconde de chaque vidéo (`COVER`, la voix et le rythme sont décalés d'autant) et l'image de couverture du MP4 (flux PNG `attached_pic`).
+  - La couverture sert à trois choses : la miniature PNG de chaque format, les 3 premières secondes de chaque vidéo (`COVER`, 3 s à la demande de l'utilisateur, la voix et le rythme sont décalés d'autant) et l'image de couverture du MP4 (flux PNG `attached_pic`).
 - Le workflow des vidéos dépose aussi les PNG dans les releases, et la page `#videos` affiche la miniature verticale de chaque fiche (cachée si elle n'existe pas encore).

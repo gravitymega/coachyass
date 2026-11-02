@@ -860,7 +860,7 @@ def beat_track(duration, path, bpm=100, rate=22050):
         w.writeframes(buf.tobytes())
 
 
-COVER = 0.7  # secondes de couverture au début de chaque vidéo (YouTube, Reels et TikTok la proposent comme miniature)
+COVER = 3.0  # secondes de couverture au début de chaque vidéo (YouTube, Reels et TikTok la proposent comme miniature)
 RED_BAND = (0.70, 0.10, 0.12)
 
 
