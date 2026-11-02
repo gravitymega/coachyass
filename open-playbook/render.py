@@ -679,8 +679,7 @@ class NeonBoard:
         for pid, p in sorted(pos.items(), key=lambda kv: kv[1][1]):
             d = pid.startswith("x")
             color = PINK if d else LIME
-            self.ring(cr, p, 2.9 + 0.3 * pulse, color if d else WHITE, 2.4)
-            self.ring(cr, p, 1.9, color, 3.4)
+            # Plus d’anneaux lumineux au sol sous les pions (demande du 2 nov. 2026).
             sc = self.scale(p[1])
             fx, fy = self.pt(p)
             hx, hy = self.pt(p, 4.6)
