@@ -1,0 +1,98 @@
+{
+  "_note": "Équipes NBA connues pour avoir utilisé le système (exemples documentés, pas une liste complète). Noms d'équipes en texte seulement : aucun logo. À relire comme les fiches.",
+  "teams": {
+    "pick-and-roll-central": [
+      { "team": "Utah Jazz", "when": { "fr": "années 1990, John Stockton et Karl Malone", "en": "1990s, John Stockton and Karl Malone" } },
+      { "team": "Phoenix Suns", "when": { "fr": "2004-2010, Steve Nash", "en": "2004-2010, Steve Nash" } }
+    ],
+    "side-pick-and-roll": [
+      { "team": "Utah Jazz", "when": { "fr": "années 1990, John Stockton et Karl Malone", "en": "1990s, John Stockton and Karl Malone" } }
+    ],
+    "spain-pick-and-roll": [
+      { "team": "Brooklyn Nets", "when": { "fr": "2018-2019, Kenny Atkinson", "en": "2018-2019, Kenny Atkinson" } }
+    ],
+    "pick-and-pop": [
+      { "team": "Dallas Mavericks", "when": { "fr": "années 2000 et 2010, Dirk Nowitzki", "en": "2000s and 2010s, Dirk Nowitzki" } }
+    ],
+    "short-roll": [
+      { "team": "Golden State Warriors", "when": { "fr": "depuis 2015, Draymond Green sur les prises à deux de Stephen Curry", "en": "since 2015, Draymond Green against traps on Stephen Curry" } }
+    ],
+    "inverted-pick-and-roll": [
+      { "team": "Golden State Warriors", "when": { "fr": "Stephen Curry pose l'écran pour Draymond Green", "en": "Stephen Curry screens for Draymond Green" } }
+    ],
+    "ghost-screen": [
+      { "team": "Golden State Warriors", "when": { "fr": "ère Steve Kerr, Stephen Curry", "en": "Steve Kerr era, Stephen Curry" } }
+    ],
+    "snake-dribble": [
+      { "team": "LA Clippers", "when": { "fr": "2011-2017, Chris Paul", "en": "2011-2017, Chris Paul" } }
+    ],
+    "chicago": [
+      { "team": "Chicago Bulls", "when": { "fr": "2015-2018, Fred Hoiberg (d'où le nom)", "en": "2015-2018, Fred Hoiberg (hence the name)" } }
+    ],
+    "elevator": [
+      { "team": "Golden State Warriors", "when": { "fr": "pour Stephen Curry et Klay Thompson", "en": "for Stephen Curry and Klay Thompson" } }
+    ],
+    "floppy": [
+      { "team": "Detroit Pistons", "when": { "fr": "années 2000, Richard Hamilton", "en": "2000s, Richard Hamilton" } }
+    ],
+    "hammer": [
+      { "team": "San Antonio Spurs", "when": { "fr": "années 2010, Gregg Popovich", "en": "2010s, Gregg Popovich" } }
+    ],
+    "flex": [
+      { "team": "Utah Jazz", "when": { "fr": "1988-2011, Jerry Sloan", "en": "1988-2011, Jerry Sloan" } }
+    ],
+    "princeton-backdoor": [
+      { "team": "Sacramento Kings", "when": { "fr": "1998-2006, Rick Adelman", "en": "1998-2006, Rick Adelman" } },
+      { "team": "Washington Wizards", "when": { "fr": "2003-2008, Eddie Jordan", "en": "2003-2008, Eddie Jordan" } }
+    ],
+    "princeton-chin": [
+      { "team": "Sacramento Kings", "when": { "fr": "1998-2006, Rick Adelman", "en": "1998-2006, Rick Adelman" } },
+      { "team": "Washington Wizards", "when": { "fr": "2003-2008, Eddie Jordan", "en": "2003-2008, Eddie Jordan" } }
+    ],
+    "triangle-offense-sideline-triangle": [
+      { "team": "Chicago Bulls", "when": { "fr": "années 1990, Phil Jackson", "en": "1990s, Phil Jackson" } },
+      { "team": "Los Angeles Lakers", "when": { "fr": "1999-2011, Phil Jackson", "en": "1999-2011, Phil Jackson" } }
+    ],
+    "5-out-motion": [
+      { "team": "Golden State Warriors", "when": { "fr": "ère Steve Kerr", "en": "Steve Kerr era" } },
+      { "team": "Boston Celtics", "when": { "fr": "depuis 2023, Joe Mazzulla", "en": "since 2023, Joe Mazzulla" } }
+    ],
+    "spacing-5-out": [
+      { "team": "Boston Celtics", "when": { "fr": "depuis 2023, Joe Mazzulla", "en": "since 2023, Joe Mazzulla" } }
+    ],
+    "top-isolation": [
+      { "team": "Houston Rockets", "when": { "fr": "2016-2020, James Harden et Mike D'Antoni", "en": "2016-2020, James Harden and Mike D'Antoni" } }
+    ],
+    "transition-rules": [
+      { "team": "Phoenix Suns", "when": { "fr": "2004-2008, « sept secondes ou moins » de Mike D'Antoni", "en": "2004-2008, Mike D'Antoni's \"seven seconds or less\"" } }
+    ],
+    "early-side-pick-and-roll": [
+      { "team": "Phoenix Suns", "when": { "fr": "2004-2008, Steve Nash et Amar'e Stoudemire", "en": "2004-2008, Steve Nash and Amar'e Stoudemire" } }
+    ],
+    "ice": [
+      { "team": "Boston Celtics", "when": { "fr": "2007-2010, Tom Thibodeau assistant", "en": "2007-2010, Tom Thibodeau as assistant" } },
+      { "team": "Chicago Bulls", "when": { "fr": "2010-2015, Tom Thibodeau", "en": "2010-2015, Tom Thibodeau" } }
+    ],
+    "blitz": [
+      { "team": "Miami Heat", "when": { "fr": "2010-2014, Erik Spoelstra", "en": "2010-2014, Erik Spoelstra" } }
+    ],
+    "drop-coverage": [
+      { "team": "Milwaukee Bucks", "when": { "fr": "2018-2023, Mike Budenholzer et Brook Lopez", "en": "2018-2023, Mike Budenholzer and Brook Lopez" } }
+    ],
+    "switch": [
+      { "team": "Golden State Warriors", "when": { "fr": "2015-2019", "en": "2015-2019" } },
+      { "team": "Houston Rockets", "when": { "fr": "2017-2019, Mike D'Antoni", "en": "2017-2019, Mike D'Antoni" } }
+    ],
+    "switch-everything": [
+      { "team": "Golden State Warriors", "when": { "fr": "2015-2019", "en": "2015-2019" } },
+      { "team": "Houston Rockets", "when": { "fr": "2017-2019, Mike D'Antoni", "en": "2017-2019, Mike D'Antoni" } }
+    ],
+    "2-3-zone": [
+      { "team": "Dallas Mavericks", "when": { "fr": "finale 2011, Rick Carlisle", "en": "2011 Finals, Rick Carlisle" } },
+      { "team": "Miami Heat", "when": { "fr": "2020, Erik Spoelstra", "en": "2020, Erik Spoelstra" } }
+    ],
+    "box-and-1": [
+      { "team": "Toronto Raptors", "when": { "fr": "finale 2019 contre Stephen Curry, Nick Nurse", "en": "2019 Finals against Stephen Curry, Nick Nurse" } }
+    ]
+  }
+}

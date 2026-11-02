@@ -2,7 +2,7 @@
   "name": "open-playbook",
   "private": true,
   "version": "0.1.0",
-  "description": "Playbook Ouvert / Open Playbook : biblioth\u00e8que libre de tactiques de basket (FR/EN)",
+  "description": "Playbook Ouvert / Open Playbook : bibliothèque libre de tactiques de basket (FR/EN)",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -12,7 +12,9 @@
     "validate": "tsx scripts/validate.ts",
     "progress": "tsx scripts/progress.ts",
     "build:single": "node scripts/single.mjs",
-    "videos": "python3 render.py --all"
+    "videos": "python3 render.py --all",
+    "audio:jobs": "tsx scripts/narration-jobs.ts",
+    "audio": "tsx scripts/narration-jobs.ts && python3 scripts/tts.py"
   },
   "devDependencies": {
     "@fontsource/barlow": "^5.3.0",

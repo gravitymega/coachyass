@@ -12,6 +12,7 @@ Usage :
     python3 render.py horns-flare zipper              # plusieurs fiches
     python3 render.py --all                           # toutes les fiches (npm run videos)
     python3 render.py --all --formats vertical        # un seul format
+    python3 render.py --all --shard 2/8               # une part sur 8 (rendu en parallèle)
     python3 render.py horns-flare --channel "Ma chaîne"  # nom affiché en bas (ou OP_CHANNEL=...)
 
 Timeline (identique au site, lue dans data/timeline.json) :
@@ -484,6 +485,7 @@ def main():
     ap.add_argument("--out", default="videos", help="dossier de sortie")
     ap.add_argument("--formats", default="vertical,square,horizontal", help="formats séparés par des virgules")
     ap.add_argument("--channel", default=CHANNEL, help="nom de la chaîne affiché en bas des vidéos")
+    ap.add_argument("--shard", default="1/1", help="i/n : ne génère qu'une part des fiches (rendu en parallèle)")
     args = ap.parse_args()
     CHANNEL = args.channel
     formats = [f.strip() for f in args.formats.split(",") if f.strip()]
@@ -500,6 +502,8 @@ def main():
         if unknown or not args.ids:
             sys.exit(f"Fiche inconnue : {', '.join(unknown)}" if unknown else "Donne un id de fiche ou --all.")
         todo = [by_id[i] for i in args.ids]
+    si, sn = (int(x) for x in args.shard.split("/"))
+    todo = todo[si - 1 :: sn]
     out_dir = (ROOT / args.out) if not Path(args.out).is_absolute() else Path(args.out)
     for n, t in enumerate(todo, 1):
         if not t.get("steps"):

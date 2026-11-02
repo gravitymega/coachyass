@@ -1,0 +1,70 @@
+# Open Playbook : vidéos MP4 de toutes les fiches animées, publiées en « releases » GitHub (gratuit).
+# Une release par format : op-videos-vertical, op-videos-square, op-videos-horizontal.
+# Le site (page « Vidéos » et chaque fiche) pointe vers ces fichiers.
+# À relancer à la main (Actions → Open Playbook · vidéos → Run workflow) après un lot de nouvelles fiches.
+name: Open Playbook · vidéos
+
+on:
+  workflow_dispatch:
+    inputs:
+      formats:
+        description: "Formats (vertical, square, horizontal)"
+        default: "vertical,square,horizontal"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: open-playbook-videos
+  cancel-in-progress: false
+
+jobs:
+  releases:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Créer les releases si besoin
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          for f in vertical square horizontal; do
+            gh release view "op-videos-$f" -R "$REPO" >/dev/null 2>&1 || \
+              gh release create "op-videos-$f" -R "$REPO" --target main --latest=false \
+                --title "Open Playbook · vidéos ($f)" \
+                --notes "Vidéos MP4 des fiches animées du Playbook Ouvert, format $f. Contenu sous licence CC BY 4.0. Liste et recherche : https://gravitymega.github.io/coachyass/#videos"
+          done
+
+  render:
+    needs: releases
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        format: [vertical, square, horizontal]
+        shard: [1, 2, 3, 4, 5, 6, 7, 8]
+    defaults:
+      run:
+        working-directory: open-playbook
+    steps:
+      - name: Format demandé ?
+        id: want
+        working-directory: .
+        run: echo "go=${{ contains(github.event.inputs.formats || 'vertical,square,horizontal', matrix.format) }}" >> "$GITHUB_OUTPUT"
+      - if: steps.want.outputs.go == 'true'
+        uses: actions/checkout@v4
+      - if: steps.want.outputs.go == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: open-playbook/package-lock.json
+      - if: steps.want.outputs.go == 'true'
+        run: npm ci && sudo apt-get update -qq && sudo apt-get install -y -qq python3-cairo ffmpeg
+      - if: steps.want.outputs.go == 'true'
+        run: /usr/bin/python3 render.py --all --formats ${{ matrix.format }} --shard ${{ matrix.shard }}/8 --out out
+      - if: steps.want.outputs.go == 'true'
+        name: Envoyer dans la release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "op-videos-${{ matrix.format }}" out/*/*-${{ matrix.format }}.mp4 --clobber -R "${{ github.repository }}"
