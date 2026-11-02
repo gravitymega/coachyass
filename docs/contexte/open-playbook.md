@@ -45,3 +45,11 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 - `data/families.json` : noms FR/EN des familles, hors du format des fiches.
 - `npm run build:single` crée `dist-single/index.html`, une page unique qui sert d'aperçu (publiée en Artifact privé : https://claude.ai/artifact/5YdHxgyQHSmdJazLqoMMGv).
 - `.github/workflows/open-playbook.yml` : validation et build sur chaque PR, publication sur GitHub Pages après fusion dans `main`. L'utilisateur doit activer une fois Settings → Pages → Source « GitHub Actions ». Adresse prévue : https://gravitymega.github.io/coachyass/
+
+## Phases 3, 4, 6, plans et 3D (2 nov. 2026)
+
+- **Plans de séance** : migration `scripts/migrate-plans.ts` (`plan` → `plans`, avec `id` et `level` : general, jeunes, amateurs, pro, pre-saison, veille-de-match). 6 plans ; routes `#plans` et `#plan-<id>`.
+- **Vue 3D** : `src/board3d.ts` (three.js 0.170, chargé à la demande). Le sol est le SVG du terrain et des flèches de l'étape ; elle suit la même animation que le SVG grâce à `Board.subscribe`. Bouton « Vue 3D », préférence `op-view3d`.
+- **Éditeur** `#editeur` : `src/editor.ts`, avec un brouillon dans `localStorage` (`op-editor-draft`). Les règles sont communes au validateur et à l'éditeur dans `src/checks.ts`. L'export est bloqué tant qu'il reste des erreurs. Le bouton « Télécharger » ne marche pas dans l'aperçu Artifact (« Copier le JSON » oui).
+- **Vidéos** : `render.py` produit, dans `videos/<id>/`, les formats vertical, square et horizontal, avec une miniature PNG par vidéo et `<id>-voix.txt`. Le nom de la chaîne se règle avec `--channel` ou `OP_CHANNEL`. `npm run videos` traite toutes les fiches.
+- **Publication** : `LICENSE` (MIT), `LICENSE-CONTENT.md` (CC BY 4.0), `README.md` et `CONTRIBUTING.md` en FR/EN, `.github/ISSUE_TEMPLATE/proposer-une-tactique.yml`.
