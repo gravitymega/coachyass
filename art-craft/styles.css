@@ -227,8 +227,8 @@ textarea { width: 100%; background: #0f0d15; color: var(--text); border: 1px sol
 .report li { margin: 3px 0; }
 .report .moments { list-style: none; padding-left: 0; }
 .report .moments .tool { margin-right: 6px; }
-#step-video label:not(.inline):not(.drop), #step-voice label:not(.inline) { display: block; margin-top: 10px; color: var(--muted); font-size: 14px; }
-#step-video label input, #step-video label textarea, #step-voice label textarea { display: block; width: 100%; margin-top: 4px; }
+#step-video label:not(.inline):not(.drop):not(.check), #step-voice label:not(.inline) { display: block; margin-top: 10px; color: var(--muted); font-size: 14px; }
+#step-video label:not(.drop):not(.check) input, #step-video label textarea, #step-voice label textarea { display: block; width: 100%; margin-top: 4px; }
 @media print {
   body { background: #fff; color: #000; }
   .top, .tabs, .foot, #step-login, #step-video, #step-voice, #step-report .row, .error { display: none !important; }
@@ -328,3 +328,6 @@ fieldset .inline { flex-wrap: wrap; }
 #result-video { display: block; width: 100%; max-height: 70vh; background: #000; border-radius: 12px; }
 #step-idea textarea, #step-generate textarea { display: block; margin-top: 4px; }
 @media (max-width: 600px) { #step-idea .fields.two { grid-template-columns: 1fr; } }
+
+#step-video label.check { display: flex; gap: 8px; align-items: flex-start; margin-top: 12px; color: var(--muted); font-size: 14px; }
+#step-video label.check input { flex: 0 0 auto; width: 18px; height: 18px; margin-top: 1px; }

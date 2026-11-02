@@ -126,6 +126,24 @@ export function normalizeAnalysis(a) {
   };
 }
 
+// Garde seulement les moments clés qui tombent dans la séquence analysée (l'IA en invente
+// parfois un hors séquence : il s'affichait dans le rapport, partait au suivi pour rien et sa
+// voix off était générée sans jamais être montée). Si l'IA a compté les instants depuis le
+// début de la séquence au lieu du début de la vidéo (ça arrive avec un lien YouTube), on décale.
+export function keepInSequence(a, start, dur, margin = 1) {
+  const end = start + dur;
+  const inside = m => m.t >= start - margin && m.t <= end + margin;
+  let moments = a.moments;
+  if (start > 0 && moments.length && !moments.some(inside) && moments.every(m => m.t >= 0 && m.t <= dur + margin)) {
+    moments = moments.map(m => ({ ...m, t: m.t + start, debut: m.debut + start, fin: m.fin + start }));
+  }
+  moments = moments.filter(inside).map(m => {
+    const t = Math.min(end, Math.max(start, m.t));
+    return { ...m, t, debut: Math.max(start, Math.min(m.debut, t)), fin: Math.min(end, Math.max(m.fin, t)) };
+  }).sort((x, y) => x.t - y.t);
+  return { ...a, moments };
+}
+
 // Texte complet de la voix off (pour le rapport).
 export function commentaryOf(a) {
   return [a.intro, ...a.moments.map(m => m.narration), a.conclusion].filter(Boolean).join(' ');
