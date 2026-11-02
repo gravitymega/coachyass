@@ -104,12 +104,43 @@ async function geminiCall(key: string, model: string, request: FreeRequest, with
   return { text, model };
 }
 
-export async function askGemini(key: string, request: FreeRequest) {
-  const model = request.live ? GEMINI_LIVE_MODEL : GEMINI_MODEL;
+// Gemini surchargé (503, « model overloaded ») : ça arrive souvent aux heures de pointe et ça passe
+// en quelques secondes. On réessaie le même modèle après une courte pause, puis un 2e modèle Gemini
+// gratuit (Flash-Lite, qui lit aussi les vidéos YouTube), avant de passer aux autres IA.
+export const GEMINI_FALLBACK_MODELS = ["gemini-3.1-flash-lite"];
+export const GEMINI_RETRY_WAITS_MS = [2500, 6000];
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+async function geminiOnce(key: string, model: string, request: FreeRequest) {
   // Schéma refusé (trop complexe pour Gemini) : on le donne dans la consigne à la place.
   const out = (await geminiCall(key, model, request, true)) ?? (await geminiCall(key, model, request, false));
   if (!out) throw new AiError("Réponse vide de Gemini", { retry: true });
   return out;
+}
+
+export async function askGemini(key: string, request: FreeRequest, { waits = GEMINI_RETRY_WAITS_MS } = {}) {
+  const models = request.live ? [GEMINI_LIVE_MODEL] : [GEMINI_MODEL, ...GEMINI_FALLBACK_MODELS];
+  let last: unknown;
+  for (let m = 0; m < models.length; m++) {
+    // Le modèle principal a droit à des nouveaux essais ; le modèle de secours, à un seul.
+    const tries = m === 0 && !request.live ? waits.length + 1 : 1; // commentaire en direct : pas le temps d'attendre
+    for (let i = 0; i < tries; i++) {
+      try {
+        return await geminiOnce(key, models[m], request);
+      } catch (err) {
+        last = err;
+        const status = err instanceof AiError ? err.status : 0;
+        // Seule une surcharge (5xx) vaut un nouvel essai : quota épuisé ou requête refusée, non.
+        if (status < 500) throw err;
+        if (i < tries - 1) await sleep(waits[i]);
+      }
+    }
+  }
+  if (last instanceof AiError) {
+    last.message = "Gemini est surchargé en ce moment (erreur 503 de Google), même après plusieurs essais. Réessaie dans quelques minutes"
+      + (hasYoutube(request) ? ", ou dépose le fichier vidéo : d'autres IA gratuites prennent alors le relais." : ".");
+  }
+  throw last;
 }
 
 // Garde-fou « aucun frais » : un modèle OpenRouter payant ne doit jamais être appelé.
