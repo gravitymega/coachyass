@@ -1,5 +1,5 @@
 // Règles de validation d'une fiche, communes à `npm run validate` et à l'éditeur du site.
-import { COURT, PLAYER_IDS, SYSTEM_CATS, frames, isDefender, type PlayerId, type Point, type Tactic } from "./engine";
+import { COURT, PLAYER_IDS, SYSTEM_CATS, boundsOf, frames, isDefender, type PlayerId, type Point, type Tactic } from "./engine";
 
 /** Distance minimale entre deux joueurs (pieds). */
 export const MIN_GAP = 1;
@@ -9,17 +9,16 @@ export interface CheckResult {
   warnings: string[];
 }
 
-export const inBounds = ([x, y]: Point) =>
-  x >= COURT.bounds.xMin && x <= COURT.bounds.xMax && y >= COURT.bounds.yMin && y <= COURT.bounds.yMax;
+export const inBounds = ([x, y]: Point, b: typeof COURT.bounds = COURT.bounds) => x >= b.xMin && x <= b.xMax && y >= b.yMin && y <= b.yMax;
 
 const fmt = (n: number) => String(Math.round(n * 100) / 100);
 
-function checkPositions(r: CheckResult, where: string, pos: Partial<Record<PlayerId, Point>>, moved?: Set<string>) {
+function checkPositions(r: CheckResult, where: string, pos: Partial<Record<PlayerId, Point>>, moved: Set<string> | undefined, bounds: typeof COURT.bounds) {
   const ids = Object.keys(pos) as PlayerId[];
   // Hors terrain : signalé seulement à l'étape où le joueur y va.
   for (const id of ids.filter((i) => !moved || moved.has(i))) {
     const p = pos[id]!;
-    if (!inBounds(p)) r.errors.push(`${where} › ${id} : hors terrain (x = ${fmt(p[0])}, y = ${fmt(p[1])})`);
+    if (!inBounds(p, bounds)) r.errors.push(`${where} › ${id} : hors terrain (x = ${fmt(p[0])}, y = ${fmt(p[1])})`);
   }
   // Même endroit : signalé seulement quand l'un des deux vient de bouger (ou au départ).
   for (let i = 0; i < ids.length; i++) {
@@ -66,7 +65,7 @@ export function checkTactic(t: Tactic, cats: Set<string>, r: CheckResult = { err
   const s = t.start;
   if (s.b !== undefined && !s[s.b as PlayerId]) err(id, `le porteur du ballon « ${s.b} » n'est pas sur le terrain`);
   if (SYSTEM_CATS.includes(t.cat) && t.steps.length < 2) err(id, `un système doit avoir au moins 2 étapes (${t.steps.length})`);
-  checkPositions(r, `${id} › départ`, Object.fromEntries(PLAYER_IDS.filter((p) => s[p]).map((p) => [p, s[p]])));
+  checkPositions(r, `${id} › départ`, Object.fromEntries(PLAYER_IDS.filter((p) => s[p]).map((p) => [p, s[p]])), undefined, boundsOf(t));
 
   const states = frames(t);
   t.steps.forEach((step, k) => {
@@ -84,7 +83,7 @@ export function checkTactic(t: Tactic, cats: Set<string>, r: CheckResult = { err
       else if (!before.ball) err(where, "passe sans porteur du ballon (ajoute « b » au départ)");
       else if (before.ball === step.p) err(where, `${step.p} se passe le ballon à lui-même`);
     }
-    checkPositions(r, where, states[k + 1].pos, new Set(Object.keys(step.m ?? {})));
+    checkPositions(r, where, states[k + 1].pos, new Set(Object.keys(step.m ?? {})), boundsOf(t));
   });
   return r;
 }

@@ -12,6 +12,7 @@
     "family": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
     "lvl": { "type": "integer", "minimum": 1, "maximum": 3 },
     "review": { "enum": ["pending", "approved"] },
+    "court": { "enum": ["full"], "description": "Terrain entier : y de 0 à 94, ligne médiane en y = 47, second panier en (25, 88.75). Absent : demi-terrain." },
     "name": { "$ref": "#/definitions/text" },
     "sum": { "$ref": "#/definitions/text" },
     "why": { "$ref": "#/definitions/text" },

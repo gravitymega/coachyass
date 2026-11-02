@@ -10,11 +10,11 @@ import {
   type Point,
   type StepTiming,
   type Tactic,
+  viewOf,
 } from "./engine";
 
 const NS = "http://www.w3.org/2000/svg";
 const INK = "#1b2333";
-const VIEW = { x: -3, y: -4, w: 56, h: 52 };
 
 export function el<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string, string | number> = {}, parent?: Element) {
   const node = document.createElementNS(NS, tag);
@@ -29,11 +29,23 @@ const arc = (cx: number, cy: number, r: number, a0: number, a1: number) => {
   return `M ${p(a0)} A ${r} ${r} 0 ${large} 1 ${p(a1)}`;
 };
 
-/** Demi-terrain en pieds : ligne de fond en haut, panier en (25, 5.25). */
-export function drawCourt(svg: SVGSVGElement) {
+/** Demi-terrain en pieds : ligne de fond en haut, panier en (25, 5.25). Avec full, le terrain entier (jusqu'à y = 94). */
+export function drawCourt(svg: SVGSVGElement, full = false) {
+  const VIEW = viewOf({ court: full ? "full" : undefined });
   const g = el("g", { "aria-hidden": "true" }, svg);
   el("rect", { x: VIEW.x, y: VIEW.y, width: VIEW.w, height: VIEW.h, rx: 1.2, fill: COLORS.court }, g);
   for (let x = VIEW.x + 1; x < VIEW.x + VIEW.w; x += 4) el("rect", { x, y: VIEW.y, width: 2, height: VIEW.h, fill: COLORS.plank }, g);
+  const halves = full ? [el("g", {}, g), el("g", { transform: "translate(0 94) scale(1 -1)" }, g)] : [g];
+  for (const h of halves) half(h);
+  if (full) {
+    const lines = el("g", { fill: "none", stroke: INK, "stroke-width": 0.18 }, g);
+    el("rect", { x: 0, y: 0, width: 50, height: 94 }, lines);
+    el("line", { x1: 0, y1: 47, x2: 50, y2: 47 }, lines);
+  }
+}
+
+/** Une moitié de terrain (panier en haut). */
+function half(g: SVGGElement) {
   el("rect", { x: 17, y: 0, width: 16, height: 19, fill: COLORS.paint, "fill-opacity": 0.55 }, g);
   const lines = el("g", { fill: "none", stroke: INK, "stroke-width": 0.18, "stroke-linejoin": "round" }, g);
   el("rect", { x: 0, y: 0, width: 50, height: 47 }, lines);
@@ -108,9 +120,10 @@ export class Board {
   private last3d: Parameters<FrameListener> | null = null;
 
   constructor(parent: HTMLElement, private tactic: Tactic, private events: BoardEvents = {}, label = "") {
-    this.svg = el("svg", { viewBox: `${VIEW.x} ${VIEW.y} ${VIEW.w} ${VIEW.h}`, role: "img", "aria-label": label, class: "board" }) as SVGSVGElement;
+    const VIEW = viewOf(tactic);
+    this.svg = el("svg", { viewBox: `${VIEW.x} ${VIEW.y} ${VIEW.w} ${VIEW.h}`, role: "img", "aria-label": label, class: `board${tactic.court === "full" ? " board-full" : ""}` }) as SVGSVGElement;
     parent.appendChild(this.svg);
-    drawCourt(this.svg);
+    drawCourt(this.svg, tactic.court === "full");
     this.arrows = el("g", {}, this.svg);
     this.states = frames(tactic);
     this.timing = stepTimings(tactic.steps ?? []);
@@ -152,8 +165,13 @@ export class Board {
     clone.querySelector(".players")?.remove();
     clone.setAttribute("xmlns", NS);
     clone.setAttribute("width", "2240");
-    clone.setAttribute("height", "2080");
+    clone.setAttribute("height", String(Math.round((2240 * viewOf(this.tactic).h) / 56)));
     return new XMLSerializer().serializeToString(clone);
+  }
+
+  /** Terrain entier ? */
+  get full() {
+    return this.tactic.court === "full";
   }
 
   get stepCount() {

@@ -149,73 +149,109 @@ def snapshot(t, timings, states, time):
 
 # ---------------------------------------------------------------- dessin ---
 class Board:
-    """Demi-terrain : x de -3 à 53, y de -5 à 47 (pieds), ligne de fond en haut."""
+    """Demi-terrain : x de -3 à 53, y de -5 à 47 (pieds), ligne de fond en haut.
+    full : terrain entier (y jusqu'à 99). horizontal : terrain couché, la première ligne de fond à gauche."""
 
-    X0, Y0, FW, FH = -3.0, -5.0, 56.0, 52.0
+    X0, Y0, FW = -3.0, -5.0, 56.0
 
-    def __init__(self, x, y, w):
-        self.x, self.y, self.s = x, y, w / self.FW
-        self.w, self.h = w, self.FH * self.s
+    def __init__(self, x, y, w, full=False, horizontal=False):
+        self.full, self.horizontal = full, horizontal
+        self.FH = 104.0 if full else 52.0
+        self.x, self.y = x, y
+        # w : largeur à l'écran (la longueur du terrain si horizontal).
+        self.s = w / (self.FH if horizontal else self.FW)
+        self.w0, self.h0 = self.FW * self.s, self.FH * self.s  # taille avant rotation
+        self.w, self.h = (self.h0, self.w0) if horizontal else (self.w0, self.h0)
 
-    def pt(self, p):
+    def pt0(self, p):
         return (self.x + (p[0] - self.X0) * self.s, self.y + (p[1] - self.Y0) * self.s)
 
+    def pt(self, p):
+        x, y = self.pt0(p)
+        if not self.horizontal:
+            return (x, y)
+        return (self.x + (y - self.y), self.y + self.w0 - (x - self.x))
+
     def court(self, cr):
-        s = self.s
         cr.save()
-        rounded(cr, self.x, self.y, self.w, self.h, 28)
+        if self.horizontal:  # le terrain est dessiné dans son repère, puis tourné d'un quart de tour
+            cr.translate(self.x, self.y + self.w0)
+            cr.rotate(-math.pi / 2)
+            cr.translate(-self.x, -self.y)
+        self.court_upright(cr)
+        cr.restore()
+
+    def court_upright(self, cr):
+        s = self.s
+        pt = self.pt0
+        cr.save()
+        rounded(cr, self.x, self.y, self.w0, self.h0, 28)
         cr.clip_preserve()
         cr.set_source_rgb(*BOARD)
         cr.fill()
-        x0, y0 = self.pt((0, 0))
+        x0, y0 = pt((0, 0))
         cr.set_source_rgb(*PLANK)  # lattes du parquet, une sur deux
         for i in range(-2, 28, 2):
-            cr.rectangle(x0 + i * 2 * s, self.y, 2 * s, self.h)
+            cr.rectangle(x0 + i * 2 * s, self.y, 2 * s, self.h0)
         cr.fill()
-        px, py = self.pt((17, 0))
-        cr.set_source_rgba(*PAINT, 0.55)  # raquette peinte
-        cr.rectangle(px, py, 16 * s, 19 * s)
+        cr.set_source_rgba(*PAINT, 0.55)  # raquette(s) peinte(s)
+        for y_top in ((0, 75) if self.full else (0,)):
+            px, py = pt((17, y_top))
+            cr.rectangle(px, py, 16 * s, 19 * s)
         cr.fill()
         cr.reset_clip()
+        if self.full:  # seconde moitié : symétrique par rapport à la ligne médiane
+            for mirror in (False, True):
+                cr.save()
+                if mirror:
+                    cr.translate(0, 2 * self.y + (94 - 2 * self.Y0) * s)
+                    cr.scale(1, -1)
+                self.half_lines(cr, s, pt)
+                cr.restore()
+            cr.restore()
+            return
+        self.half_lines(cr, s, pt)
+        cr.restore()
+
+    def half_lines(self, cr, s, pt):
         cr.set_source_rgb(*INK)
         cr.set_line_width(0.18 * s)
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
-        x0, y0 = self.pt((0, 0))
+        x0, y0 = pt((0, 0))
         cr.rectangle(x0, y0, 50 * s, 47 * s)  # lignes de touche, fond, médiane
         cr.stroke()
-        px, py = self.pt((17, 0))
+        px, py = pt((17, 0))
         cr.rectangle(px, py, 16 * s, 19 * s)  # raquette
         cr.stroke()
-        cx, cy = self.pt((25, 19))
+        cx, cy = pt((25, 19))
         cr.arc(cx, cy, 6 * s, 0, math.pi)  # cercle des lancers francs (demi extérieur)
         cr.stroke()
         cr.set_dash([0.8 * s, 0.8 * s])
         cr.arc(cx, cy, 6 * s, math.pi, 2 * math.pi)
         cr.stroke()
         cr.set_dash([])
-        bx, by = self.pt((25, 5.25))
+        bx, by = pt((25, 5.25))
         cr.arc(bx, by, 4 * s, 0, math.pi)  # zone de non-charge
         cr.stroke()
         a = math.asin(22 / 23.75)  # ligne à 3 points : corners à 3 pieds des lignes
         yc = 5.25 + 23.75 * math.cos(a)
         for x in (3, 47):
-            cr.move_to(*self.pt((x, 0)))
-            cr.line_to(*self.pt((x, yc)))
+            cr.move_to(*pt((x, 0)))
+            cr.line_to(*pt((x, yc)))
             cr.stroke()
         cr.arc(bx, by, 23.75 * s, math.pi / 2 - a, math.pi / 2 + a)
         cr.stroke()
-        mx, my = self.pt((25, 47))
+        mx, my = pt((25, 47))
         cr.arc(mx, my, 6 * s, math.pi, 2 * math.pi)  # rond central
         cr.stroke()
         cr.set_line_width(0.3 * s)
-        cr.move_to(*self.pt((22, 4)))
-        cr.line_to(*self.pt((28, 4)))  # planche
+        cr.move_to(*pt((22, 4)))
+        cr.line_to(*pt((28, 4)))  # planche
         cr.stroke()
         cr.set_source_rgb(*ORANGE)
         cr.set_line_width(0.22 * s)
         cr.arc(bx, by, 0.75 * s, 0, 2 * math.pi)  # cercle
         cr.stroke()
-        cr.restore()
 
     def arrow(self, cr, a, b, kind, defender):
         s = self.s
@@ -352,8 +388,14 @@ class Layout:
         self.margin = 60 * k if name != "horizontal" else 70
 
 
-def layouts():
+def layouts(full=False):
     m = 60
+    if full:  # terrain entier : couché dans les formats carré et horizontal, légende dessous ou à droite
+        return {
+            "vertical": Layout("vertical", 1080, 1920, 1.0, Board(250, 360, 580, full=True), (m, 1500, 1080 - 2 * m), 1850),
+            "square": Layout("square", 1080, 1080, 0.68, Board(40, 200, 1000, full=True, horizontal=True), (60, 800, 960), 1045),
+            "horizontal": Layout("horizontal", 1920, 1080, 0.9, Board(50, 240, 1240, full=True, horizontal=True), (1330, 320, 540), 1045),
+        }
     return {
         # 1080×1920 : titre, terrain pleine largeur, légende dessous.
         "vertical": Layout("vertical", 1080, 1920, 1.0, Board(m, 360, 1080 - 2 * m), (m, 360 + 52 * (960 / 56) + 90, 1080 - 2 * m), 1850),
@@ -531,24 +573,31 @@ class NeonBoard:
         cr.fill()
         cr.set_source_rgba(1, 1, 1, 0.05)
         for i in range(-2, 28, 2):
-            self.poly(cr, [(i * 2, -4), (i * 2 + 2, -4), (i * 2 + 2, 48), (i * 2, 48)])
+            self.poly(cr, [(i * 2, -4), (i * 2 + 2, -4), (i * 2 + 2, self.y_max), (i * 2, self.y_max)])
             cr.close_path()
             cr.fill()
-        self.poly(cr, [(17, 0), (33, 0), (33, 19), (17, 19)])
-        cr.close_path()
-        cr.set_source_rgba(*ELEC, 0.28)
-        cr.fill()
+        # Le terrain entier se voit quand le cadrage dépasse la ligne médiane : seconde moitié en miroir (y → 94 - y).
+        halves = (False, True) if self.y_max > 47 else (False,)
+        flip = lambda pts, m: [(x, 94 - y) for x, y in pts] if m else pts
+        for m in halves:
+            self.poly(cr, flip([(17, 0), (33, 0), (33, 19), (17, 19)], m))
+            cr.close_path()
+            cr.set_source_rgba(*ELEC, 0.28)
+            cr.fill()
         # Lignes blanches légèrement lumineuses.
         a = math.asin(22 / 23.75)
         yc = 5.25 + 23.75 * math.cos(a)
-        lines = [
-            [(0, 0), (50, 0), (50, 47), (0, 47), (0, 0)],
+        half = [
             [(17, 0), (17, 19), (33, 19), (33, 0)],
             self.arc_pts((25, 19), 6, 0, 2 * math.pi),
             self.arc_pts((25, 5.25), 4, 0, math.pi),
             [(3, 0), (3, yc)] + self.arc_pts((25, 5.25), 23.75, math.pi / 2 + a, math.pi / 2 - a) + [(47, yc), (47, 0)],
             self.arc_pts((25, 47), 6, math.pi, 2 * math.pi),
         ]
+        lines = [[(0, 0), (50, 0), (50, 94), (0, 94), (0, 0)] if len(halves) > 1 else [(0, 0), (50, 0), (50, 47), (0, 47), (0, 0)]]
+        lines += [[(0, 47), (50, 47)]] if len(halves) > 1 else []
+        for m in halves:
+            lines += [flip(pts, m) for pts in half]
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         for pts in lines:
             self.poly(cr, pts)
@@ -559,9 +608,15 @@ class NeonBoard:
             cr.set_line_width(2.4)
             cr.stroke()
         cr.restore()
-        # Panier : planche et cercle, en hauteur.
+        # Second panier, au premier plan, seulement s'il est dans le cadre.
+        if self.y_max >= 86:
+            self.hoop(cr, 94 - 4, 94 - 5.25)
+        self.hoop(cr, 4, 5.25)
+
+    def hoop(self, cr, y_board, y_rim):
+        """Planche et cercle, en hauteur."""
         cr.new_path()
-        p1, p2 = self.pt((22, 4), 9.5), self.pt((28, 4), 13)
+        p1, p2 = self.pt((22, y_board), 9.5), self.pt((28, y_board), 13)
         cr.rectangle(p1[0], p2[1], p2[0] - p1[0], p1[1] - p2[1])
         cr.set_source_rgba(1, 1, 1, 0.25)
         cr.fill_preserve()
@@ -570,7 +625,7 @@ class NeonBoard:
         cr.stroke()
         cr.new_path()
         for i in range(41):
-            q = (25 + 0.9 * math.cos(i * math.pi / 20), 5.25 + 0.9 * math.sin(i * math.pi / 20))
+            q = (25 + 0.9 * math.cos(i * math.pi / 20), y_rim + 0.9 * math.sin(i * math.pi / 20))
             (cr.move_to if i == 0 else cr.line_to)(*self.pt(q, 10))
         glow_path(cr, ORANGE, 2.5)
 
@@ -672,10 +727,10 @@ def neon_background(cr, L):
                 cr.stroke()
 
 
-def neon_board(states):
+def neon_board(states, full=False):
     """Cadrage par fiche : la caméra s'approche du panier si tous les joueurs restent près de lui."""
     ys = [p[1] for pos, _ in states for p in pos.values()]
-    y_max = min(48.0, max(30.0, max(ys) + 6))
+    y_max = min(98.0 if full else 48.0, max(30.0, max(ys) + 6))
     return NeonBoard(540, 640, 1215, 1070, y_max)
 
 
@@ -693,7 +748,7 @@ def neon_static(L, t, cat_label, states):
         # Haut : catégorie puis nom de la tactique, en néon.
         neon_text(c, cat_label.split("·")[0].strip().upper(), L.W / 2, 205, 44, ORANGE)
         neon_block(c, t["name"]["fr"], L.W / 2, 225, 980, LIME, 140, 72, 2)
-        b = neon_board(states)
+        b = neon_board(states, t.get("court") == "full")
         b.court(c)
         _NEON_STATIC[key] = (surf, b)
     return _NEON_STATIC[key]
@@ -805,32 +860,97 @@ def beat_track(duration, path, bpm=100, rate=22050):
         w.writeframes(buf.tobytes())
 
 
-def thumbnail(t, L, cat_label, timings, states, path):
-    """Miniature PNG : dernière étape, flèches visibles, gros titre."""
-    last = timings[-1]
-    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
-    cr = cairo.Context(surface)
-    draw_frame(cr, L, t, cat_label, timings, states, INTRO + last["start"] + last["move"] + last["pass"] + 0.05)
-    if L.name == "vertical":  # le style néon montre déjà le titre en grand
-        surface.write_to_png(str(path))
-        return
-    # Bandeau titre lisible en petit format.
-    k = L.k
-    cr.set_source_rgb(*BG)
-    x, y, width = L.cap
+COVER = 3.0  # secondes de couverture au début de chaque vidéo (YouTube, Reels et TikTok la proposent comme miniature)
+RED_BAND = (0.70, 0.10, 0.12)
+
+
+def split_title(name):
+    """Deux lignes pour la couverture : avant / après « : », « contre », sinon au milieu."""
+    for sep in (" : ", ": ", " contre ", " vs "):
+        if sep in name:
+            a, b = name.split(sep, 1)
+            return a.strip(), (b if sep in (" : ", ": ") else sep.strip() + " " + b).strip()
+    words = name.split()
+    if len(words) < 2:
+        return name, ""
+    best, cut = 1e9, 1
+    for i in range(1, len(words)):
+        d = abs(len(" ".join(words[:i])) - len(" ".join(words[i:])))
+        if d < best:
+            best, cut = d, i
+    return " ".join(words[:cut]), " ".join(words[cut:])
+
+
+def fit_size(cr, s, width, size, min_size=30):
+    cr.select_font_face(FONT_COND, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+    while size > min_size:
+        cr.set_font_size(size)
+        if cr.text_extents(s).x_advance <= width:
+            break
+        size -= 4
+    return size
+
+
+def draw_cover(cr, L, t, states):
+    """Couverture : parquet et placement de départ en fond, bande noire en diagonale avec le nom en très gros."""
+    W, H = L.W, L.H
+    full = t.get("court") == "full"
+    cr.set_source_rgb(*BOARD)
+    cr.paint()
     if L.name == "vertical":
-        cr.rectangle(0, y - 70, L.W, L.H - y + 70)
+        b = Board(0, 0 if full else 260, W, full=full)
     else:
-        cr.rectangle(x - 30, y - 80 * k, L.W - x + 30, L.H - y + 80 * k)
+        b = Board(0, 0, W, full=full, horizontal=True)
+    b.court(cr)
+    pos, ball = states[0]
+    b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None)
+    cr.set_source_rgba(0, 0, 0, 0.18)
+    cr.paint()
+    k = min(W, H) / 1080
+    # Bandeau du haut : nom de la chaîne.
+    band = 120 * k
+    cr.rectangle(0, 0, W, band)
+    cr.set_source_rgb(*RED_BAND)
     cr.fill()
-    paragraph(cr, t["name"]["fr"].upper(), x, y + 30 * k, 96 * k, width, WHITE, FONT_COND, bold=True, leading=1.0)
-    text(cr, CHANNEL, L.W / 2, L.footer_y, 32 * max(k, 0.8), MUTED, FONT_COND, align="center")
+    text(cr, CHANNEL.upper(), W / 2, band * 0.66, 52 * k, WHITE, FONT_COND, bold=True, align="center")
+    # Bande noire en diagonale, au centre.
+    line1, line2 = split_title(t["name"]["fr"])
+    bh = (0.36 if L.name == "vertical" else 0.52) * H
+    cr.save()
+    cr.translate(W / 2, H * (0.5 if L.name != "vertical" else 0.52))
+    cr.rotate(-0.10)
+    ext = W * 0.75
+    for color, grow in ((RED_BAND, 14 * k), ((0.04, 0.04, 0.05), 0)):
+        cr.rectangle(-ext - 40, -bh / 2 - grow, 2 * ext + 80, bh + 2 * grow)
+        cr.set_source_rgb(*color)
+        cr.fill()
+    width = W * 0.86
+    size1 = fit_size(cr, line1.upper(), width, bh * (0.42 if line2 else 0.6))
+    size2 = fit_size(cr, line2.upper(), width, bh * 0.36) if line2 else 0
+    total = size1 * 0.8 + (size2 * 0.8 + bh * 0.06 if line2 else 0)
+    y = -total / 2 + size1 * 0.8
+    text(cr, line1.upper(), 0, y, size1, ORANGE, FONT_COND, bold=True, align="center")
+    if line2:
+        text(cr, line2.upper(), 0, y + bh * 0.06 + size2 * 0.8, size2, WHITE, FONT_COND, bold=True, align="center")
+    url = "gravitymega.github.io/coachyass"
+    cr.select_font_face(FONT_COND, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
+    cr.set_font_size(30 * k)
+    text(cr, url, W * 0.44 - cr.text_extents(url).x_advance, bh / 2 - 18 * k, 30 * k, MUTED, FONT_COND)  # aligné à droite, dans le cadre
+    cr.restore()
+
+
+def thumbnail(t, L, cat_label, timings, states, path):
+    """Miniature PNG = couverture (nom de la tactique en très gros)."""
+    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
+    draw_cover(cairo.Context(surface), L, t, states)
     surface.write_to_png(str(path))
+    return surface
 
 
 def voice_script(t, timings, path):
     """Texte à lire en voix off, FR puis EN, avec le moment de chaque phrase dans la vidéo."""
     def at(sec):
+        sec += COVER
         return f"{int(sec // 60)}:{sec % 60:04.1f}"
 
     end = INTRO + timings[-1]["end"]
@@ -934,32 +1054,43 @@ def render(t, cat_label, out_dir, formats, audio=None, cache=None):
     timings = step_timings(t["steps"], step_voice)
     states = frames(t)
     duration = INTRO + timings[-1]["end"] + OUTRO
+    total = COVER + duration  # la couverture passe d'abord
     tracks = []
     if voice:
-        starts = [0.15] + [INTRO + tm["start"] for tm in timings] + [INTRO + timings[-1]["end"]]
+        starts = [COVER + s for s in [0.15] + [INTRO + tm["start"] for tm in timings] + [INTRO + timings[-1]["end"]]]
         for lang in ("fr", "en"):
             track = Path(tempfile.gettempdir()) / f"op-{t['id']}-{lang}.m4a"
-            voice_track(voice[lang], starts, duration, track)
+            voice_track(voice[lang], starts, total, track)
             tracks.append(track)
     folder = out_dir / t["id"]
     folder.mkdir(parents=True, exist_ok=True)
     made = []
     for name in formats:
-        L = layouts()[name]
+        L = layouts(t.get("court") == "full")[name]
         out = folder / f"{t['id']}-{name}.mp4"
         audio_in, audio_map = [], []
         fmt_tracks = tracks
         if name == "vertical":  # style Short : rythme de fond, sous la voix s'il y en a une
-            fmt_tracks = with_beat(t["id"], tracks, duration)
+            fmt_tracks = with_beat(t["id"], tracks, total)
         for i, (track, lang) in enumerate(zip(fmt_tracks, ("fra", "eng") if tracks else ("zxx",))):
             audio_in += ["-i", str(track)]
             audio_map += ["-map", f"{i + 1}:a", f"-metadata:s:a:{i}", f"language={lang}",
                           f"-metadata:s:a:{i}", f"title={ {'fra': 'Français', 'eng': 'English'}.get(lang, 'Musique') }",
                           f"-disposition:a:{i}", "default" if i == 0 else "0"]
+        # Couverture : miniature PNG, image de couverture du MP4 et premières images de la vidéo.
+        thumb = folder / f"{t['id']}-{name}.png"
+        cover = thumbnail(t, L, cat_label, timings, states, thumb)
+        n_in = 1 + len(audio_in) // 2
         cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "bgra", "-s", f"{L.W}x{L.H}",
-               "-r", str(FPS), "-i", "-", *audio_in, "-map", "0:v", *audio_map, "-c:v", "libx264", "-preset", "medium", "-crf", "20",
-               "-pix_fmt", "yuv420p", *(["-c:a", "copy"] if fmt_tracks else []), "-movflags", "+faststart", str(out)]
+               "-r", str(FPS), "-i", "-", *audio_in, "-i", str(thumb), "-map", "0:v", *audio_map,
+               "-map", f"{n_in}:v", "-c:v:0", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt:v:0", "yuv420p",
+               "-c:v:1", "png", "-disposition:v:1", "attached_pic",
+               *(["-c:a", "copy"] if fmt_tracks else []), "-movflags", "+faststart", str(out)]
         proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+        cover.flush()
+        cover_bytes = bytes(cover.get_data())
+        for _ in range(int(COVER * FPS)):
+            proc.stdin.write(cover_bytes)
         surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
         cr = cairo.Context(surface)
         for i in range(int(duration * FPS)):
@@ -969,7 +1100,6 @@ def render(t, cat_label, out_dir, formats, audio=None, cache=None):
         proc.stdin.close()
         if proc.wait() != 0:
             raise RuntimeError(f"ffmpeg a échoué pour {t['id']} ({name})")
-        thumbnail(t, L, cat_label, timings, states, folder / f"{t['id']}-{name}.png")
         for tr in fmt_tracks:
             if tr not in tracks:
                 tr.unlink(missing_ok=True)

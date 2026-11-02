@@ -12,6 +12,9 @@ on:
       formats:
         description: "Formats (vertical, square, horizontal)"
         default: "vertical,square,horizontal"
+      ids:
+        description: "Seulement ces fiches (id séparés par des espaces) ; vide = toutes"
+        default: ""
 
 permissions:
   contents: write
@@ -64,9 +67,14 @@ jobs:
       - if: steps.want.outputs.go == 'true'
         run: npm ci && npm run audio:jobs && sudo apt-get update -qq && sudo apt-get install -y -qq python3-cairo ffmpeg
       - if: steps.want.outputs.go == 'true'
-        run: /usr/bin/python3 render.py --all --formats ${{ matrix.format }} --shard ${{ matrix.shard }}/12 --out out --audio https://gravitymega.github.io/coachyass
+        env:
+          IDS: ${{ github.event.inputs.ids }}
+        run: /usr/bin/python3 render.py ${IDS:---all} --formats ${{ matrix.format }} --shard ${{ matrix.shard }}/12 --out out --audio https://gravitymega.github.io/coachyass
       - if: steps.want.outputs.go == 'true'
         name: Envoyer dans la release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "op-videos-${{ matrix.format }}" out/*/*-${{ matrix.format }}.mp4 --clobber -R "${{ github.repository }}"
+        run: |
+          shopt -s nullglob
+          files=(out/*/*-${{ matrix.format }}.mp4 out/*/*-${{ matrix.format }}.png)
+          if [ ${#files[@]} -gt 0 ]; then gh release upload "op-videos-${{ matrix.format }}" "${files[@]}" --clobber -R "${{ github.repository }}"; fi
