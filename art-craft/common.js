@@ -64,6 +64,22 @@ export function getFFmpeg(progressId) {
   return ffmpegPromise;
 }
 
+// ffmpeg.wasm qui a planté (souvent faute de mémoire sur iPhone : « Out of bounds memory
+// access », « unreachable », « Aborted() ») : l'instance est inutilisable, il faut la relancer.
+export function isWasmCrash(err) {
+  const msg = String((err && (err.name + ' ' + err.message)) || err || '');
+  return /RuntimeError|out of bounds|memory access|unreachable|Aborted\(|out of memory|OOM|called after the module was terminated/i.test(msg);
+}
+
+export async function resetFFmpeg() {
+  const old = ffmpegPromise;
+  ffmpegPromise = null;
+  mounted.clear();
+  try { (await old)?.terminate(); } catch { /* déjà arrêté */ }
+}
+
+export const WASM_HINT = 'Le moteur vidéo a manqué de mémoire sur cet appareil. Il a été relancé : ferme les autres onglets et applis, puis réessaie (une séquence plus courte ou la qualité 720p aide aussi).';
+
 // Monte des fichiers en WORKERFS : ils sont lus morceau par morceau, jamais
 // copiés en mémoire, ce qui permet de traiter des vidéos de plusieurs Go.
 // Retourne le chemin de chaque fichier dans le système de fichiers ffmpeg.

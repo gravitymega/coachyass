@@ -2,7 +2,7 @@
 // analyse par l'IA (fonction coach), rapport écrit, voix off (voix gratuites Piper,
 // générées dans le navigateur) et vidéo commentée rendue dans le navigateur.
 import {
-  $, showError, setProgress, parseLogDuration, getFFmpeg, mountFiles, runWithLog, offerFile, slugify,
+  $, showError, setProgress, parseLogDuration, getFFmpeg, resetFFmpeg, isWasmCrash, WASM_HINT, mountFiles, runWithLog, offerFile, slugify,
   keepAwake, readCoachStream,
 } from './common.js';
 import {
@@ -163,7 +163,65 @@ async function askCoach(payload, normalize, onTick, lighter) {
   }
 }
 
-async function grabFrames(ff, times, width, onEach) {
+// Moteur vidéo prêt, avec la vidéo montée.
+async function readyFF(progressId) {
+  const ff = await getFFmpeg(progressId);
+  if (!state.input) await mountInput(ff);
+  return ff;
+}
+
+function waitEvent(el, name, ms) {
+  return new Promise((resolve, reject) => {
+    const done = ok => { clearTimeout(timer); el.removeEventListener(name, onOk); el.removeEventListener('error', onErr); ok ? resolve() : reject(new Error('Vidéo illisible par le navigateur')); };
+    const onOk = () => done(true);
+    const onErr = () => done(false);
+    const timer = setTimeout(() => done(false), ms);
+    el.addEventListener(name, onOk);
+    el.addEventListener('error', onErr);
+  });
+}
+
+// Images tirées par le lecteur vidéo du navigateur (décodeur de l'appareil) : rapide et
+// sans la mémoire de ffmpeg.wasm, qui plantait sur iPhone (« Out of bounds memory access »).
+async function nativeFrames(times, width, onEach) {
+  const v = document.createElement('video');
+  v.muted = true;
+  v.playsInline = true;
+  v.preload = 'auto';
+  v.src = video.src;
+  try {
+    const ready = waitEvent(v, 'loadeddata', 15000);
+    v.play().then(() => v.pause()).catch(() => {}); // iPhone : rien n'est décodé avant un premier play
+    await ready;
+    v.pause();
+    if (!v.videoWidth) throw new Error('Image vide');
+    const scale = Math.min(1, width / v.videoWidth);
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round((v.videoWidth * scale) / 2) * 2;
+    canvas.height = Math.round((v.videoHeight * scale) / 2) * 2;
+    const ctx = canvas.getContext('2d');
+    const frames = [];
+    for (let i = 0; i < times.length; i++) {
+      if (onEach) onEach(i);
+      const t = Math.min(times[i], (v.duration || Infinity) - 0.05);
+      if (Math.abs(v.currentTime - t) > 0.01) {
+        const seeked = waitEvent(v, 'seeked', 10000);
+        v.currentTime = t;
+        await seeked;
+      }
+      ctx.drawImage(v, 0, 0, canvas.width, canvas.height);
+      const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.8));
+      if (!blob) throw new Error('Image impossible');
+      frames.push({ t: times[i], data: toBase64(new Uint8Array(await blob.arrayBuffer())) });
+    }
+    return frames;
+  } finally {
+    v.removeAttribute('src');
+    v.load();
+  }
+}
+
+async function ffmpegFrames(ff, times, width, onEach) {
   const frames = [];
   for (let i = 0; i < times.length; i++) {
     if (onEach) onEach(i);
@@ -176,16 +234,40 @@ async function grabFrames(ff, times, width, onEach) {
   return frames;
 }
 
+// Lecteur du navigateur d'abord ; ffmpeg en secours (vidéo que le navigateur ne lit pas),
+// relancé une fois s'il plante.
+async function grabFrames(progressId, times, width, onEach) {
+  if (video.src) {
+    try {
+      const frames = await nativeFrames(times, width, onEach);
+      if (frames.length >= Math.min(2, times.length)) return frames;
+    } catch (err) {
+      console.warn('Images par le navigateur impossibles, passage à ffmpeg', err);
+    }
+  }
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await ffmpegFrames(await readyFF(progressId), times, width, onEach);
+    } catch (err) {
+      if (!isWasmCrash(err)) throw err;
+      await resetFFmpeg();
+      state.input = '';
+      if (attempt >= 1) throw new Error(WASM_HINT);
+      console.warn('ffmpeg a planté, relance', err);
+    }
+  }
+}
+
 // 2e passe : chaque action est suivie image par image (une toutes les 0,5 s), pour que le
 // tableau rejoue les vraies positions des joueurs. Une action qui échoue garde son schéma.
-async function trackMoments(ff, onProgress) {
+async function trackMoments(onProgress) {
   const ms = state.analysis.moments;
   for (let i = 0; i < ms.length; i++) {
     const m = ms[i];
     const label = `Suivi des joueurs · action ${i + 1} / ${ms.length}`;
     try {
       const times = trackTimes(Math.max(state.start, m.debut), Math.min(state.start + state.dur, m.fin));
-      const frames = await grabFrames(ff, times, 960, k => onProgress((i + 0.3 * k / times.length) / ms.length, `${label} · image ${k + 1} / ${times.length}`));
+      const frames = await grabFrames('analyse-progress', times, 960, k => onProgress((i + 0.3 * k / times.length) / ms.length, `${label} · image ${k + 1} / ${times.length}`));
       if (frames.length < 2) continue;
       const raw = await askCoach({
         mode: 'track', frames, team: $('team').value.trim(),
@@ -243,8 +325,8 @@ $('btn-analyse').onclick = async () => {
   showError('');
   const release = await keepAwake();
   try {
-    const ff = await getFFmpeg('analyse-progress');
-    await mountInput(ff);
+    // ffmpeg seulement si le navigateur ne donne pas la durée (vidéo qu'il ne lit pas).
+    if (!state.duration) await readyFF('analyse-progress');
     const start = Math.max(0, parseTimestamp($('start').value) || 0);
     if (state.duration && start >= state.duration - 2) throw new Error('Le début est après la fin de la vidéo.');
     const dur = Math.min(+$('dur').value, (state.duration || Infinity) - start);
@@ -253,7 +335,7 @@ $('btn-analyse').onclick = async () => {
     state.numero = numeroValue();
 
     const times = sampleTimes(start, dur);
-    const frames = await grabFrames(ff, times, 640, i => setProgress('analyse-progress', (i / times.length) * 0.3, `Images clés… ${i + 1} / ${times.length}`));
+    const frames = await grabFrames('analyse-progress', times, 640, i => setProgress('analyse-progress', (i / times.length) * 0.3, `Images clés… ${i + 1} / ${times.length}`));
     if (frames.length < 2) throw new Error('Impossible d\'extraire des images de cette vidéo.');
 
     setProgress('analyse-progress', 0.3, 'Envoi à l\'IA…');
@@ -264,13 +346,14 @@ $('btn-analyse').onclick = async () => {
     }, undefined, (n, sec) => setProgress('analyse-progress', 0.32 + Math.min(end - 0.33, (n ? n / 9000 : sec / 120) * (end - 0.33)), `L'IA analyse le jeu… ${waitLabel(n, sec)}`),
     p => ({ ...p, frames: thinFrames(p.frames, 14) }));
     state.analysis = keepInSequence(state.analysis, start, dur);
-    if (track) await trackMoments(ff, (r, label) => setProgress('analyse-progress', end + (0.99 - end) * r, label));
+    if (track) await trackMoments((r, label) => setProgress('analyse-progress', end + (0.99 - end) * r, label));
     renderReport();
     const tracked = state.analysis.moments.filter(m => m.track).length;
     setProgress('analyse-progress', 1, `Analyse prête · ${frames.length} images étudiées${state.numero ? ` · n° ${state.numero} : ${verdictCount(state.analysis.moments) || 'aucune action repérée'}` : ''}${track ? ` · ${tracked} / ${state.analysis.moments.length} actions suivies image par image` : ''}`);
   } catch (err) {
     console.error(err);
-    showError('Analyse impossible : ' + (err.message || err));
+    if (isWasmCrash(err)) { await resetFFmpeg(); state.input = ''; }
+    showError('Analyse impossible : ' + (isWasmCrash(err) ? WASM_HINT : (err.message || err)));
   } finally {
     release();
     state.busy = false;
@@ -549,9 +632,10 @@ $('btn-render').onclick = async () => {
     setProgress('render-progress', 1, `Vidéo commentée prête · ${Math.round(total)} s · ${slowCount} action${slowCount > 1 ? "s" : ""} commentée${slowCount > 1 ? "s" : ""} · ${(data.length / 1e6).toFixed(1)} Mo`);
   } catch (err) {
     console.error(err);
-    showError('Vidéo commentée impossible : ' + (err.message || err));
+    if (isWasmCrash(err)) { await resetFFmpeg(); state.input = ''; ff0.length = 0; }
+    showError('Vidéo commentée impossible : ' + (isWasmCrash(err) ? WASM_HINT : (err.message || err)));
   } finally {
-    const ff = await getFFmpeg('render-progress').catch(() => null);
+    const ff = ff0.length ? await getFFmpeg('render-progress').catch(() => null) : null;
     if (ff) for (const f of ff0) await ff.deleteFile(f).catch(() => {});
     release();
     state.busy = false;
