@@ -15,7 +15,8 @@ permissions:
 
 concurrency:
   group: open-playbook-${{ github.ref }}
-  cancel-in-progress: true
+  # Ne jamais couper une publication en cours ; seules les vérifications de PR s'annulent entre elles.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 defaults:
   run:
