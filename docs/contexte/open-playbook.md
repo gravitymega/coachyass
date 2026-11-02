@@ -118,6 +118,8 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
   - `draw_cover` dessine le parquet et le placement de départ, le bandeau rouge avec le nom de la chaîne, puis la bande noire inclinée avec le nom de la fiche. `split_title` coupe le nom sur « : », « contre » ou au milieu.
   - La couverture sert à trois choses : la miniature PNG de chaque format, les 3 premières secondes de chaque vidéo (`COVER`, 3 s à la demande de l'utilisateur, la voix et le rythme sont décalés d'autant) et l'image de couverture du MP4 (flux PNG `attached_pic`).
 - Le workflow des vidéos dépose aussi les PNG dans les releases, et la page `#videos` affiche la miniature verticale de chaque fiche (cachée si elle n'existe pas encore).
+- **Limite de requêtes GitHub** (run du 2 nov. 2026 : 9 parts refusées par « API rate limit exceeded », environ 1 000 requêtes par heure pour le jeton du workflow). L'envoi passe par `scripts/upload-release.sh` : paquets de 20 fichiers, et en cas de refus, attente de la remise à zéro de la limite puis nouvel essai. Nouvelle entrée `shards` (exemple : `1,3,4`) pour ne relancer que certaines parts ; délai maximal de 300 min.
+- **À surveiller** : une release GitHub accepte au plus 1 000 fichiers. Avec un MP4 et un PNG par fiche, `op-videos-square` en contenait 974 le 2 nov. 2026. Au-delà d'environ 500 fiches animées, il faudra mettre les miniatures dans des releases séparées.
 
 ## Montage avec une vraie vidéo (demande du 2 nov. 2026)
 
