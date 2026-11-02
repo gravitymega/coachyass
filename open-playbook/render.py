@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-"""Open Playbook : vidéo MP4 verticale 1080×1920 d'une fiche animée (pycairo + ffmpeg).
+"""Open Playbook : vidéos MP4 d'une fiche animée (pycairo + ffmpeg).
 
+Pour chaque fiche, dans videos/<id>/ :
+    <id>-vertical.mp4 (1080×1920), <id>-square.mp4 (1080×1080), <id>-horizontal.mp4 (1920×1080),
+    une miniature PNG par vidéo et <id>-voix.txt (texte de voix off FR/EN avec les temps).
 La vidéo montre le titre et le placement de départ, l'animation étape par étape
 avec les légendes FR/EN, puis l'écran final « Pourquoi ça marche / Why it works ».
 
 Usage :
-    python3 render.py horns-flare            # une fiche
-    python3 render.py horns-flare zipper     # plusieurs fiches
-    python3 render.py --all                  # toutes les fiches animées
-    python3 render.py --all --out videos     # dossier de sortie (défaut : videos)
+    python3 render.py horns-flare                     # une fiche, 3 formats
+    python3 render.py horns-flare zipper              # plusieurs fiches
+    python3 render.py --all                           # toutes les fiches (npm run videos)
+    python3 render.py --all --formats vertical        # un seul format
+    python3 render.py horns-flare --channel "Ma chaîne"  # nom affiché en bas (ou OP_CHANNEL=...)
 
 Timeline (identique au site, lue dans data/timeline.json) :
     déplacements 1,5 s, passe 0,85 s, puis lecture = max(2,2 s ; 0,13 s × mots FR+EN).
@@ -319,91 +323,173 @@ def paragraph(cr, s, x, y, size, width, color, family=FONT, bold=False, leading=
 
 
 # ---------------------------------------------------------------- vidéo ---
-MARGIN = 60
-BOARD_BOX = Board(MARGIN, 360, W - 2 * MARGIN)
+# Nom de la chaîne affiché en bas de chaque vidéo : --channel ou variable d'environnement OP_CHANNEL.
+CHANNEL = os.environ.get("OP_CHANNEL", "Playbook Ouvert · Open Playbook")
 
 
-def header(cr, t, cat_label):
-    text(cr, cat_label.upper(), MARGIN, 120, 38, ORANGE, FONT_COND, bold=True)
-    y = paragraph(cr, t["name"]["fr"], MARGIN, 190, 72, W - 2 * MARGIN, WHITE, FONT_COND, bold=True, leading=1.05)
+class Layout:
+    """Mise en page d'un format. `k` met à l'échelle les tailles de texte du format vertical."""
+
+    def __init__(self, name, w, h, k, board, cap, footer_y):
+        self.name, self.W, self.H, self.k = name, w, h, k
+        self.board = board  # Board placé
+        self.cap = cap  # (x, y, largeur) du bloc de légende
+        self.footer_y = footer_y
+        self.margin = 60 * k if name != "horizontal" else 70
+
+
+def layouts():
+    m = 60
+    return {
+        # 1080×1920 : titre, terrain pleine largeur, légende dessous.
+        "vertical": Layout("vertical", 1080, 1920, 1.0, Board(m, 360, 1080 - 2 * m), (m, 360 + 52 * (960 / 56) + 90, 1080 - 2 * m), 1850),
+        # 1080×1080 : titre en haut, terrain à gauche, légende à droite.
+        "square": Layout("square", 1080, 1080, 0.68, Board(40, 210, 580), (650, 290, 390), 1045),
+        # 1920×1080 : titre en haut à gauche, terrain à gauche, légende à droite.
+        "horizontal": Layout("horizontal", 1920, 1080, 0.9, Board(70, 205, 880), (1010, 300, 840), 1045),
+    }
+
+
+def header(cr, L, t, cat_label):
+    k, m = L.k, L.margin
+    width = L.W - 2 * m
+    text(cr, cat_label.upper(), m, 120 * k if L.name == "vertical" else 70, 38 * k, ORANGE, FONT_COND, bold=True)
+    top = 190 * k if L.name == "vertical" else 70 + 68 * k
+    y = paragraph(cr, t["name"]["fr"], m, top, 72 * k, width, WHITE, FONT_COND, bold=True, leading=1.05)
     if t["name"]["en"] != t["name"]["fr"]:
-        paragraph(cr, t["name"]["en"], MARGIN, y + 6, 44, W - 2 * MARGIN, MUTED, FONT_COND)
+        paragraph(cr, t["name"]["en"], m, y + 6 * k, 44 * k, width, MUTED, FONT_COND)
 
 
-def caption_block(cr, c, y, label=None):
+def caption_block(cr, L, c, label=None):
+    x, y, width = L.cap
+    k = L.k
     if label:
-        text(cr, label, MARGIN, y, 34, ORANGE, FONT_COND, bold=True)
-        y += 62
-    y = paragraph(cr, c["fr"], MARGIN, y, 50, W - 2 * MARGIN, WHITE, FONT, bold=True, leading=1.2)
-    paragraph(cr, c["en"], MARGIN, y + 18, 42, W - 2 * MARGIN, MUTED, FONT, leading=1.2)
+        text(cr, label, x, y, 34 * k, ORANGE, FONT_COND, bold=True)
+        y += 62 * k
+    y = paragraph(cr, c["fr"], x, y, 50 * k, width, WHITE, FONT, bold=True, leading=1.2)
+    paragraph(cr, c["en"], x, y + 18 * k, 42 * k, width, MUTED, FONT, leading=1.2)
 
 
-def draw_frame(cr, t, cat_label, timings, states, time):
+def draw_frame(cr, L, t, cat_label, timings, states, time):
     cr.set_source_rgb(*BG)
     cr.paint()
-    header(cr, t, cat_label)
-    b = BOARD_BOX
+    header(cr, L, t, cat_label)
+    b = L.board
     b.court(cr)
-    cap_y = b.y + b.h + 90
     steps = t["steps"]
     total = timings[-1]["end"]
+    k = L.k
     if time < INTRO:  # titre + placement de départ
         pos, ball = states[0]
         b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None)
-        caption_block(cr, {"fr": "Placement de départ", "en": "Starting positions"}, cap_y)
+        caption_block(cr, L, {"fr": "Placement de départ", "en": "Starting positions"})
     elif time < INTRO + total:
-        k, pos, ball = snapshot(t, timings, states, time - INTRO)
-        before, ball0 = states[k]
-        after, _ = states[k + 1]
-        step = steps[k]
+        i, pos, ball = snapshot(t, timings, states, time - INTRO)
+        before, ball0 = states[i]
+        after, _ = states[i + 1]
+        step = steps[i]
         for pid, mv in step.get("m", {}).items():
             b.arrow(cr, before[pid], (mv[0], mv[1]), mv[2], pid.startswith("x"))
         if step.get("p") and ball0 in after:
             b.arrow(cr, after[ball0], after[step["p"]], "pass", False)
         b.players(cr, pos, ball)
-        caption_block(cr, step["c"], cap_y, f"ÉTAPE {k + 1}/{len(steps)}  ·  STEP {k + 1}/{len(steps)}")
+        caption_block(cr, L, step["c"], f"ÉTAPE {i + 1}/{len(steps)}  ·  STEP {i + 1}/{len(steps)}")
     else:  # écran final
         pos, ball = states[-1]
         b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None)
-        cr.set_source_rgba(*BG, 0.88)
-        cr.rectangle(0, b.y - 20, W, H - b.y + 20)
-        cr.fill()
-        y = b.y + 120
-        text(cr, "POURQUOI ÇA MARCHE", MARGIN, y, 64, ORANGE, FONT_COND, bold=True)
-        text(cr, "WHY IT WORKS", MARGIN, y + 64, 44, MUTED, FONT_COND, bold=True)
-        y = paragraph(cr, t["why"]["fr"], MARGIN, y + 170, 50, W - 2 * MARGIN, WHITE, FONT, bold=True)
-        paragraph(cr, t["why"]["en"], MARGIN, y + 30, 42, W - 2 * MARGIN, MUTED, FONT)
-    text(cr, "Playbook Ouvert · Open Playbook", W / 2, H - 70, 32, MUTED, FONT_COND, align="center")
+        x, y, width = L.cap
+        if L.name == "vertical":
+            cr.set_source_rgba(*BG, 0.88)
+            cr.rectangle(0, b.y - 20, L.W, L.H - b.y + 20)
+            cr.fill()
+            y = b.y + 120
+        text(cr, "POURQUOI ÇA MARCHE", x, y, 64 * k, ORANGE, FONT_COND, bold=True)
+        text(cr, "WHY IT WORKS", x, y + 64 * k, 44 * k, MUTED, FONT_COND, bold=True)
+        y = paragraph(cr, t["why"]["fr"], x, y + 170 * k, 50 * k, width, WHITE, FONT, bold=True)
+        paragraph(cr, t["why"]["en"], x, y + 30 * k, 42 * k, width, MUTED, FONT)
+    text(cr, CHANNEL, L.W / 2, L.footer_y, 32 * max(k, 0.8), MUTED, FONT_COND, align="center")
 
 
-def render(t, cat_label, out_dir):
+def thumbnail(t, L, cat_label, timings, states, path):
+    """Miniature PNG : dernière étape, flèches visibles, gros titre."""
+    last = timings[-1]
+    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
+    cr = cairo.Context(surface)
+    draw_frame(cr, L, t, cat_label, timings, states, INTRO + last["start"] + last["move"] + last["pass"] + 0.05)
+    # Bandeau titre lisible en petit format.
+    k = L.k
+    cr.set_source_rgb(*BG)
+    x, y, width = L.cap
+    if L.name == "vertical":
+        cr.rectangle(0, y - 70, L.W, L.H - y + 70)
+    else:
+        cr.rectangle(x - 30, y - 80 * k, L.W - x + 30, L.H - y + 80 * k)
+    cr.fill()
+    paragraph(cr, t["name"]["fr"].upper(), x, y + 30 * k, 96 * k, width, WHITE, FONT_COND, bold=True, leading=1.0)
+    text(cr, CHANNEL, L.W / 2, L.footer_y, 32 * max(k, 0.8), MUTED, FONT_COND, align="center")
+    surface.write_to_png(str(path))
+
+
+def voice_script(t, timings, path):
+    """Texte à lire en voix off, FR puis EN, avec le moment de chaque phrase dans la vidéo."""
+    def at(sec):
+        return f"{int(sec // 60)}:{sec % 60:04.1f}"
+
+    end = INTRO + timings[-1]["end"]
+    lines = [f"# {t['name']['fr']} / {t['name']['en']}", f"# {t['id']} — durée / duration {at(end + OUTRO)}", ""]
+    for lang, intro, why in (("fr", "Placement de départ.", "Pourquoi ça marche :"), ("en", "Starting positions.", "Why it works:")):
+        lines.append("## Français" if lang == "fr" else "## English")
+        lines.append(f"[{at(0)}] {t['name'][lang]}. {intro}")
+        for s, tm in zip(t["steps"], timings):
+            lines.append(f"[{at(INTRO + tm['start'])}] {s['c'][lang]}")
+        lines.append(f"[{at(end)}] {why} {t['why'][lang]}")
+        lines.append("")
+    path.write_text("\n".join(lines), encoding="utf-8")
+
+
+def render(t, cat_label, out_dir, formats):
     timings = step_timings(t["steps"])
     states = frames(t)
     duration = INTRO + timings[-1]["end"] + OUTRO
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out = out_dir / f"{t['id']}.mp4"
-    cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "bgra", "-s", f"{W}x{H}",
-           "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "medium", "-crf", "20",
-           "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(out)]
-    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, W, H)
-    cr = cairo.Context(surface)
-    for i in range(int(duration * FPS)):
-        draw_frame(cr, t, cat_label, timings, states, i / FPS)
-        surface.flush()
-        proc.stdin.write(bytes(surface.get_data()))
-    proc.stdin.close()
-    if proc.wait() != 0:
-        raise RuntimeError(f"ffmpeg a échoué pour {t['id']}")
-    return out
+    folder = out_dir / t["id"]
+    folder.mkdir(parents=True, exist_ok=True)
+    made = []
+    for name in formats:
+        L = layouts()[name]
+        out = folder / f"{t['id']}-{name}.mp4"
+        cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "bgra", "-s", f"{L.W}x{L.H}",
+               "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+               "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(out)]
+        proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
+        cr = cairo.Context(surface)
+        for i in range(int(duration * FPS)):
+            draw_frame(cr, L, t, cat_label, timings, states, i / FPS)
+            surface.flush()
+            proc.stdin.write(bytes(surface.get_data()))
+        proc.stdin.close()
+        if proc.wait() != 0:
+            raise RuntimeError(f"ffmpeg a échoué pour {t['id']} ({name})")
+        thumbnail(t, L, cat_label, timings, states, folder / f"{t['id']}-{name}.png")
+        made.append(out)
+    voice_script(t, timings, folder / f"{t['id']}-voix.txt")
+    return folder, made
 
 
 def main():
+    global CHANNEL
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("ids", nargs="*", help="id des fiches à générer")
     ap.add_argument("--all", action="store_true", help="toutes les fiches animées")
     ap.add_argument("--out", default="videos", help="dossier de sortie")
+    ap.add_argument("--formats", default="vertical,square,horizontal", help="formats séparés par des virgules")
+    ap.add_argument("--channel", default=CHANNEL, help="nom de la chaîne affiché en bas des vidéos")
     args = ap.parse_args()
+    CHANNEL = args.channel
+    formats = [f.strip() for f in args.formats.split(",") if f.strip()]
+    bad = [f for f in formats if f not in layouts()]
+    if bad:
+        sys.exit(f"Format inconnu : {', '.join(bad)} (vertical, square, horizontal)")
     lib = json.loads((DATA / "tactics.json").read_text(encoding="utf-8"))
     cats = {c["id"]: f"{c['fr']} · {c['en']}" if c["fr"] != c["en"] else c["fr"] for c in lib["cats"]}
     by_id = {t["id"]: t for t in lib["tactics"]}
@@ -415,11 +501,13 @@ def main():
             sys.exit(f"Fiche inconnue : {', '.join(unknown)}" if unknown else "Donne un id de fiche ou --all.")
         todo = [by_id[i] for i in args.ids]
     out_dir = (ROOT / args.out) if not Path(args.out).is_absolute() else Path(args.out)
-    for t in todo:
+    for n, t in enumerate(todo, 1):
         if not t.get("steps"):
             print(f"– {t['id']} : pas d'animation, ignorée")
             continue
-        print(f"✓ {render(t, cats.get(t['cat'], t['cat']), out_dir).relative_to(ROOT) if out_dir.is_relative_to(ROOT) else t['id']}")
+        folder, made = render(t, cats.get(t["cat"], t["cat"]), out_dir, formats)
+        shown = folder.relative_to(ROOT) if folder.is_relative_to(ROOT) else folder
+        print(f"✓ [{n}/{len(todo)}] {shown}/ : {len(made)} vidéo(s), {len(made)} miniature(s), script voix")
 
 
 if __name__ == "__main__":
