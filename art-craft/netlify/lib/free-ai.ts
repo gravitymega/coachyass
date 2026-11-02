@@ -1,5 +1,7 @@
 // IA gratuites d'Art craft (règle « aucun frais » : pas de clé API facturée à l'usage).
 //   1. Google Gemini, plan gratuit (clé GEMINI_API_KEY créée sur aistudio.google.com, sans carte) ;
+//   1 bis. Mistral (plan gratuit « Experiment », clé MISTRAL_API_KEY, sans carte ; lit les images) ;
+//   1 ter. NVIDIA NIM (programme développeur gratuit, clé NVIDIA_API_KEY ; 40 demandes/min, 10 000/jour) ;
 //   2. en secours, OpenRouter, modèles gratuits « :free » seulement (clé OPENROUTER_API_KEY ; compte sans
 //      crédit acheté : rien ne peut être facturé, les appels s'arrêtent au quota gratuit du jour) ;
 //   3. Groq, plan gratuit (clé GROQ_API_KEY, sans carte ; Qwen 3.8 27B, 3 images au plus par demande) ;
@@ -107,7 +109,9 @@ async function geminiCall(key: string, model: string, request: FreeRequest, with
 // Gemini surchargé (503, « model overloaded ») : ça arrive souvent aux heures de pointe et ça passe
 // en quelques secondes. On réessaie le même modèle après une courte pause, puis un 2e modèle Gemini
 // gratuit (Flash-Lite, qui lit aussi les vidéos YouTube), avant de passer aux autres IA.
-export const GEMINI_FALLBACK_MODELS = ["gemini-3.1-flash-lite"];
+// Chaque modèle a sa propre capacité chez Google : quand l'un est surchargé, un autre répond souvent.
+// Tous gratuits et tous capables de regarder une vidéo YouTube. Un nom inconnu (404) est sauté.
+export const GEMINI_FALLBACK_MODELS = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-3.1-flash-lite"];
 export const GEMINI_RETRY_WAITS_MS = [2500, 6000];
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -130,13 +134,19 @@ export async function askGemini(key: string, request: FreeRequest, { waits = GEM
       } catch (err) {
         last = err;
         const status = err instanceof AiError ? err.status : 0;
+        // Quota du jour de ce modèle épuisé (429 : chaque modèle Gemini a son propre quota gratuit),
+        // ou modèle de secours inconnu ou retiré (404) : on passe au modèle suivant.
+        if (status === 429 || (m > 0 && status === 404)) break;
         // Seule une surcharge (5xx) vaut un nouvel essai : quota épuisé ou requête refusée, non.
         if (status < 500) throw err;
         if (i < tries - 1) await sleep(waits[i]);
       }
     }
   }
-  if (last instanceof AiError) {
+  if (last instanceof AiError && last.status === 429) {
+    last.message = "Quota gratuit de Gemini épuisé pour le moment, sur tous les modèles gratuits"
+      + (hasYoutube(request) ? " : réessaie plus tard, ou dépose le fichier vidéo (d'autres IA gratuites prennent alors le relais)." : ".");
+  } else if (last instanceof AiError) {
     last.message = "Gemini est surchargé en ce moment (erreur 503 de Google), même après plusieurs essais. Réessaie dans quelques minutes"
       + (hasYoutube(request) ? ", ou dépose le fichier vidéo : d'autres IA gratuites prennent alors le relais." : ".");
   }
@@ -217,6 +227,50 @@ export async function askGroq(key: string, request: FreeRequest, model?: string)
   throw new AiError(`Aucun modèle Groq disponible (${last}) : mets le nom d'un modèle qui lit les images dans GROQ_MODEL.`);
 }
 
+// API « chat completions » compatible OpenAI (Mistral, NVIDIA NIM) : images en data URL, schéma JSON
+// dans la consigne (format le plus largement accepté), modèles essayés dans l'ordre.
+type Compatible = { name: string; keyName: string; url: string; models: string[]; maxImages: number };
+export const MISTRAL: Compatible = {
+  name: "Mistral", keyName: "MISTRAL_API_KEY", url: "https://api.mistral.ai/v1/chat/completions",
+  // Alias stables de Mistral (Medium 3.5 puis Small 4, tous deux lisent les images).
+  models: ["mistral-medium-latest", "mistral-small-latest"], maxImages: 8,
+};
+export const NVIDIA: Compatible = {
+  name: "NVIDIA", keyName: "NVIDIA_API_KEY", url: "https://integrate.api.nvidia.com/v1/chat/completions",
+  models: ["google/gemma-4-31b-it", "nvidia/nemotron-3.5-super-vl"], maxImages: 8,
+};
+
+export async function askCompatible(p: Compatible, key: string, request: FreeRequest) {
+  const content = thinImages(parts(request.content), p.maxImages).map((x) =>
+    x.image ? { type: "image_url", image_url: { url: `data:${x.mime || "image/jpeg"};base64,${x.image}` } } : { type: "text", text: x.text });
+  if (request.schema) content.push({ type: "text", text: schemaHint(request.schema) });
+  let last = "";
+  for (const m of p.models) {
+    const res = await fetch(p.url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+      body: JSON.stringify({
+        model: m,
+        messages: [{ role: "system", content: request.system }, { role: "user", content }],
+        max_tokens: request.live ? 300 : 8000,
+      }),
+    });
+    const data: any = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const msg = data?.error?.message || data?.message || data?.detail || `HTTP ${res.status}`;
+      if (res.status === 401 || res.status === 403) throw new AiError(`Clé ${p.keyName} refusée par ${p.name}`, { status: res.status, retry: true });
+      // Modèle inconnu, retiré, surchargé ou quota de ce modèle épuisé : on essaie le suivant.
+      if ([404, 422, 429].includes(res.status) || res.status >= 500 || /model|not found|image/i.test(String(msg))) { last = `${m} : ${msg}`; continue; }
+      throw new AiError(`${p.name} indisponible : ${msg}`, { status: res.status, retry: true });
+    }
+    const raw = data.choices?.[0]?.message?.content;
+    const text = typeof raw === "string" ? raw : Array.isArray(raw) ? raw.map((c: { text?: string }) => c?.text || "").join("") : "";
+    if (!text) { last = `${m} : réponse vide`; continue; }
+    return { text, model: `${p.name.toLowerCase()}/${String(data.model || m)}` };
+  }
+  throw new AiError(`${p.name} indisponible (${last})`, { retry: true });
+}
+
 // Garde au plus n images, réparties sur toute la séquence (avec le texte qui précède chacune).
 function thinImages(list: Part[], n: number) {
   const idx = list.map((p, i) => (p.image ? i : -1)).filter((i) => i >= 0);
@@ -240,7 +294,7 @@ export async function askWorkersAi(ai: WorkersAi, request: FreeRequest) {
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     throw new AiError(/limit|quota|neuron|4006/i.test(msg)
-      ? "Quota gratuit du jour épuisé (Gemini, OpenRouter, Groq et Cloudflare) : réessaie demain."
+      ? "Quota gratuit du jour épuisé (toutes les IA gratuites branchées, Cloudflare compris) : réessaie demain."
       : `IA de secours (Cloudflare) indisponible : ${msg}`);
   }
   const r = out?.response;
@@ -249,51 +303,55 @@ export async function askWorkersAi(ai: WorkersAi, request: FreeRequest) {
   return { text, model: WORKERS_MODEL };
 }
 
-export type FreeProviders = { geminiKey?: string; openRouterKey?: string; groqKey?: string; groqModel?: string; ai?: WorkersAi };
+export type FreeProviders = {
+  geminiKey?: string; mistralKey?: string; nvidiaKey?: string; openRouterKey?: string; groqKey?: string; groqModel?: string; ai?: WorkersAi;
+};
 
-// Gemini d'abord, puis OpenRouter et Groq (gratuits), puis Workers AI si les précédents sont épuisés, en panne ou absents.
-export async function askFree({ geminiKey, openRouterKey, groqKey, groqModel, ai }: FreeProviders, request: FreeRequest) {
+// Vrai si au moins une IA gratuite est branchée.
+export const anyFreeProvider = (p: FreeProviders) =>
+  Boolean(p.geminiKey || p.mistralKey || p.nvidiaKey || p.openRouterKey || p.groqKey || p.ai);
+
+// Ordre : Gemini (plusieurs modèles), Mistral, NVIDIA, OpenRouter, Groq, puis Workers AI.
+// Chacun prend le relais quand le précédent est épuisé, en panne ou absent.
+// Un lien YouTube ne peut être regardé que par Gemini.
+export async function askFree(p: FreeProviders, request: FreeRequest) {
   const errors: AiError[] = [];
-  if (geminiKey) {
+  const chain: [unknown, () => Promise<{ text: string; model: string }>][] = [
+    [p.geminiKey, () => askGemini(p.geminiKey!, request)],
+    [p.mistralKey, () => askCompatible(MISTRAL, p.mistralKey!, request)],
+    [p.nvidiaKey, () => askCompatible(NVIDIA, p.nvidiaKey!, request)],
+    [p.openRouterKey, () => askOpenRouter(p.openRouterKey!, request)],
+    [p.groqKey, () => askGroq(p.groqKey!, request, p.groqModel)],
+    [p.ai, () => askWorkersAi(p.ai!, request)],
+  ];
+  const ready = chain.filter(([on]) => on);
+  if (hasYoutube(request)) {
+    if (!p.geminiKey) throw new AiError("L'analyse d'un lien YouTube demande la clé GEMINI_API_KEY dans les variables du site Art craft.");
+    return askGemini(p.geminiKey, request);
+  }
+  if (!ready.length) throw new AiError("Aucune IA branchée : ajoute GEMINI_API_KEY dans les variables du site Art craft.");
+  for (let k = 0; k < ready.length; k++) {
     try {
-      return await askGemini(geminiKey, request);
+      return await ready[k][1]();
     } catch (err) {
-      // Les secours ne savent pas regarder une vidéo YouTube.
-      if (!(err instanceof AiError) || !err.retry || !(openRouterKey || groqKey || ai) || hasYoutube(request)) throw err;
-      errors.push(err);
+      const isLast = k === ready.length - 1;
+      // Gemini : seule une surcharge ou un quota passe la main ; les autres secours passent toujours la main.
+      const pass = err instanceof AiError && (ready[k][0] !== p.geminiKey || err.retry);
+      if (!pass || isLast) {
+        if (isLast && errors.length && err instanceof AiError && !/Quota gratuit du jour/.test(err.message)) {
+          err.message = [...errors.map((e) => e.message), err.message].join(" ; ");
+        }
+        throw err;
+      }
+      errors.push(err as AiError);
     }
   }
-  if (hasYoutube(request)) throw new AiError("L'analyse d'un lien YouTube demande la clé GEMINI_API_KEY dans les variables du site Art craft.");
-  if (openRouterKey) {
-    try {
-      return await askOpenRouter(openRouterKey, request);
-    } catch (err) {
-      // Quelle que soit l'erreur d'OpenRouter, Groq ou Cloudflare peuvent encore répondre.
-      if (!(err instanceof AiError) || !(groqKey || ai)) throw err;
-      errors.push(err);
-    }
-  }
-  if (groqKey) {
-    try {
-      return await askGroq(groqKey, request, groqModel);
-    } catch (err) {
-      if (!(err instanceof AiError) || !ai) throw err;
-      errors.push(err);
-    }
-  }
-  if (!ai) throw new AiError("Aucune IA branchée : ajoute GEMINI_API_KEY dans les variables du site Art craft.");
-  try {
-    return await askWorkersAi(ai, request);
-  } catch (err) {
-    // Tout épuisé : le message de Cloudflare dit déjà tout.
-    if (errors.length && err instanceof AiError && !/Quota gratuit du jour/.test(err.message)) err.message = [...errors.map((e) => e.message), err.message].join(" ; ");
-    throw err;
-  }
+  throw new AiError("Aucune IA disponible");
 }
 
 // Diagnostic (/api/coach?test) : une question très courte à chaque IA gratuite, séparément,
 // pour vérifier les clés sans lancer d'analyse. Ne montre jamais les clés.
-export async function testFree({ geminiKey, openRouterKey, groqKey, groqModel, ai }: FreeProviders) {
+export async function testFree({ geminiKey, mistralKey, nvidiaKey, openRouterKey, groqKey, groqModel, ai }: FreeProviders) {
   const request: FreeRequest = { system: "Réponds en un seul mot.", content: [{ type: "text", text: "Dis OK." }], live: true };
   const run = async (ready: unknown, ask: () => Promise<{ text: string; model: string }>) => {
     if (!ready) return "non branchée";
@@ -305,11 +363,13 @@ export async function testFree({ geminiKey, openRouterKey, groqKey, groqModel, a
       return `erreur : ${err instanceof Error ? err.message : String(err)}`;
     }
   };
-  const [gemini, openrouter, groq, workersAi] = await Promise.all([
+  const [gemini, mistral, nvidia, openrouter, groq, workersAi] = await Promise.all([
     run(geminiKey, () => askGemini(geminiKey!, request)),
+    run(mistralKey, () => askCompatible(MISTRAL, mistralKey!, request)),
+    run(nvidiaKey, () => askCompatible(NVIDIA, nvidiaKey!, request)),
     run(openRouterKey, () => askOpenRouter(openRouterKey!, request)),
     run(groqKey, () => askGroq(groqKey!, request, groqModel)),
     run(ai, () => askWorkersAi(ai!, request)),
   ]);
-  return { gemini, openrouter, groq, workersAi };
+  return { gemini, mistral, nvidia, openrouter, groq, workersAi };
 }

@@ -9,6 +9,8 @@
 //   ART_CRAFT_PASSWORD  — facultatif : sans lui, l'accès aux IA gratuites est libre (choix de l'utilisateur) ;
 //                         Claude (payant) n'est jamais utilisé sans mot de passe
 //   GEMINI_API_KEY      — clé gratuite Google Gemini (aistudio.google.com), jamais exposée au navigateur
+//   MISTRAL_API_KEY     — facultative : clé Mistral, plan gratuit « Experiment » sans carte (secours de Gemini)
+//   NVIDIA_API_KEY      — facultative : clé NVIDIA NIM, programme développeur gratuit (secours de Gemini)
 //   OPENROUTER_API_KEY  — facultative : clé OpenRouter, modèles gratuits « :free » seulement (2e IA gratuite)
 //   GROQ_API_KEY        — facultative : clé gratuite Groq (3e IA gratuite) ; GROQ_MODEL pour imposer un modèle
 //   ROBOFLOW_API_KEY    — facultative : clé gratuite Roboflow, détecteur « made_basket » du mode « paniers »
@@ -22,7 +24,7 @@
 // (Retouche photo : réglages proposés, légendes, fonds SVG ; la consigne vient de la page)
 // et « paniers » (Highlight Agent : quels moments forts sont des paniers marqués).
 import Anthropic from "@anthropic-ai/sdk";
-import { askFree, testFree, cleanJson, AiError, type FreeRequest, type FreeProviders, type WorkersAi } from "../lib/free-ai.ts";
+import { askFree, testFree, anyFreeProvider, cleanJson, AiError, type FreeRequest, type FreeProviders, type WorkersAi } from "../lib/free-ai.ts";
 import { madeBasketVerdicts } from "../lib/made-basket.ts";
 
 // Lien d'une vidéo YouTube publique (watch, youtu.be, shorts, live) → adresse « watch » normalisée.
@@ -472,7 +474,7 @@ function buildRequest(body: Body) {
 export async function handleCoach(req: Request, env: (name: string) => string | undefined, ai?: WorkersAi) {
   // Diagnostic : GET /api/coach?test essaie chaque IA gratuite avec une question très courte.
   if (req.method === "GET" && new URL(req.url).searchParams.has("test")) {
-    return json(200, await testFree({ geminiKey: env("GEMINI_API_KEY"), openRouterKey: env("OPENROUTER_API_KEY"), groqKey: env("GROQ_API_KEY"), groqModel: env("GROQ_MODEL"), ai }));
+    return json(200, await testFree({ geminiKey: env("GEMINI_API_KEY"), mistralKey: env("MISTRAL_API_KEY"), nvidiaKey: env("NVIDIA_API_KEY"), openRouterKey: env("OPENROUTER_API_KEY"), groqKey: env("GROQ_API_KEY"), groqModel: env("GROQ_MODEL"), ai }));
   }
   if (req.method !== "POST") return json(405, { error: "Méthode non autorisée" });
   const password = env("ART_CRAFT_PASSWORD");
@@ -491,13 +493,15 @@ export async function handleCoach(req: Request, env: (name: string) => string | 
   const geminiKey = env("GEMINI_API_KEY");
   const openRouterKey = env("OPENROUTER_API_KEY");
   const groqKey = env("GROQ_API_KEY");
-  const free: FreeProviders = { geminiKey, openRouterKey, groqKey, groqModel: env("GROQ_MODEL"), ai };
+  const mistralKey = env("MISTRAL_API_KEY");
+  const nvidiaKey = env("NVIDIA_API_KEY");
+  const free: FreeProviders = { geminiKey, mistralKey, nvidiaKey, openRouterKey, groqKey, groqModel: env("GROQ_MODEL"), ai };
   const roboflowKey = env("ROBOFLOW_API_KEY");
-  const anyFree = Boolean(geminiKey || openRouterKey || groqKey || ai);
+  const anyFree = anyFreeProvider(free);
   if (body.ping) {
     return json(200, {
       ok: true, open: !password, ai: Boolean(apiKey || anyFree),
-      provider: apiKey ? "claude" : geminiKey ? "gemini" : openRouterKey ? "openrouter" : groqKey ? "groq" : ai ? "workers-ai" : null,
+      provider: apiKey ? "claude" : geminiKey ? "gemini" : mistralKey ? "mistral" : nvidiaKey ? "nvidia" : openRouterKey ? "openrouter" : groqKey ? "groq" : ai ? "workers-ai" : null,
       madeBasket: Boolean(roboflowKey),
     });
   }
@@ -603,7 +607,7 @@ function freeResponse(
             out = await first();
           } catch (err) {
             // Détecteur en panne ou quota du mois épuisé : les IA gratuites prennent le relais.
-            if (!(providers.geminiKey || providers.openRouterKey || providers.groqKey || providers.ai)) throw err;
+            if (!anyFreeProvider(providers)) throw err;
             console.warn("coach (made_basket):", err);
             out = await askFree(providers, request);
           }
