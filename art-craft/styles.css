@@ -228,7 +228,7 @@ textarea { width: 100%; background: #0f0d15; color: var(--text); border: 1px sol
 .report .moments { list-style: none; padding-left: 0; }
 .report .moments .tool { margin-right: 6px; }
 #step-video label:not(.inline):not(.drop), #step-voice label:not(.inline) { display: block; margin-top: 10px; color: var(--muted); font-size: 14px; }
-#step-video label input, #step-video label textarea, #step-voice label textarea { display: block; width: 100%; margin-top: 4px; }
+#step-video label:not(.drop) input, #step-video label textarea, #step-voice label textarea { display: block; width: 100%; margin-top: 4px; }
 @media print {
   body { background: #fff; color: #000; }
   .top, .tabs, .foot, #step-login, #step-video, #step-voice, #step-report .row, .error { display: none !important; }
