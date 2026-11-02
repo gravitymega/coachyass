@@ -10,12 +10,18 @@ export const voiceSupported = () => typeof window !== "undefined" && "speechSynt
 const GOOD = /(premium|enhanced|améliorée|natural|neural|online|google|siri|wavenet)/i;
 const BAD = /\b(compact|espeak|eloquence|novelty|whisper|albert|bad news|bells|boing|bubbles|cellos|jester|organ|superstar|trinoids|zarvox|grandma|grandpa|rocko|shelley|flo|reed|sandy|eddy)\b/i;
 
+// Voix d'homme demandées : noms courants des voix d'homme (macOS, Windows, Edge, Android) et de femme.
+const MALE = /\b(male|homme|thomas|daniel|alex|fred|aaron|arthur|paul|henri|guy|david|mark|george|james|ryan|eric|christopher|roger|andrew|brian|jacques|antoine|claude|nicolas|jean|gilles|liam|william)\b/i;
+const FEMALE = /\b(female|femme|am[ée]lie|audrey|aur[ée]lie|marie|julie|hortense|denise|ariane|sylvie|chantal|virginie|elsa|eloise|vivienne|brigitte|celeste|josephine|samantha|zira|karen|moira|tessa|victoria|allison|ava|susan|jenny|aria|sonia|libby|emma|michelle|serena|kate|fiona|nicky|catherine|joanna|salli|kimberly|ivy|ruth)\b/i;
+
 function score(v: SpeechSynthesisVoice, lang: Lang) {
   const tag = v.lang.toLowerCase().replace("_", "-");
   if (!tag.startsWith(lang)) return -1;
   let s = 0;
   if (GOOD.test(v.name)) s += 10;
   if (BAD.test(v.name)) s -= 10;
+  if (MALE.test(v.name)) s += 15;
+  if (FEMALE.test(v.name)) s -= 15;
   if (!v.localService) s += 3; // voix en ligne (Chrome, Edge) : meilleure qualité
   if (lang === "fr" ? tag === "fr-ca" || tag === "fr-fr" : tag === "en-us" || tag === "en-ca") s += 2;
   if (v.default) s += 1;
