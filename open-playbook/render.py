@@ -12,7 +12,14 @@ Usage :
     python3 render.py horns-flare zipper              # plusieurs fiches
     python3 render.py --all                           # toutes les fiches (npm run videos)
     python3 render.py --all --formats vertical        # un seul format
+    python3 render.py --all --shard 2/8               # une part sur 8 (rendu en parallèle)
     python3 render.py horns-flare --channel "Ma chaîne"  # nom affiché en bas (ou OP_CHANNEL=...)
+    python3 render.py --all --audio public              # avec la voix (clips de scripts/tts.py)
+    python3 render.py --all --audio https://gravitymega.github.io/coachyass  # clips publiés du site
+
+Voix : avec --audio, chaque vidéo reçoit deux pistes, français (par défaut) puis anglais,
+lues aux mêmes moments que sur le site. Une étape dure assez longtemps pour que sa phrase finisse
+dans les deux langues. Il faut audio-index.json (npm run audio:jobs).
 
 Timeline (identique au site, lue dans data/timeline.json) :
     déplacements 1,5 s, passe 0,85 s, puis lecture = max(2,2 s ; 0,13 s × mots FR+EN).
@@ -24,6 +31,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -51,7 +59,8 @@ setup_fonts()
 import cairo  # noqa: E402  (après la configuration des polices)
 
 W, H, FPS = 1080, 1920, 30
-INTRO, OUTRO = 2.5, 5.0
+INTRO0, OUTRO0 = 2.5, 5.0  # sans voix ; avec voix, allongés si la phrase est plus longue
+INTRO, OUTRO = INTRO0, OUTRO0
 
 # Codes visuels
 BLUE = (0x1F / 255, 0x5F / 255, 0xD1 / 255)
@@ -79,12 +88,15 @@ def read_time(c):
     return max(TIMELINE["readMin"], TIMELINE["readPerWord"] * words)
 
 
-def step_timings(steps):
+def step_timings(steps, voice=None):
+    """voice[k] : durée de la phrase lue à l'étape k (la plus longue des deux langues), pour l'attendre."""
     t, out = 0.0, []
-    for s in steps:
+    for k, s in enumerate(steps):
         move = TIMELINE["move"] if s.get("m") else 0.0
         pas = TIMELINE["pass"] if s.get("p") else 0.0
         read = read_time(s["c"])
+        if voice:
+            read = max(read, voice[k] + 0.4 - move - pas)
         out.append({"start": t, "move": move, "pass": pas, "read": read, "end": t + move + pas + read})
         t += move + pas + read
     return out
@@ -447,19 +459,97 @@ def voice_script(t, timings, path):
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
-def render(t, cat_label, out_dir, formats):
-    timings = step_timings(t["steps"])
+# ------------------------------------------------------------------ voix ---
+AUDIO_INDEX = ROOT / "audio-index.json"
+
+
+def fetch_clip(source, rel, cache):
+    """Chemin local d'un clip : dossier (--audio public) ou site publié (--audio https://…)."""
+    if not source.startswith("http"):
+        p = Path(source) / rel
+        return p if p.exists() else None
+    p = cache / rel
+    if not p.exists():
+        p.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with urllib.request.urlopen(f"{source.rstrip('/')}/{rel}", timeout=30) as r:
+                p.write_bytes(r.read())
+        except Exception:
+            return None
+    return p
+
+
+def clip_duration(path):
+    out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)],
+                         capture_output=True, text=True, check=True).stdout
+    return float(out.strip())
+
+
+def load_voice(t, source, cache):
+    """{fr: [(chemin, durée)…], en: […]} pour [présentation, étapes…, conclusion], ou None si un clip manque."""
+    if not source:
+        return None
+    if not AUDIO_INDEX.exists():
+        sys.exit("audio-index.json manquant : lance d'abord npm run audio:jobs")
+    entry = json.loads(AUDIO_INDEX.read_text(encoding="utf-8")).get(t["id"])
+    if not entry:
+        return None
+    voice = {}
+    for lang in ("fr", "en"):
+        clips = [fetch_clip(source, rel, cache) for rel in entry[lang]]
+        if not clips or any(c is None for c in clips) or len(clips) != len(t["steps"]) + 2:
+            return None
+        voice[lang] = [(c, clip_duration(c)) for c in clips]
+    return voice
+
+
+def voice_track(clips, starts, duration, out):
+    """Place chaque clip à son moment et produit une piste AAC de la durée de la vidéo."""
+    cmd = ["ffmpeg", "-y", "-loglevel", "error"]
+    for c, _ in clips:
+        cmd += ["-i", str(c)]
+    parts = [f"[{i}:a]adelay={int(s * 1000)}:all=1[a{i}]" for i, s in enumerate(starts)]
+    mix = "".join(f"[a{i}]" for i in range(len(clips)))
+    graph = ";".join(parts) + f";{mix}amix=inputs={len(clips)}:normalize=0,apad,atrim=0:{duration:.3f}[out]"
+    cmd += ["-filter_complex", graph, "-map", "[out]", "-ac", "1", "-ar", "44100", "-c:a", "aac", "-b:a", "96k", str(out)]
+    subprocess.run(cmd, check=True)
+
+
+def render(t, cat_label, out_dir, formats, audio=None, cache=None):
+    global INTRO, OUTRO
+    voice = load_voice(t, audio, cache)
+    INTRO, OUTRO = INTRO0, OUTRO0
+    step_voice = None
+    if voice:
+        dur = [max(a[1], b[1]) for a, b in zip(voice["fr"], voice["en"])]
+        INTRO = max(INTRO0, dur[0] + 0.4)
+        step_voice = dur[1:-1]
+        OUTRO = max(OUTRO0, dur[-1] + 0.8)
+    timings = step_timings(t["steps"], step_voice)
     states = frames(t)
     duration = INTRO + timings[-1]["end"] + OUTRO
+    tracks = []
+    if voice:
+        starts = [0.15] + [INTRO + tm["start"] for tm in timings] + [INTRO + timings[-1]["end"]]
+        for lang in ("fr", "en"):
+            track = Path(tempfile.gettempdir()) / f"op-{t['id']}-{lang}.m4a"
+            voice_track(voice[lang], starts, duration, track)
+            tracks.append(track)
     folder = out_dir / t["id"]
     folder.mkdir(parents=True, exist_ok=True)
     made = []
     for name in formats:
         L = layouts()[name]
         out = folder / f"{t['id']}-{name}.mp4"
+        audio_in, audio_map = [], []
+        for i, (track, lang) in enumerate(zip(tracks, ("fra", "eng"))):
+            audio_in += ["-i", str(track)]
+            audio_map += ["-map", f"{i + 1}:a", f"-metadata:s:a:{i}", f"language={lang}",
+                          f"-metadata:s:a:{i}", f"title={'Français' if lang == 'fra' else 'English'}",
+                          f"-disposition:a:{i}", "default" if i == 0 else "0"]
         cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "bgra", "-s", f"{L.W}x{L.H}",
-               "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "medium", "-crf", "20",
-               "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(out)]
+               "-r", str(FPS), "-i", "-", *audio_in, "-map", "0:v", *audio_map, "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+               "-pix_fmt", "yuv420p", *(["-c:a", "copy"] if tracks else []), "-movflags", "+faststart", str(out)]
         proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
         surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
         cr = cairo.Context(surface)
@@ -473,7 +563,9 @@ def render(t, cat_label, out_dir, formats):
         thumbnail(t, L, cat_label, timings, states, folder / f"{t['id']}-{name}.png")
         made.append(out)
     voice_script(t, timings, folder / f"{t['id']}-voix.txt")
-    return folder, made
+    for track in tracks:
+        track.unlink(missing_ok=True)
+    return folder, made, bool(voice)
 
 
 def main():
@@ -484,6 +576,8 @@ def main():
     ap.add_argument("--out", default="videos", help="dossier de sortie")
     ap.add_argument("--formats", default="vertical,square,horizontal", help="formats séparés par des virgules")
     ap.add_argument("--channel", default=CHANNEL, help="nom de la chaîne affiché en bas des vidéos")
+    ap.add_argument("--shard", default="1/1", help="i/n : ne génère qu'une part des fiches (rendu en parallèle)")
+    ap.add_argument("--audio", help="voix : dossier contenant audio/ (ex. public) ou adresse du site publié")
     args = ap.parse_args()
     CHANNEL = args.channel
     formats = [f.strip() for f in args.formats.split(",") if f.strip()]
@@ -500,14 +594,18 @@ def main():
         if unknown or not args.ids:
             sys.exit(f"Fiche inconnue : {', '.join(unknown)}" if unknown else "Donne un id de fiche ou --all.")
         todo = [by_id[i] for i in args.ids]
+    si, sn = (int(x) for x in args.shard.split("/"))
+    todo = todo[si - 1 :: sn]
+    cache = Path(tempfile.gettempdir()) / "op-audio-cache"
     out_dir = (ROOT / args.out) if not Path(args.out).is_absolute() else Path(args.out)
     for n, t in enumerate(todo, 1):
         if not t.get("steps"):
             print(f"– {t['id']} : pas d'animation, ignorée")
             continue
-        folder, made = render(t, cats.get(t["cat"], t["cat"]), out_dir, formats)
+        folder, made, voiced = render(t, cats.get(t["cat"], t["cat"]), out_dir, formats, args.audio, cache)
         shown = folder.relative_to(ROOT) if folder.is_relative_to(ROOT) else folder
-        print(f"✓ [{n}/{len(todo)}] {shown}/ : {len(made)} vidéo(s), {len(made)} miniature(s), script voix")
+        sound = "voix FR + EN" if voiced else ("sans voix (clip manquant)" if args.audio else "sans voix")
+        print(f"✓ [{n}/{len(todo)}] {shown}/ : {len(made)} vidéo(s), {len(made)} miniature(s), {sound}", flush=True)
 
 
 if __name__ == "__main__":

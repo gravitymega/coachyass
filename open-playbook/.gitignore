@@ -3,3 +3,8 @@ dist/
 videos/
 __pycache__/
 dist-single/
+audio-jobs.json
+public/audio/
+voices/
+out/
+audio-index.json

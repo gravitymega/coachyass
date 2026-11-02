@@ -47,6 +47,8 @@ Voir [CONTRIBUTING.md](CONTRIBUTING.md). Pour proposer une tactique sans coder, 
 
 Code sous licence **MIT** ([LICENSE](LICENSE)). Contenu sous licence **CC BY 4.0** ([LICENSE-CONTENT.md](LICENSE-CONTENT.md)). Aucun logo, aucune marque et aucune image protégée.
 
+Voix de l'explication audio, générées avec [Piper](https://github.com/rhasspy/piper) (`scripts/tts.py`) : français `fr_FR-siwis-medium` (base SIWIS, CC BY 4.0), anglais `en_US-libritts_r-medium` (base LibriTTS-R, CC BY 4.0). Les équipes NBA (`data/nba.json`) sont citées en texte seulement, sans logo.
+
 ---
 
 ## English
@@ -91,3 +93,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). To suggest a play without coding, open a
 ### Licences
 
 Code under the **MIT** licence ([LICENSE](LICENSE)). Content under **CC BY 4.0** ([LICENSE-CONTENT.md](LICENSE-CONTENT.md)). No logos, brands or protected images.
+
+Audio narration voices, generated with [Piper](https://github.com/rhasspy/piper) (`scripts/tts.py`): French `fr_FR-siwis-medium` (SIWIS dataset, CC BY 4.0), English `en_US-libritts_r-medium` (LibriTTS-R dataset, CC BY 4.0). NBA teams (`data/nba.json`) are named in text only, with no logos.

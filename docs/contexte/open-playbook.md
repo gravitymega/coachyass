@@ -61,3 +61,20 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 - Explication audio : `src/voice.ts` (Web Speech API du navigateur, gratuite). Le bouton « Écouter l'explication » lit le titre et le résumé, anime chaque étape en lisant sa légende, puis lit « Pourquoi ça marche » et contre quelle défense. La voix suit la langue choisie.
 - `data/coaching.json` : `against` (contre quelle défense, par famille) et `practice` (progression d'entraînement par catégorie, `{n}` = nombre d'étapes). Le validateur vérifie que chaque famille et chaque catégorie y figurent.
 - Tir obtenu : `shotKind()` dans `src/engine.ts`, déduit de la position du dernier porteur du ballon (cercle à 8 pieds ou moins, 3 points au-delà de l'arc). Il n'est affiché que pour les fiches d'attaque.
+
+## Voix naturelle, lecture avec ▶, vidéos à télécharger, équipes NBA (demande du 2 nov. 2026)
+
+- **Audio** : la voix robotique du navigateur est remplacée par des clips MP3 à voix naturelle, générés gratuitement avec Piper (open source, hors ligne). Voix : `fr_FR-siwis-medium` et `en_US-libritts_r-medium`, toutes les deux CC BY 4.0. Les voix sous licence NC (ryan, hfc_female, lessac) sont écartées.
+  - Les textes lus sont définis dans `src/narration.ts` : présentation, une légende par étape, puis « Pourquoi ça marche », contre quelle défense et les équipes NBA. `speakable()` rend le texte prononçable (« x2 » → « défenseur 2 », « 2-3 » → « 2 3 »).
+  - `npm run audio:jobs` écrit `audio-jobs.json` (environ 4 460 clips, 88 000 mots). `scripts/tts.py` écrit `public/audio/v1/<langue>/<sha1>.mp3`. Les fichiers ne sont pas dans git.
+  - Workflow `open-playbook.yml` : le job `audio` (8 parts : fr/en × 4) garde les clips en cache GitHub. Seuls les textes nouveaux ou modifiés sont régénérés : la première fois prend environ 20 min, les suivantes quelques minutes. Les clips sont publiés avec le site.
+  - Si les clips manquent (en local, dans l'aperçu Artifact ou si une part échoue), le site prend la meilleure voix du navigateur : voix « améliorées », « naturelles » ou en ligne en priorité, phrases coupées une à une.
+  - Changer de voix : modifier `VOICES` dans `scripts/tts.py` et passer `AUDIO_VERSION` à `v2`.
+- **Lecture** : ▶ lance l'animation et l'explication audio ensemble, étape par étape. Le bouton « Son activé / Son coupé » est gardé dans `op-sound`. Le mode vidéo démarre seul avec le son ; si le navigateur bloque le son sans toucher (iPhone), l'animation continue et un bouton « Touche pour activer le son » apparaît.
+- **Vidéos à télécharger** : page `#videos` (recherche, 3 formats par fiche) et section « Télécharger la vidéo » sur chaque fiche. Les MP4 sont dans des releases GitHub `op-videos-vertical`, `op-videos-square` et `op-videos-horizontal`, produites par `.github/workflows/open-playbook-videos.yml`.
+  - Ce workflow se lance à la main, avec 24 parts en parallèle et `render.py --shard i/n`. Il est à relancer après un lot de nouvelles fiches.
+  - Voix dans les vidéos : `render.py --audio <dossier ou adresse du site>` prend les clips de chaque fiche grâce à `audio-index.json` (écrit par `npm run audio:jobs`). Il ajoute une piste française (par défaut) et une piste anglaise, et allonge l'introduction, chaque étape et la conclusion pour que la phrase la plus longue des deux langues finisse. Le workflow des vidéos lit les clips sur le site publié : le lancer **après** une publication du site.
+- **Équipes NBA** : `data/nba.json` (`teams.<id>` = `[{ team, when: {fr, en} }]`) liste 28 fiches avec des exemples connus (Spurs, Warriors, Jazz, Bulls, Lakers, Heat, Bucks, Raptors, etc.). Les noms d'équipes sont en texte seulement, sans logo.
+  - Le site affiche une section « Équipes NBA qui l'utilisent », une étiquette NBA sur les cartes et le filtre « Utilisées en NBA ». La recherche trouve aussi les équipes.
+  - La narration se termine par « En NBA, utilisé notamment par … ».
+  - Le validateur vérifie ce fichier. Les exemples sont à relire comme les fiches.

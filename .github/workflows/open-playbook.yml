@@ -1,4 +1,4 @@
-# Open Playbook : valide les fiches, construit le site et le publie sur GitHub Pages.
+# Open Playbook : valide les fiches, génère l'audio, construit le site et le publie sur GitHub Pages.
 # Activer une fois : Settings → Pages → Source : « GitHub Actions ».
 name: Open Playbook
 
@@ -23,7 +23,59 @@ defaults:
     working-directory: open-playbook
 
 jobs:
+  # Explication audio à voix naturelle (Piper, voix libres CC BY 4.0), en 8 parts parallèles.
+  # Les clips sont gardés en cache : seuls les textes nouveaux ou modifiés sont régénérés.
+  audio:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: [fr, en]
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: open-playbook/package-lock.json
+      - run: npm ci
+      - run: npm run audio:jobs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install piper-tts==1.8.0 && sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Voix Piper (cache)
+        uses: actions/cache@v4
+        with:
+          path: open-playbook/voices
+          key: piper-voices-v1
+      - name: Télécharger les voix si absentes
+        run: |
+          mkdir -p voices
+          get() { [ -f "voices/$2.onnx" ] || { curl -fsSL -o "voices/$2.onnx" "https://huggingface.co/rhasspy/piper-voices/resolve/main/$1/$2.onnx" && curl -fsSL -o "voices/$2.onnx.json" "https://huggingface.co/rhasspy/piper-voices/resolve/main/$1/$2.onnx.json"; }; }
+          get fr/fr_FR/siwis/medium fr_FR-siwis-medium
+          get en/en_US/libritts_r/medium en_US-libritts_r-medium
+      - name: Clips déjà générés (cache)
+        uses: actions/cache@v4
+        with:
+          path: open-playbook/public/audio
+          key: op-audio-v1-${{ matrix.lang }}-${{ matrix.shard }}-${{ hashFiles('open-playbook/audio-jobs.json') }}
+          restore-keys: op-audio-v1-${{ matrix.lang }}-${{ matrix.shard }}-
+      - run: python3 scripts/tts.py --voices voices --lang ${{ matrix.lang }} --shard ${{ matrix.shard }}/4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audio-${{ matrix.lang }}-${{ matrix.shard }}
+          path: open-playbook/public/audio
+          retention-days: 1
+          if-no-files-found: ignore
+
   build:
+    needs: audio
+    # Sur une PR, l'audio n'est pas généré ; si une part audio échoue, le site est publié quand même (voix du navigateur en secours).
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,6 +86,13 @@ jobs:
           cache-dependency-path: open-playbook/package-lock.json
       - run: npm ci
       - run: npm run validate
+      - if: github.event_name != 'pull_request'
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: audio-*
+          path: open-playbook/public/audio
+          merge-multiple: true
       - run: npm run build
       - if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
@@ -41,7 +100,7 @@ jobs:
           path: open-playbook/dist
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: ${{ !cancelled() && github.event_name != 'pull_request' && needs.build.result == 'success' }}
     needs: build
     runs-on: ubuntu-latest
     permissions:

@@ -65,6 +65,16 @@ for (const f of new Set(lib.tactics.map((t) => t.family).filter(Boolean))) {
   if (!coaching.against[f!]) err("coaching.json", `famille sans « contre quelle défense » : « ${f} »`);
 }
 for (const c of cats) if (!coaching.practice[c]) err("coaching.json", `catégorie sans progression d'entraînement : « ${c} »`);
+// Équipes NBA : fiche existante, nom d'équipe et période FR/EN.
+const nbaTeams = (readJson("data/nba.json") as { teams: Record<string, { team?: string; when?: { fr?: string; en?: string } }[]> }).teams;
+for (const [id, list] of Object.entries(nbaTeams)) {
+  if (!lib.tactics.some((t) => t.id === id)) err("nba.json", `fiche inconnue « ${id} »`);
+  if (!Array.isArray(list) || !list.length) err(`nba.json › ${id}`, "liste d'équipes vide");
+  for (const x of list ?? []) {
+    if (!x.team?.trim()) err(`nba.json › ${id}`, "équipe sans nom");
+    if (!x.when?.fr?.trim() || !x.when?.en?.trim()) err(`nba.json › ${id}`, `période FR/EN manquante pour ${x.team}`);
+  }
+}
 const terms = new Set<string>();
 for (const g of lib.glossary) {
   if (terms.has(g[0])) err("glossaire", `terme en double « ${g[0]} »`);
