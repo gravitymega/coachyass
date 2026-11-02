@@ -156,3 +156,9 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 - `render.py` (`VL = "en"`) : textes à l'écran en anglais seulement (titre, « STEP i/n », légende, « WHY IT WORKS ») et une seule piste audio anglaise. La traduction sous la légende est retirée.
 - Voix anglaise : Kokoro-82M (Apache 2.0), voix d'homme `am_michael`, beaucoup plus naturelle que Piper. `AUDIO_VERSIONS` passe à `{ fr: "v2", en: "v3" }`. Le français du site garde Piper « pierre ». Job `audio` : français en 4 parts, anglais en 16 parts ; modèle `kokoro-v1.0.int8.onnx` et `voices-v1.0.bin` tirés des releases de kokoro-onnx (cache `voices-v3-<langue>`).
 - Aucun lien dans les vidéos téléchargeables : la carte de fin et `data/realgame.json` sont retirés, ainsi que l'adresse du site sur la couverture (demande du 2 nov. 2026).
+
+## Accroche et analyse professionnelle (demande du 2 nov. 2026)
+
+- Plus de « Why it works » dans les vidéos. Au début, une accroche nomme le système selon la catégorie (« Film room », « Defensive breakdown », « Set play breakdown », « Drill breakdown », etc.), puis le nom et le résumé de la fiche (écran et voix).
+- À la fin, « THE ANALYSIS » : à l'écran, la phrase clé de l'efficacité ; à la voix, une analyse complète qui couvre l'efficacité, trois points clés, contre quoi le système est fait (`coaching.json` › `against`), comment l'adversaire s'adapte (`counter`) et les équipes NBA (`nba.json`). Pour les exercices : efficacité et points clés seulement.
+- Construit dans `src/narration.ts` (`englishSegments`, `HOOKS`), qui sert aussi à la lecture en anglais sur le site. Le français ne change pas. Libellés de l'écran dans `render.py` (`HOOKS`, `ANALYSIS`).
