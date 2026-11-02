@@ -142,3 +142,10 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 - Choix de l'utilisateur : « situations de jeu ». Un défenseur face à chaque attaquant dans les catégories attaque, attaque de zone, remises en jeu, transition, défense et principes. Les exercices (tir, dribble, passes, etc.) et les surnombres voulus (contre-attaques, fiches de transition qui avaient déjà des défenseurs) restent comme avant.
 - Migration `scripts/add-defenders.ts` (`--dry` pour un essai) : 245 fiches, 1 116 défenseurs ajoutés. Placement homme à homme entre l'attaquant et le panier, décalé vers le ballon sans ballon ; le défenseur suit son joueur à chaque étape où quelqu'un bouge. Les étapes qui ne sont qu'une passe gardent leur timing, et les défenseurs déjà écrits à la main ne changent pas.
 - Les fiches touchées repassent en `review: "pending"` (placement automatique à relire par un entraîneur). Les vidéos de ces fiches sont à refaire avec le workflow des vidéos (entrée `ids`).
+
+## Voix d'homme (demande du 2 nov. 2026)
+
+- Toutes les voix de narration sont des voix d'homme : français `fr_FR-upmc-medium` locuteur « pierre » (`speaker_id` 1, CC BY-SA 4.0), anglais `en_US-joe-medium` (CC0). Les voix de femme siwis et libritts_r ne sont plus utilisées.
+- `AUDIO_VERSION` passe à `v2` : tous les clips sont refaits (chemins `audio/v2/...`), caches `piper-voices-v2` et `op-audio-v2-*`.
+- Voix du navigateur (secours) : les noms de voix d'homme connus sont préférés (Thomas, Daniel, Paul, Henri, Guy…), ceux des voix de femme écartés.
+- Les vidéos prennent les clips du site publié : les refaire **après** la publication du site avec les clips v2.

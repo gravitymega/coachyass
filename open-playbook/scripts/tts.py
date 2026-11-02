@@ -7,17 +7,17 @@ Les clips déjà présents sont gardés ; ceux qui ne servent plus sont supprim�
     python3 scripts/tts.py --voices voices/                 # tout
     python3 scripts/tts.py --voices voices/ --lang fr --shard 1/4
 
-Voix (licence CC BY 4.0, voir README) :
-    fr : fr_FR-siwis-medium      en : en_US-libritts_r-medium
+Voix d'homme (licences libres, voir README) :
+    fr : fr_FR-upmc-medium, locuteur « pierre » (CC BY-SA 4.0)      en : en_US-joe-medium (CC0)
 """
 import argparse, hashlib, json, os, subprocess, sys, tempfile, time, wave
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-VOICES = {"fr": "fr_FR-siwis-medium", "en": "en_US-libritts_r-medium"}
+VOICES = {"fr": "fr_FR-upmc-medium", "en": "en_US-joe-medium"}
 # Réglages de lecture : un peu plus posé que par défaut, pour un coach qui explique.
 SPEED = {"fr": 1.05, "en": 1.05}  # length_scale > 1 = plus lent
-SPEAKER = {"fr": None, "en": 0}
+SPEAKER = {"fr": 1, "en": None}  # upmc : 0 = jessica, 1 = pierre (voix d'homme)
 
 
 def shard_of(path: str, n: int) -> int:

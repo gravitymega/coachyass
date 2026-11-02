@@ -47,7 +47,7 @@ Voir [CONTRIBUTING.md](CONTRIBUTING.md). Pour proposer une tactique sans coder, 
 
 Code sous licence **MIT** ([LICENSE](LICENSE)). Contenu sous licence **CC BY 4.0** ([LICENSE-CONTENT.md](LICENSE-CONTENT.md)). Aucun logo, aucune marque et aucune image protégée.
 
-Voix de l'explication audio, générées avec [Piper](https://github.com/rhasspy/piper) (`scripts/tts.py`) : français `fr_FR-siwis-medium` (base SIWIS, CC BY 4.0), anglais `en_US-libritts_r-medium` (base LibriTTS-R, CC BY 4.0). Les équipes NBA (`data/nba.json`) sont citées en texte seulement, sans logo.
+Voix de l'explication audio, générées avec [Piper](https://github.com/rhasspy/piper) (`scripts/tts.py`) : voix d'homme, français `fr_FR-upmc-medium` locuteur « pierre » (base UPMC, CC BY-SA 4.0), anglais `en_US-joe-medium` (CC0). Les équipes NBA (`data/nba.json`) sont citées en texte seulement, sans logo.
 
 ---
 
@@ -94,4 +94,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). To suggest a play without coding, open a
 
 Code under the **MIT** licence ([LICENSE](LICENSE)). Content under **CC BY 4.0** ([LICENSE-CONTENT.md](LICENSE-CONTENT.md)). No logos, brands or protected images.
 
-Audio narration voices, generated with [Piper](https://github.com/rhasspy/piper) (`scripts/tts.py`): French `fr_FR-siwis-medium` (SIWIS dataset, CC BY 4.0), English `en_US-libritts_r-medium` (LibriTTS-R dataset, CC BY 4.0). NBA teams (`data/nba.json`) are named in text only, with no logos.
+Audio narration voices, generated with [Piper](https://github.com/rhasspy/piper) (`scripts/tts.py`): male voices, French `fr_FR-upmc-medium` speaker "pierre" (UPMC dataset, CC BY-SA 4.0), English `en_US-joe-medium` (CC0). NBA teams (`data/nba.json`) are named in text only, with no logos.

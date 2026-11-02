@@ -51,19 +51,19 @@ jobs:
         uses: actions/cache@v4
         with:
           path: open-playbook/voices
-          key: piper-voices-v1
+          key: piper-voices-v2
       - name: Télécharger les voix si absentes
         run: |
           mkdir -p voices
           get() { [ -f "voices/$2.onnx" ] || { curl -fsSL -o "voices/$2.onnx" "https://huggingface.co/rhasspy/piper-voices/resolve/main/$1/$2.onnx" && curl -fsSL -o "voices/$2.onnx.json" "https://huggingface.co/rhasspy/piper-voices/resolve/main/$1/$2.onnx.json"; }; }
-          get fr/fr_FR/siwis/medium fr_FR-siwis-medium
-          get en/en_US/libritts_r/medium en_US-libritts_r-medium
+          get fr/fr_FR/upmc/medium fr_FR-upmc-medium
+          get en/en_US/joe/medium en_US-joe-medium
       - name: Clips déjà générés (cache)
         uses: actions/cache@v4
         with:
           path: open-playbook/public/audio
-          key: op-audio-v1-${{ matrix.lang }}-${{ matrix.shard }}-${{ hashFiles('open-playbook/audio-jobs.json') }}
-          restore-keys: op-audio-v1-${{ matrix.lang }}-${{ matrix.shard }}-
+          key: op-audio-v2-${{ matrix.lang }}-${{ matrix.shard }}-${{ hashFiles('open-playbook/audio-jobs.json') }}
+          restore-keys: op-audio-v2-${{ matrix.lang }}-${{ matrix.shard }}-
       - run: python3 scripts/tts.py --voices voices --lang ${{ matrix.lang }} --shard ${{ matrix.shard }}/4
       - uses: actions/upload-artifact@v4
         with:

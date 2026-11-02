@@ -3,7 +3,7 @@
 import type { Lang, Tactic, Text } from "./engine";
 
 /** Changer cette version régénère tous les clips (nouvelle voix, nouveaux réglages). */
-export const AUDIO_VERSION = "v1";
+export const AUDIO_VERSION = "v2";
 
 export interface NbaTeam {
   team: string;
