@@ -91,6 +91,7 @@ const app = document.querySelector<HTMLElement>("#app")!;
 let board: Board | null = null;
 let board3d: Board3D | null = null;
 let editor: Editor | null = null;
+let montage: { destroy(): void } | null = null;
 let heroBoard: Board | null = null;
 let hero3d: Board3D | null = null;
 let cleanup: (() => void) | null = null;
@@ -402,7 +403,7 @@ function ficheView(t: Tactic) {
     <p class="crumbs"><a href="#">← ${tr("Bibliothèque", "Library")}</a> · ${esc(catName(t.cat))} · ${esc(famName(t.family))}</p>
     <h1>${esc(txt(t.name))}</h1>
     <p class="alt-title" lang="${other(state.lang)}">${esc(t.name[other(state.lang)])}</p>
-    <p class="badges"><span class="badge">${txt(LEVELS[t.lvl])}</span>${t.review === "pending" ? `<span class="badge badge-pending">${tr("À relire par un entraîneur", "Awaiting coach review")}</span>` : ""}<a class="badge badge-link" href="#video-${t.id}">▶ ${tr("Mode vidéo", "Video mode")}</a></p>
+    <p class="badges"><span class="badge">${txt(LEVELS[t.lvl])}</span>${t.review === "pending" ? `<span class="badge badge-pending">${tr("À relire par un entraîneur", "Awaiting coach review")}</span>` : ""}<a class="badge badge-link" href="#video-${t.id}">▶ ${tr("Mode vidéo", "Video mode")}</a>${t.steps?.length ? `<a class="badge badge-link" href="#montage-${t.id}">🎬 ${tr("Monter avec ta vidéo", "Edit with your video")}</a>` : ""}</p>
     <div class="fiche-grid">
       <section class="player" aria-label="${tr("Schéma animé", "Animated diagram")}">
         <div id="board-host" class="board-host"></div>
@@ -679,6 +680,43 @@ function planView(p: Library["plans"][number]) {
 }
 
 // ---------------------------------------------------------------------- route
+// ------------------------------------------------------------------ montage
+function montageView(t: Tactic) {
+  app.innerHTML = `${header("")}
+  <main class="wrap" id="main">
+    <p class="crumbs"><a href="#${t.id}">← ${esc(txt(t.name))}</a></p>
+    <section class="intro"><h1>${tr("Montage : ta vidéo + le schéma du coach", "Edit: your video + the coach's diagram")}</h1>
+    <p>${tr(
+      "Ajoute un Short, un Reel ou un extrait de match : on crée une vidéo verticale avec la miniature de la tactique, ta vidéo en haut, le schéma animé en bas et l'explication à voix haute.",
+      "Add a Short, a Reel or a game clip: we build a vertical video with the play's cover, your video on top, the animated diagram below and the spoken explanation.",
+    )}</p></section>
+    <div id="montage-root"><p class="m-status">${tr("Chargement…", "Loading…")}</p></div>
+  </main>${footer()}`;
+  bindHeader();
+  const L = state.lang;
+  const n = t.steps?.length ?? 0;
+  import("./montage").then(({ Montage }) => {
+    if (location.hash.slice(1) !== `montage-${t.id}`) return;
+    montage = new Montage(document.getElementById("montage-root")!, {
+      tactic: t,
+      lang: L,
+      tr,
+      text: {
+        title: t.name[L],
+        category: catName(t.cat),
+        captions: (t.steps ?? []).map((s) => s.c[L]),
+        why: t.why[L],
+        channel: CHANNEL,
+        labels: { start: tr("Placement de départ", "Starting positions"), step: (k) => `${tr("ÉTAPE", "STEP")} ${k}/${n}`, why: tr("POURQUOI ÇA MARCHE", "WHY IT WORKS") },
+      },
+      clips: async () => {
+        const urls = await Promise.all(narrationSegments(t, L, againstFor(t), nba[t.id]).map((x) => clipPath(x, L)));
+        return (await clipsAvailable(urls[0])) ? urls : null;
+      },
+    });
+  });
+}
+
 function editorView() {
   app.innerHTML = `${header("editeur")}<main class="wrap editor" id="main"><div id="editor-root"></div></main>${footer()}`;
   bindHeader();
@@ -693,6 +731,8 @@ function route() {
   heroBoard?.destroy();
   heroBoard = null;
   editor?.destroy();
+  montage?.destroy();
+  montage = null;
   editor = null;
   board3d?.destroy();
   board3d = null;
@@ -714,6 +754,9 @@ function route() {
   } else if (h === "editeur") {
     app.dataset.view = "editeur";
     editorView();
+  } else if (h.startsWith("montage-") && byId.get(h.slice(8))?.steps?.length) {
+    app.dataset.view = "montage";
+    montageView(byId.get(h.slice(8))!);
   } else if (h === "videos") {
     app.dataset.view = "videos";
     videosView();

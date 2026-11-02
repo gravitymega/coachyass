@@ -160,6 +160,18 @@ export class Board {
   }
 
   /** Copie du terrain et des flèches de l'étape, sans les joueurs (texture du sol en 3D). */
+  /** Image complète du terrain (joueurs compris), pour la dessiner dans un canvas. */
+  snapshotSvg(width = 1080): string {
+    const clone = this.svg.cloneNode(true) as SVGSVGElement;
+    const v = viewOf(this.tactic);
+    clone.setAttribute("xmlns", NS);
+    clone.setAttribute("width", String(width));
+    clone.setAttribute("height", String(Math.round((width * v.h) / v.w)));
+    // Polices : le canvas ne voit pas les @font-face de la page, on garde une police système proche.
+    clone.querySelectorAll("text").forEach((t) => t.setAttribute("font-family", "Arial Narrow, Arial, sans-serif"));
+    return new XMLSerializer().serializeToString(clone);
+  }
+
   floorSvg(): string {
     const clone = this.svg.cloneNode(true) as SVGSVGElement;
     clone.querySelector(".players")?.remove();
