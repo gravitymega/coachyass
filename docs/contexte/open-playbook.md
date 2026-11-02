@@ -78,3 +78,16 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
   - Le site affiche une section « Équipes NBA qui l'utilisent », une étiquette NBA sur les cartes et le filtre « Utilisées en NBA ». La recherche trouve aussi les équipes.
   - La narration se termine par « En NBA, utilisé notamment par … ».
   - Le validateur vérifie ce fichier. Les exemples sont à relire comme les fiches.
+
+## Style « Short » des vidéos verticales (demande du 2 nov. 2026)
+
+- L'utilisateur a donné en exemple un Short YouTube de basket : titres néon, terrain en 3D, anneaux lumineux sous les joueurs, rythme rapide. On s'en inspire sans rien copier (ni logo ni images).
+- `render.py`, format `vertical` seulement (`draw_frame_neon`) :
+  - en haut, la catégorie et le nom de la tactique en néon ;
+  - au milieu, `NeonBoard` : terrain en perspective, la caméra s'approche du panier si les joueurs restent près de lui (`neon_board`) ;
+  - sous les joueurs, des anneaux lumineux (vert pour l'attaque, rose pour la défense) et des pions surélevés ; trajets blancs brillants, passes en bleu ;
+  - en bas, l'étape et la phrase FR en néon, l'EN en petit (seulement si elle tient), puis la marque de la chaîne ;
+  - fond sombre avec des arcs colorés.
+- Le son est un rythme synthétisé (`beat_track`, aucun droit), discret sous la voix (FR et EN), ou seul si une fiche n'a pas de voix.
+- Le fond, le titre, le terrain et chaque bloc de texte sont dessinés une seule fois (`_NEON_STATIC`, `_NEON_CAPTIONS`), ce qui rend le rendu environ 2,5 fois plus rapide.
+- Les formats carré et horizontal gardent le style d'origine. Le workflow des vidéos passe à 12 parts par format, avec un délai maximal de 180 min.
