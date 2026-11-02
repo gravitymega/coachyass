@@ -182,6 +182,9 @@ nav a[aria-current="page"] { opacity: 1; box-shadow: inset 0 -2px 0 #e07a12; bor
 .board-host { width: 100%; max-width: 100%; }
 .board { display: block; width: 100%; height: auto; border-radius: var(--radius); box-shadow: 0 1px 0 var(--line), 0 6px 22px rgba(15, 26, 43, 0.12); }
 .board .pid { font-family: var(--font-display); }
+/* Terrain entier : il tient dans l'écran (hauteur limitée), centré. */
+.board.board-full { width: auto; max-width: 100%; max-height: min(82vh, 980px); margin-inline: auto; }
+.video-frame .board.board-full { max-height: 58vh; }
 .controls { display: flex; align-items: center; gap: 0.5rem; }
 .ctl {
   width: 44px; height: 44px;

@@ -166,5 +166,9 @@
   "transition-exercices": {
     "fr": "Exercices de transition",
     "en": "Transition drills"
+  },
+  "contre-presse": {
+    "fr": "Sortie de presse",
+    "en": "Press break"
   }
 }

@@ -2,10 +2,9 @@
 // Le sol est le dessin SVG du terrain et des flèches de l'étape ; les joueurs et le ballon sont en volume.
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { COLORS, isDefender, type PlayerId, type Point } from "./engine";
+import { COLORS, isDefender, viewOf, type PlayerId, type Point } from "./engine";
 import type { Board } from "./board";
 
-const VIEW = { x: -3, y: -4, w: 56, h: 52 };
 const BALL_H = 3.4;
 
 function label(text: string, color: string) {
@@ -59,8 +58,8 @@ export class Board3D {
   private floorMat: THREE.MeshStandardMaterial;
   private players = new Map<string, THREE.Group>();
   private ball: THREE.Mesh;
-  private unsubscribe: () => void;
-  private resize: ResizeObserver;
+  private unsubscribe!: () => void;
+  private resize!: ResizeObserver;
   private raf = 0;
   private floorToken = 0;
 
@@ -73,13 +72,17 @@ export class Board3D {
     this.renderer.domElement.classList.add("board3d-canvas");
 
     this.camera = new THREE.PerspectiveCamera(42, 1, 0.5, 400);
-    this.camera.position.set(25, 44, 66);
+    const full = board.full;
+    const VIEW = viewOf({ court: full ? "full" : undefined });
+    // Terrain entier : caméra plus haute et plus loin, sur le côté de la ligne médiane.
+    if (full) this.camera.position.set(25, 140, 115);
+    else this.camera.position.set(25, 44, 66);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.target.set(25, 0, 19);
+    this.controls.target.set(25, 0, full ? 47 : 19);
     this.controls.enableDamping = true;
     this.controls.maxPolarAngle = Math.PI * 0.47;
     this.controls.minDistance = 20;
-    this.controls.maxDistance = 110;
+    this.controls.maxDistance = full ? 240 : 110;
     this.controls.autoRotate = !!opts.autoRotate;
     this.controls.autoRotateSpeed = 0.7;
     this.controls.addEventListener("start", () => (this.controls.autoRotate = false));
@@ -90,8 +93,8 @@ export class Board3D {
     sun.position.set(10, 60, 40);
     sun.castShadow = true;
     sun.shadow.mapSize.set(1024, 1024);
-    Object.assign(sun.shadow.camera, { left: -40, right: 40, top: 40, bottom: -40 });
-    sun.target.position.set(25, 0, 20);
+    Object.assign(sun.shadow.camera, full ? { left: -70, right: 70, top: 70, bottom: -70 } : { left: -40, right: 40, top: 40, bottom: -40 });
+    sun.target.position.set(25, 0, full ? 47 : 20);
     this.scene.add(sun, sun.target);
 
     // Sol : le plan couvre exactement la vue du SVG (x de -3 à 53, y de -4 à 48).
@@ -102,7 +105,22 @@ export class Board3D {
     floor.receiveShadow = true;
     this.scene.add(floor);
 
-    // Panier : poteau, planche, cercle.
+    // Panier(s) : poteau, planche, cercle. Le second panier (terrain entier) est le symétrique en y = 94.
+    for (const mirror of full ? [false, true] : [false]) this.scene.add(this.hoop(mirror));
+
+    for (const id of ids) {
+      const p = player(id);
+      this.players.set(id, p);
+      this.scene.add(p);
+    }
+    this.ball = new THREE.Mesh(new THREE.SphereGeometry(0.62, 24, 16), new THREE.MeshStandardMaterial({ color: COLORS.ball, roughness: 0.6 }));
+    this.ball.castShadow = true;
+    this.scene.add(this.ball);
+    this.start(host, board);
+  }
+
+  private hoop(mirror: boolean) {
+    const g = new THREE.Group();
     const white = new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0.85 });
     const board3 = new THREE.Mesh(new THREE.BoxGeometry(6, 3.5, 0.15), white);
     board3.position.set(25, 11.5, 4);
@@ -113,17 +131,16 @@ export class Board3D {
     pole.position.set(25, 5.75, -2.5);
     const arm = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.4, 6.5), pole.material);
     arm.position.set(25, 11.3, 0.75);
-    this.scene.add(board3, rim, pole, arm);
-
-    for (const id of ids) {
-      const p = player(id);
-      this.players.set(id, p);
-      this.scene.add(p);
+    g.add(board3, rim, pole, arm);
+    if (mirror) {
+      // Demi-tour autour de l'axe vertical : (x, z) → (50 - x, 94 - z).
+      g.rotation.y = Math.PI;
+      g.position.set(50, 0, 94);
     }
-    this.ball = new THREE.Mesh(new THREE.SphereGeometry(0.62, 24, 16), new THREE.MeshStandardMaterial({ color: COLORS.ball, roughness: 0.6 }));
-    this.ball.castShadow = true;
-    this.scene.add(this.ball);
+    return g;
+  }
 
+  private start(host: HTMLElement, board: Board) {
     this.resize = new ResizeObserver(() => this.fit());
     this.resize.observe(host);
     this.fit();
@@ -141,7 +158,7 @@ export class Board3D {
 
   private fit() {
     const w = this.host.clientWidth || 600;
-    const h = Math.round(w * 0.78);
+    const h = Math.round(w * (this.board.full ? 1.15 : 0.78)); // terrain entier : cadre plus haut
     this.renderer.setSize(w, h, false);
     this.renderer.domElement.style.width = "100%";
     this.renderer.domElement.style.height = "auto";

@@ -91,3 +91,22 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 - Le son est un rythme synthétisé (`beat_track`, aucun droit), discret sous la voix (FR et EN), ou seul si une fiche n'a pas de voix.
 - Le fond, le titre, le terrain et chaque bloc de texte sont dessinés une seule fois (`_NEON_STATIC`, `_NEON_CAPTIONS`), ce qui rend le rendu environ 2,5 fois plus rapide.
 - Les formats carré et horizontal gardent le style d'origine. Le workflow des vidéos passe à 12 parts par format, avec un délai maximal de 180 min.
+
+## Presses sur le terrain entier (demande du 2 nov. 2026)
+
+- Demande : « mettre toutes les tactiques de presse tout terrain », avec en exemple un Short d'entraînement à 5 contre 5 sur tout le terrain.
+- **Format** : champ facultatif `court: "full"` (schéma `tactic.schema.json`). Le repère ne change pas : la ligne de fond est en haut (y = 0), la ligne médiane en y = 47 et la seconde ligne de fond en y = 94 (second panier en (25, 88.75)). Les bornes vont de y = -5 à 99. Aucune migration n'est nécessaire : sans ce champ, la fiche reste un demi-terrain.
+  - Dans les presses, l'attaque remet en jeu en haut et remonte vers le bas, comme dans les fiches d'avant.
+- **Moteur** : `FULL_COURT`, `isFull`, `boundsOf` et `viewOf` dans `src/engine.ts`. `checkTactic` prend en compte les bornes du terrain entier. `shotKind` ramène un tir au second panier dans le repère du demi-terrain, par symétrie.
+- **Site** : `drawCourt(svg, full)` dessine la seconde moitié en miroir. Le terrain entier a une hauteur limitée (classe `board-full`). La vue 3D a une caméra plus haute, un cadre plus haut et un second panier.
+- **Vidéos** :
+  - le format vertical néon montre le terrain entier en perspective (cadrage jusqu'à y = 98, second panier) ;
+  - les formats carré et horizontal couchent le terrain (`Board(..., full=True, horizontal=True)`, `layouts(full)`).
+- **Contenu** :
+  - 11 presses passées sur le terrain entier, avec une étape de plus quand il fallait montrer la suite après la ligne médiane : 2-2-1, 1-2-1-1, 1-2-2, 2-1-2, homme à homme, run and jump, 3/4 de terrain, après lancer franc, refus de la remise, retour en défense placée, 1-3-1. Le piège 1-3-1 sur demi-terrain reste en demi-terrain.
+  - 9 nouvelles fiches (509 au total) :
+    - 3 presses : piège 2-2-1 à la ligne médiane, homme à homme avec changements, presse de ralentissement ;
+    - 5 sorties de presse, dans la nouvelle famille `contre-presse` (catégorie transition) : en ligne 1-4, écran pour le meneur, passeur qui court la ligne de fond, passe longue, sortir d'un piège ;
+    - l'exercice « 5 contre 5 : attaque puis repli défensif », d'après l'exemple de l'utilisateur.
+  - Le catalogue de 500 entrées n'a pas changé : les nouvelles fiches s'y ajoutent.
+- **Workflow des vidéos** : nouvelle entrée `ids`, pour ne refaire que certaines fiches.

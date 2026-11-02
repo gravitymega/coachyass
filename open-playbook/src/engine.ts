@@ -26,6 +26,8 @@ export interface Tactic {
   family?: string;
   lvl: 1 | 2 | 3;
   review?: "pending" | "approved";
+  /** "full" : terrain entier (y de 0 à 94, second panier en (25, 88.75)). Absent : demi-terrain. */
+  court?: "full";
   name: Text;
   sum: Text;
   why: Text;
@@ -87,6 +89,19 @@ export const COURT = {
   basket: [25, 5.25] as Point,
   bounds: { xMin: -3, xMax: 53, yMin: -5, yMax: 47 },
 };
+
+// Terrain entier : même repère, la ligne médiane en y = 47, la seconde ligne de fond en y = 94.
+export const FULL_COURT = {
+  depth: 94,
+  baskets: [[25, 5.25], [25, 88.75]] as Point[],
+  bounds: { xMin: -3, xMax: 53, yMin: -5, yMax: 99 },
+};
+
+export const isFull = (t: Pick<Tactic, "court">) => t.court === "full";
+export const boundsOf = (t: Pick<Tactic, "court">) => (isFull(t) ? FULL_COURT.bounds : COURT.bounds);
+
+/** Zone dessinée (unités SVG = pieds). */
+export const viewOf = (t: Pick<Tactic, "court">) => (isFull(t) ? { x: -3, y: -4, w: 56, h: 102 } : { x: -3, y: -4, w: 56, h: 52 });
 
 export const COLORS = {
   offense: "#1F5FD1",
@@ -171,10 +186,12 @@ export function shotKind(t: Tactic): ShotKind | null {
   const last = frames(t).at(-1);
   const p = last?.ball ? last.pos[last.ball as PlayerId] : undefined;
   if (!p) return null;
-  const dx = p[0] - COURT.basket[0], dy = p[1] - COURT.basket[1];
+  // Terrain entier : un tir vers le second panier est ramené par symétrie dans le repère du demi-terrain.
+  const q: Point = isFull(t) && p[1] > 47 ? [p[0], FULL_COURT.depth - p[1]] : p;
+  const dx = q[0] - COURT.basket[0], dy = q[1] - COURT.basket[1];
   const d = Math.hypot(dx, dy);
   if (d <= 8) return "rim";
-  const three = p[1] < 14 ? Math.abs(dx) >= 21.5 : d >= 23.25;
+  const three = q[1] < 14 ? Math.abs(dx) >= 21.5 : d >= 23.25;
   return three ? "three" : "mid";
 }
 

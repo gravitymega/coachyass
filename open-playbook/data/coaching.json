@@ -167,6 +167,10 @@
     "seance-pro": {
       "fr": "Selon le plan de match : la défense de l'adversaire de la semaine.",
       "en": "Depends on the game plan: the defense of this week's opponent."
+    },
+    "contre-presse": {
+      "fr": "Presses tout terrain, en zone (2-2-1, 1-2-1-1, 1-3-1) ou en homme à homme.",
+      "en": "Full-court presses, zone (2-2-1, 1-2-1-1, 1-3-1) or man-to-man."
     }
   },
   "practice": {

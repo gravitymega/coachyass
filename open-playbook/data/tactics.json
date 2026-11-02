@@ -3824,13 +3824,14 @@
       "family": "presses",
       "lvl": 2,
       "review": "pending",
+      "court": "full",
       "name": {
         "fr": "Presse 2-2-1",
         "en": "2-2-1 press"
       },
       "sum": {
-        "fr": "Presse tout terrain : deux défenseurs en premier rideau, deux au milieu, un dernier rempart. Le schéma montre la moitié de terrain où l'attaque remonte le ballon.",
-        "en": "Full-court press: two defenders in front, two in the middle, one safety. The diagram shows the half where the offense brings the ball up."
+        "fr": "Presse tout terrain : deux défenseurs en premier rideau, deux au milieu, un dernier rempart.",
+        "en": "Full-court press: two defenders in front, two in the middle, one safety."
       },
       "why": {
         "fr": "On laisse entrer la remise, puis on piège le porteur le long de la ligne de touche, là où il a le moins de solutions.",
@@ -3945,6 +3946,45 @@
           "c": {
             "fr": "1 remonte le long de la ligne : x1 et x3 le piègent, x2 coupe le milieu, x4 surveille la ligne, x5 reste en dernier rempart.",
             "en": "1 dribbles up the sideline: x1 and x3 trap him, x2 cuts off the middle, x4 watches the sideline, x5 stays back."
+          }
+        },
+        {
+          "m": {
+            "3": [
+              6,
+              48,
+              "c"
+            ],
+            "x3": [
+              8,
+              43,
+              "m"
+            ],
+            "x4": [
+              9.5,
+              46,
+              "m"
+            ],
+            "x2": [
+              16,
+              38,
+              "m"
+            ],
+            "x5": [
+              22,
+              60,
+              "m"
+            ],
+            "5": [
+              34,
+              62,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "Si 1 trouve 3 le long de la ligne, x4 monte le piéger à la ligne médiane avec x3 ; x2 reste au milieu, x5 recule protéger le panier.",
+            "en": "If 1 finds 3 up the sideline, x4 steps up to trap him at half court with x3; x2 stays in the middle, x5 drops to protect the rim."
           }
         }
       ]
@@ -31145,6 +31185,723 @@
       ]
     },
     {
+      "id": "press-break-1-4",
+      "cat": "transition",
+      "family": "contre-presse",
+      "lvl": 1,
+      "review": "pending",
+      "court": "full",
+      "name": {
+        "fr": "Sortie de presse en ligne (1-4)",
+        "en": "Press break: 1-4 line"
+      },
+      "sum": {
+        "fr": "Quatre joueurs alignés à la hauteur des lancers francs éclatent : deux reviennent vers le ballon, deux partent vers l'avant.",
+        "en": "Four players lined up at the free-throw line break out: two come back to the ball, two run ahead."
+      },
+      "why": {
+        "fr": "La ligne oblige la presse à choisir : si elle couvre les joueurs qui reviennent, les passes vers l'avant s'ouvrent, et l'inverse.",
+        "en": "The line forces the press to choose: if it covers the players coming back, the passes ahead open up, and vice versa."
+      },
+      "counter": {
+        "fr": "Refuser la première passe et piéger dès la réception le long de la ligne de touche.",
+        "en": "Deny the first pass and trap on the catch along the sideline."
+      },
+      "used": {
+        "fr": "Sortie de presse classique, enseignée dès les jeunes.",
+        "en": "Classic press break, taught from youth basketball on."
+      },
+      "keys": {
+        "fr": [
+          "Partir tous ensemble au signal",
+          "Revenir vers le ballon en V",
+          "Le passeur entre en jeu en soutien",
+          "Chercher le milieu puis l'avant"
+        ],
+        "en": [
+          "Break all together on the signal",
+          "Come back to the ball with a V-cut",
+          "The inbounder steps in as a safety valve",
+          "Look middle, then ahead"
+        ]
+      },
+      "start": {
+        "1": [
+          8,
+          19
+        ],
+        "2": [
+          19,
+          19
+        ],
+        "3": [
+          31,
+          19
+        ],
+        "4": [
+          25,
+          -2
+        ],
+        "5": [
+          42,
+          19
+        ],
+        "b": "4",
+        "x1": [
+          18,
+          12
+        ],
+        "x2": [
+          32,
+          12
+        ],
+        "x3": [
+          12,
+          30
+        ],
+        "x4": [
+          38,
+          30
+        ],
+        "x5": [
+          25,
+          50
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              8,
+              8,
+              "c"
+            ],
+            "5": [
+              42,
+              8,
+              "c"
+            ],
+            "2": [
+              15,
+              40,
+              "c"
+            ],
+            "3": [
+              35,
+              42,
+              "c"
+            ]
+          },
+          "c": {
+            "fr": "La ligne éclate : 1 et 5 reviennent vers le ballon, 2 et 3 filent vers l'avant.",
+            "en": "The line breaks: 1 and 5 come back to the ball, 2 and 3 run ahead."
+          }
+        },
+        {
+          "p": "1",
+          "c": {
+            "fr": "4 remet à 1 côté gauche.",
+            "en": "4 inbounds to 1 on the left."
+          }
+        },
+        {
+          "m": {
+            "4": [
+              22,
+              6,
+              "c"
+            ],
+            "2": [
+              18,
+              30,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "4 entre en jeu en soutien ; 2 revient au milieu et reçoit derrière le premier rideau.",
+            "en": "4 steps in as a safety valve; 2 comes back to the middle and catches behind the first line."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              24,
+              60,
+              "d"
+            ],
+            "3": [
+              38,
+              70,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "2 attaque le milieu en dribble et passe à 3 en avance : surnombre vers le panier.",
+            "en": "2 attacks the middle on the dribble and hits 3 ahead: numbers advantage to the rim."
+          }
+        }
+      ]
+    },
+    {
+      "id": "press-break-vs-man-screen",
+      "cat": "transition",
+      "family": "contre-presse",
+      "lvl": 2,
+      "review": "pending",
+      "court": "full",
+      "name": {
+        "fr": "Sortie de presse homme à homme : écran pour le meneur",
+        "en": "Press break vs man: screen for the point guard"
+      },
+      "sum": {
+        "fr": "Contre une presse homme à homme, un coéquipier pose un écran pour libérer le meneur, qui reçoit en mouvement et attaque.",
+        "en": "Against a man press, a teammate screens to free the point guard, who catches on the move and attacks."
+      },
+      "why": {
+        "fr": "Le meneur reçoit en mouvement, déjà face au terrain : un seul dribble suffit pour battre la presse.",
+        "en": "The point guard catches on the move, already facing up the floor: one dribble is enough to beat the press."
+      },
+      "counter": {
+        "fr": "Changer sur l'écran (changement agressif) ou piéger le meneur dès la réception.",
+        "en": "Switch the screen aggressively or trap the point guard on the catch."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, des jeunes aux professionnels.",
+        "en": "Common at every level, from youth to pro."
+      },
+      "keys": {
+        "fr": [
+          "Écran près du défenseur du meneur",
+          "Le meneur attend l'écran avant de couper",
+          "Recevoir face au terrain",
+          "Les autres dégagent l'espace"
+        ],
+        "en": [
+          "Screen close to the point guard's defender",
+          "The point guard waits for the screen before cutting",
+          "Catch facing up the floor",
+          "The others clear out the space"
+        ]
+      },
+      "start": {
+        "1": [
+          22,
+          14
+        ],
+        "2": [
+          34,
+          16
+        ],
+        "3": [
+          10,
+          40
+        ],
+        "4": [
+          30,
+          -2
+        ],
+        "5": [
+          38,
+          44
+        ],
+        "b": "4",
+        "x1": [
+          22,
+          11.5
+        ],
+        "x2": [
+          34,
+          13.5
+        ],
+        "x3": [
+          10,
+          37
+        ],
+        "x4": [
+          30,
+          2
+        ],
+        "x5": [
+          38,
+          41
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              25,
+              11,
+              "s"
+            ],
+            "x2": [
+              27.5,
+              13.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 pose un écran sur x1.",
+            "en": "2 sets a screen on x1."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              32,
+              7,
+              "c"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "1 coupe au-dessus de l'écran et reçoit en mouvement.",
+            "en": "1 cuts over the screen and catches on the move."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              34,
+              40,
+              "d"
+            ],
+            "x1": [
+              30,
+              30,
+              "m"
+            ],
+            "5": [
+              30,
+              64,
+              "c"
+            ],
+            "x5": [
+              32,
+              58,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 attaque en dribble pendant que 5 dégage l'espace : la presse est battue.",
+            "en": "1 attacks on the dribble while 5 clears out: the press is beaten."
+          }
+        }
+      ]
+    },
+    {
+      "id": "press-break-baseline-run",
+      "cat": "transition",
+      "family": "contre-presse",
+      "lvl": 2,
+      "review": "pending",
+      "court": "full",
+      "name": {
+        "fr": "Sortie de presse : le passeur court la ligne de fond",
+        "en": "Press break: running the baseline"
+      },
+      "sum": {
+        "fr": "Après un panier encaissé, le passeur a le droit de se déplacer le long de la ligne de fond : il change l'angle de passe pour trouver un joueur libre.",
+        "en": "After a made basket, the inbounder may run the baseline: he changes the passing angle to find an open teammate."
+      },
+      "why": {
+        "fr": "Le défenseur du passeur et les défenseurs qui refusent les passes sont placés pour un angle ; en courant, le passeur ouvre une nouvelle ligne de passe.",
+        "en": "The inbounder's defender and the denying defenders are set for one angle; by running, the inbounder opens a new passing lane."
+      },
+      "counter": {
+        "fr": "Le défenseur du passeur le suit et lève les bras ; les autres refusent les deux côtés.",
+        "en": "The inbounder's defender follows him with arms up; the others deny both sides."
+      },
+      "used": {
+        "fr": "Règle valable seulement après un panier marqué (FIBA et NBA).",
+        "en": "Rule only applies after a made basket (FIBA and NBA)."
+      },
+      "keys": {
+        "fr": [
+          "Seulement après un panier marqué",
+          "Courir pour changer l'angle",
+          "Regarder le terrain, pas le défenseur",
+          "Faire la passe dans les 5 secondes"
+        ],
+        "en": [
+          "Only after a made basket",
+          "Run to change the angle",
+          "Look at the floor, not the defender",
+          "Pass within 5 seconds"
+        ]
+      },
+      "start": {
+        "1": [
+          32,
+          8
+        ],
+        "2": [
+          12,
+          12
+        ],
+        "3": [
+          25,
+          30
+        ],
+        "4": [
+          35,
+          -2
+        ],
+        "5": [
+          40,
+          40
+        ],
+        "b": "4",
+        "x1": [
+          32,
+          11.5
+        ],
+        "x2": [
+          16,
+          14
+        ],
+        "x3": [
+          25,
+          27
+        ],
+        "x4": [
+          34,
+          2
+        ],
+        "x5": [
+          40,
+          37
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              15,
+              -2,
+              "c"
+            ],
+            "x4": [
+              18,
+              2,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Après le panier, 4 court la ligne de fond pour changer l'angle de passe.",
+            "en": "After the basket, 4 runs the baseline to change the passing angle."
+          }
+        },
+        {
+          "p": "2",
+          "c": {
+            "fr": "La nouvelle ligne de passe s'ouvre vers 2.",
+            "en": "The new passing lane opens to 2."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              10,
+              40,
+              "d"
+            ],
+            "3": [
+              25,
+              56,
+              "c"
+            ],
+            "x2": [
+              14,
+              34,
+              "m"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "2 remonte la ligne et trouve 3 qui file au milieu.",
+            "en": "2 dribbles up the sideline and finds 3 running the middle."
+          }
+        }
+      ]
+    },
+    {
+      "id": "press-break-long-pass",
+      "cat": "transition",
+      "family": "contre-presse",
+      "lvl": 2,
+      "review": "pending",
+      "court": "full",
+      "name": {
+        "fr": "Sortie de presse : la passe longue",
+        "en": "Press break: the long pass"
+      },
+      "sum": {
+        "fr": "Un joueur revient au milieu pour attirer la presse vers l'avant, pendant que le grand file au panier pour une passe longue.",
+        "en": "One player flashes to the middle to pull the press up while the big runs to the rim for a long pass."
+      },
+      "why": {
+        "fr": "Une presse avance pour piéger : elle laisse de l'espace derrière elle. Une passe longue réussie donne un panier facile.",
+        "en": "A press moves up to trap: it leaves space behind it. One good long pass means an easy basket."
+      },
+      "counter": {
+        "fr": "Garder un dernier défenseur très en arrière et contester le passeur.",
+        "en": "Keep a safety deep and pressure the inbounder."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, surtout contre les presses agressives.",
+        "en": "Common at every level, especially against aggressive presses."
+      },
+      "keys": {
+        "fr": [
+          "Attirer la presse vers l'avant",
+          "Partir quand le défenseur arrière regarde le ballon",
+          "Passe haute et devant le receveur",
+          "Finir au panier sans dribbler longtemps"
+        ],
+        "en": [
+          "Pull the press up",
+          "Go when the safety looks at the ball",
+          "Throw it high and in front of the receiver",
+          "Finish at the rim without a long dribble"
+        ]
+      },
+      "start": {
+        "1": [
+          15,
+          12
+        ],
+        "2": [
+          35,
+          12
+        ],
+        "3": [
+          25,
+          30
+        ],
+        "4": [
+          25,
+          -2
+        ],
+        "5": [
+          25,
+          40
+        ],
+        "b": "4",
+        "x1": [
+          25,
+          2
+        ],
+        "x2": [
+          15,
+          15
+        ],
+        "x3": [
+          35,
+          15
+        ],
+        "x4": [
+          25,
+          26
+        ],
+        "x5": [
+          25,
+          46
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "3": [
+              25,
+              18,
+              "c"
+            ],
+            "x4": [
+              25,
+              22,
+              "m"
+            ],
+            "5": [
+              40,
+              70,
+              "c"
+            ],
+            "x5": [
+              25,
+              52,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "3 revient au milieu et attire x4 ; 5 sprinte le long de la ligne vers le panier.",
+            "en": "3 flashes to the middle and pulls x4 up; 5 sprints up the sideline toward the rim."
+          }
+        },
+        {
+          "p": "5",
+          "c": {
+            "fr": "4 lance long vers 5, derrière le dernier défenseur.",
+            "en": "4 throws long to 5, behind the last defender."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              27,
+              84,
+              "d"
+            ],
+            "x5": [
+              24,
+              70,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "5 file au panier pour un lay-up.",
+            "en": "5 goes to the rim for a layup."
+          }
+        }
+      ]
+    },
+    {
+      "id": "press-break-trap-escape",
+      "cat": "transition",
+      "family": "contre-presse",
+      "lvl": 2,
+      "review": "pending",
+      "court": "full",
+      "name": {
+        "fr": "Sortir d'un piège : passe en retour puis au milieu",
+        "en": "Beating the trap: pass back, then middle"
+      },
+      "sum": {
+        "fr": "Le porteur piégé le long de la ligne ne force pas : il passe en retour au passeur, qui trouve le joueur venu au milieu.",
+        "en": "The trapped ball handler on the sideline doesn't force it: he passes back to the inbounder, who finds the player flashing to the middle."
+      },
+      "why": {
+        "fr": "Un piège engage deux défenseurs sur un joueur : il y a forcément un attaquant libre, souvent en retour ou au milieu.",
+        "en": "A trap puts two defenders on one player: someone is always open, usually behind the ball or in the middle."
+      },
+      "counter": {
+        "fr": "Fermer la passe en retour et la passe au milieu avec les défenseurs qui ne piègent pas.",
+        "en": "Take away the pass back and the middle pass with the non-trapping defenders."
+      },
+      "used": {
+        "fr": "Principe enseigné à tous les niveaux.",
+        "en": "Principle taught at every level."
+      },
+      "keys": {
+        "fr": [
+          "Ne pas dribbler dans le piège",
+          "Pivoter et garder le ballon haut",
+          "Toujours une option en retour",
+          "Le milieu bat la presse"
+        ],
+        "en": [
+          "Don't dribble into the trap",
+          "Pivot and keep the ball high",
+          "Always have an outlet behind the ball",
+          "The middle beats the press"
+        ]
+      },
+      "start": {
+        "1": [
+          8,
+          24
+        ],
+        "2": [
+          34,
+          26
+        ],
+        "3": [
+          12,
+          44
+        ],
+        "4": [
+          22,
+          10
+        ],
+        "5": [
+          38,
+          40
+        ],
+        "b": "1",
+        "x1": [
+          11,
+          21.5
+        ],
+        "x3": [
+          6,
+          27.5
+        ],
+        "x2": [
+          20,
+          30
+        ],
+        "x4": [
+          16,
+          40
+        ],
+        "x5": [
+          28,
+          52
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "4": [
+              14,
+              14,
+              "c"
+            ]
+          },
+          "p": "4",
+          "c": {
+            "fr": "1, piégé par x1 et x3, passe en retour à 4.",
+            "en": "1, trapped by x1 and x3, passes back to 4."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              24,
+              28,
+              "c"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "2 vient au milieu : 4 lui passe derrière le piège.",
+            "en": "2 flashes to the middle: 4 hits him behind the trap."
+          }
+        },
+        {
+          "m": {
+            "2": [
+              22,
+              56,
+              "d"
+            ],
+            "3": [
+              8,
+              64,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "2 attaque en dribble et trouve 3 en avance : la presse est battue.",
+            "en": "2 attacks on the dribble and finds 3 ahead: the press is beaten."
+          }
+        }
+      ]
+    },
+    {
       "id": "blob-box",
       "cat": "remises",
       "family": "remise-ligne-de-fond",
@@ -39463,6 +40220,7 @@
       "family": "presses",
       "lvl": 2,
       "review": "pending",
+      "court": "full",
       "name": {
         "fr": "Presse 1-2-1-1 (losange)",
         "en": "1-2-1-1 diamond press"
@@ -39580,6 +40338,35 @@
             "fr": "x1 et x2 piègent 1 ; x3 coupe le renversement, x4 le milieu, x5 reste en dernier rempart.",
             "en": "x1 and x2 trap 1; x3 cuts off the reversal, x4 the middle, x5 stays back."
           }
+        },
+        {
+          "m": {
+            "3": [
+              16,
+              36,
+              "c"
+            ],
+            "x4": [
+              17,
+              32.5,
+              "m"
+            ],
+            "x5": [
+              25,
+              62,
+              "m"
+            ],
+            "5": [
+              34,
+              70,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "Si la passe sort vers 3 au milieu, x4 l'attaque tout de suite ; x5 recule protéger le panier et les autres sprintent derrière le ballon.",
+            "en": "If the pass gets out to 3 in the middle, x4 jumps him right away; x5 drops to protect the rim and the others sprint behind the ball."
+          }
         }
       ]
     },
@@ -39589,6 +40376,7 @@
       "family": "presses",
       "lvl": 2,
       "review": "pending",
+      "court": "full",
       "name": {
         "fr": "Presse 1-2-2",
         "en": "1-2-2 press"
@@ -39711,6 +40499,40 @@
             "fr": "1 remonte le long de la ligne : x1 et x2 piègent, x3 coupe le milieu, x4 et x5 restent en arrière.",
             "en": "1 dribbles up the sideline: x1 and x2 trap, x3 cuts off the middle, x4 and x5 stay back."
           }
+        },
+        {
+          "m": {
+            "3": [
+              6,
+              44,
+              "c"
+            ],
+            "x4": [
+              9,
+              42,
+              "m"
+            ],
+            "x2": [
+              7,
+              39,
+              "m"
+            ],
+            "x5": [
+              22,
+              56,
+              "m"
+            ],
+            "5": [
+              34,
+              62,
+              "c"
+            ]
+          },
+          "p": "3",
+          "c": {
+            "fr": "Passe le long de la ligne vers 3 : x4 monte et x2 suit pour un second piège à la ligne médiane ; x5 recule.",
+            "en": "Pass up the sideline to 3: x4 steps up and x2 follows for a second trap at half court; x5 drops back."
+          }
         }
       ]
     },
@@ -39720,6 +40542,7 @@
       "family": "presses",
       "lvl": 2,
       "review": "pending",
+      "court": "full",
       "name": {
         "fr": "Presse 2-1-2",
         "en": "2-1-2 press"
@@ -39837,6 +40660,30 @@
             "fr": "x1 et x2 piègent 1 ; x3 coupe la passe au milieu.",
             "en": "x1 and x2 trap 1; x3 cuts off the middle pass."
           }
+        },
+        {
+          "m": {
+            "x3": [
+              36,
+              16,
+              "m"
+            ],
+            "x5": [
+              38,
+              30,
+              "m"
+            ],
+            "x4": [
+              22,
+              40,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "Si 1 renverse vers 2, x3 glisse sur lui et x5 ferme la ligne ; x4 se recentre au milieu.",
+            "en": "If 1 reverses to 2, x3 slides onto him and x5 closes the sideline; x4 shifts to the middle."
+          }
         }
       ]
     },
@@ -39846,6 +40693,7 @@
       "family": "presses",
       "lvl": 1,
       "review": "pending",
+      "court": "full",
       "name": {
         "fr": "Presse homme à homme tout terrain",
         "en": "Full-court man press"
@@ -39970,6 +40818,52 @@
             "fr": "1 coupe vers le ballon et reçoit : x1 reste collé.",
             "en": "1 cuts toward the ball and catches: x1 stays attached."
           }
+        },
+        {
+          "m": {
+            "1": [
+              30,
+              40,
+              "d"
+            ],
+            "x1": [
+              28,
+              37,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 remonte en dribble : x1 reste coude à coude et l'oblige à changer de direction.",
+            "en": "1 dribbles up: x1 stays hip to hip and forces him to change direction."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              22,
+              58,
+              "d"
+            ],
+            "x1": [
+              21,
+              55,
+              "m"
+            ],
+            "3": [
+              8,
+              62,
+              "c"
+            ],
+            "x3": [
+              10,
+              59,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Chacun reste collé à son joueur sur tout le terrain, même après la ligne médiane.",
+            "en": "Everyone stays attached to his man the length of the floor, even past half court."
+          }
         }
       ]
     },
@@ -39979,6 +40873,7 @@
       "family": "presses",
       "lvl": 3,
       "review": "pending",
+      "court": "full",
       "name": {
         "fr": "Presse « run and jump »",
         "en": "Run and jump press"
@@ -40113,6 +41008,7 @@
       "family": "presses",
       "lvl": 2,
       "review": "pending",
+      "court": "full",
       "name": {
         "fr": "Presse 3/4 de terrain",
         "en": "Three-quarter-court press"
@@ -40234,6 +41130,30 @@
           "c": {
             "fr": "1 remonte ; x1 et x2 le piègent à la ligne des lancers francs prolongée.",
             "en": "1 dribbles up; x1 and x2 trap him at the free-throw line extended."
+          }
+        },
+        {
+          "m": {
+            "5": [
+              36,
+              60,
+              "c"
+            ],
+            "x5": [
+              30,
+              62,
+              "m"
+            ],
+            "x4": [
+              28,
+              54,
+              "m"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "Si la passe longue part vers 5, x5 la conteste et x4 sprinte pour aider.",
+            "en": "If the long pass goes to 5, x5 contests it and x4 sprints over to help."
           }
         }
       ]
@@ -40376,6 +41296,7 @@
       "family": "presses",
       "lvl": 2,
       "review": "pending",
+      "court": "full",
       "name": {
         "fr": "Presse après lancer franc",
         "en": "Press after free throws"
@@ -40530,6 +41451,7 @@
       "family": "presses",
       "lvl": 2,
       "review": "pending",
+      "court": "full",
       "name": {
         "fr": "Presse : refuser la remise en jeu",
         "en": "Denying the inbound"
@@ -40643,6 +41565,25 @@
             "fr": "1 coupe vers l'arrière pour se démarquer : x1 reste entre lui et le ballon.",
             "en": "1 cuts away to get open: x1 stays between him and the ball."
           }
+        },
+        {
+          "m": {
+            "5": [
+              34,
+              58,
+              "c"
+            ],
+            "x5": [
+              32,
+              55,
+              "m"
+            ]
+          },
+          "p": "5",
+          "c": {
+            "fr": "Si 4 lance long vers 5, x5, resté en arrière, conteste la passe.",
+            "en": "If 4 throws long to 5, x5, who stayed back, contests the pass."
+          }
         }
       ]
     },
@@ -40652,6 +41593,7 @@
       "family": "presses",
       "lvl": 2,
       "review": "pending",
+      "court": "full",
       "name": {
         "fr": "Presse : retour en défense placée",
         "en": "Press retreat"
@@ -40774,6 +41716,44 @@
             "fr": "Tous les défenseurs sprintent vers leur panier.",
             "en": "Every defender sprints back toward his basket."
           }
+        },
+        {
+          "m": {
+            "3": [
+              25,
+              66,
+              "d"
+            ],
+            "x5": [
+              25,
+              84,
+              "m"
+            ],
+            "x4": [
+              19,
+              79,
+              "m"
+            ],
+            "x1": [
+              31,
+              79,
+              "m"
+            ],
+            "x2": [
+              14,
+              74,
+              "m"
+            ],
+            "x3": [
+              36,
+              74,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Tout le monde revient avant le ballon : la défense placée est prête sous son panier.",
+            "en": "Everyone gets back ahead of the ball: the half-court defense is set under its basket."
+          }
         }
       ]
     },
@@ -40783,6 +41763,7 @@
       "family": "presses",
       "lvl": 3,
       "review": "pending",
+      "court": "full",
       "name": {
         "fr": "Presse 1-3-1 tout terrain",
         "en": "Full-court 1-3-1 press"
@@ -40899,6 +41880,472 @@
           "c": {
             "fr": "x1 et x2 piègent 1 dans le coin ; x3 coupe le milieu, x4 descend.",
             "en": "x1 and x2 trap 1 in the corner; x3 cuts off the middle, x4 drops."
+          }
+        },
+        {
+          "m": {
+            "x4": [
+              37,
+              15,
+              "m"
+            ],
+            "x3": [
+              30,
+              22,
+              "m"
+            ],
+            "x5": [
+              30,
+              42,
+              "m"
+            ]
+          },
+          "p": "2",
+          "c": {
+            "fr": "Renversement vers 2 : x4 remonte sur lui, x3 glisse au milieu, x5 couvre la ligne.",
+            "en": "Reversal to 2: x4 steps up on him, x3 slides to the middle, x5 covers the sideline."
+          }
+        }
+      ]
+    },
+    {
+      "id": "press-2-2-1-half-court-trap",
+      "cat": "defense",
+      "family": "presses",
+      "lvl": 2,
+      "review": "pending",
+      "court": "full",
+      "name": {
+        "fr": "Presse 2-2-1 : piège à la ligne médiane",
+        "en": "2-2-1 press: half-court trap"
+      },
+      "sum": {
+        "fr": "Presse 2-2-1 qui laisse remonter le ballon, puis piège le porteur juste après la ligne médiane, le long de la ligne de touche.",
+        "en": "A 2-2-1 press that lets the ball come up, then traps the ball handler right after half court, along the sideline."
+      },
+      "why": {
+        "fr": "Une fois la ligne médiane passée, le porteur ne peut plus revenir en arrière : la ligne médiane et la ligne de touche deviennent deux défenseurs de plus.",
+        "en": "Once past half court, the ball handler can't go back: the half-court line and the sideline act as two extra defenders."
+      },
+      "counter": {
+        "fr": "Passer avant la ligne médiane, ou garder le ballon au milieu du terrain pour éviter le coin.",
+        "en": "Pass before half court, or keep the ball in the middle of the floor to avoid the corner."
+      },
+      "used": {
+        "fr": "Courant à tous les niveaux, surtout chez les jeunes et en championnat amateur.",
+        "en": "Common at every level, especially in youth and amateur leagues."
+      },
+      "keys": {
+        "fr": [
+          "Laisser remonter sans pression",
+          "Piéger juste après la ligne médiane",
+          "Couper la passe au milieu",
+          "Le dernier défenseur protège le panier"
+        ],
+        "en": [
+          "Let the ball come up without pressure",
+          "Trap right after half court",
+          "Cut off the pass to the middle",
+          "The last defender protects the rim"
+        ]
+      },
+      "start": {
+        "1": [
+          18,
+          8
+        ],
+        "2": [
+          34,
+          10
+        ],
+        "3": [
+          8,
+          52
+        ],
+        "4": [
+          25,
+          -2
+        ],
+        "5": [
+          40,
+          40
+        ],
+        "b": "4",
+        "x1": [
+          20,
+          16
+        ],
+        "x2": [
+          30,
+          16
+        ],
+        "x3": [
+          12,
+          40
+        ],
+        "x4": [
+          40,
+          34
+        ],
+        "x5": [
+          25,
+          60
+        ]
+      },
+      "steps": [
+        {
+          "p": "1",
+          "c": {
+            "fr": "La remise entre à 1 sans pression : le premier rideau reste devant lui.",
+            "en": "The ball comes in to 1 with no pressure: the first line stays in front of him."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              9,
+              44,
+              "d"
+            ],
+            "x1": [
+              12,
+              41,
+              "m"
+            ],
+            "x3": [
+              7,
+              48.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "1 remonte le long de la ligne : x1 l'accompagne, x3 l'attend juste après la ligne médiane.",
+            "en": "1 dribbles up the sideline: x1 shadows him, x3 waits right past half court."
+          }
+        },
+        {
+          "m": {
+            "x2": [
+              18,
+              46,
+              "m"
+            ],
+            "x4": [
+              28,
+              50,
+              "m"
+            ],
+            "x5": [
+              14,
+              64,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 et x3 piègent 1 contre les lignes ; x2 coupe le milieu, x4 se recentre, x5 surveille la passe longue.",
+            "en": "x1 and x3 trap 1 against the lines; x2 cuts off the middle, x4 shifts over, x5 watches the long pass."
+          }
+        }
+      ]
+    },
+    {
+      "id": "full-court-man-press-switching",
+      "cat": "defense",
+      "family": "presses",
+      "lvl": 3,
+      "review": "pending",
+      "court": "full",
+      "name": {
+        "fr": "Presse homme à homme : changer sur les écrans",
+        "en": "Full-court man press: switching screens"
+      },
+      "sum": {
+        "fr": "Presse homme à homme sur tout le terrain où les défenseurs changent de joueur sur chaque écran pour garder la pression sur le ballon.",
+        "en": "Full-court man-to-man press where defenders switch on every screen to keep pressure on the ball."
+      },
+      "why": {
+        "fr": "Les écrans sont le moyen le plus simple de libérer le meneur contre une presse homme à homme ; en changeant, on ne laisse jamais le porteur seul.",
+        "en": "Screens are the easiest way to free the point guard against a man press; by switching, the ball handler is never left alone."
+      },
+      "counter": {
+        "fr": "Chercher le décalage après le changement (grand sur petit) et attaquer vite.",
+        "en": "Hunt the mismatch after the switch (big on small) and attack quickly."
+      },
+      "used": {
+        "fr": "Utilisée par les équipes athlétiques, de taille homogène.",
+        "en": "Used by athletic teams with players of similar size."
+      },
+      "keys": {
+        "fr": [
+          "Annoncer l'écran fort et tôt",
+          "Changer sans hésiter",
+          "Le nouveau défenseur se colle au porteur",
+          "L'ancien défenseur prend l'écran"
+        ],
+        "en": [
+          "Call the screen loud and early",
+          "Switch without hesitating",
+          "The new defender gets up on the ball",
+          "The old defender takes the screener"
+        ]
+      },
+      "start": {
+        "1": [
+          22,
+          14
+        ],
+        "2": [
+          34,
+          16
+        ],
+        "3": [
+          10,
+          40
+        ],
+        "4": [
+          30,
+          -2
+        ],
+        "5": [
+          38,
+          44
+        ],
+        "b": "4",
+        "x1": [
+          22,
+          11.5
+        ],
+        "x2": [
+          34,
+          13.5
+        ],
+        "x3": [
+          10,
+          37
+        ],
+        "x4": [
+          30,
+          2
+        ],
+        "x5": [
+          38,
+          41
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "2": [
+              25,
+              11,
+              "s"
+            ],
+            "x2": [
+              27.5,
+              13.5,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "2 vient poser un écran sur x1 pour libérer 1.",
+            "en": "2 comes to set a screen on x1 to free 1."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              32,
+              7,
+              "c"
+            ],
+            "x2": [
+              31,
+              9.5,
+              "m"
+            ],
+            "x1": [
+              24,
+              14,
+              "m"
+            ]
+          },
+          "p": "1",
+          "c": {
+            "fr": "Changement : x2 saute sur 1 qui reçoit, x1 prend 2.",
+            "en": "Switch: x2 jumps 1 as he catches, x1 takes 2."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              38,
+              30,
+              "d"
+            ],
+            "x2": [
+              36,
+              27,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "La pression continue : x2 suit 1 et l'oriente vers la ligne de touche.",
+            "en": "The pressure stays on: x2 follows 1 and pushes him toward the sideline."
+          }
+        }
+      ]
+    },
+    {
+      "id": "contain-press",
+      "cat": "defense",
+      "family": "presses",
+      "lvl": 1,
+      "review": "pending",
+      "court": "full",
+      "name": {
+        "fr": "Presse de ralentissement (sans piège)",
+        "en": "Contain press (no trap)"
+      },
+      "sum": {
+        "fr": "Presse 2-2-1 sans piège : on reste devant le ballon pour faire perdre du temps à l'attaque et l'empêcher de courir.",
+        "en": "A 2-2-1 press with no trap: stay in front of the ball to burn the offense's clock and stop it from running."
+      },
+      "why": {
+        "fr": "Elle ne prend aucun risque mais retire 6 à 8 secondes à l'attaque et l'empêche d'attaquer vite : idéale pour casser le rythme.",
+        "en": "It takes no risk but costs the offense 6 to 8 seconds and keeps it from attacking early: ideal to change the tempo."
+      },
+      "counter": {
+        "fr": "Remonter vite par la passe, sans dribbler, avant que la défense se replace.",
+        "en": "Advance quickly with passes, not the dribble, before the defense is set."
+      },
+      "used": {
+        "fr": "Courante à tous les niveaux pour changer le rythme d'un match.",
+        "en": "Common at every level to change the tempo of a game."
+      },
+      "keys": {
+        "fr": [
+          "Rester devant le ballon",
+          "Pas de piège, pas de risque",
+          "Faire dribbler l'adversaire",
+          "Revenir vite en défense placée"
+        ],
+        "en": [
+          "Stay in front of the ball",
+          "No trap, no risk",
+          "Make the offense dribble",
+          "Get back fast to the half-court defense"
+        ]
+      },
+      "start": {
+        "1": [
+          20,
+          10
+        ],
+        "2": [
+          36,
+          12
+        ],
+        "3": [
+          10,
+          32
+        ],
+        "4": [
+          28,
+          -2
+        ],
+        "5": [
+          38,
+          40
+        ],
+        "b": "4",
+        "x1": [
+          20,
+          18
+        ],
+        "x2": [
+          32,
+          18
+        ],
+        "x3": [
+          12,
+          36
+        ],
+        "x4": [
+          36,
+          36
+        ],
+        "x5": [
+          25,
+          56
+        ]
+      },
+      "steps": [
+        {
+          "p": "1",
+          "c": {
+            "fr": "La remise entre à 1 sans contestation.",
+            "en": "The ball comes in to 1 uncontested."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              18,
+              34,
+              "d"
+            ],
+            "x1": [
+              19,
+              31,
+              "m"
+            ],
+            "x2": [
+              26,
+              30,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 reste devant 1 et recule avec lui, x2 ferme le milieu : on ralentit sans piéger.",
+            "en": "x1 stays in front of 1 and backpedals with him, x2 closes the middle: slow down, no trap."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              20,
+              60,
+              "d"
+            ],
+            "x1": [
+              21,
+              64,
+              "m"
+            ],
+            "x2": [
+              28,
+              70,
+              "m"
+            ],
+            "x3": [
+              14,
+              72,
+              "m"
+            ],
+            "x4": [
+              34,
+              74,
+              "m"
+            ],
+            "x5": [
+              25,
+              82,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "Tout le monde recule devant le ballon et se replace en défense placée.",
+            "en": "Everyone retreats ahead of the ball into the half-court defense."
           }
         }
       ]
@@ -56139,6 +57586,210 @@
           "Basket allowed in transition = 2-point penalty",
           "Quick inbound after a make",
           "With a shot clock"
+        ]
+      }
+    },
+    {
+      "id": "5-on-5-attack-then-transition-defense",
+      "cat": "exercices",
+      "family": "transition-exercices",
+      "lvl": 2,
+      "review": "pending",
+      "court": "full",
+      "name": {
+        "fr": "5 contre 5 : attaque puis repli défensif",
+        "en": "5-on-5: attack, then transition defense"
+      },
+      "sum": {
+        "fr": "Deux défenseurs attendent au panier ; les trois autres partent du fond et doivent passer par le rond central avant de revenir défendre. Puis on repart dans l'autre sens.",
+        "en": "Two defenders wait at the basket; the other three start from the far end and must go through the center circle before getting back. Then play goes the other way."
+      },
+      "why": {
+        "fr": "Travaille le sprint de repli et l'arrêt du ballon en infériorité, puis l'attaque contre une défense qui se replace.",
+        "en": "Works sprinting back and stopping the ball while outnumbered, then attacking a defense that is still getting set."
+      },
+      "counter": {
+        "fr": "L'attaque pousse vite pour jouer à 5 contre 2 avant le retour des défenseurs.",
+        "en": "The offense pushes fast to play 5-on-2 before the defenders get back."
+      },
+      "used": {
+        "fr": "Exercice classique de transition, utilisé en club du jeune âge aux seniors.",
+        "en": "Classic transition drill, used in clubs from youth to seniors."
+      },
+      "keys": {
+        "fr": [
+          "Les deux défenseurs arrêtent le ballon",
+          "Les retardataires sprintent par le milieu",
+          "Parler en revenant",
+          "Enchaîner vers l'autre panier sans pause"
+        ],
+        "en": [
+          "The two defenders stop the ball",
+          "The late defenders sprint through the middle",
+          "Talk on the way back",
+          "Go straight to the other basket with no break"
+        ]
+      },
+      "start": {
+        "1": [
+          25,
+          86
+        ],
+        "2": [
+          10,
+          80
+        ],
+        "3": [
+          40,
+          80
+        ],
+        "4": [
+          18,
+          90
+        ],
+        "5": [
+          32,
+          90
+        ],
+        "b": "1",
+        "x1": [
+          20,
+          12
+        ],
+        "x2": [
+          30,
+          12
+        ],
+        "x3": [
+          2,
+          70
+        ],
+        "x4": [
+          48,
+          70
+        ],
+        "x5": [
+          25,
+          95
+        ]
+      },
+      "steps": [
+        {
+          "m": {
+            "1": [
+              25,
+              52,
+              "d"
+            ],
+            "2": [
+              8,
+              40,
+              "c"
+            ],
+            "3": [
+              42,
+              40,
+              "c"
+            ],
+            "4": [
+              16,
+              56,
+              "c"
+            ],
+            "5": [
+              34,
+              58,
+              "c"
+            ],
+            "x3": [
+              20,
+              47,
+              "m"
+            ],
+            "x4": [
+              30,
+              47,
+              "m"
+            ],
+            "x5": [
+              25,
+              60,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "L'attaque remonte à cinq ; x3, x4 et x5 doivent passer par le rond central.",
+            "en": "The offense pushes up with five; x3, x4 and x5 must go through the center circle."
+          }
+        },
+        {
+          "m": {
+            "1": [
+              24,
+              26,
+              "d"
+            ],
+            "2": [
+              6,
+              14,
+              "c"
+            ],
+            "3": [
+              44,
+              14,
+              "c"
+            ],
+            "x3": [
+              14,
+              22,
+              "m"
+            ],
+            "x4": [
+              36,
+              22,
+              "m"
+            ],
+            "x5": [
+              25,
+              30,
+              "m"
+            ]
+          },
+          "c": {
+            "fr": "x1 et x2 ralentissent le ballon pendant que les trois autres sprintent se replacer.",
+            "en": "x1 and x2 slow the ball down while the other three sprint back into position."
+          }
+        },
+        {
+          "p": "3",
+          "c": {
+            "fr": "On joue jusqu'au tir ; au panier ou au rebond, les rôles s'inversent vers l'autre panier.",
+            "en": "Play to a shot; on a make or a rebound, roles switch and play goes to the other basket."
+          }
+        }
+      ],
+      "duration": 15,
+      "equipment": {
+        "fr": "Terrain complet, 1 ballon, chasubles",
+        "en": "Full court, 1 ball, pinnies"
+      },
+      "players": "10",
+      "age": [
+        "U13",
+        "U15",
+        "U17",
+        "seniors"
+      ],
+      "variants": {
+        "fr": [
+          "Un seul défenseur en attente au panier",
+          "Les retardataires touchent d'abord la ligne de fond",
+          "Points doublés sur un arrêt défensif"
+        ],
+        "en": [
+          "Only one defender waiting at the basket",
+          "The late defenders touch the baseline first",
+          "Double points for a defensive stop"
         ]
       }
     },

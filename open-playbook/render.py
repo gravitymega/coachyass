@@ -149,73 +149,109 @@ def snapshot(t, timings, states, time):
 
 # ---------------------------------------------------------------- dessin ---
 class Board:
-    """Demi-terrain : x de -3 à 53, y de -5 à 47 (pieds), ligne de fond en haut."""
+    """Demi-terrain : x de -3 à 53, y de -5 à 47 (pieds), ligne de fond en haut.
+    full : terrain entier (y jusqu'à 99). horizontal : terrain couché, la première ligne de fond à gauche."""
 
-    X0, Y0, FW, FH = -3.0, -5.0, 56.0, 52.0
+    X0, Y0, FW = -3.0, -5.0, 56.0
 
-    def __init__(self, x, y, w):
-        self.x, self.y, self.s = x, y, w / self.FW
-        self.w, self.h = w, self.FH * self.s
+    def __init__(self, x, y, w, full=False, horizontal=False):
+        self.full, self.horizontal = full, horizontal
+        self.FH = 104.0 if full else 52.0
+        self.x, self.y = x, y
+        # w : largeur à l'écran (la longueur du terrain si horizontal).
+        self.s = w / (self.FH if horizontal else self.FW)
+        self.w0, self.h0 = self.FW * self.s, self.FH * self.s  # taille avant rotation
+        self.w, self.h = (self.h0, self.w0) if horizontal else (self.w0, self.h0)
 
-    def pt(self, p):
+    def pt0(self, p):
         return (self.x + (p[0] - self.X0) * self.s, self.y + (p[1] - self.Y0) * self.s)
 
+    def pt(self, p):
+        x, y = self.pt0(p)
+        if not self.horizontal:
+            return (x, y)
+        return (self.x + (y - self.y), self.y + self.w0 - (x - self.x))
+
     def court(self, cr):
-        s = self.s
         cr.save()
-        rounded(cr, self.x, self.y, self.w, self.h, 28)
+        if self.horizontal:  # le terrain est dessiné dans son repère, puis tourné d'un quart de tour
+            cr.translate(self.x, self.y + self.w0)
+            cr.rotate(-math.pi / 2)
+            cr.translate(-self.x, -self.y)
+        self.court_upright(cr)
+        cr.restore()
+
+    def court_upright(self, cr):
+        s = self.s
+        pt = self.pt0
+        cr.save()
+        rounded(cr, self.x, self.y, self.w0, self.h0, 28)
         cr.clip_preserve()
         cr.set_source_rgb(*BOARD)
         cr.fill()
-        x0, y0 = self.pt((0, 0))
+        x0, y0 = pt((0, 0))
         cr.set_source_rgb(*PLANK)  # lattes du parquet, une sur deux
         for i in range(-2, 28, 2):
-            cr.rectangle(x0 + i * 2 * s, self.y, 2 * s, self.h)
+            cr.rectangle(x0 + i * 2 * s, self.y, 2 * s, self.h0)
         cr.fill()
-        px, py = self.pt((17, 0))
-        cr.set_source_rgba(*PAINT, 0.55)  # raquette peinte
-        cr.rectangle(px, py, 16 * s, 19 * s)
+        cr.set_source_rgba(*PAINT, 0.55)  # raquette(s) peinte(s)
+        for y_top in ((0, 75) if self.full else (0,)):
+            px, py = pt((17, y_top))
+            cr.rectangle(px, py, 16 * s, 19 * s)
         cr.fill()
         cr.reset_clip()
+        if self.full:  # seconde moitié : symétrique par rapport à la ligne médiane
+            for mirror in (False, True):
+                cr.save()
+                if mirror:
+                    cr.translate(0, 2 * self.y + (94 - 2 * self.Y0) * s)
+                    cr.scale(1, -1)
+                self.half_lines(cr, s, pt)
+                cr.restore()
+            cr.restore()
+            return
+        self.half_lines(cr, s, pt)
+        cr.restore()
+
+    def half_lines(self, cr, s, pt):
         cr.set_source_rgb(*INK)
         cr.set_line_width(0.18 * s)
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
-        x0, y0 = self.pt((0, 0))
+        x0, y0 = pt((0, 0))
         cr.rectangle(x0, y0, 50 * s, 47 * s)  # lignes de touche, fond, médiane
         cr.stroke()
-        px, py = self.pt((17, 0))
+        px, py = pt((17, 0))
         cr.rectangle(px, py, 16 * s, 19 * s)  # raquette
         cr.stroke()
-        cx, cy = self.pt((25, 19))
+        cx, cy = pt((25, 19))
         cr.arc(cx, cy, 6 * s, 0, math.pi)  # cercle des lancers francs (demi extérieur)
         cr.stroke()
         cr.set_dash([0.8 * s, 0.8 * s])
         cr.arc(cx, cy, 6 * s, math.pi, 2 * math.pi)
         cr.stroke()
         cr.set_dash([])
-        bx, by = self.pt((25, 5.25))
+        bx, by = pt((25, 5.25))
         cr.arc(bx, by, 4 * s, 0, math.pi)  # zone de non-charge
         cr.stroke()
         a = math.asin(22 / 23.75)  # ligne à 3 points : corners à 3 pieds des lignes
         yc = 5.25 + 23.75 * math.cos(a)
         for x in (3, 47):
-            cr.move_to(*self.pt((x, 0)))
-            cr.line_to(*self.pt((x, yc)))
+            cr.move_to(*pt((x, 0)))
+            cr.line_to(*pt((x, yc)))
             cr.stroke()
         cr.arc(bx, by, 23.75 * s, math.pi / 2 - a, math.pi / 2 + a)
         cr.stroke()
-        mx, my = self.pt((25, 47))
+        mx, my = pt((25, 47))
         cr.arc(mx, my, 6 * s, math.pi, 2 * math.pi)  # rond central
         cr.stroke()
         cr.set_line_width(0.3 * s)
-        cr.move_to(*self.pt((22, 4)))
-        cr.line_to(*self.pt((28, 4)))  # planche
+        cr.move_to(*pt((22, 4)))
+        cr.line_to(*pt((28, 4)))  # planche
         cr.stroke()
         cr.set_source_rgb(*ORANGE)
         cr.set_line_width(0.22 * s)
         cr.arc(bx, by, 0.75 * s, 0, 2 * math.pi)  # cercle
         cr.stroke()
-        cr.restore()
 
     def arrow(self, cr, a, b, kind, defender):
         s = self.s
@@ -352,8 +388,14 @@ class Layout:
         self.margin = 60 * k if name != "horizontal" else 70
 
 
-def layouts():
+def layouts(full=False):
     m = 60
+    if full:  # terrain entier : couché dans les formats carré et horizontal, légende dessous ou à droite
+        return {
+            "vertical": Layout("vertical", 1080, 1920, 1.0, Board(250, 360, 580, full=True), (m, 1500, 1080 - 2 * m), 1850),
+            "square": Layout("square", 1080, 1080, 0.68, Board(40, 200, 1000, full=True, horizontal=True), (60, 800, 960), 1045),
+            "horizontal": Layout("horizontal", 1920, 1080, 0.9, Board(50, 240, 1240, full=True, horizontal=True), (1330, 320, 540), 1045),
+        }
     return {
         # 1080×1920 : titre, terrain pleine largeur, légende dessous.
         "vertical": Layout("vertical", 1080, 1920, 1.0, Board(m, 360, 1080 - 2 * m), (m, 360 + 52 * (960 / 56) + 90, 1080 - 2 * m), 1850),
@@ -531,24 +573,31 @@ class NeonBoard:
         cr.fill()
         cr.set_source_rgba(1, 1, 1, 0.05)
         for i in range(-2, 28, 2):
-            self.poly(cr, [(i * 2, -4), (i * 2 + 2, -4), (i * 2 + 2, 48), (i * 2, 48)])
+            self.poly(cr, [(i * 2, -4), (i * 2 + 2, -4), (i * 2 + 2, self.y_max), (i * 2, self.y_max)])
             cr.close_path()
             cr.fill()
-        self.poly(cr, [(17, 0), (33, 0), (33, 19), (17, 19)])
-        cr.close_path()
-        cr.set_source_rgba(*ELEC, 0.28)
-        cr.fill()
+        # Le terrain entier se voit quand le cadrage dépasse la ligne médiane : seconde moitié en miroir (y → 94 - y).
+        halves = (False, True) if self.y_max > 47 else (False,)
+        flip = lambda pts, m: [(x, 94 - y) for x, y in pts] if m else pts
+        for m in halves:
+            self.poly(cr, flip([(17, 0), (33, 0), (33, 19), (17, 19)], m))
+            cr.close_path()
+            cr.set_source_rgba(*ELEC, 0.28)
+            cr.fill()
         # Lignes blanches légèrement lumineuses.
         a = math.asin(22 / 23.75)
         yc = 5.25 + 23.75 * math.cos(a)
-        lines = [
-            [(0, 0), (50, 0), (50, 47), (0, 47), (0, 0)],
+        half = [
             [(17, 0), (17, 19), (33, 19), (33, 0)],
             self.arc_pts((25, 19), 6, 0, 2 * math.pi),
             self.arc_pts((25, 5.25), 4, 0, math.pi),
             [(3, 0), (3, yc)] + self.arc_pts((25, 5.25), 23.75, math.pi / 2 + a, math.pi / 2 - a) + [(47, yc), (47, 0)],
             self.arc_pts((25, 47), 6, math.pi, 2 * math.pi),
         ]
+        lines = [[(0, 0), (50, 0), (50, 94), (0, 94), (0, 0)] if len(halves) > 1 else [(0, 0), (50, 0), (50, 47), (0, 47), (0, 0)]]
+        lines += [[(0, 47), (50, 47)]] if len(halves) > 1 else []
+        for m in halves:
+            lines += [flip(pts, m) for pts in half]
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         for pts in lines:
             self.poly(cr, pts)
@@ -559,9 +608,15 @@ class NeonBoard:
             cr.set_line_width(2.4)
             cr.stroke()
         cr.restore()
-        # Panier : planche et cercle, en hauteur.
+        # Second panier, au premier plan, seulement s'il est dans le cadre.
+        if self.y_max >= 86:
+            self.hoop(cr, 94 - 4, 94 - 5.25)
+        self.hoop(cr, 4, 5.25)
+
+    def hoop(self, cr, y_board, y_rim):
+        """Planche et cercle, en hauteur."""
         cr.new_path()
-        p1, p2 = self.pt((22, 4), 9.5), self.pt((28, 4), 13)
+        p1, p2 = self.pt((22, y_board), 9.5), self.pt((28, y_board), 13)
         cr.rectangle(p1[0], p2[1], p2[0] - p1[0], p1[1] - p2[1])
         cr.set_source_rgba(1, 1, 1, 0.25)
         cr.fill_preserve()
@@ -570,7 +625,7 @@ class NeonBoard:
         cr.stroke()
         cr.new_path()
         for i in range(41):
-            q = (25 + 0.9 * math.cos(i * math.pi / 20), 5.25 + 0.9 * math.sin(i * math.pi / 20))
+            q = (25 + 0.9 * math.cos(i * math.pi / 20), y_rim + 0.9 * math.sin(i * math.pi / 20))
             (cr.move_to if i == 0 else cr.line_to)(*self.pt(q, 10))
         glow_path(cr, ORANGE, 2.5)
 
@@ -672,10 +727,10 @@ def neon_background(cr, L):
                 cr.stroke()
 
 
-def neon_board(states):
+def neon_board(states, full=False):
     """Cadrage par fiche : la caméra s'approche du panier si tous les joueurs restent près de lui."""
     ys = [p[1] for pos, _ in states for p in pos.values()]
-    y_max = min(48.0, max(30.0, max(ys) + 6))
+    y_max = min(98.0 if full else 48.0, max(30.0, max(ys) + 6))
     return NeonBoard(540, 640, 1215, 1070, y_max)
 
 
@@ -693,7 +748,7 @@ def neon_static(L, t, cat_label, states):
         # Haut : catégorie puis nom de la tactique, en néon.
         neon_text(c, cat_label.split("·")[0].strip().upper(), L.W / 2, 205, 44, ORANGE)
         neon_block(c, t["name"]["fr"], L.W / 2, 225, 980, LIME, 140, 72, 2)
-        b = neon_board(states)
+        b = neon_board(states, t.get("court") == "full")
         b.court(c)
         _NEON_STATIC[key] = (surf, b)
     return _NEON_STATIC[key]
@@ -945,7 +1000,7 @@ def render(t, cat_label, out_dir, formats, audio=None, cache=None):
     folder.mkdir(parents=True, exist_ok=True)
     made = []
     for name in formats:
-        L = layouts()[name]
+        L = layouts(t.get("court") == "full")[name]
         out = folder / f"{t['id']}-{name}.mp4"
         audio_in, audio_map = [], []
         fmt_tracks = tracks
