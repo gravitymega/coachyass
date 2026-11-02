@@ -152,7 +152,7 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 
 ## Vidéos en anglais, voix réaliste, moins de texte, vraie séquence de match (demande du 2 nov. 2026)
 
-- Choix de l'utilisateur : « realistic » veut dire la **voix** ; le lien de vraie séquence de match va **dans la vidéo publique** ; format : **moins de texte**.
+- Choix de l'utilisateur : « realistic » veut dire la **voix** ; format : **moins de texte**. Le lien de vraie séquence de match a d'abord été demandé dans la vidéo, puis retiré le même jour (« je ne veux pas que le lien apparaisse dans la vidéo que je téléchargerai ») : aucun lien dans les vidéos, et aucune liste de liens dans le dépôt public (les liens restent dans le chat, pour l'utilisateur seulement).
 - `render.py` (`VL = "en"`) : textes à l'écran en anglais seulement (titre, « STEP i/n », légende, « WHY IT WORKS ») et une seule piste audio anglaise. La traduction sous la légende est retirée.
 - Voix anglaise : Kokoro-82M (Apache 2.0), voix d'homme `am_michael`, beaucoup plus naturelle que Piper. `AUDIO_VERSIONS` passe à `{ fr: "v2", en: "v3" }`. Le français du site garde Piper « pierre ». Job `audio` : français en 4 parts, anglais en 16 parts ; modèle `kokoro-v1.0.int8.onnx` et `voices-v1.0.bin` tirés des releases de kokoro-onnx (cache `voices-v3-<langue>`).
-- Fin de chaque vidéo : carte « WATCH IT IN A REAL GAME » pendant 4 s. Elle affiche le lien de `data/realgame.json` (11 fiches pour l'instant, trouvées par recherche, à vérifier) ; sans lien, la recherche YouTube à faire. Le lien garde sa casse d'origine, car les identifiants YouTube y sont sensibles. `npm run validate` vérifie `realgame.json`.
+- Aucun lien dans les vidéos téléchargeables : la carte de fin et `data/realgame.json` sont retirés, ainsi que l'adresse du site sur la couverture (demande du 2 nov. 2026).

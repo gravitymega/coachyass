@@ -20,7 +20,6 @@ Usage :
     python3 render.py --all --audio https://gravitymega.github.io/coachyass  # clips publiés du site
 
 Vidéos en anglais (demande du 2 nov. 2026) : textes à l'écran et voix (Kokoro, voix d'homme) en anglais seulement.
-Fin de vidéo : lien vers une vraie séquence de match (data/realgame.json), ou à défaut la recherche à faire sur YouTube.
 Voix : avec --audio, la piste anglaise est placée sous l'animation,
 lues aux mêmes moments que sur le site. Une étape dure assez longtemps pour que sa phrase finisse
 dans les deux langues. Il faut audio-index.json (npm run audio:jobs).
@@ -86,18 +85,6 @@ FONT_COND = "Barlow Condensed"
 
 PLAYER_IDS = ["1", "2", "3", "4", "5", "x1", "x2", "x3", "x4", "x5"]
 VL = "en"  # langue des vidéos
-REAL = json.loads((DATA / "realgame.json").read_text(encoding="utf-8"))["links"] if (DATA / "realgame.json").exists() else {}
-REAL_CARD = 4.0  # secondes de la carte « vraie séquence de match » à la fin
-
-
-def real_game(t):
-    """(titre, ligne principale, ligne secondaire) de la carte de fin."""
-    link = REAL.get(t["id"])
-    if link:
-        url = link["url"].replace("https://", "").replace("www.", "")
-        url = url.replace("youtube.com/watch?v=", "youtu.be/").replace("youtube.com/shorts/", "youtube.com/shorts/")
-        return "WATCH IT IN A REAL GAME", url, link.get("label", "")
-    return "WATCH IT IN A REAL GAME", f"YouTube: {t['name']['en']} NBA", "Search it and watch it live"
 TIMELINE = json.loads((DATA / "timeline.json").read_text(encoding="utf-8"))
 
 
@@ -466,17 +453,6 @@ def draw_frame(cr, L, t, cat_label, timings, states, time):
             b.arrow(cr, after[ball0], after[step["p"]], "pass", False)
         b.players(cr, pos, ball)
         caption_block(cr, L, step["c"], f"STEP {i + 1}/{len(steps)}")
-    elif time >= INTRO + total + OUTRO - REAL_CARD:  # carte « vraie séquence de match »
-        pos, ball = states[-1]
-        b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None)
-        x, y, width = L.cap
-        title, main, sub_ = real_game(t)
-        if L.name == "vertical":
-            y = b.y + 120
-        text(cr, title, x, y, 56 * k, ORANGE, FONT_COND, bold=True)
-        y = paragraph(cr, main, x, y + 110 * k, 50 * k, width, WHITE, FONT, bold=True)
-        if sub_:
-            paragraph(cr, sub_, x, y + 24 * k, 40 * k, width, MUTED, FONT)
     else:  # écran final
         pos, ball = states[-1]
         b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None)
@@ -801,11 +777,6 @@ def draw_frame_neon(cr, L, t, cat_label, timings, states, time):
             b.arrow(cr, after[ball0], after[step["p"]], "pass", False)
         b.players(cr, pos, ball, pulse)
         bottom = (step["c"][VL], "", f"STEP {i + 1}/{len(steps)}")
-    elif time >= INTRO + total + OUTRO - REAL_CARD:
-        pos, ball = states[-1]
-        b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None, pulse)
-        title, main, sub_ = real_game(t)
-        bottom = (main, sub_, title)
     else:
         pos, ball = states[-1]
         b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None, pulse)
@@ -839,8 +810,7 @@ def neon_caption(L, main, alt, label):
         text(cr, label, W / 2, y + 46, 40, WHITE, FONT_COND, bold=True, align="center")
         y += 84
     end = label == "WHY IT WORKS"
-    link = label == "WATCH IT IN A REAL GAME"  # lien : casse d'origine (les liens YouTube y sont sensibles)
-    y = neon_block(cr, main, W / 2, y, 980, WHITE if end else LIME, 64 if link else 76, 36, 2 if link else (6 if end else 4), leading=1.0, upper=not link)
+    y = neon_block(cr, main, W / 2, y, 980, WHITE if end else LIME, 76, 40, 6 if end else 4, leading=1.0)
     alt_lines = wrap(cr, alt, 34, W - 140, FONT) if alt else []
     room = int((1735 - (y + 44)) // 42) + 1
     if room >= len(alt_lines):  # la traduction anglaise seulement si elle tient en entier
@@ -961,10 +931,6 @@ def draw_cover(cr, L, t, states):
     text(cr, line1.upper(), 0, y, size1, ORANGE, FONT_COND, bold=True, align="center")
     if line2:
         text(cr, line2.upper(), 0, y + bh * 0.06 + size2 * 0.8, size2, WHITE, FONT_COND, bold=True, align="center")
-    url = "gravitymega.github.io/coachyass"
-    cr.select_font_face(FONT_COND, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
-    cr.set_font_size(30 * k)
-    text(cr, url, W * 0.44 - cr.text_extents(url).x_advance, bh / 2 - 18 * k, 30 * k, MUTED, FONT_COND)  # aligné à droite, dans le cadre
     cr.restore()
 
 
@@ -1088,7 +1054,6 @@ def render(t, cat_label, out_dir, formats, audio=None, cache=None):
         INTRO = max(INTRO0, dur[0] + 0.4)
         step_voice = dur[1:-1]
         OUTRO = max(OUTRO0, dur[-1] + 0.8)
-    OUTRO += REAL_CARD  # carte de fin « vraie séquence de match »
     timings = step_timings(t["steps"], step_voice)
     states = frames(t)
     duration = INTRO + timings[-1]["end"] + OUTRO
