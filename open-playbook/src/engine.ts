@@ -58,8 +58,11 @@ export interface PlanBlock {
   ids?: string[];
 }
 
+export type PlanLevel = "general" | "jeunes" | "amateurs" | "pro" | "pre-saison" | "veille-de-match";
+
 export interface Plan {
-  id?: string;
+  id: string;
+  level: PlanLevel;
   name: Text;
   duration: number;
   blocks: PlanBlock[];
@@ -68,7 +71,7 @@ export interface Plan {
 export interface Library {
   cats: Category[];
   glossary: GlossaryEntry[];
-  plan: Plan;
+  plans: Plan[];
   tactics: Tactic[];
 }
 
@@ -89,6 +92,9 @@ export const COLORS = {
   offense: "#1F5FD1",
   defense: "#D7263D",
   ball: "#F08A24",
+  court: "#E9C89B",
+  plank: "#DDB886",
+  paint: "#C98E5A",
 };
 
 export const TIMELINE = timelineJson as {
@@ -156,6 +162,20 @@ export function frames(t: Tactic): BoardState[] {
     out.push({ pos: { ...pos }, ball });
   }
   return out;
+}
+
+export type ShotKind = "rim" | "mid" | "three";
+
+/** Tir obtenu à la fin de la fiche, d'après la position du dernier porteur du ballon. */
+export function shotKind(t: Tactic): ShotKind | null {
+  const last = frames(t).at(-1);
+  const p = last?.ball ? last.pos[last.ball as PlayerId] : undefined;
+  if (!p) return null;
+  const dx = p[0] - COURT.basket[0], dy = p[1] - COURT.basket[1];
+  const d = Math.hypot(dx, dy);
+  if (d <= 8) return "rim";
+  const three = p[1] < 14 ? Math.abs(dx) >= 21.5 : d >= 23.25;
+  return three ? "three" : "mid";
 }
 
 /** Pour la recherche : minuscules, sans accents. */
