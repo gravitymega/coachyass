@@ -4,23 +4,11 @@ import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import Ajv from "ajv";
-import {
-  COURT,
-  PLAYER_IDS,
-  SYSTEM_CATS,
-  frames,
-  isDefender,
-  type Library,
-  type PlayerId,
-  type Point,
-  type Tactic,
-} from "../src/engine.ts";
+import type { Library } from "../src/engine.ts";
+import { checkTactic } from "../src/checks.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const readJson = (p: string) => JSON.parse(readFileSync(join(root, p), "utf8"));
-
-/** Distance minimale entre deux joueurs (pieds). */
-const MIN_GAP = 1;
 
 const errors: string[] = [];
 const warnings: string[] = [];
@@ -42,67 +30,6 @@ function schemaErrors(file: string, ok: boolean, list: typeof validateLibrary.er
   }
 }
 
-const inBounds = ([x, y]: Point) =>
-  x >= COURT.bounds.xMin && x <= COURT.bounds.xMax && y >= COURT.bounds.yMin && y <= COURT.bounds.yMax;
-
-const fmt = (n: number) => String(Math.round(n * 100) / 100);
-
-function checkPositions(where: string, pos: Partial<Record<PlayerId, Point>>, moved?: Set<string>) {
-  const ids = Object.keys(pos) as PlayerId[];
-  // Hors terrain : signalé seulement à l'étape où le joueur y va.
-  for (const id of ids.filter((i) => !moved || moved.has(i))) {
-    const p = pos[id]!;
-    if (!inBounds(p)) err(`${where} › ${id}`, `hors terrain (x = ${fmt(p[0])}, y = ${fmt(p[1])})`);
-  }
-  // Même endroit : signalé seulement quand l'un des deux vient de bouger (ou au départ).
-  for (let i = 0; i < ids.length; i++) {
-    for (let j = i + 1; j < ids.length; j++) {
-      if (moved && !moved.has(ids[i]) && !moved.has(ids[j])) continue;
-      const a = pos[ids[i]]!;
-      const b = pos[ids[j]]!;
-      const d = Math.hypot(a[0] - b[0], a[1] - b[1]);
-      if (d < MIN_GAP) err(where, `${ids[i]} et ${ids[j]} au même endroit (${fmt(d)} pied d'écart)`);
-    }
-  }
-}
-
-function checkTactic(t: Tactic, cats: Set<string>) {
-  const id = t.id;
-  if (!cats.has(t.cat)) err(id, `catégorie inconnue « ${t.cat} »`);
-  if (t.keys.fr.length !== t.keys.en.length) warnings.push(`${id} : ${t.keys.fr.length} points clés FR pour ${t.keys.en.length} EN`);
-  if (t.variants && t.variants.fr.length !== t.variants.en.length) warnings.push(`${id} : variantes FR et EN en nombre différent`);
-  // Objectif du projet : toutes les fiches sont animées.
-  if (!t.start || !t.steps?.length) {
-    err(id, "fiche non animée (placement de départ et étapes obligatoires)");
-    return;
-  }
-  const s = t.start;
-  if (s.b !== undefined && !s[s.b as PlayerId]) err(id, `le porteur du ballon « ${s.b} » n'est pas sur le terrain`);
-  if (SYSTEM_CATS.includes(t.cat) && t.steps.length < 2) {
-    err(id, `un système doit avoir au moins 2 étapes (${t.steps.length})`);
-  }
-  checkPositions(`${id} › départ`, Object.fromEntries(PLAYER_IDS.filter((p) => s[p]).map((p) => [p, s[p]])));
-
-  const states = frames(t);
-  (t.steps ?? []).forEach((step, k) => {
-    const where = `${id} › étape ${k + 1}`;
-    const before = states[k];
-    for (const [pid, mv] of Object.entries(step.m ?? {})) {
-      if (!before.pos[pid as PlayerId]) err(where, `${pid} se déplace mais n'est pas dans le placement de départ`);
-      const type = mv[2];
-      if (type === "m" && !isDefender(pid)) warnings.push(`${where} : ${pid} (attaquant) utilise le type « m » réservé à la défense`);
-      if (type !== "m" && isDefender(pid)) err(where, `${pid} (défenseur) doit utiliser le type « m »`);
-      if (type === "d" && before.ball !== pid) err(where, `${pid} dribble sans avoir le ballon`);
-    }
-    if (step.p !== undefined) {
-      if (!before.pos[step.p as PlayerId]) err(where, `le receveur de la passe « ${step.p} » n'existe pas`);
-      else if (!before.ball) err(where, "passe sans porteur du ballon (ajoute « b » au départ)");
-      else if (before.ball === step.p) err(where, `${step.p} se passe le ballon à lui-même`);
-    }
-    checkPositions(where, states[k + 1].pos, new Set(Object.keys(step.m ?? {})));
-  });
-}
-
 // --- tactics.json -----------------------------------------------------------
 const lib = readJson("data/tactics.json") as Library;
 schemaErrors("tactics.json", validateLibrary(lib) as boolean, validateLibrary.errors, lib);
@@ -112,7 +39,11 @@ const seen = new Set<string>();
 for (const t of lib.tactics) {
   if (seen.has(t.id)) err(t.id, "id en double");
   seen.add(t.id);
-  if (t.name && t.keys) checkTactic(t, cats);
+  if (t.name && t.keys) {
+    const r = checkTactic(t, cats);
+    errors.push(...r.errors);
+    warnings.push(...r.warnings);
+  }
 }
 const planIds = new Set<string>();
 for (const plan of lib.plans) {

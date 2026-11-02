@@ -8,6 +8,7 @@ import library from "../data/tactics.json";
 import familiesJson from "../data/families.json";
 import { Board } from "./board";
 import type { Board3D } from "./board3d";
+import { Editor } from "./editor";
 import { normalize, type Lang, type Library, type Tactic, type Text } from "./engine";
 
 const lib = library as Library;
@@ -72,12 +73,14 @@ function applyTheme() {
 const app = document.querySelector<HTMLElement>("#app")!;
 let board: Board | null = null;
 let board3d: Board3D | null = null;
+let editor: Editor | null = null;
 
 function header(active: string) {
   const nav = [
     ["", tr("Bibliothèque", "Library")],
     ["glossaire", tr("Glossaire", "Glossary")],
     ["plans", tr("Plans de séance", "Session plans")],
+    ["editeur", tr("Éditeur", "Editor")],
   ];
   const themeLabel = { auto: tr("Thème : auto", "Theme: auto"), light: tr("Thème : clair", "Theme: light"), dark: tr("Thème : sombre", "Theme: dark") }[state.theme];
   return `
@@ -409,7 +412,15 @@ function planView(p: Library["plans"][number]) {
 }
 
 // ---------------------------------------------------------------------- route
+function editorView() {
+  app.innerHTML = `${header("editeur")}<main class="wrap editor" id="main"><div id="editor-root"></div></main>${footer()}`;
+  bindHeader();
+  editor = new Editor(document.getElementById("editor-root")!, lib, families, state.lang, tr);
+}
+
 function route() {
+  editor?.destroy();
+  editor = null;
   board3d?.destroy();
   board3d = null;
   board?.destroy();
@@ -427,6 +438,9 @@ function route() {
   } else if (h === "glossaire") {
     app.dataset.view = "glossaire";
     glossaryView();
+  } else if (h === "editeur") {
+    app.dataset.view = "editeur";
+    editorView();
   } else if (h === "plans") {
     app.dataset.view = "plans";
     plansView();

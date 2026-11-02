@@ -16,7 +16,7 @@ const NS = "http://www.w3.org/2000/svg";
 const INK = "#1b2333";
 const VIEW = { x: -3, y: -4, w: 56, h: 52 };
 
-function el<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string, string | number> = {}, parent?: Element) {
+export function el<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string, string | number> = {}, parent?: Element) {
   const node = document.createElementNS(NS, tag);
   for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, String(v));
   parent?.appendChild(node);
@@ -50,7 +50,7 @@ export function drawCourt(svg: SVGSVGElement) {
   el("circle", { cx: 25, cy: 5.25, r: 0.75, stroke: COLORS.ball, "stroke-width": 0.22 }, lines);
 }
 
-function arrow(g: SVGGElement, a: Point, b: Point, kind: Move[2] | "p", defender: boolean) {
+export function arrow(g: SVGGElement, a: Point, b: Point, kind: Move[2] | "p", defender: boolean) {
   const dx = b[0] - a[0], dy = b[1] - a[1];
   const dist = Math.hypot(dx, dy);
   if (dist < 1.2) return;
