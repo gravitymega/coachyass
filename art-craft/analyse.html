@@ -75,8 +75,11 @@
         </label>
       </div>
       <p class="muted">Conseil : une séquence d'une à trois minutes (une possession, un quart-temps difficile, une défense à corriger) donne l'analyse la plus précise. L'IA voit jusqu'à 24 images de la séquence.</p>
+      <label>Numéro du joueur à analyser (facultatif : seulement ses actions, bons coups et coups à corriger)
+        <input id="numero" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="ex. 23">
+      </label>
       <label>Équipe à analyser (facultatif)
-        <input id="team" maxlength="120" placeholder="ex. Gravity, maillots noirs">
+        <input id="team" maxlength="120" placeholder="ex. Gravity, maillots noirs (aide l'IA à trouver le joueur)">
       </label>
       <label>Ce que tu veux savoir (facultatif)
         <textarea id="context" rows="2" maxlength="1500" placeholder="ex. Pourquoi on encaisse autant de paniers faciles ? Comment on attaque leur zone ?"></textarea>

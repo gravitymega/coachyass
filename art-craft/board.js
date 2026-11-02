@@ -178,7 +178,10 @@ function drawTrails(ctx, st, box, r) {
   ctx.setLineDash([]);
 }
 
-function drawPieces(ctx, st, box, r) {
+// Couleurs du mode joueur : bon coup / coup à corriger.
+export const VERDICT_COLORS = { bon: '#1fa463', mauvais: '#e0393e' };
+
+function drawPieces(ctx, st, box, r, focus = null) {
   // Défenseurs : croix.
   ctx.strokeStyle = 'rgba(20,10,14,0.85)';
   ctx.lineWidth = Math.max(3, r * 0.22);
@@ -191,20 +194,39 @@ function drawPieces(ctx, st, box, r) {
     ctx.stroke();
   });
   // Attaquants : pions noirs étiquetés, comme sur un tableau de coach.
+  // Mode joueur : le joueur suivi porte son numéro, avec un halo à la couleur du verdict.
   POSITIONS.forEach(p => {
     const [x, y] = toPx(st.players[p], box);
+    const me = focus && focus.pos === p;
+    const color = me ? VERDICT_COLORS[focus.verdict] || BRAND.magenta : null;
+    if (me) {
+      ctx.beginPath();
+      ctx.arc(x, y, r * 1.7, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.28)'; // halo clair : se voit sur le parquet rouge
+      ctx.fill();
+    }
     ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fillStyle = '#0d0b12';
+    ctx.arc(x, y, me ? r * 1.15 : r, 0, Math.PI * 2);
+    ctx.fillStyle = me ? color : '#0d0b12';
     ctx.fill();
-    ctx.lineWidth = Math.max(2, r * 0.12);
+    ctx.lineWidth = Math.max(2, r * (me ? 0.16 : 0.12));
     ctx.strokeStyle = p === st.holder && !st.passing ? BRAND.orange : '#ffffff';
     ctx.stroke();
     ctx.fillStyle = '#ffffff';
-    ctx.font = `700 ${Math.round(r * (p.length > 1 ? 0.82 : 1))}px Oswald, Impact, sans-serif`;
+    const label = me ? String(focus.label) : p;
+    ctx.font = `700 ${Math.round(r * (label.length > 2 ? 0.72 : label.length > 1 ? 0.9 : 1.05))}px Oswald, Impact, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(p, x, y + r * 0.04);
+    ctx.fillText(label, x, y + r * 0.04);
+    if (me) {
+      // Son poste en petit sous le pion, pour suivre la voix du coach.
+      ctx.font = `700 ${Math.round(r * 0.55)}px Inter, system-ui, sans-serif`;
+      ctx.textBaseline = 'top';
+      ctx.lineWidth = Math.max(2, r * 0.14);
+      ctx.strokeStyle = 'rgba(13,11,18,0.85)';
+      ctx.strokeText(p, x, y + r * 1.25);
+      ctx.fillText(p, x, y + r * 1.25);
+    }
   });
   // Ballon.
   let [bx, by] = toPx(st.ball, box);
@@ -245,7 +267,7 @@ export function drawBoard(ctx, W, H, info) {
     const bw = ctx.measureText(info.badge).width + tagSize * 1.4;
     const bh = tagSize * 1.7;
     const bx = W - pad - bw, by = y - tagSize * 0.35;
-    ctx.fillStyle = info.slow ? BRAND.magenta : 'rgba(255,255,255,0.14)';
+    ctx.fillStyle = VERDICT_COLORS[info.verdict] || (info.slow ? BRAND.magenta : 'rgba(255,255,255,0.14)');
     ctx.beginPath();
     if (ctx.roundRect) ctx.roundRect(bx, by, bw, bh, bh / 2); else ctx.rect(bx, by, bw, bh);
     ctx.fill();
@@ -289,11 +311,11 @@ export function drawBoard(ctx, W, H, info) {
     // Positions réelles suivies image par image.
     const st = trackAt(info.track, info.s);
     drawTrails(ctx, st, box, r);
-    drawPieces(ctx, st, box, r);
+    drawPieces(ctx, st, box, r, info.focus);
   } else if (info.board) {
     // Schéma de l'action (trajets prévus par l'IA).
     drawMoves(ctx, info.board, box, r);
-    drawPieces(ctx, { ...boardAt(info.board, info.u ?? 0), defenders: info.board.defenders }, box, r);
+    drawPieces(ctx, { ...boardAt(info.board, info.u ?? 0), defenders: info.board.defenders }, box, r, info.focus);
   }
   // Signature discrète.
   ctx.font = `700 ${Math.round(W * 0.026)}px Oswald, Impact, sans-serif`;

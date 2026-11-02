@@ -331,3 +331,7 @@ fieldset .inline { flex-wrap: wrap; }
 
 #step-video label.check { display: flex; gap: 8px; align-items: flex-start; margin-top: 12px; color: var(--muted); font-size: 14px; }
 #step-video label.check input { flex: 0 0 auto; width: 18px; height: 18px; margin-top: 1px; }
+.report .player-head { font-size: 16px; margin: 0 0 6px; }
+.report .verdict { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap; }
+.report .verdict.bon { background: #1fa463; }
+.report .verdict.mauvais { background: #e0393e; }
