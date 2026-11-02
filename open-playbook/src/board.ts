@@ -81,6 +81,8 @@ function arrow(g: SVGGElement, a: Point, b: Point, kind: Move[2] | "p", defender
 const lerp = (p: Point, q: Point, k: number): Point => [p[0] + (q[0] - p[0]) * k, p[1] + (q[1] - p[1]) * k];
 const ease = (k: number) => (k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2);
 
+export type FrameListener = (pos: Partial<Record<PlayerId, Point>>, ball: Point | undefined, flight: number | null) => void;
+
 export interface BoardEvents {
   onStep?: (index: number) => void; // -1 = placement de départ
   onPlayState?: (playing: boolean) => void;
@@ -101,6 +103,9 @@ export class Board {
   private stopAt: number | null = null;
   playing = false;
   loop = false;
+  private frameListeners: FrameListener[] = [];
+  private stepListeners: ((k: number) => void)[] = [];
+  private last3d: Parameters<FrameListener> | null = null;
 
   constructor(parent: HTMLElement, private tactic: Tactic, private events: BoardEvents = {}, label = "") {
     this.svg = el("svg", { viewBox: `${VIEW.x} ${VIEW.y} ${VIEW.w} ${VIEW.h}`, role: "img", "aria-label": label, class: "board" }) as SVGSVGElement;
@@ -110,7 +115,7 @@ export class Board {
     this.states = frames(tactic);
     this.timing = stepTimings(tactic.steps ?? []);
     this.total = this.timing.length ? this.timing[this.timing.length - 1].end : 0;
-    const layer = el("g", {}, this.svg);
+    const layer = el("g", { class: "players" }, this.svg);
     const start = this.states[0];
     for (const id of Object.keys(start?.pos ?? {})) {
       const g = el("g", {}, layer);
@@ -127,6 +132,28 @@ export class Board {
     }
     this.ball = el("circle", { r: 0.6, fill: COLORS.ball, stroke: INK, "stroke-width": 0.1 }, layer) as SVGCircleElement;
     this.render();
+  }
+
+  /** Suit chaque image (vue 3D) et chaque changement d'étape. Renvoie une fonction pour se désabonner. */
+  subscribe(onFrame: FrameListener, onStep: (k: number) => void) {
+    this.frameListeners.push(onFrame);
+    this.stepListeners.push(onStep);
+    if (this.last3d) onFrame(...this.last3d);
+    onStep(this.step);
+    return () => {
+      this.frameListeners = this.frameListeners.filter((f) => f !== onFrame);
+      this.stepListeners = this.stepListeners.filter((f) => f !== onStep);
+    };
+  }
+
+  /** Copie du terrain et des flèches de l'étape, sans les joueurs (texture du sol en 3D). */
+  floorSvg(): string {
+    const clone = this.svg.cloneNode(true) as SVGSVGElement;
+    clone.querySelector(".players")?.remove();
+    clone.setAttribute("xmlns", NS);
+    clone.setAttribute("width", "2240");
+    clone.setAttribute("height", "2080");
+    return new XMLSerializer().serializeToString(clone);
   }
 
   get stepCount() {
@@ -147,6 +174,7 @@ export class Board {
     let pos = before.pos;
     let ballPos: Point | undefined;
     let inFlight = false;
+    let flight: number | null = null;
     const holder = (s: BoardState, p: BoardState["pos"]) => (s.ball ? p[s.ball as PlayerId] : undefined);
     if (k >= 0) {
       const tm = this.timing[k];
@@ -162,6 +190,7 @@ export class Board {
         const receiver = pos[step.p as PlayerId];
         ballPos = receiver && kp > 0 ? lerp(passer, receiver, ease(kp)) : passer;
         inFlight = kp > 0 && kp < 1;
+        if (inFlight) flight = kp;
       } else {
         ballPos = holder(after, pos);
       }
@@ -182,7 +211,10 @@ export class Board {
       this.step = k;
       this.drawArrows(k);
       this.events.onStep?.(k);
+      for (const f of this.stepListeners) f(k);
     }
+    this.last3d = [pos, ballPos, flight];
+    for (const f of this.frameListeners) f(pos, ballPos, flight);
   }
 
   private drawArrows(k: number) {

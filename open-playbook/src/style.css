@@ -179,6 +179,11 @@ nav a[aria-current="page"] { opacity: 1; box-shadow: inset 0 -2px 0 #e07a12; bor
   cursor: pointer;
 }
 .ctl-main { width: 52px; height: 52px; background: var(--accent); color: var(--accent-fg); border-color: var(--accent); font-size: 1.2rem; }
+.controls { flex-wrap: wrap; }
+.view-toggle { margin-left: auto; color: var(--accent); border-color: var(--accent); min-height: 40px; }
+.view-toggle[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+.board3d-canvas { display: block; border-radius: var(--radius); background: linear-gradient(#20304d, #0f1a2b); touch-action: none; box-shadow: 0 6px 22px rgba(15, 26, 43, 0.18); }
+.hint3d { margin: 0; font-size: 0.8rem; color: var(--muted); }
 .step-label { margin-left: 0.4rem; font: 700 0.95rem var(--font-display); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ball); font-variant-numeric: tabular-nums; }
 .caption { min-height: 5.5rem; }
 .caption p { margin: 0; }

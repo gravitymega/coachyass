@@ -1,12 +1,13 @@
 // Site Playbook Ouvert : bibliothèque, fiche animée (#id), mode vidéo (#video-id), glossaire, plan de séance.
-import "@fontsource/barlow/400.css";
-import "@fontsource/barlow/600.css";
-import "@fontsource/barlow-condensed/600.css";
-import "@fontsource/barlow-condensed/700.css";
+import "@fontsource/barlow/latin-400.css";
+import "@fontsource/barlow/latin-600.css";
+import "@fontsource/barlow-condensed/latin-600.css";
+import "@fontsource/barlow-condensed/latin-700.css";
 import "./style.css";
 import library from "../data/tactics.json";
 import familiesJson from "../data/families.json";
 import { Board } from "./board";
+import type { Board3D } from "./board3d";
 import { normalize, type Lang, type Library, type Tactic, type Text } from "./engine";
 
 const lib = library as Library;
@@ -37,6 +38,7 @@ const state = {
   lang: (store.get("lang") === "en" ? "en" : "fr") as Lang,
   theme: store.get("theme") ?? "auto",
   pending: store.get("pending") !== "0",
+  view3d: store.get("view3d") === "1",
   q: "",
   cat: "",
   family: "",
@@ -69,6 +71,7 @@ function applyTheme() {
 // --------------------------------------------------------------------- shell
 const app = document.querySelector<HTMLElement>("#app")!;
 let board: Board | null = null;
+let board3d: Board3D | null = null;
 
 function header(active: string) {
   const nav = [
@@ -230,12 +233,15 @@ function ficheView(t: Tactic) {
     <div class="fiche-grid">
       <section class="player" aria-label="${tr("Schéma animé", "Animated diagram")}">
         <div id="board-host" class="board-host"></div>
+        <div id="board3d-host" class="board-host board3d-host" hidden></div>
         <div class="controls" role="group" aria-label="${tr("Contrôles de l'animation", "Animation controls")}">
           <button type="button" class="ctl" id="b-prev" aria-label="${tr("Étape précédente", "Previous step")}">⏮</button>
           <button type="button" class="ctl ctl-main" id="b-play" aria-label="${tr("Lecture", "Play")}">▶</button>
           <button type="button" class="ctl" id="b-next" aria-label="${tr("Étape suivante", "Next step")}">⏭</button>
           <span class="step-label" id="step-label"></span>
+          <button type="button" class="chip view-toggle" id="b-3d" aria-pressed="false">${tr("Vue 3D", "3D view")}</button>
         </div>
+        <p class="hint3d" id="hint3d" hidden>${tr("Glisse pour tourner autour du terrain, pince ou molette pour zoomer.", "Drag to orbit the court, pinch or scroll to zoom.")}</p>
         <div class="caption" aria-live="polite"><p id="cap-main"></p><p id="cap-alt" class="cap-alt" lang="${other(state.lang)}"></p></div>
         <p class="legend"><span><i class="lg-o"></i>${tr("Attaque", "Offense")}</span><span><i class="lg-x"></i>${tr("Défense", "Defense")}</span><span><i class="lg-b"></i>${tr("Ballon", "Ball")}</span><span>${tr("Zigzag : dribble · pointillé : passe · barre : écran", "Zigzag: dribble · dotted: pass · bar: screen")}</span></p>
       </section>
@@ -273,6 +279,30 @@ function ficheView(t: Tactic) {
   const b = board;
   playBtn.addEventListener("click", () => (b.playing ? b.pause() : reduceMotion() ? b.playStatic() : b.play()));
   document.getElementById("b-prev")!.addEventListener("click", () => b.prev(reduceMotion()));
+  const btn3d = document.getElementById("b-3d")!;
+  const set3d = async (on: boolean) => {
+    const h2 = document.getElementById("board-host")!, h3 = document.getElementById("board3d-host")!;
+    if (on && !board3d) {
+      try {
+        const { Board3D } = await import("./board3d");
+        if (board !== b) return;
+        board3d = new Board3D(h3, b, Object.keys(t.start ?? {}).filter((k) => k !== "b"));
+      } catch {
+        btn3d.textContent = tr("3D indisponible sur cet appareil", "3D not available on this device");
+        (btn3d as HTMLButtonElement).disabled = true;
+        return;
+      }
+    }
+    h3.hidden = !on;
+    h2.hidden = on;
+    document.getElementById("hint3d")!.hidden = !on;
+    btn3d.setAttribute("aria-pressed", String(on));
+    btn3d.textContent = on ? tr("Vue 2D", "2D view") : tr("Vue 3D", "3D view");
+    state.view3d = on;
+    store.set("view3d", on ? "1" : "0");
+  };
+  btn3d.addEventListener("click", () => set3d(!state.view3d));
+  if (state.view3d) set3d(true);
   document.getElementById("b-next")!.addEventListener("click", () => b.next(reduceMotion()));
 }
 
@@ -380,6 +410,8 @@ function planView(p: Library["plans"][number]) {
 
 // ---------------------------------------------------------------------- route
 function route() {
+  board3d?.destroy();
+  board3d = null;
   board?.destroy();
   board = null;
   const h = decodeURIComponent(location.hash.slice(1));

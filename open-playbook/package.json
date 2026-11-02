@@ -2,7 +2,7 @@
   "name": "open-playbook",
   "private": true,
   "version": "0.1.0",
-  "description": "Playbook Ouvert / Open Playbook : biblioth\u00e8que libre de tactiques de basket (FR/EN)",
+  "description": "Playbook Ouvert / Open Playbook : bibliothèque libre de tactiques de basket (FR/EN)",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -17,10 +17,14 @@
     "@fontsource/barlow": "^5.3.0",
     "@fontsource/barlow-condensed": "^5.3.0",
     "@types/node": "^26.6.5",
+    "@types/three": "^0.170.0",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vite": "^8.3.5"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
   }
 }
