@@ -3,6 +3,7 @@
 # Le site (page « Vidéos » et chaque fiche) pointe vers ces fichiers.
 # Voix : piste française (par défaut) et piste anglaise, prises dans les clips audio déjà publiés sur le site
 # (lancer ce workflow après la publication du site qui a généré l'audio).
+# Envoi par paquets avec attente si la limite de requêtes GitHub est atteinte (scripts/upload-release.sh).
 # À relancer à la main (Actions → Open Playbook · vidéos → Run workflow) après un lot de nouvelles fiches.
 name: Open Playbook · vidéos
 
@@ -14,6 +15,9 @@ on:
         default: "vertical,square,horizontal"
       ids:
         description: "Seulement ces fiches (id séparés par des espaces) ; vide = toutes"
+        default: ""
+      shards:
+        description: "Seulement ces parts (1 à 12, séparées par des virgules) ; vide = toutes"
         default: ""
 
 permissions:
@@ -42,7 +46,7 @@ jobs:
   render:
     needs: releases
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 300
     strategy:
       fail-fast: false
       matrix:
@@ -55,7 +59,12 @@ jobs:
       - name: Format demandé ?
         id: want
         working-directory: .
-        run: echo "go=${{ contains(github.event.inputs.formats || 'vertical,square,horizontal', matrix.format) }}" >> "$GITHUB_OUTPUT"
+        env:
+          SHARDS: ${{ github.event.inputs.shards }}
+        run: |
+          go=${{ contains(github.event.inputs.formats || 'vertical,square,horizontal', matrix.format) }}
+          if [ -n "$SHARDS" ] && [[ ",${SHARDS// /}," != *",${{ matrix.shard }},"* ]]; then go=false; fi
+          echo "go=$go" >> "$GITHUB_OUTPUT"
       - if: steps.want.outputs.go == 'true'
         uses: actions/checkout@v4
       - if: steps.want.outputs.go == 'true'
@@ -77,4 +86,4 @@ jobs:
         run: |
           shopt -s nullglob
           files=(out/*/*-${{ matrix.format }}.mp4 out/*/*-${{ matrix.format }}.png)
-          if [ ${#files[@]} -gt 0 ]; then gh release upload "op-videos-${{ matrix.format }}" "${files[@]}" --clobber -R "${{ github.repository }}"; fi
+          if [ ${#files[@]} -gt 0 ]; then scripts/upload-release.sh "op-videos-${{ matrix.format }}" "${files[@]}"; fi
