@@ -371,3 +371,8 @@ body.is-video::before { background: #0f1a2b; }
 .m-actions, .m-download { margin: 0; }
 .montage-preview canvas { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 9 / 16; margin-inline: auto; border-radius: var(--radius); background: #0b1220; box-shadow: 0 6px 22px rgba(15, 26, 43, 0.18); }
 .montage-board { position: absolute; left: -10000px; top: 0; width: 600px; }
+.reels { margin-block: 0 1.2rem; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.reels h2 { margin-top: 0; font-size: 1.1rem; }
+.reels ul { margin: 0 0 0.6rem; padding-left: 1.2rem; display: grid; gap: 0.35rem; }
+.reels a { overflow-wrap: anywhere; }
+.reel-site { font-size: 0.8rem; color: var(--muted); }

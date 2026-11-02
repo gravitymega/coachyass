@@ -1,0 +1,60 @@
+{
+  "_note": "Vidéos publiques (YouTube, Instagram, Facebook) à monter avec une fiche : lien et titre d'origine seulement, rien n'est copié. Trouvées par recherche le 2 nov. 2026 : à regarder avant de les utiliser, et toujours créditer l'auteur dans le montage.",
+  "videos": {
+    "spain-pick-and-roll": [
+      { "title": "NBA Plays YOU Should Know Pt.4 \"Stack/Spain Pick And Roll\" (Short)", "url": "https://www.youtube.com/watch?v=q8TBokYu180" },
+      { "title": "Spain Pick and Roll: Breaking Down the Basics", "url": "https://www.youtube.com/watch?v=M3EJyFzYDU8" },
+      { "title": "Spain Pick-N-Roll - BREAKDOWN", "url": "https://www.youtube.com/watch?v=y8C8b9p9tl8" }
+    ],
+    "horns-spain": [
+      { "title": "Horns Ballscreen Spain Basketball Offense", "url": "https://www.youtube.com/watch?v=LrRLEO_mfBo" },
+      { "title": "Spain Pick & Roll vs Zone Defense", "url": "https://www.youtube.com/watch?v=bReHiAwVSHA" }
+    ],
+    "horns-pick-and-roll": [
+      { "title": "The Basketball Set Horns Double P&R and its Variations", "url": "https://www.youtube.com/watch?v=erA6cW6F4-I" }
+    ],
+    "elevator": [
+      { "title": "Explain One Play: Elevator Doors and Floppy Plays for Klay Thompson and Jonathan Kuminga", "url": "https://www.youtube.com/watch?v=F7ZqrLKi0FM" },
+      { "title": "Is The Warriors \"Elevator Play\" Going EXTINCT In The NBA?", "url": "https://www.youtube.com/watch?v=ttCSl6bbBis" }
+    ],
+    "floppy": [
+      { "title": "Explain One Play: Elevator Doors and Floppy Plays for Klay Thompson and Jonathan Kuminga", "url": "https://www.youtube.com/watch?v=F7ZqrLKi0FM" }
+    ],
+    "hammer": [
+      { "title": "Why The Spurs Hammer Play is Unstoppable", "url": "https://www.youtube.com/watch?v=i_MLRbJ4M-I" },
+      { "title": "What is a Hammer Play in Basketball", "url": "https://www.youtube.com/watch?v=BPXv-puagAw" }
+    ],
+    "ice": [
+      { "title": "Down and Ice Ball Screen Coverage Breakdown", "url": "https://www.youtube.com/watch?v=3SrCCRjyKfQ" },
+      { "title": "How to \"Ice\" Ball Screens", "url": "https://www.youtube.com/watch?v=xEbZ4a5GQq8" }
+    ],
+    "drop-coverage": [
+      { "title": "NBA Defense - Drop Coverage!", "url": "https://www.youtube.com/watch?v=-pT9u-eHY9c" },
+      { "title": "Playing \"Drop\" Coverage", "url": "https://www.youtube.com/watch?v=RZt6WQ51Hwc" }
+    ],
+    "switch": [
+      { "title": "Drop Coverage vs Switching : Quelle défense choisir face aux écrans ?", "url": "https://www.youtube.com/watch?v=Q9MCtYIOf4M" },
+      { "title": "Master the Switch: How to Force Defensive Breakdowns in the Pick & Roll", "url": "https://www.youtube.com/watch?v=HudjqfGtYxs" }
+    ],
+    "princeton-backdoor": [
+      { "title": "Princeton Offense Split Cuts: Backdoor and Curl Reads Explained", "url": "https://www.youtube.com/watch?v=mhi2rnHUH9Y" },
+      { "title": "Princeton Tigers - Princeton Offense Breakdown", "url": "https://www.youtube.com/watch?v=651JLRzY9R0" }
+    ],
+    "triangle-offense-sideline-triangle": [
+      { "title": "Triangle Basketball Offense BASICS", "url": "https://www.youtube.com/watch?v=OMBd9MMmk6Q" },
+      { "title": "How the Lakers are mixing Princeton, Triangle, and Horns in their Offense", "url": "https://www.youtube.com/watch?v=SRo1uIVYigQ" }
+    ],
+    "1-2-2-press": [
+      { "title": "1-2-2 Full Court Press Break Basketball Play (Short)", "url": "https://www.youtube.com/shorts/eR_z_VGZxl0" },
+      { "title": "Beat a 1-2-2 Full Court Press In Basketball", "url": "https://www.youtube.com/watch?v=v7YB1uJ3qCg" }
+    ],
+    "press-break-1-4": [
+      { "title": "1-4 Across Press Break Guide: Beat Trapping Full Court Defenses Easily", "url": "https://www.youtube.com/playlist?list=PLg6l5LgDUZefLZoqP_VHD-ww9iVbY4Jkf" },
+      { "title": "1-2-2 Full Court Press Break Basketball Play (Short)", "url": "https://www.youtube.com/shorts/eR_z_VGZxl0" }
+    ],
+    "press-break-trap-escape": [
+      { "title": "Full Court Press Breaks ALL Basketball Coaches Should Know!", "url": "https://www.youtube.com/watch?v=JYi0eZlha6s" },
+      { "title": "\"Split Swing\" Full Court Press Break", "url": "https://www.youtube.com/watch?v=Sdbav0NEwOY" }
+    ]
+  }
+}

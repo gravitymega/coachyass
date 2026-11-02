@@ -75,6 +75,15 @@ for (const [id, list] of Object.entries(nbaTeams)) {
     if (!x.when?.fr?.trim() || !x.when?.en?.trim()) err(`nba.json › ${id}`, `période FR/EN manquante pour ${x.team}`);
   }
 }
+// Vidéos à monter : fiche existante, titre et lien https.
+const reels = (readJson("data/reels.json") as { videos: Record<string, { title?: string; url?: string }[]> }).videos;
+for (const [id, list] of Object.entries(reels)) {
+  if (!lib.tactics.some((t) => t.id === id)) err("reels.json", `fiche inconnue « ${id} »`);
+  for (const x of list ?? []) {
+    if (!x.title?.trim()) err(`reels.json › ${id}`, "vidéo sans titre");
+    if (!/^https:\/\/(www\.|m\.)?(youtube\.com|youtu\.be|instagram\.com|facebook\.com|fb\.watch)\//.test(x.url ?? "")) err(`reels.json › ${id}`, `lien non accepté : ${x.url}`);
+  }
+}
 const terms = new Set<string>();
 for (const g of lib.glossary) {
   if (terms.has(g[0])) err("glossaire", `terme en double « ${g[0]} »`);

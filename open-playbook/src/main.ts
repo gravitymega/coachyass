@@ -12,6 +12,7 @@ import { Editor } from "./editor";
 import coachingJson from "../data/coaching.json";
 import { normalize, shotKind, type Lang, type Library, type ShotKind, type Tactic, type Text } from "./engine";
 import nbaJson from "../data/nba.json";
+import reelsJson from "../data/reels.json";
 import { clipPath, narrationSegments, type NbaTeam } from "./narration";
 import { clipsAvailable, playClip, speak, stopSpeaking } from "./voice";
 
@@ -681,6 +682,22 @@ function planView(p: Library["plans"][number]) {
 
 // ---------------------------------------------------------------------- route
 // ------------------------------------------------------------------ montage
+const REELS = (reelsJson as { videos: Record<string, { title: string; url: string }[]> }).videos;
+
+/** Vidéos publiques trouvées pour cette fiche (data/reels.json) : liens à ouvrir, enregistrer, puis ajouter au montage. */
+function reelsSection(t: Tactic) {
+  const list = REELS[t.id];
+  const site = (u: string) => (/instagram\./.test(u) ? "Instagram" : /facebook\.|fb\.watch/.test(u) ? "Facebook" : "YouTube");
+  const search = encodeURIComponent(`${t.name.en} basketball`);
+  return `<section class="reels"><h2>${tr("Vidéos à monter avec cette tactique", "Videos to edit with this play")}</h2>
+    ${list?.length ? `<ul>${list.map((v) => `<li><a href="${esc(v.url)}" target="_blank" rel="noopener">${esc(v.title)}</a> <span class="reel-site">${site(v.url)}</span></li>`).join("")}</ul>` : `<p>${tr("Pas encore de vidéo choisie pour cette fiche.", "No video picked for this play yet.")}</p>`}
+    <p class="reel-search">${tr("Chercher d'autres vidéos :", "Find more videos:")} <a href="https://www.youtube.com/results?search_query=${search}" target="_blank" rel="noopener">YouTube</a> · <a href="https://www.instagram.com/explore/search/keyword/?q=${search}" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/search/videos/?q=${search}" target="_blank" rel="noopener">Facebook</a></p>
+    <p class="m-help">${tr(
+      "Ouvre la vidéo, enregistre l'extrait sur ton appareil, puis ajoute-le ci-dessous avec le @compte de l'auteur. Regarde-la avant : la liste vient d'une recherche.",
+      "Open the video, save the clip on your device, then add it below with the author's @handle. Watch it first: the list comes from a search.",
+    )}</p></section>`;
+}
+
 function montageView(t: Tactic) {
   app.innerHTML = `${header("")}
   <main class="wrap" id="main">
@@ -690,6 +707,7 @@ function montageView(t: Tactic) {
       "Ajoute un Short, un Reel ou un extrait de match : on crée une vidéo verticale avec la miniature de la tactique, ta vidéo en haut, le schéma animé en bas et l'explication à voix haute.",
       "Add a Short, a Reel or a game clip: we build a vertical video with the play's cover, your video on top, the animated diagram below and the spoken explanation.",
     )}</p></section>
+    ${reelsSection(t)}
     <div id="montage-root"><p class="m-status">${tr("Chargement…", "Loading…")}</p></div>
   </main>${footer()}`;
   bindHeader();

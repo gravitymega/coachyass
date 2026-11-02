@@ -136,3 +136,9 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 - Son : les clips de voix naturelle de la fiche et le son de la vidéo (option, volume 35 %) sont mélangés avec WebAudio.
 - Enregistrement en temps réel avec `canvas.captureStream` et `MediaRecorder`. Le navigateur choisit le format : MP4 (H.264) sur Safari et Chrome récents, sinon WebM. Le chrono part quand l'enregistreur a vraiment démarré (`onstart`).
 - Tout se fait sur l'appareil, sans envoi ni frais. Testé dans Chromium à 390 px avec une vidéo de test : fichier 1080 × 1920 de 40 s avec la voix, aucune erreur dans la console.
+
+## Vidéos à monter (demande du 2 nov. 2026)
+
+- `data/reels.json` : pour chaque fiche, des liens vers des vidéos publiques (YouTube pour l'instant ; Instagram et Facebook acceptés) à monter avec le schéma. On ne garde que le titre et le lien : rien n'est copié ni téléchargé par le site. `npm run validate` vérifie que la fiche existe, que la vidéo a un titre et que le lien vient de YouTube, d'Instagram ou de Facebook.
+- La page `#montage-<id>` affiche « Vidéos à monter avec cette tactique », avec des liens de recherche YouTube, Instagram et Facebook sur le nom anglais de la fiche. L'utilisateur enregistre l'extrait, puis l'ajoute au montage en créditant l'auteur.
+- Première liste trouvée par recherche le 2 nov. 2026 (14 fiches) : vidéos pas encore regardées. Instagram n'est pas joignable depuis la session cloud ; pour ajouter des Reels, l'utilisateur envoie les liens.
