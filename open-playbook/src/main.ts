@@ -28,6 +28,7 @@ const FORMATS: [string, Text][] = [
   ["horizontal", { fr: "Horizontale 16:9", en: "Landscape 16:9" }],
 ];
 const videoUrl = (id: string, f: string) => `${VIDEO_BASE}${f}/${id}-${f}.mp4`;
+const coverUrl = (id: string, f = "vertical") => `${VIDEO_BASE}${f}/${id}-${f}.png`;
 const CHANNEL = "Playbook Ouvert · Open Playbook";
 const PAGE = 48;
 
@@ -606,7 +607,7 @@ function videosView() {
     document.getElementById("v-list")!.innerHTML = rows
       .slice(0, 200)
       .map(
-        (t) => `<li><div><a href="#${t.id}"><strong>${esc(txt(t.name))}</strong></a><span class="card-meta">${esc(catName(t.cat))} · ${esc(famName(t.family))}</span></div><p class="downloads">${downloadLinks(t.id)}</p></li>`,
+        (t) => `<li><img class="cover" src="${coverUrl(t.id)}" alt="" loading="lazy" width="54" height="96" onerror="this.remove()" /><div><a href="#${t.id}"><strong>${esc(txt(t.name))}</strong></a><span class="card-meta">${esc(catName(t.cat))} · ${esc(famName(t.family))}</span></div><p class="downloads">${downloadLinks(t.id)}</p></li>`,
       )
       .join("") + (rows.length > 200 ? `<li class="more-hint">${tr("Affine la recherche pour voir les autres vidéos.", "Refine the search to see the other videos.")} (${rows.length - 200})</li>` : "");
   };

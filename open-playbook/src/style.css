@@ -210,7 +210,8 @@ nav a[aria-current="page"] { opacity: 1; box-shadow: inset 0 -2px 0 #e07a12; bor
 .downloads .chip { color: var(--accent); }
 .video-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
 .video-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; padding: 0.7rem 0.9rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
-.video-list li > div { display: grid; gap: 0.1rem; min-width: 0; }
+.video-list li > div { display: grid; gap: 0.1rem; min-width: 0; flex: 1 1 12rem; }
+.video-list .cover { width: 54px; height: 96px; object-fit: cover; border-radius: 6px; background: var(--line); flex: none; }
 .video-list .downloads { margin: 0; }
 .video-list .more-hint { color: var(--muted); justify-content: center; }
 .v-unmute { margin: 0; text-align: center; }

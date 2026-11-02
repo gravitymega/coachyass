@@ -76,5 +76,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           shopt -s nullglob
-          files=(out/*/*-${{ matrix.format }}.mp4)
+          files=(out/*/*-${{ matrix.format }}.mp4 out/*/*-${{ matrix.format }}.png)
           if [ ${#files[@]} -gt 0 ]; then gh release upload "op-videos-${{ matrix.format }}" "${files[@]}" --clobber -R "${{ github.repository }}"; fi

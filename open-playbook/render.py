@@ -860,32 +860,97 @@ def beat_track(duration, path, bpm=100, rate=22050):
         w.writeframes(buf.tobytes())
 
 
-def thumbnail(t, L, cat_label, timings, states, path):
-    """Miniature PNG : dernière étape, flèches visibles, gros titre."""
-    last = timings[-1]
-    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
-    cr = cairo.Context(surface)
-    draw_frame(cr, L, t, cat_label, timings, states, INTRO + last["start"] + last["move"] + last["pass"] + 0.05)
-    if L.name == "vertical":  # le style néon montre déjà le titre en grand
-        surface.write_to_png(str(path))
-        return
-    # Bandeau titre lisible en petit format.
-    k = L.k
-    cr.set_source_rgb(*BG)
-    x, y, width = L.cap
+COVER = 0.7  # secondes de couverture au début de chaque vidéo (YouTube, Reels et TikTok la proposent comme miniature)
+RED_BAND = (0.70, 0.10, 0.12)
+
+
+def split_title(name):
+    """Deux lignes pour la couverture : avant / après « : », « contre », sinon au milieu."""
+    for sep in (" : ", ": ", " contre ", " vs "):
+        if sep in name:
+            a, b = name.split(sep, 1)
+            return a.strip(), (b if sep in (" : ", ": ") else sep.strip() + " " + b).strip()
+    words = name.split()
+    if len(words) < 2:
+        return name, ""
+    best, cut = 1e9, 1
+    for i in range(1, len(words)):
+        d = abs(len(" ".join(words[:i])) - len(" ".join(words[i:])))
+        if d < best:
+            best, cut = d, i
+    return " ".join(words[:cut]), " ".join(words[cut:])
+
+
+def fit_size(cr, s, width, size, min_size=30):
+    cr.select_font_face(FONT_COND, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+    while size > min_size:
+        cr.set_font_size(size)
+        if cr.text_extents(s).x_advance <= width:
+            break
+        size -= 4
+    return size
+
+
+def draw_cover(cr, L, t, states):
+    """Couverture : parquet et placement de départ en fond, bande noire en diagonale avec le nom en très gros."""
+    W, H = L.W, L.H
+    full = t.get("court") == "full"
+    cr.set_source_rgb(*BOARD)
+    cr.paint()
     if L.name == "vertical":
-        cr.rectangle(0, y - 70, L.W, L.H - y + 70)
+        b = Board(0, 0 if full else 260, W, full=full)
     else:
-        cr.rectangle(x - 30, y - 80 * k, L.W - x + 30, L.H - y + 80 * k)
+        b = Board(0, 0, W, full=full, horizontal=True)
+    b.court(cr)
+    pos, ball = states[0]
+    b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None)
+    cr.set_source_rgba(0, 0, 0, 0.18)
+    cr.paint()
+    k = min(W, H) / 1080
+    # Bandeau du haut : nom de la chaîne.
+    band = 120 * k
+    cr.rectangle(0, 0, W, band)
+    cr.set_source_rgb(*RED_BAND)
     cr.fill()
-    paragraph(cr, t["name"]["fr"].upper(), x, y + 30 * k, 96 * k, width, WHITE, FONT_COND, bold=True, leading=1.0)
-    text(cr, CHANNEL, L.W / 2, L.footer_y, 32 * max(k, 0.8), MUTED, FONT_COND, align="center")
+    text(cr, CHANNEL.upper(), W / 2, band * 0.66, 52 * k, WHITE, FONT_COND, bold=True, align="center")
+    # Bande noire en diagonale, au centre.
+    line1, line2 = split_title(t["name"]["fr"])
+    bh = (0.36 if L.name == "vertical" else 0.52) * H
+    cr.save()
+    cr.translate(W / 2, H * (0.5 if L.name != "vertical" else 0.52))
+    cr.rotate(-0.10)
+    ext = W * 0.75
+    for color, grow in ((RED_BAND, 14 * k), ((0.04, 0.04, 0.05), 0)):
+        cr.rectangle(-ext - 40, -bh / 2 - grow, 2 * ext + 80, bh + 2 * grow)
+        cr.set_source_rgb(*color)
+        cr.fill()
+    width = W * 0.86
+    size1 = fit_size(cr, line1.upper(), width, bh * (0.42 if line2 else 0.6))
+    size2 = fit_size(cr, line2.upper(), width, bh * 0.36) if line2 else 0
+    total = size1 * 0.8 + (size2 * 0.8 + bh * 0.06 if line2 else 0)
+    y = -total / 2 + size1 * 0.8
+    text(cr, line1.upper(), 0, y, size1, ORANGE, FONT_COND, bold=True, align="center")
+    if line2:
+        text(cr, line2.upper(), 0, y + bh * 0.06 + size2 * 0.8, size2, WHITE, FONT_COND, bold=True, align="center")
+    url = "gravitymega.github.io/coachyass"
+    cr.select_font_face(FONT_COND, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
+    cr.set_font_size(30 * k)
+    text(cr, url, W * 0.44 - cr.text_extents(url).x_advance, bh / 2 - 18 * k, 30 * k, MUTED, FONT_COND)  # aligné à droite, dans le cadre
+    cr.restore()
+
+
+def thumbnail(t, L, cat_label, timings, states, path):
+    """Miniature PNG = couverture (nom de la tactique en très gros)."""
+    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
+    draw_cover(cairo.Context(surface), L, t, states)
     surface.write_to_png(str(path))
+    return surface
 
 
 def voice_script(t, timings, path):
     """Texte à lire en voix off, FR puis EN, avec le moment de chaque phrase dans la vidéo."""
     def at(sec):
+        sec += COVER
         return f"{int(sec // 60)}:{sec % 60:04.1f}"
 
     end = INTRO + timings[-1]["end"]
@@ -989,12 +1054,13 @@ def render(t, cat_label, out_dir, formats, audio=None, cache=None):
     timings = step_timings(t["steps"], step_voice)
     states = frames(t)
     duration = INTRO + timings[-1]["end"] + OUTRO
+    total = COVER + duration  # la couverture passe d'abord
     tracks = []
     if voice:
-        starts = [0.15] + [INTRO + tm["start"] for tm in timings] + [INTRO + timings[-1]["end"]]
+        starts = [COVER + s for s in [0.15] + [INTRO + tm["start"] for tm in timings] + [INTRO + timings[-1]["end"]]]
         for lang in ("fr", "en"):
             track = Path(tempfile.gettempdir()) / f"op-{t['id']}-{lang}.m4a"
-            voice_track(voice[lang], starts, duration, track)
+            voice_track(voice[lang], starts, total, track)
             tracks.append(track)
     folder = out_dir / t["id"]
     folder.mkdir(parents=True, exist_ok=True)
@@ -1005,16 +1071,26 @@ def render(t, cat_label, out_dir, formats, audio=None, cache=None):
         audio_in, audio_map = [], []
         fmt_tracks = tracks
         if name == "vertical":  # style Short : rythme de fond, sous la voix s'il y en a une
-            fmt_tracks = with_beat(t["id"], tracks, duration)
+            fmt_tracks = with_beat(t["id"], tracks, total)
         for i, (track, lang) in enumerate(zip(fmt_tracks, ("fra", "eng") if tracks else ("zxx",))):
             audio_in += ["-i", str(track)]
             audio_map += ["-map", f"{i + 1}:a", f"-metadata:s:a:{i}", f"language={lang}",
                           f"-metadata:s:a:{i}", f"title={ {'fra': 'Français', 'eng': 'English'}.get(lang, 'Musique') }",
                           f"-disposition:a:{i}", "default" if i == 0 else "0"]
+        # Couverture : miniature PNG, image de couverture du MP4 et premières images de la vidéo.
+        thumb = folder / f"{t['id']}-{name}.png"
+        cover = thumbnail(t, L, cat_label, timings, states, thumb)
+        n_in = 1 + len(audio_in) // 2
         cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "bgra", "-s", f"{L.W}x{L.H}",
-               "-r", str(FPS), "-i", "-", *audio_in, "-map", "0:v", *audio_map, "-c:v", "libx264", "-preset", "medium", "-crf", "20",
-               "-pix_fmt", "yuv420p", *(["-c:a", "copy"] if fmt_tracks else []), "-movflags", "+faststart", str(out)]
+               "-r", str(FPS), "-i", "-", *audio_in, "-i", str(thumb), "-map", "0:v", *audio_map,
+               "-map", f"{n_in}:v", "-c:v:0", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt:v:0", "yuv420p",
+               "-c:v:1", "png", "-disposition:v:1", "attached_pic",
+               *(["-c:a", "copy"] if fmt_tracks else []), "-movflags", "+faststart", str(out)]
         proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+        cover.flush()
+        cover_bytes = bytes(cover.get_data())
+        for _ in range(int(COVER * FPS)):
+            proc.stdin.write(cover_bytes)
         surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
         cr = cairo.Context(surface)
         for i in range(int(duration * FPS)):
@@ -1024,7 +1100,6 @@ def render(t, cat_label, out_dir, formats, audio=None, cache=None):
         proc.stdin.close()
         if proc.wait() != 0:
             raise RuntimeError(f"ffmpeg a échoué pour {t['id']} ({name})")
-        thumbnail(t, L, cat_label, timings, states, folder / f"{t['id']}-{name}.png")
         for tr in fmt_tracks:
             if tr not in tracks:
                 tr.unlink(missing_ok=True)
