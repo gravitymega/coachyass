@@ -19,7 +19,9 @@ Usage :
     python3 render.py --all --audio public              # avec la voix (clips de scripts/tts.py)
     python3 render.py --all --audio https://gravitymega.github.io/coachyass  # clips publiés du site
 
-Voix : avec --audio, chaque vidéo reçoit deux pistes, français (par défaut) puis anglais,
+Vidéos en anglais (demande du 2 nov. 2026) : textes à l'écran et voix (Kokoro, voix d'homme) en anglais seulement.
+Fin de vidéo : lien vers une vraie séquence de match (data/realgame.json), ou à défaut la recherche à faire sur YouTube.
+Voix : avec --audio, la piste anglaise est placée sous l'animation,
 lues aux mêmes moments que sur le site. Une étape dure assez longtemps pour que sa phrase finisse
 dans les deux langues. Il faut audio-index.json (npm run audio:jobs).
 
@@ -83,12 +85,25 @@ FONT = "Barlow"
 FONT_COND = "Barlow Condensed"
 
 PLAYER_IDS = ["1", "2", "3", "4", "5", "x1", "x2", "x3", "x4", "x5"]
+VL = "en"  # langue des vidéos
+REAL = json.loads((DATA / "realgame.json").read_text(encoding="utf-8"))["links"] if (DATA / "realgame.json").exists() else {}
+REAL_CARD = 4.0  # secondes de la carte « vraie séquence de match » à la fin
+
+
+def real_game(t):
+    """(titre, ligne principale, ligne secondaire) de la carte de fin."""
+    link = REAL.get(t["id"])
+    if link:
+        url = link["url"].replace("https://", "").replace("www.", "")
+        url = url.replace("youtube.com/watch?v=", "youtu.be/").replace("youtube.com/shorts/", "youtube.com/shorts/")
+        return "WATCH IT IN A REAL GAME", url, link.get("label", "")
+    return "WATCH IT IN A REAL GAME", f"YouTube: {t['name']['en']} NBA", "Search it and watch it live"
 TIMELINE = json.loads((DATA / "timeline.json").read_text(encoding="utf-8"))
 
 
 # --------------------------------------------------------------- timeline ---
 def read_time(c):
-    words = len(c["fr"].split()) + len(c["en"].split())
+    words = len(c[VL].split()) * 2  # même rythme qu'avant (deux langues) : le temps de lire et d'écouter
     return max(TIMELINE["readMin"], TIMELINE["readPerWord"] * words)
 
 
@@ -413,9 +428,7 @@ def header(cr, L, t, cat_label):
     width = L.W - 2 * m
     text(cr, cat_label.upper(), m, 120 * k if L.name == "vertical" else 70, 38 * k, ORANGE, FONT_COND, bold=True)
     top = 190 * k if L.name == "vertical" else 70 + 68 * k
-    y = paragraph(cr, t["name"]["fr"], m, top, 72 * k, width, WHITE, FONT_COND, bold=True, leading=1.05)
-    if t["name"]["en"] != t["name"]["fr"]:
-        paragraph(cr, t["name"]["en"], m, y + 6 * k, 44 * k, width, MUTED, FONT_COND)
+    paragraph(cr, t["name"][VL], m, top, 72 * k, width, WHITE, FONT_COND, bold=True, leading=1.05)
 
 
 def caption_block(cr, L, c, label=None):
@@ -424,8 +437,7 @@ def caption_block(cr, L, c, label=None):
     if label:
         text(cr, label, x, y, 34 * k, ORANGE, FONT_COND, bold=True)
         y += 62 * k
-    y = paragraph(cr, c["fr"], x, y, 50 * k, width, WHITE, FONT, bold=True, leading=1.2)
-    paragraph(cr, c["en"], x, y + 18 * k, 42 * k, width, MUTED, FONT, leading=1.2)
+    paragraph(cr, c[VL], x, y, 50 * k, width, WHITE, FONT, bold=True, leading=1.2)
 
 
 def draw_frame(cr, L, t, cat_label, timings, states, time):
@@ -453,7 +465,18 @@ def draw_frame(cr, L, t, cat_label, timings, states, time):
         if step.get("p") and ball0 in after:
             b.arrow(cr, after[ball0], after[step["p"]], "pass", False)
         b.players(cr, pos, ball)
-        caption_block(cr, L, step["c"], f"ÉTAPE {i + 1}/{len(steps)}  ·  STEP {i + 1}/{len(steps)}")
+        caption_block(cr, L, step["c"], f"STEP {i + 1}/{len(steps)}")
+    elif time >= INTRO + total + OUTRO - REAL_CARD:  # carte « vraie séquence de match »
+        pos, ball = states[-1]
+        b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None)
+        x, y, width = L.cap
+        title, main, sub_ = real_game(t)
+        if L.name == "vertical":
+            y = b.y + 120
+        text(cr, title, x, y, 56 * k, ORANGE, FONT_COND, bold=True)
+        y = paragraph(cr, main, x, y + 110 * k, 50 * k, width, WHITE, FONT, bold=True)
+        if sub_:
+            paragraph(cr, sub_, x, y + 24 * k, 40 * k, width, MUTED, FONT)
     else:  # écran final
         pos, ball = states[-1]
         b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None)
@@ -463,10 +486,8 @@ def draw_frame(cr, L, t, cat_label, timings, states, time):
             cr.rectangle(0, b.y - 20, L.W, L.H - b.y + 20)
             cr.fill()
             y = b.y + 120
-        text(cr, "POURQUOI ÇA MARCHE", x, y, 64 * k, ORANGE, FONT_COND, bold=True)
-        text(cr, "WHY IT WORKS", x, y + 64 * k, 44 * k, MUTED, FONT_COND, bold=True)
-        y = paragraph(cr, t["why"]["fr"], x, y + 170 * k, 50 * k, width, WHITE, FONT, bold=True)
-        paragraph(cr, t["why"]["en"], x, y + 30 * k, 42 * k, width, MUTED, FONT)
+        text(cr, "WHY IT WORKS", x, y, 64 * k, ORANGE, FONT_COND, bold=True)
+        paragraph(cr, t["why"][VL], x, y + 110 * k, 50 * k, width, WHITE, FONT, bold=True)
     text(cr, CHANNEL, L.W / 2, L.footer_y, 32 * max(k, 0.8), MUTED, FONT_COND, align="center")
 
 
@@ -517,9 +538,9 @@ def neon_text(cr, s, x, y, size, color, align="center", family=FONT_COND):
     cr.stroke()
 
 
-def neon_block(cr, s, cx, y, width, color, size, min_size, max_lines, leading=0.98):
-    """Texte en majuscules, réduit jusqu'à tenir en `max_lines` lignes ; renvoie le y suivant."""
-    s = s.upper()
+def neon_block(cr, s, cx, y, width, color, size, min_size, max_lines, leading=0.98, upper=True):
+    """Texte en majuscules (sauf upper=False, pour un lien), réduit jusqu'à tenir en `max_lines` lignes ; renvoie le y suivant."""
+    s = s.upper() if upper else s
     while True:
         lines = wrap(cr, s, size, width, FONT_COND, True)
         if len(lines) <= max_lines or size <= min_size:
@@ -749,7 +770,7 @@ def neon_static(L, t, cat_label, states):
         neon_background(c, L)
         # Haut : catégorie puis nom de la tactique, en néon.
         neon_text(c, cat_label.split("·")[0].strip().upper(), L.W / 2, 205, 44, ORANGE)
-        neon_block(c, t["name"]["fr"], L.W / 2, 225, 980, LIME, 140, 72, 2)
+        neon_block(c, t["name"][VL], L.W / 2, 225, 980, LIME, 140, 72, 2)
         b = neon_board(states, t.get("court") == "full")
         b.court(c)
         _NEON_STATIC[key] = (surf, b)
@@ -764,11 +785,11 @@ def draw_frame_neon(cr, L, t, cat_label, timings, states, time):
     cr.set_source_surface(static, 0, 0)
     cr.paint()
     pulse = 0.5 + 0.5 * math.sin(time * 2 * math.pi / 1.2)
-    fam = FAMILIES.get(t.get("family") or "", {}).get("fr", "")
+    fam = FAMILIES.get(t.get("family") or "", {}).get(VL, "")
     if time < INTRO:
         pos, ball = states[0]
         b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None, pulse)
-        bottom = (fam or "Placement de départ", "Starting positions", None)
+        bottom = (fam or "Starting positions", "", None)
     elif time < INTRO + total:
         i, pos, ball = snapshot(t, timings, states, time - INTRO)
         before, ball0 = states[i]
@@ -779,11 +800,16 @@ def draw_frame_neon(cr, L, t, cat_label, timings, states, time):
         if step.get("p") and ball0 in after:
             b.arrow(cr, after[ball0], after[step["p"]], "pass", False)
         b.players(cr, pos, ball, pulse)
-        bottom = (step["c"]["fr"], step["c"]["en"], f"ÉTAPE {i + 1}/{len(steps)}")
+        bottom = (step["c"][VL], "", f"STEP {i + 1}/{len(steps)}")
+    elif time >= INTRO + total + OUTRO - REAL_CARD:
+        pos, ball = states[-1]
+        b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None, pulse)
+        title, main, sub_ = real_game(t)
+        bottom = (main, sub_, title)
     else:
         pos, ball = states[-1]
         b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None, pulse)
-        bottom = (t["why"]["fr"], t["why"]["en"], "POURQUOI ÇA MARCHE")
+        bottom = (t["why"][VL], "", "WHY IT WORKS")
     cr.set_source_surface(neon_caption(L, *bottom), 0, 0)
     cr.paint()
 
@@ -812,9 +838,10 @@ def neon_caption(L, main, alt, label):
         glow_path(cr, ORANGE, 2.5)
         text(cr, label, W / 2, y + 46, 40, WHITE, FONT_COND, bold=True, align="center")
         y += 84
-    end = label == "POURQUOI ÇA MARCHE"
-    y = neon_block(cr, main, W / 2, y, 980, WHITE if end else LIME, 80, 40, 6 if end else 4, leading=1.0)
-    alt_lines = wrap(cr, alt, 34, W - 140, FONT)
+    end = label == "WHY IT WORKS"
+    link = label == "WATCH IT IN A REAL GAME"  # lien : casse d'origine (les liens YouTube y sont sensibles)
+    y = neon_block(cr, main, W / 2, y, 980, WHITE if end else LIME, 64 if link else 76, 36, 2 if link else (6 if end else 4), leading=1.0, upper=not link)
+    alt_lines = wrap(cr, alt, 34, W - 140, FONT) if alt else []
     room = int((1735 - (y + 44)) // 42) + 1
     if room >= len(alt_lines):  # la traduction anglaise seulement si elle tient en entier
         for line in alt_lines:
@@ -916,7 +943,7 @@ def draw_cover(cr, L, t, states):
     cr.fill()
     text(cr, CHANNEL.upper(), W / 2, band * 0.66, 52 * k, WHITE, FONT_COND, bold=True, align="center")
     # Bande noire en diagonale, au centre.
-    line1, line2 = split_title(t["name"]["fr"])
+    line1, line2 = split_title(t["name"][VL])
     bh = (0.36 if L.name == "vertical" else 0.52) * H
     cr.save()
     cr.translate(W / 2, H * (0.5 if L.name != "vertical" else 0.52))
@@ -956,8 +983,8 @@ def voice_script(t, timings, path):
         return f"{int(sec // 60)}:{sec % 60:04.1f}"
 
     end = INTRO + timings[-1]["end"]
-    lines = [f"# {t['name']['fr']} / {t['name']['en']}", f"# {t['id']} — durée / duration {at(end + OUTRO)}", ""]
-    for lang, intro, why in (("fr", "Placement de départ.", "Pourquoi ça marche :"), ("en", "Starting positions.", "Why it works:")):
+    lines = [f"# {t['name'][VL]}", f"# {t['id']} — duration {at(end + OUTRO)}", ""]
+    for lang, intro, why in (("en", "Starting positions.", "Why it works:"),):
         lines.append("## Français" if lang == "fr" else "## English")
         lines.append(f"[{at(0)}] {t['name'][lang]}. {intro}")
         for s, tm in zip(t["steps"], timings):
@@ -1002,7 +1029,7 @@ def clip_duration(path):
 
 
 def load_voice(t, source, cache):
-    """{fr: [(chemin, durée)…], en: […]} pour [présentation, étapes…, conclusion], ou None si un clip manque."""
+    """{en: [(chemin, durée)…]} pour [présentation, étapes…, conclusion], ou None si un clip manque."""
     if not source:
         return None
     if not AUDIO_INDEX.exists():
@@ -1011,7 +1038,7 @@ def load_voice(t, source, cache):
     if not entry:
         return None
     voice = {}
-    for lang in ("fr", "en"):
+    for lang in (VL,):
         clips = [fetch_clip(source, rel, cache) for rel in entry[lang]]
         if not clips or any(c is None for c in clips) or len(clips) != len(t["steps"]) + 2:
             return None
@@ -1057,10 +1084,11 @@ def render(t, cat_label, out_dir, formats, audio=None, cache=None):
     INTRO, OUTRO = INTRO0, OUTRO0
     step_voice = None
     if voice:
-        dur = [max(a[1], b[1]) for a, b in zip(voice["fr"], voice["en"])]
+        dur = [d for _, d in voice[VL]]
         INTRO = max(INTRO0, dur[0] + 0.4)
         step_voice = dur[1:-1]
         OUTRO = max(OUTRO0, dur[-1] + 0.8)
+    OUTRO += REAL_CARD  # carte de fin « vraie séquence de match »
     timings = step_timings(t["steps"], step_voice)
     states = frames(t)
     duration = INTRO + timings[-1]["end"] + OUTRO
@@ -1068,7 +1096,7 @@ def render(t, cat_label, out_dir, formats, audio=None, cache=None):
     tracks = []
     if voice:
         starts = [COVER + s for s in [0.15] + [INTRO + tm["start"] for tm in timings] + [INTRO + timings[-1]["end"]]]
-        for lang in ("fr", "en"):
+        for lang in (VL,):
             track = Path(tempfile.gettempdir()) / f"op-{t['id']}-{lang}.m4a"
             voice_track(voice[lang], starts, total, track)
             tracks.append(track)
@@ -1082,7 +1110,7 @@ def render(t, cat_label, out_dir, formats, audio=None, cache=None):
         fmt_tracks = tracks
         if name == "vertical":  # style Short : rythme de fond, sous la voix s'il y en a une
             fmt_tracks = with_beat(t["id"], tracks, total)
-        for i, (track, lang) in enumerate(zip(fmt_tracks, ("fra", "eng") if tracks else ("zxx",))):
+        for i, (track, lang) in enumerate(zip(fmt_tracks, ("eng",) if tracks else ("zxx",))):
             audio_in += ["-i", str(track)]
             audio_map += ["-map", f"{i + 1}:a", f"-metadata:s:a:{i}", f"language={lang}",
                           f"-metadata:s:a:{i}", f"title={ {'fra': 'Français', 'eng': 'English'}.get(lang, 'Musique') }",
@@ -1137,7 +1165,7 @@ def main():
     if bad:
         sys.exit(f"Format inconnu : {', '.join(bad)} (vertical, square, horizontal)")
     lib = json.loads((DATA / "tactics.json").read_text(encoding="utf-8"))
-    cats = {c["id"]: f"{c['fr']} · {c['en']}" if c["fr"] != c["en"] else c["fr"] for c in lib["cats"]}
+    cats = {c["id"]: c[VL] for c in lib["cats"]}
     by_id = {t["id"]: t for t in lib["tactics"]}
     if args.all:
         todo = [t for t in lib["tactics"] if t.get("steps")]
@@ -1156,7 +1184,7 @@ def main():
             continue
         folder, made, voiced = render(t, cats.get(t["cat"], t["cat"]), out_dir, formats, args.audio, cache)
         shown = folder.relative_to(ROOT) if folder.is_relative_to(ROOT) else folder
-        sound = "voix FR + EN" if voiced else ("sans voix (clip manquant)" if args.audio else "sans voix")
+        sound = "voix EN" if voiced else ("sans voix (clip manquant)" if args.audio else "sans voix")
         print(f"✓ [{n}/{len(todo)}] {shown}/ : {len(made)} vidéo(s), {len(made)} miniature(s), {sound}", flush=True)
 
 

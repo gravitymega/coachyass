@@ -2,8 +2,9 @@
 // Un clip audio par segment : présentation, chaque étape, puis « pourquoi ça marche ».
 import type { Lang, Tactic, Text } from "./engine";
 
-/** Changer cette version régénère tous les clips (nouvelle voix, nouveaux réglages). */
-export const AUDIO_VERSION = "v2";
+/** Changer la version d'une langue régénère tous ses clips (nouvelle voix, nouveaux réglages).
+ * fr v2 : Piper upmc « pierre » ; en v3 : Kokoro am_michael (voix d'homme réaliste). */
+export const AUDIO_VERSIONS: Record<Lang, string> = { fr: "v2", en: "v3" };
 
 export interface NbaTeam {
   team: string;
@@ -44,5 +45,5 @@ export async function clipPath(text: string, lang: Lang) {
   const data = new TextEncoder().encode(`${lang}|${text}`);
   const digest = await crypto.subtle.digest("SHA-1", data);
   const hex = [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
-  return `audio/${AUDIO_VERSION}/${lang}/${hex.slice(0, 16)}.mp3`;
+  return `audio/${AUDIO_VERSIONS[lang]}/${lang}/${hex.slice(0, 16)}.mp3`;
 }

@@ -1,0 +1,16 @@
+{
+  "_note": "Vraie séquence de match montrée à la fin de chaque vidéo (demande du 2 nov. 2026 : le lien apparaît dans la vidéo publique). Liens trouvés par recherche le 2 nov. 2026, à vérifier en les regardant. Sans lien, la vidéo affiche la recherche YouTube à faire.",
+  "links": {
+    "pick-and-roll-central": { "url": "https://www.youtube.com/watch?v=llEwJpFxYCY", "label": "Stockton & Malone, Utah Jazz" },
+    "side-pick-and-roll": { "url": "https://www.youtube.com/shorts/54HngGMPP2Y", "label": "Stockton to Malone, 1990s Utah Jazz" },
+    "spain-pick-and-roll": { "url": "https://www.youtube.com/watch?v=q8TBokYu180", "label": "Stack/Spain pick and roll, Phoenix Suns" },
+    "elevator": { "url": "https://www.youtube.com/watch?v=F7ZqrLKi0FM", "label": "Elevator doors, Golden State Warriors" },
+    "floppy": { "url": "https://www.youtube.com/watch?v=F7ZqrLKi0FM", "label": "Floppy for Klay Thompson, Warriors" },
+    "hammer": { "url": "https://www.youtube.com/watch?v=i_MLRbJ4M-I", "label": "The San Antonio Spurs Hammer" },
+    "drop-coverage": { "url": "https://www.youtube.com/watch?v=-pT9u-eHY9c", "label": "Drop coverage in the NBA" },
+    "box-and-1": { "url": "https://www.youtube.com/watch?v=plQxss7N1pU", "label": "Raptors box-and-one on Curry, 2019 Finals" },
+    "princeton-backdoor": { "url": "https://www.youtube.com/watch?v=SRo1uIVYigQ", "label": "Lakers running Princeton actions" },
+    "triangle-offense-sideline-triangle": { "url": "https://www.youtube.com/watch?v=SRo1uIVYigQ", "label": "Lakers running Triangle actions" },
+    "handoff-into-pick-and-roll": { "url": "https://www.youtube.com/watch?v=n3TOQ8e8uXY", "label": "Bucks film room: dribble handoff" }
+  }
+}

@@ -149,3 +149,10 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 - `AUDIO_VERSION` passe à `v2` : tous les clips sont refaits (chemins `audio/v2/...`), caches `piper-voices-v2` et `op-audio-v2-*`.
 - Voix du navigateur (secours) : les noms de voix d'homme connus sont préférés (Thomas, Daniel, Paul, Henri, Guy…), ceux des voix de femme écartés.
 - Les vidéos prennent les clips du site publié : les refaire **après** la publication du site avec les clips v2.
+
+## Vidéos en anglais, voix réaliste, moins de texte, vraie séquence de match (demande du 2 nov. 2026)
+
+- Choix de l'utilisateur : « realistic » veut dire la **voix** ; le lien de vraie séquence de match va **dans la vidéo publique** ; format : **moins de texte**.
+- `render.py` (`VL = "en"`) : textes à l'écran en anglais seulement (titre, « STEP i/n », légende, « WHY IT WORKS ») et une seule piste audio anglaise. La traduction sous la légende est retirée.
+- Voix anglaise : Kokoro-82M (Apache 2.0), voix d'homme `am_michael`, beaucoup plus naturelle que Piper. `AUDIO_VERSIONS` passe à `{ fr: "v2", en: "v3" }`. Le français du site garde Piper « pierre ». Job `audio` : français en 4 parts, anglais en 16 parts ; modèle `kokoro-v1.0.int8.onnx` et `voices-v1.0.bin` tirés des releases de kokoro-onnx (cache `voices-v3-<langue>`).
+- Fin de chaque vidéo : carte « WATCH IT IN A REAL GAME » pendant 4 s. Elle affiche le lien de `data/realgame.json` (11 fiches pour l'instant, trouvées par recherche, à vérifier) ; sans lien, la recherche YouTube à faire. Le lien garde sa casse d'origine, car les identifiants YouTube y sont sensibles. `npm run validate` vérifie `realgame.json`.

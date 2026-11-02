@@ -75,6 +75,13 @@ for (const [id, list] of Object.entries(nbaTeams)) {
     if (!x.when?.fr?.trim() || !x.when?.en?.trim()) err(`nba.json › ${id}`, `période FR/EN manquante pour ${x.team}`);
   }
 }
+// Vraie séquence de match (fin des vidéos) : fiche existante, lien YouTube, légende.
+const realgame = (readJson("data/realgame.json") as { links: Record<string, { url?: string; label?: string }> }).links;
+for (const [id, x] of Object.entries(realgame)) {
+  if (!lib.tactics.some((t) => t.id === id)) err("realgame.json", `fiche inconnue « ${id} »`);
+  if (!/^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(x.url ?? "")) err(`realgame.json › ${id}`, `lien YouTube attendu : ${x.url}`);
+  if (!x.label?.trim()) err(`realgame.json › ${id}`, "légende manquante");
+}
 const terms = new Set<string>();
 for (const g of lib.glossary) {
   if (terms.has(g[0])) err("glossaire", `terme en double « ${g[0]} »`);
