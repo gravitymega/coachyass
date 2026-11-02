@@ -358,3 +358,16 @@ body.is-video::before { background: #0f1a2b; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* ---- montage (vidéo de l'utilisateur + schéma) ---- */
+.montage { display: grid; gap: 1.2rem; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 860px) { .montage { grid-template-columns: minmax(0, 1fr) minmax(0, 360px); align-items: start; } }
+.montage-form { display: grid; gap: 0.8rem; }
+.montage-form label:not(.f-check) { display: grid; gap: 0.3rem; font-weight: 600; }
+.montage-form input[type="text"], .montage-form input[type="number"] { font: inherit; padding: 0.55rem 0.7rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: var(--fg); }
+.montage-form input[type="file"] { font: inherit; max-width: 100%; }
+.m-status { margin: 0; color: var(--muted); }
+.m-note { margin: 0; font-size: 0.9rem; color: var(--muted); }
+.m-actions, .m-download { margin: 0; }
+.montage-preview canvas { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 9 / 16; margin-inline: auto; border-radius: var(--radius); background: #0b1220; box-shadow: 0 6px 22px rgba(15, 26, 43, 0.18); }
+.montage-board { position: absolute; left: -10000px; top: 0; width: 600px; }

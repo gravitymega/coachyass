@@ -118,3 +118,19 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
   - `draw_cover` dessine le parquet et le placement de départ, le bandeau rouge avec le nom de la chaîne, puis la bande noire inclinée avec le nom de la fiche. `split_title` coupe le nom sur « : », « contre » ou au milieu.
   - La couverture sert à trois choses : la miniature PNG de chaque format, les 3 premières secondes de chaque vidéo (`COVER`, 3 s à la demande de l'utilisateur, la voix et le rythme sont décalés d'autant) et l'image de couverture du MP4 (flux PNG `attached_pic`).
 - Le workflow des vidéos dépose aussi les PNG dans les releases, et la page `#videos` affiche la miniature verticale de chaque fiche (cachée si elle n'existe pas encore).
+
+## Montage avec une vraie vidéo (demande du 2 nov. 2026)
+
+- Demande : mettre des Shorts dans les montages avec le schéma du coach, à partir de vidéos que l'utilisateur fournit. L'utilisateur estime avoir le droit de commenter et d'analyser des vidéos publiées sur les réseaux.
+  - On n'ajoute **aucun outil qui télécharge** sur Instagram, Facebook ou YouTube : l'utilisateur fournit lui-même le fichier.
+  - Le crédit de l'auteur (« 🎥 @compte ») est affiché sur la vidéo et demandé dans le formulaire.
+- Route `#montage-<id>` et bouton « 🎬 Monter avec ta vidéo » sur chaque fiche. `src/montage.ts` est chargé à la demande.
+- Rendu 1080 × 1920 dans un canvas :
+  - d'abord la miniature pendant 3 s (même dessin que `render.py`) ;
+  - puis la vidéo de l'utilisateur en haut (recadrée, à partir de « Début de l'extrait »), avec le titre et le crédit par-dessus ;
+  - au milieu, l'étape et la légende ;
+  - en bas, le schéma animé (`Board.snapshotSvg` est redessiné en image à chaque mouvement) ;
+  - le nom de la chaîne tout en bas.
+- Son : les clips de voix naturelle de la fiche et le son de la vidéo (option, volume 35 %) sont mélangés avec WebAudio.
+- Enregistrement en temps réel avec `canvas.captureStream` et `MediaRecorder`. Le navigateur choisit le format : MP4 (H.264) sur Safari et Chrome récents, sinon WebM. Le chrono part quand l'enregistreur a vraiment démarré (`onstart`).
+- Tout se fait sur l'appareil, sans envoi ni frais. Testé dans Chromium à 390 px avec une vidéo de test : fichier 1080 × 1920 de 40 s avec la voix, aucune erreur dans la console.
