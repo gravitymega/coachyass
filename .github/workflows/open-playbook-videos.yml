@@ -39,12 +39,12 @@ jobs:
   render:
     needs: releases
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     strategy:
       fail-fast: false
       matrix:
         format: [vertical, square, horizontal]
-        shard: [1, 2, 3, 4, 5, 6, 7, 8]
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     defaults:
       run:
         working-directory: open-playbook
@@ -64,7 +64,7 @@ jobs:
       - if: steps.want.outputs.go == 'true'
         run: npm ci && npm run audio:jobs && sudo apt-get update -qq && sudo apt-get install -y -qq python3-cairo ffmpeg
       - if: steps.want.outputs.go == 'true'
-        run: /usr/bin/python3 render.py --all --formats ${{ matrix.format }} --shard ${{ matrix.shard }}/8 --out out --audio https://gravitymega.github.io/coachyass
+        run: /usr/bin/python3 render.py --all --formats ${{ matrix.format }} --shard ${{ matrix.shard }}/12 --out out --audio https://gravitymega.github.io/coachyass
       - if: steps.want.outputs.go == 'true'
         name: Envoyer dans la release
         env:

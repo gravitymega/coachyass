@@ -6,6 +6,8 @@ Pour chaque fiche, dans videos/<id>/ :
     une miniature PNG par vidéo et <id>-voix.txt (texte de voix off FR/EN avec les temps).
 La vidéo montre le titre et le placement de départ, l'animation étape par étape
 avec les légendes FR/EN, puis l'écran final « Pourquoi ça marche / Why it works ».
+Le format vertical a le style « Short » : titres néon, terrain en perspective, anneaux lumineux
+sous les joueurs, trajets brillants et petit rythme de fond synthétisé (sans droits d'auteur).
 
 Usage :
     python3 render.py horns-flare                     # une fiche, 3 formats
@@ -383,6 +385,8 @@ def caption_block(cr, L, c, label=None):
 
 
 def draw_frame(cr, L, t, cat_label, timings, states, time):
+    if L.name == "vertical":
+        return draw_frame_neon(cr, L, t, cat_label, timings, states, time)
     cr.set_source_rgb(*BG)
     cr.paint()
     header(cr, L, t, cat_label)
@@ -422,12 +426,394 @@ def draw_frame(cr, L, t, cat_label, timings, states, time):
     text(cr, CHANNEL, L.W / 2, L.footer_y, 32 * max(k, 0.8), MUTED, FONT_COND, align="center")
 
 
+# ------------------------------------------------------- style « Short » ---
+# Format vertical façon Shorts / Reels : gros titres néon, terrain en perspective,
+# anneaux lumineux sous les joueurs, trajets brillants, petit rythme de fond.
+LIME = (0.80, 1.0, 0.24)
+ELEC = (0.25, 0.55, 1.0)
+PINK = (1.0, 0.30, 0.42)
+NIGHT = (0.03, 0.05, 0.11)
+FAMILIES = json.loads((DATA / "families.json").read_text(encoding="utf-8")) if (DATA / "families.json").exists() else {}
+
+
+def mix(a, b, k):
+    return tuple(a[i] + (b[i] - a[i]) * k for i in range(3))
+
+
+def glow_path(cr, color, core_width, fill=False):
+    """Trace le chemin courant avec un halo néon (traits larges et transparents, puis cœur clair)."""
+    for w, a in ((core_width * 7, 0.06), (core_width * 4.2, 0.10), (core_width * 2.4, 0.18), (core_width * 1.5, 0.35)):
+        cr.set_source_rgba(*color, a)
+        cr.set_line_width(w)
+        cr.stroke_preserve()
+    cr.set_source_rgb(*mix(color, WHITE, 0.45))
+    if fill:
+        cr.fill_preserve()
+    cr.set_line_width(core_width)
+    cr.stroke()
+
+
+def neon_text(cr, s, x, y, size, color, align="center", family=FONT_COND):
+    cr.select_font_face(family, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+    cr.set_font_size(size)
+    ext = cr.text_extents(s)
+    if align == "center":
+        x -= ext.x_advance / 2
+    cr.new_path()
+    cr.move_to(x, y)
+    cr.text_path(s)
+    for w, a in ((size * 0.30, 0.05), (size * 0.18, 0.09), (size * 0.09, 0.18)):
+        cr.set_source_rgba(*color, a)
+        cr.set_line_width(w)
+        cr.stroke_preserve()
+    cr.set_source_rgb(*mix(color, WHITE, 0.55))
+    cr.fill_preserve()
+    cr.set_source_rgba(*color, 0.9)
+    cr.set_line_width(max(1.5, size * 0.018))
+    cr.stroke()
+
+
+def neon_block(cr, s, cx, y, width, color, size, min_size, max_lines, leading=0.98):
+    """Texte en majuscules, réduit jusqu'à tenir en `max_lines` lignes ; renvoie le y suivant."""
+    s = s.upper()
+    while True:
+        lines = wrap(cr, s, size, width, FONT_COND, True)
+        if len(lines) <= max_lines or size <= min_size:
+            break
+        size -= 4
+    for line in lines[:max_lines]:
+        y += size * 0.82
+        neon_text(cr, line, cx, y, size, color)
+        y += size * (leading - 0.82)
+    return y
+
+
+class NeonBoard:
+    """Demi-terrain vu de la ligne médiane, en hauteur : la ligne de fond est au loin, en haut."""
+
+    def __init__(self, cx, far_y, near_y, width, y_max=48.0, d0=39.0):
+        """Le bord lointain (derrière la ligne de fond) est à l'écran en far_y, le bord proche (y = y_max) en near_y.
+        y_max < 48 rapproche la caméra du panier quand les joueurs restent dans la moitié haute."""
+        self.cx, self.y_max, self.d0 = cx, y_max, d0
+        dn, df = d0, d0 + y_max + 4
+        self.F = width * dn / 56.0  # la largeur de la vue (56 pieds) tient dans `width` au premier plan
+        self.cam_h = (near_y - far_y) / (self.F * (1 / dn - 1 / df))
+        self.top = near_y - self.F * self.cam_h / dn
+
+    def depth(self, y):
+        return self.d0 + (self.y_max - y)
+
+    def pt(self, p, h=0.0):
+        d = self.depth(p[1])
+        return (self.cx + (p[0] - 25) * self.F / d, self.top + self.F * (self.cam_h - h) / d)
+
+    def scale(self, y):
+        return self.F / self.depth(y)
+
+    def poly(self, cr, pts):
+        cr.new_path()
+        for i, p in enumerate(pts):
+            (cr.move_to if i == 0 else cr.line_to)(*self.pt(p))
+
+    def arc_pts(self, c, r, a0, a1, n=48):
+        return [(c[0] + r * math.cos(a0 + (a1 - a0) * i / n), c[1] + r * math.sin(a0 + (a1 - a0) * i / n)) for i in range(n + 1)]
+
+    def court(self, cr):
+        cr.save()
+        self.poly(cr, [(-3, -4), (53, -4), (53, self.y_max), (-3, self.y_max)])
+        cr.close_path()
+        cr.clip_preserve()  # rien sous le bord proche
+        # Parquet sombre et lustré, raquette teintée.
+        g = cairo.LinearGradient(0, self.pt((25, -4))[1], 0, self.pt((25, self.y_max))[1])
+        g.add_color_stop_rgb(0, *mix(PLANK, NIGHT, 0.55))
+        g.add_color_stop_rgb(1, *mix(BOARD, NIGHT, 0.25))
+        cr.set_source(g)
+        cr.fill()
+        cr.set_source_rgba(1, 1, 1, 0.05)
+        for i in range(-2, 28, 2):
+            self.poly(cr, [(i * 2, -4), (i * 2 + 2, -4), (i * 2 + 2, 48), (i * 2, 48)])
+            cr.close_path()
+            cr.fill()
+        self.poly(cr, [(17, 0), (33, 0), (33, 19), (17, 19)])
+        cr.close_path()
+        cr.set_source_rgba(*ELEC, 0.28)
+        cr.fill()
+        # Lignes blanches légèrement lumineuses.
+        a = math.asin(22 / 23.75)
+        yc = 5.25 + 23.75 * math.cos(a)
+        lines = [
+            [(0, 0), (50, 0), (50, 47), (0, 47), (0, 0)],
+            [(17, 0), (17, 19), (33, 19), (33, 0)],
+            self.arc_pts((25, 19), 6, 0, 2 * math.pi),
+            self.arc_pts((25, 5.25), 4, 0, math.pi),
+            [(3, 0), (3, yc)] + self.arc_pts((25, 5.25), 23.75, math.pi / 2 + a, math.pi / 2 - a) + [(47, yc), (47, 0)],
+            self.arc_pts((25, 47), 6, math.pi, 2 * math.pi),
+        ]
+        cr.set_line_join(cairo.LINE_JOIN_ROUND)
+        for pts in lines:
+            self.poly(cr, pts)
+            cr.set_source_rgba(1, 1, 1, 0.12)
+            cr.set_line_width(7)
+            cr.stroke_preserve()
+            cr.set_source_rgba(1, 1, 1, 0.85)
+            cr.set_line_width(2.4)
+            cr.stroke()
+        cr.restore()
+        # Panier : planche et cercle, en hauteur.
+        cr.new_path()
+        p1, p2 = self.pt((22, 4), 9.5), self.pt((28, 4), 13)
+        cr.rectangle(p1[0], p2[1], p2[0] - p1[0], p1[1] - p2[1])
+        cr.set_source_rgba(1, 1, 1, 0.25)
+        cr.fill_preserve()
+        cr.set_source_rgba(1, 1, 1, 0.9)
+        cr.set_line_width(2)
+        cr.stroke()
+        cr.new_path()
+        for i in range(41):
+            q = (25 + 0.9 * math.cos(i * math.pi / 20), 5.25 + 0.9 * math.sin(i * math.pi / 20))
+            (cr.move_to if i == 0 else cr.line_to)(*self.pt(q, 10))
+        glow_path(cr, ORANGE, 2.5)
+
+    def arrow(self, cr, a, b, kind, defender):
+        dist = math.hypot(b[0] - a[0], b[1] - a[1])
+        if dist < 1.2:
+            return
+        ux, uy = (b[0] - a[0]) / dist, (b[1] - a[1]) / dist
+        nx, ny = -uy, ux
+        end = (b[0] - ux * 1.9, b[1] - uy * 1.9)
+        color = PINK if defender else (ELEC if kind == "pass" else WHITE)
+        pts = [a]
+        if kind == "d":
+            n = max(4, int(dist / 1.1))
+            for i in range(1, n):
+                k, off = i / n, 0.55 * (1 if i % 2 else -1)
+                pts.append((a[0] + (end[0] - a[0]) * k + nx * off, a[1] + (end[1] - a[1]) * k + ny * off))
+        pts.append(end)
+        cr.save()
+        cr.set_line_cap(cairo.LINE_CAP_ROUND)
+        cr.set_line_join(cairo.LINE_JOIN_ROUND)
+        if kind == "pass":
+            cr.set_dash([10, 14])
+        self.poly(cr, pts)
+        glow_path(cr, color, 4)
+        cr.set_dash([])
+        if kind == "s":
+            self.poly(cr, [(end[0] + nx * 1.3, end[1] + ny * 1.3), (end[0] - nx * 1.3, end[1] - ny * 1.3)])
+            glow_path(cr, color, 6)
+        else:
+            h = 1.3
+            self.poly(cr, [(end[0] + ux * 0.4, end[1] + uy * 0.4), (end[0] - ux * h + nx * h * 0.6, end[1] - uy * h + ny * h * 0.6),
+                           (end[0] - ux * h - nx * h * 0.6, end[1] - uy * h - ny * h * 0.6)])
+            cr.close_path()
+            glow_path(cr, color, 3, fill=True)
+        cr.restore()
+
+    def ring(self, cr, p, r, color, width):
+        cr.new_path()
+        for i in range(49):
+            q = (p[0] + r * math.cos(i * math.pi / 24), p[1] + r * math.sin(i * math.pi / 24))
+            (cr.move_to if i == 0 else cr.line_to)(*self.pt(q))
+        cr.close_path()
+        glow_path(cr, color, width)
+
+    def players(self, cr, pos, ball, pulse=0.0):
+        # Du plus loin au plus proche, pour que les pions proches passent devant.
+        for pid, p in sorted(pos.items(), key=lambda kv: kv[1][1]):
+            d = pid.startswith("x")
+            color = PINK if d else LIME
+            self.ring(cr, p, 2.9 + 0.3 * pulse, color if d else WHITE, 2.4)
+            self.ring(cr, p, 1.9, color, 3.4)
+            sc = self.scale(p[1])
+            fx, fy = self.pt(p)
+            hx, hy = self.pt(p, 4.6)
+            cr.new_path()  # « corps » : trait lumineux du sol au pion
+            cr.move_to(fx, fy)
+            cr.line_to(hx, hy)
+            cr.set_source_rgba(*color, 0.35)
+            cr.set_line_width(0.5 * sc)
+            cr.stroke()
+            r = 1.7 * sc
+            cr.new_path()
+            cr.arc(hx, hy, r, 0, 2 * math.pi)
+            cr.set_source_rgb(*(mix(RED, NIGHT, 0.1) if d else mix(BLUE, NIGHT, 0.1)))
+            cr.fill_preserve()
+            glow_path(cr, color, 0.16 * sc)
+            label = pid[1] if d else pid
+            text(cr, label, hx, hy + 0.75 * sc, 2.1 * sc, WHITE, FONT_COND, bold=True, align="center")
+        if ball:
+            bx, by = self.pt(ball, 3.6)
+            r = 0.95 * self.scale(ball[1])
+            cr.new_path()
+            cr.arc(bx, by, r, 0, 2 * math.pi)
+            glow_path(cr, ORANGE, max(2, r * 0.25), fill=True)
+
+
+def neon_background(cr, L):
+    g = cairo.LinearGradient(0, 0, 0, L.H)
+    g.add_color_stop_rgb(0, 0.10, 0.06, 0.20)
+    g.add_color_stop_rgb(0.5, *NIGHT)
+    g.add_color_stop_rgb(1, 0.16, 0.07, 0.04)
+    cr.set_source(g)
+    cr.paint()
+    # Arcs concentriques colorés en haut et en bas (motif « arc-en-ciel » des Shorts).
+    colors = (LIME, WHITE, ELEC, ORANGE)
+    for row, (y, up) in enumerate(((-30, False), (L.H + 30, True))):
+        for i in range(5):
+            cx = 110 + i * 215
+            c = colors[(i + row) % len(colors)]
+            for j, r in enumerate((80, 58, 36)):
+                cr.new_path()
+                if up:
+                    cr.arc(cx, y, r, math.pi, 2 * math.pi)
+                else:
+                    cr.arc(cx, y, r, 0, math.pi)
+                cr.set_source_rgba(*c, 0.55 - j * 0.12)
+                cr.set_line_width(16)
+                cr.stroke()
+
+
+def neon_board(states):
+    """Cadrage par fiche : la caméra s'approche du panier si tous les joueurs restent près de lui."""
+    ys = [p[1] for pos, _ in states for p in pos.values()]
+    y_max = min(48.0, max(30.0, max(ys) + 6))
+    return NeonBoard(540, 640, 1215, 1070, y_max)
+
+
+_NEON_STATIC = {}
+
+
+def neon_static(L, t, cat_label, states):
+    """Fond, titre et terrain : identiques sur toute la vidéo, dessinés une seule fois."""
+    key = (t["id"], L.W, L.H)
+    if key not in _NEON_STATIC:
+        _NEON_STATIC.clear()
+        surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
+        c = cairo.Context(surf)
+        neon_background(c, L)
+        # Haut : catégorie puis nom de la tactique, en néon.
+        neon_text(c, cat_label.split("·")[0].strip().upper(), L.W / 2, 205, 44, ORANGE)
+        neon_block(c, t["name"]["fr"], L.W / 2, 225, 980, LIME, 140, 72, 2)
+        b = neon_board(states)
+        b.court(c)
+        _NEON_STATIC[key] = (surf, b)
+    return _NEON_STATIC[key]
+
+
+def draw_frame_neon(cr, L, t, cat_label, timings, states, time):
+    W = L.W
+    steps = t["steps"]
+    total = timings[-1]["end"]
+    static, b = neon_static(L, t, cat_label, states)
+    cr.set_source_surface(static, 0, 0)
+    cr.paint()
+    pulse = 0.5 + 0.5 * math.sin(time * 2 * math.pi / 1.2)
+    fam = FAMILIES.get(t.get("family") or "", {}).get("fr", "")
+    if time < INTRO:
+        pos, ball = states[0]
+        b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None, pulse)
+        bottom = (fam or "Placement de départ", "Starting positions", None)
+    elif time < INTRO + total:
+        i, pos, ball = snapshot(t, timings, states, time - INTRO)
+        before, ball0 = states[i]
+        after, _ = states[i + 1]
+        step = steps[i]
+        for pid, mv in step.get("m", {}).items():
+            b.arrow(cr, before[pid], (mv[0], mv[1]), mv[2], pid.startswith("x"))
+        if step.get("p") and ball0 in after:
+            b.arrow(cr, after[ball0], after[step["p"]], "pass", False)
+        b.players(cr, pos, ball, pulse)
+        bottom = (step["c"]["fr"], step["c"]["en"], f"ÉTAPE {i + 1}/{len(steps)}")
+    else:
+        pos, ball = states[-1]
+        b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None, pulse)
+        bottom = (t["why"]["fr"], t["why"]["en"], "POURQUOI ÇA MARCHE")
+    cr.set_source_surface(neon_caption(L, *bottom), 0, 0)
+    cr.paint()
+
+
+_NEON_CAPTIONS = {}
+
+
+def neon_caption(L, main, alt, label):
+    """Bloc de texte du bas (étape, phrase néon, traduction, marque) : dessiné une fois par étape."""
+    key = (main, alt, label, L.W)
+    if key in _NEON_CAPTIONS:
+        return _NEON_CAPTIONS[key]
+    if len(_NEON_CAPTIONS) > 40:
+        _NEON_CAPTIONS.clear()
+    W = L.W
+    surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
+    cr = cairo.Context(surf)
+    y = 1245
+    if label:
+        cr.select_font_face(FONT_COND, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+        cr.set_font_size(40)
+        w = cr.text_extents(label).x_advance + 56
+        rounded(cr, W / 2 - w / 2, y, w, 64, 32)
+        cr.set_source_rgba(*ORANGE, 0.18)
+        cr.fill_preserve()
+        glow_path(cr, ORANGE, 2.5)
+        text(cr, label, W / 2, y + 46, 40, WHITE, FONT_COND, bold=True, align="center")
+        y += 84
+    end = label == "POURQUOI ÇA MARCHE"
+    y = neon_block(cr, main, W / 2, y, 980, WHITE if end else LIME, 80, 40, 6 if end else 4, leading=1.0)
+    alt_lines = wrap(cr, alt, 34, W - 140, FONT)
+    room = int((1735 - (y + 44)) // 42) + 1
+    if room >= len(alt_lines):  # la traduction anglaise seulement si elle tient en entier
+        for line in alt_lines:
+            y += 42
+            text(cr, line, W / 2, y + 6, 34, MUTED, FONT, align="center")
+    # Bas : marque de la chaîne dans un cadre lumineux.
+    cr.select_font_face(FONT_COND, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+    cr.set_font_size(34)
+    w = cr.text_extents(CHANNEL.upper()).x_advance + 60
+    rounded(cr, W / 2 - w / 2, 1752, w, 70, 14)
+    cr.set_source_rgba(*NIGHT, 0.85)
+    cr.fill_preserve()
+    glow_path(cr, ELEC, 2)
+    text(cr, CHANNEL.upper(), W / 2, 1799, 34, WHITE, FONT_COND, bold=True, align="center")
+
+
+    _NEON_CAPTIONS[key] = surf
+    return surf
+
+
+def beat_track(duration, path, bpm=100, rate=22050):
+    """Petit rythme de fond (grosse caisse, claquement, charleston), synthétisé : aucun droit d'auteur."""
+    import array, random, wave as wavmod
+    rnd = random.Random(7)
+    beat = 60.0 / bpm
+    n = int(duration * rate)
+    buf = array.array("h", bytes(2 * n))
+    noise = [rnd.uniform(-1, 1) for _ in range(rate)]
+    for i in range(n):
+        t = i / rate
+        tb = t % beat
+        k = math.sin(2 * math.pi * (48 * tb + 110 * (1 - math.exp(-28 * tb)) / 28)) * math.exp(-7 * tb)
+        nb = int(t / beat)
+        clap = noise[i % rate] * math.exp(-25 * tb) * 0.35 if nb % 2 == 1 else 0.0
+        th = (t + beat / 2) % beat
+        hat = noise[(i * 7) % rate] * math.exp(-90 * th) * 0.18
+        bass = math.sin(2 * math.pi * (55 if (nb // 4) % 2 == 0 else 65.4) * t) * 0.18 * math.exp(-2.5 * tb)
+        v = (k * 0.75 + clap + hat + bass)
+        fade = min(1.0, t / 0.6, (duration - t) / 1.2)
+        buf[i] = int(max(-1, min(1, v * 0.8 * fade)) * 32000)
+    with wavmod.open(str(path), "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(rate)
+        w.writeframes(buf.tobytes())
+
+
 def thumbnail(t, L, cat_label, timings, states, path):
     """Miniature PNG : dernière étape, flèches visibles, gros titre."""
     last = timings[-1]
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
     cr = cairo.Context(surface)
     draw_frame(cr, L, t, cat_label, timings, states, INTRO + last["start"] + last["move"] + last["pass"] + 0.05)
+    if L.name == "vertical":  # le style néon montre déjà le titre en grand
+        surface.write_to_png(str(path))
+        return
     # Bandeau titre lisible en petit format.
     k = L.k
     cr.set_source_rgb(*BG)
@@ -515,6 +901,26 @@ def voice_track(clips, starts, duration, out):
     subprocess.run(cmd, check=True)
 
 
+def with_beat(tid, tracks, duration):
+    """Pistes du format vertical : rythme seul, ou voix + rythme discret."""
+    tmp = Path(tempfile.gettempdir())
+    beat = tmp / f"op-{tid}-beat.wav"
+    beat_track(duration, beat)
+    out = []
+    for i, track in enumerate(tracks or [None]):
+        dest = tmp / f"op-{tid}-mix{i}.m4a"
+        if track is None:
+            cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(beat), "-af", "volume=0.5", "-ac", "1", "-ar", "44100", "-c:a", "aac", "-b:a", "96k", str(dest)]
+        else:
+            cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(track), "-i", str(beat), "-filter_complex",
+                   "[1:a]volume=0.16[m];[0:a][m]amix=inputs=2:normalize=0:duration=first[out]", "-map", "[out]",
+                   "-ac", "1", "-ar", "44100", "-c:a", "aac", "-b:a", "96k", str(dest)]
+        subprocess.run(cmd, check=True)
+        out.append(dest)
+    beat.unlink(missing_ok=True)
+    return out
+
+
 def render(t, cat_label, out_dir, formats, audio=None, cache=None):
     global INTRO, OUTRO
     voice = load_voice(t, audio, cache)
@@ -542,14 +948,17 @@ def render(t, cat_label, out_dir, formats, audio=None, cache=None):
         L = layouts()[name]
         out = folder / f"{t['id']}-{name}.mp4"
         audio_in, audio_map = [], []
-        for i, (track, lang) in enumerate(zip(tracks, ("fra", "eng"))):
+        fmt_tracks = tracks
+        if name == "vertical":  # style Short : rythme de fond, sous la voix s'il y en a une
+            fmt_tracks = with_beat(t["id"], tracks, duration)
+        for i, (track, lang) in enumerate(zip(fmt_tracks, ("fra", "eng") if tracks else ("zxx",))):
             audio_in += ["-i", str(track)]
             audio_map += ["-map", f"{i + 1}:a", f"-metadata:s:a:{i}", f"language={lang}",
-                          f"-metadata:s:a:{i}", f"title={'Français' if lang == 'fra' else 'English'}",
+                          f"-metadata:s:a:{i}", f"title={ {'fra': 'Français', 'eng': 'English'}.get(lang, 'Musique') }",
                           f"-disposition:a:{i}", "default" if i == 0 else "0"]
         cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "bgra", "-s", f"{L.W}x{L.H}",
                "-r", str(FPS), "-i", "-", *audio_in, "-map", "0:v", *audio_map, "-c:v", "libx264", "-preset", "medium", "-crf", "20",
-               "-pix_fmt", "yuv420p", *(["-c:a", "copy"] if tracks else []), "-movflags", "+faststart", str(out)]
+               "-pix_fmt", "yuv420p", *(["-c:a", "copy"] if fmt_tracks else []), "-movflags", "+faststart", str(out)]
         proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
         surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, L.W, L.H)
         cr = cairo.Context(surface)
@@ -561,6 +970,9 @@ def render(t, cat_label, out_dir, formats, audio=None, cache=None):
         if proc.wait() != 0:
             raise RuntimeError(f"ffmpeg a échoué pour {t['id']} ({name})")
         thumbnail(t, L, cat_label, timings, states, folder / f"{t['id']}-{name}.png")
+        for tr in fmt_tracks:
+            if tr not in tracks:
+                tr.unlink(missing_ok=True)
         made.append(out)
     voice_script(t, timings, folder / f"{t['id']}-voix.txt")
     for track in tracks:
