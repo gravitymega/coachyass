@@ -587,8 +587,8 @@ function videosView() {
   <main class="wrap" id="main">
     <section class="intro"><h1>${tr("Vidéos à télécharger", "Videos to download")}</h1>
     <p>${tr(
-      `Les ${anim.length} fiches animées en MP4, prêtes pour les réseaux sociaux ou l'écran du gymnase : verticale (Reels, TikTok, Shorts), carrée ou horizontale (YouTube, télé). Libres sous licence CC BY 4.0 : cite « Playbook Ouvert ».`,
-      `All ${anim.length} animated cards as MP4, ready for social media or the gym screen: vertical (Reels, TikTok, Shorts), square or landscape (YouTube, TV). Free under CC BY 4.0: credit “Open Playbook”.`,
+      `Les ${anim.length} fiches animées en MP4, avec l'explication à voix haute (piste française, et piste anglaise en second) : verticale (Reels, TikTok, Shorts), carrée ou horizontale (YouTube, télé). Libres sous licence CC BY 4.0 : cite « Playbook Ouvert ».`,
+      `All ${anim.length} animated cards as MP4, with the spoken explanation (French track, English as a second track): vertical (Reels, TikTok, Shorts), square or landscape (YouTube, TV). Free under CC BY 4.0: credit “Open Playbook”.`,
     )}</p></section>
     <form class="filters" role="search" id="v-filters"><label class="f-search"><span>${tr("Rechercher", "Search")}</span>
       <input id="v-q" type="search" placeholder="${tr("ex. hammer, zone 2-3…", "e.g. hammer, 2-3 zone…")}" autocomplete="off" /></label></form>

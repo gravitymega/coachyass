@@ -1,6 +1,8 @@
 # Open Playbook : vidéos MP4 de toutes les fiches animées, publiées en « releases » GitHub (gratuit).
 # Une release par format : op-videos-vertical, op-videos-square, op-videos-horizontal.
 # Le site (page « Vidéos » et chaque fiche) pointe vers ces fichiers.
+# Voix : piste française (par défaut) et piste anglaise, prises dans les clips audio déjà publiés sur le site
+# (lancer ce workflow après la publication du site qui a généré l'audio).
 # À relancer à la main (Actions → Open Playbook · vidéos → Run workflow) après un lot de nouvelles fiches.
 name: Open Playbook · vidéos
 
@@ -60,9 +62,9 @@ jobs:
           cache: npm
           cache-dependency-path: open-playbook/package-lock.json
       - if: steps.want.outputs.go == 'true'
-        run: npm ci && sudo apt-get update -qq && sudo apt-get install -y -qq python3-cairo ffmpeg
+        run: npm ci && npm run audio:jobs && sudo apt-get update -qq && sudo apt-get install -y -qq python3-cairo ffmpeg
       - if: steps.want.outputs.go == 'true'
-        run: /usr/bin/python3 render.py --all --formats ${{ matrix.format }} --shard ${{ matrix.shard }}/8 --out out
+        run: /usr/bin/python3 render.py --all --formats ${{ matrix.format }} --shard ${{ matrix.shard }}/8 --out out --audio https://gravitymega.github.io/coachyass
       - if: steps.want.outputs.go == 'true'
         name: Envoyer dans la release
         env:
