@@ -58,8 +58,11 @@ export interface PlanBlock {
   ids?: string[];
 }
 
+export type PlanLevel = "general" | "jeunes" | "amateurs" | "pro" | "pre-saison" | "veille-de-match";
+
 export interface Plan {
-  id?: string;
+  id: string;
+  level: PlanLevel;
   name: Text;
   duration: number;
   blocks: PlanBlock[];
@@ -68,7 +71,7 @@ export interface Plan {
 export interface Library {
   cats: Category[];
   glossary: GlossaryEntry[];
-  plan: Plan;
+  plans: Plan[];
   tactics: Tactic[];
 }
 

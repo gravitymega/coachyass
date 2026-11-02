@@ -1,0 +1,74 @@
+name: "Proposer une tactique / Suggest a play"
+description: "Proposer une nouvelle fiche pour Playbook Ouvert. Suggest a new card for Open Playbook."
+title: "[Tactique / Play] "
+labels: ["open-playbook", "proposition"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci ! Décrivez la tactique en français, en anglais ou les deux. Une photo d'un schéma dessiné à la main suffit.
+        Thanks! Describe the play in French, English or both. A photo of a hand-drawn diagram is enough.
+  - type: input
+    id: name
+    attributes:
+      label: "Nom / Name"
+      placeholder: "Horns Flare"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: "Catégorie / Category"
+      options:
+        - "Attaque / Offense"
+        - "Attaque de zone / Zone offense"
+        - "Transition"
+        - "Remise en jeu / Inbounds"
+        - "Défense / Defense"
+        - "Exercice / Drill"
+        - "Principe / Principle"
+    validations:
+      required: true
+  - type: dropdown
+    id: level
+    attributes:
+      label: "Niveau / Level"
+      options:
+        - "1 · Débutant / Beginner"
+        - "2 · Intermédiaire / Intermediate"
+        - "3 · Avancé / Advanced"
+  - type: textarea
+    id: setup
+    attributes:
+      label: "Placement de départ / Starting positions"
+      description: "Où se trouve chaque joueur ? Qui a le ballon ? / Where is each player? Who has the ball?"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Étapes / Steps"
+      description: "Une ligne par étape : déplacements, écrans, passes. / One line per step: moves, screens, passes."
+      placeholder: |
+        1. 1 passe à 4 au coude / 1 passes to 4 at the elbow
+        2. 2 sort de l'écran de 5 / 2 comes off 5's screen
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: "Pourquoi ça marche / Why it works"
+  - type: textarea
+    id: used
+    attributes:
+      label: "Qui l'utilise / Who uses it"
+      description: "Seulement si c'est bien documenté (lien bienvenu). / Only if well documented (a link helps)."
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: "Règles / Rules"
+      options:
+        - label: "Pas de logo, de marque ni d'image protégée. / No logos, brands or protected images."
+          required: true
+        - label: "J'accepte que ce contenu soit publié sous licence CC BY 4.0. / I agree this content is published under CC BY 4.0."
+          required: true

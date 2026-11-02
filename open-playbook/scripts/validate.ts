@@ -114,11 +114,21 @@ for (const t of lib.tactics) {
   seen.add(t.id);
   if (t.name && t.keys) checkTactic(t, cats);
 }
-for (const b of lib.plan.blocks) {
-  for (const ref of b.ids ?? []) if (!seen.has(ref)) err(`séance type › ${b.title.fr}`, `fiche inconnue « ${ref} »`);
+const planIds = new Set<string>();
+for (const plan of lib.plans) {
+  const where = `plan ${plan.id}`;
+  if (planIds.has(plan.id)) err(where, "id en double");
+  planIds.add(plan.id);
+  for (const b of plan.blocks) {
+    for (const ref of b.ids ?? []) if (!seen.has(ref)) err(`${where} › ${b.title.fr}`, `fiche inconnue « ${ref} »`);
+  }
+  const planMin = plan.blocks.reduce((n, b) => n + b.min, 0);
+  if (planMin !== plan.duration) err(where, `les blocs durent ${planMin} min au lieu de ${plan.duration}`);
 }
-const planMin = lib.plan.blocks.reduce((n, b) => n + b.min, 0);
-if (planMin !== lib.plan.duration) err("séance type", `les blocs durent ${planMin} min au lieu de ${lib.plan.duration}`);
+const familyNames = readJson("data/families.json") as Record<string, unknown>;
+for (const f of new Set(lib.tactics.map((t) => t.family).filter(Boolean))) {
+  if (!familyNames[f!]) err("families.json", `famille sans nom FR/EN « ${f} »`);
+}
 const terms = new Set<string>();
 for (const g of lib.glossary) {
   if (terms.has(g[0])) err("glossaire", `terme en double « ${g[0]} »`);
@@ -152,5 +162,5 @@ if (errors.length) {
   process.exit(1);
 }
 console.log(
-  `✓ ${lib.tactics.length} fiches valides (${animated} animées), ${lib.glossary.length} termes, ${lib.cats.length} catégories${catalogueInfo}.`,
+  `✓ ${lib.tactics.length} fiches valides (${animated} animées), ${lib.glossary.length} termes, ${lib.plans.length} plans de séance, ${lib.cats.length} catégories${catalogueInfo}.`,
 );

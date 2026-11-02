@@ -331,13 +331,40 @@ function glossaryView() {
 }
 
 // ---------------------------------------------------------------------- plans
+const PLAN_LEVELS: Record<string, Text> = {
+  general: { fr: "Général", en: "General" },
+  jeunes: { fr: "Jeunes", en: "Youth" },
+  amateurs: { fr: "Amateurs", en: "Amateur" },
+  pro: { fr: "Pro", en: "Pro" },
+  "pre-saison": { fr: "Pré-saison", en: "Preseason" },
+  "veille-de-match": { fr: "Veille de match", en: "Day before a game" },
+};
+
 function plansView() {
-  const p = lib.plan;
+  app.innerHTML = `${header("plans")}
+  <main class="wrap" id="main">
+    <section class="intro"><h1>${tr("Plans de séance", "Session plans")}</h1>
+    <p>${tr("Des séances complètes par niveau, construites avec les fiches de la bibliothèque.", "Complete practices by level, built from the library's cards.")}</p></section>
+    <ul class="plan-list">${lib.plans
+      .map(
+        (p) => `<li><a class="card" href="#plan-${p.id}">
+        <span class="card-meta">${esc(txt(PLAN_LEVELS[p.level]))}</span>
+        <strong>${esc(txt(p.name))}</strong>
+        <span class="card-foot"><span>${p.duration} min</span><span>${p.blocks.length} ${tr("blocs", "blocks")}</span></span>
+      </a></li>`,
+      )
+      .join("")}</ul>
+  </main>${footer()}`;
+  bindHeader();
+}
+
+function planView(p: Library["plans"][number]) {
   let t0 = 0;
   app.innerHTML = `${header("plans")}
   <main class="wrap" id="main">
+    <p class="crumbs"><a href="#plans">← ${tr("Plans de séance", "Session plans")}</a> · ${esc(txt(PLAN_LEVELS[p.level]))}</p>
     <section class="intro"><h1>${esc(txt(p.name))}</h1>
-    <p>${tr(`Une séance complète de ${p.duration} minutes, construite avec les fiches de la bibliothèque.`, `A complete ${p.duration}-minute practice built from the library's cards.`)}</p></section>
+    <p class="alt-title" lang="${other(state.lang)}">${esc(p.name[other(state.lang)])}</p></section>
     <ol class="plan">${p.blocks
       .map((b) => {
         const from = t0;
@@ -371,6 +398,9 @@ function route() {
   } else if (h === "plans") {
     app.dataset.view = "plans";
     plansView();
+  } else if (h.startsWith("plan-") && lib.plans.some((p) => p.id === h.slice(5))) {
+    app.dataset.view = "plan";
+    planView(lib.plans.find((p) => p.id === h.slice(5))!);
   } else {
     app.dataset.view = "library";
     libraryView();
