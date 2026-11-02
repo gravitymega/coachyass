@@ -33,6 +33,8 @@ import os
 import subprocess
 import sys
 import tempfile
+import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -977,10 +979,18 @@ def fetch_clip(source, rel, cache):
     p = cache / rel
     if not p.exists():
         p.parent.mkdir(parents=True, exist_ok=True)
-        try:
-            with urllib.request.urlopen(f"{source.rstrip('/')}/{rel}", timeout=30) as r:
-                p.write_bytes(r.read())
-        except Exception:
+        for attempt in range(4):  # coupures réseau passagères : on réessaie avant de renoncer à la voix
+            try:
+                with urllib.request.urlopen(f"{source.rstrip('/')}/{rel}", timeout=30) as r:
+                    p.write_bytes(r.read())
+                break
+            except urllib.error.HTTPError as e:
+                if e.code == 404:
+                    return None
+            except Exception:
+                pass
+            time.sleep(2 * (attempt + 1))
+        else:
             return None
     return p
 
