@@ -1,5 +1,7 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# Vérification automatique à chaque PR et à chaque mise à jour de main.
+# Le dépôt n'a pas de package.json à la racine (un dossier = un site) : au lieu de `npm ci`,
+# on vérifie la syntaxe de tous les scripts de tous les sites (JS, TypeScript des fonctions, JSON).
+# Rien à installer, aucun frais (minutes GitHub Actions gratuites).
 
 name: Node.js CI
 
@@ -9,23 +11,17 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: read
+
 jobs:
-  build:
-
+  syntaxe:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Node.js 22
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+        node-version: 22.x
+    - name: Vérifier la syntaxe des scripts (tous les sites)
+      run: node .github/scripts/verifier-syntaxe.mjs .
