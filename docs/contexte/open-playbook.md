@@ -136,3 +136,9 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 - Son : les clips de voix naturelle de la fiche et le son de la vidéo (option, volume 35 %) sont mélangés avec WebAudio.
 - Enregistrement en temps réel avec `canvas.captureStream` et `MediaRecorder`. Le navigateur choisit le format : MP4 (H.264) sur Safari et Chrome récents, sinon WebM. Le chrono part quand l'enregistreur a vraiment démarré (`onstart`).
 - Tout se fait sur l'appareil, sans envoi ni frais. Testé dans Chromium à 390 px avec une vidéo de test : fichier 1080 × 1920 de 40 s avec la voix, aucune erreur dans la console.
+
+## Défenseurs dans toutes les situations de jeu (demande du 2 nov. 2026)
+
+- Choix de l'utilisateur : « situations de jeu ». Un défenseur face à chaque attaquant dans les catégories attaque, attaque de zone, remises en jeu, transition, défense et principes. Les exercices (tir, dribble, passes, etc.) et les surnombres voulus (contre-attaques, fiches de transition qui avaient déjà des défenseurs) restent comme avant.
+- Migration `scripts/add-defenders.ts` (`--dry` pour un essai) : 245 fiches, 1 116 défenseurs ajoutés. Placement homme à homme entre l'attaquant et le panier, décalé vers le ballon sans ballon ; le défenseur suit son joueur à chaque étape où quelqu'un bouge. Les étapes qui ne sont qu'une passe gardent leur timing, et les défenseurs déjà écrits à la main ne changent pas.
+- Les fiches touchées repassent en `review: "pending"` (placement automatique à relire par un entraîneur). Les vidéos de ces fiches sont à refaire avec le workflow des vidéos (entrée `ids`).
