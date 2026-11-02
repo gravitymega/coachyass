@@ -85,6 +85,10 @@ FONT_COND = "Barlow Condensed"
 
 PLAYER_IDS = ["1", "2", "3", "4", "5", "x1", "x2", "x3", "x4", "x5"]
 VL = "en"  # langue des vidéos
+HOOKS = {"attaque": "FILM ROOM", "zone_att": "ZONE OFFENSE FILM ROOM", "transition": "TRANSITION FILM ROOM",
+         "remises": "SET PLAY BREAKDOWN", "defense": "DEFENSIVE BREAKDOWN", "exercices": "DRILL BREAKDOWN",
+         "principes": "COACHING PRINCIPLE"}  # mêmes accroches que src/narration.ts
+ANALYSIS = "THE ANALYSIS"
 TIMELINE = json.loads((DATA / "timeline.json").read_text(encoding="utf-8"))
 
 
@@ -441,7 +445,7 @@ def draw_frame(cr, L, t, cat_label, timings, states, time):
     if time < INTRO:  # titre + placement de départ
         pos, ball = states[0]
         b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None)
-        caption_block(cr, L, {"fr": "Placement de départ", "en": "Starting positions"})
+        caption_block(cr, L, {VL: t["name"][VL]}, HOOKS.get(t["cat"], "BREAKDOWN"))
     elif time < INTRO + total:
         i, pos, ball = snapshot(t, timings, states, time - INTRO)
         before, ball0 = states[i]
@@ -462,7 +466,7 @@ def draw_frame(cr, L, t, cat_label, timings, states, time):
             cr.rectangle(0, b.y - 20, L.W, L.H - b.y + 20)
             cr.fill()
             y = b.y + 120
-        text(cr, "WHY IT WORKS", x, y, 64 * k, ORANGE, FONT_COND, bold=True)
+        text(cr, ANALYSIS, x, y, 64 * k, ORANGE, FONT_COND, bold=True)
         paragraph(cr, t["why"][VL], x, y + 110 * k, 50 * k, width, WHITE, FONT, bold=True)
     text(cr, CHANNEL, L.W / 2, L.footer_y, 32 * max(k, 0.8), MUTED, FONT_COND, align="center")
 
@@ -765,7 +769,7 @@ def draw_frame_neon(cr, L, t, cat_label, timings, states, time):
     if time < INTRO:
         pos, ball = states[0]
         b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None, pulse)
-        bottom = (fam or "Starting positions", "", None)
+        bottom = (t["name"][VL], "", HOOKS.get(t["cat"], "BREAKDOWN"))
     elif time < INTRO + total:
         i, pos, ball = snapshot(t, timings, states, time - INTRO)
         before, ball0 = states[i]
@@ -780,7 +784,7 @@ def draw_frame_neon(cr, L, t, cat_label, timings, states, time):
     else:
         pos, ball = states[-1]
         b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None, pulse)
-        bottom = (t["why"][VL], "", "WHY IT WORKS")
+        bottom = (t["why"][VL], "", ANALYSIS)
     cr.set_source_surface(neon_caption(L, *bottom), 0, 0)
     cr.paint()
 
@@ -809,7 +813,7 @@ def neon_caption(L, main, alt, label):
         glow_path(cr, ORANGE, 2.5)
         text(cr, label, W / 2, y + 46, 40, WHITE, FONT_COND, bold=True, align="center")
         y += 84
-    end = label == "WHY IT WORKS"
+    end = label == ANALYSIS
     y = neon_block(cr, main, W / 2, y, 980, WHITE if end else LIME, 76, 40, 6 if end else 4, leading=1.0)
     alt_lines = wrap(cr, alt, 34, W - 140, FONT) if alt else []
     room = int((1735 - (y + 44)) // 42) + 1
