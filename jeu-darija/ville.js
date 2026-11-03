@@ -127,10 +127,12 @@ export function createVille(api) {
     const k = { ArrowLeft: 'left', a: 'left', q: 'left', ArrowRight: 'right', d: 'right', ArrowUp: 'jump', ' ': 'jump', w: 'jump', z: 'jump' }[e.key];
     if (k) { keys[k] = down; if (k === 'jump' && down) jumpQueued = 0.15; e.preventDefault(); }
     if (down && (e.key === 'Enter' || e.key === 'e') && near) talk(near);
+    if (down && (e.key === 'g' || e.key === 'f')) shoot();
   };
   const kd = onKey(true), ku = onKey(false);
   window.addEventListener('keydown', kd); window.addEventListener('keyup', ku); window.addEventListener('resize', resize);
   $('#v-talk').onclick = () => near && talk(near);
+  $('#v-grab').onpointerdown = (e) => { e.preventDefault(); shoot(); };
 
   // ----- Physique -----
   const PW = 0.7, PH = 1.75, GRAV = 40, JUMP = 14.6, SPEED = 6.5;
@@ -158,20 +160,51 @@ export function createVille(api) {
     const target = p.x - p.facing * 1.4;
     buddy.x += (target - buddy.x) * Math.min(1, dt * 4); buddy.y += (p.y - buddy.y) * Math.min(1, dt * 6); buddy.facing = p.facing;
     // Ramasser pièces et objets
-    for (const c of coins) if (!c.taken && Math.abs(c.x - p.x) < 0.7 && c.y > p.y - PH - 0.3 && c.y < p.y + 0.3) {
-      c.taken = true; coinCount++; api.sfx('pop'); api.earn?.(1);
-      if (coinCount % 10 === 0) api.onCoins(1);
-    }
-    if (fetch) for (const it of fetch.items) if (!it.taken && Math.abs(it.x - p.x) < 0.8 && it.y > p.y - PH - 0.4 && it.y < p.y + 0.4) {
-      it.taken = true; api.sfx('chime');
-      const left = fetch.items.filter((i) => !i.taken).length;
-      api.say(left ? `Encore ${left} !` : `Tu as tout trouvé ! Retourne voir ${fetch.npc.name}.`);
-    }
+    for (const c of coins) if (!c.taken && grab?.target !== c && Math.abs(c.x - p.x) < 0.7 && c.y > p.y - PH - 0.3 && c.y < p.y + 0.3) takeCoin(c);
+    if (fetch) for (const it of fetch.items) if (!it.taken && grab?.target !== it && Math.abs(it.x - p.x) < 0.8 && it.y > p.y - PH - 0.4 && it.y < p.y + 0.4) takeItem(it);
+    grabStep(dt);
     near = NPCS.find((n) => Math.abs(n.x - p.x) < 1.6 && Math.abs(npcY(n) - p.y) < 1.5) || null;
     $('#v-talk').hidden = !near;
     if (near) $('#v-talk').textContent = `💬 ${near.name}`;
   }
   const npcY = (n) => world.ground[Math.floor(n.x)];
+  function takeCoin(c) { c.taken = true; coinCount++; api.sfx('pop'); api.earn?.(1); if (coinCount % 10 === 0) api.onCoins(1); }
+  function takeItem(it) {
+    it.taken = true; api.sfx('chime');
+    const left = fetch.items.filter((i) => !i.taken).length;
+    api.say(left ? `Encore ${left} !` : `Tu as tout trouvé ! Retourne voir ${fetch.npc.name}.`);
+  }
+  // ----- Le GrabPack de Poppy Playtime : la main bleue ou rouge s'allonge pour attraper de loin -----
+  let grab = null, grabSide = 0;
+  const clearLine = (ax, ay, bx, by) => { for (let f = 0.1; f < 0.9; f += 0.05) if (isSolid(world, ax + (bx - ax) * f, ay + (by - ay) * f)) return false; return true; };
+  function shoot() {
+    if (grab || dialog) return;
+    const fx = p.x, fy = p.y - 1.2;
+    const cands = [...(fetch ? fetch.items.filter((i) => !i.taken).map((i) => ({ o: i, x: i.x, y: i.y - 0.2, item: true })) : []),
+      ...coins.filter((c) => !c.taken).map((c) => ({ o: c, x: c.x, y: c.y - 0.2 }))]
+      .map((c) => ({ ...c, d: Math.hypot(c.x - fx, c.y - fy) }))
+      .filter((c) => c.d < 7 && clearLine(fx, fy, c.x, c.y))
+      .sort((a, b) => (b.item ? 1 : 0) - (a.item ? 1 : 0) || a.d - b.d);
+    const c = cands[0];
+    grabSide = 1 - grabSide;
+    grab = { t: 0, to: c || { x: p.x + p.facing * 5, y: fy }, target: c ? c.o : null, item: !!c?.item };
+    if (c) p.facing = c.x >= p.x ? 1 : -1;
+    api.sfx('boing');
+  }
+  function grabStep(dt) {
+    if (!grab) return;
+    grab.t += dt / 0.3;
+    if (grab.t >= 2) { if (grab.target) grab.item ? takeItem(grab.target) : takeCoin(grab.target); else api.sfx('miss'); grab = null; }
+  }
+  function drawGrab(camX, camY, s) {
+    if (!grab) return;
+    const out = grab.t <= 1 ? grab.t : Math.max(0, 2 - grab.t);
+    const fx = p.x, fy = p.y - 1.2, hx = fx + (grab.to.x - fx) * out, hy = fy + (grab.to.y - fy) * out;
+    g.strokeStyle = '#333'; g.lineWidth = Math.max(2, s * 0.06); g.beginPath(); g.moveTo((fx - camX) * s, (fy - camY) * s); g.lineTo((hx - camX) * s, (hy - camY) * s); g.stroke();
+    g.fillStyle = grabSide ? '#e5484d' : '#2f6fe0'; g.beginPath(); g.arc((hx - camX) * s, (hy - camY) * s, s * 0.28, 0, Math.PI * 2); g.fill();
+    g.font = `${s * 0.4}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('✋', (hx - camX) * s, (hy - camY) * s); g.textBaseline = 'alphabetic';
+    if (grab.t > 1 && grab.target) { grab.target.x = hx; grab.target.y = hy + 0.2; }
+  }
 
   // ----- Paysage du bled en arrière-plan (3 plans qui défilent moins vite que la ville) -----
   const hill = (x, a, b, c) => a + b * Math.sin(x * 0.23) + c * Math.sin(x * 0.071 + 1.3);
@@ -303,7 +336,12 @@ export function createVille(api) {
     // Le frère ou la sœur, puis l'enfant qui joue
     const moving = Math.abs(p.vx) > 0.1 && p.onGround;
     if (api.kidLook2) drawPerson(g, api.kidLook2, (buddy.x - camX) * s, (buddy.y - camY) * s, s * 0.92, t, buddy.facing, moving);
+    // Le GrabPack sur le dos : un petit sac gris avec une main bleue et une main rouge.
+    { const bx = (p.x - camX - p.facing * 0.32) * s, by = (p.y - camY - 1.25) * s;
+      g.fillStyle = '#4a4f5a'; g.fillRect(bx - s * 0.12, by - s * 0.2, s * 0.24, s * 0.4);
+      g.fillStyle = '#2f6fe0'; g.fillRect(bx - s * 0.16, by - s * 0.26, s * 0.12, s * 0.12); g.fillStyle = '#e5484d'; g.fillRect(bx + s * 0.04, by - s * 0.26, s * 0.12, s * 0.12); }
     drawPerson(g, api.kidLook, (p.x - camX) * s, (p.y - camY) * s, s, t, p.facing, moving || !p.onGround);
+    drawGrab(camX, camY, s);
     // Flèche vers l'objectif
     const goal = objective();
     $('#v-goal').innerHTML = goal.text;
@@ -423,6 +461,7 @@ export function createVille(api) {
     stop() { cancelAnimationFrame(raf); canvas.removeEventListener('pointerdown', onTap); window.removeEventListener('keydown', kd); window.removeEventListener('keyup', ku); window.removeEventListener('resize', resize); },
     get state() { return { p: { ...p }, quests, fetch, coins: coinCount }; },
     tap(x, y) { const r = canvas.getBoundingClientRect(), k = canvas.width / r.width; onTap({ clientX: r.left + ((x - view.camX + 0.5) * view.s) / k, clientY: r.top + ((y - view.camY + 0.5) * view.s) / k }); },
+    shoot,
     teleport(x, y) { p.x = x; p.y = y ?? world.ground[Math.floor(x)]; p.vy = 0; },
   };
 }
