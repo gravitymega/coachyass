@@ -22,10 +22,13 @@ wait_for_limit() {
 for (( i = 0; i < ${#files[@]}; i += batch )); do
   chunk=("${files[@]:i:batch}")
   for try in 1 2 3 4 5 6; do
-    if gh release upload "$tag" "${chunk[@]}" --clobber -R "$repo"; then
+    if out=$(gh release upload "$tag" "${chunk[@]}" --clobber -R "$repo" 2>&1); then
       echo "✓ $(( i + ${#chunk[@]} ))/${#files[@]}"
       break
     fi
+    echo "$out" >&2
+    # Release pleine (1000 fichiers au plus) : attendre ne sert à rien.
+    if grep -q "file_count limited" <<<"$out"; then echo "Release $tag pleine (1000 fichiers)." >&2; exit 1; fi
     if (( try == 6 )); then echo "Échec de l'envoi après 6 essais." >&2; exit 1; fi
     wait_for_limit
   done
