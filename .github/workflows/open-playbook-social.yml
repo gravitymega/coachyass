@@ -1,0 +1,42 @@
+# Gravity Playbook : une vidéo verticale par jour sur YouTube (Shorts) et Instagram (Reels).
+# Script : open-playbook/scripts/post-social.py. Sans secrets, la plate-forme est simplement sautée.
+# Secrets : YT_CLIENT_ID, YT_CLIENT_SECRET, YT_REFRESH_TOKEN, IG_USER_ID, IG_ACCESS_TOKEN.
+# Variable du dépôt : SOCIAL_START (AAAA-MM-JJ, premier jour de publication).
+name: Gravity Playbook · réseaux
+
+on:
+  schedule:
+    - cron: "17 22 * * *" # tous les jours, 17 h 17 à Montréal (heure normale)
+  workflow_dispatch:
+    inputs:
+      id:
+        description: "Publier cette fiche maintenant (id) ; vide = vidéo du jour"
+        default: ""
+      dry:
+        description: "Essai sans rien publier (true/false)"
+        default: "false"
+
+concurrency:
+  group: open-playbook-social
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: open-playbook
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publier
+        env:
+          SOCIAL_START: ${{ vars.SOCIAL_START }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          ID: ${{ github.event.inputs.id }}
+          DRY: ${{ github.event.inputs.dry }}
+        run: python3 scripts/post-social.py ${ID:+--id "$ID"} $([ "$DRY" = true ] && echo --dry)
