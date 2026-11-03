@@ -178,5 +178,5 @@ Ne pas casser ce format. S'il doit évoluer, écrire un script de migration.
 
 GitHub limite une release à 1000 fichiers. Avec 509 fiches animées, vidéo + miniature = 1018 : l'envoi vertical a échoué.
 Les MP4 restent dans `op-videos-<format>`, les PNG partent dans `op-covers-<format>` (créées par le workflow).
-Le site lit les miniatures dans `op-covers-` (`COVER_BASE` dans `src/main.ts`). Les anciens PNG des releases `op-videos-` sont supprimés.
+Le site lit les miniatures dans `op-covers-` (`COVER_BASE` dans `src/main.ts`). Les anciens PNG des releases `op-videos-` sont retirés par le job `releases` du workflow (la session Claude ne peut pas modifier les releases).
 `upload-release.sh` s'arrête tout de suite si une release est pleine (au lieu d'attendre la limite de requêtes 5 fois).

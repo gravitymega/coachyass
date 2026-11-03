@@ -47,6 +47,26 @@ jobs:
                 --title "Open Playbook · miniatures ($f)" \
                 --notes "Miniatures PNG des vidéos du Playbook Ouvert, format $f. Contenu sous licence CC BY 4.0."
           done
+      - name: Retirer les anciennes miniatures des releases de vidéos
+        # Avant le 3 nov. 2026, les PNG étaient dans op-videos-<format> : ils prennent la place des MP4
+        # (1000 fichiers au plus par release). Sans effet quand il n'en reste plus.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          FORMATS: ${{ github.event.inputs.formats || 'vertical,square,horizontal' }}
+        run: |
+          for f in vertical square horizontal; do
+            [[ ",${FORMATS// /}," == *",$f,"* ]] || continue
+            ids=$(gh api --paginate "repos/$REPO/releases/tags/op-videos-$f" --jq '.id')
+            gh api --paginate "repos/$REPO/releases/$ids/assets?per_page=100" --jq '.[] | select(.name | endswith(".png")) | .id' > png.txt
+            echo "$f : $(wc -l < png.txt) miniature(s) à retirer"
+            while read -r a; do
+              until gh api -X DELETE "repos/$REPO/releases/assets/$a" >/dev/null; do
+                reset=$(gh api rate_limit --jq '.resources.core.reset'); now=$(date +%s)
+                echo "Limite GitHub : pause"; sleep $(( reset > now ? reset - now + 15 : 60 ))
+              done
+            done < png.txt
+          done
 
   render:
     needs: releases
