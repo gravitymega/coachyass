@@ -61,3 +61,12 @@ export function reportText(name, r, dialects = ['ma', 'dz']) {
   lines.push(`⭐ ${r.stars} étoile(s) · ${r.totalWords} mots de darija bien sus en tout. Machallah !`);
   return lines.join('\n');
 }
+
+// Jours de suite où l'enfant a joué (aujourd'hui compris ; si pas encore joué aujourd'hui, la série d'hier tient toujours).
+export function streak(progress, date = today()) {
+  const days = progress.days || {};
+  let d = days[date] ? date : shift(date, -1);
+  let n = 0;
+  while (days[d]) { n++; d = shift(d, -1); }
+  return n;
+}

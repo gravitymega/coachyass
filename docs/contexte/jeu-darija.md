@@ -234,3 +234,10 @@ Demande : « 3D : les joueurs peuvent entrer dans les bâtiments, sauter, se pen
 - Correction : le nom `fetch` (la mission en cours) cachait la fonction réseau ; on appelle maintenant `window.fetch`.
 - `ville3d.test.mjs` vérifie les portes, les intérieurs et les passages ; `worker.test.mjs` vérifie le serveur avec une fausse IA ; Playwright couvre les poses, le passage secret, les 4 intérieurs et les discussions.
 - 9 198 phrases de voix.
+
+## Usine : révision, série de jours, navigation (3 nov. 2026)
+- **Révision de Hbibiti** (`#map-review`, apparaît dès 3 mots fragiles) : `weakWords`/`buildReview` (exercises.js) reprennent les mots vus en boîtes 0-1 des salles ouvertes, chacun dans le jeu de sa salle ; ne compte pas comme partie d'une salle.
+- **Série de jours 🔥** : `streak(progress)` (carnet.js, à partir de `progress.days`), affichée en haut de l'usine (dès 2 jours) et sur l'écran de récompense avec les +5 🪙.
+- En-tête : ⭐ + 🪙 + 🔥. Barre de navigation collante (Salles / Activités / Ville et histoires) ; les salles passent avant les activités.
+- Vibration courte (bonne réponse) / double (erreur) sur Android, réglage parents `set-buzz` (`settings.buzz`).
+- Cache SW `hbibiti-v15`. Tests : carnet (série) et exercises (révision).

@@ -43,21 +43,23 @@
   <header class="bar">
     <button class="round" data-go="home" aria-label="Retour">⬅</button>
     <div class="bar-kid" id="map-who"></div>
-    <div class="bar-stats"><span class="pill">⭐ <b id="map-stars">0</b></span><button class="round" id="btn-album" aria-label="Mon album">📒</button></div>
+    <div class="bar-stats"><span class="pill streak" id="map-streak" hidden></span><span class="pill">⭐ <b id="map-stars">0</b></span><span class="pill">🪙 <b id="map-coins">0</b></span><button class="round" id="btn-album" aria-label="Mon album">📒</button></div>
   </header>
   <div class="hbibiti-row">
     <div class="gm-mini" id="map-gm"></div>
     <p class="bubble" id="map-bubble"></p>
   </div>
   <div class="mission" id="map-mission"></div>
+  <nav class="map-nav" id="map-nav"><button data-to="rooms">🏭 Les salles</button><button data-to="acts-title">🎈 Les activités</button><button data-to="map-ville">🏙️ Ville et histoires</button></nav>
+  <button class="mission revue" id="map-review" hidden></button>
   <button class="mission defi" id="map-defi" hidden></button>
   <button class="mission ville-btn" id="map-ville"></button>
   <button class="mission daily-btn" id="map-daily"></button>
   <button class="mission tales-btn" id="map-tales"></button>
   <p class="ramadan-banner" id="map-ramadan" hidden></p>
-  <h3 class="acts-title">🎈 Les activités</h3>
-  <div id="acts" class="acts"></div>
   <div id="rooms" class="rooms"></div>
+  <h3 class="acts-title" id="acts-title">🎈 Les activités</h3>
+  <div id="acts" class="acts"></div>
 </section>
 
 <!-- Activités -->
@@ -116,6 +118,7 @@
   <div class="sticker-reveal" id="reward-sticker"></div>
   <p class="lead" id="reward-text"></p>
   <div class="chest" id="reward-chest" hidden></div>
+  <p class="reward-coins" id="reward-coins"></p>
   <p class="fog-text" id="reward-fog"></p>
   <p class="reward-mission" id="reward-mission" hidden></p>
   <button class="go alt" id="reward-msg" hidden>💌 Surprise : un message des grands-parents !</button>
@@ -277,6 +280,7 @@
     <label class="check"><input type="checkbox" id="set-sfx"> Petits sons du jeu (applaudissements, sifflet)</label>
     <label class="check"><input type="checkbox" id="set-unlock-all"> Ouvrir toutes les salles tout de suite</label>
     <label class="check"><input type="checkbox" id="set-scarf"> Maman porte le foulard dans le jeu</label>
+    <label class="check"><input type="checkbox" id="set-buzz"> Petite vibration quand on répond (tablettes Android)</label>
     <label class="check"><input type="checkbox" id="set-chatia"> Ville en 3D : discussion libre avec les habitants (micro ou clavier, IA gratuite de Cloudflare, il faut Internet ; sinon seulement les questions toutes prêtes)</label>
     <fieldset class="field"><legend>Activités proposées aux enfants</legend><div id="set-acts" class="set-acts"></div></fieldset>
     <label class="check"><input type="checkbox" id="set-poppy"> Coin Poppy Playtime (questions sur les personnages du jeu, sans images)</label>

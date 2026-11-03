@@ -621,3 +621,23 @@ export function buildChallenge(progress, opts = {}) {
   return { learn: [], questions, challenge: true };
 }
 
+
+// Révision de Hbibiti : les mots déjà vus mais encore fragiles (boîtes 0 et 1), toutes salles ouvertes confondues.
+export function weakWords(progress, { older, rooms = [] } = {}) {
+  return WORDS.filter((w) => {
+    const s = progress.words[w.id];
+    return s?.seen && (s.box || 0) <= 1 && rooms.includes(w.room) && (older || !w.older);
+  }).sort((a, b) => (progress.words[a.id].box || 0) - (progress.words[b.id].box || 0) || (progress.words[b.id].wrong || 0) - (progress.words[a.id].wrong || 0));
+}
+export function buildReview(progress, opts = {}) {
+  const r = opts.r || Math.random;
+  const older = !!opts.older;
+  const dialects = opts.dialects?.length ? opts.dialects : ['ma', 'dz'];
+  const weak = weakWords(progress, { older, rooms: opts.rooms });
+  const targets = weak.slice(0, opts.count || 6);
+  const questions = shuffle(targets, r).map((w, i) => ({
+    ...makeQuestion(w, wordsFor(w.room, older), { older, dialect: dialects[i % dialects.length], dialects, r }),
+    game: (opts.games || {})[w.room],
+  }));
+  return { learn: [], questions, review: true };
+}

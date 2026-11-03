@@ -6,12 +6,12 @@ import {
 import { settings, saveSettings, load, save, progressOf, saveProgressOf, getRec, putRec, delRec, recKeys, exportBackup, importBackup } from './store.js';
 import { playWord, say, stopVoice, sfx, startMusic, stopMusic, voiceFor, frVoices, recordedKeys, preload, audio } from './audio.js';
 import { GAMES } from './games.js';
-import { buildExerciseLevel, buildChallenge, itemsFor, isExerciseRoom, clockSVG } from './exercises.js';
+import { buildExerciseLevel, buildChallenge, buildReview, weakWords, itemsFor, isExerciseRoom, clockSVG } from './exercises.js';
 import * as ART from './art.js';
 import { TALES, TALE_CATS, speakTale, nextTale } from './tales.js';
 import { dailyMissions, dailyState, autoComplete } from './missions.js';
 import { createVille } from './ville.js';
-import { recordDay, weekReport, reportText } from './carnet.js';
+import { recordDay, weekReport, reportText, streak } from './carnet.js';
 import { ramadanInfo } from './calendrier.js';
 import { ACTS, openAct } from './activites.js';
 import { unheardMessages } from './act-famille.js';
@@ -154,6 +154,10 @@ const buddyOf = (r) => BUDDY[r?.id] || 'hbibiti';
 const drawChar = (name, mood = 'happy') => (name === 'maman' ? ART.maman(mood, '', settings.mamaScarf) : ART[name](mood));
 // Défi éclair : questions mêlées de toutes les salles ouvertes, chacune dans la scène de sa salle.
 const DEFI = { id: 'defi', name: 'Défi éclair', theme: '10 questions de tout le jeu', game: 'rocket', host: 'rocket' };
+// Révision : les mots encore fragiles reviennent, pour ne rien oublier.
+const REVUE = { id: 'revoir', name: 'La révision de Hbibiti', theme: 'Les mots à revoir', game: 'claw', host: 'books' };
+const special = (r) => r === DEFI || r === REVUE;
+const weakCount = () => weakWords(players[0].progress, { older: players[0].kid.older, rooms: openRooms().map((r) => r.id) }).length;
 // Le coin Poppy Playtime peut être masqué par les parents.
 const gameRooms = () => ROOMS.filter((r) => !r.fan || settings.poppy);
 const openRooms = () => gameRooms().filter((r) => roomUnlocked(r, { levels: levelsDone() }, settings.unlockAll));
@@ -163,6 +167,14 @@ function openMap(greet) {
   applyGmName();
   $('#map-who').innerHTML = players.map((p) => `<span class="who">${esc(p.kid.avatar)} ${esc(p.kid.name)}</span>`).join('');
   $('#map-stars').textContent = players.reduce((a, p) => a + p.progress.stars, 0);
+  $('#map-coins').textContent = players[0].progress.coins || 0;
+  const st = Math.max(...players.map((p) => streak(p.progress)));
+  $('#map-streak').hidden = st < 2;
+  $('#map-streak').innerHTML = `🔥 <b>${st}</b>`;
+  $('#map-streak').title = `${st} jours de suite !`;
+  const wk = levelsDone() ? weakCount() : 0;
+  $('#map-review').hidden = wk < 3;
+  $('#map-review').innerHTML = `<span class="mi-icon">🧠</span><span><b>La révision de ${esc(settings.gm)}</b>${wk} mot${wk > 1 ? 's' : ''} à revoir pour ne pas les oublier</span><span class="defi-go">Réviser</span>`;
   mount($('#map-gm'), ART.hbibiti(), { speaker: true });
   const lead = players[0];
   const all = gameRooms().flatMap((r) => itemsFor(r.id, lead.kid.older));
@@ -203,6 +215,8 @@ function openMap(greet) {
   if (greet) say(bubble);
 }
 $('#map-defi').addEventListener('click', () => openStart(DEFI));
+$('#map-review').addEventListener('click', () => openStart(REVUE));
+$('#map-nav').addEventListener('click', (e) => { const b = e.target.closest('[data-to]'); if (!b) return; sfx('tap'); $('#' + b.dataset.to).scrollIntoView({ behavior: 'smooth', block: 'start' }); });
 $('#map-tales').addEventListener('click', () => { sfx('tap'); openTales(); });
 $('#map-daily').addEventListener('click', () => { sfx('tap'); openDaily(); });
 $('#map-ville').addEventListener('click', () => { sfx('tap'); openVille(); });
@@ -257,7 +271,7 @@ function openStart(r) {
 let room = null;
 
 // ---------- Mode bilingue : une partie en arabe, la suivante en anglais (ou un jour sur deux) ----------
-const bilingualRoom = (r) => settings.bilingual !== 'off' && r && r !== DEFI && !r.school && hasEnglish(r.id);
+const bilingualRoom = (r) => settings.bilingual !== 'off' && r && !special(r) && !r.school && hasEnglish(r.id);
 function levelLang(r) {
   if (!bilingualRoom(r)) return 'ar';
   if (settings.bilingual === 'jour') return Math.floor(Date.now() / 86400000) % 2 ? 'en' : 'ar';
@@ -273,6 +287,7 @@ $('#btn-bismillah').addEventListener('click', () => {
   const games = Object.fromEntries(ROOMS.map((r) => [r.id, r.game]));
   const build = room === DEFI
     ? (id, progress, o) => buildChallenge(progress, { ...o, count: coop() ? 5 : 10, rooms: openRooms().map((r) => r.id), games })
+    : room === REVUE ? (id, progress, o) => buildReview(progress, { ...o, count: coop() ? 3 : 6, rooms: openRooms().map((r) => r.id), games })
     : isExerciseRoom(room.id) ? buildExerciseLevel : buildLevel;
   const lang = levelLang(room);
   const opts = { dialects: settings.dialects, seqIndex: levelsDone(), build, count: room === DEFI ? 10 : undefined, lang };
@@ -416,6 +431,8 @@ const PRAISE = ['Bravo !', 'Machallah !', 'Zwin bezzaf !', 'Super !', 'Saha !', 
 const praise = () => PRAISE[Math.floor(Math.random() * PRAISE.length)];
 function markDot(firstTry) { $$('#play-dots i')[level.i]?.classList.add(firstTry ? 'ok' : 'meh'); }
 
+// Petite vibration (tablettes Android) : courte = bravo, double = on réessaie.
+const buzz = (good) => { if (settings.buzz !== false) try { navigator.vibrate?.(good ? 18 : [35, 60, 35]); } catch { /* pas de vibreur */ } };
 async function answer(i, el) {
   if (busy || el.classList.contains('tried')) return;
   busy = true;
@@ -428,6 +445,7 @@ async function answer(i, el) {
   $$('#scene .char').forEach((c) => (c.closest('.keeper') ? setMood(c, good ? 'wow' : 'cheer', 1200) : react(c, good)));
   const w = q.word;
   const d = ansDialect();
+  buzz(good);
   if (good) {
     sfx('ok');
     confetti();
@@ -543,7 +561,7 @@ function finishLevel() {
       const sc = Math.round((level.score[k] / total) * 10);
       if (sc > best) p.progress.best = sc;
       records.push({ sc, best, total, record: sc > best });
-    } else {
+    } else if (room !== REVUE) {
       p.progress.rooms = p.progress.rooms || {};
       p.progress.rooms[room.id] = (p.progress.rooms[room.id] || 0) + 1;
     }
@@ -552,7 +570,7 @@ function finishLevel() {
     shown.push(st);
     if (p.progress.chest !== today()) { p.progress.chest = today(); p.progress.stars += 3; chest = true; }
   });
-  const kind = defi ? 'defi' : room.id === 'poppy' ? 'poppy' : 'room';
+  const kind = defi || room === REVUE ? 'defi' : room.id === 'poppy' ? 'poppy' : 'room';
   const missionsDone = players.flatMap((p) => autoComplete(p.progress, missionsOf(p), today(), { kind, school: !!room.school && !room.fan }).map((m) => ({ p, m })));
   missionsDone.forEach(({ p }) => { p.progress.stars += 3; });
   players.forEach((p) => { p.progress.coins = (p.progress.coins || 0) + 5; }); // 5 pièces pour construire en ville
@@ -560,7 +578,7 @@ function finishLevel() {
   sfx('win');
   confetti(90);
   const lead = players[0];
-  const m = defi ? 0 : Math.round(mastery(lead.progress, itemsFor(room.id, lead.kid.older)) * 100);
+  const m = special(room) ? 0 : Math.round(mastery(lead.progress, itemsFor(room.id, lead.kid.older)) * 100);
   $('#reward-sticker').innerHTML = `<div class="reward-char"></div>` + shown.map((st) => `<div class="st-wrap"><span class="st">${st.e}</span><small>${esc(st.n)}</small></div>`).join('');
   const rc = mount($('#reward-sticker .reward-char'), drawChar(buddyOf(room)), { speaker: true });
   setTimeout(() => setMood(rc, 'cheer', 2400), 200);
@@ -572,7 +590,10 @@ function finishLevel() {
   $('#reward-chest').hidden = !chest;
   $('#reward-chest').innerHTML = chest ? `<span class="chest-icon">🎁</span> Le coffre de ${esc(settings.gm)} du jour : +3 ⭐` : '';
   if (chest) setTimeout(() => sfx('chest'), 900);
-  $('#reward-fog').textContent = defi
+  $('#reward-coins').innerHTML = `+5 🪙 pour construire en ville${streak(lead.progress) > 1 ? ` · 🔥 ${streak(lead.progress)} jours de suite !` : ''}`;
+  $('#reward-fog').textContent = room === REVUE
+    ? `🧠 Révision finie ! Il reste ${weakCount()} mot${weakCount() > 1 ? 's' : ''} à revoir.`
+    : defi
     ? records.map((x, k) => `⚡ ${coop() ? players[k].kid.name + ' : ' : ''}${x.sc}/10${x.record ? ' — nouveau record !' : x.best ? ` (record : ${x.best}/10)` : ''}`).join(' · ')
     : m ? `🌫️ Le brouillard recule : ${room.name} réveillé à ${m} %` : '🌫️ Rejoue pour faire reculer le brouillard !';
   $('#reward-msg').hidden = !(actOn('messages') && unheardMessages(settings).length);
@@ -806,6 +827,7 @@ function renderSettings() {
   $('#set-unlock-all').checked = settings.unlockAll;
   $('#set-poppy').checked = settings.poppy;
   $('#set-chatia').checked = settings.chatIA !== false;
+  $('#set-buzz').checked = settings.buzz !== false;
   $('#set-acts').innerHTML = ACTS.filter((a) => !a.noToggle).map((a) => `<label class="check"><input type="checkbox" data-act-set="${a.id}" ${actOn(a.id) ? 'checked' : ''}> ${a.icon} ${esc(a.title)}</label>`).join('');
   $('#set-scarf').checked = settings.mamaScarf;
   $('#set-bilingual').value = settings.bilingual;
@@ -831,6 +853,7 @@ $('#tab-settings').addEventListener('change', (e) => {
   if (t.id === 'set-unlock-all') settings.unlockAll = t.checked;
   if (t.id === 'set-poppy') settings.poppy = t.checked;
   if (t.id === 'set-chatia') settings.chatIA = t.checked;
+  if (t.id === 'set-buzz') settings.buzz = t.checked;
   if (t.dataset.actSet) settings.acts = { ...(settings.acts || {}), [t.dataset.actSet]: t.checked };
   if (t.id === 'set-scarf') settings.mamaScarf = t.checked;
   if (t.id === 'set-bilingual') settings.bilingual = t.value;
