@@ -188,8 +188,11 @@ const STATS_SCHEMA = {
           numero: { type: "integer" },
           confiance: { type: "string", enum: ["haute", "moyenne", "basse"] },
           detail: { type: "string" },
+          // Carte des tirs : lieu du tir sur le demi-terrain attaqué (0 à 1), -1 si ce n'est pas un tir ou s'il est impossible à situer.
+          x: { type: "number" },
+          y: { type: "number" },
         },
-        required: ["t", "type", "equipe", "numero", "confiance", "detail"],
+        required: ["t", "type", "equipe", "numero", "confiance", "detail", "x", "y"],
         additionalProperties: false,
       },
     },
@@ -216,7 +219,8 @@ Règles :
 - « detail » : 100 caractères maximum, ex. « tir en suspension à mi-distance, côté gauche ».
 - Un panier se voit au ballon dans le filet, à la réaction des joueurs (repli en défense, remise en jeu depuis la ligne de fond) ou au tableau d'affichage s'il est visible. Si tu n'es pas sûr qu'un tir est rentré, note un tir raté avec confiance basse plutôt qu'un panier.
 - Ce sont des images fixes : déduis l'action en comparant les images, et ne note rien qui ne se voit pas. Une portion sans action claire = liste vide.
-- Ne note pas deux fois la même action.`;
+- Ne note pas deux fois la même action.
+- « x » et « y » (carte des tirs) : pour panier_2, panier_3, tir_rate_2 et tir_rate_3, l'endroit où le tireur a pris son tir, sur le demi-terrain attaqué vu depuis le milieu du terrain, panier en face : x = 0 ligne de touche gauche, 0,5 au centre (dans l'axe du panier), 1 ligne de touche droite ; y = 0 ligne de fond (sous le panier), 1 ligne médiane. Repères : le panier est à y = 0,11 ; la raquette va de x = 0,34 à 0,66 et de y = 0 à 0,41 ; la ligne des lancers francs est à y = 0,41 ; l'arc à 3 points passe à y = 0,59 au centre et rejoint la ligne de fond près des touches (x = 0,06 et 0,94). Estime au mieux d'après les lignes du terrain. Pour toutes les autres actions (et les lancers francs), ou si l'endroit est impossible à situer : x = -1 et y = -1.`;
 
 // Devoirs et exercices personnalisés (après un match), d'après les stats du joueur.
 const DEVOIRS_SCHEMA = {

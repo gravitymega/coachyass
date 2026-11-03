@@ -78,6 +78,7 @@ export function normalizeEvents(raw, win, numbers = []) {
         numero: Number.isFinite(n) && n >= 0 && n < 100 ? n : null,
         confiance: ['haute', 'moyenne', 'basse'].includes(e.confiance) ? e.confiance : 'moyenne',
         detail: String(e.detail || '').slice(0, 160),
+        ...shotSpot(e),
         known: equipe === 'nous' && Number.isFinite(n) && numbers.includes(n),
       };
     });
@@ -246,6 +247,7 @@ export function parseLive(json) {
     numero: Number.isFinite(e.numero) ? e.numero : null,
     confiance: 'haute',
     detail: String(e.detail || ''),
+    ...shotSpot(e),
   })), { gap: 0 });
   return { ...o, events };
 }
@@ -259,4 +261,69 @@ export function fmtClock(s) {
 // Pourcentage de réussite « 3/7 (43 %) ».
 export function pct(made, att) {
   return att ? `${made}/${att} (${Math.round((made / att) * 100)} %)` : '—';
+}
+
+// ---------- Carte des tirs ----------
+// Demi-terrain FIBA (15 m × 14 m) en coordonnées 0–1 : x = 0 touche gauche → 1 touche droite
+// (vu depuis le milieu du terrain, panier en face), y = 0 ligne de fond → 1 ligne médiane.
+export const COURT = {
+  w: 15, h: 14,
+  basket: { x: 0.5, y: 1.575 / 14 },
+  three: 6.75,            // rayon de l'arc à 3 points (m)
+  corner: 0.9 / 15,       // distance des tirs à 3 pts dans le coin à la touche
+  cornerY: 2.99 / 14,     // hauteur où la ligne droite du coin rejoint l'arc
+  paint: { x0: 0.5 - 2.45 / 15, x1: 0.5 + 2.45 / 15, y1: 5.8 / 14 },
+};
+
+export const ZONES = {
+  raquette: 'Raquette',
+  mi_distance: 'Mi-distance',
+  trois_coin: '3 pts coin',
+  trois_axe: '3 pts (arc)',
+};
+
+const isFieldShot = type => ['2', '3'].includes(EVENT_TYPES[type]?.shot);
+const inUnit = v => Number.isFinite(v) && v >= 0 && v <= 1;
+
+// Garde le lieu d'un tir (x, y entre 0 et 1) ; rien pour les autres actions.
+export function shotSpot(e) {
+  const x = Number(e && e.x), y = Number(e && e.y);
+  return e && isFieldShot(e.type) && inUnit(x) && inUnit(y) ? { x: round3(x), y: round3(y) } : { x: null, y: null };
+}
+const round3 = v => Math.round(v * 1000) / 1000;
+
+// Distance au panier en mètres.
+export function shotDistance(x, y) {
+  return Math.hypot((x - COURT.basket.x) * COURT.w, (y - COURT.basket.y) * COURT.h);
+}
+
+// Zone d'un tir. Le type (2 ou 3 pts) l'emporte sur le lieu estimé : un tir noté à 3 pts reste à 3 pts.
+export function shotZone(x, y, shot) {
+  const corner = y <= COURT.cornerY && (x <= COURT.corner || x >= 1 - COURT.corner);
+  const beyond = corner || shotDistance(x, y) > COURT.three;
+  const three = shot === '3' || (shot !== '2' && beyond);
+  if (three) return corner || (y <= COURT.cornerY + 0.05 && (x < 0.15 || x > 0.85)) ? 'trois_coin' : 'trois_axe';
+  const p = COURT.paint;
+  return x >= p.x0 && x <= p.x1 && y <= p.y1 ? 'raquette' : 'mi_distance';
+}
+
+/**
+ * Tirs du match pour la carte : filtre { equipe, numero } (numero facultatif).
+ * Renvoie les tirs placés, les réussites par zone et le nombre de tirs sans lieu.
+ */
+export function shotChart(events, { equipe = 'nous', numero = null } = {}) {
+  const zones = Object.fromEntries(Object.keys(ZONES).map(k => [k, { m: 0, a: 0 }]));
+  const shots = [];
+  let unplaced = 0;
+  events.forEach(e => {
+    if (!isFieldShot(e.type) || e.equipe !== equipe) return;
+    if (numero != null && e.numero !== numero) return;
+    if (!inUnit(e.x) || !inUnit(e.y)) { unplaced++; return; }
+    const def = EVENT_TYPES[e.type];
+    const zone = shotZone(e.x, e.y, def.shot);
+    zones[zone].a++;
+    if (def.made) zones[zone].m++;
+    shots.push({ id: e.id, t: e.t, x: e.x, y: e.y, made: def.made, zone, numero: e.numero, type: e.type });
+  });
+  return { shots, zones, unplaced };
 }

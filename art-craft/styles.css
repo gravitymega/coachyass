@@ -249,6 +249,12 @@ table.events td, table.box td { padding: 5px 6px; border-bottom: 1px solid rgba(
 table.events td.det { white-space: normal; color: var(--muted); min-width: 160px; }
 table.events select, table.events input { padding: 4px 6px; font-size: 13px; }
 table.events tr.doubt td:first-child { box-shadow: inset 3px 0 0 #ffb15c; }
+/* Carte des tirs (Stats auto) */
+.shot-wrap { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 14px; align-items: start; margin: 8px 0; }
+@media (max-width: 640px) { .shot-wrap { grid-template-columns: minmax(0, 1fr); } }
+#court { width: 100%; height: auto; display: block; border-radius: 10px; cursor: pointer; touch-action: manipulation; }
+#court.placing { outline: 3px solid #ffb15c; cursor: crosshair; }
+table.events button.placed { color: #4ade80; }
 .score { font: 600 20px Oswald, Impact, sans-serif; margin: 4px 0; }
 .error-inline { color: #ffd0dc; margin: 4px 0 0; min-height: 1em; }
 .devoir-card { border: 1px solid var(--border); border-radius: 12px; padding: 12px; background: #120f18; }

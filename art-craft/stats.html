@@ -119,6 +119,19 @@
     <div class="row">
       <a class="btn ghost" id="btn-csv">Télécharger (.csv)</a>
     </div>
+    <h3 class="sub">Carte des tirs</h3>
+    <p class="muted">Chaque tir à l'endroit où il a été pris (● réussi, ✕ raté), d'après l'IA. Touche un tir pour le revoir. Pour placer ou corriger un tir : bouton 📍 de sa ligne dans le tableau, puis touche le terrain.</p>
+    <div class="row">
+      <select id="shot-filter"></select>
+      <span class="muted" id="shot-info"></span>
+    </div>
+    <div class="shot-wrap">
+      <svg id="court" viewBox="0 0 300 280" role="img" aria-label="Carte des tirs"></svg>
+      <div class="table-scroll"><table class="box" id="shot-zones"></table></div>
+    </div>
+    <div class="row">
+      <button class="btn ghost" id="btn-court-png" type="button">Télécharger la carte (.png)</button>
+    </div>
   </section>
 
   <section class="card" id="step-send" hidden>

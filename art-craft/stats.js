@@ -9,7 +9,7 @@ import { createStreamReader, isNetworkError, NETWORK_HINT } from './analyse-core
 import { energyEnvelope, excitementScore, findPeaks, WINDOW_S, parseTimestamp } from './highlights.js';
 import {
   EVENT_TYPES, TYPE_KEYS, CLIP_TYPES, statsWindows, windowTimes, normalizeEvents, mergeEvents,
-  boxScore, playerStatsRow, clipWindow, clipPlayers, kmeans2, hex, pickCrops, syncEvents, parseLive, fmtClock, pct,
+  boxScore, shotChart, ZONES, COURT, playerStatsRow, clipWindow, clipPlayers, kmeans2, hex, pickCrops, syncEvents, parseLive, fmtClock, pct,
 } from './stats-core.js';
 import { loadDetector, detectPlayers, jerseyColor, cropJpeg, scaledJpeg, detectorDevice } from './detect.js';
 import { SITE, accessToken, rest, uploadFile, fillTeams, loadRoster, loadGames, sessionEmail, logout } from './supa.js';
@@ -23,7 +23,7 @@ const MAX_IMG = 12;
 const CROPS = 8;
 const state = {
   password: '', file: null, input: '', duration: 0, hasAudio: false, busy: false,
-  team: null, roster: [], games: [], events: [], nextId: 1, devoirs: new Map(), live: null,
+  team: null, roster: [], games: [], events: [], nextId: 1, devoirs: new Map(), live: null, placing: null,
 };
 
 // ---------- Accès (mot de passe Art craft, comme l'Analyse tactique) ----------
@@ -386,7 +386,7 @@ const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&a
 function renderEvents() {
   const only = $('only-doubt').checked;
   const rows = state.events.filter(e => !only || doubtful(e));
-  $('events').innerHTML = '<thead><tr><th>Moment</th><th>Action</th><th>Équipe</th><th>N°</th><th>Confiance</th><th>Détail</th><th></th></tr></thead><tbody>' +
+  $('events').innerHTML = '<thead><tr><th>Moment</th><th>Action</th><th>Équipe</th><th>N°</th><th>Confiance</th><th>Détail</th><th>Lieu</th><th></th></tr></thead><tbody>' +
     rows.map(e => `<tr data-id="${e.id}" class="${doubtful(e) ? 'doubt' : ''}">
       <td><button class="tool" data-act="seek">${fmtClock(e.t)}</button></td>
       <td><select data-f="type">${typeOptions(e.type)}</select></td>
@@ -394,9 +394,10 @@ function renderEvents() {
       <td><input data-f="numero" inputmode="numeric" size="3" value="${e.numero == null ? '' : e.numero}" placeholder="?"></td>
       <td>${e.manual ? 'noté à la main' : esc(e.confiance)}</td>
       <td class="det">${esc(e.detail)}</td>
+      <td>${isShot(e) ? `<button class="tool${e.x != null ? ' placed' : ''}" data-act="place" title="Placer le tir sur la carte">📍${e.x != null ? ' ✓' : ''}</button>` : ''}</td>
       <td><button class="tool" data-act="del" title="Supprimer">✕</button></td>
     </tr>`).join('') + '</tbody>';
-  if (!rows.length) $('events').innerHTML += '<tbody><tr><td colspan="7" class="muted">Aucune action.</td></tr></tbody>';
+  if (!rows.length) $('events').innerHTML += '<tbody><tr><td colspan="8" class="muted">Aucune action.</td></tr></tbody>';
 }
 
 $('events').addEventListener('click', e => {
@@ -406,6 +407,7 @@ $('events').addEventListener('click', e => {
   const ev = state.events.find(x => x.id === id);
   if (btn.dataset.act === 'seek') { $('det-canvas').hidden = true; video.currentTime = Math.max(0, ev.t - 5); video.play().catch(() => {}); }
   if (btn.dataset.act === 'del') { state.events = state.events.filter(x => x.id !== id); refresh(); }
+  if (btn.dataset.act === 'place') startPlacing(ev);
 });
 $('events').addEventListener('change', e => {
   const f = e.target.dataset.f;
@@ -415,6 +417,7 @@ $('events').addEventListener('change', e => {
     const n = Number.parseInt(e.target.value, 10);
     ev.numero = Number.isFinite(n) ? n : null;
   } else ev[f] = e.target.value;
+  if (!isShot(ev)) { ev.x = null; ev.y = null; }
   ev.confiance = 'haute';
   refresh();
 });
@@ -457,8 +460,119 @@ function renderSendList(box) {
   }).join('') || '<li class="muted">Aucune action de notre équipe avec un numéro.</li>';
 }
 
+// ---------- Carte des tirs ----------
+const isShot = e => ['2', '3'].includes(EVENT_TYPES[e.type]?.shot);
+const W = 300, H = 280; // 20 px par mètre (demi-terrain 15 m × 14 m)
+
+function courtLines() {
+  const p = COURT.paint, b = COURT.basket;
+  const bx = b.x * W, by = b.y * H, r3 = COURT.three * 20, cx = COURT.corner * W, cy = COURT.cornerY * H;
+  const line = 'fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"';
+  return `<rect width="${W}" height="${H}" fill="#2a1d14"/>
+    <rect x="${p.x0 * W}" y="0" width="${(p.x1 - p.x0) * W}" height="${p.y1 * H}" fill="rgba(255,110,40,.18)" ${line}/>
+    <path d="M${W / 2 - 36} ${p.y1 * H} A36 36 0 0 0 ${W / 2 + 36} ${p.y1 * H}" ${line}/>
+    <path d="M${cx} 0 L${cx} ${cy} A${r3} ${r3} 0 0 0 ${W - cx} ${cy} L${W - cx} 0" ${line}/>
+    <path d="M${bx - 25} ${by} A25 25 0 0 0 ${bx + 25} ${by}" ${line}/>
+    <line x1="${bx - 18}" y1="24" x2="${bx + 18}" y2="24" stroke="#fff" stroke-width="3"/>
+    <circle cx="${bx}" cy="${by}" r="4.5" fill="none" stroke="#ff6e28" stroke-width="2"/>
+    <path d="M${W / 2 - 36} ${H} A36 36 0 0 1 ${W / 2 + 36} ${H}" ${line}/>
+    <rect width="${W}" height="${H}" ${line}/>`;
+}
+
+function shotFilter() {
+  const v = $('shot-filter').value || 'nous';
+  if (v === 'adversaire') return { equipe: 'adversaire' };
+  if (v.startsWith('joueur-')) return { equipe: 'nous', numero: +v.slice(7) };
+  return { equipe: 'nous' };
+}
+
+function renderShots() {
+  // Choix : toute l'équipe, chaque joueur qui a tiré, l'adversaire.
+  const sel = $('shot-filter');
+  const keep = sel.value;
+  const nums = [...new Set(state.events.filter(e => isShot(e) && e.equipe === 'nous' && e.numero != null).map(e => e.numero))].sort((a, b) => a - b);
+  sel.innerHTML = `<option value="nous">${esc(teamName())} (toute l'équipe)</option>` +
+    nums.map(n => `<option value="joueur-${n}">#${n} ${esc(playerOf(n)?.full_name || '')}</option>`).join('') +
+    `<option value="adversaire">${esc($('opponent').value || 'Adversaire')}</option>`;
+  if ([...sel.options].some(o => o.value === keep)) sel.value = keep;
+  const chart = shotChart(state.events, shotFilter());
+  const marks = chart.shots.map(s => {
+    const x = s.x * W, y = s.y * H, tip = `${fmtClock(s.t)} · ${EVENT_TYPES[s.type].label}${s.numero != null ? ' · #' + s.numero : ''}`;
+    return s.made
+      ? `<circle data-id="${s.id}" cx="${x}" cy="${y}" r="7" fill="#4ade80" stroke="#0b2a17" stroke-width="2"><title>${esc(tip)}</title></circle>`
+      : `<g data-id="${s.id}" stroke="#f87171" stroke-width="3.5" stroke-linecap="round"><title>${esc(tip)}</title><circle cx="${x}" cy="${y}" r="9" fill="transparent" stroke="none"/><line x1="${x - 6}" y1="${y - 6}" x2="${x + 6}" y2="${y + 6}"/><line x1="${x + 6}" y1="${y - 6}" x2="${x - 6}" y2="${y + 6}"/></g>`;
+  }).join('');
+  $('court').innerHTML = courtLines() + marks;
+  const tot = Object.values(chart.zones).reduce((a, z) => ({ m: a.m + z.m, a: a.a + z.a }), { m: 0, a: 0 });
+  $('shot-zones').innerHTML = '<thead><tr><th>Zone</th><th>Réussis / tentés</th></tr></thead><tbody>' +
+    Object.entries(ZONES).map(([k, label]) => `<tr><td>${label}</td><td>${pct(chart.zones[k].m, chart.zones[k].a)}</td></tr>`).join('') +
+    `<tr><td><b>Total placé</b></td><td><b>${pct(tot.m, tot.a)}</b></td></tr></tbody>`;
+  $('shot-info').textContent = state.placing != null ? $('shot-info').textContent : chart.unplaced
+    ? `${chart.unplaced} tir${chart.unplaced > 1 ? 's' : ''} sans lieu (bouton 📍 dans le tableau pour ${chart.unplaced > 1 ? 'les' : 'le'} placer)`
+    : '';
+}
+
+function teamName() {
+  return $('team').value ? $('team').selectedOptions[0].text.split(' · ')[0] : 'Nous';
+}
+
+function startPlacing(ev) {
+  state.placing = ev.id;
+  $('shot-filter').value = ev.equipe === 'adversaire' ? 'adversaire' : 'nous';
+  renderShots();
+  $('court').classList.add('placing');
+  $('shot-info').textContent = `Touche le terrain là où le tir de ${fmtClock(ev.t)} a été pris (panier en haut).`;
+  $('court').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+$('shot-filter').addEventListener('change', renderShots);
+$('court').addEventListener('click', e => {
+  if (state.placing != null) {
+    const ev = state.events.find(x => x.id === state.placing);
+    const r = $('court').getBoundingClientRect();
+    if (ev) {
+      ev.x = Math.round(Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) * 1000) / 1000;
+      ev.y = Math.round(Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)) * 1000) / 1000;
+    }
+    state.placing = null;
+    $('court').classList.remove('placing');
+    refresh();
+    return;
+  }
+  const mark = e.target.closest('[data-id]');
+  if (!mark) return;
+  const ev = state.events.find(x => x.id === +mark.dataset.id);
+  if (ev) { $('det-canvas').hidden = true; video.currentTime = Math.max(0, ev.t - 5); video.play().catch(() => {}); video.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+});
+
+// Image de la carte (pour la partager) : le SVG est dessiné dans un canvas avec un titre.
+$('btn-court-png').addEventListener('click', async () => {
+  const label = $('shot-filter').selectedOptions[0]?.text || '';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W * 3}" height="${H * 3}">${$('court').innerHTML}</svg>`;
+  const img = new Image();
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  await img.decode();
+  const c = document.createElement('canvas');
+  c.width = W * 3; c.height = H * 3 + 120;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#0f0f14'; ctx.fillRect(0, 0, c.width, c.height);
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 34px Oswald, sans-serif';
+  ctx.fillText(`Carte des tirs · ${label}`, 24, 50);
+  ctx.fillStyle = '#aaa'; ctx.font = '24px sans-serif';
+  ctx.fillText(`${$('game-date').value} · ${teamName()} – ${$('opponent').value || 'Adversaire'} · Gravity Basketball`, 24, 92);
+  ctx.drawImage(img, 0, 120);
+  c.toBlob(b => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(b);
+    a.download = `carte-des-tirs-${$('game-date').value || 'match'}.png`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  }, 'image/png');
+});
+
 function refresh() {
   renderEvents();
+  renderShots();
   const box = renderBox();
   renderSendList(box);
   const s = sessionEmail();
