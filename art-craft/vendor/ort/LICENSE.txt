@@ -1,0 +1,2 @@
+ort.wasm.min.js, ort-wasm-simd.wasm, ort-wasm.wasm : onnxruntime-web 1.18.0
+(Microsoft, licence MIT, https://github.com/microsoft/onnxruntime).

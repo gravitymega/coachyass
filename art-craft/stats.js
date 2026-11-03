@@ -9,7 +9,7 @@ import { createStreamReader, isNetworkError, NETWORK_HINT } from './analyse-core
 import { energyEnvelope, excitementScore, findPeaks, WINDOW_S, parseTimestamp } from './highlights.js';
 import {
   EVENT_TYPES, TYPE_KEYS, CLIP_TYPES, statsWindows, windowTimes, normalizeEvents, mergeEvents,
-  boxScore, playerStatsRow, clipWindow, clipPlayers, kmeans2, hex, pickCrops, syncEvents, parseLive, fmtClock, pct,
+  boxScore, shotChart, ZONES, COURT, momentum, scoutingFacts, playingTime, fmtMinutes, playerStatsRow, clipWindow, clipPlayers, kmeans2, hex, pickCrops, syncEvents, parseLive, fmtClock, pct,
 } from './stats-core.js';
 import { loadDetector, detectPlayers, jerseyColor, cropJpeg, scaledJpeg, detectorDevice } from './detect.js';
 import { SITE, accessToken, rest, uploadFile, fillTeams, loadRoster, loadGames, sessionEmail, logout } from './supa.js';
@@ -23,7 +23,7 @@ const MAX_IMG = 12;
 const CROPS = 8;
 const state = {
   password: '', file: null, input: '', duration: 0, hasAudio: false, busy: false,
-  team: null, roster: [], games: [], events: [], nextId: 1, devoirs: new Map(), live: null,
+  team: null, roster: [], games: [], events: [], nextId: 1, devoirs: new Map(), live: null, placing: null, scouting: null, momentumEnd: 0,
 };
 
 // ---------- Accès (mot de passe Art craft, comme l'Analyse tactique) ----------
@@ -351,6 +351,7 @@ $('import-file').addEventListener('change', async e => {
       $('team').dispatchEvent(new Event('change'));
     }
     if (live.opponent) $('opponent').value = live.opponent;
+    if (Array.isArray(live.numbers) && live.numbers.length && !$('numbers').value.trim()) $('numbers').value = live.numbers.join(', ');
     if (live.date) $('game-date').value = live.date;
     setEvents(live.events.map(ev => ({ ...ev, manual: true })));
     const sel = $('sync-event');
@@ -386,7 +387,7 @@ const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&a
 function renderEvents() {
   const only = $('only-doubt').checked;
   const rows = state.events.filter(e => !only || doubtful(e));
-  $('events').innerHTML = '<thead><tr><th>Moment</th><th>Action</th><th>Équipe</th><th>N°</th><th>Confiance</th><th>Détail</th><th></th></tr></thead><tbody>' +
+  $('events').innerHTML = '<thead><tr><th>Moment</th><th>Action</th><th>Équipe</th><th>N°</th><th>Confiance</th><th>Détail</th><th>Lieu</th><th></th></tr></thead><tbody>' +
     rows.map(e => `<tr data-id="${e.id}" class="${doubtful(e) ? 'doubt' : ''}">
       <td><button class="tool" data-act="seek">${fmtClock(e.t)}</button></td>
       <td><select data-f="type">${typeOptions(e.type)}</select></td>
@@ -394,9 +395,10 @@ function renderEvents() {
       <td><input data-f="numero" inputmode="numeric" size="3" value="${e.numero == null ? '' : e.numero}" placeholder="?"></td>
       <td>${e.manual ? 'noté à la main' : esc(e.confiance)}</td>
       <td class="det">${esc(e.detail)}</td>
+      <td>${isShot(e) ? `<button class="tool${e.x != null ? ' placed' : ''}" data-act="place" title="Placer le tir sur la carte">📍${e.x != null ? ' ✓' : ''}</button>` : ''}</td>
       <td><button class="tool" data-act="del" title="Supprimer">✕</button></td>
     </tr>`).join('') + '</tbody>';
-  if (!rows.length) $('events').innerHTML += '<tbody><tr><td colspan="7" class="muted">Aucune action.</td></tr></tbody>';
+  if (!rows.length) $('events').innerHTML += '<tbody><tr><td colspan="8" class="muted">Aucune action.</td></tr></tbody>';
 }
 
 $('events').addEventListener('click', e => {
@@ -406,6 +408,7 @@ $('events').addEventListener('click', e => {
   const ev = state.events.find(x => x.id === id);
   if (btn.dataset.act === 'seek') { $('det-canvas').hidden = true; video.currentTime = Math.max(0, ev.t - 5); video.play().catch(() => {}); }
   if (btn.dataset.act === 'del') { state.events = state.events.filter(x => x.id !== id); refresh(); }
+  if (btn.dataset.act === 'place') startPlacing(ev);
 });
 $('events').addEventListener('change', e => {
   const f = e.target.dataset.f;
@@ -415,6 +418,7 @@ $('events').addEventListener('change', e => {
     const n = Number.parseInt(e.target.value, 10);
     ev.numero = Number.isFinite(n) ? n : null;
   } else ev[f] = e.target.value;
+  if (!isShot(ev)) { ev.x = null; ev.y = null; }
   ev.confiance = 'haute';
   refresh();
 });
@@ -431,11 +435,15 @@ $('numbers').addEventListener('change', refresh);
 function renderBox() {
   const box = boxScore(state.events, state.roster.length ? state.roster : numbers().map(n => ({ numero: n })));
   $('score').textContent = `${$('team').value ? $('team').selectedOptions[0].text.split(' · ')[0] : 'Nous'} ${box.score.nous} – ${box.score.adversaire} ${$('opponent').value || 'Adversaire'} (points vus dans la vidéo)`;
-  const line = (label, r) => `<tr><td>${label}</td><td><b>${r.pts}</b></td><td>${pct(r.fg2m, r.fg2a)}</td><td>${pct(r.fg3m, r.fg3a)}</td><td>${pct(r.ftm, r.fta)}</td><td>${r.oreb}</td><td>${r.dreb}</td><td>${r.ast}</td><td>${r.stl}</td><td>${r.blk}</td><td>${r.tov}</td><td>${r.pf}</td></tr>`;
-  $('box').innerHTML = '<thead><tr><th>Joueur</th><th>Pts</th><th>Tirs 2</th><th>Tirs 3</th><th>LF</th><th>Reb O</th><th>Reb D</th><th>Passes</th><th>Interc.</th><th>Contres</th><th>Pertes</th><th>Fautes</th></tr></thead><tbody>' +
-    box.rows.filter(r => r.events || r.player).map(r => line(`#${r.numero} ${esc(r.player ? r.player.full_name : '(pas de fiche)')}`, r)).join('') +
+  // Temps de jeu et +/- : seulement avec un fichier du Mode direct où les cinq en jeu ont été notés.
+  const lv = state.live;
+  const pt = lv && Array.isArray(lv.lineups) && lv.lineups.length ? playingTime(lv.lineups, lv.events, lv.end || {}).byNum : null;
+  const extra = r => (p => `<td>${p ? fmtMinutes(p.sec) : '—'}</td><td>${p ? (p.plusMinus > 0 ? '+' : '') + p.plusMinus : '—'}</td>`)(r.numero != null ? pt.get(r.numero) : null);
+  const line = (label, r, team = false) => `<tr><td>${label}</td>${pt ? (team ? '<td></td><td></td>' : extra(r)) : ''}<td><b>${r.pts}</b></td><td>${pct(r.fg2m, r.fg2a)}</td><td>${pct(r.fg3m, r.fg3a)}</td><td>${pct(r.ftm, r.fta)}</td><td>${r.oreb}</td><td>${r.dreb}</td><td>${r.ast}</td><td>${r.stl}</td><td>${r.blk}</td><td>${r.tov}</td><td>${r.pf}</td></tr>`;
+  $('box').innerHTML = '<thead><tr><th>Joueur</th>' + (pt ? '<th>Min</th><th>+/-</th>' : '') + '<th>Pts</th><th>Tirs 2</th><th>Tirs 3</th><th>LF</th><th>Reb O</th><th>Reb D</th><th>Passes</th><th>Interc.</th><th>Contres</th><th>Pertes</th><th>Fautes</th></tr></thead><tbody>' +
+    box.rows.filter(r => r.events || r.player || (pt && pt.has(r.numero))).map(r => line(`#${r.numero} ${esc(r.player ? r.player.full_name : '(pas de fiche)')}`, r)).join('') +
     (box.unknown.events ? line('Numéro inconnu', box.unknown) : '') +
-    line('<b>Équipe</b>', box.team) + line(esc($('opponent').value || 'Adversaire'), box.opp) + '</tbody>';
+    line('<b>Équipe</b>', box.team, true) + line(esc($('opponent').value || 'Adversaire'), box.opp, true) + '</tbody>';
   const csv = [['joueur', 'numero', 'pts', 'fg2m', 'fg2a', 'fg3m', 'fg3a', 'ftm', 'fta', 'oreb', 'dreb', 'ast', 'stl', 'blk', 'tov', 'pf'].join(',')]
     .concat(box.rows.filter(r => r.events).map(r => [`"${(r.player ? r.player.full_name : '').replace(/"/g, '""')}"`, r.numero, r.pts, r.fg2m, r.fg2a, r.fg3m, r.fg3a, r.ftm, r.fta, r.oreb, r.dreb, r.ast, r.stl, r.blk, r.tov, r.pf].join(',')));
   const a = $('btn-csv');
@@ -457,8 +465,204 @@ function renderSendList(box) {
   }).join('') || '<li class="muted">Aucune action de notre équipe avec un numéro.</li>';
 }
 
+// ---------- Carte des tirs ----------
+const isShot = e => ['2', '3'].includes(EVENT_TYPES[e.type]?.shot);
+const W = 300, H = 280; // 20 px par mètre (demi-terrain 15 m × 14 m)
+
+function courtLines() {
+  const p = COURT.paint, b = COURT.basket;
+  const bx = b.x * W, by = b.y * H, r3 = COURT.three * 20, cx = COURT.corner * W, cy = COURT.cornerY * H;
+  const line = 'fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"';
+  return `<rect width="${W}" height="${H}" fill="#2a1d14"/>
+    <rect x="${p.x0 * W}" y="0" width="${(p.x1 - p.x0) * W}" height="${p.y1 * H}" fill="rgba(255,110,40,.18)" ${line}/>
+    <path d="M${W / 2 - 36} ${p.y1 * H} A36 36 0 0 0 ${W / 2 + 36} ${p.y1 * H}" ${line}/>
+    <path d="M${cx} 0 L${cx} ${cy} A${r3} ${r3} 0 0 0 ${W - cx} ${cy} L${W - cx} 0" ${line}/>
+    <path d="M${bx - 25} ${by} A25 25 0 0 0 ${bx + 25} ${by}" ${line}/>
+    <line x1="${bx - 18}" y1="24" x2="${bx + 18}" y2="24" stroke="#fff" stroke-width="3"/>
+    <circle cx="${bx}" cy="${by}" r="4.5" fill="none" stroke="#ff6e28" stroke-width="2"/>
+    <path d="M${W / 2 - 36} ${H} A36 36 0 0 1 ${W / 2 + 36} ${H}" ${line}/>
+    <rect width="${W}" height="${H}" ${line}/>`;
+}
+
+function shotFilter() {
+  const v = $('shot-filter').value || 'nous';
+  if (v === 'adversaire') return { equipe: 'adversaire' };
+  if (v.startsWith('joueur-')) return { equipe: 'nous', numero: +v.slice(7) };
+  return { equipe: 'nous' };
+}
+
+function renderShots() {
+  // Choix : toute l'équipe, chaque joueur qui a tiré, l'adversaire.
+  const sel = $('shot-filter');
+  const keep = sel.value;
+  const nums = [...new Set(state.events.filter(e => isShot(e) && e.equipe === 'nous' && e.numero != null).map(e => e.numero))].sort((a, b) => a - b);
+  sel.innerHTML = `<option value="nous">${esc(teamName())} (toute l'équipe)</option>` +
+    nums.map(n => `<option value="joueur-${n}">#${n} ${esc(playerOf(n)?.full_name || '')}</option>`).join('') +
+    `<option value="adversaire">${esc($('opponent').value || 'Adversaire')}</option>`;
+  if ([...sel.options].some(o => o.value === keep)) sel.value = keep;
+  const chart = shotChart(state.events, shotFilter());
+  const marks = chart.shots.map(s => {
+    const x = s.x * W, y = s.y * H, tip = `${fmtClock(s.t)} · ${EVENT_TYPES[s.type].label}${s.numero != null ? ' · #' + s.numero : ''}`;
+    return s.made
+      ? `<circle data-id="${s.id}" cx="${x}" cy="${y}" r="7" fill="#4ade80" stroke="#0b2a17" stroke-width="2"><title>${esc(tip)}</title></circle>`
+      : `<g data-id="${s.id}" stroke="#f87171" stroke-width="3.5" stroke-linecap="round"><title>${esc(tip)}</title><circle cx="${x}" cy="${y}" r="9" fill="transparent" stroke="none"/><line x1="${x - 6}" y1="${y - 6}" x2="${x + 6}" y2="${y + 6}"/><line x1="${x + 6}" y1="${y - 6}" x2="${x - 6}" y2="${y + 6}"/></g>`;
+  }).join('');
+  $('court').innerHTML = courtLines() + marks;
+  const tot = Object.values(chart.zones).reduce((a, z) => ({ m: a.m + z.m, a: a.a + z.a }), { m: 0, a: 0 });
+  $('shot-zones').innerHTML = '<thead><tr><th>Zone</th><th>Réussis / tentés</th></tr></thead><tbody>' +
+    Object.entries(ZONES).map(([k, label]) => `<tr><td>${label}</td><td>${pct(chart.zones[k].m, chart.zones[k].a)}</td></tr>`).join('') +
+    `<tr><td><b>Total placé</b></td><td><b>${pct(tot.m, tot.a)}</b></td></tr></tbody>`;
+  $('shot-info').textContent = state.placing != null ? $('shot-info').textContent : chart.unplaced
+    ? `${chart.unplaced} tir${chart.unplaced > 1 ? 's' : ''} sans lieu (bouton 📍 dans le tableau pour ${chart.unplaced > 1 ? 'les' : 'le'} placer)`
+    : '';
+}
+
+function teamName() {
+  return $('team').value ? $('team').selectedOptions[0].text.split(' · ')[0] : 'Nous';
+}
+
+function startPlacing(ev) {
+  state.placing = ev.id;
+  $('shot-filter').value = ev.equipe === 'adversaire' ? 'adversaire' : 'nous';
+  renderShots();
+  $('court').classList.add('placing');
+  $('shot-info').textContent = `Touche le terrain là où le tir de ${fmtClock(ev.t)} a été pris (panier en haut).`;
+  $('court').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+$('shot-filter').addEventListener('change', renderShots);
+$('court').addEventListener('click', e => {
+  if (state.placing != null) {
+    const ev = state.events.find(x => x.id === state.placing);
+    const r = $('court').getBoundingClientRect();
+    if (ev) {
+      ev.x = Math.round(Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) * 1000) / 1000;
+      ev.y = Math.round(Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)) * 1000) / 1000;
+    }
+    state.placing = null;
+    $('court').classList.remove('placing');
+    refresh();
+    return;
+  }
+  const mark = e.target.closest('[data-id]');
+  if (!mark) return;
+  const ev = state.events.find(x => x.id === +mark.dataset.id);
+  if (ev) { $('det-canvas').hidden = true; video.currentTime = Math.max(0, ev.t - 5); video.play().catch(() => {}); video.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+});
+
+// Image de la carte (pour la partager) : le SVG est dessiné dans un canvas avec un titre.
+$('btn-court-png').addEventListener('click', async () => {
+  const label = $('shot-filter').selectedOptions[0]?.text || '';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W * 3}" height="${H * 3}">${$('court').innerHTML}</svg>`;
+  const img = new Image();
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  await img.decode();
+  const c = document.createElement('canvas');
+  c.width = W * 3; c.height = H * 3 + 120;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#0f0f14'; ctx.fillRect(0, 0, c.width, c.height);
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 34px Oswald, sans-serif';
+  ctx.fillText(`Carte des tirs · ${label}`, 24, 50);
+  ctx.fillStyle = '#aaa'; ctx.font = '24px sans-serif';
+  ctx.fillText(`${$('game-date').value} · ${teamName()} – ${$('opponent').value || 'Adversaire'} · Gravity Basketball`, 24, 92);
+  ctx.drawImage(img, 0, 120);
+  c.toBlob(b => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(b);
+    a.download = `carte-des-tirs-${$('game-date').value || 'match'}.png`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  }, 'image/png');
+});
+
+// ---------- Momentum ----------
+const MW = 600, MH = 200;
+function renderMomentum() {
+  const m = momentum(state.events);
+  const end = Math.max(state.duration || 0, ...m.points.map(p => p.t), 1);
+  const amp = Math.max(5, m.max, -m.min);
+  const X = t => (t / end) * MW, Y = d => MH / 2 - (d / amp) * (MH / 2 - 16);
+  // Ligne en escalier : l'écart reste le même jusqu'au panier suivant.
+  let d = `M0 ${Y(0)}`;
+  m.points.slice(1).forEach(p => { d += ` H${X(p.t).toFixed(1)} V${Y(p.diff).toFixed(1)}`; });
+  d += ` H${MW}`;
+  const area = `${d} V${MH / 2} H0 Z`;
+  $('momentum').innerHTML = `<defs>
+      <clipPath id="mo-up"><rect width="${MW}" height="${MH / 2}"/></clipPath>
+      <clipPath id="mo-down"><rect y="${MH / 2}" width="${MW}" height="${MH / 2}"/></clipPath></defs>
+    <path d="${area}" fill="rgba(74,222,128,.35)" clip-path="url(#mo-up)"/>
+    <path d="${area}" fill="rgba(248,113,113,.35)" clip-path="url(#mo-down)"/>
+    <line x1="0" y1="${MH / 2}" x2="${MW}" y2="${MH / 2}" stroke="rgba(255,255,255,.35)"/>
+    <path d="${d}" fill="none" stroke="#fff" stroke-width="2"/>
+    <text x="8" y="16" fill="#4ade80" font-size="13">${esc(teamName())} +${m.max}</text>
+    <text x="8" y="${MH - 6}" fill="#f87171" font-size="13">${esc($('opponent').value || 'Adversaire')} +${-m.min}</text>
+    <text x="${MW - 8}" y="16" fill="#aaa" font-size="13" text-anchor="end">${fmtClock(end)}</text>`;
+  const run = (r, who) => r ? `${who} : ${r.pts}-0 (${fmtClock(r.from)} → ${fmtClock(r.to)})` : '';
+  $('runs').textContent = [run(m.runs.nous, 'Plus grosse série ' + teamName()), run(m.runs.adversaire, 'Plus grosse série ' + ($('opponent').value || 'adversaire'))].filter(Boolean).join(' · ');
+  state.momentumEnd = end;
+}
+$('momentum').addEventListener('click', e => {
+  const r = $('momentum').getBoundingClientRect();
+  const t = ((e.clientX - r.left) / r.width) * (state.momentumEnd || 0);
+  if (!video.src) return;
+  $('det-canvas').hidden = true;
+  video.currentTime = Math.max(0, t - 5);
+  video.play().catch(() => {});
+  video.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+// ---------- Rapport sur l'adversaire ----------
+function scoutingText(r) {
+  const opp = $('opponent').value || 'Adversaire';
+  return [`Rapport sur ${opp} (${$('game-date').value})`, '', r.resume, '',
+    'Joueurs clés :', ...(r.joueurs_cles || []).map(j => `- #${j.numero} ${j.role} — ${j.comment_le_defendre}`), '',
+    `D'où ils marquent : ${r.d_ou_ils_marquent}`, '',
+    'Forces :', ...(r.forces || []).map(x => '- ' + x), '',
+    'Faiblesses :', ...(r.faiblesses || []).map(x => '- ' + x), '',
+    'Plan de match :', ...(r.plan_de_match || []).map(x => '- ' + x)].join('\n');
+}
+function renderScouting(r) {
+  const li = list => (list || []).map(x => `<li>${esc(x)}</li>`).join('');
+  $('scouting').innerHTML = `<p>${esc(r.resume)}</p>
+    ${(r.joueurs_cles || []).length ? `<h4>Joueurs clés</h4><ul>${r.joueurs_cles.map(j => `<li><b>#${esc(j.numero)}</b> ${esc(j.role)} — ${esc(j.comment_le_defendre)}</li>`).join('')}</ul>` : ''}
+    <h4>D'où ils marquent</h4><p>${esc(r.d_ou_ils_marquent)}</p>
+    <h4>Forces</h4><ul>${li(r.forces)}</ul>
+    <h4>Faiblesses</h4><ul>${li(r.faiblesses)}</ul>
+    <h4>Plan de match</h4><ul>${li(r.plan_de_match)}</ul>`;
+  $('scouting').hidden = false;
+  $('btn-scouting-copy').hidden = false;
+}
+$('btn-scouting').addEventListener('click', async () => {
+  if (state.busy) return;
+  if (!state.events.some(e => e.equipe === 'adversaire')) { showError('Aucune action de l\'adversaire : rien à analyser.'); return; }
+  state.busy = true;
+  showError('');
+  const btn = $('btn-scouting');
+  btn.disabled = true;
+  btn.textContent = 'L\'IA prépare le rapport…';
+  try {
+    const facts = scoutingFacts(state.events, { opponent: $('opponent').value, team: teamName() });
+    state.scouting = await askCoach({ mode: 'scouting', facts, context: $('context').value }, o => o);
+    renderScouting(state.scouting);
+  } catch (err) {
+    console.error(err);
+    showError('Rapport impossible : ' + (err.message || err));
+  } finally {
+    state.busy = false;
+    btn.disabled = false;
+    btn.textContent = 'Préparer le rapport';
+  }
+});
+$('btn-scouting-copy').addEventListener('click', async () => {
+  if (!state.scouting) return;
+  try { await navigator.clipboard.writeText(scoutingText(state.scouting)); $('btn-scouting-copy').textContent = 'Copié ✓'; } catch { /* presse-papiers refusé */ }
+  setTimeout(() => { $('btn-scouting-copy').textContent = 'Copier le rapport'; }, 2000);
+});
+
 function refresh() {
   renderEvents();
+  renderShots();
+  renderMomentum();
   const box = renderBox();
   renderSendList(box);
   const s = sessionEmail();

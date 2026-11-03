@@ -1,0 +1,4 @@
+piper_phonemize.js / .wasm / .data : @diffusionstudio/piper-wasm 1.0.0 (licence MIT,
+https://github.com/diffusion-studio/piper-wasm), build WebAssembly de piper-phonemize
+(rhasspy, MIT) avec les données espeak-ng (GPL-3.0, https://github.com/espeak-ng/espeak-ng).
+Servis par Art craft au lieu de jsDelivr/unpkg (échecs « Load failed » sur iPhone).

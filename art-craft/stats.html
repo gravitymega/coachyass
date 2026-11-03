@@ -119,6 +119,30 @@
     <div class="row">
       <a class="btn ghost" id="btn-csv">Télécharger (.csv)</a>
     </div>
+    <h3 class="sub">Carte des tirs</h3>
+    <p class="muted">Chaque tir à l'endroit où il a été pris (● réussi, ✕ raté), d'après l'IA. Touche un tir pour le revoir. Pour placer ou corriger un tir : bouton 📍 de sa ligne dans le tableau, puis touche le terrain.</p>
+    <div class="row">
+      <select id="shot-filter"></select>
+      <span class="muted" id="shot-info"></span>
+    </div>
+    <div class="shot-wrap">
+      <svg id="court" viewBox="0 0 300 280" role="img" aria-label="Carte des tirs"></svg>
+      <div class="table-scroll"><table class="box" id="shot-zones"></table></div>
+    </div>
+    <div class="row">
+      <button class="btn ghost" id="btn-court-png" type="button">Télécharger la carte (.png)</button>
+    </div>
+    <h3 class="sub">Momentum</h3>
+    <p class="muted">Écart au score au fil de la vidéo : au-dessus de la ligne, on mène ; en dessous, l'adversaire mène. Touche le graphique pour revoir ce moment.</p>
+    <svg id="momentum" viewBox="0 0 600 200" role="img" aria-label="Écart au score au fil du match"></svg>
+    <p class="muted" id="runs"></p>
+    <h3 class="sub">Rapport sur l'adversaire</h3>
+    <p class="muted">L'IA lit les actions notées pour l'adversaire (numéros, tirs, zones, pertes, séries) et prépare un rapport pour le prochain match contre lui. Corrige d'abord les actions : le rapport en dépend.</p>
+    <div class="row">
+      <button class="btn" id="btn-scouting" type="button">Préparer le rapport</button>
+      <button class="btn ghost" id="btn-scouting-copy" type="button" hidden>Copier le rapport</button>
+    </div>
+    <div id="scouting" class="scouting" hidden></div>
   </section>
 
   <section class="card" id="step-send" hidden>

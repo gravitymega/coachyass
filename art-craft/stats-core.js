@@ -78,6 +78,7 @@ export function normalizeEvents(raw, win, numbers = []) {
         numero: Number.isFinite(n) && n >= 0 && n < 100 ? n : null,
         confiance: ['haute', 'moyenne', 'basse'].includes(e.confiance) ? e.confiance : 'moyenne',
         detail: String(e.detail || '').slice(0, 160),
+        ...shotSpot(e),
         known: equipe === 'nous' && Number.isFinite(n) && numbers.includes(n),
       };
     });
@@ -246,6 +247,7 @@ export function parseLive(json) {
     numero: Number.isFinite(e.numero) ? e.numero : null,
     confiance: 'haute',
     detail: String(e.detail || ''),
+    ...shotSpot(e),
   })), { gap: 0 });
   return { ...o, events };
 }
@@ -259,4 +261,168 @@ export function fmtClock(s) {
 // Pourcentage de réussite « 3/7 (43 %) ».
 export function pct(made, att) {
   return att ? `${made}/${att} (${Math.round((made / att) * 100)} %)` : '—';
+}
+
+// ---------- Carte des tirs ----------
+// Demi-terrain FIBA (15 m × 14 m) en coordonnées 0–1 : x = 0 touche gauche → 1 touche droite
+// (vu depuis le milieu du terrain, panier en face), y = 0 ligne de fond → 1 ligne médiane.
+export const COURT = {
+  w: 15, h: 14,
+  basket: { x: 0.5, y: 1.575 / 14 },
+  three: 6.75,            // rayon de l'arc à 3 points (m)
+  corner: 0.9 / 15,       // distance des tirs à 3 pts dans le coin à la touche
+  cornerY: 2.99 / 14,     // hauteur où la ligne droite du coin rejoint l'arc
+  paint: { x0: 0.5 - 2.45 / 15, x1: 0.5 + 2.45 / 15, y1: 5.8 / 14 },
+};
+
+export const ZONES = {
+  raquette: 'Raquette',
+  mi_distance: 'Mi-distance',
+  trois_coin: '3 pts coin',
+  trois_axe: '3 pts (arc)',
+};
+
+const isFieldShot = type => ['2', '3'].includes(EVENT_TYPES[type]?.shot);
+const inUnit = v => Number.isFinite(v) && v >= 0 && v <= 1;
+
+// Garde le lieu d'un tir (x, y entre 0 et 1) ; rien pour les autres actions.
+export function shotSpot(e) {
+  const x = Number(e && e.x), y = Number(e && e.y);
+  return e && isFieldShot(e.type) && inUnit(x) && inUnit(y) ? { x: round3(x), y: round3(y) } : { x: null, y: null };
+}
+const round3 = v => Math.round(v * 1000) / 1000;
+
+// Distance au panier en mètres.
+export function shotDistance(x, y) {
+  return Math.hypot((x - COURT.basket.x) * COURT.w, (y - COURT.basket.y) * COURT.h);
+}
+
+// Zone d'un tir. Le type (2 ou 3 pts) l'emporte sur le lieu estimé : un tir noté à 3 pts reste à 3 pts.
+export function shotZone(x, y, shot) {
+  const corner = y <= COURT.cornerY && (x <= COURT.corner || x >= 1 - COURT.corner);
+  const beyond = corner || shotDistance(x, y) > COURT.three;
+  const three = shot === '3' || (shot !== '2' && beyond);
+  if (three) return corner || (y <= COURT.cornerY + 0.05 && (x < 0.15 || x > 0.85)) ? 'trois_coin' : 'trois_axe';
+  const p = COURT.paint;
+  return x >= p.x0 && x <= p.x1 && y <= p.y1 ? 'raquette' : 'mi_distance';
+}
+
+/**
+ * Tirs du match pour la carte : filtre { equipe, numero } (numero facultatif).
+ * Renvoie les tirs placés, les réussites par zone et le nombre de tirs sans lieu.
+ */
+export function shotChart(events, { equipe = 'nous', numero = null } = {}) {
+  const zones = Object.fromEntries(Object.keys(ZONES).map(k => [k, { m: 0, a: 0 }]));
+  const shots = [];
+  let unplaced = 0;
+  events.forEach(e => {
+    if (!isFieldShot(e.type) || e.equipe !== equipe) return;
+    if (numero != null && e.numero !== numero) return;
+    if (!inUnit(e.x) || !inUnit(e.y)) { unplaced++; return; }
+    const def = EVENT_TYPES[e.type];
+    const zone = shotZone(e.x, e.y, def.shot);
+    zones[zone].a++;
+    if (def.made) zones[zone].m++;
+    shots.push({ id: e.id, t: e.t, x: e.x, y: e.y, made: def.made, zone, numero: e.numero, type: e.type });
+  });
+  return { shots, zones, unplaced };
+}
+
+// ---------- Momentum ----------
+// Écart au score (nous − adversaire) après chaque point marqué, et la plus grosse série
+// de points sans réponse de chaque équipe (ex. 10-0).
+export function momentum(events) {
+  const scored = events.filter(e => EVENT_TYPES[e.type]?.pts > 0).sort((a, b) => a.t - b.t);
+  const points = [{ t: 0, nous: 0, adversaire: 0, diff: 0 }];
+  const best = { nous: null, adversaire: null };
+  let run = null;
+  let nous = 0, adversaire = 0;
+  scored.forEach(e => {
+    const pts = EVENT_TYPES[e.type].pts;
+    if (e.equipe === 'adversaire') adversaire += pts; else nous += pts;
+    points.push({ t: e.t, nous, adversaire, diff: nous - adversaire, id: e.id });
+    const side = e.equipe === 'adversaire' ? 'adversaire' : 'nous';
+    if (!run || run.equipe !== side) run = { equipe: side, pts: 0, from: e.t, to: e.t };
+    run.pts += pts;
+    run.to = e.t;
+    if (!best[side] || run.pts > best[side].pts) best[side] = { ...run };
+  });
+  const diffs = points.map(p => p.diff);
+  return { points, max: Math.max(...diffs), min: Math.min(...diffs), runs: best, score: { nous, adversaire } };
+}
+
+// Données envoyées à l'IA pour le rapport sur l'adversaire.
+export function scoutingFacts(events, { opponent = '', team = '' } = {}) {
+  const opp = events.filter(e => e.equipe === 'adversaire');
+  const lines = new Map();
+  const line = n => {
+    const k = n == null ? 'inconnu' : n;
+    if (!lines.has(k)) lines.set(k, { numero: n, pts: 0, tirs_2: [0, 0], tirs_3: [0, 0], lf: [0, 0], rebonds: 0, passes: 0, interceptions: 0, contres: 0, pertes: 0, fautes: 0 });
+    return lines.get(k);
+  };
+  opp.forEach(e => {
+    const d = EVENT_TYPES[e.type];
+    const l = line(e.numero);
+    l.pts += d.pts;
+    const key = { '2': 'tirs_2', '3': 'tirs_3', lf: 'lf' }[d.shot];
+    if (key) { l[key][1]++; if (d.made) l[key][0]++; }
+    const col = { oreb: 'rebonds', dreb: 'rebonds', ast: 'passes', stl: 'interceptions', blk: 'contres', tov: 'pertes', pf: 'fautes' }[d.stat];
+    if (col) l[col]++;
+  });
+  const fmt = ([m, a]) => `${m}/${a}`;
+  const chart = shotChart(events, { equipe: 'adversaire' });
+  const mo = momentum(events);
+  return {
+    adversaire: opponent || 'adversaire', nous: team || 'nous',
+    score: mo.score,
+    joueurs: [...lines.values()].sort((a, b) => b.pts - a.pts).map(l => ({ ...l, tirs_2: fmt(l.tirs_2), tirs_3: fmt(l.tirs_3), lf: fmt(l.lf) })),
+    tirs_par_zone: Object.fromEntries(Object.entries(chart.zones).map(([k, z]) => [ZONES[k], `${z.m}/${z.a}`])),
+    tirs_sans_lieu: chart.unplaced,
+    plus_grosses_series: { nous: mo.runs.nous?.pts || 0, adversaire: mo.runs.adversaire?.pts || 0 },
+    ecart_max: { pour_nous: mo.max, pour_eux: -mo.min },
+    actions: opp.slice(0, 150).map(e => ({ moment: fmtClock(e.t), action: EVENT_TYPES[e.type].label, numero: e.numero, detail: e.detail || undefined })),
+  };
+}
+
+// ---------- Temps de jeu et +/- (Mode direct) ----------
+// Secondes de jeu écoulées d'après le chrono : quart-temps (Q1…Q4, Prol.) et temps restant.
+export function gameSeconds(period, left, periodMin = 10) {
+  const order = ['Q1', 'Q2', 'Q3', 'Q4'];
+  const i = order.indexOf(period);
+  const base = i >= 0 ? i * periodMin * 60 : 4 * periodMin * 60;
+  const len = i >= 0 ? periodMin * 60 : 5 * 60;
+  return base + Math.max(0, len - (Number(left) || 0));
+}
+
+/**
+ * Minutes et +/- par numéro. lineups = [{ t, g, on: [numéros] }] (cinq sur le terrain à partir de ce moment),
+ * events = actions du match, end = { t, g } fin du match.
+ * Temps de jeu au chrono (g) quand il a servi, sinon au temps réel (t).
+ */
+export function playingTime(lineups = [], events = [], end = {}) {
+  const useG = [...lineups, ...events, end].some(x => Number(x && x.g) > 0);
+  const k = x => Number(useG ? x.g : x.t) || 0;
+  const segs = [...lineups].sort((a, b) => k(a) - k(b));
+  const out = new Map();
+  const line = n => { if (!out.has(n)) out.set(n, { numero: n, sec: 0, plusMinus: 0 }); return out.get(n); };
+  segs.forEach((s, i) => {
+    const from = k(s), to = i + 1 < segs.length ? k(segs[i + 1]) : Math.max(from, k(end));
+    (s.on || []).forEach(n => { line(n).sec += Math.max(0, to - from); });
+  });
+  events.forEach(e => {
+    const pts = EVENT_TYPES[e.type]?.pts || 0;
+    if (!pts) return;
+    const at = k(e);
+    // Le cinq en jeu au moment du panier (le dernier changement fait avant ou au même instant).
+    let cur = null;
+    segs.forEach(s => { if (k(s) <= at) cur = s; });
+    if (!cur) return;
+    (cur.on || []).forEach(n => { line(n).plusMinus += e.equipe === 'adversaire' ? -pts : pts; });
+  });
+  return { byNum: out, unit: useG ? 'chrono' : 'temps réel' };
+}
+
+export function fmtMinutes(sec) {
+  const m = Math.floor(sec / 60), s = Math.round(sec % 60);
+  return `${m}:${String(s).padStart(2, '0')}`;
 }
