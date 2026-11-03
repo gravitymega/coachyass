@@ -172,3 +172,28 @@ Question de l'utilisateur sur des listes de bibliothèques (Three.js, R3F, GSAP,
   - **Pour ne pas se perdre** : des **traces de pas dorées** au sol (`pathTo`, le chemin le plus court à pied, recalculé toutes les 0,35 s) ; la flèche suit ce chemin et non la ligne droite. Une **petite carte vue du ciel** en haut à droite montre Ali, les habitants qui ont une mission, les objets et le chemin.
   - Tests (`ville3d.test.mjs`) : tous les carrefours sont reliés, il y a au moins 5 ruelles, il existe un chemin vers chaque habitant, et le chemin vers Maman fait des détours.
 - **Le GrabPack de Poppy Playtime partout** (demande « la [main] de Poppy Playtime doit être utilisée partout ») : Ali porte le sac gris avec une main bleue et une main rouge dans la **ville en 2D** et dans la **ville en 3D**. Le bouton ✋ (touche G ou F au clavier) lance la main, bleue puis rouge, à tour de rôle, vers l'objet de mission le plus proche, sinon vers la pièce la plus proche visible (portée de 7 blocs en 2D, 10 en 3D, sans mur entre Ali et l'objet). La main ramène l'objet au bout de son câble ; s'il n'y a rien à attraper, elle part tout droit et revient.
+
+## Très grande ville 2D (3 novembre 2026)
+
+Demande : « la ville 2D très grande ». La largeur passe de 168 à **468 blocs** (`W` dans `ville-core.js`), avec 18 quartiers. À la suite du stade, on trouve :
+- **la gare** : bâtiment blanc, horloge dorée, toit accessible ;
+- **le port** : mer, barques à voile, phare, caisses (sol en pierre) ;
+- **la kasbah** : remparts ocre, tours crénelées, grande porte et **chemin de ronde** où l'on marche ;
+- **le hammam** à coupoles ;
+- **la forêt de l'Atlas** : collines jusqu'à 3 blocs et cèdres ;
+- **le désert** : sol en sable `T.DUNE`, dunes, palmiers ;
+- **l'oasis** : bassin et tente rayée ;
+- **la plage** : mer, parasols, château de sable ;
+- **le village berbère** : maisons ocre à toit plat et grande porte ;
+- **la colline aux étoiles**, avec un observatoire.
+
+**10 nouveaux habitants** avec leurs missions : le chef de gare (appel), le pêcheur (animaux), le gardien de la kasbah (salutations), la dame du hammam (corps), le berger (ciel), le chamelier (nombres), le musicien gnaoua (musique), le maître-nageur (sport), le grand-père du village (fête) et l'astronome (émotions). Leurs tenues sont dans `LOOKS` (`ville.js`).
+
+Autres changements :
+- 110 pièces au lieu de 40 ;
+- nouvelles textures `T.OCRE` et `T.DUNE`.
+
+Vérifications :
+- Traversée complète testée à pied, en courant et en sautant, dans les deux sens (de 1 à 466).
+- Les tests de `ville.test.mjs` passent : marches de 2 blocs au plus, habitants au sol, missions valides.
+- 9 131 phrases de voix.

@@ -4,10 +4,10 @@ import { WORDS, wordsFor, makeQuestion, rng, shuffle } from './core.js';
 
 export const H = 14; // hauteur du monde en blocs
 export const GROUND = 10; // ligne du sol (le haut de l'herbe)
-export const W = 168; // largeur du monde en blocs
+export const W = 468; // largeur du monde en blocs (très grande ville : 18 quartiers)
 
 // Les blocs solides (on marche dessus) et le décor (derrière le personnage).
-export const T = { AIR: 0, GRASS: 1, DIRT: 2, STONE: 3, PLANK: 4, BRICK: 5, LEAVES: 6, LOG: 7, WHITE: 8, GLASS: 9, SAND: 10, ROOF: 11, GREEN: 12, GOLD: 13, CARPET: 14, LANTERN: 15, ZELLIGE: 16, PALM: 17, FROND: 18, WATER: 19, ARCH: 20, DOOR: 21 };
+export const T = { AIR: 0, GRASS: 1, DIRT: 2, STONE: 3, PLANK: 4, BRICK: 5, LEAVES: 6, LOG: 7, WHITE: 8, GLASS: 9, SAND: 10, ROOF: 11, GREEN: 12, GOLD: 13, CARPET: 14, LANTERN: 15, ZELLIGE: 16, PALM: 17, FROND: 18, WATER: 19, ARCH: 20, DOOR: 21, OCRE: 22, DUNE: 23 };
 
 // Les quartiers, de gauche à droite. room : la salle de mots dont viennent les questions de l'habitant.
 export const NPCS = [
@@ -21,12 +21,27 @@ export const NPCS = [
   { id: 'fermier', name: 'Le fermier', x: 111, room: 'animaux', look: 'fermier' },
   { id: 'medecin', name: 'La docteure', x: 131, room: 'corps', look: 'medecin' },
   { id: 'assad', name: 'Assad', x: 152, room: 'stade', look: 'assad' },
+  // La grande ville : les nouveaux quartiers et leurs habitants
+  { id: 'chefgare', name: 'Le chef de gare', x: 180, room: 'appel', look: 'chefgare' },
+  { id: 'pecheur', name: 'Le pêcheur', x: 210, room: 'animaux', look: 'pecheur' },
+  { id: 'gardien', name: 'Le gardien de la kasbah', x: 228, room: 'hall', look: 'gardien' },
+  { id: 'hammam', name: 'La dame du hammam', x: 252, room: 'corps', look: 'hammam' },
+  { id: 'berger', name: 'Le berger', x: 277, room: 'ciel', look: 'berger' },
+  { id: 'chamelier', name: 'Le chamelier', x: 314, room: 'gym', look: 'chamelier' },
+  { id: 'gnawa', name: 'Le musicien gnaoua', x: 351, room: 'musique', look: 'gnawa' },
+  { id: 'nageur', name: 'Le maître-nageur', x: 378, room: 'sport', look: 'nageur' },
+  { id: 'berbere', name: 'Le grand-père du village', x: 409, room: 'fete', look: 'berbere' },
+  { id: 'astronome', name: 'L’astronome', x: 449, room: 'emotions', look: 'astronome' },
 ];
 
 export const ZONES = [
   { x: 2, w: 18, name: 'La maison' }, { x: 24, w: 16, name: 'Le parc' }, { x: 42, w: 20, name: 'Le souk' },
   { x: 64, w: 16, name: 'L’école' }, { x: 84, w: 18, name: 'La mosquée' }, { x: 104, w: 18, name: 'La ferme' },
   { x: 124, w: 16, name: 'Le dispensaire' }, { x: 144, w: 22, name: 'Le stade' },
+  { x: 170, w: 18, name: 'La gare' }, { x: 190, w: 26, name: 'Le port' }, { x: 218, w: 24, name: 'La kasbah' },
+  { x: 244, w: 16, name: 'Le hammam' }, { x: 262, w: 40, name: 'La forêt de l’Atlas' }, { x: 304, w: 38, name: 'Le désert' },
+  { x: 344, w: 18, name: 'L’oasis' }, { x: 364, w: 30, name: 'La plage' }, { x: 396, w: 36, name: 'Le village' },
+  { x: 434, w: 32, name: 'La colline aux étoiles' },
 ];
 
 // Le plan de la ville (toujours le même : on apprend à s'y repérer).
@@ -35,12 +50,16 @@ export function makeWorld() {
   const deco = Array.from({ length: H }, () => new Array(W).fill(T.AIR));
   const ground = new Array(W).fill(GROUND);
   // Petites collines (1 ou 2 blocs), en escaliers pour qu'on puisse toujours monter.
-  for (const [x0, x1, h] of [[26, 30, 1], [27, 29, 2], [44, 46, 1], [100, 103, 1], [118, 121, 1], [119, 120, 2], [140, 142, 1]]) {
-    for (let x = x0; x <= x1; x++) ground[x] = GROUND - h;
-  }
+  const hills = [[26, 30, 1], [27, 29, 2], [44, 46, 1], [100, 103, 1], [118, 121, 1], [119, 120, 2], [140, 142, 1],
+    // la forêt de l'Atlas (on monte jusqu'à 3 blocs, une marche à la fois), les dunes du désert, la colline aux étoiles
+    [264, 290, 1], [269, 285, 2], [274, 280, 3], [306, 312, 1], [309, 311, 2], [318, 326, 1], [320, 324, 2], [332, 336, 1],
+    [436, 461, 1], [441, 457, 2], [446, 452, 3]];
+  for (const [x0, x1, h] of hills) for (let x = x0; x <= x1; x++) ground[x] = Math.min(ground[x], GROUND - h);
+  // Le sol : herbe, quai en pierre au port, sable du désert jusqu'à la plage.
+  const surf = (x) => (x >= 302 && x <= 393 ? T.DUNE : x >= 190 && x <= 215 ? T.STONE : T.GRASS);
   for (let x = 0; x < W; x++) {
-    const g = ground[x];
-    for (let y = g; y < H; y++) solid[y][x] = y === g ? T.GRASS : y < GROUND + 3 ? T.DIRT : T.STONE;
+    const g = ground[x], top = surf(x);
+    for (let y = g; y < H; y++) solid[y][x] = y === g ? top : top === T.DUNE && y < g + 3 ? T.DUNE : y < GROUND + 3 ? T.DIRT : T.STONE;
   }
   // Murs aux deux bouts.
   for (let y = 0; y < H; y++) { solid[y][0] = T.STONE; solid[y][W - 1] = T.STONE; }
@@ -86,6 +105,45 @@ export function makeWorld() {
   for (let i = 0; i < 4; i++) fill(solid, 145 + i, GROUND - 1 - i, 1, 1 + i, T.STONE);
   for (let i = 0; i < 3; i++) fill(solid, 149 + i, GROUND - 3 + i, 1, 3 - i, T.STONE);
   fill(deco, 156, GROUND - 3, 1, 3, T.WHITE); fill(deco, 162, GROUND - 3, 1, 3, T.WHITE); fill(deco, 156, GROUND - 3, 7, 1, T.WHITE);
+  // ---------- La grande ville ----------
+  // La gare : grand bâtiment blanc, horloge dorée, toit où l'on peut monter.
+  fill(deco, 172, GROUND - 4, 13, 4, T.WHITE); for (const x of [174, 177, 181]) fill(deco, x, GROUND - 3, 2, 2, T.GLASS);
+  fill(deco, 178, GROUND - 6, 1, 1, T.GOLD); fill(solid, 171, GROUND - 5, 15, 1, T.ROOF);
+  fill(solid, 168, GROUND - 2, 1, 1, T.PLANK); fill(solid, 170, GROUND - 4, 1, 1, T.PLANK);
+  // Le port : la mer derrière le quai, des barques avec leur voile, un phare, des caisses.
+  fill(deco, 190, GROUND - 3, 26, 3, T.WATER);
+  for (const x of [194, 204]) { fill(deco, x, GROUND - 2, 4, 1, T.PLANK); fill(deco, x + 1, GROUND - 5, 1, 3, T.WHITE); fill(deco, x + 2, GROUND - 4, 1, 2, T.WHITE); }
+  fill(deco, 214, GROUND - 7, 1, 7, T.WHITE); fill(deco, 214, GROUND - 8, 1, 1, T.ROOF); fill(deco, 214, GROUND - 9, 1, 1, T.GOLD);
+  fill(solid, 199, GROUND - 1, 1, 1, T.PLANK); fill(solid, 200, GROUND - 2, 1, 2, T.PLANK);
+  // La kasbah : remparts ocre avec deux tours crénelées, grande porte, chemin de ronde où l'on peut marcher.
+  fill(deco, 219, GROUND - 5, 21, 5, T.OCRE); fill(deco, 219, GROUND - 7, 3, 2, T.OCRE); fill(deco, 237, GROUND - 7, 3, 2, T.OCRE);
+  for (const x of [219, 221, 237, 239]) fill(deco, x, GROUND - 8, 1, 1, T.OCRE);
+  fill(deco, 229, GROUND - 3, 1, 1, T.ARCH); fill(deco, 229, GROUND - 2, 1, 2, T.DOOR);
+  fill(solid, 216, GROUND - 2, 1, 1, T.PLANK); fill(solid, 218, GROUND - 4, 1, 1, T.PLANK); fill(solid, 220, GROUND - 5, 1, 1, T.OCRE);
+  fill(solid, 221, GROUND - 6, 18, 1, T.OCRE);
+  // Le hammam : bâtiment blanc à coupoles, bandeau de zellige.
+  fill(deco, 245, GROUND - 4, 13, 4, T.WHITE); fill(deco, 245, GROUND - 1, 13, 1, T.ZELLIGE);
+  fill(deco, 248, GROUND - 5, 3, 1, T.WHITE); fill(deco, 249, GROUND - 6, 1, 1, T.WHITE); fill(deco, 253, GROUND - 5, 3, 1, T.WHITE); fill(deco, 254, GROUND - 6, 1, 1, T.WHITE);
+  door(250, GROUND - 3);
+  // La forêt de l'Atlas : des cèdres sur les collines.
+  for (const x of [263, 268, 272, 277, 283, 288, 295, 299]) tree(x);
+  // Le désert et l'oasis : palmiers, bassin, tente rayée.
+  palm(316); palm(329); palm(340);
+  fill(deco, 348, GROUND - 1, 7, 1, T.WATER); palm(346); palm(357);
+  fill(deco, 350, GROUND - 4, 4, 1, T.SAND); fill(deco, 350, GROUND - 3, 1, 3, T.PLANK); fill(deco, 353, GROUND - 3, 1, 3, T.PLANK);
+  // La plage : la mer, des parasols, un château de sable.
+  fill(deco, 366, GROUND - 3, 27, 3, T.WATER);
+  for (const x of [370, 385]) { fill(deco, x, GROUND - 3, 1, 3, T.WHITE); fill(deco, x - 1, GROUND - 4, 3, 1, T.SAND); }
+  fill(deco, 375, GROUND - 1, 3, 1, T.DUNE); fill(deco, 376, GROUND - 2, 1, 1, T.DUNE);
+  // Le village berbère : maisons ocre aux toits plats, et une grande porte (bab).
+  fill(deco, 398, GROUND - 4, 8, 4, T.OCRE); door(401, GROUND - 3); fill(solid, 397, GROUND - 5, 10, 1, T.OCRE);
+  fill(solid, 394, GROUND - 2, 1, 1, T.PLANK); fill(solid, 396, GROUND - 4, 1, 1, T.PLANK);
+  fill(deco, 413, GROUND - 3, 7, 3, T.OCRE); door(416, GROUND - 2);
+  fill(deco, 424, GROUND - 5, 1, 5, T.OCRE); fill(deco, 428, GROUND - 5, 1, 5, T.OCRE); fill(deco, 424, GROUND - 6, 5, 1, T.OCRE); fill(deco, 426, GROUND - 5, 1, 1, T.ARCH);
+  // La colline aux étoiles : un petit observatoire tout en haut.
+  fill(deco, 448, ground[448] - 2, 3, 2, T.WHITE); fill(deco, 449, ground[449] - 3, 1, 1, T.WHITE); fill(deco, 451, ground[451] - 3, 1, 1, T.STONE);
+  tree(438); palm(459);
+
   // Marches pour monter sur les toits (on saute au plus de 2 blocs).
   fill(solid, 1, GROUND - 3, 2, 1, T.PLANK); fill(solid, 63, GROUND - 5, 1, 1, T.PLANK);
   fill(solid, 117, GROUND - 4, 2, 1, T.PLANK); fill(solid, 122, GROUND - 4, 2, 1, T.PLANK);
@@ -160,7 +218,7 @@ export function fetchQuest(npc, state, world, { older, count = 3, room: only } =
 }
 
 // Les pièces à ramasser en se baladant (une partie sur les hauteurs).
-export function coinSpots(world, seed = 1, count = 40) {
+export function coinSpots(world, seed = 1, count = 110) {
   const r = rng(seed);
   return shuffle(world.spots, r).filter((s, i, a) => a.findIndex((o) => Math.abs(o.x - s.x) < 2.5) === i).slice(0, count)
     .map((s, i) => ({ id: i, x: s.x, y: s.y - (s.high ? 0 : 0.4), taken: false }));

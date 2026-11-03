@@ -18,6 +18,7 @@ const PAL = {
   [T.ZELLIGE]: ['#f4efe4', '#1f8a5b', '#2b5fb3', '#f6c445'], [T.PALM]: ['#9a6b3c', '#86592f', '#b8844f', '#6a4527'],
   [T.FROND]: ['#3c9a3f', '#2e7f33', '#6cc24a', '#22662a'], [T.WATER]: ['#3aa0e0', '#2b86c8', '#bfe9ff', '#1f6aa6'],
   [T.ARCH]: ['#f4efe4', '#5a3a20', '#2bb673', '#3e2814'], [T.DOOR]: ['#6b4423', '#5a3a20', '#c8914f', '#3e2814'],
+  [T.OCRE]: ['#e3a86b', '#d39456', '#efbd85', '#b8733f'], [T.DUNE]: ['#ecc98a', '#e2bb76', '#f4d9a4', '#c9a060'],
 };
 function makeTexture(t, seed) {
   const c = document.createElement('canvas'); c.width = 16; c.height = 16;
@@ -39,6 +40,8 @@ function makeTexture(t, seed) {
     if (t === T.FROND) col = (x + 2 * y) % 7 === 0 ? hi : (r() < 0.6 ? a : b);
     if (t === T.WATER) col = (y % 5 === 1 && (x + y) % 4 < 2) ? hi : (r() < 0.6 ? a : b);
     if (t === T.ARCH) { const inArch = (x >= 3 && x <= 12 && y >= 8) || ((x - 7.5) ** 2 + (y - 8) ** 2 < 30); const edge = !inArch && ((x >= 2 && x <= 13 && y >= 8) || (x - 7.5) ** 2 + (y - 8) ** 2 < 42); col = inArch ? (y % 4 === 3 ? lo : b) : edge ? hi : a; }
+    if (t === T.OCRE) col = (y % 5 === 4 || (x + (Math.floor(y / 5) % 2) * 5) % 10 === 0) ? lo : (r() < 0.7 ? a : b);
+    if (t === T.DUNE) col = (y + Math.floor(x / 3)) % 7 === 0 ? hi : (r() < 0.6 ? a : b);
     if (t === T.DOOR) col = (x === 0 || x === 15) ? lo : x % 5 === 2 ? lo : (y % 6 === 3 && x % 5 === 4) ? hi : (r() < 0.7 ? a : b);
     if (t === T.LANTERN) col = (y < 2 || y > 13) ? lo : (x < 3 || x > 12) ? lo : (x + y) % 4 === 0 ? hi : (y % 4 === 0 ? b : hi);
     g.fillStyle = col; g.fillRect(x, y, 1, 1);
@@ -60,6 +63,16 @@ const LOOKS = {
   medecin: { skin: '#f0c4a0', hair: '#2b1b12', shirt: '#ffffff', pants: '#5ec4ff', scarf: '#5ec4ff', cross: true },
   fifi: { emoji: '🦊', shirt: '#00843d', pants: '#ffffff', num: '10' },
   assad: { emoji: '🦁', shirt: '#c8323a', pants: '#2b2140' },
+  chefgare: { skin: '#d9a77e', hair: '#2b1b12', shirt: '#2b4a8a', pants: '#2b2140', hat: '#2b4a8a', beard: true },
+  pecheur: { skin: '#d9a77e', hair: '#5a3a20', shirt: '#f4c430', pants: '#2b4a8a', hat: '#f4c430' },
+  gardien: { skin: '#c98b5e', hair: '#2b1b12', shirt: '#c8323a', pants: '#ffffff', hat: '#c8323a', beard: true },
+  hammam: { skin: '#f0c4a0', hair: '#3a2212', shirt: '#ffffff', pants: '#5ec4ff', scarf: '#ffffff' },
+  berger: { skin: '#c98b5e', hair: '#5a3a20', shirt: '#8a6238', pants: '#8a6238', robe: true, hat: '#8a6238' },
+  chamelier: { skin: '#b97a50', hair: '#1f3c88', shirt: '#1f3c88', pants: '#1f3c88', scarf: '#1f3c88', robe: true },
+  gnawa: { skin: '#8d5a3b', hair: '#2b1b12', shirt: '#ffffff', pants: '#ffffff', hat: '#c8323a', robe: true },
+  nageur: { skin: '#e2b48c', hair: '#2b1b12', shirt: '#e5484d', pants: '#ffc93c', num: '🛟' },
+  berbere: { skin: '#d9a77e', hair: '#ffffff', shirt: '#ffffff', pants: '#8a6238', beard: true, hat: '#ffffff', robe: true },
+  astronome: { skin: '#f0c4a0', hair: '#6b3a1a', shirt: '#7a48b8', pants: '#2b2140', glasses: true, long: true },
 };
 function drawPerson(g, look, x, y, s, t, facing = 1, moving = false) {
   // x, y : bas-centre en pixels ; s : taille d'un bloc ; t : temps (animation des jambes).
