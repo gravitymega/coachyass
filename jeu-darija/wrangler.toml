@@ -3,9 +3,16 @@
 # Root directory = jeu-darija, Deploy command = npx wrangler deploy (pas de build).
 name = "jeu-hbibiti"
 compatibility_date = "2026-10-01"
+# Le worker sert le jeu et répond à /api/parler (discussion libre avec les habitants de la ville en 3D).
+main = "worker/index.js"
 
 [assets]
 directory = "."
+binding = "ASSETS"
+
+# IA gratuite de Cloudflare (Workers AI, quota quotidien gratuit) pour la discussion libre.
+[ai]
+binding = "AI"
 
 # Aucune tâche planifiée : vide les déclencheurs si une autre configuration (Art craft) a été déployée ici par erreur.
 [triggers]

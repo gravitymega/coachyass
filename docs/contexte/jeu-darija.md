@@ -172,3 +172,72 @@ Question de l'utilisateur sur des listes de bibliothèques (Three.js, R3F, GSAP,
   - **Pour ne pas se perdre** : des **traces de pas dorées** au sol (`pathTo`, le chemin le plus court à pied, recalculé toutes les 0,35 s) ; la flèche suit ce chemin et non la ligne droite. Une **petite carte vue du ciel** en haut à droite montre Ali, les habitants qui ont une mission, les objets et le chemin.
   - Tests (`ville3d.test.mjs`) : tous les carrefours sont reliés, il y a au moins 5 ruelles, il existe un chemin vers chaque habitant, et le chemin vers Maman fait des détours.
 - **Le GrabPack de Poppy Playtime partout** (demande « la [main] de Poppy Playtime doit être utilisée partout ») : Ali porte le sac gris avec une main bleue et une main rouge dans la **ville en 2D** et dans la **ville en 3D**. Le bouton ✋ (touche G ou F au clavier) lance la main, bleue puis rouge, à tour de rôle, vers l'objet de mission le plus proche, sinon vers la pièce la plus proche visible (portée de 7 blocs en 2D, 10 en 3D, sans mur entre Ali et l'objet). La main ramène l'objet au bout de son câble ; s'il n'y a rien à attraper, elle part tout droit et revient.
+
+## Très grande ville 2D (3 novembre 2026)
+
+Demande : « la ville 2D très grande ». La largeur passe de 168 à **468 blocs** (`W` dans `ville-core.js`), avec 18 quartiers. À la suite du stade, on trouve :
+- **la gare** : bâtiment blanc, horloge dorée, toit accessible ;
+- **le port** : mer, barques à voile, phare, caisses (sol en pierre) ;
+- **la kasbah** : remparts ocre, tours crénelées, grande porte et **chemin de ronde** où l'on marche ;
+- **le hammam** à coupoles ;
+- **la forêt de l'Atlas** : collines jusqu'à 3 blocs et cèdres ;
+- **le désert** : sol en sable `T.DUNE`, dunes, palmiers ;
+- **l'oasis** : bassin et tente rayée ;
+- **la plage** : mer, parasols, château de sable ;
+- **le village berbère** : maisons ocre à toit plat et grande porte ;
+- **la colline aux étoiles**, avec un observatoire.
+
+**10 nouveaux habitants** avec leurs missions : le chef de gare (appel), le pêcheur (animaux), le gardien de la kasbah (salutations), la dame du hammam (corps), le berger (ciel), le chamelier (nombres), le musicien gnaoua (musique), le maître-nageur (sport), le grand-père du village (fête) et l'astronome (émotions). Leurs tenues sont dans `LOOKS` (`ville.js`).
+
+Autres changements :
+- 110 pièces au lieu de 40 ;
+- nouvelles textures `T.OCRE` et `T.DUNE`.
+
+Vérifications :
+- Traversée complète testée à pied, en courant et en sautant, dans les deux sens (de 1 à 466).
+- Les tests de `ville.test.mjs` passent : marches de 2 blocs au plus, habitants au sol, missions valides.
+- 9 131 phrases de voix.
+
+## Ville en 3D : bâtiments, mouvements, discussions (3 novembre 2026)
+
+Demande : « 3D : les joueurs peuvent entrer dans les bâtiments, sauter, se pencher, courir, se baisser, ramper à plat ventre, discuter avec les habitants et avoir des réponses comme dans la vraie vie ».
+
+**Entrer dans les bâtiments**
+- Chaque porte bleue ou en bois de la médina (plus de 10 portes, `world.doors`) affiche le bouton « 🚪 Entrer » quand on est devant. Il mène à un intérieur (`makeInterior` dans `ville3d-core.js`) :
+  - **maison** : salon marocain avec sedari, table basse et théière, tapis, télé, lanternes ;
+  - **mosquée** : rangées de tapis, mihrab vert et doré, minbar, lustres, Corans, fontaine d'ablutions ;
+  - **boulangerie** : four, comptoir avec les pains, sacs de farine ;
+  - **école** : tableau, pupitres, bureau du maître, livres.
+- La porte de la mosquée mène à la mosquée, celles du souk à la boulangerie, les autres à une maison ou à l'école.
+- Chaque intérieur a son habitant : la tante, le muezzin, la boulangère, le maître.
+- La vue de l'intérieur se fait de haut, comme une maison de poupée (le mur de devant est bas). « 🚪 Sortir » ramène devant la porte.
+
+**Mouvements** (colonne de boutons à gauche, et touches du clavier)
+- 🏃 courir (×1,7 ; touche R ou Maj) ;
+- 🧎 s'accroupir (C) ;
+- 🐛 ramper à plat ventre (X) : le personnage mesure alors 0,55 bloc ;
+- ⤺ ⤻ se pencher (maintenir le bouton ; touches N et M) : la caméra glisse sur le côté pour regarder au coin d'une ruelle ;
+- ⤴ sauter (en rampant, ce bouton relève le personnage).
+- **Passages secrets** : de 3 à 7 trous d'un seul bloc de haut dans les murs (`world.tunnels`), où l'on ne passe qu'à plat ventre, avec une pièce au milieu. On ne peut pas se relever s'il n'y a pas la place.
+
+**Discuter avec les habitants**
+- Le bouton 💬 propose « 🎯 La mission » ou « 💬 Discuter ».
+- **Questions toutes prêtes**, qui marchent hors ligne et ont la voix douce : « Comment ça va ? », « Comment tu t'appelles ? », « Qu'est-ce que tu fais ici ? », « Qu'est-ce que tu aimes ? », « Raconte-moi quelque chose ! », et « Apprends-moi un mot ! » (un mot de darija de la salle de l'habitant). Les réponses et la personnalité de chacun sont dans `ville3d-dialogues.js`. **À faire relire.**
+- **Discussion libre** : l'enfant pose sa question au micro (reconnaissance vocale de la tablette, en français) ou au clavier.
+  - Le Worker `jeu-hbibiti` (`jeu-darija/worker/index.js`, `main` dans `wrangler.toml`, liaisons `ASSETS` et `AI`) répond à `POST /api/parler` avec **Workers AI**, gratuit : `@cf/meta/llama-4-scout-17b-16e-instruct`, puis `llama-3.1-8b-instruct` en secours.
+  - Consignes pour enfants : 1 ou 2 phrases simples, jamais de violence, de peur ou de contenu adulte, pas d'informations personnelles demandées ; si la question n'est pas adaptée, « demande à Papa ou à Maman ». Le personnage reste dans son rôle.
+  - Les liens et la mise en forme sont retirés, et la réponse est coupée à 320 caractères.
+  - Sans Internet ou si l'IA ne répond pas, l'habitant dit gentiment de demander à Papa ou à Maman.
+- Réglage parents : « Discussion libre avec les habitants » (`settings.chatIA`, activé par défaut). Sans cette option, il ne reste que les questions toutes prêtes.
+
+**Tests et voix**
+- Correction : le nom `fetch` (la mission en cours) cachait la fonction réseau ; on appelle maintenant `window.fetch`.
+- `ville3d.test.mjs` vérifie les portes, les intérieurs et les passages ; `worker.test.mjs` vérifie le serveur avec une fausse IA ; Playwright couvre les poses, le passage secret, les 4 intérieurs et les discussions.
+- 9 198 phrases de voix.
+
+## Usine : révision, série de jours, navigation (3 nov. 2026)
+- **Révision de Hbibiti** (`#map-review`, apparaît dès 3 mots fragiles) : `weakWords`/`buildReview` (exercises.js) reprennent les mots vus en boîtes 0-1 des salles ouvertes, chacun dans le jeu de sa salle ; ne compte pas comme partie d'une salle.
+- **Série de jours 🔥** : `streak(progress)` (carnet.js, à partir de `progress.days`), affichée en haut de l'usine (dès 2 jours) et sur l'écran de récompense avec les +5 🪙.
+- En-tête : ⭐ + 🪙 + 🔥. Barre de navigation collante (Salles / Activités / Ville et histoires) ; les salles passent avant les activités.
+- Vibration courte (bonne réponse) / double (erreur) sur Android, réglage parents `set-buzz` (`settings.buzz`).
+- Cache SW `hbibiti-v15`. Tests : carnet (série) et exercises (révision).

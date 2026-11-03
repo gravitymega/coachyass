@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { newProgress, WORDS } from './core.js';
-import { recordDay, weekReport, reportText } from './carnet.js';
+import { recordDay, weekReport, reportText, streak } from './carnet.js';
 
 test('le carnet compte seulement ce qui a été appris cette semaine', () => {
   const p = newProgress();
@@ -25,4 +25,14 @@ test('on garde au plus 60 jours', () => {
   const p = newProgress();
   for (let i = 1; i <= 70; i++) recordDay(p, `2026-${String(Math.ceil(i / 28)).padStart(2, '0')}-${String(((i - 1) % 28) + 1).padStart(2, '0')}`);
   assert.equal(Object.keys(p.days).length, 60);
+});
+
+test('série de jours : compte les jours joués de suite', () => {
+  const p = newProgress();
+  assert.equal(streak(p, '2026-11-03'), 0);
+  for (const d of ['2026-10-30', '2026-11-01', '2026-11-02']) recordDay(p, d);
+  assert.equal(streak(p, '2026-11-03'), 2); // pas encore joué aujourd'hui : la série d'hier tient
+  recordDay(p, '2026-11-03');
+  assert.equal(streak(p, '2026-11-03'), 3);
+  assert.equal(streak(p, '2026-11-05'), 0);
 });

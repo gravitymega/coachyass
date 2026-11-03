@@ -1,7 +1,7 @@
 // La ville en 3D : node --test jeu-darija/ville3d.test.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { makeWorld3d, NPCS3D, spawnItems, coinSpots3d, topOf, walkable, pathTo, nodeX, SPAWN, B, N } from './ville3d-core.js';
+import { makeInterior, INTERIORS, makeWorld3d, NPCS3D, spawnItems, coinSpots3d, topOf, walkable, pathTo, nodeX, SPAWN, B, N } from './ville3d-core.js';
 
 const reachable = walkable;
 test('les habitants sont debout sur le sol, avec de la place, et on peut tous les rejoindre', () => {
@@ -43,4 +43,18 @@ test('la médina est un vrai labyrinthe : tous les carrefours reliés, des ruell
   // Il faut tourner : le chemin vers Maman est plus long que la ligne droite.
   const m = NPCS3D.find((n) => n.id === 'maman');
   assert.ok(pathTo(w, SPAWN[0], SPAWN[1], 1, Math.floor(m.x), Math.floor(m.z)).length > Math.hypot(m.x - SPAWN[0], m.z - SPAWN[1]) * 1.2);
+});
+
+test('portes, intérieurs et passages secrets', () => {
+  const w = makeWorld3d();
+  assert.ok(w.doors.length >= 10, 'pas assez de portes');
+  for (const t of ['maison', 'mosquee', 'boulangerie', 'ecole']) assert.ok(w.doors.some((d) => d.type === t), `aucune porte vers ${t}`);
+  assert.ok(w.tunnels.length >= 3, 'pas assez de passages secrets');
+  for (const t of w.tunnels) { assert.equal(w.get(t.x, 1, t.z), B.AIR); assert.notEqual(w.get(t.x, 2, t.z), B.AIR); } // un seul bloc de haut
+  for (const type of Object.keys(INTERIORS)) {
+    const r = makeInterior(type);
+    const [sx, sz] = r.spawn, [nx, nz] = r.npcAt;
+    for (const [x, z] of [[sx, sz], [nx, nz]]) { assert.equal(r.get(Math.floor(x), 1, Math.floor(z)), B.AIR, `${type} ${x},${z}`); assert.equal(r.get(Math.floor(x), 2, Math.floor(z)), B.AIR); }
+    assert.equal(r.get(r.exit.x, 1, r.exit.z), B.DOOR);
+  }
 });

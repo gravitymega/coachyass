@@ -9,6 +9,8 @@ export const HMAX = 14; // hauteur maximale
 export const B = {
   AIR: 0, GRASS: 1, SAND: 2, WHITE: 3, OCRE: 4, ZELLIGE: 5, GREEN: 6, GOLD: 7, DOOR: 8, PLANK: 9,
   TENT: 10, PALM: 11, FROND: 12, WATER: 13, WALL: 14, STONE: 15, BLUE: 16, CARPET: 17,
+  // Meubles des intérieurs
+  SOFA: 18, TABLE: 19, TV: 20, LAMP: 21, OVEN: 22, BREAD: 23, BOARD: 24, DESK: 25, BOOK: 26, SACK: 27, RUG: 28, TILE: 29,
 };
 
 // La médina en labyrinthe : une grille de 8 x 8 carrefours reliés par des rues (2 blocs) et des ruelles (1 bloc),
@@ -82,12 +84,22 @@ export function makeWorld3d() {
     if ((x + z) % 3 === 0) set(x, 0, z, B.CARPET);
     if (x % 2 === 0 && get(x, 4, z) === B.AIR) set(x, 4, z, B.TENT);
   }
+  const doors = [{ x: nodeX(5), z: 8, type: 'mosquee' }, { x: nodeX(5) + 1, z: 8, type: 'mosquee' }];
   // 7. Des portes bleues ou en bois sur les murs des ruelles, et des caisses pour grimper sur les toits (raccourcis !).
   for (let z = 1; z < N - 1; z++) for (let x = 1; x < N - 1; x++) {
     const wall = get(x, 1, z) === B.WHITE || get(x, 1, z) === B.OCRE;
     if (!wall || r() > 0.06) continue;
     const open = [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dz]) => get(x + dx, 1, z + dz) === B.AIR);
-    if (open) { set(x, 1, z, r() < 0.5 ? B.BLUE : B.DOOR); set(x, 2, z, get(x, 1, z)); }
+    if (open) { set(x, 1, z, r() < 0.5 ? B.BLUE : B.DOOR); set(x, 2, z, get(x, 1, z)); doors.push({ x, z }); }
+  }
+  // Passages secrets : un trou d'un seul bloc de haut dans un mur épais, entre deux rues. On y passe en rampant !
+  const tunnels = [];
+  for (let z = 3; z < N - 3 && tunnels.length < 7; z += 3) for (let x = 2; x < N - 5; x++) {
+    const air = (xx) => get(xx, 1, z) === B.AIR && get(xx, 2, z) === B.AIR;
+    const wall = (xx) => [B.WHITE, B.OCRE].includes(get(xx, 1, z)) && [B.WHITE, B.OCRE].includes(get(xx, 2, z));
+    if (air(x) && wall(x + 1) && wall(x + 2) && air(x + 3) && !tunnels.some((t) => Math.abs(t.z - z) < 4)) {
+      set(x + 1, 1, z, B.AIR); set(x + 2, 1, z, B.AIR); tunnels.push({ x: x + 1, z }); break;
+    }
   }
   for (const [x, z] of [[nodeX(1) + 1, nodeX(0)], [nodeX(6), nodeX(6) + 1], [nodeX(2), nodeX(2) + 1], [nodeX(7) + 1, nodeX(2)], [nodeX(1), nodeX(4) + 2]]) {
     // Deux caisses en escalier contre un mur : on monte d'un bloc à la fois.
@@ -100,7 +112,9 @@ export function makeWorld3d() {
     box(x, 1, z, 1, 4, 1, B.WALL);
     if (i % 2 === 0) set(x, 5, z, B.WALL); else set(x, 5, z, B.AIR);
   }
-  return { cells, lanes, get: (x, y, z) => (x < 0 || x >= N || z < 0 || z >= N || y < 0 ? B.STONE : y >= HMAX ? B.AIR : cells[idx(x, y, z)]) };
+  // Chaque porte mène à un intérieur : boulangerie au souk, sinon une maison ou une école.
+  doors.forEach((d, i) => { if (!d.type) d.type = d.x > 22 && d.z >= 14 && d.z <= 21 ? 'boulangerie' : i % 3 === 2 ? 'ecole' : 'maison'; });
+  return { cells, lanes, doors, tunnels, get: (x, y, z) => (x < 0 || x >= N || z < 0 || z >= N || y < 0 ? B.STONE : y >= HMAX ? B.AIR : cells[idx(x, y, z)]) };
 }
 
 // Bloc solide (on ne traverse pas l'eau du bassin, mais on ne s'y tient pas debout non plus : elle compte comme solide).
@@ -208,4 +222,51 @@ export function coinSpots3d(world, r = Math.random, count = 24) {
     out.push({ x: x + 0.5, y: y + 0.5, z: z + 0.5, taken: false });
   }
   return out;
+}
+
+// ---------- Les intérieurs (une petite pièce en blocs par sorte de bâtiment) ----------
+// La porte de sortie est au milieu du mur du bas (z = D - 1). Chaque intérieur a son habitant.
+export const IW = 11, ID = 10, IH = 5;
+export const INTERIORS = {
+  maison: { name: 'La maison', npc: { id: 'tante', name: 'La tante', look: 'maman', room: 'maison' } },
+  mosquee: { name: 'La mosquée', npc: { id: 'muezzin', name: 'Le muezzin', look: 'imam', room: 'jardin' } },
+  boulangerie: { name: 'La boulangerie', npc: { id: 'boulangere', name: 'La boulangère', look: 'hbibiti', room: 'cuisine' } },
+  ecole: { name: 'L’école', npc: { id: 'maitre', name: 'Le maître', look: 'papa', room: 'ecole' } },
+};
+export function makeInterior(type) {
+  const cells = new Uint8Array(IW * IH * ID);
+  const idx = (x, y, z) => (y * ID + z) * IW + x;
+  const set = (x, y, z, t) => { if (x >= 0 && x < IW && z >= 0 && z < ID && y >= 0 && y < IH) cells[idx(x, y, z)] = t; };
+  const box = (x0, y0, z0, w, h, d, t) => { for (let y = y0; y < y0 + h; y++) for (let z = z0; z < z0 + d; z++) for (let x = x0; x < x0 + w; x++) set(x, y, z, t); };
+  const wall = type === 'mosquee' ? B.WHITE : type === 'boulangerie' ? B.OCRE : B.WHITE;
+  box(0, 0, 0, IW, 1, ID, type === 'boulangerie' ? B.TILE : type === 'ecole' ? B.PLANK : B.TILE);
+  // Le mur de devant est bas (1 bloc) : on voit l'intérieur de haut, comme une maison de poupée.
+  for (let x = 0; x < IW; x++) for (let z = 0; z < ID; z++) if (x === 0 || z === 0 || x === IW - 1 || z === ID - 1) box(x, 1, z, 1, z === ID - 1 ? 1 : IH - 1, 1, wall);
+  box(0, 1, 0, IW, 1, 1, B.ZELLIGE); box(0, 1, 0, 1, 1, ID, B.ZELLIGE); box(IW - 1, 1, 0, 1, 1, ID, B.ZELLIGE);
+  const exit = { x: Math.floor(IW / 2), z: ID - 1 };
+  box(exit.x, 1, exit.z, 1, 2, 1, B.DOOR);
+  if (type === 'maison') {
+    // Salon marocain : sedari tout autour, table basse avec la théière, tapis, télévision, lanternes.
+    box(1, 1, 1, IW - 2, 1, 1, B.SOFA); box(1, 1, 2, 1, 1, 5, B.SOFA); box(IW - 2, 1, 2, 1, 1, 5, B.SOFA);
+    box(3, 0, 3, 5, 1, 4, B.RUG); box(4, 1, 4, 3, 1, 2, B.TABLE); set(5, 2, 4, B.GOLD);
+    box(1, 2, 3, 1, 2, 2, B.TV); set(2, 4, 2, B.LAMP); set(IW - 3, 4, 2, B.LAMP);
+  } else if (type === 'mosquee') {
+    // Salle de prière : rangées de tapis, mihrab vert et doré, minbar (escalier), lustres, étagère de Corans.
+    for (let z = 2; z < ID - 2; z += 2) box(1, 0, z, IW - 2, 1, 1, B.RUG);
+    box(4, 1, 0, 3, 3, 1, B.GREEN); set(5, 2, 0, B.GOLD); set(5, 3, 0, B.GOLD);
+    set(8, 1, 1, B.PLANK); set(8, 1, 2, B.PLANK); set(8, 2, 1, B.PLANK);
+    box(1, 1, 1, 1, 3, 2, B.BOOK); set(3, 4, 4, B.LAMP); set(7, 4, 4, B.LAMP); set(5, 4, 6, B.LAMP);
+    box(IW - 3, 1, ID - 3, 2, 1, 2, B.ZELLIGE); set(IW - 2, 1, ID - 2, B.WATER);
+  } else if (type === 'boulangerie') {
+    // Le four à pain, le comptoir avec les pains, les sacs de farine.
+    box(1, 1, 1, 4, 3, 2, B.OVEN); box(6, 1, 4, 4, 1, 1, B.TABLE); for (const x of [6, 7, 8, 9]) set(x, 2, 4, B.BREAD);
+    box(1, 1, 6, 2, 1, 2, B.SACK); set(1, 2, 6, B.SACK); set(IW - 2, 1, 1, B.SACK);
+  } else {
+    // La classe : le tableau, les pupitres en rangées, le bureau du maître, les livres.
+    box(2, 2, 0, 7, 2, 1, B.BOARD); box(4, 1, 2, 3, 1, 1, B.DESK);
+    for (const z of [4, 6]) for (const x of [2, 5, 8]) set(x, 1, z, B.DESK);
+    box(1, 1, ID - 3, 1, 2, 2, B.BOOK);
+  }
+  return { cells, type, exit, w: IW, d: ID, spawn: [exit.x + 0.5, exit.z - 1.2], npcAt: type === 'mosquee' ? [5.5, 2.5] : type === 'boulangerie' ? [7.5, 3.2] : type === 'ecole' ? [5.5, 1.6] : [5.5, 2.4],
+    get: (x, y, z) => (x < 0 || x >= IW || z < 0 || z >= ID || y < 0 ? B.STONE : y >= IH ? B.AIR : cells[idx(x, y, z)]) };
 }

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { rng, newProgress, grade, ROOMS, buildCoop, WORDS } from './core.js';
-import { SKILLS, makeExercise, skillsFor, buildExerciseLevel, buildChallenge, itemsFor, MOTS, isExerciseRoom } from './exercises.js';
+import { SKILLS, makeExercise, skillsFor, buildExerciseLevel, buildChallenge, buildReview, weakWords, itemsFor, MOTS, isExerciseRoom } from './exercises.js';
 
 const strip = (h) => String(h).replace(/<[^>]+>/g, '').trim();
 const numOf = (c) => Number(c.key);
@@ -106,4 +106,17 @@ test('items de maîtrise et mots illustrés', () => {
   assert.ok(isExerciseRoom('formes') && !isExerciseRoom('stade'));
   assert.equal(new Set(MOTS.map((m) => m.mot)).size, MOTS.length);
   assert.equal(new Set(MOTS.map((m) => m.e)).size, MOTS.length);
+});
+
+test('révision : seulement les mots vus et fragiles des salles ouvertes', () => {
+  const p = newProgress();
+  const ws = WORDS.filter((w) => w.room === 'hall' && !w.older).slice(0, 4);
+  ws.forEach((w) => grade(p, w.id, false));
+  grade(p, ws[3].id, true); grade(p, ws[3].id, true); grade(p, ws[3].id, true); // bien su maintenant
+  const weak = weakWords(p, { older: false, rooms: ['hall'] });
+  assert.deepEqual(weak.map((w) => w.id).sort(), ws.slice(0, 3).map((w) => w.id).sort());
+  assert.equal(weakWords(p, { rooms: ['stade'] }).length, 0);
+  const lv = buildReview(p, { rooms: ['hall'], games: { hall: 'claw' }, r: rng(3) });
+  assert.equal(lv.questions.length, 3);
+  assert.ok(lv.questions.every((q) => q.game === 'claw' && q.choices.some((c) => c.correct)));
 });
