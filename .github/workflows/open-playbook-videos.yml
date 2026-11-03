@@ -1,5 +1,6 @@
 # Open Playbook : vidéos MP4 de toutes les fiches animées, publiées en « releases » GitHub (gratuit).
-# Une release par format : op-videos-vertical, op-videos-square, op-videos-horizontal.
+# Une release par format : op-videos-vertical, op-videos-square, op-videos-horizontal (MP4),
+# et les miniatures PNG à part dans op-covers-<format> (GitHub limite une release à 1000 fichiers).
 # Le site (page « Vidéos » et chaque fiche) pointe vers ces fichiers.
 # Voix : piste française (par défaut) et piste anglaise, prises dans les clips audio déjà publiés sur le site
 # (lancer ce workflow après la publication du site qui a généré l'audio).
@@ -41,6 +42,10 @@ jobs:
               gh release create "op-videos-$f" -R "$REPO" --target main --latest=false \
                 --title "Open Playbook · vidéos ($f)" \
                 --notes "Vidéos MP4 des fiches animées du Playbook Ouvert, format $f. Contenu sous licence CC BY 4.0. Liste et recherche : https://gravitymega.github.io/coachyass/#videos"
+            gh release view "op-covers-$f" -R "$REPO" >/dev/null 2>&1 || \
+              gh release create "op-covers-$f" -R "$REPO" --target main --latest=false \
+                --title "Open Playbook · miniatures ($f)" \
+                --notes "Miniatures PNG des vidéos du Playbook Ouvert, format $f. Contenu sous licence CC BY 4.0."
           done
 
   render:
@@ -85,5 +90,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           shopt -s nullglob
-          files=(out/*/*-${{ matrix.format }}.mp4 out/*/*-${{ matrix.format }}.png)
-          if [ ${#files[@]} -gt 0 ]; then scripts/upload-release.sh "op-videos-${{ matrix.format }}" "${files[@]}"; fi
+          videos=(out/*/*-${{ matrix.format }}.mp4)
+          covers=(out/*/*-${{ matrix.format }}.png)
+          if [ ${#videos[@]} -gt 0 ]; then scripts/upload-release.sh "op-videos-${{ matrix.format }}" "${videos[@]}"; fi
+          if [ ${#covers[@]} -gt 0 ]; then scripts/upload-release.sh "op-covers-${{ matrix.format }}" "${covers[@]}"; fi

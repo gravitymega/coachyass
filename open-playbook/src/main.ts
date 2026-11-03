@@ -28,7 +28,9 @@ const FORMATS: [string, Text][] = [
   ["horizontal", { fr: "Horizontale 16:9", en: "Landscape 16:9" }],
 ];
 const videoUrl = (id: string, f: string) => `${VIDEO_BASE}${f}/${id}-${f}.mp4`;
-const coverUrl = (id: string, f = "vertical") => `${VIDEO_BASE}${f}/${id}-${f}.png`;
+// Miniatures dans une release à part (op-covers-<format>) : GitHub limite une release à 1000 fichiers.
+const COVER_BASE = "https://github.com/gravitymega/coachyass/releases/download/op-covers-";
+const coverUrl = (id: string, f = "vertical") => `${COVER_BASE}${f}/${id}-${f}.png`;
 const CHANNEL = "Playbook Ouvert · Open Playbook";
 const PAGE = 48;
 
