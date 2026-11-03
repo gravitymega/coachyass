@@ -94,7 +94,7 @@ TIMELINE = json.loads((DATA / "timeline.json").read_text(encoding="utf-8"))
 
 # --------------------------------------------------------------- timeline ---
 def read_time(c):
-    words = len(c[VL].split()) * 2  # même rythme qu'avant (deux langues) : le temps de lire et d'écouter
+    words = len(c[VL].split())  # une seule langue à l'écran : vidéo plus courte
     return max(TIMELINE["readMin"], TIMELINE["readPerWord"] * words)
 
 
