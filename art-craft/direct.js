@@ -2,7 +2,7 @@
 // caméra et enregistrement facultatifs, commentateur IA à voix haute (fonction coach, mode « live »).
 // Le match en cours est gardé dans le navigateur : un rechargement de la page ne perd rien.
 import { $, showError } from './common.js';
-import { EVENT_TYPES, TYPE_KEYS, boxScore, playerStatsRow, fmtClock, pct } from './stats-core.js';
+import { EVENT_TYPES, TYPE_KEYS, boxScore, playerStatsRow, fmtClock, pct, gameSeconds, playingTime, fmtMinutes } from './stats-core.js';
 import { FREE_VOICES, DEFAULT_FREE_VOICE } from './piper-core.js';
 import { synthFree } from './piper.js';
 import { canvasJpeg } from './detect.js';
@@ -72,6 +72,8 @@ $('btn-start').addEventListener('click', async () => {
     numbers,
     roster: roster.map(p => ({ id: p.id, full_name: p.full_name, numero: p.numero })),
     events: [],
+    // Cinq sur le terrain à partir de chaque changement : temps de jeu et +/-.
+    lineups: [],
     // Début de chaque quart-temps (heure réelle) : sert aux chapitres YouTube.
     markers: [{ wall: Date.now(), label: 'Début du match (Q1)' }],
     startedAt: Date.now(),
@@ -93,6 +95,7 @@ async function startLive() {
   $('name-us').textContent = match.team;
   $('name-them').textContent = match.opponent;
   renderPlayers();
+  renderCourt();
   renderActions();
   renderAll();
   if ($('cam-on').checked || $('rec-on').checked) await startCamera();
@@ -101,6 +104,31 @@ async function startLive() {
 
 // Temps du match en secondes depuis le début de l'enregistrement (ou de la page) : sert à caler les clips.
 const now = () => (recorder ? (performance.now() - recStart) / 1000 : (Date.now() - match.startedAt) / 1000);
+// Secondes de jeu au chrono (0 tant que le chrono n'a pas servi).
+const gameNow = () => gameSeconds(match.clock.period, match.clock.left, match.periodMin);
+
+// ---------- Sur le terrain ----------
+const onCourt = () => (match.lineups && match.lineups.length ? match.lineups.at(-1).on : []);
+function renderCourt() {
+  const on = onCourt();
+  $('court').innerHTML = match.numbers.map(n => `<button type="button" data-n="${n}" class="${on.includes(n) ? 'in' : ''}">#${n}</button>`).join('');
+  $('court-count').textContent = on.length === 5 ? '· 5 en jeu' : `· ${on.length} en jeu${on.length ? ' (il en faut 5)' : ''}`;
+}
+$('court').addEventListener('click', e => {
+  const b = e.target.closest('button[data-n]');
+  if (!b) return;
+  const n = +b.dataset.n;
+  const cur = onCourt();
+  const on = cur.includes(n) ? cur.filter(x => x !== n) : [...cur, n].sort((a, c) => a - c);
+  match.lineups = match.lineups || [];
+  const t = Math.round(now() * 10) / 10, g = gameNow();
+  const last = match.lineups.at(-1);
+  // Plusieurs touches pour un même changement (sortie puis entrée) : un seul instant.
+  if (last && Math.abs(last.t - t) < 8 && last.g === g) Object.assign(last, { on });
+  else match.lineups.push({ t, g, on });
+  save();
+  renderCourt();
+});
 
 // ---------- Boutons ----------
 function renderPlayers() {
@@ -136,6 +164,7 @@ $('actions').addEventListener('click', e => {
     numero: selected === 'adv' || selected === '?' ? null : +selected,
     period: match.clock.period,
     clock: fmtClock(match.clock.left),
+    g: gameNow(),
     wall: Date.now(), // heure réelle : cale l'action sur la vidéo du live YouTube
   };
   match.events.push(ev);
@@ -345,6 +374,7 @@ $('btn-end').addEventListener('click', async () => {
   aiTimer = null;
   clearInterval(clockTimer);
   match.clock.running = false;
+  match.end = { t: Math.round(now() * 10) / 10, g: gameNow() };
   const blob = await stopCamera();
   save();
   $('step-live').hidden = true;
@@ -397,10 +427,12 @@ $('btn-yt-chapters').addEventListener('click', async () => {
 
 function renderEndBox() {
   const box = boxScore(match.events, match.numbers.map(n => match.roster.find(p => p.numero === n) || { numero: n }));
-  const line = (label, r) => `<tr><td>${label}</td><td><b>${r.pts}</b></td><td>${pct(r.fg2m, r.fg2a)}</td><td>${pct(r.fg3m, r.fg3a)}</td><td>${pct(r.ftm, r.fta)}</td><td>${r.oreb + r.dreb}</td><td>${r.ast}</td><td>${r.stl}</td><td>${r.blk}</td><td>${r.tov}</td><td>${r.pf}</td></tr>`;
-  $('box').innerHTML = '<thead><tr><th>Joueur</th><th>Pts</th><th>Tirs 2</th><th>Tirs 3</th><th>LF</th><th>Reb</th><th>Passes</th><th>Interc.</th><th>Contres</th><th>Pertes</th><th>Fautes</th></tr></thead><tbody>' +
+  const pt = (match.lineups || []).length ? playingTime(match.lineups, match.events, match.end || { t: now(), g: gameNow() }).byNum : null;
+  const extra = r => (pt ? (p => `<td>${p ? fmtMinutes(p.sec) : '—'}</td><td>${p ? (p.plusMinus > 0 ? '+' : '') + p.plusMinus : '—'}</td>`)(r.numero != null ? pt.get(r.numero) : null) : '');
+  const line = (label, r, team = false) => `<tr><td>${label}</td>${pt ? (team ? '<td></td><td></td>' : extra(r)) : ''}<td><b>${r.pts}</b></td><td>${pct(r.fg2m, r.fg2a)}</td><td>${pct(r.fg3m, r.fg3a)}</td><td>${pct(r.ftm, r.fta)}</td><td>${r.oreb + r.dreb}</td><td>${r.ast}</td><td>${r.stl}</td><td>${r.blk}</td><td>${r.tov}</td><td>${r.pf}</td></tr>`;
+  $('box').innerHTML = '<thead><tr><th>Joueur</th>' + (pt ? '<th>Min</th><th>+/-</th>' : '') + '<th>Pts</th><th>Tirs 2</th><th>Tirs 3</th><th>LF</th><th>Reb</th><th>Passes</th><th>Interc.</th><th>Contres</th><th>Pertes</th><th>Fautes</th></tr></thead><tbody>' +
     box.rows.map(r => line(`#${r.numero} ${r.player && r.player.full_name ? r.player.full_name : ''}`, r)).join('') +
-    line('<b>Équipe</b>', box.team) + line(match.opponent, box.opp) + '</tbody>';
+    line('<b>Équipe</b>', box.team, true) + line(match.opponent, box.opp, true) + '</tbody>';
   return box;
 }
 
