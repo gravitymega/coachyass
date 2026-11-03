@@ -88,13 +88,19 @@ VL = "en"  # langue des vidéos
 HOOKS = {"attaque": "FILM ROOM", "zone_att": "ZONE OFFENSE FILM ROOM", "transition": "TRANSITION FILM ROOM",
          "remises": "SET PLAY BREAKDOWN", "defense": "DEFENSIVE BREAKDOWN", "exercices": "DRILL BREAKDOWN",
          "principes": "COACHING PRINCIPLE"}  # mêmes accroches que src/narration.ts
-ANALYSIS = "THE ANALYSIS"
+ANALYSIS = "THE KEY"
+
+
+def key_point(t):
+    """Point clé affiché à la fin (court) ; à défaut, la phrase sur l'efficacité."""
+    keys = t.get("keys", {}).get(VL) or []
+    return keys[0] if keys else t["why"][VL]
 TIMELINE = json.loads((DATA / "timeline.json").read_text(encoding="utf-8"))
 
 
 # --------------------------------------------------------------- timeline ---
 def read_time(c):
-    words = len(c[VL].split()) * 2  # même rythme qu'avant (deux langues) : le temps de lire et d'écouter
+    words = len(c[VL].split())  # une seule langue à l'écran : vidéo plus courte
     return max(TIMELINE["readMin"], TIMELINE["readPerWord"] * words)
 
 
@@ -467,7 +473,7 @@ def draw_frame(cr, L, t, cat_label, timings, states, time):
             cr.fill()
             y = b.y + 120
         text(cr, ANALYSIS, x, y, 64 * k, ORANGE, FONT_COND, bold=True)
-        paragraph(cr, t["why"][VL], x, y + 110 * k, 50 * k, width, WHITE, FONT, bold=True)
+        paragraph(cr, key_point(t), x, y + 110 * k, 50 * k, width, WHITE, FONT, bold=True)
     text(cr, CHANNEL, L.W / 2, L.footer_y, 32 * max(k, 0.8), MUTED, FONT_COND, align="center")
 
 
@@ -783,7 +789,7 @@ def draw_frame_neon(cr, L, t, cat_label, timings, states, time):
     else:
         pos, ball = states[-1]
         b.players(cr, pos, ball_spot(pos[ball]) if ball in pos else None, pulse)
-        bottom = (t["why"][VL], "", ANALYSIS)
+        bottom = (key_point(t), "", ANALYSIS)
     cr.set_source_surface(neon_caption(L, *bottom), 0, 0)
     cr.paint()
 

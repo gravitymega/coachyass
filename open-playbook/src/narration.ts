@@ -44,27 +44,21 @@ export const HOOKS: Record<string, string> = {
 
 const sentence = (s: string) => (/[.!?]$/.test(s.trim()) ? s.trim() : `${s.trim()}.`);
 
-/** Anglais (vidéos et lecture du site) : accroche professionnelle au début, analyse à la fin
- * (pourquoi le système est efficace, points clés, contre quoi il marche, comment l'adversaire s'adapte, références NBA). */
-function englishSegments(t: Tactic, against?: Text, nba?: NbaTeam[]) {
+/** Anglais (vidéos et lecture du site), version courte : accroche + nom au début,
+ * le point clé à la fin. */
+function englishSegments(t: Tactic) {
   const hook = HOOKS[t.cat] ?? "Breakdown";
-  const intro = `${hook}: ${t.name.en}. ${sentence(t.sum.en)}`;
+  const intro = `${hook}: ${t.name.en}.`;
   const lower = (k: string) => (/^[A-Z][a-z]/.test(k) ? k[0].toLowerCase() + k.slice(1) : k);
-  const keys = t.keys.en.slice(0, 3).map((k) => lower(k.replace(/[.;]$/, ""))).join("; ");
-  const defensive = t.cat === "defense";
-  const parts = [
-    `The analysis. ${sentence(t.why.en)}`,
-    keys ? `What makes it work: ${keys}.` : "",
-    against && t.cat !== "exercices" ? `${defensive ? "Best used against" : "It is built to beat"}: ${sentence(against.en)}` : "",
-    t.cat !== "exercices" ? `${defensive ? "How offenses attack it" : "How defenses adjust"}: ${sentence(t.counter.en)}` : "",
-    nba?.length ? nbaSentence(nba, "en") : "",
-  ];
-  return [intro, ...(t.steps ?? []).map((s) => s.c.en), parts.filter(Boolean).join(" ")].map((x) => speakable(x, "en"));
+  const key = t.keys.en[0] ? `The key: ${lower(t.keys.en[0].replace(/[.;]$/, ""))}.` : "";
+  // Version très courte (demande du 3 nov. 2026) : seulement le point clé à la fin.
+  const end = key || sentence(t.why.en);
+  return [intro, ...(t.steps ?? []).map((s) => s.c.en), end].map((x) => speakable(x, "en"));
 }
 
 /** Segments à lire, dans l'ordre : [présentation, étape 1, …, étape n, conclusion]. */
 export function narrationSegments(t: Tactic, lang: Lang, against?: Text, nba?: NbaTeam[]) {
-  if (lang === "en") return englishSegments(t, against, nba);
+  if (lang === "en") return englishSegments(t);
   const colon = lang === "fr" ? " :" : ":";
   const why = lang === "fr" ? "Pourquoi ça marche" : "Why it works";
   const vs = against ? ` ${lang === "fr" ? "Contre quelle défense ça marche" : "Which defense it beats"}${colon} ${against[lang]}` : "";
