@@ -45,20 +45,20 @@ export const HOOKS: Record<string, string> = {
 const sentence = (s: string) => (/[.!?]$/.test(s.trim()) ? s.trim() : `${s.trim()}.`);
 
 /** Anglais (vidéos et lecture du site), version courte : accroche + nom au début,
- * analyse en deux phrases à la fin (efficacité, point clé, équipe NBA s'il y en a une). */
-function englishSegments(t: Tactic, nba?: NbaTeam[]) {
+ * le point clé à la fin. */
+function englishSegments(t: Tactic) {
   const hook = HOOKS[t.cat] ?? "Breakdown";
   const intro = `${hook}: ${t.name.en}.`;
   const lower = (k: string) => (/^[A-Z][a-z]/.test(k) ? k[0].toLowerCase() + k.slice(1) : k);
   const key = t.keys.en[0] ? `The key: ${lower(t.keys.en[0].replace(/[.;]$/, ""))}.` : "";
-  const team = nba?.length ? `Used by the ${nba[0].team}.` : "";
-  const end = [sentence(t.why.en), key, team].filter(Boolean).join(" ");
+  // Version très courte (demande du 3 nov. 2026) : seulement le point clé à la fin.
+  const end = key || sentence(t.why.en);
   return [intro, ...(t.steps ?? []).map((s) => s.c.en), end].map((x) => speakable(x, "en"));
 }
 
 /** Segments à lire, dans l'ordre : [présentation, étape 1, …, étape n, conclusion]. */
 export function narrationSegments(t: Tactic, lang: Lang, against?: Text, nba?: NbaTeam[]) {
-  if (lang === "en") return englishSegments(t, nba);
+  if (lang === "en") return englishSegments(t);
   const colon = lang === "fr" ? " :" : ":";
   const why = lang === "fr" ? "Pourquoi ça marche" : "Why it works";
   const vs = against ? ` ${lang === "fr" ? "Contre quelle défense ça marche" : "Which defense it beats"}${colon} ${against[lang]}` : "";
