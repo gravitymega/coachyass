@@ -197,3 +197,40 @@ Vérifications :
 - Traversée complète testée à pied, en courant et en sautant, dans les deux sens (de 1 à 466).
 - Les tests de `ville.test.mjs` passent : marches de 2 blocs au plus, habitants au sol, missions valides.
 - 9 131 phrases de voix.
+
+## Ville en 3D : bâtiments, mouvements, discussions (3 novembre 2026)
+
+Demande : « 3D : les joueurs peuvent entrer dans les bâtiments, sauter, se pencher, courir, se baisser, ramper à plat ventre, discuter avec les habitants et avoir des réponses comme dans la vraie vie ».
+
+**Entrer dans les bâtiments**
+- Chaque porte bleue ou en bois de la médina (plus de 10 portes, `world.doors`) affiche le bouton « 🚪 Entrer » quand on est devant. Il mène à un intérieur (`makeInterior` dans `ville3d-core.js`) :
+  - **maison** : salon marocain avec sedari, table basse et théière, tapis, télé, lanternes ;
+  - **mosquée** : rangées de tapis, mihrab vert et doré, minbar, lustres, Corans, fontaine d'ablutions ;
+  - **boulangerie** : four, comptoir avec les pains, sacs de farine ;
+  - **école** : tableau, pupitres, bureau du maître, livres.
+- La porte de la mosquée mène à la mosquée, celles du souk à la boulangerie, les autres à une maison ou à l'école.
+- Chaque intérieur a son habitant : la tante, le muezzin, la boulangère, le maître.
+- La vue de l'intérieur se fait de haut, comme une maison de poupée (le mur de devant est bas). « 🚪 Sortir » ramène devant la porte.
+
+**Mouvements** (colonne de boutons à gauche, et touches du clavier)
+- 🏃 courir (×1,7 ; touche R ou Maj) ;
+- 🧎 s'accroupir (C) ;
+- 🐛 ramper à plat ventre (X) : le personnage mesure alors 0,55 bloc ;
+- ⤺ ⤻ se pencher (maintenir le bouton ; touches N et M) : la caméra glisse sur le côté pour regarder au coin d'une ruelle ;
+- ⤴ sauter (en rampant, ce bouton relève le personnage).
+- **Passages secrets** : de 3 à 7 trous d'un seul bloc de haut dans les murs (`world.tunnels`), où l'on ne passe qu'à plat ventre, avec une pièce au milieu. On ne peut pas se relever s'il n'y a pas la place.
+
+**Discuter avec les habitants**
+- Le bouton 💬 propose « 🎯 La mission » ou « 💬 Discuter ».
+- **Questions toutes prêtes**, qui marchent hors ligne et ont la voix douce : « Comment ça va ? », « Comment tu t'appelles ? », « Qu'est-ce que tu fais ici ? », « Qu'est-ce que tu aimes ? », « Raconte-moi quelque chose ! », et « Apprends-moi un mot ! » (un mot de darija de la salle de l'habitant). Les réponses et la personnalité de chacun sont dans `ville3d-dialogues.js`. **À faire relire.**
+- **Discussion libre** : l'enfant pose sa question au micro (reconnaissance vocale de la tablette, en français) ou au clavier.
+  - Le Worker `jeu-hbibiti` (`jeu-darija/worker/index.js`, `main` dans `wrangler.toml`, liaisons `ASSETS` et `AI`) répond à `POST /api/parler` avec **Workers AI**, gratuit : `@cf/meta/llama-4-scout-17b-16e-instruct`, puis `llama-3.1-8b-instruct` en secours.
+  - Consignes pour enfants : 1 ou 2 phrases simples, jamais de violence, de peur ou de contenu adulte, pas d'informations personnelles demandées ; si la question n'est pas adaptée, « demande à Papa ou à Maman ». Le personnage reste dans son rôle.
+  - Les liens et la mise en forme sont retirés, et la réponse est coupée à 320 caractères.
+  - Sans Internet ou si l'IA ne répond pas, l'habitant dit gentiment de demander à Papa ou à Maman.
+- Réglage parents : « Discussion libre avec les habitants » (`settings.chatIA`, activé par défaut). Sans cette option, il ne reste que les questions toutes prêtes.
+
+**Tests et voix**
+- Correction : le nom `fetch` (la mission en cours) cachait la fonction réseau ; on appelle maintenant `window.fetch`.
+- `ville3d.test.mjs` vérifie les portes, les intérieurs et les passages ; `worker.test.mjs` vérifie le serveur avec une fausse IA ; Playwright couvre les poses, le passage secret, les 4 intérieurs et les discussions.
+- 9 198 phrases de voix.

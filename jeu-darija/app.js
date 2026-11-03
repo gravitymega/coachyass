@@ -805,6 +805,7 @@ function renderSettings() {
   $('#set-sfx').checked = settings.sfx;
   $('#set-unlock-all').checked = settings.unlockAll;
   $('#set-poppy').checked = settings.poppy;
+  $('#set-chatia').checked = settings.chatIA !== false;
   $('#set-acts').innerHTML = ACTS.filter((a) => !a.noToggle).map((a) => `<label class="check"><input type="checkbox" data-act-set="${a.id}" ${actOn(a.id) ? 'checked' : ''}> ${a.icon} ${esc(a.title)}</label>`).join('');
   $('#set-scarf').checked = settings.mamaScarf;
   $('#set-bilingual').value = settings.bilingual;
@@ -829,6 +830,7 @@ $('#tab-settings').addEventListener('change', (e) => {
   if (t.id === 'set-sfx') settings.sfx = t.checked;
   if (t.id === 'set-unlock-all') settings.unlockAll = t.checked;
   if (t.id === 'set-poppy') settings.poppy = t.checked;
+  if (t.id === 'set-chatia') settings.chatIA = t.checked;
   if (t.dataset.actSet) settings.acts = { ...(settings.acts || {}), [t.dataset.actSet]: t.checked };
   if (t.id === 'set-scarf') settings.mamaScarf = t.checked;
   if (t.id === 'set-bilingual') settings.bilingual = t.value;

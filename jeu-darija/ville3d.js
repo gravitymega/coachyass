@@ -1,6 +1,8 @@
 // La ville en 3D (façon Minecraft), dessinée avec Three.js (licence MIT, copié dans lib/ : marche hors ligne).
 // On marche avec le joystick, on tourne la caméra en glissant le doigt, on saute, et on aide les habitants.
-import { N, HMAX, B, SPAWN, makeWorld3d, solid, groundBelow, NPCS3D, spawnItems, questWord, coinSpots3d, pathTo, topOf } from './ville3d-core.js';
+import { N, HMAX, B, SPAWN, makeWorld3d, solid, groundBelow, NPCS3D, spawnItems, questWord, coinSpots3d, pathTo, topOf, makeInterior, INTERIORS, IW, ID, IH } from './ville3d-core.js';
+import { QUESTIONS, DIALOGUES, persona } from './ville3d-dialogues.js';
+import { WORDS, wordsFor } from './core.js';
 import { askQuestion } from './ville-core.js';
 import { screen, el, choose } from './act-kit.js';
 
@@ -12,6 +14,10 @@ const COL = {
   [B.TENT]: ['#e94f4f', '#f6c445', '#f4efe4'], [B.PALM]: ['#9a6b3c', '#86592f', '#6a4527'], [B.FROND]: ['#3c9a3f', '#2e7f33', '#6cc24a'],
   [B.WATER]: ['#3aa0e0', '#2b86c8', '#bfe9ff'], [B.WALL]: ['#c9824e', '#b8733f', '#d99560'], [B.STONE]: ['#e8e8e8', '#d0d0d0', '#ffffff'],
   [B.BLUE]: ['#2b5fb3', '#244f96', '#5a8fe0'], [B.CARPET]: ['#b22234', '#8e1b2a', '#f6c445'],
+  [B.SOFA]: ['#8e1b2a', '#7a1624', '#f6c445'], [B.TABLE]: ['#8f6232', '#7a5230', '#b37e42'], [B.TV]: ['#1d1f26', '#2a2d36', '#5ec4ff'],
+  [B.LAMP]: ['#ffc93c', '#f0a020', '#fff3a8'], [B.OVEN]: ['#9b4a2b', '#7d3a22', '#ff8a3d'], [B.BREAD]: ['#d9a463', '#c8914f', '#f1d59a'],
+  [B.BOARD]: ['#1f4d3a', '#1a4232', '#e8f0e8'], [B.DESK]: ['#c8914f', '#b37e42', '#8f6232'], [B.BOOK]: ['#2bb673', '#c8323a', '#2b5fb3'],
+  [B.SACK]: ['#f4efe4', '#e6dfd0', '#c9b8a0'], [B.RUG]: ['#1f8a5b', '#176e48', '#f6c445'], [B.TILE]: ['#e8e2d6', '#d8d0c0', '#2b5fb3'],
 };
 const LOOKS = {
   ali: { skin: '#e2b48c', hair: '#2b1b12', shirt: '#e5484d', pants: '#2b4a8a' },
@@ -35,7 +41,22 @@ export async function ville3d(ctx) {
     <div class="v3-stick"><div class="v3-knob"></div></div>
     <button class="v-btn v3-jump">⤴</button>
     <button class="v-btn v3-grab" aria-label="GrabPack">✋</button>
+    <div class="v3-moves">
+      <button class="v3-move" data-m="run" aria-label="Courir">🏃</button>
+      <button class="v3-move" data-m="crouch" aria-label="S'accroupir">🧎</button>
+      <button class="v3-move" data-m="prone" aria-label="Ramper à plat ventre">🐛</button>
+      <button class="v3-move" data-m="leanL" aria-label="Se pencher à gauche">⤺</button>
+      <button class="v3-move" data-m="leanR" aria-label="Se pencher à droite">⤻</button>
+    </div>
+    <button class="go v3-door" hidden>🚪 Entrer</button>
     <button class="go v3-talk" hidden>💬</button>
+    <div class="v3-chat act-card" hidden>
+      <p class="act-big v3-chat-who"></p>
+      <div class="v3-chat-log"></div>
+      <div class="v3-chat-qs"></div>
+      <div class="v3-chat-free"><button class="go small alt v3-mic" aria-label="Parler au micro">🎤</button><input class="v3-input" maxlength="160" placeholder="Pose ta question…"><button class="go small v3-send">➜</button></div>
+      <button class="go small alt v3-chat-close">Au revoir 👋</button>
+    </div>
     <div class="v3-dialog act-card" hidden><p class="act-big v3-who"></p><p class="v3-say"></p><div class="act-choices v3-choices"></div><button class="go v3-ok">D'accord ➜</button></div>
   </div>`);
   body.append(wrap);
@@ -64,37 +85,53 @@ export async function ville3d(ctx) {
       if (t === B.DOOR || t === B.BLUE) c = (x === 0 || x === 15 || x === 7) ? COL[t][1] : (y % 5 === 2 && x % 7 === 3) ? hi : a;
       if (t === B.WATER) c = (y % 5 === 1 && (x + y) % 4 < 2) ? hi : c;
       if (t === B.CARPET) c = (x + y) % 6 === 0 || (x - y + 16) % 6 === 0 ? hi : a;
+      if (t === B.SOFA) c = y < 4 ? hi : (x % 8 === 0 ? b2 : a);
+      if (t === B.TV) c = (x < 2 || x > 13 || y < 2 || y > 13) ? a : ((x + y) % 7 === 0 ? hi : b2);
+      if (t === B.BOARD) c = (x < 1 || x > 14 || y < 1 || y > 14) ? '#8f6232' : (y % 5 === 2 && x % 3 !== 0 && x > 2 && x < 13) ? hi : a;
+      if (t === B.BOOK) c = [a, b2, hi, '#ffc93c'][Math.floor(x / 4)];
+      if (t === B.RUG) c = (x === 0 || x === 15 || y === 0 || y === 15) ? hi : (x + y) % 8 === 0 ? hi : a;
+      if (t === B.TILE) c = (x % 8 === 0 || y % 8 === 0) ? b2 : ((x + y) % 16 === 4 ? hi : a);
+      if (t === B.OVEN) c = (y > 8 && x > 3 && x < 12) ? (y > 11 ? hi : '#2b1b12') : c;
       if (t === B.WALL) c = (y % 4 === 3 || (x + (Math.floor(y / 4) % 2) * 4) % 8 === 0) ? b2 : a;
       g.fillStyle = c; g.fillRect(x, y, 1, 1);
     }
   });
 
   // ----- Le monde : un seul objet 3D par sorte de bloc, seulement les blocs visibles -----
-  const world = makeWorld3d();
+  const outdoorWorld = makeWorld3d();
+  let world = outdoorWorld, inside = null; // inside : l'intérieur où l'on est entré (null = dehors)
+  const outdoor = new THREE.Group(); scene.add(outdoor);
   const geo = new THREE.BoxGeometry(1, 1, 1);
-  const visible = (x, y, z) => [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]].some(([dx, dy, dz]) => { const n = world.get(x + dx, y + dy, z + dz); return n === B.AIR || n === B.WATER || n === B.FROND; });
-  const groups = {};
-  for (let y = 0; y < HMAX; y++) for (let z = 0; z < N; z++) for (let x = 0; x < N; x++) {
-    const t = world.get(x, y, z);
-    if (t !== B.AIR && (t === B.WATER || visible(x, y, z))) (groups[t] = groups[t] || []).push([x, y, z]);
+  const texCache = {};
+  // Un objet 3D par sorte de bloc, seulement les blocs visibles (pour que la tablette reste rapide).
+  function buildBlocks(w, sx, sy, sz) {
+    const group = new THREE.Group();
+    const see = (x, y, z) => [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]].some(([dx, dy, dz]) => { const n = w.get(x + dx, y + dy, z + dz); return n === B.AIR || n === B.WATER || n === B.FROND; });
+    const groups = {};
+    for (let y = 0; y < sy; y++) for (let z = 0; z < sz; z++) for (let x = 0; x < sx; x++) {
+      const t = w.get(x, y, z);
+      if (t !== B.AIR && (t === B.WATER || see(x, y, z))) (groups[t] = groups[t] || []).push([x, y, z]);
+    }
+    const m4 = new THREE.Matrix4();
+    for (const [t, list] of Object.entries(groups)) {
+      const mat = new THREE.MeshLambertMaterial({ map: texCache[t] || (texCache[t] = blockTex(+t)), transparent: +t === B.WATER, opacity: +t === B.WATER ? 0.8 : 1, emissive: +t === B.LAMP ? '#7a5a00' : '#000000' });
+      const mesh = new THREE.InstancedMesh(geo, mat, list.length);
+      list.forEach(([x, y, z], i) => { m4.makeTranslation(x + 0.5, y + (+t === B.WATER ? 0.35 : 0.5), z + 0.5); if (+t === B.WATER) m4.scale(new THREE.Vector3(1, 0.7, 1)); mesh.setMatrixAt(i, m4); });
+      group.add(mesh);
+    }
+    return group;
   }
-  const m4 = new THREE.Matrix4();
-  for (const [t, list] of Object.entries(groups)) {
-    const mat = new THREE.MeshLambertMaterial({ map: blockTex(+t), transparent: +t === B.WATER, opacity: +t === B.WATER ? 0.8 : 1 });
-    const mesh = new THREE.InstancedMesh(geo, mat, list.length);
-    list.forEach(([x, y, z], i) => { m4.makeTranslation(x + 0.5, y + (+t === B.WATER ? 0.35 : 0.5), z + 0.5); if (+t === B.WATER) m4.scale(new THREE.Vector3(1, 0.7, 1)); mesh.setMatrixAt(i, m4); });
-    scene.add(mesh);
-  }
+  outdoor.add(buildBlocks(outdoorWorld, N, HMAX, N));
   // Les montagnes de l'Atlas au loin, avec de la neige en haut.
   const mount = new THREE.MeshLambertMaterial({ color: '#a99ad6', flatShading: true });
   const snow = new THREE.MeshLambertMaterial({ color: '#ffffff', flatShading: true });
   for (let i = 0; i < 14; i++) {
     const a = (i / 14) * Math.PI * 2, d = 60 + (i % 3) * 8, h = 14 + (i * 7) % 10;
-    const m = new THREE.Mesh(new THREE.ConeGeometry(12, h, 5), mount); m.position.set(N / 2 + Math.cos(a) * d, h / 2 - 1, N / 2 + Math.sin(a) * d); scene.add(m);
-    const s = new THREE.Mesh(new THREE.ConeGeometry(12 * 0.3, h * 0.3, 5), snow); s.position.set(m.position.x, h - h * 0.15 - 1, m.position.z); scene.add(s);
+    const m = new THREE.Mesh(new THREE.ConeGeometry(12, h, 5), mount); m.position.set(N / 2 + Math.cos(a) * d, h / 2 - 1, N / 2 + Math.sin(a) * d); outdoor.add(m);
+    const s = new THREE.Mesh(new THREE.ConeGeometry(12 * 0.3, h * 0.3, 5), snow); s.position.set(m.position.x, h - h * 0.15 - 1, m.position.z); outdoor.add(s);
   }
   const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshLambertMaterial({ color: '#e6c27a' }));
-  ground.rotation.x = -Math.PI / 2; ground.position.y = -0.01; scene.add(ground);
+  ground.rotation.x = -Math.PI / 2; ground.position.y = -0.01; outdoor.add(ground);
 
   // ----- Personnages en blocs -----
   const emojiTex = (e, size = 128) => { const c = document.createElement('canvas'); c.width = c.height = size; const g = c.getContext('2d'); g.font = `${size * 0.8}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(e, size / 2, size * 0.55); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
@@ -121,38 +158,49 @@ export async function ville3d(ctx) {
     return g;
   }
   const kid = ctx.P().kid;
-  const hero = person(kid.older ? 'ali' : 'asma'); scene.add(hero);
+  const hero = person(kid.older ? 'ali' : 'asma'); hero.rotation.order = 'YXZ'; scene.add(hero);
   // Le GrabPack de Poppy Playtime sur le dos d'Ali : un sac gris avec une main bleue et une main rouge.
   { const pack = part(0.48, 0.55, 0.2, '#4a4f5a'); pack.position.set(0, 1.05, -0.26); hero.add(pack);
     const hb = part(0.16, 0.16, 0.16, '#2f6fe0'); hb.position.set(-0.3, 1.25, -0.3); const hr = part(0.16, 0.16, 0.16, '#e5484d'); hr.position.set(0.3, 1.25, -0.3); hero.add(hb, hr); }
   const npcs = NPCS3D.map((n) => {
-    const m = person(n.look); m.position.set(n.x, 1, n.z); m.rotation.y = Math.atan2(SPAWN[0] - n.x, SPAWN[1] - n.z); scene.add(m);
-    const tag = label(n.name); tag.position.set(n.x, 3.1, n.z); scene.add(tag);
-    const mark = new THREE.Sprite(new THREE.SpriteMaterial({ map: emojiTex('❗') })); mark.scale.set(0.6, 0.6, 1); mark.position.set(n.x, 3.6, n.z); scene.add(mark);
+    const m = person(n.look); m.position.set(n.x, 1, n.z); m.rotation.y = Math.atan2(SPAWN[0] - n.x, SPAWN[1] - n.z); outdoor.add(m);
+    const tag = label(n.name); tag.position.set(n.x, 3.1, n.z); outdoor.add(tag);
+    const mark = new THREE.Sprite(new THREE.SpriteMaterial({ map: emojiTex('❗') })); mark.scale.set(0.6, 0.6, 1); mark.position.set(n.x, 3.6, n.z); outdoor.add(mark);
     return { ...n, mesh: m, mark, step: 0, seed: Math.floor(Math.random() * 1e6), round: 0 };
   });
 
   // ----- Pièces et objets à trouver -----
   const coinMat = new THREE.MeshLambertMaterial({ color: '#ffc93c', emissive: '#7a5a00' });
-  const coins = coinSpots3d(world).map((c) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.06, 12), coinMat); m.rotation.z = Math.PI / 2; m.position.set(c.x, c.y, c.z); scene.add(m); return { ...c, mesh: m }; });
+  const coins = coinSpots3d(outdoorWorld).map((c) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.06, 12), coinMat); m.rotation.z = Math.PI / 2; m.position.set(c.x, c.y, c.z); outdoor.add(m); return { ...c, mesh: m }; });
+  // Quelques pièces dans les passages secrets (récompense pour ceux qui rampent !).
+  for (const tn of outdoorWorld.tunnels) { const m = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.06, 12), coinMat); m.rotation.z = Math.PI / 2; m.position.set(tn.x + 1, 1.4, tn.z + 0.5); outdoor.add(m); coins.push({ x: tn.x + 1, y: 1.4, z: tn.z + 0.5, taken: false, mesh: m }); }
   let fetch = null; // { npc, word, items: [{x,y,z,mesh,taken}] }
 
   // ----- Joueur : position, physique, caméra -----
-  const p = { x: SPAWN[0], y: 1, z: SPAWN[1], vy: 0, onGround: true, yaw: 0, pitch: 0.35, walk: 0 };
+  const p = { x: SPAWN[0], y: 1, z: SPAWN[1], vy: 0, onGround: true, yaw: 0, pitch: 0.35, walk: 0, pose: 'stand', run: false, lean: 0 };
   const keys = {};
   const stick = { x: 0, y: 0, id: null, cx: 0, cy: 0 }, look = { id: null, x: 0, y: 0 };
   let jumpQueued = false, dialog = false, near = null, raf = 0, last = performance.now(), t = 0, leaving = false;
-  const R = 0.3, H = 1.7, SPEED = 4.2, GRAV = 22, JUMP = 7.6;
-  const hitAt = (x, y, z) => [[-R, -R], [R, -R], [-R, R], [R, R]].some(([dx, dz]) => solid(world, x + dx, y + 0.05, z + dz) || solid(world, x + dx, y + 0.9, z + dz) || solid(world, x + dx, y + H - 0.05, z + dz));
+  // Debout, accroupi ou à plat ventre : la taille change (à plat ventre, on passe dans les trous d'un seul bloc).
+  const R = 0.3, SPEED = 4.2, GRAV = 22, JUMP = 7.6;
+  const HEIGHT = { stand: 1.7, crouch: 1.15, prone: 0.55 }, SPEEDS = { stand: 1, crouch: 0.55, prone: 0.35 };
+  const hitAt = (x, y, z, H = HEIGHT[p.pose]) => [[-R, -R], [R, -R], [-R, R], [R, R]].some(([dx, dz]) => solid(world, x + dx, y + 0.05, z + dz) || solid(world, x + dx, y + Math.min(0.9, H / 2), z + dz) || solid(world, x + dx, y + H - 0.05, z + dz));
+  function setPose(pose) {
+    if (pose === p.pose) pose = 'stand';
+    if (HEIGHT[pose] > HEIGHT[p.pose] && hitAt(p.x, p.y, p.z, HEIGHT[pose])) { ctx.sfx('miss'); return; } // pas la place de se relever
+    p.pose = pose; if (pose !== 'stand') p.run = false;
+    wrap.querySelectorAll('.v3-move').forEach((b) => b.classList.toggle('on', b.dataset.m === pose || (b.dataset.m === 'run' && p.run)));
+  }
   function physics(dt) {
     let mx = (keys.d ? 1 : 0) - (keys.a ? 1 : 0) + stick.x, mz = (keys.s ? 1 : 0) - (keys.w ? 1 : 0) + stick.y;
     const len = Math.hypot(mx, mz); if (len > 1) { mx /= len; mz /= len; }
     const sin = Math.sin(p.yaw), cos = Math.cos(p.yaw);
-    const vx = (-mz * sin - mx * cos) * SPEED, vz = (-mz * cos + mx * sin) * SPEED; // devant = là où regarde la caméra
+    const sp = SPEED * SPEEDS[p.pose] * (p.run && p.pose === 'stand' ? 1.7 : 1) * (keys.shift ? 1.7 : 1);
+    const vx = (-mz * sin - mx * cos) * sp, vz = (-mz * cos + mx * sin) * sp; // devant = là où regarde la caméra
     if (len > 0.1) { hero.rotation.y = Math.atan2(vx, vz); p.walk += dt * 10; } else p.walk = 0;
     const nx = p.x + vx * dt; if (!hitAt(nx, p.y, p.z)) p.x = nx;
     const nz = p.z + vz * dt; if (!hitAt(p.x, p.y, nz)) p.z = nz;
-    if ((jumpQueued || keys[' ']) && p.onGround) { p.vy = JUMP; p.onGround = false; ctx.sfx('boing'); }
+    if ((jumpQueued || keys[' ']) && p.onGround) { if (p.pose === 'prone') setPose('stand'); else { p.vy = p.pose === 'crouch' ? JUMP * 0.8 : JUMP; p.onGround = false; ctx.sfx('boing'); } }
     jumpQueued = false;
     p.vy -= GRAV * dt;
     let ny = p.y + p.vy * dt;
@@ -162,13 +210,19 @@ export async function ville3d(ctx) {
     p.y = ny;
   }
   function placeCamera() {
-    const d = 5.5, h = 1.4;
+    if (inside) { // vue de haut, en biais, comme une maison de poupée
+      camera.position.set(p.x * 0.5 + IW * 0.25 + p.lean * 1.2, p.y + 6.8, p.z + 4.6);
+      camera.lookAt(p.x + p.lean * 0.6, p.y + 0.6, p.z - 0.8); return;
+    }
+    const d = p.pose === 'prone' ? 3.5 : 5.5, h = HEIGHT[p.pose] - 0.3;
+    // Se pencher : la caméra glisse sur le côté pour regarder au coin d'une ruelle.
+    const side = p.lean * 1.2, lx = -Math.cos(p.yaw) * side, lz = Math.sin(p.yaw) * side;
     const cx = p.x - Math.sin(p.yaw) * Math.cos(p.pitch) * d, cz = p.z - Math.cos(p.yaw) * Math.cos(p.pitch) * d, cy = p.y + h + Math.sin(p.pitch) * d;
     // La caméra ne traverse pas les murs : on la rapproche d'Ali jusqu'au premier bloc.
-    const hx = p.x, hy = p.y + 1.4, hz = p.z;
+    const hx = p.x + lx, hy = p.y + h, hz = p.z + lz;
     let k = 1;
     for (let f = 0.1; f <= 1; f += 0.05) if (solid(world, hx + (cx - hx) * f, hy + (cy - hy) * f, hz + (cz - hz) * f)) { k = Math.max(0.12, f - 0.08); break; }
-    camera.position.set(hx + (cx - hx) * k, Math.max(hy + (cy - hy) * k, 1.2), hz + (cz - hz) * k); camera.lookAt(p.x, p.y + 1.3, p.z);
+    camera.position.set(hx + (cx + lx - hx) * k, Math.max(hy + (cy - hy) * k, 0.6), hz + (cz + lz - hz) * k); camera.lookAt(p.x + lx, p.y + h - 0.1, p.z + lz);
   }
 
   // ----- Commandes tactiles : joystick à gauche, glisser à droite pour tourner, bouton saut -----
@@ -182,9 +236,18 @@ export async function ville3d(ctx) {
   const endLook = (e) => { if (e.pointerId === look.id) look.id = null; };
   canvas.addEventListener('pointerup', endLook); canvas.addEventListener('pointercancel', endLook);
   wrap.querySelector('.v3-jump').addEventListener('pointerdown', (e) => { e.preventDefault(); jumpQueued = true; });
-  const kmap = { ArrowUp: 'w', z: 'w', w: 'w', ArrowDown: 's', s: 's', ArrowLeft: 'a', q: 'a', a: 'a', ArrowRight: 'd', d: 'd', ' ': ' ' };
-  const kd = (e) => { if (dialog) return; const k = kmap[e.key]; if (k) { keys[k] = true; e.preventDefault(); } if ((e.key === 'Enter' || e.key === 'e') && near) talk(near); if (e.key === 'g' || e.key === 'f') shoot(); };
-  const ku = (e) => { const k = kmap[e.key]; if (k) keys[k] = false; };
+  wrap.querySelectorAll('.v3-move').forEach((b) => {
+    const m = b.dataset.m;
+    if (m === 'leanL' || m === 'leanR') {
+      const v = m === 'leanL' ? -1 : 1;
+      b.addEventListener('pointerdown', (e) => { e.preventDefault(); p.lean = v; b.classList.add('on'); });
+      const off = () => { if (p.lean === v) p.lean = 0; b.classList.remove('on'); };
+      b.addEventListener('pointerup', off); b.addEventListener('pointerleave', off); b.addEventListener('pointercancel', off);
+    } else b.addEventListener('click', () => { ctx.sfx('tap'); if (m === 'run') { p.run = !p.run; if (p.run) setPose('stand'); b.classList.toggle('on', p.run); } else setPose(m); });
+  });
+  const kmap = { ArrowUp: 'w', z: 'w', w: 'w', ArrowDown: 's', s: 's', ArrowLeft: 'a', q: 'a', a: 'a', ArrowRight: 'd', d: 'd', ' ': ' ', Shift: 'shift' };
+  const kd = (e) => { if (dialog) return; const k = kmap[e.key]; if (k) { keys[k] = true; e.preventDefault(); } if ((e.key === 'Enter' || e.key === 'e') && near) talk(near); if (e.key === 'g' || e.key === 'f') shoot(); if (e.key === 'c') setPose('crouch'); if (e.key === 'x') setPose('prone'); if (e.key === 'r') { p.run = !p.run; } if (e.key === 'n') p.lean = -1; if (e.key === 'm') p.lean = 1; };
+  const ku = (e) => { const k = kmap[e.key]; if (k) keys[k] = false; if (e.key === 'n' || e.key === 'm') p.lean = 0; };
   window.addEventListener('keydown', kd); window.addEventListener('keyup', ku);
   const talkBtn = wrap.querySelector('.v3-talk');
   talkBtn.onclick = () => near && talk(near);
@@ -198,10 +261,22 @@ export async function ville3d(ctx) {
     if (sayIt) ctx.say(text);
     return new Promise((res) => { dlg.querySelector('.v3-ok').onclick = () => { ctx.sfx('tap'); dlg.hidden = true; dialog = false; ctx.stopVoice(); res(); }; });
   }
+  // Parler : choisir entre la mission et une vraie discussion.
   async function talk(npc) {
     if (dialog) return;
     p.yaw = Math.atan2(npc.x - p.x, npc.z - p.z); // Ali se tourne vers l'habitant
     hero.rotation.y = p.yaw;
+    if (npc.inside) return openChat(npc);
+    dialog = true; dlg.hidden = false; keys.w = keys.a = keys.s = keys.d = false; stick.x = stick.y = 0;
+    dlg.querySelector('.v3-who').textContent = npc.name; dlg.querySelector('.v3-say').textContent = 'Que veux-tu faire ?';
+    dlg.querySelector('.v3-ok').hidden = true;
+    const box = dlg.querySelector('.v3-choices');
+    box.innerHTML = `<button class="act-choice" data-c="mission">${npc.step < 2 ? '🎯 La mission' : '🎯 Merci !'}</button><button class="act-choice" data-c="chat">💬 Discuter</button>`;
+    const c = await new Promise((res) => { box.onclick = (e) => { const b = e.target.closest('[data-c]'); if (b) res(b.dataset.c); }; });
+    box.onclick = null; dlg.hidden = true; dialog = false; ctx.sfx('tap');
+    return c === 'chat' ? openChat(npc) : mission(npc);
+  }
+  async function mission(npc) {
     if (fetch?.npc === npc) {
       if (fetch.items.every((i) => i.taken)) {
         const w = fetch.word; fetch = null; npc.step = 2; npc.mark.visible = false;
@@ -271,8 +346,95 @@ export async function ville3d(ctx) {
     mg.strokeStyle = '#e5484d'; mg.lineWidth = 2; mg.beginPath(); mg.moveTo(p.x * CELL, p.z * CELL); mg.lineTo((p.x + Math.sin(p.yaw) * 2.2) * CELL, (p.z + Math.cos(p.yaw) * 2.2) * CELL); mg.stroke();
   }
 
+  // ----- Discuter avec un habitant, comme dans la vraie vie -----
+  const chat = wrap.querySelector('.v3-chat'), log = chat.querySelector('.v3-chat-log'), input = chat.querySelector('.v3-input');
+  let chatNpc = null, history = [];
+  const addLine = (who, text) => { log.insertAdjacentHTML('beforeend', `<p class="v3-line ${who === 'moi' ? 'me' : ''}"><b>${ctx.esc(who === 'moi' ? kid.name : chatNpc.name)} :</b> ${ctx.esc(text)}</p>`); log.scrollTop = log.scrollHeight; };
+  function openChat(npc) {
+    chatNpc = npc; history = []; dialog = true; chat.hidden = false; keys.w = keys.a = keys.s = keys.d = false; stick.x = stick.y = 0;
+    chat.querySelector('.v3-chat-who').textContent = `💬 ${npc.name}`; log.innerHTML = ''; input.value = '';
+    chat.querySelector('.v3-chat-qs').innerHTML = QUESTIONS.map((q) => `<button class="v3-q" data-q="${q.id}">${ctx.esc(q.q)}</button>`).join('');
+    const free = ctx.settings.chatIA !== false;
+    chat.querySelector('.v3-chat-free').hidden = !free;
+    chat.querySelector('.v3-mic').hidden = !(window.SpeechRecognition || window.webkitSpeechRecognition);
+    const hello = (DIALOGUES[npc.id] || {}).salut || 'Salam !';
+    addLine('npc', hello); ctx.say(hello);
+  }
+  async function answer(qid) {
+    const q = QUESTIONS.find((x) => x.id === qid);
+    addLine('moi', q.q);
+    if (qid === 'mot') {
+      const pool = wordsFor(chatNpc.room === 'jardin' ? 'cuisine' : chatNpc.room, kid.older).filter((w) => w.emoji && !w.phrase);
+      const w = pool[Math.floor(Math.random() * pool.length)] || WORDS[0];
+      const ds = ctx.settings.dialects;
+      addLine('npc', `${w.emoji} ${w.fr} se dit : ${ds.map((d) => `${ctx.FLAG[d]} ${w[d].lat}`).join(' · ')}`);
+      return ctx.say(`${w.fr}, on dit :`, ...ds.map((d) => ({ word: w, d })));
+    }
+    const a = (DIALOGUES[chatNpc.id] || {})[qid] || 'Je ne sais pas trop… demande à Papa ou à Maman !';
+    addLine('npc', a); return ctx.say(a);
+  }
+  // Une question libre : l'IA gratuite de Cloudflare répond comme l'habitant (si les parents l'ont permis et s'il y a Internet).
+  async function askFree(text) {
+    text = String(text || '').trim().slice(0, 160);
+    if (!text) return;
+    input.value = ''; addLine('moi', text);
+    const fallback = 'Hmm, je ne sais pas… Demande à Papa ou à Maman, ou choisis une des questions !';
+    let reply = '';
+    if (navigator.onLine !== false) {
+      try {
+        const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), 9000);
+        const r = await window.fetch('api/parler', { method: 'POST', headers: { 'content-type': 'application/json' }, signal: ctrl.signal,
+          body: JSON.stringify({ name: chatNpc.name, persona: persona(chatNpc), question: text, history: history.slice(-6), older: !!kid.older }) });
+        clearTimeout(timer);
+        if (r.ok) reply = String((await r.json()).reponse || '').trim();
+      } catch (e) { console.warn('Discussion libre :', e); /* pas d'Internet ou IA indisponible */ }
+    }
+    reply = reply || fallback;
+    history.push({ q: text, a: reply });
+    addLine('npc', reply); ctx.say(reply);
+  }
+  chat.querySelector('.v3-chat-qs').onclick = (e) => { const b = e.target.closest('[data-q]'); if (b) { ctx.sfx('tap'); answer(b.dataset.q); } };
+  chat.querySelector('.v3-send').onclick = () => askFree(input.value);
+  input.addEventListener('keydown', (e) => { e.stopPropagation(); if (e.key === 'Enter') askFree(input.value); });
+  chat.querySelector('.v3-mic').onclick = () => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR) return;
+    const rec = new SR(); rec.lang = 'fr-FR'; rec.interimResults = false; rec.maxAlternatives = 1;
+    const mic = chat.querySelector('.v3-mic'); mic.classList.add('rec'); ctx.stopVoice();
+    rec.onresult = (e) => askFree(e.results[0][0].transcript);
+    rec.onend = rec.onerror = () => mic.classList.remove('rec');
+    try { rec.start(); } catch { mic.classList.remove('rec'); }
+  };
+  chat.querySelector('.v3-chat-close').onclick = () => { ctx.sfx('tap'); ctx.stopVoice(); chat.hidden = true; dialog = false; chatNpc = null; ctx.say('Bslama !'); };
+
+  // ----- Entrer dans les bâtiments -----
+  const doorBtn = wrap.querySelector('.v3-door');
+  let doorNear = null, saved = null;
+  function enter(door) {
+    const room = makeInterior(door.type), info = INTERIORS[door.type];
+    saved = { x: p.x, z: p.z, y: p.y, yaw: p.yaw };
+    const group = buildBlocks(room, IW, IH, ID);
+    const n = { ...info.npc, inside: true, x: room.npcAt[0], z: room.npcAt[1] };
+    const m = person(n.look); m.position.set(n.x, 1, n.z); m.rotation.y = 0; group.add(m);
+    const tag = label(n.name); tag.position.set(n.x, 3.0, n.z); group.add(tag);
+    inside = { room, group, npc: n, info };
+    world = room; outdoor.visible = false; scene.add(group);
+    scene.background = new THREE.Color('#2b1e18'); scene.fog = null;
+    p.x = room.spawn[0]; p.z = room.spawn[1]; p.y = 1; p.vy = 0; p.yaw = Math.PI; p.pitch = 0.5;
+    steps.forEach((s2) => { s2.visible = false; }); mapEl.hidden = true;
+    ctx.sfx('door'); ctx.say(`Bienvenue dans ${info.name.toLowerCase()} !`);
+  }
+  function leave() {
+    scene.remove(inside.group); inside.group.traverse((o) => { if (o.material?.map && !Object.values(texCache).includes(o.material.map)) o.material.map.dispose(); });
+    inside = null; world = outdoorWorld; outdoor.visible = true;
+    scene.background = new THREE.Color('#8fd3ff'); scene.fog = new THREE.Fog('#8fd3ff', 30, 70);
+    p.x = saved.x; p.z = saved.z; p.y = saved.y; p.yaw = saved.yaw + Math.PI; p.vy = 0; mapEl.hidden = false;
+    ctx.sfx('door');
+  }
+  doorBtn.onclick = () => { if (dialog) return; ctx.sfx('tap'); if (inside) leave(); else if (doorNear) enter(doorNear); };
+
   // ----- Objectif et flèche -----
   function goal() {
+    if (inside) return { text: `${inside.info.name} · parle avec ${inside.npc.name} 💬`, x: null };
     if (fetch) {
       const left = fetch.items.filter((i) => !i.taken);
       if (left.length) { const n = left.sort((a, b) => Math.hypot(a.x - p.x, a.z - p.z) - Math.hypot(b.x - p.x, b.z - p.z))[0]; return { text: `Trouve ${left.length} ${fetch.word.emoji} pour ${fetch.npc.name}`, x: n.x, z: n.z }; }
@@ -301,7 +463,7 @@ export async function ville3d(ctx) {
   cable.visible = false; scene.add(cable);
   const clearLine = (a, b) => { for (let f = 0.08; f < 0.92; f += 0.04) if (solid(world, a.x + (b.x - a.x) * f, a.y + (b.y - a.y) * f, a.z + (b.z - a.z) * f)) return false; return true; };
   function shoot() {
-    if (grab || dialog) return;
+    if (grab || dialog || inside) return;
     const from = { x: p.x, y: p.y + 1.2, z: p.z };
     const cands = [...(fetch ? fetch.items.filter((i) => !i.taken).map((i) => ({ o: i, x: i.x, y: i.y + 0.6, z: i.z, item: true })) : []),
       ...coins.filter((c) => !c.taken).map((c) => ({ o: c, x: c.x, y: c.y, z: c.z }))]
@@ -339,23 +501,30 @@ export async function ville3d(ctx) {
     if (leaving) return;
     const dt = Math.min(0.05, (now - last) / 1000); last = now; t += dt;
     if (!dialog) physics(dt);
-    hero.position.set(p.x, p.y, p.z);
+    hero.position.set(p.x, p.y + (p.pose === 'prone' ? 0.3 : 0), p.z);
+    hero.scale.y = p.pose === 'crouch' ? 0.68 : 1;
+    hero.rotation.x = p.pose === 'prone' ? Math.PI / 2 : 0;
+    hero.rotation.z = -p.lean * 0.35;
     const sw = Math.sin(p.walk) * 0.6, u = hero.userData;
     u.legL.rotation.x = sw; u.legR.rotation.x = -sw; u.armL.rotation.x = -sw; u.armR.rotation.x = sw;
-    for (const c of coins) if (!c.taken && grab?.target !== c) {
+    if (!inside) for (const c of coins) if (!c.taken && grab?.target !== c) {
       c.mesh.rotation.y += dt * 3;
       if (Math.hypot(c.x - p.x, c.z - p.z) < 0.7 && Math.abs(c.y - (p.y + 0.6)) < 1) takeCoin(c);
     }
-    if (fetch) for (const it of fetch.items) if (!it.taken && grab?.target !== it) {
+    if (fetch && !inside) for (const it of fetch.items) if (!it.taken && grab?.target !== it) {
       it.mesh.position.y = it.y + 0.6 + Math.sin(t * 3 + it.id) * 0.15;
       if (Math.hypot(it.x - p.x, it.z - p.z) < 0.8 && Math.abs(it.y - p.y) < 1.2) takeItem(it);
     }
     grabStep(dt);
     for (const n of npcs) n.mark.position.y = 3.6 + Math.sin(t * 3 + n.x) * 0.1;
-    near = npcs.find((n) => Math.hypot(n.x - p.x, n.z - p.z) < 1.8) || null;
+    near = inside ? (Math.hypot(inside.npc.x - p.x, inside.npc.z - p.z) < 2 ? inside.npc : null) : npcs.find((n) => Math.hypot(n.x - p.x, n.z - p.z) < 1.8) || null;
+    if (inside) { const ex = inside.room.exit; doorNear = Math.hypot(ex.x + 0.5 - p.x, ex.z + 0.5 - p.z) < 1.6 ? ex : null; }
+    else doorNear = p.y < 1.6 ? outdoorWorld.doors.find((d) => Math.hypot(d.x + 0.5 - p.x, d.z + 0.5 - p.z) < 1.3) || null : null;
+    doorBtn.hidden = !doorNear || dialog;
+    if (doorNear) doorBtn.textContent = inside ? '🚪 Sortir' : `🚪 Entrer : ${INTERIORS[doorNear.type].name}`;
     talkBtn.hidden = !near || dialog; if (near) talkBtn.textContent = `💬 ${near.name}`;
     const g = goal(); textEl.textContent = g.text;
-    pathT -= dt; if (pathT <= 0) { pathT = 0.35; updatePath(g); drawMap(); }
+    pathT -= dt; if (pathT <= 0 && !inside) { pathT = 0.35; updatePath(g); drawMap(); }
     const way = path && path.length > 3 ? { x: path[3][0] + 0.5, z: path[3][1] + 0.5 } : g;
     if (g.x != null) { const a = Math.atan2(way.x - p.x, way.z - p.z) - p.yaw; arrowEl.style.transform = `rotate(${-a * 180 / Math.PI}deg)`; arrowEl.style.opacity = 1; } else arrowEl.style.opacity = 0;
     placeCamera();
@@ -370,5 +539,5 @@ export async function ville3d(ctx) {
     window.removeEventListener('keydown', kd); window.removeEventListener('keyup', ku); window.removeEventListener('resize', resize);
     renderer.dispose(); body.classList.remove('v3-body');
   }, { once: true });
-  if (new URLSearchParams(location.search).has('e2e')) window.__v3 = { p, npcs, shoot, get fetch() { return fetch; }, talk, teleport: (x, z) => { p.x = x; p.z = z; p.y = groundBelow(world, x, z, HMAX); } };
+  if (new URLSearchParams(location.search).has('e2e')) window.__v3 = { p, npcs, shoot, enter, leave, openChat, askFree, answer, get inside() { return inside; }, get doorNear() { return doorNear; }, setPose, hitAt, world: () => world, get fetch() { return fetch; }, talk, teleport: (x, z) => { p.x = x; p.z = z; p.y = groundBelow(world, x, z, HMAX); } };
 }
