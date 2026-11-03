@@ -241,3 +241,8 @@ Demande : « 3D : les joueurs peuvent entrer dans les bâtiments, sauter, se pen
 - En-tête : ⭐ + 🪙 + 🔥. Barre de navigation collante (Salles / Activités / Ville et histoires) ; les salles passent avant les activités.
 - Vibration courte (bonne réponse) / double (erreur) sur Android, réglage parents `set-buzz` (`settings.buzz`).
 - Cache SW `hbibiti-v15`. Tests : carnet (série) et exercises (révision).
+
+## Historique des parties par profil (3 nov. 2026)
+- `logGame(progress, entry)` (carnet.js) ajoute chaque partie terminée dans `progress.history` (300 max, gardé dans le profil `hbibiti-p-<id>`) : salles, défi éclair, révision (score/total, étoiles, « avec » le frère ou la sœur en coop), activités qui donnent des étoiles (`actCtx.stars`, via `curAct`), missions en ville (`villeDone`).
+- Affichage : album 📒 (« Mes parties », 40 dernières, groupées par jour) et espace parents → Carnet (« Historique des parties », 100 dernières). `gameLine(e)` fait la ligne lisible.
+- Cache SW `hbibiti-v16`.
