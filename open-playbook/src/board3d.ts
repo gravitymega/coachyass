@@ -37,16 +37,9 @@ function player(id: string) {
   body.position.y = 2.1;
   const head = new THREE.Mesh(new THREE.SphereGeometry(0.75, 20, 16), mat);
   head.position.y = 4.95;
-  const shadow = new THREE.Mesh(
-    new THREE.CircleGeometry(1.25, 24),
-    new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.22 }),
-  );
-  shadow.rotation.x = -Math.PI / 2;
-  shadow.position.y = 0.02;
   const tag = label(defender ? id.slice(1) : id, color);
   tag.position.y = 6.7;
-  g.add(shadow, body, head, tag);
-  for (const m of [body, head]) m.castShadow = true;
+  g.add(body, head, tag); // sans ombre ronde au sol (demande du 2 nov. 2026)
   return g;
 }
 
