@@ -3,9 +3,11 @@ import { tracer, sourates, miroir, duel } from './act-ecole.js';
 import { voyage, cuisine, noms, marche, priere } from './act-monde.js';
 import { foot, basket, studio, animal, glowby } from './act-jeux.js';
 import { photos, messages } from './act-famille.js';
+import { ville3d } from './ville3d.js';
 
 const A = (id, icon, title, desc, open, extra = {}) => ({ id, icon, title, desc, open, ...extra });
 export const ACTS = [
+  A('ville3d', '🧊', 'La ville en 3D', 'Comme Minecraft : marche, saute et aide les habitants', ville3d),
   A('construire', '🏗️', 'Construire', 'Bâtis ta maison dans la ville avec tes pièces', (ctx) => ctx.openVille({ build: true })),
   A('tracer', '✍️', 'Tracer les lettres', 'Écris les lettres arabes avec ton doigt', tracer),
   A('sourates', '📖', 'Petites sourates', 'Al-Fatiha, Al-Ikhlas… verset par verset', sourates),

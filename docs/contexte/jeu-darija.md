@@ -154,3 +154,14 @@ Demande : « beaucoup d'éléments de Poppy Playtime, chapitre 5 ». Le chapitre
 Demande : « va sur le web trouver des paysages et décorations ». Les banques d'images libres (Kenney, OpenGameArt, Poly Haven) sont bloquées par le réseau de la session. La seule trouvée sur GitHub (Kenney Pixel Platformer, CC0) est générique. Les décors sont donc **dessinés en code** dans le style en blocs, sans aucun droit à payer :
 - **Arrière-plan qui défile en 3 plans** (`scenery` dans `ville.js`) : les montagnes de l'Atlas avec de la neige, les dunes avec des palmiers d'oasis, et une médina blanche et ocre avec fenêtres, minarets à lanterneau vert et tours de kasbah crénelées. La nuit de Ramadan, les fenêtres s'allument.
 - **Nouveaux blocs de décor** (`ville-core.js`) : zellige (bandeau de la mosquée et de l'école), palmier (tronc et palmes), eau, porte en arc outrepassé avec porte en bois clouté (maison, école, mosquée, dispensaire), et fontaine du souk en zellige avec son bassin.
+
+## La ville en 3D avec Three.js (3 novembre 2026)
+
+Question de l'utilisateur sur des listes de bibliothèques (Three.js, R3F, GSAP, React Bits…), puis : « utilise ce qui peut apporter de plus ». Seul **Three.js** apporte vraiment quelque chose. Les autres bibliothèques servent aux sites vitrines React, alors que le jeu est en JS pur et a déjà ses animations.
+- **Three.js r170** (licence MIT) est copié dans `jeu-darija/lib/three.module.min.js` (690 Ko, licence dans `lib/three-LICENSE.txt`). Il est chargé à la demande (`import()`) seulement quand on ouvre l'activité, et mis en cache par le service worker : ça marche hors ligne.
+- Activité **🧊 La ville en 3D** (`ville3d.js`, avec le plan pur dans `ville3d-core.js`, testé par `ville3d.test.mjs`) :
+  - une ville de 36 × 36 blocs : remparts crénelés, mosquée avec coupole verte et minaret, maisons blanches et ocre à porte bleue et toits plats accessibles par des caisses, souk avec toiles rayées et tapis, fontaine en zellige, palmiers, petit terrain de foot, et montagnes de l'Atlas enneigées au loin ;
+  - Ali (ou Asma) en blocs, vu de dos, avec une caméra qui ne traverse pas les murs et qui se tourne vers l'habitant pendant une discussion ;
+  - commandes : joystick à gauche, glisser le doigt pour tourner la caméra, bouton saut (un bloc), et clavier ZQSD, WASD ou flèches ;
+  - 8 habitants avec des missions comme dans la ville en 2D : une question de darija (`askQuestion`), puis « trouve 3 … », avec des objets en emoji cachés loin et au moins un sur un toit. `walkable()` garantit que tout est atteignable à pied. Les pièces ramassées vont dans `progress.coins`.
+  - Rendu : un `InstancedMesh` par sorte de bloc (seulement les faces visibles), des textures pixel 16 × 16 dessinées en code, pas d'anticrénelage et une résolution limitée à 1,5 pour économiser la batterie.
