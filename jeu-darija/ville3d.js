@@ -1,6 +1,6 @@
 // La ville en 3D (façon Minecraft), dessinée avec Three.js (licence MIT, copié dans lib/ : marche hors ligne).
 // On marche avec le joystick, on tourne la caméra en glissant le doigt, on saute, et on aide les habitants.
-import { N, HMAX, B, SPAWN, makeWorld3d, solid, groundBelow, NPCS3D, spawnItems, questWord, coinSpots3d } from './ville3d-core.js';
+import { N, HMAX, B, SPAWN, makeWorld3d, solid, groundBelow, NPCS3D, spawnItems, questWord, coinSpots3d, pathTo, topOf } from './ville3d-core.js';
 import { askQuestion } from './ville-core.js';
 import { screen, el, choose } from './act-kit.js';
 
@@ -31,6 +31,7 @@ export async function ville3d(ctx) {
   body.classList.add('v3-body');
   const wrap = el(`<div class="v3-wrap"><canvas class="v3-canvas"></canvas>
     <div class="v3-goal"><span class="v3-arrow">⬆️</span> <span class="v3-text">Chargement…</span></div>
+    <canvas class="v3-map" width="144" height="144" aria-label="Carte de la médina"></canvas>
     <div class="v3-stick"><div class="v3-knob"></div></div>
     <button class="v-btn v3-jump">⤴</button>
     <button class="go v3-talk" hidden>💬</button>
@@ -234,6 +235,38 @@ export async function ville3d(ctx) {
     return openDialog(npc, 'Merci pour ton aide ! Va voir les autres habitants.');
   }
 
+  // ----- Traces de pas dorées : le chemin le plus court vers l'objectif (pour ne pas se perdre dans les ruelles) -----
+  const stepMat = new THREE.MeshBasicMaterial({ color: '#ffd23f', transparent: true, opacity: 0.85 });
+  const steps = Array.from({ length: 14 }, () => { const m = new THREE.Mesh(new THREE.CircleGeometry(0.16, 10), stepMat); m.rotation.x = -Math.PI / 2; m.visible = false; scene.add(m); return m; });
+  let path = null, pathT = 0;
+  function updatePath(g) {
+    path = g.x == null ? null : pathTo(world, p.x, p.z, p.y, Math.floor(g.x), Math.floor(g.z));
+    steps.forEach((m, i) => {
+      const c = path && path[i + 1];
+      m.visible = !!c;
+      if (c) m.position.set(c[0] + 0.5 + (i % 2 ? 0.12 : -0.12), c[2] + 0.03, c[1] + 0.5);
+    });
+  }
+  // ----- Petite carte vue du ciel -----
+  const mapEl = wrap.querySelector('.v3-map'), mg = mapEl.getContext('2d'), CELL = 144 / N;
+  const mapBg = document.createElement('canvas'); mapBg.width = mapBg.height = 144;
+  { const b = mapBg.getContext('2d');
+    for (let z = 0; z < N; z++) for (let x = 0; x < N; x++) {
+      const top = topOf(world, x, z), under = world.get(x, top - 1, z);
+      b.fillStyle = under === B.WATER ? '#3aa0e0' : under === B.WALL ? '#8a5530' : under === B.GREEN || under === B.GOLD ? '#2bb673' : top <= 1 ? '#f1d59a' : under === B.ZELLIGE ? '#7fb8a0' : under === B.TENT ? '#e94f4f' : under === B.FROND ? '#3c9a3f' : top <= 3 ? '#b9a48a' : '#8f7a62';
+      b.fillRect(x * CELL, z * CELL, CELL + 0.5, CELL + 0.5);
+    } }
+  function drawMap() {
+    mg.drawImage(mapBg, 0, 0);
+    const dot = (x, z, c, r = 3) => { mg.fillStyle = c; mg.beginPath(); mg.arc(x * CELL, z * CELL, r, 0, Math.PI * 2); mg.fill(); };
+    if (path) { mg.fillStyle = '#ffd23f'; for (const c of path) mg.fillRect(c[0] * CELL + 1, c[1] * CELL + 1, CELL - 2, CELL - 2); }
+    for (const n of npcs) if (n.step < 2) dot(n.x, n.z, '#ffc93c', 3.5);
+    if (fetch) for (const it of fetch.items) if (!it.taken) dot(it.x, it.z, '#2b5fb3', 3.5);
+    // Ali : un point rouge avec une petite flèche dans la direction de la caméra
+    dot(p.x, p.z, '#e5484d', 4);
+    mg.strokeStyle = '#e5484d'; mg.lineWidth = 2; mg.beginPath(); mg.moveTo(p.x * CELL, p.z * CELL); mg.lineTo((p.x + Math.sin(p.yaw) * 2.2) * CELL, (p.z + Math.cos(p.yaw) * 2.2) * CELL); mg.stroke();
+  }
+
   // ----- Objectif et flèche -----
   function goal() {
     if (fetch) {
@@ -275,7 +308,9 @@ export async function ville3d(ctx) {
     near = npcs.find((n) => Math.hypot(n.x - p.x, n.z - p.z) < 1.8) || null;
     talkBtn.hidden = !near || dialog; if (near) talkBtn.textContent = `💬 ${near.name}`;
     const g = goal(); textEl.textContent = g.text;
-    if (g.x != null) { const a = Math.atan2(g.x - p.x, g.z - p.z) - p.yaw; arrowEl.style.transform = `rotate(${-a * 180 / Math.PI}deg)`; arrowEl.style.opacity = 1; } else arrowEl.style.opacity = 0;
+    pathT -= dt; if (pathT <= 0) { pathT = 0.35; updatePath(g); drawMap(); }
+    const way = path && path.length > 3 ? { x: path[3][0] + 0.5, z: path[3][1] + 0.5 } : g;
+    if (g.x != null) { const a = Math.atan2(way.x - p.x, way.z - p.z) - p.yaw; arrowEl.style.transform = `rotate(${-a * 180 / Math.PI}deg)`; arrowEl.style.opacity = 1; } else arrowEl.style.opacity = 0;
     placeCamera();
     renderer.render(scene, camera);
     raf = requestAnimationFrame(loop);

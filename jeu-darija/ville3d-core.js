@@ -11,52 +11,96 @@ export const B = {
   TENT: 10, PALM: 11, FROND: 12, WATER: 13, WALL: 14, STONE: 15, BLUE: 16, CARPET: 17,
 };
 
+// La médina en labyrinthe : une grille de 8 x 8 carrefours reliés par des rues (2 blocs) et des ruelles (1 bloc),
+// creusée dans un bloc de maisons. Toujours le même plan (graine fixe) : on apprend à s'y repérer.
+const SEED = 1448;
+const NODES = 8;
+export const nodeX = (k) => 2 + 4 * k; // première case (sur 2) du carrefour k
+const RESERVED = (i, j) => (i >= 3 && i <= 4 && j >= 3 && j <= 4) /* place */ || (i <= 1 && j >= 6) /* terrain */ || (i >= 5 && i <= 6 && j <= 1) /* mosquée */;
+function rngOf(seed) { let a = seed >>> 0; return () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
 export function makeWorld3d() {
   const cells = new Uint8Array(N * HMAX * N);
   const idx = (x, y, z) => (y * N + z) * N + x;
   const set = (x, y, z, t) => { if (x >= 0 && x < N && z >= 0 && z < N && y >= 0 && y < HMAX) cells[idx(x, y, z)] = t; };
+  const get = (x, y, z) => cells[idx(x, y, z)];
   const box = (x0, y0, z0, w, h, d, t) => { for (let y = y0; y < y0 + h; y++) for (let z = z0; z < z0 + d; z++) for (let x = x0; x < x0 + w; x++) set(x, y, z, t); };
-  // Le sol : herbe, rues en sable et place centrale.
-  box(0, 0, 0, N, 1, N, B.GRASS);
-  box(0, 0, 16, N, 1, 4, B.SAND); box(16, 0, 0, 4, 1, N, B.SAND);
-  // Les remparts de la kasbah, avec des créneaux.
-  for (let i = 0; i < N; i++) for (const [x, z] of [[i, 0], [i, N - 1], [0, i], [N - 1, i]]) {
-    box(x, 1, z, 1, 3, 1, B.WALL);
-    if (i % 2 === 0) set(x, 4, z, B.WALL);
+  const r = rngOf(SEED);
+  // 1. Tout est d'abord un bloc de maisons (blanches ou ocre, 3 ou 4 étages), sur un sol en sable.
+  box(0, 0, 0, N, 1, N, B.SAND);
+  for (let bz = 0; bz < N; bz += 2) for (let bx = 0; bx < N; bx += 2) {
+    const t = r() < 0.65 ? B.WHITE : B.OCRE, h = r() < 0.7 ? 3 : 4;
+    box(bx, 1, bz, 2, h, 2, t);
   }
-  // Fontaine en zellige au milieu de la place.
+  const carve = (x0, z0, w, d) => box(x0, 1, z0, w, HMAX - 1, d, B.AIR);
+  // 2. Le labyrinthe : on relie tous les carrefours (parcours en profondeur), puis on ouvre quelques passages en plus.
+  const visited = new Set(), key = (i, j) => i * NODES + j;
+  const links = [];
+  const stack = [[3, 3]];
+  for (let i = 0; i < NODES; i++) for (let j = 0; j < NODES; j++) if (RESERVED(i, j)) visited.add(key(i, j));
+  const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+  while (stack.length) {
+    const [i, j] = stack[stack.length - 1];
+    const next = dirs.map(([di, dj]) => [i + di, j + dj]).filter(([a, b]) => a >= 0 && b >= 0 && a < NODES && b < NODES && !visited.has(key(a, b)));
+    if (!next.length) { stack.pop(); continue; }
+    const [a, b] = next[Math.floor(r() * next.length)];
+    visited.add(key(a, b)); links.push([i, j, a, b]); stack.push([a, b]);
+  }
+  for (let i = 0; i < NODES; i++) for (let j = 0; j < NODES; j++) for (const [di, dj] of [[1, 0], [0, 1]]) {
+    const a = i + di, b = j + dj;
+    if (a < NODES && b < NODES && !RESERVED(i, j) && !RESERVED(a, b) && r() < 0.12) links.push([i, j, a, b]);
+  }
+  // Les grandes rues : une rue est-ouest et une rue nord-sud qui traversent toute la médina (4 blocs de large).
+  for (let k = 0; k < NODES - 1; k++) { links.push([k, 4, k + 1, 4]); links.push([4, k, 4, k + 1]); }
+  for (let i = 0; i < NODES; i++) for (let j = 0; j < NODES; j++) if (!RESERVED(i, j) || (i >= 3 && i <= 4 && j >= 3 && j <= 4)) carve(nodeX(i), nodeX(j), 2, 2);
+  const lanes = [];
+  for (const [i, j, a, b] of links) {
+    const narrow = r() < 0.4 && i !== 4 && a !== 4 && j !== 4 && b !== 4; // ruelle d'un seul bloc
+    if (a !== i) { const x = nodeX(Math.min(i, a)) + 2; carve(x, nodeX(j) + (narrow ? Math.floor(r() * 2) : 0), 2, narrow ? 1 : 2); }
+    else { const z = nodeX(Math.min(j, b)) + 2; carve(nodeX(i) + (narrow ? Math.floor(r() * 2) : 0), z, narrow ? 1 : 2, 2); }
+    if (narrow) lanes.push([i, j, a, b]);
+  }
+  carve(2, nodeX(4) - 2, N - 4, 2); carve(nodeX(4) - 2, 2, 2, N - 4); // élargir les grandes rues
+  // 3. La place centrale avec sa fontaine en zellige et ses palmiers.
+  carve(nodeX(3) - 2, nodeX(3) - 2, 12, 12);
+  for (let z = nodeX(3) - 2; z < nodeX(3) + 10; z++) for (let x = nodeX(3) - 2; x < nodeX(3) + 10; x++) set(x, 0, z, (x + z) % 2 ? B.ZELLIGE : B.WHITE);
   box(16, 1, 16, 4, 1, 4, B.ZELLIGE); box(17, 1, 17, 2, 1, 2, B.WATER);
-  // La mosquée : murs blancs, bandeau de zellige, porte, coupole verte et minaret.
-  box(22, 1, 3, 9, 4, 9, B.WHITE); box(22, 1, 3, 9, 1, 9, B.ZELLIGE);
-  box(26, 1, 11, 1, 2, 1, B.DOOR);
-  box(24, 5, 5, 5, 1, 5, B.GREEN); box(25, 6, 6, 3, 1, 3, B.GREEN); set(26, 7, 7, B.GOLD);
-  box(30, 1, 12, 1, 9, 1, B.WHITE); set(30, 10, 12, B.GREEN); set(30, 11, 12, B.GOLD);
-  // Maisons blanches et ocre avec porte bleue, toits plats où l'on peut monter.
-  const house = (x, z, w, d, h, t, door) => {
-    box(x, 1, z, w, h, d, t);
-    for (let i = 0; i < w; i++) { set(x + i, h + 1, z, t); set(x + i, h + 1, z + d - 1, t); }
-    for (let i = 0; i < d; i++) { set(x, h + 1, z + i, t); set(x + w - 1, h + 1, z + i, t); }
-    box(door[0], 1, door[1], 1, 2, 1, B.BLUE);
-  };
-  house(3, 4, 5, 5, 3, B.WHITE, [5, 8]);
-  house(10, 6, 5, 5, 2, B.OCRE, [12, 10]);
-  house(3, 23, 6, 5, 3, B.WHITE, [5, 23]);
-  house(10, 25, 4, 4, 2, B.OCRE, [11, 25]);
-  // Caisses en bois pour grimper sur les toits (on saute d'un bloc).
-  set(8, 1, 9, B.PLANK); set(8, 1, 10, B.PLANK); set(8, 2, 10, B.PLANK);
-  set(9, 1, 27, B.PLANK); set(9, 2, 27, B.PLANK); set(9, 1, 26, B.PLANK);
-  set(15, 1, 11, B.PLANK); set(15, 1, 10, B.PLANK);
-  // Le souk : étals avec des toiles rayées et des tapis.
-  for (const [x, z] of [[22, 22], [27, 22], [22, 28], [27, 28]]) {
-    box(x, 1, z, 1, 2, 1, B.PLANK); box(x + 3, 1, z, 1, 2, 1, B.PLANK);
-    box(x, 3, z - 1, 4, 1, 3, B.TENT); box(x + 1, 1, z, 2, 1, 1, B.CARPET);
-  }
-  // Palmiers.
   const palm = (x, z) => { box(x, 1, z, 1, 4, 1, B.PALM); box(x - 1, 5, z - 1, 3, 1, 3, B.FROND); for (const [dx, dz] of [[-2, 0], [2, 0], [0, -2], [0, 2]]) set(x + dx, 4, z + dz, B.FROND); };
-  palm(14, 14); palm(21, 14); palm(14, 21); palm(21, 21); palm(9, 15); palm(32, 18); palm(4, 13); palm(32, 31);
-  // Un petit terrain de foot avec ses buts (pour Assad).
-  for (const z of [27, 33]) { box(18, 1, z, 1, 2, 1, B.STONE); box(21, 1, z, 1, 2, 1, B.STONE); box(18, 3, z, 4, 1, 1, B.STONE); }
-  return { cells, get: (x, y, z) => (x < 0 || x >= N || z < 0 || z >= N || y < 0 ? B.STONE : y >= HMAX ? B.AIR : cells[idx(x, y, z)]) };
+  palm(13, 13); palm(22, 13); palm(13, 22); palm(22, 22);
+  // 4. La mosquée (en haut à droite) : murs blancs, bandeau de zellige, coupole verte, minaret et porte sur une rue.
+  carve(nodeX(5) - 1, 1, 10, 9);
+  box(nodeX(5) - 1, 1, 1, 9, 4, 8, B.WHITE); box(nodeX(5) - 1, 1, 1, 9, 1, 8, B.ZELLIGE);
+  box(24, 5, 3, 5, 1, 4, B.GREEN); box(25, 6, 4, 3, 1, 2, B.GREEN); set(26, 7, 4, B.GOLD); set(26, 7, 5, B.GOLD);
+  box(30, 1, 1, 1, 9, 1, B.WHITE); set(30, 10, 1, B.GREEN); set(30, 11, 1, B.GOLD);
+  carve(nodeX(5), 9, 2, 1); box(nodeX(5), 1, 8, 2, 2, 1, B.DOOR);
+  // 5. Le terrain de foot d'Assad (en bas à gauche) avec ses buts.
+  carve(1, nodeX(6) - 1, nodeX(2) - 1, N - nodeX(6));
+  for (let z = nodeX(6) - 1; z < N - 1; z++) for (let x = 1; x < nodeX(2) - 1; x++) set(x, 0, z, B.GRASS);
+  for (const z of [nodeX(6) - 1, N - 2]) { set(3, 1, z, B.STONE); set(7, 1, z, B.STONE); box(3, 2, z, 5, 1, 1, B.STONE); }
+  // 6. Le souk dans la grande rue est-ouest (côté est) : tapis au sol et toiles rayées au-dessus.
+  for (let x = 23; x < N - 2; x++) for (let z = nodeX(4) - 2; z < nodeX(4) + 2; z++) {
+    if ((x + z) % 3 === 0) set(x, 0, z, B.CARPET);
+    if (x % 2 === 0 && get(x, 4, z) === B.AIR) set(x, 4, z, B.TENT);
+  }
+  // 7. Des portes bleues ou en bois sur les murs des ruelles, et des caisses pour grimper sur les toits (raccourcis !).
+  for (let z = 1; z < N - 1; z++) for (let x = 1; x < N - 1; x++) {
+    const wall = get(x, 1, z) === B.WHITE || get(x, 1, z) === B.OCRE;
+    if (!wall || r() > 0.06) continue;
+    const open = [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dz]) => get(x + dx, 1, z + dz) === B.AIR);
+    if (open) { set(x, 1, z, r() < 0.5 ? B.BLUE : B.DOOR); set(x, 2, z, get(x, 1, z)); }
+  }
+  for (const [x, z] of [[nodeX(1) + 1, nodeX(0)], [nodeX(6), nodeX(6) + 1], [nodeX(2), nodeX(2) + 1], [nodeX(7) + 1, nodeX(2)], [nodeX(1), nodeX(4) + 2]]) {
+    // Deux caisses en escalier contre un mur : on monte d'un bloc à la fois.
+    if (get(x, 1, z) !== B.AIR) continue;
+    set(x, 1, z, B.PLANK);
+    for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) if (get(x + dx, 1, z + dz) === B.AIR && get(x + dx, 2, z + dz) === B.AIR) { set(x + dx, 1, z + dz, B.PLANK); set(x + dx, 2, z + dz, B.PLANK); break; }
+  }
+  // 8. Les remparts de la kasbah tout autour, avec des créneaux.
+  for (let i = 0; i < N; i++) for (const [x, z] of [[i, 0], [i, N - 1], [0, i], [N - 1, i]]) {
+    box(x, 1, z, 1, 4, 1, B.WALL);
+    if (i % 2 === 0) set(x, 5, z, B.WALL); else set(x, 5, z, B.AIR);
+  }
+  return { cells, lanes, get: (x, y, z) => (x < 0 || x >= N || z < 0 || z >= N || y < 0 ? B.STONE : y >= HMAX ? B.AIR : cells[idx(x, y, z)]) };
 }
 
 // Bloc solide (on ne traverse pas l'eau du bassin, mais on ne s'y tient pas debout non plus : elle compte comme solide).
@@ -73,7 +117,7 @@ export function topOf(world, x, z) {
 }
 
 // Toutes les cases où l'on peut aller à pied depuis le départ, en montant d'un bloc au plus (2 blocs d'air pour la tête).
-export const SPAWN = [18.5, 12.5];
+export const SPAWN = [20.5, 17.5]; // sur la place, à côté de la fontaine
 export function walkable(world) {
   const key = (x, z, y) => `${x},${z},${y}`;
   const stand = (x, z, y) => world.get(x, y, z) === B.AIR && world.get(x, y + 1, z) === B.AIR && ![B.AIR, B.WATER].includes(world.get(x, y - 1, z));
@@ -93,8 +137,35 @@ export function walkable(world) {
   return seen;
 }
 
+// Le chemin le plus court à pied (mêmes règles que walkable) : liste de cases [x, z, y] jusqu'à la colonne (tx, tz).
+export function pathTo(world, fx, fz, fy, tx, tz) {
+  const key = (x, z, y) => `${x},${z},${y}`;
+  const stand = (x, z, y) => world.get(x, y, z) === B.AIR && world.get(x, y + 1, z) === B.AIR && ![B.AIR, B.WATER].includes(world.get(x, y - 1, z));
+  const start = [Math.floor(fx), Math.floor(fz), Math.round(fy)];
+  const prev = new Map([[key(...start), null]]);
+  const todo = [start];
+  for (let k = 0; k < todo.length; k++) {
+    const [x, z, y] = todo[k];
+    if (x === tx && z === tz) {
+      const out = []; let c = key(x, z, y);
+      while (c) { out.unshift(c.split(',').map(Number)); c = prev.get(c); }
+      return out;
+    }
+    for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+      const nx = x + dx, nz = z + dz;
+      for (let ny = y + 1; ny >= 1; ny--) {
+        if (ny === y + 1 && world.get(x, y + 2, z) !== B.AIR) continue;
+        if (stand(nx, nz, ny)) { const kk = key(nx, nz, ny); if (!prev.has(kk)) { prev.set(kk, key(x, z, y)); todo.push([nx, nz, ny]); } break; }
+        if (world.get(nx, ny, nz) !== B.AIR && ny <= y) break;
+      }
+    }
+  }
+  return null;
+}
+
 // Les habitants : position dans la ville en 3D (les autres réglages viennent de la ville en 2D).
-const PLACES = { maman: [6, 10], papa: [12, 12], hbibiti: [25, 25], boulanger: [30, 25], imam: [26, 13], fifi: [18, 14], assad: [20, 30], maitresse: [7, 21] };
+const C = (i, j) => [nodeX(i) + 0.5, nodeX(j) + 0.5]; // au milieu d'un carrefour
+const PLACES = { maman: C(1, 1), papa: C(2, 5), hbibiti: [26, 16], boulanger: [31, 19], imam: [nodeX(5), nodeX(2)], fifi: [14, 14], assad: [5, 30], maitresse: C(1, 3) };
 export const NPCS3D = NPCS.filter((n) => PLACES[n.id]).map((n) => ({ ...n, x: PLACES[n.id][0] + 0.5, z: PLACES[n.id][1] + 0.5 }));
 
 // Objets à trouver : 3 exemplaires loin de l'habitant, au moins un en hauteur (sur un toit).
