@@ -115,14 +115,25 @@ function header(active: string) {
         ${nav.map(([h, l]) => `<a href="#${h}"${active === h ? ' aria-current="page"' : ""}>${l}</a>`).join("")}
       </nav>
       <div class="prefs">
+        <button type="button" id="search-btn" class="chip search-btn" aria-haspopup="dialog" aria-keyshortcuts="/"><svg aria-hidden="true" viewBox="0 0 24 24" width="15" height="15"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>${tr("Rechercher", "Search")}</button>
         <button type="button" id="lang-btn" class="chip" aria-label="${tr("Changer de langue : passer en anglais", "Change language: switch to French")}">${state.lang === "fr" ? "FR · <span>EN</span>" : "EN · <span>FR</span>"}</button>
         <button type="button" id="theme-btn" class="chip">${themeLabel}</button>
       </div>
     </div>
-  </header>`;
+  </header>
+  <dialog id="search-dlg" class="search-dlg" aria-label="${tr("Rechercher un système", "Find a play")}">
+    <form method="dialog" class="search-box" role="search">
+      <label for="s-q" class="sr">${tr("Rechercher un système", "Find a play")}</label>
+      <input id="s-q" type="search" placeholder="${tr("Nom, famille, défense, équipe NBA… ex. horns, zone 2-3, Spurs", "Name, family, defense, NBA team… e.g. horns, 2-3 zone, Spurs")}" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="s-list" aria-autocomplete="list" />
+      <button type="button" class="chip s-close" id="s-close">${tr("Fermer", "Close")}</button>
+    </form>
+    <ul id="s-list" class="s-list" role="listbox" aria-label="${tr("Résultats", "Results")}"></ul>
+    <p class="s-foot" id="s-foot" aria-live="polite"></p>
+  </dialog>`;
 }
 
 function bindHeader() {
+  bindSearch();
   document.getElementById("lang-btn")?.addEventListener("click", () => {
     state.lang = other(state.lang);
     store.set("lang", state.lang);
@@ -145,6 +156,120 @@ const footer = () => `
     )}</p>
   </div></footer>`;
 
+// ------------------------------------------------------------------ recherche
+/** Texte cherché d'une fiche : noms, résumé, famille, catégorie, points clés, équipes NBA. */
+const hayCache = new Map<string, string>();
+function hay(t: Tactic) {
+  const k = `${state.lang}:${t.id}`;
+  let h = hayCache.get(k);
+  if (h === undefined) {
+    h = normalize([t.name.fr, t.name.en, t.sum.fr, t.sum.en, famName(t.family), catName(t.cat), t.id.replace(/-/g, " "), ...(t.keys?.fr ?? []), ...(t.keys?.en ?? []), ...(nba[t.id] ?? []).map((x) => x.team)].join(" "));
+    hayCache.set(k, h);
+  }
+  return h;
+}
+const matches = (t: Tactic, words: string[]) => words.every((w) => hay(t).includes(w));
+
+/** Résultats classés : le nom d'abord (début du nom, puis mot du nom), puis le reste. */
+function searchTactics(q: string): Tactic[] {
+  const words = normalize(q.trim()).split(/\s+/).filter(Boolean);
+  if (!words.length) return [];
+  const nq = words.join(" ");
+  const score = (t: Tactic) => {
+    const names = [t.name.fr, t.name.en].map(normalize);
+    if (names.some((n) => n.startsWith(nq))) return 0;
+    if (names.some((n) => n.includes(nq))) return 1;
+    if (words.every((w) => names.some((n) => n.includes(w)))) return 2;
+    return t.cat === "exercices" || t.cat === "principes" ? 4 : 3;
+  };
+  return lib.tactics
+    .filter((t) => matches(t, words))
+    .map((t) => [score(t), t] as const)
+    .sort((a, b) => a[0] - b[0] || txt(a[1].name).localeCompare(txt(b[1].name), state.lang))
+    .map(([, t]) => t);
+}
+
+const S_MAX = 8;
+let searchQ = "";
+function openSearch() {
+  const dlg = document.getElementById("search-dlg") as HTMLDialogElement | null;
+  if (!dlg || dlg.open) return;
+  dlg.showModal();
+  const input = document.getElementById("s-q") as HTMLInputElement;
+  input.value = searchQ;
+  input.select();
+  renderSearch();
+}
+
+function renderSearch() {
+  const input = document.getElementById("s-q") as HTMLInputElement;
+  const ul = document.getElementById("s-list")!;
+  const foot = document.getElementById("s-foot")!;
+  searchQ = input.value;
+  const res = searchTactics(searchQ);
+  input.setAttribute("aria-expanded", String(res.length > 0));
+  input.removeAttribute("aria-activedescendant");
+  ul.innerHTML = res
+    .slice(0, S_MAX)
+    .map(
+      (t, i) => `<li role="option" id="s-opt-${i}" aria-selected="${i === 0}"><a href="#${t.id}" tabindex="-1">
+      <strong>${esc(txt(t.name))}</strong><span class="s-meta">${esc(catName(t.cat))} · ${esc(famName(t.family))}${nba[t.id] ? ` · <span class="tag-nba">NBA</span>` : ""}</span></a></li>`,
+    )
+    .join("");
+  if (res.length) input.setAttribute("aria-activedescendant", "s-opt-0");
+  foot.innerHTML = !searchQ.trim()
+    ? tr("Tape le nom d'un système, une famille (horns, flex…), une défense (zone 2-3, press) ou une équipe NBA.", "Type a play name, a family (horns, flex…), a defense (2-3 zone, press) or an NBA team.")
+    : !res.length
+      ? tr("Aucun système trouvé. Essaie un autre mot.", "No play found. Try another word.")
+      : `${res.length} ${tr(res.length > 1 ? "résultats" : "résultat", res.length > 1 ? "results" : "result")}${res.length > S_MAX ? ` · <button type="button" class="linkish" id="s-all">${tr("Voir tout dans la bibliothèque", "See all in the library")}</button>` : ""}`;
+}
+
+/** Ouvre la bibliothèque avec la recherche remplie, filtres remis à zéro, défilée jusqu'aux résultats. */
+function searchInLibrary(q: string) {
+  Object.assign(state, { q, cat: "", family: "", lvl: "", nba: false, pending: true, shown: PAGE });
+  pendingScroll = true;
+  (document.getElementById("search-dlg") as HTMLDialogElement | null)?.close();
+  if (location.hash.replace("#", "")) location.hash = "";
+  else route();
+}
+
+function bindSearch() {
+  const dlg = document.getElementById("search-dlg") as HTMLDialogElement | null;
+  if (!dlg) return;
+  const input = document.getElementById("s-q") as HTMLInputElement;
+  const ul = document.getElementById("s-list")!;
+  document.getElementById("search-btn")?.addEventListener("click", openSearch);
+  document.getElementById("s-close")!.addEventListener("click", () => dlg.close());
+  dlg.addEventListener("click", (e) => {
+    if (e.target === dlg) dlg.close(); // clic sur le fond
+    if ((e.target as HTMLElement).id === "s-all") searchInLibrary(searchQ);
+    if ((e.target as HTMLElement).closest("a")) dlg.close();
+  });
+  input.addEventListener("input", renderSearch);
+  input.addEventListener("keydown", (e) => {
+    const opts = [...ul.querySelectorAll<HTMLElement>("[role=option]")];
+    let i = opts.findIndex((o) => o.getAttribute("aria-selected") === "true");
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      if (!opts.length) return;
+      i = (i + (e.key === "ArrowDown" ? 1 : -1) + opts.length) % opts.length;
+      opts.forEach((o, j) => o.setAttribute("aria-selected", String(j === i)));
+      input.setAttribute("aria-activedescendant", opts[i].id);
+      opts[i].scrollIntoView({ block: "nearest" });
+    } else if (e.key === "Escape") {
+      e.preventDefault(); // sinon Échap vide d'abord le champ
+      dlg.close();
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const a = opts[i]?.querySelector("a");
+      if (a) {
+        dlg.close();
+        location.hash = a.getAttribute("href")!;
+      } else if (input.value.trim()) searchInLibrary(input.value);
+    }
+  });
+}
+
 // --------------------------------------------------------------- bibliothèque
 function filtered(): Tactic[] {
   const q = normalize(state.q.trim());
@@ -154,9 +279,7 @@ function filtered(): Tactic[] {
     if (state.family && t.family !== state.family) return false;
     if (state.lvl && String(t.lvl) !== state.lvl) return false;
     if (state.nba && !nba[t.id]) return false;
-    if (!q) return true;
-    const hay = normalize([t.name.fr, t.name.en, t.sum.fr, t.sum.en, famName(t.family), t.id, ...(nba[t.id] ?? []).map((x) => x.team)].join(" "));
-    return q.split(/\s+/).every((w) => hay.includes(w));
+    return !q || matches(t, q.split(/\s+/));
   });
 }
 
@@ -725,6 +848,7 @@ function editorView() {
   editor = new Editor(document.getElementById("editor-root")!, lib, families, state.lang, tr);
 }
 
+let pendingScroll = false;
 function route() {
   cleanup?.();
   cleanup = null;
@@ -774,7 +898,22 @@ function route() {
   }
   if (!byId.has(h)) document.title = "Playbook Ouvert · Open Playbook";
   if (!keepScroll) window.scrollTo(0, 0);
+  if (pendingScroll && app.dataset.view === "library") {
+    pendingScroll = false;
+    const f = document.getElementById("filters");
+    const top = document.querySelector<HTMLElement>(".top")?.offsetHeight ?? 0;
+    if (f) window.scrollTo(0, f.getBoundingClientRect().top + window.scrollY - top - 8);
+  }
 }
+
+document.addEventListener("keydown", (e) => {
+  const inField = (e.target as HTMLElement).closest("input, select, textarea, [contenteditable]");
+  if ((e.key === "k" && (e.ctrlKey || e.metaKey)) || (e.key === "/" && !inField)) {
+    if (!document.getElementById("search-dlg")) return;
+    e.preventDefault();
+    openSearch();
+  }
+});
 
 document.addEventListener("keydown", (e) => {
   if (!board || (e.target as HTMLElement).closest("input, select, textarea")) return;

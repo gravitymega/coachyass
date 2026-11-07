@@ -180,3 +180,9 @@ GitHub limite une release à 1000 fichiers. Avec 509 fiches animées, vidéo + m
 Les MP4 restent dans `op-videos-<format>`, les PNG partent dans `op-covers-<format>` (créées par le workflow).
 Le site lit les miniatures dans `op-covers-` (`COVER_BASE` dans `src/main.ts`). Les anciens PNG des releases `op-videos-` sont retirés par le job `releases` du workflow (la session Claude ne peut pas modifier les releases).
 `upload-release.sh` s'arrête tout de suite si une release est pleine (au lieu d'attendre la limite de requêtes 5 fois).
+
+## Recherche sur toutes les pages (demande du 7 nov. 2026)
+
+- Bouton orange « Rechercher » dans l'en-tête de chaque page (pas en mode vidéo), raccourcis `/` et Ctrl/Cmd+K. Il ouvre une boîte (`<dialog id="search-dlg">`) avec résultats instantanés (8 au plus) : flèches ↑/↓, Entrée ouvre la fiche, Échap ferme.
+- Recherche commune avec la bibliothèque (`hay()` / `matches()` dans `src/main.ts`) : noms FR/EN, résumé, famille, catégorie, points clés, id et équipes NBA, sans accents ni majuscules. `searchTactics()` classe le début du nom, puis le nom, puis les systèmes avant exercices et principes.
+- « Voir tout dans la bibliothèque » remplit la recherche de la bibliothèque, remet les filtres à zéro et descend jusqu'aux résultats.
