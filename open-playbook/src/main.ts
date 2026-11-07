@@ -10,7 +10,8 @@ import { Board } from "./board";
 import type { Board3D } from "./board3d";
 import { Editor } from "./editor";
 import coachingJson from "../data/coaching.json";
-import { normalize, shotKind, type Lang, type Library, type ShotKind, type Tactic, type Text } from "./engine";
+import { normalize, shotKind, type Lang, type Library, type Plan, type ShotKind, type Tactic, type Text } from "./engine";
+import { expandSeance, SEANCE_DURATIONS, SEANCE_LEVELS, THEMES, themeById, type SeancesFile } from "./seances";
 import nbaJson from "../data/nba.json";
 import { clipPath, narrationSegments, type NbaTeam } from "./narration";
 import { clipsAvailable, playClip, speak, stopSpeaking } from "./voice";
@@ -766,31 +767,97 @@ const PLAN_LEVELS: Record<string, Text> = {
   "veille-de-match": { fr: "Veille de match", en: "Day before a game" },
 };
 
+// Séances générées (data/seances.json) : chargées à la demande pour garder la page d'accueil légère.
+type AnyPlan = Plan & { theme?: string };
+let seances: AnyPlan[] | null = null;
+let seancesLoading: Promise<AnyPlan[]> | null = null;
+function loadSeances(): Promise<AnyPlan[]> {
+  if (seances) return Promise.resolve(seances);
+  seancesLoading ??= import("../data/seances.json").then((m) => (seances = (m.default as unknown as SeancesFile).plans.map((x) => expandSeance(x, byId))));
+  return seancesLoading;
+}
+const SPAGE = 48;
+const pf = { level: "", theme: "", dur: "", q: "", shown: SPAGE };
+
+const planCard = (p: AnyPlan) => `<li><a class="card" href="#plan-${p.id}">
+  <span class="card-meta">${esc(txt(PLAN_LEVELS[p.level]))}${p.theme ? ` · ${esc(txt(themeById.get(p.theme)!.name))}` : ""}</span>
+  <strong>${esc(txt(p.name))}</strong>
+  <span class="card-foot"><span>${p.duration} min</span><span>${p.blocks.length} ${tr("blocs", "blocks")}</span></span>
+</a></li>`;
+
 function plansView() {
   app.innerHTML = `${header("plans")}
   <main class="wrap" id="main">
     <section class="intro"><h1>${tr("Plans de séance", "Session plans")}</h1>
-    <p>${tr("Des séances complètes par niveau, construites avec les fiches de la bibliothèque.", "Complete practices by level, built from the library's cards.")}</p></section>
-    <ul class="plan-list">${lib.plans
-      .map(
-        (p) => `<li><a class="card" href="#plan-${p.id}">
-        <span class="card-meta">${esc(txt(PLAN_LEVELS[p.level]))}</span>
-        <strong>${esc(txt(p.name))}</strong>
-        <span class="card-foot"><span>${p.duration} min</span><span>${p.blocks.length} ${tr("blocs", "blocks")}</span></span>
-      </a></li>`,
-      )
-      .join("")}</ul>
+    <p>${tr("Des séances complètes par niveau, construites avec les fiches de la bibliothèque.", "Complete practices by level, built from the library's cards.")}</p>
+    <p><a class="btn" href="#plans" id="go-seances">${tr("Voir les 1000 séances ↓", "See all 1,000 sessions ↓")}</a></p></section>
+    <h2 class="sec-title">${tr("Séances types", "Model sessions")}</h2>
+    <ul class="plan-list">${lib.plans.map(planCard).join("")}</ul>
+    <h2 class="sec-title" id="seances-title">${tr("Toutes les séances", "All sessions")}</h2>
+    <p class="sec-note">${tr(
+      "Séances composées automatiquement avec les fiches (échauffement, technique, mise en place, jeu à thème, retour au calme). Choisis un niveau, un thème et une durée, puis adapte à ton groupe.",
+      "Sessions built automatically from the cards (warm-up, skills, team concept, themed game, cool-down). Pick a level, a theme and a length, then adapt it to your group.",
+    )}</p>
+    <form class="filters" id="pfilters" role="search">
+      <label class="f-search"><span>${tr("Rechercher", "Search")}</span>
+        <input id="p-q" type="search" value="${esc(pf.q)}" placeholder="${tr("ex. tir, horns, zone…", "e.g. shooting, horns, zone…")}" autocomplete="off" /></label>
+      <label><span>${tr("Niveau", "Level")}</span><select id="p-level"><option value="">${tr("Tous", "All")}</option>${SEANCE_LEVELS.map((l) => `<option value="${l}"${pf.level === l ? " selected" : ""}>${esc(txt(PLAN_LEVELS[l]))}</option>`).join("")}</select></label>
+      <label><span>${tr("Thème", "Theme")}</span><select id="p-theme"><option value="">${tr("Tous", "All")}</option>${THEMES.map((t) => `<option value="${t.id}"${pf.theme === t.id ? " selected" : ""}>${esc(txt(t.name))}</option>`).join("")}</select></label>
+      <label><span>${tr("Durée", "Length")}</span><select id="p-dur"><option value="">${tr("Toutes", "All")}</option>${SEANCE_DURATIONS.map((d) => `<option value="${d}"${pf.dur === String(d) ? " selected" : ""}>${d} min</option>`).join("")}</select></label>
+    </form>
+    <div id="seance-results"><p class="count">${tr("Chargement des séances…", "Loading sessions…")}</p></div>
   </main>${footer()}`;
   bindHeader();
+  const update = () => {
+    pf.shown = SPAGE;
+    renderSeances();
+  };
+  document.getElementById("p-q")!.addEventListener("input", (e) => ((pf.q = (e.target as HTMLInputElement).value), update()));
+  for (const [id, k] of [["p-level", "level"], ["p-theme", "theme"], ["p-dur", "dur"]] as const)
+    document.getElementById(id)!.addEventListener("change", (e) => ((pf[k] = (e.target as HTMLSelectElement).value), update()));
+  document.getElementById("pfilters")!.addEventListener("submit", (e) => e.preventDefault());
+  document.getElementById("seance-results")!.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).id !== "p-more") return;
+    pf.shown += SPAGE;
+    renderSeances();
+    document.getElementById("p-more")?.focus();
+  });
+  document.getElementById("go-seances")!.addEventListener("click", (e) => {
+    e.preventDefault();
+    const top = document.querySelector<HTMLElement>(".top")?.offsetHeight ?? 0;
+    window.scrollTo({ top: document.getElementById("seances-title")!.getBoundingClientRect().top + scrollY - top - 8, behavior: "smooth" });
+  });
+  loadSeances().then(() => app.dataset.view === "plans" && renderSeances());
 }
 
-function planView(p: Library["plans"][number]) {
+function renderSeances() {
+  const box = document.getElementById("seance-results");
+  if (!box || !seances) return;
+  const words = normalize(pf.q.trim()).split(/\s+/).filter(Boolean);
+  const list = seances.filter((p) => {
+    if (pf.level && p.level !== pf.level) return false;
+    if (pf.theme && p.theme !== pf.theme) return false;
+    if (pf.dur && String(p.duration) !== pf.dur) return false;
+    if (!words.length) return true;
+    const h = normalize([p.name.fr, p.name.en, ...p.blocks.flatMap((b) => (b.ids ?? []).map((id) => `${byId.get(id)?.name.fr} ${byId.get(id)?.name.en}`))].join(" "));
+    return words.every((w) => h.includes(w));
+  });
+  document.getElementById("seances-title")!.textContent = `${tr("Toutes les séances", "All sessions")} (${seances.length})`;
+  box.innerHTML = `<p class="count" aria-live="polite">${list.length} ${tr(list.length > 1 ? "séances" : "séance", list.length > 1 ? "sessions" : "session")}</p>
+    ${list.length ? `<ul class="plan-list">${list.slice(0, pf.shown).map(planCard).join("")}</ul>` : `<p class="empty">${tr("Aucune séance ne correspond. Retire un filtre.", "No session matches. Remove a filter.")}</p>`}
+    ${list.length > pf.shown ? `<p class="more"><button type="button" id="p-more" class="btn">${tr("Afficher plus", "Show more")} (${list.length - pf.shown})</button></p>` : ""}`;
+}
+
+function planView(p: AnyPlan) {
   let t0 = 0;
+  const theme = p.theme ? themeById.get(p.theme) : undefined;
+  const siblings = theme && seances ? seances.filter((x) => x.theme === p.theme && x.level === p.level && x.id !== p.id).slice(0, 6) : [];
   app.innerHTML = `${header("plans")}
   <main class="wrap" id="main">
-    <p class="crumbs"><a href="#plans">← ${tr("Plans de séance", "Session plans")}</a> · ${esc(txt(PLAN_LEVELS[p.level]))}</p>
+    <p class="crumbs"><a href="#plans">← ${tr("Plans de séance", "Session plans")}</a> · ${esc(txt(PLAN_LEVELS[p.level]))}${theme ? ` · ${esc(txt(theme.name))}` : ""}</p>
     <section class="intro"><h1>${esc(txt(p.name))}</h1>
-    <p class="alt-title" lang="${other(state.lang)}">${esc(p.name[other(state.lang)])}</p></section>
+    <p class="alt-title" lang="${other(state.lang)}">${esc(p.name[other(state.lang)])}</p>
+    ${theme ? `<p class="plan-note">${tr("Séance composée automatiquement avec les fiches de la bibliothèque : adapte les durées et le nombre de joueurs à ton groupe.", "Session built automatically from the library's cards: adapt the timings and player numbers to your group.")}</p>` : ""}</section>
     <ol class="plan">${p.blocks
       .map((b) => {
         const from = t0;
@@ -800,6 +867,7 @@ function planView(p: Library["plans"][number]) {
         }</div></li>`;
       })
       .join("")}</ol>
+    ${siblings.length ? `<h2 class="sec-title">${tr("Autres séances sur ce thème", "More sessions on this theme")}</h2><ul class="plan-list">${siblings.map(planCard).join("")}</ul>` : ""}
   </main>${footer()}`;
   bindHeader();
 }
@@ -892,6 +960,18 @@ function route() {
   } else if (h.startsWith("plan-") && lib.plans.some((p) => p.id === h.slice(5))) {
     app.dataset.view = "plan";
     planView(lib.plans.find((p) => p.id === h.slice(5))!);
+  } else if (h.startsWith("plan-s-")) {
+    // Séance générée : le fichier se charge à la demande.
+    app.dataset.view = "plan";
+    app.innerHTML = `${header("plans")}<main class="wrap" id="main"><p class="count">${tr("Chargement de la séance…", "Loading the session…")}</p></main>${footer()}`;
+    bindHeader();
+    loadSeances().then((list) => {
+      if (decodeURIComponent(location.hash.slice(1)) !== h) return;
+      const p = list.find((x) => x.id === h.slice(5));
+      if (!p) return void (location.hash = "plans");
+      planView(p);
+      document.title = `${txt(p.name)} · Playbook Ouvert`;
+    });
   } else {
     app.dataset.view = "library";
     libraryView();
