@@ -359,6 +359,12 @@ body.is-video::before { background: #0f1a2b; }
   * { transition: none !important; scroll-behavior: auto !important; }
 }
 
+/* ---- séances générées ---- */
+.sec-title { font-size: 1.5rem; margin: 1.5rem 0 0.5rem; }
+#go-seances { display: inline-flex; align-items: center; text-decoration: none; }
+.sec-note, .plan-note { color: var(--muted); margin: 0 0 1rem; max-width: 46rem; }
+.plan-note { font-size: 0.92rem; border-left: 3px solid var(--ball); padding-left: 0.7rem; margin-top: 0.4rem; }
+
 /* ---- recherche (toutes les pages) ---- */
 .search-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: #e07a12; border-color: #e07a12; color: #0f1a2b; opacity: 1; }
 .search-btn:hover { background: #f08a24; }
