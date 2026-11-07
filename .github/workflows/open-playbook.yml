@@ -132,3 +132,6 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          # Le site contient des milliers de clips audio : la copie vers Pages dépasse parfois les 10 min par défaut.
+          timeout: 1800000
