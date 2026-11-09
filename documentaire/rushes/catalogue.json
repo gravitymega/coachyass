@@ -1,6 +1,6 @@
 {
   "documentaire": "Gravity — documentaire",
-  "mis_a_jour": "2026-10-26",
+  "mis_a_jour": "2026-11-09",
   "rushes": [
     {
       "id": "IMG_6686",
@@ -363,6 +363,40 @@
       },
       "taille_octets": 12654786,
       "sha256": "479aa9f2f65b8f82a40f82ee12c0ef22a5ce1c113b6956ed7cda4e95396b9767"
+    },
+    {
+      "id": "IMG_6967",
+      "titre": "Selfie au bord du bassin avec les joueurs",
+      "sequence": "L'entraînement",
+      "usage": "Moment spontané avant l'entraînement : le coach (selfie) puis un joueur, les autres joueurs derrière. Son direct gardé au montage.",
+      "lieu": "Bassins, Complexe sportif Claude-Robillard",
+      "tags": [
+        "coach",
+        "joueurs",
+        "selfie",
+        "piscine",
+        "son direct"
+      ],
+      "voix": "« Voilà, la squadra… » (coach, son direct).",
+      "son": "Voix, écho de la piscine.",
+      "utilise_dans": [
+        "montage « La piscine » avec voix off (9 novembre 2026)"
+      ],
+      "fichier": "IMG_6967.mov",
+      "vignette": "vignettes/IMG_6967.jpg",
+      "tourne_le": "2026-11-04 21:47:06 (heure de Montréal)",
+      "duree_s": 3.43,
+      "resolution_affichee": "1920x1440",
+      "cadence_ips": 30.0,
+      "codec": "hevc",
+      "rotation": -180,
+      "audio": {
+        "codec": "pcm_s16le",
+        "volume_moyen_db": -17.6,
+        "crete_db": -3.2
+      },
+      "taille_octets": 4644071,
+      "sha256": "bed89bf0f1d0daa3905eb3ffe1e77067e1a9653a9b8942aadd23d3c3e75120b5"
     }
   ]
 }

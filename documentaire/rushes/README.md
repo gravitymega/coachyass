@@ -4,6 +4,7 @@ Base de données des vidéos brutes du documentaire : tous les plans partagés a
 
 - `catalogue.json` : la fiche de chaque plan (date, durée, format, son, contenu, séquence, tags, empreinte `sha256`). C'est la base de données.
 - `vignettes/` : une image par plan, pour parcourir sans ouvrir les vidéos.
+- `photos/` : photos fixes (le script ne les gère pas) : `equipe-hall-claude-robillard.jpg`, 6 joueurs et le coach sous la bannière « Après 45 ans d'utilisation, des rénos s'imposent ! » du hall de Claude-Robillard (reçue le 9 novembre 2026).
 - `ajouter.py` : recalcule les infos techniques et ajoute les nouveaux plans.
 - Les vidéos : `IMG_xxxx.mov`, avec leur nom d'origine de l'iPhone (le script `../sequence-piscine.md` y fait référence).
 
@@ -23,6 +24,7 @@ Base de données des vidéos brutes du documentaire : tous les plans partagés a
 | [IMG_6797](IMG_6797.mov) | 2026-10-25 12:45:45 | 4.43 s | 1440x1920 · 30 i/s | D'un gymnase à l'autre | Entrée du Collège Dawson |
 | [IMG_6798](IMG_6798.mov) | 2026-10-25 12:46:05 | 1.6 s | 1440x1920 · 30 i/s | D'un gymnase à l'autre | Couloir vers le gymnase |
 | [IMG_6799](IMG_6799.mov) | 2026-10-25 12:46:57 | 9.3 s | 1440x1920 · 30 i/s | D'un gymnase à l'autre | Révélation du gymnase par la vitre |
+| [IMG_6967](IMG_6967.mov) | 2026-11-04 21:47:06 | 3.43 s | 1920x1440 · 30 i/s | L'entraînement | Selfie au bord du bassin avec les joueurs |
 <!-- index:fin -->
 
 ## Ajouter de nouveaux plans
@@ -34,6 +36,6 @@ Base de données des vidéos brutes du documentaire : tous les plans partagés a
 ## À savoir
 
 - Toutes les vidéos sont **verticales** (tournées à l'iPhone, rotation −90°) : `resolution_affichee` donne la taille réelle à l'écran. Le HEVC ne se lit pas partout ; un aperçu noir dans certains navigateurs est normal.
-- Dates : heure de Montréal. Les prises du 20 octobre 2026 sont à 20 h 10 à 20 h 12, sauf IMG_6692 (bassins), tournée à 21 h 31.
-- Les vidéos montrent le coach Yassine et des lieux publics. Pas de joueurs mineurs pour l'instant : à faire valider (autorisation des parents) avant toute diffusion de plans avec des joueurs.
+- Dates : heure de Montréal (heure d'été ou normale selon la date). Les prises du 20 octobre 2026 sont à 20 h 10 à 20 h 12, sauf IMG_6692 (bassins), tournée à 21 h 31.
+- **Joueurs à l'image** depuis le 4 novembre 2026 (IMG_6967 et la photo d'équipe) : vérifier leur âge et obtenir l'autorisation (des parents pour les mineurs) avant toute diffusion.
 - Le dépôt est privé. Gros fichiers : au-delà de ~100 Mo par vidéo, GitHub refuse l'envoi ; il faudra alors un autre stockage (Google Drive) et ne garder ici que la fiche et la vignette.
