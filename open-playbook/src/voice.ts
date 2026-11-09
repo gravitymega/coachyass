@@ -1,5 +1,5 @@
 // Explication audio.
-// 1. Clips MP3 pré-générés avec une voix naturelle (Piper, scripts/tts.py), publiés avec le site.
+// 1. Clips MP3 pré-générés avec une voix naturelle (scripts/tts.py), publiés avec le site, joués par Web Audio.
 // 2. Sinon, synthèse vocale du navigateur (Web Speech API), avec la meilleure voix disponible.
 import type { Lang } from "./engine";
 
@@ -81,9 +81,6 @@ export async function speak(text: string, lang: Lang, alive: () => boolean = () 
 }
 
 // ---------------------------------------------------------------- clips audio
-// Un seul élément audio pour tout le site : une fois débloqué par un toucher (iPhone), il peut enchaîner les clips.
-let player: HTMLAudioElement | null = null;
-const audio = () => (player ??= Object.assign(new Audio(), { preload: "auto" }));
 const clipOk = new Map<string, Promise<boolean>>();
 
 /** Vérifie (une fois) que les clips de cette version sont publiés : absents en local et dans l'aperçu en une page. */
@@ -99,32 +96,105 @@ export function clipsAvailable(url: string) {
   return clipOk.get(url)!;
 }
 
-/**
- * Joue un clip. À appeler sans « await » préalable dans le gestionnaire de clic pour le premier clip,
- * sinon le navigateur peut bloquer le son. Rejette si la lecture est refusée.
- */
-export function playClip(url: string, alive: () => boolean = () => true): Promise<void> {
-  const a = audio();
-  a.pause();
-  a.src = url;
-  return new Promise((resolve, reject) => {
+// ---------------------------------------------------------------- Web Audio (synchronisation exacte)
+// Les clips d'une fiche sont téléchargés et décodés dès l'ouverture : au moment de jouer une étape,
+// le son part sans délai réseau et sa durée exacte est connue, ce qui cale l'animation sur la voix.
+type Ctx = AudioContext & { outputLatency?: number };
+let ctx: Ctx | null = null;
+let current: AudioBufferSourceNode | null = null;
+
+function audioCtx(): Ctx | null {
+  if (ctx) return ctx;
+  const C = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+  return C ? (ctx = new C() as Ctx) : null;
+}
+
+/** À appeler dans le geste de l'utilisateur (clic) : débloque le son sur iPhone et Safari. */
+export function unlockAudio() {
+  const c = audioCtx();
+  if (!c) return;
+  if (c.state !== "running") void c.resume().catch(() => {});
+  // Un son vide joué dans le geste suffit à iOS pour autoriser les suivants.
+  const s = c.createBufferSource();
+  s.buffer = c.createBuffer(1, 1, 22050);
+  s.connect(c.destination);
+  s.start(0);
+}
+
+/** Le son est-il autorisé ? (false tant que le navigateur bloque la lecture sans geste.) */
+export async function audioRunning(timeoutMs = 400) {
+  const c = audioCtx();
+  if (!c) return false;
+  if (c.state === "running") return true;
+  await Promise.race([c.resume().catch(() => {}), new Promise((r) => setTimeout(r, timeoutMs))]);
+  return (c.state as string) === "running";
+}
+
+const buffers = new Map<string, Promise<AudioBuffer | null>>();
+/** Télécharge et décode un clip (une seule fois). null si absent ou illisible. */
+export function loadClip(url: string): Promise<AudioBuffer | null> {
+  const c = audioCtx();
+  if (!c) return Promise.resolve(null);
+  if (!buffers.has(url)) {
+    buffers.set(
+      url,
+      fetch(url)
+        .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(String(r.status)))))
+        // Forme à rappels : compatible avec les anciens Safari.
+        .then((data) => new Promise<AudioBuffer>((ok, ko) => c.decodeAudioData(data, ok, ko)))
+        .catch(() => {
+          buffers.delete(url);
+          return null;
+        }),
+    );
+  }
+  return buffers.get(url)!;
+}
+
+/** Délai entre le départ du son et le moment où on l'entend (haut-parleur, Bluetooth), en secondes. */
+export function outputDelay() {
+  const c = audioCtx();
+  return c ? Math.min(0.5, Math.max(0, c.outputLatency ?? c.baseLatency ?? 0)) : 0;
+}
+
+/** Joue un clip décodé tout de suite ; se résout à la fin du clip (ou à l'arrêt). */
+export function playBuffer(buf: AudioBuffer, alive: () => boolean = () => true): Promise<void> {
+  const c = audioCtx()!;
+  current?.stop();
+  const src = c.createBufferSource();
+  src.buffer = buf;
+  src.connect(c.destination);
+  current = src;
+  return new Promise((resolve) => {
     let done = false;
-    const end = (ok: boolean, e?: unknown) => {
+    const end = () => {
       if (done) return;
       done = true;
-      a.onended = a.onerror = null;
       clearInterval(watch);
-      ok ? resolve() : reject(e);
+      if (current === src) current = null;
+      resolve();
     };
-    a.onended = () => end(true);
-    a.onerror = () => end(false, new Error("clip"));
-    // Arrêt demandé (nouvelle fiche, pause) : on libère l'attente.
-    const watch = window.setInterval(() => !alive() && end(true), 200);
-    a.play().catch((e) => end(false, e));
+    src.onended = end;
+    const watch = window.setInterval(() => {
+      if (!alive()) {
+        try {
+          src.stop();
+        } catch {
+          /* déjà arrêté */
+        }
+        end();
+      }
+    }, 100);
+    src.start(0);
   });
 }
 
 export function stopSpeaking() {
+  try {
+    current?.stop();
+  } catch {
+    /* déjà arrêté */
+  }
+  current = null;
   if (voiceSupported()) window.speechSynthesis.cancel();
-  player?.pause();
 }
