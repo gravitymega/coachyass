@@ -11,7 +11,7 @@ import * as ART from './art.js';
 import { TALES, TALE_CATS, speakTale, nextTale } from './tales.js';
 import { dailyMissions, dailyState, autoComplete } from './missions.js';
 import { createVille } from './ville.js';
-import { recordDay, weekReport, reportText, streak } from './carnet.js';
+import { recordDay, weekReport, reportText, streak, logGame, gameLine } from './carnet.js';
 import { ramadanInfo } from './calendrier.js';
 import { ACTS, openAct } from './activites.js';
 import { unheardMessages } from './act-famille.js';
@@ -220,7 +220,7 @@ $('#map-nav').addEventListener('click', (e) => { const b = e.target.closest('[da
 $('#map-tales').addEventListener('click', () => { sfx('tap'); openTales(); });
 $('#map-daily').addEventListener('click', () => { sfx('tap'); openDaily(); });
 $('#map-ville').addEventListener('click', () => { sfx('tap'); openVille(); });
-$('#reward-msg').addEventListener('click', () => { sfx('tap'); openAct('messages', actCtx(), { surprise: true }); });
+$('#reward-msg').addEventListener('click', () => { sfx('tap'); curAct = 'messages'; openAct('messages', actCtx(), { surprise: true }); });
 
 // ---------- Activités (chacune peut être coupée dans les réglages des parents) ----------
 const actOn = (id) => settings.acts?.[id] !== false;
@@ -238,13 +238,15 @@ $('#acts').addEventListener('click', (e) => {
   const b = e.target.closest('[data-act]');
   if (!b) return;
   sfx('tap');
+  curAct = b.dataset.act;
   openAct(b.dataset.act, actCtx());
 });
+let curAct = null;
 function actCtx() {
   return {
     $, esc, settings, players, P: () => players[0], say, sfx, stopVoice, saveAll, confetti, praise, show, playWord, getRec, putRec, delRec, recKeys,
     load, save, saveSettings, audio, DIALECT_NAME, FLAG, cap, openVille,
-    stars(n) { players.forEach((p) => { p.progress.stars += n; }); saveAll(); },
+    stars(n) { const a = ACTS.find((x) => x.id === curAct); players.forEach((p) => { p.progress.stars += n; if (a) logGame(p.progress, { kind: 'act', icon: a.icon, name: a.title, stars: n }); }); saveAll(); },
     back() { stopVoice(); openMap(); },
   };
 }
@@ -574,6 +576,11 @@ function finishLevel() {
   const missionsDone = players.flatMap((p) => autoComplete(p.progress, missionsOf(p), today(), { kind, school: !!room.school && !room.fan }).map((m) => ({ p, m })));
   missionsDone.forEach(({ p }) => { p.progress.stars += 3; });
   players.forEach((p) => { p.progress.coins = (p.progress.coins || 0) + 5; }); // 5 pièces pour construire en ville
+  players.forEach((p, k) => logGame(p.progress, {
+    kind: defi ? 'defi' : room === REVUE ? 'revoir' : 'salle', name: room.name,
+    score: level.score[k], total: level.questions.filter((x) => (x.player ?? 0) === k).length, stars: level.stars[k],
+    with: players.filter((o) => o !== p).map((o) => o.kid.name).join(' et ') || undefined,
+  }));
   saveAll();
   sfx('win');
   confetti(90);
@@ -615,7 +622,9 @@ $('#btn-album').addEventListener('click', () => {
       ? `<div class="sticker"><span>${s.e}</span><small>${esc(s.n)}</small></div>`
       : `<div class="sticker locked"><span>?</span><small>À réveiller</small></div>`).join('')}
       ${Array.from({ length: pl.progress.gold || 0 }, () => '<div class="sticker gold"><span>🏅</span><small>Mission réussie</small></div>').join('')}
-    </div>`).join('');
+    </div>
+    <h3 class="album-kid">📜 ${coop() ? `Les parties de ${esc(pl.kid.name)}` : 'Mes parties'}</h3>
+    ${historyHTML(pl.progress, 40)}`).join('');
   show('album');
 });
 
@@ -932,6 +941,20 @@ function renderProgress() {
     </div>`;
   }).join('');
 }
+// Historique des parties d'un profil, groupé par jour (le plus récent en haut).
+function historyHTML(progress, max) {
+  const h = (progress.history || []).slice(-max).reverse();
+  if (!h.length) return '<p class="hist-empty">Pas encore de partie terminée. Bismillah !</p>';
+  const day = (t) => new Date(t).toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long' });
+  let last = '';
+  return `<ul class="hist">${h.map((e) => {
+    const d = day(e.t);
+    const head = d !== last ? `<li class="hist-day">${esc(d)}</li>` : '';
+    last = d;
+    return `${head}<li><span class="hist-time">${new Date(e.t).toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' })}</span> ${esc(gameLine(e))}</li>`;
+  }).join('')}</ul>`;
+}
+
 // ---------- Le carnet de fierté (à montrer aux grands-parents) ----------
 function renderCarnet() {
   $('#carnet-list').innerHTML = settings.kids.map((k, i) => {
@@ -946,6 +969,7 @@ function renderCarnet() {
       </div>
       ${r.words.length ? `<div class="carnet-words">${r.words.map((w) => `<span>${w.emoji || ''} ${esc(w.fr)} : <b>${[...new Set(ds.map((d) => w[d]?.lat).filter(Boolean))].map(esc).join(' / ')}</b></span>`).join('')}</div>`
     : '<p>Pas encore de nouveau mot cette semaine.</p>'}
+      <details class="hist-box"><summary>📜 Historique des parties (${(progressOf(k).history || []).length})</summary>${historyHTML(progressOf(k), 100)}</details>
       <button class="go small" data-share="${i}">📤 Envoyer aux grands-parents</button>
     </div>`;
   }).join('');
@@ -1054,6 +1078,7 @@ function openVille(opts = {}) {
 function villeDone() {
   players.forEach((p) => {
     p.progress.ville = (p.progress.ville || 0) + 1;
+    logGame(p.progress, { kind: 'ville', name: `Mission en ville de ${settings.gm}` });
     autoComplete(p.progress, missionsOf(p), today(), { kind: 'ville' }).forEach(() => { p.progress.stars += 3; });
   });
   saveAll();

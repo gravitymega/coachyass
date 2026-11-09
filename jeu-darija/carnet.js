@@ -70,3 +70,21 @@ export function streak(progress, date = today()) {
   while (days[d]) { n++; d = shift(d, -1); }
   return n;
 }
+
+// Historique des parties : chaque partie terminée reste dans le profil de l'enfant (les 300 dernières).
+const KEEP_HIST = 300;
+export function logGame(progress, entry, now = Date.now()) {
+  const h = progress.history || (progress.history = []);
+  h.push({ t: now, ...entry });
+  if (h.length > KEEP_HIST) h.splice(0, h.length - KEEP_HIST);
+  return h;
+}
+// Une ligne lisible : « 🏭 Stade d'Assad · 4/5 ✔ · +4 ⭐ · avec Asma »
+export function gameLine(e) {
+  const icon = e.icon || { salle: '🏭', defi: '⚡', revoir: '🧠', act: '🎈', ville: '🏙️' }[e.kind] || '🎮';
+  const parts = [`${icon} ${e.name}`];
+  if (e.total) parts.push(`${e.score || 0}/${e.total} ✔`);
+  if (e.stars) parts.push(`+${e.stars} ⭐`);
+  if (e.with) parts.push(`avec ${e.with}`);
+  return parts.join(' · ');
+}
