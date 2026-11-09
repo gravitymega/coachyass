@@ -89,6 +89,8 @@ export function clipsAvailable(url: string) {
     clipOk.set(
       url,
       fetch(url, { method: "HEAD" })
+        // Certains hébergeurs refusent HEAD : on réessaie avec une vraie requête.
+        .then((r) => (r.ok ? r : fetch(url)))
         .then((r) => r.ok && /audio|mpeg|octet/.test(r.headers.get("content-type") ?? "audio"))
         .catch(() => false),
     );
