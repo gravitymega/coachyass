@@ -47,7 +47,7 @@ Voir [CONTRIBUTING.md](CONTRIBUTING.md). Pour proposer une tactique sans coder, 
 
 Code sous licence **MIT** ([LICENSE](LICENSE)). Contenu sous licence **CC BY 4.0** ([LICENSE-CONTENT.md](LICENSE-CONTENT.md)). Aucun logo, aucune marque et aucune image protégée.
 
-Voix de l'explication audio, générées avec [Kokoro-82M](https://github.com/thewh1teagle/kokoro-onnx) (Apache 2.0, `scripts/tts.py`) : voix d'homme ; en français, mélange des voix `ff_siwis` et `im_nicola`, avec les termes anglais du basket prononcés à l'anglaise ; en anglais, `am_michael`. Les équipes NBA (`data/nba.json`) sont citées en texte seulement, sans logo.
+Voix de l'explication audio, générées avec [Kokoro-82M](https://github.com/thewh1teagle/kokoro-onnx) (Apache 2.0, `scripts/tts.py`) : voix d'homme ; en français, mélange des voix `ff_siwis`, `am_onyx` et `im_nicola`, avec les termes anglais du basket prononcés à l'anglaise ; en anglais, `am_michael`. Les équipes NBA (`data/nba.json`) sont citées en texte seulement, sans logo.
 
 ---
 
@@ -94,4 +94,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). To suggest a play without coding, open a
 
 Code under the **MIT** licence ([LICENSE](LICENSE)). Content under **CC BY 4.0** ([LICENSE-CONTENT.md](LICENSE-CONTENT.md)). No logos, brands or protected images.
 
-Audio narration voices, generated with [Kokoro-82M](https://github.com/thewh1teagle/kokoro-onnx) (Apache 2.0, `scripts/tts.py`): male voices; in French, a blend of `ff_siwis` and `im_nicola`, with English basketball terms pronounced in English; in English, `am_michael`. NBA teams (`data/nba.json`) are named in text only, with no logos.
+Audio narration voices, generated with [Kokoro-82M](https://github.com/thewh1teagle/kokoro-onnx) (Apache 2.0, `scripts/tts.py`): male voices; in French, a blend of `ff_siwis`, `am_onyx` and `im_nicola`, with English basketball terms pronounced in English; in English, `am_michael`. NBA teams (`data/nba.json`) are named in text only, with no logos.
