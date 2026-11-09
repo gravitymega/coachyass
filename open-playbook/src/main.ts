@@ -14,7 +14,7 @@ import { normalize, shotKind, type Lang, type Library, type Plan, type ShotKind,
 import { expandSeance, SEANCE_DURATIONS, SEANCE_LEVELS, THEMES, themeById, type SeancesFile } from "./seances";
 import nbaJson from "../data/nba.json";
 import { clipPath, narrationSegments, type NbaTeam } from "./narration";
-import { clipsAvailable, playClip, speak, stopSpeaking } from "./voice";
+import { audioRunning, clipsAvailable, loadClip, outputDelay, playBuffer, speak, stopSpeaking, unlockAudio, voiceSupported } from "./voice";
 
 const lib = library as Library;
 const families = familiesJson as Record<string, Text>;
@@ -443,53 +443,83 @@ const againstFor = (t: Tactic) => (t.family ? coaching.against[t.family] : undef
  * Lecture avec la voix : anime chaque étape pendant que sa légende est lue.
  * Clips à voix naturelle s'ils sont publiés, sinon voix du navigateur.
  */
+/**
+ * Lecture commentée d'une fiche : chaque étape s'anime pendant que la voix la décrit.
+ * Les clips sont préchargés et décodés (Web Audio) dès l'ouverture de la fiche, donc :
+ * - le son part à l'instant où le mouvement commence (pas d'attente réseau entre les étapes) ;
+ * - la durée exacte de chaque phrase est connue, et le mouvement est étiré ou accéléré pour se
+ *   dérouler pendant la phrase (il finit un peu avant la fin de la voix, comme un coach au tableau).
+ */
 function makeNarrator(t: Tactic, b: Board, hooks: { onState: (on: boolean) => void; onBlocked?: () => void; loop?: boolean }) {
   const L = state.lang;
   const n = t.steps?.length ?? 0;
   const segs = narrationSegments(t, L, againstFor(t), nba[t.id]);
-  let urls: string[] | null = null;
-  Promise.all(segs.map((x) => clipPath(x, L)))
-    .then(async (u) => (await clipsAvailable(u[0])) && (urls = u))
-    .catch(() => {});
+  // Préchargement : liste des clips décodés, ou null si les clips ne sont pas publiés (local, aperçu).
+  const ready: Promise<(AudioBuffer | null)[] | null> = Promise.all(segs.map((x) => clipPath(x, L)))
+    .then(async (urls) => ((await clipsAvailable(urls[0])) ? Promise.all(urls.map(loadClip)) : null))
+    .catch(() => null);
   let token = 0;
   let on = false;
-  let blocked = false;
-  // Pas d'« await » avant le premier clip : il doit partir dans le geste de l'utilisateur (iPhone).
-  const say = async (i: number, alive: () => boolean) => {
-    if (blocked) return;
-    if (urls) {
-      try {
-        return await playClip(urls[i], alive);
-      } catch (e) {
-        if ((e as DOMException)?.name === "NotAllowedError") {
-          blocked = true;
-          hooks.onBlocked?.();
-          return;
-        }
-      }
-    }
-    return speak(segs[i], L, alive);
+  // Mouvement pendant la phrase : ~80 % de sa durée, entre 1,1 s et 2,5 fois le temps normal.
+  const motionFor = (k: number, speech: number) => {
+    const base = b.motionOf(k);
+    if (!base) return 0;
+    return Math.min(Math.max(speech * 0.8, 1.1), base * 2.5);
   };
+  const GAP = 0.35; // respiration entre deux phrases
   const run = async () => {
     const my = ++token;
-    blocked = false;
     on = true;
     hooks.onState(true);
+    unlockAudio(); // dans le geste de l'utilisateur, avant toute attente
     const alive = () => my === token && board === b;
-    do {
-      b.goTo(-1, true);
-      await say(0, alive);
-      for (let k = 0; k < n && alive(); k++) {
-        b.goTo(k, reduceMotion());
-        await Promise.all([say(k + 1, alive), wait(2400)]);
+    const bufs = await ready;
+    if (!alive()) return;
+    let silent = false;
+    if (bufs && !(await audioRunning())) {
+      silent = true; // son bloqué (lecture automatique) : l'animation continue, un bouton propose le son
+      hooks.onBlocked?.();
+    }
+    const delay = outputDelay();
+    /** Lit le segment i et lance en même temps l'action visuelle ; se résout quand les deux sont finis. */
+    const segment = async (i: number, visual: (speech: number) => number) => {
+      const buf = bufs?.[i];
+      if (buf && !silent) {
+        const motion = visual(buf.duration); // le mouvement attend la latence de sortie : on voit et on entend ensemble
+        const played = playBuffer(buf, alive);
+        await Promise.all([played, wait((motion + delay) * 1000)]);
+      } else if (silent || !voiceSupported()) {
+        await wait(Math.max(visual(2.2), 2.2) * 1000);
+      } else {
+        // Secours sans clips : voix du navigateur, durée estimée pour régler le mouvement.
+        const est = segs[i].split(/\s+/).length * 0.36;
+        const motion = visual(est);
+        await Promise.all([speak(segs[i], L, alive), wait(motion * 1000)]);
       }
-      if (alive()) await say(n + 1, alive);
-      if (hooks.loop && alive()) await wait(1800);
+      if (alive()) await wait(GAP * 1000);
+    };
+    do {
+      await segment(0, () => (b.goTo(-1, true), 0));
+      for (let k = 0; k < n && alive(); k++) {
+        await segment(k + 1, (speech) => {
+          const m = reduceMotion() ? 0 : motionFor(k, speech);
+          const go = () => alive() && b.goTo(k, reduceMotion(), m || undefined);
+          delayGo(go);
+          return m;
+        });
+      }
+      if (alive()) await segment(n + 1, () => 0);
+      if (hooks.loop && alive()) await wait(1500);
     } while (hooks.loop && alive());
     if (my === token) {
       on = false;
       hooks.onState(false);
     }
+  };
+  // Décale le départ du mouvement de la latence de sortie audio (Bluetooth : jusqu'à 0,3 s).
+  const delayGo = (go: () => void) => {
+    const d = outputDelay();
+    d > 0.02 ? window.setTimeout(go, d * 1000) : go();
   };
   const stop = () => {
     token++;

@@ -2,8 +2,10 @@
 # Une release par format : op-videos-vertical, op-videos-square, op-videos-horizontal (MP4),
 # et les miniatures PNG à part dans op-covers-<format> (GitHub limite une release à 1000 fichiers).
 # Le site (page « Vidéos » et chaque fiche) pointe vers ces fichiers.
-# Voix : piste française (par défaut) et piste anglaise, prises dans les clips audio déjà publiés sur le site
-# (lancer ce workflow après la publication du site qui a généré l'audio).
+# Voix : celle de l'utilisateur (demande du 9 nov. 2026). Le job « voix » lit les phrases anglaises des vidéos
+# avec sa voix clonée (Chatterbox, scripts/voix-clone.py) à partir du secret OP_VOIX_ECHANTILLON (base64 d'un
+# échantillon de 10 s, jamais dans le dépôt public). Sans ce secret, ou pour une fiche dont un clip manque,
+# la vidéo prend la voix publiée sur le site (lancer ce workflow après la publication du site).
 # Envoi par paquets avec attente si la limite de requêtes GitHub est atteinte (scripts/upload-release.sh).
 # À relancer à la main (Actions → Open Playbook · vidéos → Run workflow) après un lot de nouvelles fiches.
 name: Open Playbook · vidéos
@@ -68,8 +70,79 @@ jobs:
             done < png.txt
           done
 
+  # Voix de l'utilisateur : 24 parts, clips gardés en cache (seules les phrases nouvelles ou modifiées sont refaites).
+  voix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    defaults:
+      run:
+        working-directory: open-playbook
+    steps:
+      - name: Échantillon de voix présent ?
+        id: has
+        working-directory: .
+        env:
+          ECH: ${{ secrets.OP_VOIX_ECHANTILLON }}
+        run: |
+          if [ -n "$ECH" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; else echo "Secret OP_VOIX_ECHANTILLON absent, voix du site"; fi
+      - if: steps.has.outputs.go == 'true'
+        uses: actions/checkout@v4
+      - if: steps.has.outputs.go == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: open-playbook/package-lock.json
+      - if: steps.has.outputs.go == 'true'
+        run: npm ci && npm run audio:jobs
+      - if: steps.has.outputs.go == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - if: steps.has.outputs.go == 'true'
+        name: Installer Chatterbox (processeur) et Whisper
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          pip install -q torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+          pip install -q chatterbox-tts==0.1.7 faster-whisper==1.2.1
+      - if: steps.has.outputs.go == 'true'
+        name: Modèles (cache)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-chatterbox-mtl-whisper-small-v1
+      - if: steps.has.outputs.go == 'true'
+        name: Clips déjà générés (cache)
+        uses: actions/cache@v4
+        with:
+          path: open-playbook/voix-perso
+          # run_id : le cache est enregistré à chaque fois (une liste partielle, avec « ids », se complète ensuite).
+          key: op-voix-perso-v1-${{ matrix.shard }}of24-${{ github.run_id }}
+          restore-keys: op-voix-perso-v1-${{ matrix.shard }}of24-
+      - if: steps.has.outputs.go == 'true'
+        env:
+          ECH: ${{ secrets.OP_VOIX_ECHANTILLON }}
+          IDS: ${{ github.event.inputs.ids }}
+        run: |
+          echo "$ECH" | base64 -d > "$RUNNER_TEMP/echantillon"
+          python scripts/voix-clone.py --echantillon "$RUNNER_TEMP/echantillon" --out voix-perso --shard ${{ matrix.shard }}/24 ${IDS:+--ids $IDS}
+          rm -f "$RUNNER_TEMP/echantillon"
+      - if: steps.has.outputs.go == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: voix-perso-${{ matrix.shard }}
+          path: open-playbook/voix-perso
+          retention-days: 1
+          if-no-files-found: ignore
+
   render:
-    needs: releases
+    needs: [releases, voix]
+    # Une part de voix en échec ne bloque pas les vidéos : ses fiches prennent la voix du site.
+    if: ${{ !cancelled() && needs.releases.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 300
     strategy:
@@ -101,9 +174,16 @@ jobs:
       - if: steps.want.outputs.go == 'true'
         run: npm ci && npm run audio:jobs && sudo apt-get update -qq && sudo apt-get install -y -qq python3-cairo ffmpeg
       - if: steps.want.outputs.go == 'true'
+        continue-on-error: true  # aucun clip (secret absent) : voix du site
+        uses: actions/download-artifact@v4
+        with:
+          pattern: voix-perso-*
+          merge-multiple: true
+          path: open-playbook/voix-perso
+      - if: steps.want.outputs.go == 'true'
         env:
           IDS: ${{ github.event.inputs.ids }}
-        run: /usr/bin/python3 render.py ${IDS:---all} --formats ${{ matrix.format }} --shard ${{ matrix.shard }}/12 --out out --audio https://gravitymega.github.io/coachyass
+        run: /usr/bin/python3 render.py ${IDS:---all} --formats ${{ matrix.format }} --shard ${{ matrix.shard }}/12 --out out --audio voix-perso,https://gravitymega.github.io/coachyass
       - if: steps.want.outputs.go == 'true'
         name: Envoyer dans la release
         env:
