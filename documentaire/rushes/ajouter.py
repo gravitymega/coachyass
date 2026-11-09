@@ -9,12 +9,13 @@ sont conservées. Pour une nouvelle vidéo, remplis ensuite ses notes dans catal
 Demande : ffmpeg et ffprobe installés.
 """
 import hashlib, json, os, subprocess, sys
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 D = os.path.dirname(os.path.abspath(__file__))
 CAT = os.path.join(D, 'catalogue.json')
 EXT = ('.mov', '.mp4', '.m4v')
-MONTREAL = timezone(timedelta(hours=-4))  # heure d'été ; passe à -5 de novembre à mars
+MONTREAL = ZoneInfo('America/Montreal')  # heure d'été ou normale selon la date
 
 def probe(p):
     j = json.loads(subprocess.check_output(['ffprobe', '-v', 'error', '-print_format', 'json', '-show_format', '-show_streams', p]))
