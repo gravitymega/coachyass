@@ -25,7 +25,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 # Voix par langue : nom Kokoro (ou mélange {voix: poids}), langue espeak, vitesse.
 VOICE = {
-    "fr": ("ff_siwis", "fr-fr", 1.0),
+    # Voix d'homme française (choix du 2 nov. 2026) : Kokoro n'a qu'une voix française (ff_siwis, femme) ;
+    # mélangée à 45 % avec la voix d'homme italienne im_nicola, elle donne une voix d'homme (≈145 Hz) qui garde
+    # la diction française. Banc d'essai Whisper sur 16 phrases du site : 20,6 % d'erreurs, contre 40 % pour
+    # l'ancienne voix Piper « pierre ».
+    "fr": ({"ff_siwis": 0.55, "im_nicola": 0.45}, "fr-fr", 1.0),
     "en": ("am_michael", "en-us", 1.0),
 }
 FILTERS = ",".join([
