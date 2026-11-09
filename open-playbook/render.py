@@ -18,6 +18,7 @@ Usage :
     python3 render.py horns-flare --channel "Ma chaîne"  # nom affiché en bas (ou OP_CHANNEL=...)
     python3 render.py --all --audio public              # avec la voix (clips de scripts/tts.py)
     python3 render.py --all --audio https://gravitymega.github.io/coachyass  # clips publiés du site
+    python3 render.py --all --audio voix-perso,https://gravitymega.github.io/coachyass  # voix clonée (scripts/voix-clone.py) en priorité
 
 Vidéos en anglais (demande du 2 nov. 2026) : textes à l'écran et voix (Kokoro, voix d'homme) en anglais seulement.
 Voix : avec --audio, la piste anglaise est placée sous l'animation,
@@ -1014,10 +1015,15 @@ def load_voice(t, source, cache):
         return None
     voice = {}
     for lang in (VL,):
-        clips = [fetch_clip(source, rel, cache) for rel in entry[lang]]
-        if not clips or any(c is None for c in clips) or len(clips) != len(t["steps"]) + 2:
+        # Plusieurs sources séparées par des virgules (ex. voix-perso,https://…) : la première qui a tous
+        # les clips de la fiche est prise, pour ne jamais mélanger deux voix dans une même vidéo.
+        for src in [x.strip() for x in source.split(",") if x.strip()]:
+            clips = [fetch_clip(src, rel, cache) for rel in entry[lang]]
+            if clips and all(c is not None for c in clips) and len(clips) == len(t["steps"]) + 2:
+                voice[lang] = [(c, clip_duration(c)) for c in clips]
+                break
+        else:
             return None
-        voice[lang] = [(c, clip_duration(c)) for c in clips]
     return voice
 
 
@@ -1131,7 +1137,8 @@ def main():
     ap.add_argument("--formats", default="vertical,square,horizontal", help="formats séparés par des virgules")
     ap.add_argument("--channel", default=CHANNEL, help="nom de la chaîne affiché en bas des vidéos")
     ap.add_argument("--shard", default="1/1", help="i/n : ne génère qu'une part des fiches (rendu en parallèle)")
-    ap.add_argument("--audio", help="voix : dossier contenant audio/ (ex. public) ou adresse du site publié")
+    ap.add_argument("--audio", help="voix : dossier contenant audio/ (ex. public ou voix-perso) ou adresse du site publié ; "
+                    "plusieurs sources séparées par des virgules, la première complète est prise")
     args = ap.parse_args()
     CHANNEL = args.channel
     formats = [f.strip() for f in args.formats.split(",") if f.strip()]

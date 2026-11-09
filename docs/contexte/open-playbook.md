@@ -206,3 +206,14 @@ Demande : sons parfaits, synchronisés avec le tableau, sans bruit ni mot mal pr
 - **Contrôle qualité** : `scripts/audio-qa.py --whisper <dossier>` (Whisper small de sherpa-onnx, releases GitHub `k2-fsa/sherpa-onnx` › `asr-models`), qui donne le WER par clip, le silence au début et la crête, et écrit `audio-qa.json`.
 - Voix personnalisée possible (proposé à l'utilisateur) : modèle Piper ou Kokoro, ou enregistrement de 1 à 3 min d'une personne consentante, converti en timbre (OpenVoice, MIT) à essayer.
 - Après publication : relancer le workflow des vidéos pour que les MP4 prennent les clips v4.
+
+## Voix de l'utilisateur dans toutes les vidéos (demande du 9 nov. 2026, PR #138)
+
+- Demande : « Met ma voix dans tt les vidéos de playbook ». Les vidéos restent en anglais (`VL = "en"`) ; la voix anglaise am_michael est remplacée, dans les MP4 seulement, par la voix clonée de l'utilisateur. Le site garde ses voix Kokoro.
+- `scripts/voix-clone.py` : Chatterbox Multilingue (MIT, même outil que `voix-locale/`), `language_id="en"`, à partir d'un échantillon de 10 s (le modèle n'en lit pas plus). Ne génère que les clips anglais utilisés par les vidéos (`audio-index.json`, ~2 480 clips), dans `voix-perso/audio/v4/en/<empreinte>.mp3`, avec le même traitement du son que `tts.py` (`encode`).
+- Contrôle Whisper (faster-whisper small) : Chatterbox ajoute parfois un bout de mot après la phrase (« …and roll », « two… ») ; tout ce qui suit le dernier mot attendu est coupé. S'il manque des mots, jusqu'à 3 prises (graines différentes), la meilleure est gardée. Essai sur 2 fiches (10 clips) : toutes les fins parasites coupées.
+- Vitesse : ~30 s de calcul par clip sur 4 processeurs (avec les nouvelles prises), donc environ 1 h par part sur GitHub Actions en 24 parts.
+- `render.py --audio voix-perso,https://…` : plusieurs sources, la première qui a **tous** les clips de la fiche est prise (jamais deux voix dans une vidéo).
+- Workflow des vidéos : job `voix` (24 parts, cache `op-voix-perso-v1-*` enregistré à chaque lancement, modèles en cache `hf-chatterbox-mtl-whisper-small-v1`), puis `render` télécharge les clips. Une part en échec ne bloque pas les vidéos (voix du site pour ces fiches).
+- **Échantillon** : l'extrait de 10 s du mémo vocal de l'utilisateur (Opus 24 kb/s, ~30 Ko) n'est **jamais dans le dépôt public**. Il est dans le secret GitHub `OP_VOIX_ECHANTILLON` (base64), que l'utilisateur doit créer (Settings → Secrets and variables → Actions). Sans ce secret, le job `voix` ne fait rien et les vidéos gardent la voix du site.
+- Changer de voix ou d'échantillon : remplacer le secret, puis passer `op-voix-perso-v1` à `v2` dans le workflow (sinon les anciens clips en cache sont gardés).
