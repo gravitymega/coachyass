@@ -216,14 +216,44 @@ Republie chaque inscription d'équipe en story (« Bienvenue aux [nom d'équipe]
 |---|---|---|
 | 22 nov. | 2 équipes inscrites | Relancer les capitaines et faire 2 Reels de plus |
 | 6 déc. (fin du lève-tôt) | 4 équipes (16 joueurs) | Prolonger le lève-tôt d'une semaine (« dernière chance ») |
-| **15 déc. (décision)** | **5 équipes (20 joueurs), environ le seuil de rentabilité** | Relancer écoles et parents, faire une soirée d'essai gratuite |
+| **15 déc. (décision)** | **6 équipes (22-24 joueurs), le seuil de rentabilité** | Relancer écoles et parents, faire une soirée d'essai gratuite, réduire les coûts (1 arbitre par terrain en saison régulière, bénévoles à la table) |
 | 3 janv. (fin des inscriptions) | 8 équipes | Former les équipes avec les agents libres |
 
 Chaque semaine, note les réponses à « Comment as-tu connu la ligue ? » et mets plus d'efforts dans le canal qui marche le mieux.
 
-**Budget rappel :**
-- Gymnase : 1 517,67 $ (11 dimanches, taxes incluses).
-- Prix augmentés de 80 % (10 nov.) pour payer les t-shirts, les arbitres et les bénévoles à la table de marque.
-- À compléter avec tes vrais montants : t-shirts (environ 32 × 15 $ = 480 $), arbitres (nombre × taux × 11 dimanches), table de marque (nombre × montant × 11 dimanches), trophées et publicité.
-- Exemple : avec 1 600 $ pour les arbitres et la table, le total est d'environ 4 000 $. Le seuil de rentabilité est alors d'environ 20 joueurs (5 équipes).
-- Revenus à 32 joueurs : de 6 300 $ (toutes en équipes de 4) à 6 850 $ (tous au lève-tôt).
+**Budget (recalculé le 10 nov. avec les prix +80 %)**
+
+Tous les calculs sont dans `budget-ligue-3x3.xlsx`. Change les cases jaunes (taux des arbitres, de la table, prix des t-shirts…) et tout se recalcule.
+
+Hypothèses de départ, à remplacer par tes vrais chiffres :
+- 2 arbitres à 25 $/h et 2 personnes à la table à 15 $/h, pendant 2 h, 11 dimanches.
+- T-shirt à 18 $ par joueur, 10 % d'imprévus.
+
+| Coûts fixes | Montant |
+|---|---|
+| Gymnase (11 × 120 $ + taxes) | 1 517,67 $ |
+| Arbitres (2 × 2 h × 11 × 25 $) | 1 100,00 $ |
+| Table de marque (2 × 2 h × 11 × 15 $) | 660,00 $ |
+| Trophées et médailles | 200,00 $ |
+| Ballons | 160,00 $ |
+| Publicité | 150,00 $ |
+| Imprévus (10 %) | 378,77 $ |
+| **Total** | **4 166,44 $** |
+
+Coût par joueur : t-shirt de 18 $.
+
+Revenu moyen par joueur, après rabais :
+- en équipe de 4, avec le rabais capitaine : 193 $ ;
+- lève-tôt : 214 $ ;
+- régulier : 268 $ ;
+- **mélange réaliste : 214,50 $**.
+
+| Scénario | Joueurs | Revenus | Coûts | **Profit** |
+|---|---|---|---|---|
+| 5 équipes | 20 | 4 290 $ | 4 526 $ | **−236 $** |
+| 6 équipes | 24 | 5 148 $ | 4 598 $ | **+550 $** |
+| 7 équipes | 28 | 6 006 $ | 4 670 $ | **+1 336 $** |
+| 8 équipes (complet) | 32 | 6 864 $ | 4 742 $ | **+2 122 $** |
+| 8 équipes, toutes en équipe de 4 | 32 | 6 176 $ | 4 742 $ | **+1 434 $** |
+
+**Seuil de rentabilité : 22 joueurs, donc 6 équipes.** Si toutes les inscriptions se font en équipe de 4, il en faut 24.

@@ -7,7 +7,7 @@ Demande du 10 novembre 2026 : nouveau programme 3x3 pour les 14-15 ans, **dimanc
 **Choix proposés (prix et rabais suggérés par Claude, acceptés par « vas-y ») :**
 - 8 équipes de 4 au maximum, 3x3 FIBA sur 2 demi-terrains.
 - Prix de départ proposés : 119 $ / 149 $ / 440 $. **L'utilisateur a demandé +80 % (10 nov.)** pour payer t-shirts, arbitres et table de marque : **214 $ lève-tôt jusqu'au 6 déc., 268 $ régulier, 792 $ l'équipe de 4 (198 $ / joueur)**. Capitaine : 20 $ de rabais. Amène un ami : 10 $ chacun (non majorés).
-- Seuil de rentabilité : environ 20 joueurs selon les coûts réels d'arbitres et de table. Décision le 15 déc.
+- Budget recalculé (10 nov.) dans `docs/marketing/ligue-3x3-dimanche/budget-ligue-3x3.xlsx` (formules, cases jaunes modifiables). Hypothèses : 2 arbitres à 25 $/h, 2 personnes à la table à 15 $/h, t-shirt à 18 $, 10 % d'imprévus. Coûts fixes : 4 166 $. **Seuil de rentabilité : 22 joueurs (6 équipes).** Profit à 8 équipes : environ 1 400 $ à 2 100 $. Décision le 15 déc.
 
 **Dans le code (`gravity-basketball-mtl/`) :**
 - `ligue-3x3-dimanche.html` : page de la ligue (cible du code QR), carte « Nouveau » sur l'accueil, ajoutée au sitemap.
