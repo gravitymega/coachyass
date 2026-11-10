@@ -32,6 +32,24 @@ const ZEFFY_LINKS = {
   'Gravity Prep': 'https://www.zeffy.com/en-CA/ticketing/gravity-prep-saison-2026--2027',
 };
 
+// Ligue 3x3 du dimanche, hiver 2027 (14-15 ans) — page ligue-3x3-dimanche.html.
+// Ses boutons mènent ici avec ?programme=Ligue%203v3&saison=dimanche-hiver-2027 :
+// même formulaire, même chaîne (Supabase, Notion, courriels), mais la catégorie
+// passe à 14-15 ans et la remarque est préfixée par SAISONS[...].label pour
+// qu'on reconnaisse ces inscriptions partout sans nouvelle valeur « Programme ».
+// zeffy : billet Zeffy dédié, vide tant qu'il n'est pas créé — un paiement Zeffy
+// affiche alors « paiement bientôt disponible » (jamais le billet de la ligue
+// du samedi).
+const SAISONS = {
+  'dimanche-hiver-2027': {
+    label: 'Ligue 3x3 du dimanche — hiver 2027',
+    age: '14-15 ans',
+    titre: 'Réserve ta place — Ligue 3x3 du dimanche (14-15 ans)',
+    zeffy: '',
+  },
+};
+const SAISON = SAISONS[new URLSearchParams(window.location.search).get('saison')] || null;
+
 // Formulaire Zeffy unique pour "Mes équipes" — un seul événement avec choix de
 // catégorie/équipe dans le formulaire lui-même. Vide tant que le lien n'est pas
 // fourni : chaque équipe affiche alors "Inscription bientôt disponible" au lieu
@@ -94,7 +112,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isPrep) dechargePrepCheckbox.checked = false;
     }
 
-    ageCategorieSelect.value = isLigueMaison ? '9-10 ans' : isPrep ? 'Prep' : isU15Masculin ? 'U15' : '13-14 ans';
+    const isSaison = !!SAISON && selected === 'Ligue 3v3';
+    ageCategorieSelect.value = isLigueMaison ? '9-10 ans' : isPrep ? 'Prep' : isU15Masculin ? 'U15' : isSaison ? SAISON.age : '13-14 ans';
+    const saisonInput = document.getElementById('saison');
+    if (saisonInput) saisonInput.value = isSaison ? SAISON.label : '';
 
     const interacEmailFormEl = document.getElementById('interac-email-form');
     if (interacEmailFormEl) interacEmailFormEl.textContent = isPrep ? GRAVITY_PREP_EMAIL : DEFAULT_INTERAC_EMAIL;
@@ -104,7 +125,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ? 'Réserve ta place — Gravity Prep'
         : isU15Masculin
           ? 'Réserve ta place — Gravity U15 Masculin'
-          : 'Réserve ta place — Gravity Basketball Ligue 3v3';
+          : isSaison
+            ? SAISON.titre
+            : 'Réserve ta place — Gravity Basketball Ligue 3v3';
 
     programmeToggles.forEach(t => {
       const input = t.querySelector('input');
@@ -173,7 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
         nom_equipe: isIndividuelSeulement ? '' : get('nom_equipe'),
         age_categorie: get('age_categorie'),
         date_naissance: get('date_naissance'),
-        remarque: get('remarque'),
+        saison: get('saison'),
+        remarque: [get('saison') ? `[${get('saison')}]` : '', get('remarque')].filter(Boolean).join(' '),
         reference: get('reference'),
         consentement_medias: data.get('consentement_medias') === 'Oui',
         mode_paiement: get('mode_paiement') || 'Interac',
@@ -341,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const zeffyLink = document.getElementById('zeffy-payment-link');
         const paymentPendingCta = document.getElementById('payment-pending-cta');
         const modePaiement = get('mode_paiement') || 'Interac';
-        const link = ZEFFY_LINKS[programme];
+        const link = payload.details.saison ? (SAISON && SAISON.zeffy) : ZEFFY_LINKS[programme];
         const interacEmailSuccessEl = document.getElementById('interac-email-success');
         if (interacEmailSuccessEl) interacEmailSuccessEl.textContent = isPrep ? GRAVITY_PREP_EMAIL : DEFAULT_INTERAC_EMAIL;
 

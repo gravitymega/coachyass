@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificat cadeau Ligue 3x3 | Gravity Basketball</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Certificat cadeau imprimable (Lettre paysage). Les champs « Pour » et « De la part de »
+     se remplissent à l'écran avant d'imprimer. */
+  @page { size: letter landscape; margin: 0; }
+  :root { --bg:#0d0b12; --orange:#e8672e; --orange-l:#ff8a4c; --magenta:#d81e5b; --magenta-l:#f0425f; --muted:#c9c4d3; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #2a2536; }
+  body { font-family: "Inter", sans-serif; color: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .controls { max-width: 760px; margin: 0 auto; padding: 16px; display: grid; gap: 10px; grid-template-columns: 1fr 1fr auto; align-items: end; }
+  .controls label { display: grid; gap: 4px; font-size: 13px; color: #ddd; }
+  .controls input { font: inherit; padding: 8px 10px; border-radius: 8px; border: 1px solid #555; background: #17141d; color: #fff; }
+  .controls button { font: inherit; font-weight: 700; padding: 9px 16px; border-radius: 999px; border: 0; background: var(--orange); color: #fff; cursor: pointer; }
+  @media (max-width: 600px) { .controls { grid-template-columns: 1fr; } }
+  .cert {
+    width: 11in; height: 8.5in; margin: 0 auto; position: relative; overflow: hidden; padding: .6in .7in;
+    background:
+      radial-gradient(circle at 92% 10%, rgba(216,30,91,.45), transparent 40%),
+      radial-gradient(circle at 5% 90%, rgba(232,103,46,.38), transparent 42%),
+      var(--bg);
+    display: flex; flex-direction: column;
+  }
+  .frame { position: absolute; inset: .3in; border: 2px solid rgba(255,138,76,.55); border-radius: 22px; pointer-events: none; }
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .top img { height: .9in; }
+  .top span { font-family: "Oswald", sans-serif; text-transform: uppercase; letter-spacing: .14em; font-size: 14pt; color: var(--orange-l); }
+  h1 { font-family: "Oswald", sans-serif; text-transform: uppercase; font-size: 54pt; line-height: .95; margin: .35in 0 .1in;
+       background: linear-gradient(135deg, var(--orange-l), var(--magenta-l)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { font-size: 17pt; margin: 0 0 .35in; color: var(--muted); }
+  .who { display: grid; grid-template-columns: 1fr 1fr; gap: .5in; margin-bottom: .35in; }
+  .who div { border-bottom: 2px solid rgba(255,255,255,.5); padding-bottom: 6px; }
+  .who b { display: block; font-family: "Oswald", sans-serif; text-transform: uppercase; letter-spacing: .08em; font-size: 11pt; color: var(--orange-l); }
+  .who span { font-size: 22pt; font-weight: 700; min-height: 1.3em; display: block; }
+  .details { display: grid; grid-template-columns: repeat(3, 1fr); gap: .25in; margin-top: auto; }
+  .details div { border-left: 4px solid var(--orange); padding-left: 12px; }
+  .details b { display: block; font-family: "Oswald", sans-serif; text-transform: uppercase; font-size: 11pt; letter-spacing: .08em; color: var(--orange-l); }
+  .details span { font-size: 13.5pt; font-weight: 600; }
+  .note { margin-top: .25in; font-size: 10.5pt; color: var(--muted); }
+  @media print { html, body { background: var(--bg); } .controls { display: none; } }
+  @media screen and (max-width: 1060px) { .cert { transform-origin: top left; transform: scale(calc(100vw / 1056px)); margin: 0; } body { overflow-x: hidden; } }
+</style>
+</head>
+<body>
+<div class="controls">
+  <label>Pour (nom du jeune)<input id="for" type="text" placeholder="Ex. Adam" autocomplete="off"></label>
+  <label>De la part de<input id="from" type="text" placeholder="Ex. Papa et maman" autocomplete="off"></label>
+  <button type="button" onclick="window.print()">Imprimer</button>
+</div>
+<div class="cert">
+  <div class="frame" aria-hidden="true"></div>
+  <div class="top">
+    <img src="assets/logo.png" alt="Gravity Basketball">
+    <span>Certificat cadeau</span>
+  </div>
+  <h1>Une saison de<br>Ligue 3x3 du dimanche</h1>
+  <p class="sub">11 dimanches de basket, un maillot, des matchs arbitrés et une finale à gagner.</p>
+  <div class="who">
+    <div><b>Pour</b><span id="for-out"></span></div>
+    <div><b>De la part de</b><span id="from-out"></span></div>
+  </div>
+  <div class="details">
+    <div><b>Quand</b><span>Dimanches 12h-14h<br>10 janvier au 21 mars 2027</span></div>
+    <div><b>Où</b><span>Collège Sainte-Anne<br>1250, boul. St-Joseph, Lachine</span></div>
+    <div><b>Infos</b><span>gravity.osmm-mtl.site<br>@GravityBasketballMTL</span></div>
+  </div>
+  <p class="note">Place réservée par inscription en ligne. Ce certificat n'a pas de valeur monétaire : il accompagne une inscription déjà payée.</p>
+</div>
+<script>
+  [['for', 'for-out'], ['from', 'from-out']].forEach(function (pair) {
+    var input = document.getElementById(pair[0]);
+    var out = document.getElementById(pair[1]);
+    input.addEventListener('input', function () { out.textContent = input.value; });
+  });
+</script>
+</body>
+</html>

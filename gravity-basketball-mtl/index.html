@@ -188,6 +188,23 @@
       <h2 class="section-title">Nos programmes Gravity Basketball</h2>
       <p class="section-lead">Quatre programmes sous la bannière Gravity Basketball, secteur Dorval-Lachine à Montréal — d'autres suivront.</p>
 
+      <h3 class="programme-name">Nouveau · Ligue 3x3 du dimanche (14-15 ans)</h3>
+      <div class="programme-card">
+        <div class="programme-badge">
+          <img src="assets/logo.png" alt="Gravity Basketball" width="512" height="396" loading="lazy">
+        </div>
+        <div class="programme-details">
+          <ul class="programme-list">
+            <li><span class="li-label">Catégorie d'âge</span><span class="li-value">14-15 ans</span></li>
+            <li><span class="li-label">Horaire</span><span class="li-value">Dimanches 12h-14h, 10 janvier au 21 mars 2027</span></li>
+            <li><span class="li-label">Lieu</span><span class="li-value">Collège Sainte-Anne, Lachine</span></li>
+            <li><span class="li-label">Inscription</span><span class="li-value">Équipe de 4 ou agent libre</span></li>
+          </ul>
+          <p style="text-align:center; color:var(--accent-light); font-weight:700; font-size:0.9rem; margin-bottom:12px;">8 équipes maximum · Lève-tôt 119 $ jusqu'au 6 décembre</p>
+          <a href="ligue-3x3-dimanche.html" class="btn btn-primary btn-block">Voir la ligue</a>
+        </div>
+      </div>
+
       <h3 class="programme-name" id="programme-name-ligue-3v3">Gravity Basketball Ligue 3v3</h3>
       <div class="programme-card">
         <div class="programme-badge">
@@ -423,6 +440,7 @@
       <p class="section-lead">Remplis le formulaire ci-dessous. On te recontacte pour confirmer par message ou téléphone.</p>
 
       <form id="inscription-form" class="form-card" name="inscription-gravity-basketball">
+        <input type="hidden" name="saison" id="saison" value="">
 
         <div class="form-section">
           <p class="form-section-title">Programme</p>
@@ -478,6 +496,7 @@
             <label for="age_categorie">Catégorie d'âge</label>
             <select id="age_categorie" name="age_categorie" required>
               <option value="13-14 ans">13-14 ans</option>
+              <option value="14-15 ans">14-15 ans</option>
               <option value="9-10 ans">9-10 ans</option>
               <option value="Prep">Prep</option>
               <option value="U15">U15</option>
