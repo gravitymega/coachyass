@@ -14,6 +14,8 @@ Tout est prêt à copier-coller. Liens utiles :
 
 ## 1. Courriel à Nicolas Ramirez (Collège Sainte-Anne)
 
+> ✅ **Gymnase confirmé** (10 nov. 2026) : dimanches 12h-14h. Ce courriel n'est plus nécessaire. Il reste en modèle, au cas où tu voudrais ajouter les samedis 9 janvier ou 20 mars.
+
 **À :** Ramirezn@sainteanne.ca
 **Objet :** Confirmation location gymnase A, hiver 2027 (dimanches), OSMM
 
@@ -52,9 +54,9 @@ Tout est prêt à copier-coller. Liens utiles :
 
 | Billet | Prix | Disponibilité |
 |---|---|---|
-| Joueur, lève-tôt | 119 $ | jusqu'au 6 décembre 2026 |
-| Joueur, régulier | 149 $ | à partir du 7 décembre 2026 |
-| Équipe complète (4 joueurs) | 440 $ | toute la période |
+| Joueur, lève-tôt | 214 $ | jusqu'au 6 décembre 2026 |
+| Joueur, régulier | 268 $ | à partir du 7 décembre 2026 |
+| Équipe complète (4 joueurs) | 792 $ | toute la période |
 
 **Quantité totale :** 32 places (8 équipes de 4). Ajoute une liste d'attente si Zeffy le permet.
 
@@ -87,7 +89,7 @@ Les visuels sont dans `instagram/`. Mets le lien de la page de la ligue dans la 
 | **Ven. 20 nov.** | `3-format.png` | B |
 | **Mar. 24 nov.** | `4-agent-libre.png` | C |
 | **Lun. 30 nov.** | `2-prix-leve-tot.png` | D |
-| **Jeu. 3 déc.** | `2-prix-leve-tot.png` (story) | « Dernière chance : 119 $ jusqu'à dimanche » |
+| **Jeu. 3 déc.** | `2-prix-leve-tot.png` (story) | « Dernière chance : 214 $ jusqu'à dimanche » |
 | **Mar. 8 déc., puis 15 et 22 déc.** | `5-cadeau-noel.png` | E |
 | **Dim. 3 janv.** | `1-annonce.png` (story) | « Inscriptions : dernière journée. Il reste X places. » |
 | **Mer. 6 janv.** | Annonce des équipes (noms, logos) | F |
@@ -125,10 +127,10 @@ Republie chaque inscription d'équipe en story (« Bienvenue aux [nom d'équipe]
 > Ou mieux : tag les 3 amis avec qui tu montes ton équipe 👇
 
 **Légende D (lève-tôt) :**
-> 119 $ pour 11 dimanches de basket, jusqu'au 6 décembre seulement.
-> Équipe complète de 4 : 440 $. Capitaine : 20 $ de rabais en plus. Amène un ami : 10 $ chacun.
+> 214 $ pour 11 dimanches de basket, jusqu'au 6 décembre seulement.
+> Équipe complète de 4 : 792 $. Capitaine : 20 $ de rabais en plus. Amène un ami : 10 $ chacun.
 >
-> Après le 6 décembre : 149 $. 👉 Lien dans la bio
+> Après le 6 décembre : 268 $. 👉 Lien dans la bio
 
 **Légende E (cadeau, pour les parents) :**
 > Vous cherchez un cadeau qui le fait bouger ? 🎄
@@ -157,7 +159,7 @@ Republie chaque inscription d'équipe en story (« Bienvenue aux [nom d'équipe]
 > ✅ Maillot inclus
 > ✅ Seul ou en équipe de 4
 >
-> 💰 119 $ jusqu'au 6 décembre (ensuite 149 $). Équipe de 4 : 440 $.
+> 💰 214 $ jusqu'au 6 décembre (ensuite 268 $). Équipe de 4 : 792 $.
 > 🎄 Idée cadeau des Fêtes : un certificat cadeau est disponible sur le site.
 >
 > Seulement 8 équipes. Inscription : https://gravity.osmm-mtl.site/ligue-3x3-dimanche.html
@@ -214,12 +216,14 @@ Republie chaque inscription d'équipe en story (« Bienvenue aux [nom d'équipe]
 |---|---|---|
 | 22 nov. | 2 équipes inscrites | Relancer les capitaines et faire 2 Reels de plus |
 | 6 déc. (fin du lève-tôt) | 4 équipes (16 joueurs) | Prolonger le lève-tôt d'une semaine (« dernière chance ») |
-| **15 déc. (décision)** | **5 équipes (20 joueurs), le seuil de rentabilité** | Baisser à 6 équipes, ou faire une soirée d'essai gratuite |
+| **15 déc. (décision)** | **5 équipes (20 joueurs), environ le seuil de rentabilité** | Relancer écoles et parents, faire une soirée d'essai gratuite |
 | 3 janv. (fin des inscriptions) | 8 équipes | Former les équipes avec les agents libres |
 
 Chaque semaine, note les réponses à « Comment as-tu connu la ligue ? » et mets plus d'efforts dans le canal qui marche le mieux.
 
 **Budget rappel :**
 - Gymnase : 1 517,67 $ (11 dimanches, taxes incluses).
-- Total estimé : environ 2 400 $ avec les maillots, les trophées et un peu de publicité.
-- Revenus à 32 joueurs : de 3 500 $ à 4 000 $.
+- Prix augmentés de 80 % (10 nov.) pour payer les t-shirts, les arbitres et les bénévoles à la table de marque.
+- À compléter avec tes vrais montants : t-shirts (environ 32 × 15 $ = 480 $), arbitres (nombre × taux × 11 dimanches), table de marque (nombre × montant × 11 dimanches), trophées et publicité.
+- Exemple : avec 1 600 $ pour les arbitres et la table, le total est d'environ 4 000 $. Le seuil de rentabilité est alors d'environ 20 joueurs (5 équipes).
+- Revenus à 32 joueurs : de 6 300 $ (toutes en équipes de 4) à 6 850 $ (tous au lève-tôt).
