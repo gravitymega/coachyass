@@ -14,7 +14,8 @@
     "build:single": "node scripts/single.mjs",
     "videos": "python3 render.py --all",
     "audio:jobs": "tsx scripts/narration-jobs.ts",
-    "audio": "tsx scripts/narration-jobs.ts && python3 scripts/tts.py"
+    "audio": "tsx scripts/narration-jobs.ts && python3 scripts/tts.py",
+    "seances": "tsx scripts/generate-seances.ts"
   },
   "devDependencies": {
     "@fontsource/barlow": "^5.3.0",

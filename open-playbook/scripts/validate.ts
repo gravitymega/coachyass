@@ -6,6 +6,7 @@ import { dirname, join } from "node:path";
 import Ajv from "ajv";
 import type { Library } from "../src/engine.ts";
 import { checkTactic } from "../src/checks.ts";
+import { expandSeance, themeById, type SeancesFile } from "../src/seances.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const readJson = (p: string) => JSON.parse(readFileSync(join(root, p), "utf8"));
@@ -55,6 +56,24 @@ for (const plan of lib.plans) {
   }
   const planMin = plan.blocks.reduce((n, b) => n + b.min, 0);
   if (planMin !== plan.duration) err(where, `les blocs durent ${planMin} min au lieu de ${plan.duration}`);
+}
+// Séances générées (data/seances.json, npm run seances) : ids uniques, fiches existantes, durée = somme des blocs.
+const seances = (readJson("data/seances.json") as SeancesFile).plans;
+const byIdV = new Map(lib.tactics.map((t) => [t.id, t]));
+const kinds = new Set(["ech", "phys", "tech", "tech2", "sit", "sit2", "opp", "match", "calme"]);
+for (const s of seances) {
+  const where = `seances.json › ${s.id}`;
+  if (planIds.has(s.id)) err(where, "id en double");
+  planIds.add(s.id);
+  if (!themeById.has(s.theme)) err(where, `thème inconnu « ${s.theme} »`);
+  if (!["general", "jeunes", "amateurs", "pro", "pre-saison", "veille-de-match"].includes(s.level)) err(where, `niveau inconnu « ${s.level} »`);
+  const min = s.blocks.reduce((n, b) => n + b.min, 0);
+  if (min !== s.duration) err(where, `les blocs durent ${min} min au lieu de ${s.duration}`);
+  for (const b of s.blocks) {
+    if (!kinds.has(b.k)) err(where, `bloc inconnu « ${b.k} »`);
+    for (const ref of b.ids ?? []) if (!byIdV.has(ref)) err(where, `fiche inconnue « ${ref} »`);
+  }
+  if (themeById.has(s.theme)) for (const b of expandSeance(s, byIdV).blocks) if (/«\s*»|“”|undefined/.test(b.desc.fr + b.desc.en)) err(where, `texte incomplet dans « ${b.title.fr} »`);
 }
 const familyNames = readJson("data/families.json") as Record<string, unknown>;
 for (const f of new Set(lib.tactics.map((t) => t.family).filter(Boolean))) {
@@ -108,5 +127,5 @@ if (errors.length) {
   process.exit(1);
 }
 console.log(
-  `✓ ${lib.tactics.length} fiches valides (${animated} animées), ${lib.glossary.length} termes, ${lib.plans.length} plans de séance, ${lib.cats.length} catégories${catalogueInfo}.`,
+  `✓ ${lib.tactics.length} fiches valides (${animated} animées), ${lib.glossary.length} termes, ${lib.plans.length} plans de séance, ${seances.length} séances générées, ${lib.cats.length} catégories${catalogueInfo}.`,
 );

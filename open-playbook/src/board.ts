@@ -113,6 +113,8 @@ export class Board {
   private raf = 0;
   private last = 0;
   private stopAt: number | null = null;
+  /** Vitesse de l'animation : 1 = normale ; goTo(k, false, secondes) l'ajuste pour suivre la voix. */
+  private rate = 1;
   playing = false;
   loop = false;
   private frameListeners: FrameListener[] = [];
@@ -265,7 +267,7 @@ export class Board {
   private tick = (now: number) => {
     const dt = Math.min(0.1, (now - this.last) / 1000);
     this.last = now;
-    this.t += dt;
+    this.t += dt * this.rate;
     if (this.stopAt !== null && this.t >= this.stopAt) {
       this.t = this.stopAt;
       this.stopAt = null;
@@ -288,6 +290,7 @@ export class Board {
 
   play() {
     if (!this.timing.length) return;
+    this.rate = 1;
     if (this.t >= this.total) this.t = 0;
     this.stopAt = null;
     this.run();
@@ -315,8 +318,17 @@ export class Board {
     this.playing ? this.pause() : this.play();
   }
 
-  /** Va à l'étape k (-1 = départ). Anime le déplacement sauf si reduce. */
-  goTo(k: number, reduce: boolean) {
+  /** Durée normale du mouvement de l'étape k (déplacements puis passe), en secondes. */
+  motionOf(k: number) {
+    const tm = this.timing[k];
+    return tm ? tm.move + tm.pass : 0;
+  }
+
+  /**
+   * Va à l'étape k (-1 = départ). Anime le déplacement sauf si reduce.
+   * seconds : durée voulue du mouvement (pour qu'il se déroule pendant que la voix décrit l'étape).
+   */
+  goTo(k: number, reduce: boolean, seconds?: number) {
     const n = this.timing.length;
     k = Math.max(-1, Math.min(n - 1, k));
     this.pause();
@@ -327,6 +339,7 @@ export class Board {
     }
     const tm = this.timing[k];
     const settled = tm.start + tm.move + tm.pass + 0.001;
+    this.rate = seconds && seconds > 0 && tm.move + tm.pass > 0 ? (tm.move + tm.pass) / seconds : 1;
     if (reduce) {
       this.t = settled;
       this.render();

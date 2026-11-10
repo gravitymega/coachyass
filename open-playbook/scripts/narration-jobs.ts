@@ -1,11 +1,12 @@
 // npm run audio:jobs : liste des clips audio à générer (un par segment de narration et par langue).
-// Sorties : audio-jobs.json [{ lang, text, path }], lu par scripts/tts.py ;
+// Sorties : audio-jobs.json [{ lang, text, path }] (text = texte pour la voix, termes anglais entre ⟦…⟧), lu par scripts/tts.py ;
 // audio-index.json { id: { fr: [chemins], en: [chemins] } } (présentation, étapes, conclusion), lu par render.py --audio.
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import type { Lang, Library, Text } from "../src/engine.ts";
 import { clipPath, narrationSegments, type NbaTeam } from "../src/narration.ts";
+import { ttsText } from "../src/pronounce.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (p: string) => JSON.parse(readFileSync(join(root, p), "utf8"));
@@ -21,7 +22,7 @@ for (const t of lib.tactics) {
   for (const lang of ["fr", "en"] as Lang[]) {
     for (const text of narrationSegments(t, lang, t.family ? coaching.against[t.family] : undefined, nba[t.id])) {
       const path = await clipPath(text, lang);
-      jobs.set(path, { lang, text, path });
+      jobs.set(path, { lang, text: ttsText(text, lang), path });
       index[t.id][lang].push(path);
     }
   }

@@ -23,7 +23,7 @@ defaults:
     working-directory: open-playbook
 
 jobs:
-  # Explication audio, voix d'homme libres : français Piper (4 parts), anglais Kokoro (16 parts, plus lent mais très naturel).
+  # Explication audio : Kokoro pour le français et l'anglais (16 parts chacun), termes anglais dits à l'anglaise en français.
   # Les clips sont gardés en cache : seuls les textes nouveaux ou modifiés sont régénérés.
   audio:
     if: github.event_name != 'pull_request'
@@ -33,10 +33,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { lang: fr, shard: 1, of: 4 }
-          - { lang: fr, shard: 2, of: 4 }
-          - { lang: fr, shard: 3, of: 4 }
-          - { lang: fr, shard: 4, of: 4 }
+          - { lang: fr, shard: 1, of: 16 }
+          - { lang: fr, shard: 2, of: 16 }
+          - { lang: fr, shard: 3, of: 16 }
+          - { lang: fr, shard: 4, of: 16 }
+          - { lang: fr, shard: 5, of: 16 }
+          - { lang: fr, shard: 6, of: 16 }
+          - { lang: fr, shard: 7, of: 16 }
+          - { lang: fr, shard: 8, of: 16 }
+          - { lang: fr, shard: 9, of: 16 }
+          - { lang: fr, shard: 10, of: 16 }
+          - { lang: fr, shard: 11, of: 16 }
+          - { lang: fr, shard: 12, of: 16 }
+          - { lang: fr, shard: 13, of: 16 }
+          - { lang: fr, shard: 14, of: 16 }
+          - { lang: fr, shard: 15, of: 16 }
+          - { lang: fr, shard: 16, of: 16 }
           - { lang: en, shard: 1, of: 16 }
           - { lang: en, shard: 2, of: 16 }
           - { lang: en, shard: 3, of: 16 }
@@ -65,25 +77,23 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install piper-tts==1.8.0 kokoro-onnx==0.6.1 soundfile && sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
-      - name: Voix Piper (cache)
+      - run: pip install kokoro-onnx==0.6.1 soundfile && sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Voix Kokoro (cache)
         uses: actions/cache@v4
         with:
           path: open-playbook/voices
-          key: voices-v3-${{ matrix.lang }}
+          key: voices-kokoro-v1
       - name: Télécharger les voix si absentes
         run: |
           mkdir -p voices
-          get() { [ -f "voices/$2.onnx" ] || { curl -fsSL -o "voices/$2.onnx" "https://huggingface.co/rhasspy/piper-voices/resolve/main/$1/$2.onnx" && curl -fsSL -o "voices/$2.onnx.json" "https://huggingface.co/rhasspy/piper-voices/resolve/main/$1/$2.onnx.json"; }; }
-          if [ "${{ matrix.lang }}" = fr ]; then get fr/fr_FR/upmc/medium fr_FR-upmc-medium; fi
-          # Kokoro-82M (Apache 2.0) : modèle et voix publiés dans les releases de kokoro-onnx.
-          if [ "${{ matrix.lang }}" = en ]; then for f in kokoro-v1.0.int8.onnx voices-v1.0.bin; do [ -f "voices/$f" ] || curl -fsSL -o "voices/$f" "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/$f"; done; fi
+          # Kokoro-82M (Apache 2.0), voix française et anglaise : modèle et voix publiés dans les releases de kokoro-onnx.
+          for f in kokoro-v1.0.int8.onnx voices-v1.0.bin; do [ -f "voices/$f" ] || curl -fsSL -o "voices/$f" "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/$f"; done
       - name: Clips déjà générés (cache)
         uses: actions/cache@v4
         with:
           path: open-playbook/public/audio
-          key: op-audio-v3-${{ matrix.lang }}-${{ matrix.shard }}of${{ matrix.of }}-${{ hashFiles('open-playbook/audio-jobs.json') }}
-          restore-keys: op-audio-v3-${{ matrix.lang }}-${{ matrix.shard }}of${{ matrix.of }}-
+          key: op-audio-v4-${{ matrix.lang }}-${{ matrix.shard }}of${{ matrix.of }}-${{ hashFiles('open-playbook/audio-jobs.json') }}
+          restore-keys: op-audio-v4-${{ matrix.lang }}-${{ matrix.shard }}of${{ matrix.of }}-
       - run: python3 scripts/tts.py --voices voices --lang ${{ matrix.lang }} --shard ${{ matrix.shard }}/${{ matrix.of }}
       - uses: actions/upload-artifact@v4
         with:
@@ -132,3 +142,6 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          # Le site contient des milliers de clips audio : la copie vers Pages dépasse parfois les 10 min par défaut.
+          timeout: 1800000

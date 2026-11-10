@@ -838,3 +838,13 @@ body[data-screen=parents] #factory, body[data-screen=parents] #fog { display: no
 #rooms, #acts-title, #map-ville { scroll-margin-top: 64px; }
 @keyframes pop { 0% { transform: scale(.6); } 70% { transform: scale(1.15); } 100% { transform: scale(1); } }
 .choice:active, .room:active, .act-btn:active, .mission:active { transform: scale(.97); }
+
+/* Historique des parties */
+.hist { list-style: none; margin: 6px 0 14px; padding: 0; display: grid; gap: 4px; }
+.hist li { background: rgba(255, 255, 255, .1); border-radius: 10px; padding: 8px 12px; font-size: 16px; }
+.hist .hist-day { background: none; padding: 8px 2px 0; font-weight: 700; color: #ffd166; text-transform: capitalize; }
+.hist-time { opacity: .7; font-variant-numeric: tabular-nums; margin-right: 6px; }
+.hist-empty { opacity: .8; }
+.hist-box { margin: 10px 0; }
+.hist-box summary { cursor: pointer; font-weight: 700; }
+.hist-box .hist li { background: rgba(0, 0, 0, .05); }

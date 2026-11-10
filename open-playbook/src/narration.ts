@@ -1,10 +1,12 @@
 // Texte lu à voix haute pour une fiche : partagé par le site (lecture) et scripts/narration-jobs.ts (fichiers audio).
 // Un clip audio par segment : présentation, chaque étape, puis « pourquoi ça marche ».
 import type { Lang, Tactic, Text } from "./engine";
+import { ttsText } from "./pronounce";
 
 /** Changer la version d'une langue régénère tous ses clips (nouvelle voix, nouveaux réglages).
- * fr v2 : Piper upmc « pierre » ; en v3 : Kokoro am_michael (voix d'homme réaliste). */
-export const AUDIO_VERSIONS: Record<Lang, string> = { fr: "v2", en: "v3" };
+ * v4 : Kokoro pour les deux langues, termes anglais prononcés à l'anglaise en français (src/pronounce.ts),
+ * silences coupés et son nettoyé (scripts/tts.py). */
+export const AUDIO_VERSIONS: Record<Lang, string> = { fr: "v4", en: "v4" };
 
 export interface NbaTeam {
   team: string;
@@ -66,9 +68,10 @@ export function narrationSegments(t: Tactic, lang: Lang, against?: Text, nba?: N
   return [`${t.name[lang]}. ${t.sum[lang]}`, ...(t.steps ?? []).map((s) => s.c[lang]), end].map((x) => speakable(x, lang));
 }
 
-/** Nom du fichier d'un clip : empreinte SHA-1 de la langue et du texte (écrite dans audio-jobs.json pour scripts/tts.py). */
+/** Nom du fichier d'un clip : empreinte SHA-1 de la langue et du texte envoyé à la voix (ttsText),
+ * écrite dans audio-jobs.json pour scripts/tts.py. */
 export async function clipPath(text: string, lang: Lang) {
-  const data = new TextEncoder().encode(`${lang}|${text}`);
+  const data = new TextEncoder().encode(`${lang}|${ttsText(text, lang)}`);
   const digest = await crypto.subtle.digest("SHA-1", data);
   const hex = [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
   return `audio/${AUDIO_VERSIONS[lang]}/${lang}/${hex.slice(0, 16)}.mp3`;

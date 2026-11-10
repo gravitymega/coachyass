@@ -10,10 +10,11 @@ import { Board } from "./board";
 import type { Board3D } from "./board3d";
 import { Editor } from "./editor";
 import coachingJson from "../data/coaching.json";
-import { normalize, shotKind, type Lang, type Library, type ShotKind, type Tactic, type Text } from "./engine";
+import { normalize, shotKind, type Lang, type Library, type Plan, type ShotKind, type Tactic, type Text } from "./engine";
+import { expandSeance, SEANCE_DURATIONS, SEANCE_LEVELS, THEMES, themeById, type SeancesFile } from "./seances";
 import nbaJson from "../data/nba.json";
 import { clipPath, narrationSegments, type NbaTeam } from "./narration";
-import { clipsAvailable, playClip, speak, stopSpeaking } from "./voice";
+import { audioRunning, clipsAvailable, loadClip, outputDelay, playBuffer, speak, stopSpeaking, unlockAudio, voiceSupported } from "./voice";
 
 const lib = library as Library;
 const families = familiesJson as Record<string, Text>;
@@ -115,14 +116,25 @@ function header(active: string) {
         ${nav.map(([h, l]) => `<a href="#${h}"${active === h ? ' aria-current="page"' : ""}>${l}</a>`).join("")}
       </nav>
       <div class="prefs">
+        <button type="button" id="search-btn" class="chip search-btn" aria-haspopup="dialog" aria-keyshortcuts="/"><svg aria-hidden="true" viewBox="0 0 24 24" width="15" height="15"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>${tr("Rechercher", "Search")}</button>
         <button type="button" id="lang-btn" class="chip" aria-label="${tr("Changer de langue : passer en anglais", "Change language: switch to French")}">${state.lang === "fr" ? "FR · <span>EN</span>" : "EN · <span>FR</span>"}</button>
         <button type="button" id="theme-btn" class="chip">${themeLabel}</button>
       </div>
     </div>
-  </header>`;
+  </header>
+  <dialog id="search-dlg" class="search-dlg" aria-label="${tr("Rechercher un système", "Find a play")}">
+    <form method="dialog" class="search-box" role="search">
+      <label for="s-q" class="sr">${tr("Rechercher un système", "Find a play")}</label>
+      <input id="s-q" type="search" placeholder="${tr("Nom, famille, défense, équipe NBA… ex. horns, zone 2-3, Spurs", "Name, family, defense, NBA team… e.g. horns, 2-3 zone, Spurs")}" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="s-list" aria-autocomplete="list" />
+      <button type="button" class="chip s-close" id="s-close">${tr("Fermer", "Close")}</button>
+    </form>
+    <ul id="s-list" class="s-list" role="listbox" aria-label="${tr("Résultats", "Results")}"></ul>
+    <p class="s-foot" id="s-foot" aria-live="polite"></p>
+  </dialog>`;
 }
 
 function bindHeader() {
+  bindSearch();
   document.getElementById("lang-btn")?.addEventListener("click", () => {
     state.lang = other(state.lang);
     store.set("lang", state.lang);
@@ -145,6 +157,120 @@ const footer = () => `
     )}</p>
   </div></footer>`;
 
+// ------------------------------------------------------------------ recherche
+/** Texte cherché d'une fiche : noms, résumé, famille, catégorie, points clés, équipes NBA. */
+const hayCache = new Map<string, string>();
+function hay(t: Tactic) {
+  const k = `${state.lang}:${t.id}`;
+  let h = hayCache.get(k);
+  if (h === undefined) {
+    h = normalize([t.name.fr, t.name.en, t.sum.fr, t.sum.en, famName(t.family), catName(t.cat), t.id.replace(/-/g, " "), ...(t.keys?.fr ?? []), ...(t.keys?.en ?? []), ...(nba[t.id] ?? []).map((x) => x.team)].join(" "));
+    hayCache.set(k, h);
+  }
+  return h;
+}
+const matches = (t: Tactic, words: string[]) => words.every((w) => hay(t).includes(w));
+
+/** Résultats classés : le nom d'abord (début du nom, puis mot du nom), puis le reste. */
+function searchTactics(q: string): Tactic[] {
+  const words = normalize(q.trim()).split(/\s+/).filter(Boolean);
+  if (!words.length) return [];
+  const nq = words.join(" ");
+  const score = (t: Tactic) => {
+    const names = [t.name.fr, t.name.en].map(normalize);
+    if (names.some((n) => n.startsWith(nq))) return 0;
+    if (names.some((n) => n.includes(nq))) return 1;
+    if (words.every((w) => names.some((n) => n.includes(w)))) return 2;
+    return t.cat === "exercices" || t.cat === "principes" ? 4 : 3;
+  };
+  return lib.tactics
+    .filter((t) => matches(t, words))
+    .map((t) => [score(t), t] as const)
+    .sort((a, b) => a[0] - b[0] || txt(a[1].name).localeCompare(txt(b[1].name), state.lang))
+    .map(([, t]) => t);
+}
+
+const S_MAX = 8;
+let searchQ = "";
+function openSearch() {
+  const dlg = document.getElementById("search-dlg") as HTMLDialogElement | null;
+  if (!dlg || dlg.open) return;
+  dlg.showModal();
+  const input = document.getElementById("s-q") as HTMLInputElement;
+  input.value = searchQ;
+  input.select();
+  renderSearch();
+}
+
+function renderSearch() {
+  const input = document.getElementById("s-q") as HTMLInputElement;
+  const ul = document.getElementById("s-list")!;
+  const foot = document.getElementById("s-foot")!;
+  searchQ = input.value;
+  const res = searchTactics(searchQ);
+  input.setAttribute("aria-expanded", String(res.length > 0));
+  input.removeAttribute("aria-activedescendant");
+  ul.innerHTML = res
+    .slice(0, S_MAX)
+    .map(
+      (t, i) => `<li role="option" id="s-opt-${i}" aria-selected="${i === 0}"><a href="#${t.id}" tabindex="-1">
+      <strong>${esc(txt(t.name))}</strong><span class="s-meta">${esc(catName(t.cat))} · ${esc(famName(t.family))}${nba[t.id] ? ` · <span class="tag-nba">NBA</span>` : ""}</span></a></li>`,
+    )
+    .join("");
+  if (res.length) input.setAttribute("aria-activedescendant", "s-opt-0");
+  foot.innerHTML = !searchQ.trim()
+    ? tr("Tape le nom d'un système, une famille (horns, flex…), une défense (zone 2-3, press) ou une équipe NBA.", "Type a play name, a family (horns, flex…), a defense (2-3 zone, press) or an NBA team.")
+    : !res.length
+      ? tr("Aucun système trouvé. Essaie un autre mot.", "No play found. Try another word.")
+      : `${res.length} ${tr(res.length > 1 ? "résultats" : "résultat", res.length > 1 ? "results" : "result")}${res.length > S_MAX ? ` · <button type="button" class="linkish" id="s-all">${tr("Voir tout dans la bibliothèque", "See all in the library")}</button>` : ""}`;
+}
+
+/** Ouvre la bibliothèque avec la recherche remplie, filtres remis à zéro, défilée jusqu'aux résultats. */
+function searchInLibrary(q: string) {
+  Object.assign(state, { q, cat: "", family: "", lvl: "", nba: false, pending: true, shown: PAGE });
+  pendingScroll = true;
+  (document.getElementById("search-dlg") as HTMLDialogElement | null)?.close();
+  if (location.hash.replace("#", "")) location.hash = "";
+  else route();
+}
+
+function bindSearch() {
+  const dlg = document.getElementById("search-dlg") as HTMLDialogElement | null;
+  if (!dlg) return;
+  const input = document.getElementById("s-q") as HTMLInputElement;
+  const ul = document.getElementById("s-list")!;
+  document.getElementById("search-btn")?.addEventListener("click", openSearch);
+  document.getElementById("s-close")!.addEventListener("click", () => dlg.close());
+  dlg.addEventListener("click", (e) => {
+    if (e.target === dlg) dlg.close(); // clic sur le fond
+    if ((e.target as HTMLElement).id === "s-all") searchInLibrary(searchQ);
+    if ((e.target as HTMLElement).closest("a")) dlg.close();
+  });
+  input.addEventListener("input", renderSearch);
+  input.addEventListener("keydown", (e) => {
+    const opts = [...ul.querySelectorAll<HTMLElement>("[role=option]")];
+    let i = opts.findIndex((o) => o.getAttribute("aria-selected") === "true");
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      if (!opts.length) return;
+      i = (i + (e.key === "ArrowDown" ? 1 : -1) + opts.length) % opts.length;
+      opts.forEach((o, j) => o.setAttribute("aria-selected", String(j === i)));
+      input.setAttribute("aria-activedescendant", opts[i].id);
+      opts[i].scrollIntoView({ block: "nearest" });
+    } else if (e.key === "Escape") {
+      e.preventDefault(); // sinon Échap vide d'abord le champ
+      dlg.close();
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const a = opts[i]?.querySelector("a");
+      if (a) {
+        dlg.close();
+        location.hash = a.getAttribute("href")!;
+      } else if (input.value.trim()) searchInLibrary(input.value);
+    }
+  });
+}
+
 // --------------------------------------------------------------- bibliothèque
 function filtered(): Tactic[] {
   const q = normalize(state.q.trim());
@@ -154,9 +280,7 @@ function filtered(): Tactic[] {
     if (state.family && t.family !== state.family) return false;
     if (state.lvl && String(t.lvl) !== state.lvl) return false;
     if (state.nba && !nba[t.id]) return false;
-    if (!q) return true;
-    const hay = normalize([t.name.fr, t.name.en, t.sum.fr, t.sum.en, famName(t.family), t.id, ...(nba[t.id] ?? []).map((x) => x.team)].join(" "));
-    return q.split(/\s+/).every((w) => hay.includes(w));
+    return !q || matches(t, q.split(/\s+/));
   });
 }
 
@@ -319,53 +443,83 @@ const againstFor = (t: Tactic) => (t.family ? coaching.against[t.family] : undef
  * Lecture avec la voix : anime chaque étape pendant que sa légende est lue.
  * Clips à voix naturelle s'ils sont publiés, sinon voix du navigateur.
  */
+/**
+ * Lecture commentée d'une fiche : chaque étape s'anime pendant que la voix la décrit.
+ * Les clips sont préchargés et décodés (Web Audio) dès l'ouverture de la fiche, donc :
+ * - le son part à l'instant où le mouvement commence (pas d'attente réseau entre les étapes) ;
+ * - la durée exacte de chaque phrase est connue, et le mouvement est étiré ou accéléré pour se
+ *   dérouler pendant la phrase (il finit un peu avant la fin de la voix, comme un coach au tableau).
+ */
 function makeNarrator(t: Tactic, b: Board, hooks: { onState: (on: boolean) => void; onBlocked?: () => void; loop?: boolean }) {
   const L = state.lang;
   const n = t.steps?.length ?? 0;
   const segs = narrationSegments(t, L, againstFor(t), nba[t.id]);
-  let urls: string[] | null = null;
-  Promise.all(segs.map((x) => clipPath(x, L)))
-    .then(async (u) => (await clipsAvailable(u[0])) && (urls = u))
-    .catch(() => {});
+  // Préchargement : liste des clips décodés, ou null si les clips ne sont pas publiés (local, aperçu).
+  const ready: Promise<(AudioBuffer | null)[] | null> = Promise.all(segs.map((x) => clipPath(x, L)))
+    .then(async (urls) => ((await clipsAvailable(urls[0])) ? Promise.all(urls.map(loadClip)) : null))
+    .catch(() => null);
   let token = 0;
   let on = false;
-  let blocked = false;
-  // Pas d'« await » avant le premier clip : il doit partir dans le geste de l'utilisateur (iPhone).
-  const say = async (i: number, alive: () => boolean) => {
-    if (blocked) return;
-    if (urls) {
-      try {
-        return await playClip(urls[i], alive);
-      } catch (e) {
-        if ((e as DOMException)?.name === "NotAllowedError") {
-          blocked = true;
-          hooks.onBlocked?.();
-          return;
-        }
-      }
-    }
-    return speak(segs[i], L, alive);
+  // Mouvement pendant la phrase : ~80 % de sa durée, entre 1,1 s et 2,5 fois le temps normal.
+  const motionFor = (k: number, speech: number) => {
+    const base = b.motionOf(k);
+    if (!base) return 0;
+    return Math.min(Math.max(speech * 0.8, 1.1), base * 2.5);
   };
+  const GAP = 0.35; // respiration entre deux phrases
   const run = async () => {
     const my = ++token;
-    blocked = false;
     on = true;
     hooks.onState(true);
+    unlockAudio(); // dans le geste de l'utilisateur, avant toute attente
     const alive = () => my === token && board === b;
-    do {
-      b.goTo(-1, true);
-      await say(0, alive);
-      for (let k = 0; k < n && alive(); k++) {
-        b.goTo(k, reduceMotion());
-        await Promise.all([say(k + 1, alive), wait(2400)]);
+    const bufs = await ready;
+    if (!alive()) return;
+    let silent = false;
+    if (bufs && !(await audioRunning())) {
+      silent = true; // son bloqué (lecture automatique) : l'animation continue, un bouton propose le son
+      hooks.onBlocked?.();
+    }
+    const delay = outputDelay();
+    /** Lit le segment i et lance en même temps l'action visuelle ; se résout quand les deux sont finis. */
+    const segment = async (i: number, visual: (speech: number) => number) => {
+      const buf = bufs?.[i];
+      if (buf && !silent) {
+        const motion = visual(buf.duration); // le mouvement attend la latence de sortie : on voit et on entend ensemble
+        const played = playBuffer(buf, alive);
+        await Promise.all([played, wait((motion + delay) * 1000)]);
+      } else if (silent || !voiceSupported()) {
+        await wait(Math.max(visual(2.2), 2.2) * 1000);
+      } else {
+        // Secours sans clips : voix du navigateur, durée estimée pour régler le mouvement.
+        const est = segs[i].split(/\s+/).length * 0.36;
+        const motion = visual(est);
+        await Promise.all([speak(segs[i], L, alive), wait(motion * 1000)]);
       }
-      if (alive()) await say(n + 1, alive);
-      if (hooks.loop && alive()) await wait(1800);
+      if (alive()) await wait(GAP * 1000);
+    };
+    do {
+      await segment(0, () => (b.goTo(-1, true), 0));
+      for (let k = 0; k < n && alive(); k++) {
+        await segment(k + 1, (speech) => {
+          const m = reduceMotion() ? 0 : motionFor(k, speech);
+          const go = () => alive() && b.goTo(k, reduceMotion(), m || undefined);
+          delayGo(go);
+          return m;
+        });
+      }
+      if (alive()) await segment(n + 1, () => 0);
+      if (hooks.loop && alive()) await wait(1500);
     } while (hooks.loop && alive());
     if (my === token) {
       on = false;
       hooks.onState(false);
     }
+  };
+  // Décale le départ du mouvement de la latence de sortie audio (Bluetooth : jusqu'à 0,3 s).
+  const delayGo = (go: () => void) => {
+    const d = outputDelay();
+    d > 0.02 ? window.setTimeout(go, d * 1000) : go();
   };
   const stop = () => {
     token++;
@@ -643,31 +797,97 @@ const PLAN_LEVELS: Record<string, Text> = {
   "veille-de-match": { fr: "Veille de match", en: "Day before a game" },
 };
 
+// Séances générées (data/seances.json) : chargées à la demande pour garder la page d'accueil légère.
+type AnyPlan = Plan & { theme?: string };
+let seances: AnyPlan[] | null = null;
+let seancesLoading: Promise<AnyPlan[]> | null = null;
+function loadSeances(): Promise<AnyPlan[]> {
+  if (seances) return Promise.resolve(seances);
+  seancesLoading ??= import("../data/seances.json").then((m) => (seances = (m.default as unknown as SeancesFile).plans.map((x) => expandSeance(x, byId))));
+  return seancesLoading;
+}
+const SPAGE = 48;
+const pf = { level: "", theme: "", dur: "", q: "", shown: SPAGE };
+
+const planCard = (p: AnyPlan) => `<li><a class="card" href="#plan-${p.id}">
+  <span class="card-meta">${esc(txt(PLAN_LEVELS[p.level]))}${p.theme ? ` · ${esc(txt(themeById.get(p.theme)!.name))}` : ""}</span>
+  <strong>${esc(txt(p.name))}</strong>
+  <span class="card-foot"><span>${p.duration} min</span><span>${p.blocks.length} ${tr("blocs", "blocks")}</span></span>
+</a></li>`;
+
 function plansView() {
   app.innerHTML = `${header("plans")}
   <main class="wrap" id="main">
     <section class="intro"><h1>${tr("Plans de séance", "Session plans")}</h1>
-    <p>${tr("Des séances complètes par niveau, construites avec les fiches de la bibliothèque.", "Complete practices by level, built from the library's cards.")}</p></section>
-    <ul class="plan-list">${lib.plans
-      .map(
-        (p) => `<li><a class="card" href="#plan-${p.id}">
-        <span class="card-meta">${esc(txt(PLAN_LEVELS[p.level]))}</span>
-        <strong>${esc(txt(p.name))}</strong>
-        <span class="card-foot"><span>${p.duration} min</span><span>${p.blocks.length} ${tr("blocs", "blocks")}</span></span>
-      </a></li>`,
-      )
-      .join("")}</ul>
+    <p>${tr("Des séances complètes par niveau, construites avec les fiches de la bibliothèque.", "Complete practices by level, built from the library's cards.")}</p>
+    <p><a class="btn" href="#plans" id="go-seances">${tr("Voir les 1000 séances ↓", "See all 1,000 sessions ↓")}</a></p></section>
+    <h2 class="sec-title">${tr("Séances types", "Model sessions")}</h2>
+    <ul class="plan-list">${lib.plans.map(planCard).join("")}</ul>
+    <h2 class="sec-title" id="seances-title">${tr("Toutes les séances", "All sessions")}</h2>
+    <p class="sec-note">${tr(
+      "Séances composées automatiquement avec les fiches (échauffement, technique, mise en place, jeu à thème, retour au calme). Choisis un niveau, un thème et une durée, puis adapte à ton groupe.",
+      "Sessions built automatically from the cards (warm-up, skills, team concept, themed game, cool-down). Pick a level, a theme and a length, then adapt it to your group.",
+    )}</p>
+    <form class="filters" id="pfilters" role="search">
+      <label class="f-search"><span>${tr("Rechercher", "Search")}</span>
+        <input id="p-q" type="search" value="${esc(pf.q)}" placeholder="${tr("ex. tir, horns, zone…", "e.g. shooting, horns, zone…")}" autocomplete="off" /></label>
+      <label><span>${tr("Niveau", "Level")}</span><select id="p-level"><option value="">${tr("Tous", "All")}</option>${SEANCE_LEVELS.map((l) => `<option value="${l}"${pf.level === l ? " selected" : ""}>${esc(txt(PLAN_LEVELS[l]))}</option>`).join("")}</select></label>
+      <label><span>${tr("Thème", "Theme")}</span><select id="p-theme"><option value="">${tr("Tous", "All")}</option>${THEMES.map((t) => `<option value="${t.id}"${pf.theme === t.id ? " selected" : ""}>${esc(txt(t.name))}</option>`).join("")}</select></label>
+      <label><span>${tr("Durée", "Length")}</span><select id="p-dur"><option value="">${tr("Toutes", "All")}</option>${SEANCE_DURATIONS.map((d) => `<option value="${d}"${pf.dur === String(d) ? " selected" : ""}>${d} min</option>`).join("")}</select></label>
+    </form>
+    <div id="seance-results"><p class="count">${tr("Chargement des séances…", "Loading sessions…")}</p></div>
   </main>${footer()}`;
   bindHeader();
+  const update = () => {
+    pf.shown = SPAGE;
+    renderSeances();
+  };
+  document.getElementById("p-q")!.addEventListener("input", (e) => ((pf.q = (e.target as HTMLInputElement).value), update()));
+  for (const [id, k] of [["p-level", "level"], ["p-theme", "theme"], ["p-dur", "dur"]] as const)
+    document.getElementById(id)!.addEventListener("change", (e) => ((pf[k] = (e.target as HTMLSelectElement).value), update()));
+  document.getElementById("pfilters")!.addEventListener("submit", (e) => e.preventDefault());
+  document.getElementById("seance-results")!.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).id !== "p-more") return;
+    pf.shown += SPAGE;
+    renderSeances();
+    document.getElementById("p-more")?.focus();
+  });
+  document.getElementById("go-seances")!.addEventListener("click", (e) => {
+    e.preventDefault();
+    const top = document.querySelector<HTMLElement>(".top")?.offsetHeight ?? 0;
+    window.scrollTo({ top: document.getElementById("seances-title")!.getBoundingClientRect().top + scrollY - top - 8, behavior: "smooth" });
+  });
+  loadSeances().then(() => app.dataset.view === "plans" && renderSeances());
 }
 
-function planView(p: Library["plans"][number]) {
+function renderSeances() {
+  const box = document.getElementById("seance-results");
+  if (!box || !seances) return;
+  const words = normalize(pf.q.trim()).split(/\s+/).filter(Boolean);
+  const list = seances.filter((p) => {
+    if (pf.level && p.level !== pf.level) return false;
+    if (pf.theme && p.theme !== pf.theme) return false;
+    if (pf.dur && String(p.duration) !== pf.dur) return false;
+    if (!words.length) return true;
+    const h = normalize([p.name.fr, p.name.en, ...p.blocks.flatMap((b) => (b.ids ?? []).map((id) => `${byId.get(id)?.name.fr} ${byId.get(id)?.name.en}`))].join(" "));
+    return words.every((w) => h.includes(w));
+  });
+  document.getElementById("seances-title")!.textContent = `${tr("Toutes les séances", "All sessions")} (${seances.length})`;
+  box.innerHTML = `<p class="count" aria-live="polite">${list.length} ${tr(list.length > 1 ? "séances" : "séance", list.length > 1 ? "sessions" : "session")}</p>
+    ${list.length ? `<ul class="plan-list">${list.slice(0, pf.shown).map(planCard).join("")}</ul>` : `<p class="empty">${tr("Aucune séance ne correspond. Retire un filtre.", "No session matches. Remove a filter.")}</p>`}
+    ${list.length > pf.shown ? `<p class="more"><button type="button" id="p-more" class="btn">${tr("Afficher plus", "Show more")} (${list.length - pf.shown})</button></p>` : ""}`;
+}
+
+function planView(p: AnyPlan) {
   let t0 = 0;
+  const theme = p.theme ? themeById.get(p.theme) : undefined;
+  const siblings = theme && seances ? seances.filter((x) => x.theme === p.theme && x.level === p.level && x.id !== p.id).slice(0, 6) : [];
   app.innerHTML = `${header("plans")}
   <main class="wrap" id="main">
-    <p class="crumbs"><a href="#plans">← ${tr("Plans de séance", "Session plans")}</a> · ${esc(txt(PLAN_LEVELS[p.level]))}</p>
+    <p class="crumbs"><a href="#plans">← ${tr("Plans de séance", "Session plans")}</a> · ${esc(txt(PLAN_LEVELS[p.level]))}${theme ? ` · ${esc(txt(theme.name))}` : ""}</p>
     <section class="intro"><h1>${esc(txt(p.name))}</h1>
-    <p class="alt-title" lang="${other(state.lang)}">${esc(p.name[other(state.lang)])}</p></section>
+    <p class="alt-title" lang="${other(state.lang)}">${esc(p.name[other(state.lang)])}</p>
+    ${theme ? `<p class="plan-note">${tr("Séance composée automatiquement avec les fiches de la bibliothèque : adapte les durées et le nombre de joueurs à ton groupe.", "Session built automatically from the library's cards: adapt the timings and player numbers to your group.")}</p>` : ""}</section>
     <ol class="plan">${p.blocks
       .map((b) => {
         const from = t0;
@@ -677,6 +897,7 @@ function planView(p: Library["plans"][number]) {
         }</div></li>`;
       })
       .join("")}</ol>
+    ${siblings.length ? `<h2 class="sec-title">${tr("Autres séances sur ce thème", "More sessions on this theme")}</h2><ul class="plan-list">${siblings.map(planCard).join("")}</ul>` : ""}
   </main>${footer()}`;
   bindHeader();
 }
@@ -725,6 +946,7 @@ function editorView() {
   editor = new Editor(document.getElementById("editor-root")!, lib, families, state.lang, tr);
 }
 
+let pendingScroll = false;
 function route() {
   cleanup?.();
   cleanup = null;
@@ -768,13 +990,40 @@ function route() {
   } else if (h.startsWith("plan-") && lib.plans.some((p) => p.id === h.slice(5))) {
     app.dataset.view = "plan";
     planView(lib.plans.find((p) => p.id === h.slice(5))!);
+  } else if (h.startsWith("plan-s-")) {
+    // Séance générée : le fichier se charge à la demande.
+    app.dataset.view = "plan";
+    app.innerHTML = `${header("plans")}<main class="wrap" id="main"><p class="count">${tr("Chargement de la séance…", "Loading the session…")}</p></main>${footer()}`;
+    bindHeader();
+    loadSeances().then((list) => {
+      if (decodeURIComponent(location.hash.slice(1)) !== h) return;
+      const p = list.find((x) => x.id === h.slice(5));
+      if (!p) return void (location.hash = "plans");
+      planView(p);
+      document.title = `${txt(p.name)} · Playbook Ouvert`;
+    });
   } else {
     app.dataset.view = "library";
     libraryView();
   }
   if (!byId.has(h)) document.title = "Playbook Ouvert · Open Playbook";
   if (!keepScroll) window.scrollTo(0, 0);
+  if (pendingScroll && app.dataset.view === "library") {
+    pendingScroll = false;
+    const f = document.getElementById("filters");
+    const top = document.querySelector<HTMLElement>(".top")?.offsetHeight ?? 0;
+    if (f) window.scrollTo(0, f.getBoundingClientRect().top + window.scrollY - top - 8);
+  }
 }
+
+document.addEventListener("keydown", (e) => {
+  const inField = (e.target as HTMLElement).closest("input, select, textarea, [contenteditable]");
+  if ((e.key === "k" && (e.ctrlKey || e.metaKey)) || (e.key === "/" && !inField)) {
+    if (!document.getElementById("search-dlg")) return;
+    e.preventDefault();
+    openSearch();
+  }
+});
 
 document.addEventListener("keydown", (e) => {
   if (!board || (e.target as HTMLElement).closest("input, select, textarea")) return;

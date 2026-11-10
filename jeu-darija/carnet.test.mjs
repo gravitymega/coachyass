@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { newProgress, WORDS } from './core.js';
-import { recordDay, weekReport, reportText, streak } from './carnet.js';
+import { recordDay, weekReport, reportText, streak, logGame, gameLine } from './carnet.js';
 
 test('le carnet compte seulement ce qui a été appris cette semaine', () => {
   const p = newProgress();
@@ -35,4 +35,14 @@ test('série de jours : compte les jours joués de suite', () => {
   recordDay(p, '2026-11-03');
   assert.equal(streak(p, '2026-11-03'), 3);
   assert.equal(streak(p, '2026-11-05'), 0);
+});
+
+test('historique : chaque partie reste dans le profil, 300 max', () => {
+  const p = newProgress();
+  logGame(p, { kind: 'salle', name: 'Stade', score: 4, total: 5, stars: 4, with: 'Asma' }, 1);
+  assert.equal(p.history.length, 1);
+  assert.equal(gameLine(p.history[0]), '🏭 Stade · 4/5 ✔ · +4 ⭐ · avec Asma');
+  for (let i = 0; i < 400; i++) logGame(p, { kind: 'act', icon: '⚽', name: 'Foot', stars: 1 }, i + 2);
+  assert.equal(p.history.length, 300);
+  assert.equal(p.history.at(-1).t, 401);
 });
