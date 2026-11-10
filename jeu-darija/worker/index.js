@@ -1,6 +1,8 @@
 // Le serveur du jeu sur Cloudflare (Worker « jeu-hbibiti ») : il sert les fichiers du jeu, et répond à /api/parler
 // avec l'IA gratuite de Cloudflare (Workers AI, inclus dans le plan gratuit, aucun frais ni clé à payer).
 // Les habitants de la ville en 3D répondent comme dans la vraie vie, avec des réponses courtes et adaptées aux enfants.
+import { mergeLabo } from '../labo-core.js';
+
 const MODELS = ['@cf/meta/llama-4-scout-17b-16e-instruct', '@cf/meta/llama-3.1-8b-instruct'];
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 const clean = (t, max) => String(t || '').replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, max);
@@ -48,10 +50,34 @@ async function parler(request, env) {
   return json({ erreur: 'IA indisponible' }, 503);
 }
 
+// Le labo du Dr Harley, un seul pour tous les appareils (tablette, harley-lab) : progrès gardés dans KV (gratuit).
+// Protégé par le code famille : secret Cloudflare LABO_CODE (jamais dans le code), envoyé dans l'en-tête x-famille.
+// GET /api/labo?enfant=ali → le labo ; PUT /api/labo?enfant=ali (corps = labo) → fusionné avec celui du serveur, renvoyé.
+async function laboApi(request, env, url) {
+  if (!env.LABO || !env.LABO_CODE) return json({ erreur: 'synchronisation non configurée' }, 503);
+  const code = request.headers.get('x-famille') || '';
+  if (code.length < 6 || code !== env.LABO_CODE) return json({ erreur: 'code famille incorrect' }, 401);
+  const enfant = (url.searchParams.get('enfant') || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 30);
+  if (!enfant) return json({ erreur: 'enfant manquant' }, 400);
+  const key = 'labo:' + enfant;
+  const stored = await env.LABO.get(key, 'json');
+  if (request.method === 'GET') return json({ labo: stored || null });
+  if (request.method !== 'PUT') return json({ erreur: 'GET ou PUT' }, 405);
+  const text = await request.text();
+  if (text.length > 300000) return json({ erreur: 'trop gros' }, 413);
+  let body;
+  try { body = JSON.parse(text); } catch { return json({ erreur: 'JSON invalide' }, 400); }
+  if (!body || typeof body.labo !== 'object') return json({ erreur: 'labo manquant' }, 400);
+  const merged = mergeLabo(stored, body.labo);
+  await env.LABO.put(key, JSON.stringify(merged));
+  return json({ labo: merged });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname.endsWith('/api/parler')) return parler(request, env);
+    if (url.pathname.endsWith('/api/labo')) return laboApi(request, env, url);
     return env.ASSETS.fetch(request);
   },
 };

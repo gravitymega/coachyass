@@ -72,3 +72,20 @@ test('grades et bulletin du dimanche', () => {
   assert.match(b[1], /Bip et la pièce cachée/);
   assert.match(b[3], /premier coup/);
 });
+
+test('un seul labo : fusion des progrès de deux appareils, sans rien perdre', async () => {
+  const { mergeLabo } = await import('./labo-core.js');
+  const ms = CHAPITRES[0].missions;
+  const tablette = newLabo(), serveur = newLabo();
+  recordMission(tablette, ms[0], { ok: true, essais: 1, indices: 0, ms: 1000 }, '2026-11-10');
+  recordMission(serveur, ms[0], { ok: true, essais: 2, indices: 0, ms: 2000 }, '2026-11-11');
+  recordMission(serveur, ms[1], { ok: true, essais: 1, indices: 0, ms: 3000 }, '2026-11-11');
+  const m = mergeLabo(tablette, serveur);
+  assert.equal(m.faits['c1-m1'].premier, '2026-11-10');
+  assert.equal(m.faits['c1-m1'].dernier, '2026-11-11');
+  assert.ok(m.faits['c1-m2']);
+  assert.equal(m.essais.length, 3);
+  assert.deepEqual(mergeLabo(m, m).essais.length, 3); // fusionner deux fois ne double rien
+  assert.equal(missionsState(ms, m, '2026-11-11')[2].etat, 'demain'); // la règle « une par jour » vaut sur tous les appareils
+  assert.deepEqual(mergeLabo(null, tablette).faits, tablette.faits);
+});

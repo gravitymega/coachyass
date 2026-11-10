@@ -4,7 +4,7 @@
 // puis une nouvelle chance, on félicite l'effort, les notions reviennent (1, 3, 7, 14, 30 jours).
 import { screen, el, shuffled, pickOne } from './act-kit.js';
 import { CHAPITRES } from './labo-missions.js';
-import { DOMAINES, dayKey, enLettres, missionsState, recordMission, newLabo, gradeOf, chapitresFinis, bulletin, robotRun, robotSolution } from './labo-core.js';
+import { DOMAINES, dayKey, enLettres, missionsState, recordMission, newLabo, gradeOf, chapitresFinis, bulletin, robotRun, robotSolution, mergeLabo } from './labo-core.js';
 import { encouragement } from './ville3d-dialogues.js';
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -25,6 +25,27 @@ export const harleySVG = (mood = 'happy') => `<svg class="harley" viewBox="0 0 1
 
 function laboOf(p) { p.progress.labo = { ...newLabo(), ...(p.progress.labo || {}) }; return p.progress.labo; }
 
+// Un seul labo sur tous les appareils (tablette, harley-lab) : le Worker garde les progrès (KV), protégés par le code famille.
+// Un seul appel PUT envoie le labo local et reçoit la fusion des deux. Sans Internet ou sans code : on joue quand même.
+let lastSync = '';
+export async function syncLabo(ctx, p = ctx.P()) {
+  const code = ctx.settings.laboCode;
+  if (!code || navigator.onLine === false) return { ok: false, raison: code ? 'hors ligne' : 'pas de code famille' };
+  try {
+    const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 8000);
+    const r = await window.fetch(`api/labo?enfant=${encodeURIComponent(p.kid.id)}`, { method: 'PUT', signal: ctrl.signal,
+      headers: { 'content-type': 'application/json', 'x-famille': code }, body: JSON.stringify({ labo: laboOf(p) }) });
+    clearTimeout(timer);
+    if (!r.ok) return { ok: false, raison: r.status === 401 ? 'code famille incorrect' : 'serveur indisponible' };
+    const { labo: merged } = await r.json();
+    const changed = JSON.stringify(merged) !== JSON.stringify(p.progress.labo);
+    p.progress.labo = mergeLabo(p.progress.labo, merged);
+    ctx.saveAll();
+    lastSync = new Date().toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' });
+    return { ok: true, changed };
+  } catch { return { ok: false, raison: 'hors ligne' }; }
+}
+
 // Le docteur parle : bulle de texte + voix.
 function docSays(ctx, box, ...lines) {
   box.querySelector('.lb-bubble').textContent = lines.join(' ');
@@ -33,8 +54,10 @@ function docSays(ctx, box, ...lines) {
 }
 
 // ---------- La carte du labo ----------
-export function labo(ctx) {
+export function labo(ctx, { synced = false } = {}) {
   const p = ctx.P(), kid = p.kid, lb = laboOf(p), today = dayKey();
+  // Récupère les progrès faits sur l'autre appareil, puis réaffiche si quelque chose a changé.
+  if (!synced) syncLabo(ctx, p).then((r) => { if (r.changed && document.querySelector('.lb-chap')) labo(ctx, { synced: true }); });
   const libre = !!ctx.settings.laboLibre;
   const grade = gradeOf(CHAPITRES, lb);
   const body = screen(ctx, '🔬 Le labo du Dr Harley', `${grade.e} ${grade.nom}`);
@@ -97,6 +120,7 @@ async function mission(ctx, m) {
   }
   res.ms = Date.now() - t0;
   const { premiere } = recordMission(lb, m, res, today);
+  syncLabo(ctx, p); // partagé tout de suite avec l'autre appareil
   if (premiere) ctx.stars(m.domaine === 'defi' ? 5 : 2); else ctx.saveAll();
   // Récompense : la pièce, et des félicitations pour l'EFFORT (pas « tu es un génie »).
   const effort = res.solution ? 'Tu n’as pas abandonné : c’est comme ça qu’on devient savant !'
@@ -383,11 +407,23 @@ function parents(ctx) {
   const b = bulletin(CHAPITRES, lb, today, p.kid.name);
   const card = el(`<div class="act-card"><h3>Bulletin de la semaine (${ctx.esc(p.kid.name)})</h3><ul>${b.map((x) => `<li>${ctx.esc(x)}</li>`).join('')}</ul>
     <p>Chapitres finis : ${chapitresFinis(CHAPITRES, lb)} · Grade : ${ctx.esc(gradeOf(CHAPITRES, lb).nom)} · Missions jouées : ${lb.essais.length}</p>
+    <h3>Un seul labo sur la tablette et harley-lab</h3>
+    <label class="field">Code famille (le même sur chaque appareil, au moins 6 caractères)
+      <input type="password" data-code autocomplete="off" value="${ctx.esc(ctx.settings.laboCode || '')}"></label>
+    <div class="act-row"><button class="go small" data-sync>🔄 Synchroniser maintenant</button><span data-state>${lastSync ? `Dernière synchronisation : ${lastSync}` : ''}</span></div>
     <label class="check"><input type="checkbox" data-libre ${ctx.settings.laboLibre ? 'checked' : ''}> Ouvrir toutes les missions (sinon : une nouvelle par jour)</label>
     <div class="act-row"><button class="go small" data-dl>📤 Télécharger les progrès pour Dr Harley</button><button class="go small alt" data-back>Retour au labo</button></div>
-    <p class="act-note">Le fichier reste sur la tablette : envoyez-le vous-même à l’ordinateur du labo (harley-lab) pour que Dr Harley adapte les prochaines missions.</p></div>`);
+    <p class="act-note">Avec le code famille, les progrès sont partagés tout seuls entre la tablette et harley-lab (et Dr Harley les lit pour adapter les missions). Le fichier est une copie de secours.</p></div>`);
   card.querySelector('[data-libre]').onchange = (e) => { ctx.settings.laboLibre = e.target.checked; ctx.saveSettings(); };
   card.querySelector('[data-back]').onclick = () => labo(ctx);
+  card.querySelector('[data-code]').onchange = (e) => { ctx.settings.laboCode = e.target.value.trim(); ctx.saveSettings(); };
+  card.querySelector('[data-sync]').onclick = async () => {
+    ctx.settings.laboCode = card.querySelector('[data-code]').value.trim(); ctx.saveSettings();
+    const st = card.querySelector('[data-state]'); st.textContent = '…';
+    const r = await syncLabo(ctx, p);
+    st.textContent = r.ok ? `✅ Synchronisé (${lastSync})` : `⚠️ ${r.raison}`;
+    if (r.ok) ctx.sfx('ok');
+  };
   card.querySelector('[data-dl]').onclick = () => {
     const blob = new Blob([JSON.stringify({ app: 'hbibiti-labo', version: 1, enfant: p.kid.name, jour: today, grade: gradeOf(CHAPITRES, lb).nom, bulletin: b, labo: lb }, null, 2)], { type: 'application/json' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `dr-ali-progres-${today}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);

@@ -1,9 +1,11 @@
 # Dr Ali : le labo du Dr Harley (dans le jeu de Hbibiti)
 
-Plan écrit par Mythos le 8 novembre 2026 pour Dr Harley (harley-lab). Le 10 novembre 2026, l'utilisateur a demandé de l'**intégrer au jeu de Hbibiti** (`jeu-darija/`) : c'est maintenant l'activité **🔬 Le labo du Dr Harley** (profil qui lit seulement, donc Ali). **Il existe deux versions, gardées toutes les deux (choix de l'utilisateur, 10 nov. 2026)** :
-- la version de **Mythos sur le serveur harley-lab** (`~/Dr-Ali`, `labo/`, `jeu/`, voix Piper ; pas dans ce dépôt, pas accessible depuis une session cloud) : Dr Harley y lit les progrès d'Ali directement ;
-- la version **dans le jeu de Hbibiti** (tablette), décrite ci-dessous.
-Les progrès sont **séparés** (un endroit chacun). Pour que Dr Harley tienne compte des deux, donner le fichier « 📤 progrès pour Dr Harley » de la tablette à harley-lab. Ne pas fusionner ni supprimer une des deux versions sans redemander à l'utilisateur.
+Plan écrit par Mythos le 8 novembre 2026 pour Dr Harley (harley-lab). Le 10 novembre 2026, l'utilisateur a demandé de l'**intégrer au jeu de Hbibiti** (`jeu-darija/`) : c'est maintenant l'activité **🔬 Le labo du Dr Harley** (profil qui lit seulement, donc Ali). **Un seul jeu Dr Ali, des progrès partagés (choix de l'utilisateur, 10 nov. 2026 : « pas séparer »)** :
+- Le jeu Dr Ali, c'est **le labo du jeu de Hbibiti**, sur la tablette **et** sur harley-lab (qui ouvre simplement https://jeu-hbibiti.moqtad6.workers.dev, profil Ali, activité 🔬). La version que Mythos avait mise sur le serveur (`~/Dr-Ali`, `labo/`, `jeu/`) n'est plus le jeu de référence : **à faire par Dr Harley sur harley-lab** : faire pointer le raccourci « Dr Ali » du bureau vers le jeu de Hbibiti (sans rien effacer de `~/Dr-Ali` sans l'accord de l'utilisateur).
+- Les progrès d'Ali sont gardés par le Worker `jeu-hbibiti` dans **Cloudflare KV `jeu-hbibiti-labo`** (gratuit, id `93c297fb4a004fc4886f188bdee32f49`), clé `labo:ali`, et fusionnés à chaque synchronisation (`mergeLabo` : rien ne se perd, la règle « une par jour » vaut sur tous les appareils).
+- Protection : **code famille**, secret Cloudflare `LABO_CODE` (au moins 6 caractères, jamais dans le code ni dans le chat), à saisir aussi une fois dans chaque appareil (labo › 🔒 Parents › Code famille). Sans code, le jeu marche quand même, sans partage.
+- Ce qui sort de l'appareil : seulement le prénom (`ali`) et les résultats des missions (réussite, essais, indices, temps). C'est une exception voulue à la règle « aucune donnée ne sort » du plan d'origine.
+- **Dr Harley lit les progrès** depuis harley-lab : `curl -s -H "x-famille: $LABO_CODE" "https://jeu-hbibiti.moqtad6.workers.dev/api/labo?enfant=ali"` (le code dans une variable d'environnement de harley-lab, pas dans un fichier du dépôt).
 
 ## Le but
 Ali a 7 ans et il croit que Dr Harley vit dans l'ordinateur pour aider sa famille. On garde cette magie et on en fait une école secrète : **Dr Harley forme Ali pour qu'il devienne « Dr Ali »**, un savant du labo. En six mois : se servir d'un ordinateur sous Linux et taper ses premières commandes ; penser comme un programmeur (suites, boucles, conditions, variables) ; être solide en maths pour son âge ; comprendre des idées de science en les testant ; et surtout aimer chercher, se tromper et recommencer.
@@ -56,12 +58,13 @@ Saison 2 : les mots anglais de l'ordinateur, du vrai Python, trier et chercher, 
 - `jeu-darija/labo-core.js` : logique pure (une par jour, révisions, grades, bulletin, valideur, Bip sur la grille, nombres en lettres).
 - `jeu-darija/act-labo.js` : l'écran et les **7 moteurs** : `compter`, `robot` (Bip et les flèches), `ranger` (glisser dans des boîtes), `secret` (message codé), `maison` (en vrai, confirmé par un parent), `quiz`, `sons` (mémoire). Prochains moteurs prévus par le plan : clavier, console simulée de Pingo, balance des nombres, horloge, monnaie, labyrinthe (au plus un nouveau moteur par semaine, testé à part).
 - Progrès dans `progress.labo` de chaque enfant (localStorage, compris dans la sauvegarde JSON des parents) : `faits`, `essais` (réussite, essais, indices, solution montrée, temps), `revues`.
-- Espace parents du labo (🔒 calcul) : bulletin de la semaine, réglage « une par jour », **📤 Télécharger les progrès pour Dr Harley** (`dr-ali-progres-AAAA-MM-JJ.json`). Le jeu tourne sur la tablette : harley-lab ne peut pas lire ses progrès tout seul, il faut lui donner ce fichier.
+- Espace parents du labo (🔒 calcul) : bulletin de la semaine, **code famille et « Synchroniser maintenant »**, réglage « une par jour », copie de secours **📤 Télécharger les progrès** (`dr-ali-progres-AAAA-MM-JJ.json`).
+- Synchronisation (`syncLabo` dans `act-labo.js`) : à l'ouverture du labo et après chaque mission, un seul `PUT /api/labo?enfant=ali` envoie le labo local et reçoit la fusion. Testé : `worker.test.mjs` (code obligatoire, fusion, KV) et Playwright avec deux appareils (mission faite sur la tablette → vue sur harley-lab, la suivante « demain » sur les deux).
 - Tests : `node --test jeu-darija/labo.test.mjs` (c'est aussi **le valideur** : une mission mal écrite fait échouer le test). Playwright : le chapitre 1 joué en entier (erreurs volontaires, indice, glisser à la souris, porte parents, mémoire des sons), téléphone 390×844 sans débordement.
 - Voix : les phrases des missions sont dans `outils/voix/phrases.mjs` mais **pas encore enregistrées avec Kokoro** (le plan parlait de Piper sur harley-lab) ; en attendant, voix de la tablette.
 
 ## Comment Dr Harley ajoute une mission (chaque matin)
-1. Lire le fichier de progrès d'Ali (s'il a été donné) : 3 essais ou plus ou solution montrée → la notion revient en plus facile ; réussie du premier coup → une marche au-dessus.
+1. Lire les progrès d'Ali avec la commande `curl` ci-dessus : 3 essais ou plus ou solution montrée → la notion revient en plus facile ; réussie du premier coup → une marche au-dessus.
 2. Ajouter la mission (données seulement) dans `jeu-darija/labo-missions.js`, dans le chapitre en cours ; **toujours au moins 3 missions d'avance**. Un chapitre = 7 missions, la 7e est le défi.
 3. `node --test jeu-darija/*.test.mjs` (valideur) ; si ça échoue, on ne publie pas.
 4. Ajouter les phrases à la voix douce si possible (`node jeu-darija/outils/voix/phrases.mjs`, puis `generer.py`).
@@ -81,4 +84,4 @@ Pingo a caché les sept pièces de la super-machine ; chaque mission rend une pi
 | 7 | 🏆 | La machine s'allume : répéter les sons, compter les boulons, Bip jusqu'au bouton | badge « Apprenti du labo » |
 
 ## Sécurité, toujours
-Pas de lien, pas de compte, pas de pub, pas d'achat, rien d'effrayant. Le labo ne demande rien à Internet. Les vraies commandes Linux se tapent seulement avec papa, jamais `sudo`, jamais `rm` en vrai.
+Pas de lien, pas de compte, pas de pub, pas d'achat, rien d'effrayant. Seule exception : les résultats du labo sont partagés entre les appareils de la famille par le Worker (code famille). Les vraies commandes Linux se tapent seulement avec papa, jamais `sudo`, jamais `rm` en vrai.

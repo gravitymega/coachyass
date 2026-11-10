@@ -163,3 +163,31 @@ export function bulletin(chapitres, labo, today, nom = 'Ali') {
     `Fierté : ${premierCoup ? `${premierCoup} mission${premierCoup > 1 ? 's' : ''} réussie${premierCoup > 1 ? 's' : ''} du premier coup` : `${nom} a continué à essayer`}.`,
   ];
 }
+
+// ----- Un seul labo sur tous les appareils : fusionner deux états (tablette, harley-lab, serveur) -----
+// Rien ne se perd : les missions faites s'additionnent, la 1re date reste la plus ancienne, le dernier résultat
+// est le plus récent, les essais sont réunis (sans doublon), et pour chaque notion on garde la révision la plus récente.
+const essaiKey = (e) => `${e.id}|${e.jour}|${e.ms ?? ''}|${e.essais}|${e.indices}|${e.ok}`;
+export function mergeLabo(a, b) {
+  a = { ...newLabo(), ...(a || {}) }; b = { ...newLabo(), ...(b || {}) };
+  const faits = { ...a.faits };
+  for (const [id, f] of Object.entries(b.faits)) {
+    const g = faits[id];
+    if (!g) { faits[id] = f; continue; }
+    const recent = (f.dernier || f.premier) > (g.dernier || g.premier) ? f : g;
+    faits[id] = { ...recent, premier: g.premier < f.premier ? g.premier : f.premier, fois: Math.max(g.fois || 0, f.fois || 0) };
+  }
+  const seen = new Set(), essais = [];
+  for (const e of [...a.essais, ...b.essais]) { const k = essaiKey(e); if (!seen.has(k)) { seen.add(k); essais.push(e); } }
+  essais.sort((x, y) => (x.jour < y.jour ? -1 : x.jour > y.jour ? 1 : 0));
+  const revues = { ...a.revues };
+  for (const [n, r] of Object.entries(b.revues)) {
+    const s = revues[n];
+    if (!s) { revues[n] = r; continue; }
+    // la plus avancée (acquise, puis réussites, puis date de retour la plus lointaine) l'emporte
+    const score = (x) => [x.acquise ? 1 : 0, x.reussites || 0, x.due || ''];
+    const [sa, sb] = [score(s), score(r)];
+    revues[n] = sb[0] > sa[0] || (sb[0] === sa[0] && (sb[1] > sa[1] || (sb[1] === sa[1] && sb[2] > sa[2]))) ? r : s;
+  }
+  return { ...a, ...b, faits, essais: essais.slice(-400), revues };
+}

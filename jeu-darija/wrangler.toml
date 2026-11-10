@@ -14,6 +14,12 @@ binding = "ASSETS"
 [ai]
 binding = "AI"
 
+# Le labo du Dr Harley : progrès d'Ali partagés entre la tablette et harley-lab (KV gratuit « jeu-hbibiti-labo »).
+# Le code famille est un secret : npx wrangler secret put LABO_CODE (ou Cloudflare › jeu-hbibiti › Settings › Variables and Secrets).
+[[kv_namespaces]]
+binding = "LABO"
+id = "93c297fb4a004fc4886f188bdee32f49"
+
 # Aucune tâche planifiée : vide les déclencheurs si une autre configuration (Art craft) a été déployée ici par erreur.
 [triggers]
 crons = []
