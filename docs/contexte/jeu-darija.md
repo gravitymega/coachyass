@@ -256,3 +256,7 @@ Demande : « Ali va au soccer les mardis et le dimanche au basket, puis il fait 
 - **Discussion libre (IA)** : le jeu envoie `about` (les sports d'Ali + le jour) au Worker ; la consigne demande d'encourager Ali pour son sport **à chaque réponse** (2 ou 3 phrases, 35 mots au plus). Sans `about` (Asma), rien ne change. Test dans `worker.test.mjs`.
 - Les 11 nouvelles phrases sont dans `outils/voix/phrases.mjs` (9 209 phrases) mais **pas encore enregistrées avec Kokoro** : en attendant, c'est la voix de la tablette qui les dit. Cache `hbibiti-v17`.
 - Pour la session harley-lab : quand on parle à Ali (ou de lui), l'encourager pour son soccer (mardi), son basket (dimanche) et sa course avec Maman.
+
+## Le labo du Dr Harley, « Dr Ali » (10 nov. 2026)
+
+Demande : intégrer au jeu le plan « Dr Ali » (école secrète où Dr Harley forme Ali, une mission par jour). Nouvelle activité **🔬 Le labo du Dr Harley** (profil qui lit), chapitre 1 « La super-machine » complet, 7 moteurs. Tout est décrit dans **`docs/contexte/dr-ali.md`** (plan, règles, format des missions, comment Dr Harley en ajoute une). Fichiers : `labo-core.js`, `labo-missions.js`, `act-labo.js`, `labo.test.mjs`. `openGate` ajouté au contexte des activités. Cache `hbibiti-v18`.

@@ -57,5 +57,6 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 | Ligue 3x3 du dimanche 14-15 ans (hiver 2027, page, affiche, kit marketing) | `docs/contexte/ligue-3x3-dimanche.md` |
 | **Historique de toutes les discussions Claude** (août → nov. 2026, points ouverts) | `docs/contexte/historique-discussions.md` |
 | Jeu « L'Usine magique de Hbibiti » (darija pour Ali et Asma, PR #98) | `docs/contexte/jeu-darija.md` |
+| **Dr Ali** : le labo du Dr Harley dans le jeu de Hbibiti (plan, missions, une par jour) | `docs/contexte/dr-ali.md` |
 
 **Après un changement important** : mettre à jour le fichier `docs/contexte/` concerné (ou en créer un et l'ajouter au tableau ci-dessus). Garder ce `CLAUDE.md` court.
