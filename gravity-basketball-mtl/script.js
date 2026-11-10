@@ -48,7 +48,9 @@ const SAISONS = {
     zeffy: '',
   },
 };
-const SAISON = SAISONS[new URLSearchParams(window.location.search).get('saison')] || null;
+// La Ligue 3v3 du samedi (13-14 ans) est terminée : depuis le 10 nov. 2026, le
+// programme « Ligue 3v3 » du site EST la ligue du dimanche, avec ou sans ?saison=.
+const SAISON = SAISONS[new URLSearchParams(window.location.search).get('saison')] || SAISONS['dimanche-hiver-2027'];
 
 // Formulaire Zeffy unique pour "Mes équipes" — un seul événement avec choix de
 // catégorie/équipe dans le formulaire lui-même. Vide tant que le lien n'est pas
@@ -84,6 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const programmeRadios = form.querySelectorAll('input[name="programme"]');
   const fieldTypeInscription = document.getElementById('field-type-inscription');
   const fieldPrepDetails = document.getElementById('field-prep-details');
+  // Les champs Gravity Prep sont « required » dans le HTML : cachés pour les
+  // autres programmes, ils bloquaient l'envoi en silence (bug corrigé le 10 nov.
+  // 2026). On ne les exige donc que lorsque Gravity Prep est choisi.
+  const prepRequiredFields = fieldPrepDetails ? [...fieldPrepDetails.querySelectorAll('[required]')] : [];
   const dechargePrepCheckbox = document.getElementById('decharge_prep');
   const ageCategorieSelect = document.getElementById('age_categorie');
   const inscriptionTitle = document.getElementById('inscription-title');
@@ -105,8 +111,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (fieldPrepDetails) fieldPrepDetails.style.display = isPrep ? 'grid' : 'none';
+    prepRequiredFields.forEach((el) => { el.required = isPrep; });
     // La décharge n'est exigée (et interactible) que pour Gravity Prep — un
     // champ requis mais caché bloquerait la soumission des autres programmes.
+    // Santé et sécurité : seulement pour la Ligue 3x3 du dimanche (mineurs).
+    const isLigue3v3 = selected === 'Ligue 3v3';
+    const fieldLigueDimanche = document.getElementById('field-ligue-dimanche');
+    if (fieldLigueDimanche) {
+      fieldLigueDimanche.style.display = isLigue3v3 ? '' : 'none';
+      ['taille_tshirt', 'contact_urgence', 'sante', 'autorisation_participation'].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.required = isLigue3v3;
+      });
+    }
     if (dechargePrepCheckbox) {
       dechargePrepCheckbox.required = isPrep;
       if (!isPrep) dechargePrepCheckbox.checked = false;
@@ -197,6 +214,12 @@ document.addEventListener('DOMContentLoaded', () => {
         age_categorie: get('age_categorie'),
         date_naissance: get('date_naissance'),
         saison: get('saison'),
+        ...(programme === 'Ligue 3v3' ? {
+          taille_tshirt: get('taille_tshirt'),
+          contact_urgence: get('contact_urgence'),
+          sante: get('sante'),
+          autorisation_participation: data.get('autorisation_participation') === 'Oui',
+        } : {}),
         remarque: [get('saison') ? `[${get('saison')}]` : '', get('remarque')].filter(Boolean).join(' '),
         reference: get('reference'),
         consentement_medias: data.get('consentement_medias') === 'Oui',
@@ -322,6 +345,11 @@ document.addEventListener('DOMContentLoaded', () => {
               'Catégorie d\'âge': payload.details.age_categorie,
               'Type d\'inscription': payload.details.type_inscription,
               'Mode de paiement': payload.details.mode_paiement,
+              'Taille de t-shirt': payload.details.taille_tshirt || '—',
+              'Contact d\'urgence': payload.details.contact_urgence || '—',
+              'Santé / allergies': payload.details.sante || '—',
+              'Autorisation parentale': payload.details.autorisation_participation ? 'Oui' : '—',
+              'Photos autorisées': payload.details.consentement_medias ? 'Oui' : 'Non',
               'Remarque': payload.details.remarque || '—',
               'Référence': payload.details.reference || '—',
             }),
@@ -355,6 +383,10 @@ document.addEventListener('DOMContentLoaded', () => {
               isPrep ? `Objectif de la saison : ${payload.details.objectif_saison}` : '',
               isPrep ? `Réseaux sociaux : ${payload.details.reseaux_sociaux}` : '',
               isPrep ? `Disponibilités : ${payload.details.disponibilites}` : '',
+              payload.details.taille_tshirt ? `Taille de t-shirt : ${payload.details.taille_tshirt}` : '',
+              payload.details.contact_urgence ? `Contact d'urgence : ${payload.details.contact_urgence}` : '',
+              payload.details.sante ? `Santé / allergies : ${payload.details.sante}` : '',
+              payload.details.autorisation_participation ? 'Autorisation parentale : Oui' : '',
             ].filter(Boolean).join('\n'),
           }),
         }).catch(() => {});

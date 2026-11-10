@@ -18,4 +18,8 @@ Demande du 10 novembre 2026 : nouveau programme 3x3 pour les 14-15 ans, **dimanc
 
 **Matériel marketing :** `docs/marketing/ligue-3x3-dimanche/` (pas publié : `/docs/*` renvoie 404). Contient `kit-marketing.md` (courriel à Nicolas, texte et questions du billet Zeffy, calendrier et légendes Instagram, message aux parents, lettre aux écoles, suivi hebdomadaire), `instagram/` (5 visuels 1080 × 1350) et `affiche-lettre.pdf`.
 
+**Remplacement de l'ancienne ligue du samedi (10 nov., choix de l'utilisateur)** : la Ligue 3v3 du samedi (13-14 ans, 10h-13h) est terminée. Sur l'accueil du site, le programme « Ligue 3v3 » est désormais la ligue du dimanche : carte, titre, description Google, JSON-LD, formulaire et pied de page. La valeur interne `Ligue 3v3` est gardée pour Notion et Supabase. `SAISON` s'applique par défaut, avec ou sans `?saison=`. La ligne `programs` slug `ligue-3v3` dans Supabase a été mise à jour (nom, description, détails, tarifs), car elle écrase la carte de l'accueil.
+- Le formulaire demande aussi, pour cette ligue seulement : taille de t-shirt, contact d'urgence, santé ou allergies, et autorisation parentale (obligatoire). Ces infos partent dans `details`, FormSubmit et Notion.
+- **Bug corrigé** : les champs Gravity Prep cachés étaient `required` et bloquaient en silence l'envoi du formulaire pour tous les autres programmes. Ils ne sont maintenant exigés que pour Gravity Prep.
+
 **Reste à faire (utilisateur) :** créer le billet Zeffy et donner son URL ; publier selon le calendrier du kit.
