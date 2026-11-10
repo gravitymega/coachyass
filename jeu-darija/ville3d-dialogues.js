@@ -57,3 +57,40 @@ export const persona = (npc) => {
   const d = DIALOGUES[npc.id] || {};
   return `${npc.name}. ${d.nom || ''} ${d.fais || ''} ${d.aime || ''}`.trim();
 };
+
+// ----- Les sports d'Ali (dit par Papa le 10 nov. 2026) -----
+// Soccer le mardi, basket le dimanche, course à pied avec Maman. Chaque habitant l'encourage quand il lui parle.
+export const SPORTS = {
+  ali: {
+    resume: 'Ali fait du soccer tous les mardis, du basket tous les dimanches, et de la course à pied avec sa maman.',
+  },
+};
+const isAli = (kid) => !!kid && (kid.id === 'ali' || String(kid.name || '').trim().toLowerCase() === 'ali');
+export const sportsOf = (kid) => (isAli(kid) ? SPORTS.ali : null);
+
+// Un encouragement selon le jour (0 = dimanche … 6 = samedi) ; `n` fait varier la phrase d'un habitant à l'autre.
+export const ENCOURAGEMENTS = {
+  0: ['Aujourd’hui, c’est basket ! Vise bien le panier, champion, tu vas être génial !',
+    'C’est dimanche, jour de basket ! Bezzaf de paniers pour toi aujourd’hui, inchallah !'],
+  1: ['Demain, c’est le soccer ! Prépare tes crampons, tu vas tout donner !',
+    'Plus qu’un dodo avant le soccer ! Je suis sûr que tu vas marquer un beau but.'],
+  2: ['Aujourd’hui, c’est soccer ! Cours vite et fais de belles passes, tu es un champion !',
+    'C’est mardi, jour de soccer ! Yallah, donne tout sur le terrain !'],
+  6: ['Demain, c’est le basket ! Repose-toi bien pour faire plein de paniers.',
+    'Plus qu’un dodo avant le basket ! Tu deviens de plus en plus fort, saha !'],
+  autre: ['Et la course avec Maman ? Bravo, tu deviens de plus en plus rapide !',
+    'Tu cours avec Maman ? Zwin ! Continue comme ça, tu es très fort.',
+    'Soccer le mardi, basket le dimanche, course avec Maman : quel sportif ! Je suis fier de toi.'],
+};
+export function encouragement(kid, date = new Date(), n = 0) {
+  if (!sportsOf(kid)) return '';
+  const list = ENCOURAGEMENTS[date.getDay()] || ENCOURAGEMENTS.autre;
+  return list[(date.getDate() + n) % list.length];
+}
+
+// Ce que l'IA doit savoir sur l'enfant (discussion libre), avec le jour d'aujourd'hui.
+const JOURS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+export function aboutKid(kid, date = new Date()) {
+  const s = sportsOf(kid);
+  return s ? `${s.resume} Aujourd’hui, on est ${JOURS[date.getDay()]}.` : '';
+}

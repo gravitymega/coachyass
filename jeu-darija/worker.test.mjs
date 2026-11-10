@@ -25,3 +25,13 @@ test('le serveur sert les fichiers du jeu et refuse les mauvaises demandes', asy
   assert.equal((await worker.fetch(post({ question: 'Bonjour' }), env)).status, 503); // IA indisponible : le jeu répond tout seul
   assert.equal((await worker.fetch(new Request('https://jeu.example/api/parler'), env)).status, 405);
 });
+
+test('Ali : l’IA connaît ses sports et doit l’encourager', async () => {
+  let seen;
+  const env = { AI: { run: async (model, input) => { seen = input; return { response: 'Bravo champion !' }; } }, ASSETS: { fetch: () => new Response('') } };
+  await worker.fetch(post({ name: 'Papa', persona: 'Je suis Papa.', question: 'Salut', about: 'Ali fait du soccer tous les mardis.' }), env);
+  assert.match(seen.messages[0].content, /soccer tous les mardis/);
+  assert.match(seen.messages[0].content, /encourage/);
+  await worker.fetch(post({ name: 'Papa', persona: 'Je suis Papa.', question: 'Salut' }), env);
+  assert.doesNotMatch(seen.messages[0].content, /encourage-le/);
+});

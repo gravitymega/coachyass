@@ -129,9 +129,10 @@ for (const v of VILLES) {
 }
 add('Bienvenue dans la ville en 3D ! Glisse le doigt pour tourner, et utilise le rond pour marcher.');
 // Discussions dans la ville en 3D
-import { QUESTIONS, DIALOGUES } from '../../ville3d-dialogues.js';
+import { QUESTIONS, DIALOGUES, ENCOURAGEMENTS } from '../../ville3d-dialogues.js';
 import { INTERIORS } from '../../ville3d-core.js';
 for (const d of Object.values(DIALOGUES)) add(...Object.values(d));
+add(...Object.values(ENCOURAGEMENTS).flat()); // les sports d'Ali
 add('Bslama !', 'Hmm, je ne sais pas… Demande à Papa ou à Maman, ou choisis une des questions !', 'Je ne sais pas trop… demande à Papa ou à Maman !');
 for (const t of Object.values(INTERIORS)) add(`Bienvenue dans ${t.name.toLowerCase()} !`);
 add('Écoute bien et trouve-le avec la lampe !', 'Pas celui-là ! Cherche encore avec la lampe.', 'Bravo ! Avec Glowby, tu as trouvé tous les mots cachés !');

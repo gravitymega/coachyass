@@ -1,7 +1,7 @@
 // La ville en 3D (façon Minecraft), dessinée avec Three.js (licence MIT, copié dans lib/ : marche hors ligne).
 // On marche avec le joystick, on tourne la caméra en glissant le doigt, on saute, et on aide les habitants.
 import { N, HMAX, B, SPAWN, makeWorld3d, solid, groundBelow, NPCS3D, spawnItems, questWord, coinSpots3d, pathTo, topOf, makeInterior, INTERIORS, IW, ID, IH } from './ville3d-core.js';
-import { QUESTIONS, DIALOGUES, persona } from './ville3d-dialogues.js';
+import { QUESTIONS, DIALOGUES, persona, encouragement, aboutKid } from './ville3d-dialogues.js';
 import { WORDS, wordsFor } from './core.js';
 import { askQuestion } from './ville-core.js';
 import { screen, el, choose } from './act-kit.js';
@@ -358,7 +358,12 @@ export async function ville3d(ctx) {
     chat.querySelector('.v3-chat-free').hidden = !free;
     chat.querySelector('.v3-mic').hidden = !(window.SpeechRecognition || window.webkitSpeechRecognition);
     const hello = (DIALOGUES[npc.id] || {}).salut || 'Salam !';
-    addLine('npc', hello); ctx.say(hello);
+    addLine('npc', hello);
+    // Ali : chaque habitant l'encourage pour son sport (soccer le mardi, basket le dimanche, course avec Maman).
+    let enc = encouragement(kid, new Date(), NPCS3D.findIndex((x) => x.id === npc.id));
+    if (npc.id === 'maman') enc = enc.replace(/avec Maman/g, 'avec moi');
+    if (enc) addLine('npc', enc);
+    ctx.say(hello, ...(enc ? [enc] : []));
   }
   async function answer(qid) {
     const q = QUESTIONS.find((x) => x.id === qid);
@@ -384,7 +389,7 @@ export async function ville3d(ctx) {
       try {
         const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), 9000);
         const r = await window.fetch('api/parler', { method: 'POST', headers: { 'content-type': 'application/json' }, signal: ctrl.signal,
-          body: JSON.stringify({ name: chatNpc.name, persona: persona(chatNpc), question: text, history: history.slice(-6), older: !!kid.older }) });
+          body: JSON.stringify({ name: chatNpc.name, persona: persona(chatNpc), question: text, history: history.slice(-6), older: !!kid.older, about: aboutKid(kid) }) });
         clearTimeout(timer);
         if (r.ok) reply = String((await r.json()).reponse || '').trim();
       } catch (e) { console.warn('Discussion libre :', e); /* pas d'Internet ou IA indisponible */ }
