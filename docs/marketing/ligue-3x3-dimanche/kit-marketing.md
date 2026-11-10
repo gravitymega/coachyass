@@ -216,7 +216,7 @@ Republie chaque inscription d'équipe en story (« Bienvenue aux [nom d'équipe]
 |---|---|---|
 | 22 nov. | 2 équipes inscrites | Relancer les capitaines et faire 2 Reels de plus |
 | 6 déc. (fin du lève-tôt) | 4 équipes (16 joueurs) | Prolonger le lève-tôt d'une semaine (« dernière chance ») |
-| **15 déc. (décision)** | **6 équipes (22-24 joueurs), le seuil de rentabilité** | Relancer écoles et parents, faire une soirée d'essai gratuite, réduire les coûts (1 arbitre par terrain en saison régulière, bénévoles à la table) |
+| **15 déc. (décision)** | **6 équipes (22-24 joueurs), le seuil de rentabilité** | Relancer écoles et parents, faire une soirée d'essai gratuite, réduire les coûts (bénévoles à la table, moins de publicité) |
 | 3 janv. (fin des inscriptions) | 8 équipes | Former les équipes avec les agents libres |
 
 Chaque semaine, note les réponses à « Comment as-tu connu la ligue ? » et mets plus d'efforts dans le canal qui marche le mieux.
