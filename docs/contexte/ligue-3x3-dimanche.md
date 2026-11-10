@@ -18,4 +18,6 @@ Demande du 10 novembre 2026 : nouveau programme 3x3 pour les 14-15 ans, **dimanc
 
 **Matériel marketing :** `docs/marketing/ligue-3x3-dimanche/` (pas publié : `/docs/*` renvoie 404). Contient `kit-marketing.md` (courriel à Nicolas, texte et questions du billet Zeffy, calendrier et légendes Instagram, message aux parents, lettre aux écoles, suivi hebdomadaire), `instagram/` (5 visuels 1080 × 1350) et `affiche-lettre.pdf`.
 
+**Google Forms (10 nov.)** : `docs/marketing/ligue-3x3-dimanche/google-form-inscription.gs`, script Apps Script à coller dans script.google.com (fonction `creerFormulaire`). Il crée le formulaire (joueur, inscription, parent, paiement, autorisations) et sa feuille de réponses dans le Drive de l'utilisateur. Aucun outil disponible ne crée un Google Forms directement.
+
 **Reste à faire (utilisateur) :** créer le billet Zeffy et donner son URL ; publier selon le calendrier du kit.
