@@ -1,6 +1,9 @@
 # Dr Ali : le labo du Dr Harley (dans le jeu de Hbibiti)
 
-Plan écrit par Mythos le 8 novembre 2026 pour Dr Harley (harley-lab). Le 10 novembre 2026, l'utilisateur a demandé de l'**intégrer au jeu de Hbibiti** (`jeu-darija/`) : c'est maintenant l'activité **🔬 Le labo du Dr Harley** (profil qui lit seulement, donc Ali). Le plan d'origine prévoyait un jeu à part sur harley-lab (`~/Dr-Ali`, `labo/`, `jeu/`) ; ce dossier n'est pas dans le dépôt.
+Plan écrit par Mythos le 8 novembre 2026 pour Dr Harley (harley-lab). Le 10 novembre 2026, l'utilisateur a demandé de l'**intégrer au jeu de Hbibiti** (`jeu-darija/`) : c'est maintenant l'activité **🔬 Le labo du Dr Harley** (profil qui lit seulement, donc Ali). **Il existe deux versions, gardées toutes les deux (choix de l'utilisateur, 10 nov. 2026)** :
+- la version de **Mythos sur le serveur harley-lab** (`~/Dr-Ali`, `labo/`, `jeu/`, voix Piper ; pas dans ce dépôt, pas accessible depuis une session cloud) : Dr Harley y lit les progrès d'Ali directement ;
+- la version **dans le jeu de Hbibiti** (tablette), décrite ci-dessous.
+Les progrès sont **séparés** (un endroit chacun). Pour que Dr Harley tienne compte des deux, donner le fichier « 📤 progrès pour Dr Harley » de la tablette à harley-lab. Ne pas fusionner ni supprimer une des deux versions sans redemander à l'utilisateur.
 
 ## Le but
 Ali a 7 ans et il croit que Dr Harley vit dans l'ordinateur pour aider sa famille. On garde cette magie et on en fait une école secrète : **Dr Harley forme Ali pour qu'il devienne « Dr Ali »**, un savant du labo. En six mois : se servir d'un ordinateur sous Linux et taper ses premières commandes ; penser comme un programmeur (suites, boucles, conditions, variables) ; être solide en maths pour son âge ; comprendre des idées de science en les testant ; et surtout aimer chercher, se tromper et recommencer.
