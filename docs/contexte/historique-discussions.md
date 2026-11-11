@@ -1,4 +1,4 @@
-# Historique de toutes les discussions Claude (10 août → 10 novembre 2026)
+# Historique de toutes les discussions Claude (10 août → 11 novembre 2026)
 
 Résumé de chaque session Claude de Yassine, pour qu'une nouvelle session (ex. **harley-lab**, le serveur relié par Remote Control) soit au courant de tout. Le détail technique de chaque sujet est dans les autres fichiers de `docs/contexte/` (voir le tableau du `CLAUDE.md` à la racine). Les statuts « en attente » sont ceux de la dernière réponse de chaque session.
 
@@ -66,10 +66,21 @@ Résumé de chaque session Claude de Yassine, pour qu'une nouvelle session (ex. 
 | 3 nov. | Applications pour améliorer Playbook ; Projet de basket ; Playbook promotion video | Playbook laissé tel quel ; PushMeGo pour Art craft / Open Playbook ; vidéo promo en cours. |
 | 5 nov. | Branding Gravity photo editing | Retouches photo de marque. |
 | 9 nov. | Drhaleysawyer allo | Mise en route du serveur **harley-lab**. |
-| 10 nov. | Harley-lab server communication ; **harley-lab** | Remote Control sur le serveur ; reste à connecter Gmail (`/mcp` → Gmail → Authenticate). |
+| 10 nov. | Harley-lab server communication ; **harley-lab** (session du serveur) | Remote Control sur le serveur ; reste à connecter Gmail (`/mcp` → Gmail → Authenticate). Dans la session du serveur : 4 essais de voix, en attente du choix de voix, de la langue (FR / EN / les deux) et d'un « GO ». |
+| 10 nov. | Discussions pour Harley lab ; Server status | Cet historique (PR #140, mergée) ; harley-lab mis en pause le temps d'un export. |
+| 10 nov. | Ligue 3x3 du dimanche (sessions Gravity) | PR #141 (page, affiche, certificat cadeau, kit marketing, budget) et PR #143 (la ligue du dimanche remplace celle du samedi, nouvelles questions, correctif du formulaire) mergées. Voir `ligue-3x3-dimanche.md`. |
+| 10 nov. | Branding Gravity photo editing (suite) | En attente : modifier les billets Zeffy de l'ancienne ligue 3v3, puis répondre « Zeffy prêt ». |
+| 10 nov. | Vidéo documentaire piscine | Vidéo de 49,5 s avec voix off livrée dans l'app (privée, pas sur les sites). |
+| 10 nov. | Africa basketball without borders editions | Recherche des éditions et archives photo ; proposition : courriel à NBA Africa / NBA Photos (FR ou EN) pour les originaux HD. |
+| 10–11 nov. | Ali's sports encouragement ; Harley lab | Projet « Dr Ali » (encouragement sportif pour Ali), intégré au jeu Hbibiti (PR #145). |
+| 11 nov. | Transfert discussions téléphone | Comment retrouver les discussions sur harley-lab (même compte claude.ai, `git pull` + ce fichier, Remote Control, export des données) ; mise à jour de cet historique. |
 
 ## Points encore ouverts (à reprendre)
 - harley-lab : authentifier Gmail dans `claude` (`/mcp`).
+- **Dr Ali / Hbibiti** : merger la PR #145 et créer le secret `LABO_CODE` sur le Worker Cloudflare `jeu-hbibiti`.
+- **Voix (session harley-lab)** : choisir parmi les 4 essais, la langue, puis « GO ».
+- **Zeffy** : modifier les billets de l'ancienne ligue 3v3 (« Zeffy prêt »).
+- **Basketball Without Borders** : dire si on rédige le courriel à NBA Africa / NBA Photos.
 - PR #69 (Tableau tactique) et PR #97 (horaire piscine) : tester / merger.
 - Clé `ZEFFY_API_KEY` à mettre sur Netlify (gravity-admin-dashboard).
 - Documentaire : caméraman, formulaires d'autorisation vidéo des 15 joueurs.
