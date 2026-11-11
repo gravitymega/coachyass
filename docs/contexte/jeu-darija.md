@@ -246,3 +246,17 @@ Demande : « 3D : les joueurs peuvent entrer dans les bâtiments, sauter, se pen
 - `logGame(progress, entry)` (carnet.js) ajoute chaque partie terminée dans `progress.history` (300 max, gardé dans le profil `hbibiti-p-<id>`) : salles, défi éclair, révision (score/total, étoiles, « avec » le frère ou la sœur en coop), activités qui donnent des étoiles (`actCtx.stars`, via `curAct`), missions en ville (`villeDone`).
 - Affichage : album 📒 (« Mes parties », 40 dernières, groupées par jour) et espace parents → Carnet (« Historique des parties », 100 dernières). `gameLine(e)` fait la ligne lisible.
 - Cache SW `hbibiti-v16`.
+
+## Les sports d'Ali : les habitants l'encouragent (10 nov. 2026)
+
+Demande : « Ali va au soccer les mardis et le dimanche au basket, puis il fait de la course avec sa maman ; on veut que tu l'encourages à chaque fois que tu lui parles ».
+
+- `SPORTS`, `encouragement(kid, date, n)` et `aboutKid(kid, date)` dans `ville3d-dialogues.js` (seulement pour le profil Ali : id `ali` ou prénom « Ali »). Test : `ville3d-sports.test.mjs`.
+- **Ville en 3D, discussion** : après le bonjour, chaque habitant ajoute un encouragement selon le jour : dimanche = basket, samedi = « demain c'est le basket », mardi = soccer, lundi = « demain c'est le soccer », les autres jours = la course avec Maman (Maman dit « avec moi »). La phrase varie d'un habitant à l'autre (`ENCOURAGEMENTS`).
+- **Discussion libre (IA)** : le jeu envoie `about` (les sports d'Ali + le jour) au Worker ; la consigne demande d'encourager Ali pour son sport **à chaque réponse** (2 ou 3 phrases, 35 mots au plus). Sans `about` (Asma), rien ne change. Test dans `worker.test.mjs`.
+- Les 11 nouvelles phrases sont dans `outils/voix/phrases.mjs` (9 209 phrases) mais **pas encore enregistrées avec Kokoro** : en attendant, c'est la voix de la tablette qui les dit. Cache `hbibiti-v17`.
+- Pour la session harley-lab : quand on parle à Ali (ou de lui), l'encourager pour son soccer (mardi), son basket (dimanche) et sa course avec Maman.
+
+## Le labo du Dr Harley, « Dr Ali » (10 nov. 2026)
+
+Demande : intégrer au jeu le plan « Dr Ali » (école secrète où Dr Harley forme Ali, une mission par jour). Nouvelle activité **🔬 Le labo du Dr Harley** (profil qui lit), chapitre 1 « La super-machine » complet, 7 moteurs. Tout est décrit dans **`docs/contexte/dr-ali.md`** (plan, règles, format des missions, comment Dr Harley en ajoute une). Fichiers : `labo-core.js`, `labo-missions.js`, `act-labo.js`, `labo.test.mjs`. `openGate` ajouté au contexte des activités. Cache `hbibiti-v18`. Progrès du labo partagés entre la tablette et harley-lab : route `/api/labo` du Worker, KV `jeu-hbibiti-labo` (liaison `LABO` dans `wrangler.toml`), secret `LABO_CODE` à créer dans Cloudflare.

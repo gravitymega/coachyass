@@ -245,7 +245,7 @@ let curAct = null;
 function actCtx() {
   return {
     $, esc, settings, players, P: () => players[0], say, sfx, stopVoice, saveAll, confetti, praise, show, playWord, getRec, putRec, delRec, recKeys,
-    load, save, saveSettings, audio, DIALECT_NAME, FLAG, cap, openVille,
+    load, save, saveSettings, audio, DIALECT_NAME, FLAG, cap, openVille, openGate,
     stars(n) { const a = ACTS.find((x) => x.id === curAct); players.forEach((p) => { p.progress.stars += n; if (a) logGame(p.progress, { kind: 'act', icon: a.icon, name: a.title, stars: n }); }); saveAll(); },
     back() { stopVoice(); openMap(); },
   };

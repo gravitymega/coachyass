@@ -4,9 +4,11 @@ import { voyage, cuisine, noms, marche, priere } from './act-monde.js';
 import { foot, basket, studio, animal, glowby } from './act-jeux.js';
 import { photos, messages } from './act-famille.js';
 import { ville3d } from './ville3d.js';
+import { labo } from './act-labo.js';
 
 const A = (id, icon, title, desc, open, extra = {}) => ({ id, icon, title, desc, open, ...extra });
 export const ACTS = [
+  A('labo', '🔬', 'Le labo du Dr Harley', 'Deviens Dr Ali : une mission secrète par jour', labo, { older: true }),
   A('ville3d', '🧊', 'La ville en 3D', 'Comme Minecraft : marche, saute et aide les habitants', ville3d),
   A('construire', '🏗️', 'Construire', 'Bâtis ta maison dans la ville avec tes pièces', (ctx) => ctx.openVille({ build: true })),
   A('tracer', '✍️', 'Tracer les lettres', 'Écris les lettres arabes avec ton doigt', tracer),
