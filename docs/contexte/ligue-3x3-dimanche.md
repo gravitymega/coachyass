@@ -1,6 +1,6 @@
 # Ligue 3x3 du dimanche, 14-15 ans (hiver 2027)
 
-Demande du 10 novembre 2026 : nouveau programme 3x3 pour les 14-15 ans, **dimanches seulement** (samedis possibles au besoin), au Collège Sainte-Anne (gymnase A, Lachine), du 10 janvier au 21 mars 2027. L'utilisateur voulait un plan marketing « boule de neige ».
+Demande du 10 novembre 2026 : nouveau programme 3x3 pour les 14-15 ans, **dimanches seulement** (samedis possibles au besoin), au Collège Sainte-Anne (gymnase A, Dorval), du 10 janvier au 21 mars 2027. L'utilisateur voulait un plan marketing « boule de neige ».
 
 **Soumission du collège (4 nov. 2026, contact Nicolas Ramirez, Ramirezn@sainteanne.ca)** : 60 $/h. Samedis 18h30-20h30 et dimanches 12h-14h (horaire du dimanche marqué « à vérifier » sur la soumission, **confirmé par l'utilisateur le 10 nov.**). Total des deux journées : 3 035,34 $. **Dimanches seulement : 11 × 120 $ = 1 320 $ + taxes = 1 517,67 $.** Samedis 9 janvier (lancement) et 20 mars (finale) proposés en option.
 
