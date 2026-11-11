@@ -89,3 +89,23 @@ test('un seul labo : fusion des progrès de deux appareils, sans rien perdre', a
   assert.equal(missionsState(ms, m, '2026-11-11')[2].etat, 'demain'); // la règle « une par jour » vaut sur tous les appareils
   assert.deepEqual(mergeLabo(null, tablette).faits, tablette.faits);
 });
+
+test('chapitres à la suite : le chapitre 2 s’ouvre le lendemain du défi du chapitre 1', () => {
+  const tout = CHAPITRES.flatMap((c) => c.missions), labo = newLabo(), j = '2026-11-10';
+  const c2 = tout.findIndex((m) => m.id === 'c2-m1');
+  assert.equal(missionsState(tout, labo, j)[c2].etat, 'fermee');
+  CHAPITRES[0].missions.forEach((m, i) => recordMission(labo, m, { ok: true, essais: 1, indices: 0 }, addDays(j, i)));
+  assert.equal(missionsState(tout, labo, addDays(j, 6))[c2].etat, 'demain'); // le défi est fait aujourd'hui
+  assert.equal(missionsState(tout, labo, addDays(j, 7))[c2].etat, 'ouverte');
+  for (const c of CHAPITRES) assert.ok(c.badge?.nom && c.fin, `${c.id} : badge et phrase de fin`);
+});
+
+test('moteur clavier : le prénom, sans accents, et le valideur', async () => {
+  const { motClavier, CLAVIER } = await import('./labo-core.js');
+  assert.equal(motClavier('{prenom}', 'Ali'), 'ALI');
+  assert.equal(motClavier('{prenom}', 'Éloïse'), 'ELOISE');
+  assert.equal(motClavier('bip'), 'BIP');
+  for (const l of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') assert.ok(CLAVIER.some((r) => r.includes(l)), `touche ${l}`);
+  assert.ok(validateMission({ id: 'c9-m1', domaine: 'ordi', titre: 't', histoire: ['h'], notions: ['n'], etapes: [{ moteur: 'clavier', consigne: 'c', mot: '' }] }).length);
+  assert.deepEqual(validateMission({ id: 'c9-m1', domaine: 'ordi', titre: 't', histoire: ['h'], notions: ['n'], etapes: [{ moteur: 'clavier', consigne: 'c', mot: 'PINGO' }] }), []);
+});

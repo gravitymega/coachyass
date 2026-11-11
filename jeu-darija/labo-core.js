@@ -2,7 +2,10 @@
 // Le plan complet est dans docs/contexte/dr-ali.md. Les missions sont des DONNÉES (labo-missions.js) qui utilisent
 // des MOTEURS déjà prêts (act-labo.js). Une seule nouvelle mission par jour ; on peut rejouer les anciennes.
 
-export const ENGINES = ['compter', 'robot', 'ranger', 'secret', 'maison', 'quiz', 'sons'];
+export const ENGINES = ['compter', 'robot', 'ranger', 'secret', 'maison', 'quiz', 'sons', 'clavier'];
+// Le clavier dessiné (disposition QWERTY, comme les claviers du Canada) et le mot à taper (« {prenom} » = le prénom, sans accents).
+export const CLAVIER = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
+export const motClavier = (mot, prenom = 'Ali') => String(mot).replace('{prenom}', prenom).normalize('NFD').replace(/[^A-Za-z]/g, '').toUpperCase();
 export const DOMAINES = {
   maths: { e: '🔢', nom: 'Maths' }, code: { e: '🤖', nom: 'Code' }, ordi: { e: '🐧', nom: 'L’ordinateur' },
   sciences: { e: '🔬', nom: 'Sciences' }, enigme: { e: '🧩', nom: 'Énigme' }, maison: { e: '🏠', nom: 'Avec Papa ou Maman' },
@@ -60,6 +63,7 @@ export function validateMission(m) {
     if (s.moteur === 'ranger' && (!s.boites?.length || !s.objets?.every((o) => s.boites.some((b) => b.id === o.boite)))) err.push(`étape ${i} : chaque objet va dans une boîte qui existe`);
     if (s.moteur === 'secret' && !(s.mot && [...s.mot].every((l) => s.code?.[l]))) err.push(`étape ${i} : chaque lettre du mot a son dessin`);
     if ((s.moteur === 'quiz' || s.moteur === 'maison') && (s.questions || []).some((q) => (q.choix || []).filter((c) => c.bon).length !== 1)) err.push(`étape ${i} : une seule bonne réponse par question`);
+    if (s.moteur === 'clavier' && !(s.mot && motClavier(s.mot).length >= 1 && motClavier(s.mot).length <= 8)) err.push(`étape ${i} : clavier, un mot de 1 à 8 lettres`);
     if (s.moteur === 'sons' && !(s.longueur >= 2 && s.longueur <= 6)) err.push(`étape ${i} : longueur des sons de 2 à 6`);
   }
   return err;

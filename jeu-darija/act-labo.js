@@ -4,7 +4,7 @@
 // puis une nouvelle chance, on félicite l'effort, les notions reviennent (1, 3, 7, 14, 30 jours).
 import { screen, el, shuffled, pickOne } from './act-kit.js';
 import { CHAPITRES } from './labo-missions.js';
-import { DOMAINES, dayKey, enLettres, missionsState, recordMission, newLabo, gradeOf, chapitresFinis, bulletin, robotRun, robotSolution, mergeLabo } from './labo-core.js';
+import { DOMAINES, CLAVIER, motClavier, dayKey, enLettres, missionsState, recordMission, newLabo, gradeOf, chapitresFinis, bulletin, robotRun, robotSolution, mergeLabo } from './labo-core.js';
 import { encouragement } from './ville3d-dialogues.js';
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -64,8 +64,11 @@ export function labo(ctx, { synced = false } = {}) {
   const enc = encouragement(kid, new Date(), 3);
   const head = el(`<div class="act-card lb-head"><div class="harley-wrap">${harleySVG()}</div><p class="lb-bubble"></p></div>`);
   body.append(head);
+  // Un seul fil de missions pour tous les chapitres : le chapitre suivant s'ouvre après le défi du précédent,
+  // et la règle « une nouvelle mission par jour » vaut pour tout le labo.
+  const tout = missionsState(MISSIONS, lb, today, { libre });
   for (const c of CHAPITRES) {
-    const st = missionsState(c.missions, lb, today, { libre });
+    const st = tout.filter((x) => x.m.chapitre === c);
     const pieces = c.missions.map((m) => `<span class="lb-piece ${lb.faits[m.id] ? 'got' : ''}" title="${ctx.esc(m.piece.nom)}">${lb.faits[m.id] ? m.piece.e : '❔'}</span>`).join('');
     const card = el(`<div class="act-card lb-chap"><h3>Chapitre ${c.id.slice(1)} : ${ctx.esc(c.titre)} <span class="lb-pingo" title="Pingo">🐧</span></h3>
       <div class="lb-pieces">${pieces}</div><div class="act-grid lb-missions"></div></div>`);
@@ -86,7 +89,7 @@ export function labo(ctx, { synced = false } = {}) {
   const lines = first
     ? [`Bonjour ${kid.name} ! Je suis le docteur Harley.`, 'Bienvenue dans mon labo secret.', `${kid.name}, veux-tu devenir mon assistant ? Commence par la première mission !`]
     : !next ? [`Re-bonjour ${kid.name} !`, 'Tu as fini toutes les missions. Bravo ! Je prépare le prochain chapitre, et tu peux rejouer les missions.']
-    : missionsState(next.chapitre.missions, lb, today, { libre }).find((x) => x.m.id === next.id)?.etat === 'ouverte'
+    : tout.find((x) => x.m.id === next.id)?.etat === 'ouverte'
       ? [`Re-bonjour ${kid.name} !`, 'Une nouvelle mission t’attend aujourd’hui.']
       : [`Re-bonjour ${kid.name} !`, 'Ta mission du jour est faite. Bravo ! La prochaine arrive demain matin.'];
   if (enc) lines.push(enc);
@@ -129,7 +132,7 @@ async function mission(ctx, m) {
   const grade = gradeOf(CHAPITRES, lb);
   zone.innerHTML = `<div class="lb-reward"><div class="lb-big">${m.piece.e}</div>
     <p class="act-big">${chapFini ? `Badge : ${ctx.esc(m.chapitre.badge.nom)} !` : `Tu as retrouvé ${ctx.esc(m.piece.nom)} !`}</p>
-    ${chapFini ? `<p class="lb-machine">⚡ La super-machine s’allume ! ⚡</p><p>Ton grade : ${grade.e} <b>${ctx.esc(grade.nom)}</b></p>` : ''}
+    ${chapFini ? `<p class="lb-machine">${ctx.esc(m.chapitre.fin || '⚡ Bravo ! ⚡')}</p><p>Ton grade : ${grade.e} <b>${ctx.esc(grade.nom)}</b></p>` : ''}
     <div class="act-row"><button class="go" data-back>Retour au labo ➜</button></div></div>`;
   ctx.sfx('win'); ctx.confetti(chapFini ? 120 : 60);
   zone.querySelector('[data-back]').onclick = () => { ctx.stopVoice(); labo(ctx); };
@@ -330,6 +333,43 @@ const ENGINES = {
     });
   },
 
+  // ⌨️ Le clavier : taper un mot lettre par lettre (sur le clavier dessiné ou sur le vrai clavier de l'ordinateur).
+  // « {prenom} » est remplacé par le prénom de l'enfant (sans accents).
+  async clavier(ctx, zone, head, step, { kid }) {
+    const word = [...motClavier(step.mot, kid?.name)], found = [];
+    zone.innerHTML = `<p class="act-big lb-q">${ctx.esc(step.consigne)}</p><div class="lb-word"></div>
+      <div class="lb-kbd">${CLAVIER.map((row) => `<div class="lb-kbd-row">${[...row].map((l) => `<button class="lb-key" data-k="${l}">${l}</button>`).join('')}</div>`).join('')}</div>`;
+    const drawWord = () => {
+      zone.querySelector('.lb-word').innerHTML = word.map((l, i) => `<span class="lb-letter ${i === found.length ? 'cur' : ''}"><i>${i < found.length ? '✅' : i === found.length ? '👉' : '·'}</i><b>${found[i] || l.toLowerCase()}</b></span>`).join('');
+      zone.querySelectorAll('.lb-key.hint').forEach((x) => x.classList.remove('hint'));
+    };
+    drawWord();
+    const t = tries(ctx, head, step, {
+      showHint: () => zone.querySelector(`.lb-key[data-k="${word[found.length]}"]`)?.classList.add('hint'),
+      async showSolution() { const l = word[found.length]; zone.querySelector(`.lb-key[data-k="${l}"]`)?.classList.add('hint'); await docSays(ctx, head, `Regarde : la touche ${l} brille. Appuie dessus !`); },
+    });
+    docSays(ctx, head, step.consigne);
+    return new Promise((resolve) => {
+      let busy = false;
+      const press = async (k) => {
+        if (busy || found.length >= word.length || !/^[A-Z]$/.test(k)) return;
+        busy = true; ctx.stopVoice();
+        const key = zone.querySelector(`.lb-key[data-k="${k}"]`);
+        key?.classList.add('down'); setTimeout(() => key?.classList.remove('down'), 150);
+        if (k === word[found.length]) { found.push(k); ctx.sfx('ok'); drawWord(); }
+        else await t.miss();
+        busy = false;
+        if (found.length === word.length) {
+          document.removeEventListener('keydown', onKey);
+          ctx.confetti(50); await ctx.say(`Bravo ! Tu as écrit : ${word.join(', ')}.`); resolve(t.r);
+        }
+      };
+      const onKey = (e) => { if (!document.body.contains(zone)) { document.removeEventListener('keydown', onKey); return; } press(e.key.toUpperCase()); };
+      document.addEventListener('keydown', onKey);
+      zone.querySelector('.lb-kbd').addEventListener('click', (e) => { const k = e.target.closest('[data-k]'); if (k) press(k.dataset.k); });
+    });
+  },
+
   // 🏠 Une mission en vrai, avec Papa ou Maman (confirmée par un parent), puis des questions.
   async maison(ctx, zone, head, step, o) {
     zone.innerHTML = `<p class="act-big lb-q">🏠 ${ctx.esc(step.consigne)}</p><p class="lb-todo">${ctx.esc(step.aFaire || '')}</p>
@@ -350,7 +390,7 @@ const ENGINES = {
     if (step.consigne) await docSays(ctx, head, step.consigne);
     for (const q of step.questions) {
       zone.innerHTML = `<p class="act-big lb-q">${ctx.esc(q.q)}</p><div class="act-choices lb-choices">${q.choix.map((c, i) => `<button class="act-choice" data-i="${i}">${ctx.esc(c.t)}</button>`).join('')}</div>`;
-      const t = tries(ctx, head, { indice: q.indice || 'Écoute encore la question.' }, {
+      const t = tries(ctx, head, { indice: q.indice || step.indice || 'Écoute encore la question.' }, {
         showHint: () => {},
         async showSolution() { const i = q.choix.findIndex((c) => c.bon); zone.querySelectorAll('.act-choice')[i].classList.add('reveal'); await docSays(ctx, head, `La réponse, c’est : ${q.choix[i].t.replace(/^\P{L}+/u, '')}.`); },
       });

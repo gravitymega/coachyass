@@ -56,7 +56,7 @@ Saison 2 : les mots anglais de l'ordinateur, du vrai Python, trier et chercher, 
 ## Comment c'est construit dans le jeu
 - `jeu-darija/labo-missions.js` : **les données** (`CHAPITRES`, chacun 7 missions dont un défi en dernier). Le format et les moteurs sont décrits en tête du fichier.
 - `jeu-darija/labo-core.js` : logique pure (une par jour, révisions, grades, bulletin, valideur, Bip sur la grille, nombres en lettres).
-- `jeu-darija/act-labo.js` : l'écran et les **7 moteurs** : `compter`, `robot` (Bip et les flèches), `ranger` (glisser dans des boîtes), `secret` (message codé), `maison` (en vrai, confirmé par un parent), `quiz`, `sons` (mémoire). Prochains moteurs prévus par le plan : clavier, console simulée de Pingo, balance des nombres, horloge, monnaie, labyrinthe (au plus un nouveau moteur par semaine, testé à part).
+- `jeu-darija/act-labo.js` : l'écran et les **8 moteurs** : `compter`, `robot` (Bip et les flèches), `ranger` (glisser dans des boîtes), `secret` (message codé), `maison` (en vrai, confirmé par un parent), `quiz`, `sons` (mémoire), `clavier` (ajouté le 11 nov.). Prochains moteurs prévus par le plan : console simulée de Pingo, balance des nombres, horloge, monnaie, labyrinthe (au plus un nouveau moteur par semaine, testé à part).
 - Progrès dans `progress.labo` de chaque enfant (localStorage, compris dans la sauvegarde JSON des parents) : `faits`, `essais` (réussite, essais, indices, solution montrée, temps), `revues`.
 - Espace parents du labo (🔒 calcul) : bulletin de la semaine, **code famille et « Synchroniser maintenant »**, réglage « une par jour », copie de secours **📤 Télécharger les progrès** (`dr-ali-progres-AAAA-MM-JJ.json`).
 - Synchronisation (`syncLabo` dans `act-labo.js`) : à l'ouverture du labo et après chaque mission, un seul `PUT /api/labo?enfant=ali` envoie le labo local et reçoit la fusion. Testé : `worker.test.mjs` (code obligatoire, fusion, KV) et Playwright avec deux appareils (mission faite sur la tablette → vue sur harley-lab, la suivante « demain » sur les deux).
@@ -82,6 +82,38 @@ Pingo a caché les sept pièces de la super-machine ; chaque mission rend une pi
 | 5 | 🧩 | Le message secret de Pingo : PINGO | le fil de cuivre |
 | 6 | 🏠 | La chasse aux aimants, avec Papa ou Maman, puis 2 questions | la manivelle |
 | 7 | 🏆 | La machine s'allume : répéter les sons, compter les boulons, Bip jusqu'au bouton | badge « Apprenti du labo » |
+
+## Chapitre 2 : Le grand match de Bip (écrit le 11 nov. 2026)
+Thème soccer (Ali joue le mardi). Pingo a rangé le matériel du terrain n'importe où ; chaque mission rend un objet du match ; le 7e jour, c'est le grand match. Toujours le programme du mois 1, une marche au-dessus du chapitre 1 (compter jusqu'à 20, 3 dossiers, 2 murs pour Bip). Aucun nouveau moteur.
+| N° | Domaine | Mission | Pièce |
+|---|---|---|---|
+| 1 | 🔢 | Les ballons du vestiaire : compter de 14 à 20, puis comparer (quelle équipe a le plus de joueurs, 12 ou 17) | le ballon du match |
+| 2 | 🤖 | Bip dribble jusqu'au but : 4 flèches autour d'un mur, puis 6 flèches entre deux murs | le filet du but |
+| 3 | 🐧 | Les dossiers du club : ranger des photos dans 3 dossiers (Soccer, Basket, Course), puis le double-clic | le sifflet |
+| 4 | 🔬 | Le gazon du terrain : ce dont une plante a besoin (eau, soleil, air, terre), une plante dans le noir | le maillot |
+| 5 | 🧩 | Les motifs de l'équipe : 2 suites à compléter, puis le mot secret BALLON | les crampons |
+| 6 | 🏠 | La course avec Maman (ou Papa) : compter 20 pas à voix haute, sentir son cœur battre plus vite | la gourde |
+| 7 | 🏆 | Le grand match ! : 4 sons, compter les supporters, un motif, Bip marque le but (6 flèches) | badge « Capitaine du labo » ⚽ |
+
+**Correctif du 11 nov.** : l'écran du labo calculait « une par jour » chapitre par chapitre, donc la 1re mission du chapitre 2 aurait été ouverte tout de suite. Maintenant tout le labo est un seul fil de missions (`missionsState(MISSIONS…)` dans `act-labo.js`) : le chapitre suivant s'ouvre le lendemain du défi du précédent (test dans `labo.test.mjs`). Chaque chapitre a aussi une phrase `fin`, montrée quand le défi est réussi (avant, « La super-machine s'allume » était écrit en dur). Cache `hbibiti-v19`.
+
+## Chapitre 3 : Le panier magique (écrit le 11 nov. 2026)
+Thème basket (Ali joue le dimanche). Le docteur a inventé un panier qui compte les points ; Pingo a mélangé ses sept réglages. Fin du mois 1. **Nouveau moteur `clavier`** (le seul de la semaine) : taper un mot lettre par lettre, sur un clavier dessiné (QWERTY, comme au Canada) ou sur le vrai clavier de harley-lab ; `mot: '{prenom}'` = le prénom de l'enfant sans accents ; la petite main 👉 montre la lettre à trouver, la touche brille à l'indice. Testé dans `labo.test.mjs` (`motClavier`, valideur).
+| N° | Domaine | Mission | Pièce |
+|---|---|---|---|
+| 1 | 🔢 | Les points du panier : 5 + 3, 10 + 4, 9 + 6 | le compteur de points |
+| 2 | 🤖 | Bip monte l'escalier : → ↑ répété 3 fois (seul chemin possible), puis « quelle flèche vient après ? » | la petite échelle |
+| 3 | 🐧 | Le clavier du labo : écrire son prénom, puis BIP | le bouton du panier |
+| 4 | 🔬 | Ça flotte ou ça coule ? : trier 8 objets, pourquoi le ballon flotte | la bouée du labo |
+| 5 | 🧩 | Les devinettes des formes : rond, carré, triangle (3 boîtes), 2 devinettes | le triangle du réglage |
+| 6 | 🏠 | Les paniers du dimanche : 10 tirs avec Papa ou Maman, 10 − 3, « quand on rate, on réessaie » | le carnet des tirs |
+| 7 | 🏆 | Le panier magique s'allume ! : 7 + 5, l'escalier, écrire PANIER, 4 sons | badge « Meneur du labo » 🏀 |
+
+Correctif du même jour : l'indice écrit au niveau de l'étape d'un `quiz` est maintenant dit (avant, seul l'indice de chaque question l'était, sinon « Écoute encore la question »). Cache `hbibiti-v20`.
+
+Avec les chapitres 1 à 3, le mois 1 est écrit (21 missions, jusqu'au 1er déc. environ si Ali joue chaque jour). **Prochain : chapitre 4** (début du mois 2 : + et − jusqu'à 100, les **boucles** avec Bip, la console de Pingo simulée `ls`/`cd`/`pwd` = prochain nouveau moteur, l'eau et ses états). À écrire avant le 1er décembre.
+
+**Pas encore fait** (il faut être sur harley-lab) : comparer avec `~/Dr-Ali/jeu/` de Mythos, convertir les résultats qu'Ali y aurait déjà, et le raccourci du bureau. 
 
 ## Sécurité, toujours
 Pas de lien, pas de compte, pas de pub, pas d'achat, rien d'effrayant. Seule exception : les résultats du labo sont partagés entre les appareils de la famille par le Worker (code famille). Les vraies commandes Linux se tapent seulement avec papa, jamais `sudo`, jamais `rm` en vrai.
