@@ -1295,7 +1295,22 @@ function finishTale() {
 
 // ---------- Démarrage ----------
 initCharacters();
-openHome();
+// Lien direct vers le labo du Dr Harley : …/?labo=ali (bouton de la page « Dr Ali » de Mythos sur harley-lab).
+// Ouvre le jeu sur le profil de l'enfant, directement dans le labo ; la flèche ⬅ ramène à la carte du jeu.
+function openDirectLabo() {
+  const want = new URLSearchParams(location.search).get('labo');
+  if (want === null) return false;
+  const kid = settings.kids.find((k) => k.id === (want || 'ali')) || settings.kids.find((k) => k.older);
+  if (!kid) return false;
+  players = [{ kid, progress: progressOf(kid) }];
+  turn = 0; curAct = 'labo';
+  players[0].progress.story = true; // pas l'histoire de l'usine : on arrive par la porte du labo
+  saveAll();
+  openAct('labo', actCtx());
+  document.addEventListener('pointerdown', () => audio(), { once: true }); // le son se débloque au premier toucher (iPad)
+  return true;
+}
+if (!openDirectLabo()) openHome();
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
