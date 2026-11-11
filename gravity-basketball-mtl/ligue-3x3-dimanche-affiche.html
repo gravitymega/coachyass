@@ -1,93 +1,113 @@
 <!doctype html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Affiche Ligue 3x3 du dimanche | Gravity Basketball</title>
-<meta name="robots" content="noindex">
-<link rel="icon" href="assets/logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Affiche Ligue 3x3 du dimanche | Gravity Basketball</title><meta name="robots" content="noindex"><link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@500;600;700&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* Affiche imprimable (Lettre 8,5 x 11). Imprimer : Ctrl/Cmd + P, marges « Aucune », graphiques d'arrière-plan cochés. */
-  @page { size: letter; margin: 0; }
-  :root { --bg:#0d0b12; --orange:#e8672e; --orange-l:#ff8a4c; --magenta:#d81e5b; --magenta-l:#f0425f; --muted:#c9c4d3; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; background: #2a2536; }
-  body { font-family: "Inter", sans-serif; color: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .print-hint { text-align: center; padding: 12px 16px; font-size: 14px; color: #ddd; }
-  .print-hint button { font: inherit; font-weight: 700; margin-left: 8px; padding: 6px 14px; border-radius: 999px; border: 0; background: var(--orange); color: #fff; cursor: pointer; }
-  .poster {
-    width: 8.5in; height: 11in; margin: 0 auto; position: relative; overflow: hidden;
-    background:
-      radial-gradient(circle at 85% 8%, rgba(216,30,91,.45), transparent 42%),
-      radial-gradient(circle at 10% 70%, rgba(232,103,46,.35), transparent 45%),
-      var(--bg);
-    padding: .55in .6in .5in; display: flex; flex-direction: column;
-  }
-  .court { position: absolute; right: -1.6in; bottom: -1.2in; width: 5.6in; height: 5.6in; border: 6px solid rgba(255,255,255,.07); border-radius: 50%; }
-  .court::after { content:""; position:absolute; inset: 1.1in; border: 6px solid rgba(255,255,255,.07); border-radius: 50%; }
-  .top { display: flex; align-items: center; justify-content: space-between; }
-  .top img { height: .95in; }
-  .badge { font-family: "Oswald", sans-serif; text-transform: uppercase; letter-spacing: .08em; font-size: 15pt; padding: 6px 16px; border-radius: 999px; background: linear-gradient(135deg, #c04d1c, var(--magenta)); }
-  h1 { font-family: "Oswald", sans-serif; text-transform: uppercase; line-height: .9; margin: .35in 0 .12in; font-size: 88pt; letter-spacing: -.01em;
-       background: linear-gradient(135deg, var(--orange-l), var(--magenta-l)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .tag { font-family: "Oswald", sans-serif; font-size: 26pt; text-transform: uppercase; margin: 0 0 .28in; letter-spacing: .02em; }
-  .facts { display: grid; grid-template-columns: 1fr 1fr; gap: .14in .3in; margin-bottom: .3in; }
-  .fact { border-left: 4px solid var(--orange); padding-left: 12px; }
-  .fact b { display: block; font-family: "Oswald", sans-serif; text-transform: uppercase; font-size: 11pt; letter-spacing: .08em; color: var(--orange-l); }
-  .fact span { font-size: 15pt; font-weight: 600; }
-  .perks { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: .3in; }
-  .perks span { border: 1.5px solid rgba(255,255,255,.35); border-radius: 999px; padding: 6px 13px; font-size: 11.5pt; font-weight: 600; }
-  .bottom { margin-top: auto; display: flex; align-items: flex-end; gap: .35in; position: relative; }
-  .price { flex: 1; }
-  .price .early { font-family: "Oswald", sans-serif; font-size: 50pt; line-height: 1; }
-  .price .early small { font-size: 18pt; color: var(--muted); }
-  .price p { margin: 6px 0 0; font-size: 12.5pt; color: var(--muted); }
-  .price .urgent { color: #fff; font-weight: 700; font-size: 14pt; margin-top: 10px; }
-  .qr-box { background: #fff; color: var(--bg); border-radius: 18px; padding: 12px 12px 8px; text-align: center; width: 2.25in; }
-  .qr-box svg.qr { width: 100%; height: auto; display: block; }
-  .qr-box p { margin: 4px 0 0; font-family: "Oswald", sans-serif; text-transform: uppercase; font-size: 13pt; letter-spacing: .04em; }
-  .foot { font-feature-settings: "calt" 0; margin-top: .22in; font-size: 10.5pt; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-  @media print { html, body { background: var(--bg); } .print-hint { display: none; } }
-  @media screen and (max-width: 860px) { .poster { transform-origin: top left; transform: scale(calc((100vw - 0px) / 816px)); margin: 0; } body { overflow-x: hidden; } }
-</style>
-</head>
-<body>
-<p class="print-hint">Affiche format Lettre. Imprimer avec marges « Aucune » et graphiques d'arrière-plan. <button type="button" onclick="window.print()">Imprimer</button></p>
-<div class="poster">
-  <div class="court" aria-hidden="true"></div>
+:root{--bg:#090b10;--o:#e8672e;--ol:#ff8a4c;--m:#1e6fff;--ml:#ffc93c;--mu:#cfc8da;--y:#ffd54a}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#141821}
+body{font-family:"Inter",sans-serif;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.f-display{font-family:"Anton","Oswald",sans-serif;text-transform:uppercase;letter-spacing:.005em}
+.f-head{font-family:"Oswald",sans-serif;text-transform:uppercase}
+.grad{background:linear-gradient(100deg,var(--ol) 0%,var(--ml) 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.canvas{position:relative;overflow:hidden;margin:0 auto;background:
+ radial-gradient(120% 70% at 100% 0%,rgba(30,111,255,.55),transparent 55%),
+ radial-gradient(90% 60% at 0% 100%,rgba(232,103,46,.5),transparent 60%),
+ linear-gradient(180deg,#0d111a 0%,#090b10 60%,#090b10 100%)}
+.canvas::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.07;
+ background-image:repeating-linear-gradient(135deg,#fff 0 1px,transparent 1px 7px)}
+.court{position:absolute;color:rgba(255,255,255,.07)}
+.mega{position:absolute;line-height:.8;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.07);white-space:nowrap}
+.ball{position:absolute;filter:drop-shadow(0 18px 30px rgba(232,103,46,.45))}
+.qr{display:block;width:100%;height:auto}
+.stamp{position:absolute;display:grid;place-items:center;text-align:center;border-radius:50%;
+ background:var(--y);color:#0d111a;transform:rotate(-12deg);box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.stamp b{display:block;font-family:"Anton",sans-serif;line-height:.9}
+.stamp span{display:block;font-family:"Oswald",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.pill{display:inline-block;border:1.5px solid rgba(255,255,255,.28);border-radius:999px;background:rgba(255,255,255,.04);font-weight:600;white-space:nowrap}
+.hint{text-align:center;padding:12px 16px;font-size:14px;color:#ddd}
+.hint button{font:inherit;font-weight:700;margin-left:8px;padding:6px 14px;border-radius:999px;border:0;background:var(--o);color:#fff;cursor:pointer}
+@media print{html,body{background:var(--bg)}.hint{display:none}}
+
+@page{size:letter;margin:0}
+.poster{width:816px;height:1056px;padding:46px 52px 34px;display:flex;flex-direction:column}
+.poster .court{width:760px;right:-250px;top:150px;transform:rotate(-8deg)}
+.poster .mega{font-size:560px;left:-30px;bottom:-60px}
+.poster .ball{width:140px;right:66px;top:262px;transform:rotate(-18deg)}
+.top{position:relative;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:14px}
+.brand img{height:74px}
+.brand small{font-family:"Oswald";text-transform:uppercase;letter-spacing:.18em;font-size:12px;color:var(--mu);line-height:1.35}
+.age{font-family:"Oswald";font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:17px;padding:9px 18px;border-radius:999px;background:linear-gradient(135deg,#ff7a1a,#c84b0c)}
+.kicker{position:relative;margin-top:30px;font-family:"Oswald";font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:var(--ol);font-size:17px}
+h1{position:relative;font-size:150px;line-height:.84;margin-top:8px}
+h1 .l2{display:block;font-size:104px;color:#fff}
+.tag{position:relative;margin-top:16px;font-family:"Oswald";font-weight:600;text-transform:uppercase;font-size:25px;letter-spacing:.02em;line-height:1.15}
+.tag em{font-style:normal;color:var(--y)}
+.facts{position:relative;margin-top:26px;display:grid;grid-template-columns:repeat(3,1fr);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+.fact{padding:14px 16px}
+.fact+.fact{border-left:1px solid rgba(255,255,255,.12)}
+.fact b{display:block;font-family:"Oswald";text-transform:uppercase;letter-spacing:.14em;font-size:11.5px;color:var(--ol);margin-bottom:4px}
+.fact span{font-family:"Oswald";font-weight:600;font-size:20px;line-height:1.1;text-transform:uppercase}
+.perks{position:relative;margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+.perks .pill{font-size:13px;padding:7px 13px}
+.bottom{position:relative;margin-top:auto;display:grid;grid-template-columns:1fr 220px;gap:26px;align-items:end}
+.price{background:linear-gradient(135deg,rgba(232,103,46,.22),rgba(30,111,255,.22));border:1px solid rgba(255,138,76,.45);border-radius:20px;padding:20px 22px 18px}
+.price .lbl{font-family:"Oswald";text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:var(--mu)}
+.price .big{display:flex;align-items:baseline;gap:10px;margin-top:2px}
+.price .big strong{font-family:"Anton";font-size:96px;line-height:.9}
+.price .big span{font-family:"Oswald";font-weight:600;text-transform:uppercase;font-size:20px;line-height:1.1}
+.price ul{list-style:none;margin-top:12px;display:grid;gap:5px;font-size:14.5px;color:var(--mu)}
+.price li b{color:#fff}
+.qrbox{background:#fff;color:#0d0b12;border-radius:20px;padding:12px 12px 10px;text-align:center;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+.qrbox p{font-family:"Oswald";font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:16px;margin-top:6px}
+.qrbox small{display:block;font-size:10.5px;color:#555;margin-top:1px}
+.poster .stamp{width:128px;height:128px;right:60px;top:100px;transform:rotate(12deg)}
+.poster .stamp b{font-size:50px} .poster .stamp span{font-size:11.5px}
+.foot{position:relative;margin-top:18px;padding-top:12px;border-top:1px solid rgba(255,255,255,.14);display:flex;justify-content:space-between;font-size:12.5px;color:var(--mu);font-feature-settings:"calt" 0}
+@media screen and (max-width:860px){.poster{transform-origin:top left;transform:scale(calc(100vw / 816px));margin:0}body{overflow-x:hidden}}
+</style></head><body>
+<p class="hint">Affiche format Lettre : imprimer avec marges « Aucune » et graphiques d'arrière-plan. <button type="button" onclick="window.print()">Imprimer</button></p>
+<div class="canvas poster">
+  <svg class="court" viewBox="0 0 600 600" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="5">
+  <rect x="40" y="40" width="520" height="520" rx="6"/>
+  <path d="M120 40 V300 A180 180 0 0 0 480 300 V40"/>
+  <rect x="220" y="40" width="160" height="200"/>
+  <circle cx="300" cy="240" r="60"/>
+  <path d="M260 85 h80"/><circle cx="300" cy="100" r="14"/>
+  <path d="M40 560 A260 260 0 0 1 560 560" stroke-dasharray="14 14"/>
+</svg>
+  <div class="mega f-display">3x3</div>
+  <svg class="ball" viewBox="0 0 100 100" aria-hidden="true"><defs><radialGradient id="bg" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#ffb07a"/><stop offset=".55" stop-color="#e8672e"/><stop offset="1" stop-color="#8f2f0c"/></radialGradient></defs>
+<circle cx="50" cy="50" r="47" fill="url(#bg)"/><g fill="none" stroke="#2a0f05" stroke-width="2.6" stroke-linecap="round"><path d="M3 50 H97"/><path d="M50 3 V97"/><path d="M17 17 C40 35 40 65 17 83"/><path d="M83 17 C60 35 60 65 83 83"/></g></svg>
   <div class="top">
-    <img src="assets/logo.png" alt="Gravity Basketball">
-    <span class="badge">Hiver 2027 · 14-15 ans</span>
+    <div class="brand"><img src="assets/logo.png" alt="Gravity Basketball"><small>Gravity Basketball<br>OSMM · Montréal</small></div>
+    <span class="age">Hiver 2027 · 14-15 ans</span>
   </div>
-  <h1>Ligue 3x3<br>du dimanche</h1>
-  <p class="tag">Monte ton équipe. Joue chaque dimanche. Gagne la finale.</p>
+  <p class="kicker">Nouvelle ligue · Places limitées</p>
+  <h1 class="f-display"><span class="grad">Ligue 3x3</span><span class="l2">du dimanche</span></h1>
+  <p class="tag">Monte ton équipe.<br>Joue chaque dimanche. <em>Gagne la finale.</em></p>
   <div class="facts">
-    <div class="fact"><b>Quand</b><span>Dimanches 12h-14h</span></div>
-    <div class="fact"><b>Dates</b><span>10 janvier au 21 mars</span></div>
-    <div class="fact"><b>Où</b><span>Collège Sainte-Anne, Lachine</span></div>
-    <div class="fact"><b>Format</b><span>3x3 FIBA · équipes de 4</span></div>
+    <div class="fact"><b>Quand</b><span>Dimanches<br>12h – 14h</span></div>
+    <div class="fact"><b>Saison</b><span>10 janvier<br>→ 21 mars</span></div>
+    <div class="fact"><b>Où</b><span>Collège<br>Sainte-Anne · Dorval</span></div>
   </div>
   <div class="perks">
-    <span>Matchs arbitrés</span><span>Classement en ligne</span><span>Top 5 vidéo chaque semaine</span><span>Finale + trophées</span><span>Maillot inclus</span>
+    <span class="pill">🏀 3x3 FIBA arbitré</span><span class="pill">⏱️ ~5 matchs par dimanche</span><span class="pill">📊 Classement en ligne</span><span class="pill">🎥 Top 5 vidéo</span><span class="pill">🏆 Finale + trophées</span><span class="pill">👕 T-shirt inclus</span>
   </div>
+  <div class="stamp"><div><b>8</b><span>équipes<br>seulement</span></div></div>
   <div class="bottom">
     <div class="price">
-      <div class="early">214 $ <small>lève-tôt</small></div>
-      <p>Jusqu'au 6 décembre · Équipe de 4 : 792 $ · Agents libres bienvenus</p>
-      <p class="urgent">8 équipes maximum.</p>
+      <div class="lbl">En équipe complète de 4</div>
+      <div class="big"><strong>198 $</strong><span>par<br>joueur</span></div>
+      <ul>
+        <li><b>Équipe de 4 : 792 $</b> · capitaine : 20 $ de rabais</li>
+        <li><b>Solo lève-tôt : 214 $</b> jusqu'au 6 décembre (puis 268 $)</li>
+        <li>Pas d'équipe ? <b>Agent libre</b> : on te place dans une équipe</li>
+      </ul>
     </div>
-    <div class="qr-box">
-      <svg class="qr" role="img" aria-label="Code QR vers la page de la ligue" xmlns="http://www.w3.org/2000/svg" width="370" height="370" class="segno"><g transform="scale(10)"><path fill="#fff" d="M0 0h37v37h-37z"/><path class="qrline" stroke="#0d0b12" d="M2 2.5h7m2 0h1m3 0h1m3 0h4m1 0h2m2 0h7m-33 1h1m5 0h1m2 0h1m2 0h5m3 0h1m1 0h1m3 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m1 0h2m3 0h1m1 0h2m1 0h1m1 0h2m2 0h1m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h2m4 0h3m1 0h2m2 0h3m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m2 0h3m1 0h1m1 0h5m1 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m1 0h1m1 0h1m1 0h5m3 0h3m3 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-25 1h1m2 0h2m1 0h2m4 0h2m2 0h1m-25 1h1m1 0h5m3 0h2m1 0h3m1 0h1m1 0h1m2 0h1m1 0h1m1 0h5m-30 1h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m3 0h1m2 0h1m1 0h3m2 0h2m1 0h4m-32 1h1m1 0h1m2 0h1m3 0h3m2 0h1m2 0h1m1 0h1m3 0h1m3 0h1m1 0h2m-32 1h4m6 0h3m1 0h3m1 0h1m1 0h4m1 0h2m1 0h5m-32 1h1m1 0h7m5 0h1m2 0h2m2 0h1m1 0h1m3 0h2m1 0h1m-32 1h3m1 0h2m1 0h2m1 0h2m1 0h4m1 0h3m2 0h1m2 0h2m1 0h4m-33 1h2m1 0h2m1 0h5m10 0h1m3 0h3m1 0h3m-30 1h2m5 0h5m2 0h1m1 0h1m1 0h3m2 0h6m-31 1h1m5 0h1m3 0h1m1 0h3m1 0h2m5 0h1m1 0h1m1 0h2m3 0h1m-33 1h6m2 0h1m1 0h1m1 0h2m2 0h5m2 0h1m2 0h2m1 0h2m1 0h1m-33 1h1m3 0h3m4 0h1m1 0h1m1 0h3m2 0h2m3 0h4m1 0h2m-32 1h1m2 0h3m3 0h1m3 0h3m1 0h2m1 0h2m2 0h2m1 0h5m-31 1h2m2 0h2m1 0h2m2 0h3m1 0h1m2 0h2m1 0h1m1 0h2m2 0h2m2 0h1m-33 1h1m2 0h2m4 0h4m2 0h1m1 0h4m2 0h1m2 0h1m2 0h2m1 0h1m-33 1h1m1 0h2m1 0h2m1 0h1m2 0h1m3 0h2m5 0h1m2 0h1m2 0h4m-32 1h1m1 0h1m2 0h1m6 0h2m1 0h1m2 0h1m2 0h1m2 0h4m2 0h2m-32 1h1m4 0h3m1 0h4m2 0h1m1 0h3m2 0h7m2 0h1m-24 1h3m2 0h1m2 0h1m1 0h4m2 0h1m3 0h1m1 0h1m1 0h1m-33 1h7m3 0h3m2 0h2m1 0h1m1 0h5m1 0h1m1 0h1m1 0h2m-32 1h1m5 0h1m1 0h1m1 0h1m1 0h1m1 0h1m4 0h1m1 0h4m3 0h3m-31 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m2 0h1m5 0h6m1 0h2m-33 1h1m1 0h3m1 0h1m1 0h1m4 0h5m1 0h2m4 0h1m2 0h2m1 0h2m-33 1h1m1 0h3m1 0h1m1 0h5m4 0h1m4 0h1m1 0h4m1 0h2m-31 1h1m5 0h1m3 0h1m2 0h2m1 0h1m1 0h5m2 0h1m2 0h1m1 0h1m-31 1h7m1 0h2m1 0h3m2 0h2m1 0h2m1 0h3m2 0h1m1 0h1m1 0h1"/></g></svg>
-      <p>Scanne et inscris-toi</p>
-    </div>
+    <div class="qrbox"><svg class="qr" role="img" aria-label="Code QR inscription" viewBox="0 0 350 350" xmlns="http://www.w3.org/2000/svg" class="segno"><g transform="scale(10)"><path fill="#fff" d="M0 0h35v35h-35z"/><path class="qrline" stroke="#0d0b12" d="M1 1.5h7m2 0h1m3 0h1m3 0h4m1 0h2m2 0h7m-33 1h1m5 0h1m2 0h1m2 0h5m3 0h1m1 0h1m3 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m1 0h2m3 0h1m1 0h2m1 0h1m1 0h2m2 0h1m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h2m4 0h3m1 0h2m2 0h3m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m2 0h3m1 0h1m1 0h5m1 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m1 0h1m1 0h1m1 0h5m3 0h3m3 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-25 1h1m2 0h2m1 0h2m4 0h2m2 0h1m-25 1h1m1 0h5m3 0h2m1 0h3m1 0h1m1 0h1m2 0h1m1 0h1m1 0h5m-30 1h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m3 0h1m2 0h1m1 0h3m2 0h2m1 0h4m-32 1h1m1 0h1m2 0h1m3 0h3m2 0h1m2 0h1m1 0h1m3 0h1m3 0h1m1 0h2m-32 1h4m6 0h3m1 0h3m1 0h1m1 0h4m1 0h2m1 0h5m-32 1h1m1 0h7m5 0h1m2 0h2m2 0h1m1 0h1m3 0h2m1 0h1m-32 1h3m1 0h2m1 0h2m1 0h2m1 0h4m1 0h3m2 0h1m2 0h2m1 0h4m-33 1h2m1 0h2m1 0h5m10 0h1m3 0h3m1 0h3m-30 1h2m5 0h5m2 0h1m1 0h1m1 0h3m2 0h6m-31 1h1m5 0h1m3 0h1m1 0h3m1 0h2m5 0h1m1 0h1m1 0h2m3 0h1m-33 1h6m2 0h1m1 0h1m1 0h2m2 0h5m2 0h1m2 0h2m1 0h2m1 0h1m-33 1h1m3 0h3m4 0h1m1 0h1m1 0h3m2 0h2m3 0h4m1 0h2m-32 1h1m2 0h3m3 0h1m3 0h3m1 0h2m1 0h2m2 0h2m1 0h5m-31 1h2m2 0h2m1 0h2m2 0h3m1 0h1m2 0h2m1 0h1m1 0h2m2 0h2m2 0h1m-33 1h1m2 0h2m4 0h4m2 0h1m1 0h4m2 0h1m2 0h1m2 0h2m1 0h1m-33 1h1m1 0h2m1 0h2m1 0h1m2 0h1m3 0h2m5 0h1m2 0h1m2 0h4m-32 1h1m1 0h1m2 0h1m6 0h2m1 0h1m2 0h1m2 0h1m2 0h4m2 0h2m-32 1h1m4 0h3m1 0h4m2 0h1m1 0h3m2 0h7m2 0h1m-24 1h3m2 0h1m2 0h1m1 0h4m2 0h1m3 0h1m1 0h1m1 0h1m-33 1h7m3 0h3m2 0h2m1 0h1m1 0h5m1 0h1m1 0h1m1 0h2m-32 1h1m5 0h1m1 0h1m1 0h1m1 0h1m1 0h1m4 0h1m1 0h4m3 0h3m-31 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m2 0h1m5 0h6m1 0h2m-33 1h1m1 0h3m1 0h1m1 0h1m4 0h5m1 0h2m4 0h1m2 0h2m1 0h2m-33 1h1m1 0h3m1 0h1m1 0h5m4 0h1m4 0h1m1 0h4m1 0h2m-31 1h1m5 0h1m3 0h1m2 0h2m1 0h1m1 0h5m2 0h1m2 0h1m1 0h1m-31 1h7m1 0h2m1 0h3m2 0h2m1 0h2m1 0h3m2 0h1m1 0h1m1 0h1"/></g></svg><p>Scanne · Inscris-toi</p><small>gravity.osmm-mtl.site</small></div>
   </div>
-  <div class="foot">
-    <span>gravity.osmm-mtl.site/ligue-3x3-dimanche.html</span>
-    <span>@GravityBasketballMTL · 438-341-2051</span>
-  </div>
+  <div class="foot"><span>gravity.osmm-mtl.site/ligue-3x3-dimanche.html</span><span>@GravityBasketballMTL · 438-341-2051</span></div>
 </div>
-</body>
-</html>
+</body></html>
