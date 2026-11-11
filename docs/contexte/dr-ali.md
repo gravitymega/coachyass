@@ -83,5 +83,21 @@ Pingo a caché les sept pièces de la super-machine ; chaque mission rend une pi
 | 6 | 🏠 | La chasse aux aimants, avec Papa ou Maman, puis 2 questions | la manivelle |
 | 7 | 🏆 | La machine s'allume : répéter les sons, compter les boulons, Bip jusqu'au bouton | badge « Apprenti du labo » |
 
+## Chapitre 2 : Le grand match de Bip (écrit le 11 nov. 2026)
+Thème soccer (Ali joue le mardi). Pingo a rangé le matériel du terrain n'importe où ; chaque mission rend un objet du match ; le 7e jour, c'est le grand match. Toujours le programme du mois 1, une marche au-dessus du chapitre 1 (compter jusqu'à 20, 3 dossiers, 2 murs pour Bip). Aucun nouveau moteur.
+| N° | Domaine | Mission | Pièce |
+|---|---|---|---|
+| 1 | 🔢 | Les ballons du vestiaire : compter de 14 à 20, puis comparer (quelle équipe a le plus de joueurs, 12 ou 17) | le ballon du match |
+| 2 | 🤖 | Bip dribble jusqu'au but : 4 flèches autour d'un mur, puis 6 flèches entre deux murs | le filet du but |
+| 3 | 🐧 | Les dossiers du club : ranger des photos dans 3 dossiers (Soccer, Basket, Course), puis le double-clic | le sifflet |
+| 4 | 🔬 | Le gazon du terrain : ce dont une plante a besoin (eau, soleil, air, terre), une plante dans le noir | le maillot |
+| 5 | 🧩 | Les motifs de l'équipe : 2 suites à compléter, puis le mot secret BALLON | les crampons |
+| 6 | 🏠 | La course avec Maman (ou Papa) : compter 20 pas à voix haute, sentir son cœur battre plus vite | la gourde |
+| 7 | 🏆 | Le grand match ! : 4 sons, compter les supporters, un motif, Bip marque le but (6 flèches) | badge « Capitaine du labo » ⚽ |
+
+**Correctif du 11 nov.** : l'écran du labo calculait « une par jour » chapitre par chapitre, donc la 1re mission du chapitre 2 aurait été ouverte tout de suite. Maintenant tout le labo est un seul fil de missions (`missionsState(MISSIONS…)` dans `act-labo.js`) : le chapitre suivant s'ouvre le lendemain du défi du précédent (test dans `labo.test.mjs`). Chaque chapitre a aussi une phrase `fin`, montrée quand le défi est réussi (avant, « La super-machine s'allume » était écrit en dur). Cache `hbibiti-v19`.
+
+**Pas encore fait** (il faut être sur harley-lab) : comparer avec `~/Dr-Ali/jeu/` de Mythos, convertir les résultats qu'Ali y aurait déjà, et le raccourci du bureau. Le chapitre 3 (fin du mois 1 : formes, + et − jusqu'à 20, Bip avec des motifs, taper son prénom) reste à écrire avant le 24 novembre.
+
 ## Sécurité, toujours
 Pas de lien, pas de compte, pas de pub, pas d'achat, rien d'effrayant. Seule exception : les résultats du labo sont partagés entre les appareils de la famille par le Worker (code famille). Les vraies commandes Linux se tapent seulement avec papa, jamais `sudo`, jamais `rm` en vrai.

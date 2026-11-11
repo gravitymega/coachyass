@@ -64,8 +64,11 @@ export function labo(ctx, { synced = false } = {}) {
   const enc = encouragement(kid, new Date(), 3);
   const head = el(`<div class="act-card lb-head"><div class="harley-wrap">${harleySVG()}</div><p class="lb-bubble"></p></div>`);
   body.append(head);
+  // Un seul fil de missions pour tous les chapitres : le chapitre suivant s'ouvre après le défi du précédent,
+  // et la règle « une nouvelle mission par jour » vaut pour tout le labo.
+  const tout = missionsState(MISSIONS, lb, today, { libre });
   for (const c of CHAPITRES) {
-    const st = missionsState(c.missions, lb, today, { libre });
+    const st = tout.filter((x) => x.m.chapitre === c);
     const pieces = c.missions.map((m) => `<span class="lb-piece ${lb.faits[m.id] ? 'got' : ''}" title="${ctx.esc(m.piece.nom)}">${lb.faits[m.id] ? m.piece.e : '❔'}</span>`).join('');
     const card = el(`<div class="act-card lb-chap"><h3>Chapitre ${c.id.slice(1)} : ${ctx.esc(c.titre)} <span class="lb-pingo" title="Pingo">🐧</span></h3>
       <div class="lb-pieces">${pieces}</div><div class="act-grid lb-missions"></div></div>`);
@@ -86,7 +89,7 @@ export function labo(ctx, { synced = false } = {}) {
   const lines = first
     ? [`Bonjour ${kid.name} ! Je suis le docteur Harley.`, 'Bienvenue dans mon labo secret.', `${kid.name}, veux-tu devenir mon assistant ? Commence par la première mission !`]
     : !next ? [`Re-bonjour ${kid.name} !`, 'Tu as fini toutes les missions. Bravo ! Je prépare le prochain chapitre, et tu peux rejouer les missions.']
-    : missionsState(next.chapitre.missions, lb, today, { libre }).find((x) => x.m.id === next.id)?.etat === 'ouverte'
+    : tout.find((x) => x.m.id === next.id)?.etat === 'ouverte'
       ? [`Re-bonjour ${kid.name} !`, 'Une nouvelle mission t’attend aujourd’hui.']
       : [`Re-bonjour ${kid.name} !`, 'Ta mission du jour est faite. Bravo ! La prochaine arrive demain matin.'];
   if (enc) lines.push(enc);
@@ -129,7 +132,7 @@ async function mission(ctx, m) {
   const grade = gradeOf(CHAPITRES, lb);
   zone.innerHTML = `<div class="lb-reward"><div class="lb-big">${m.piece.e}</div>
     <p class="act-big">${chapFini ? `Badge : ${ctx.esc(m.chapitre.badge.nom)} !` : `Tu as retrouvé ${ctx.esc(m.piece.nom)} !`}</p>
-    ${chapFini ? `<p class="lb-machine">⚡ La super-machine s’allume ! ⚡</p><p>Ton grade : ${grade.e} <b>${ctx.esc(grade.nom)}</b></p>` : ''}
+    ${chapFini ? `<p class="lb-machine">${ctx.esc(m.chapitre.fin || '⚡ Bravo ! ⚡')}</p><p>Ton grade : ${grade.e} <b>${ctx.esc(grade.nom)}</b></p>` : ''}
     <div class="act-row"><button class="go" data-back>Retour au labo ➜</button></div></div>`;
   ctx.sfx('win'); ctx.confetti(chapFini ? 120 : 60);
   zone.querySelector('[data-back]').onclick = () => { ctx.stopVoice(); labo(ctx); };
