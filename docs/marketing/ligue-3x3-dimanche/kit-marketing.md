@@ -48,7 +48,7 @@ Tout est prêt à copier-coller. Liens utiles :
 **Nom du billet :** Ligue 3x3 du dimanche, hiver 2027 (14-15 ans)
 
 **Description :**
-> 11 dimanches de basketball 3x3 pour les 14-15 ans, de 12h à 14h, du 10 janvier au 21 mars 2027, au Collège Sainte-Anne (gymnase A, 1250, boul. St-Joseph, Lachine). Matchs arbitrés (règles FIBA), classement en ligne, éliminatoires, finale et trophées. Maillot réversible inclus. Une initiative de Gravity Basketball, programme de l'Organisme Sportif Maghrébin de Montréal (OSMM).
+> 11 dimanches de basketball 3x3 pour les 14-15 ans, de 12h à 14h, du 10 janvier au 21 mars 2027, au Collège Sainte-Anne (gymnase A, 100, boul. Bouchard, Dorval). Matchs arbitrés (règles FIBA), classement en ligne, éliminatoires, finale et trophées. Maillot réversible inclus. Une initiative de Gravity Basketball, programme de l'Organisme Sportif Maghrébin de Montréal (OSMM).
 
 **Types de billets :**
 
@@ -102,7 +102,7 @@ Les visuels sont dans `instagram/`. Mets le lien de la page de la ligue dans la 
 Republie chaque inscription d'équipe en story (« Bienvenue aux [nom d'équipe] ! 5 places restantes »). Plus le compteur baisse, plus ça presse.
 
 **Légende A (annonce) :**
-> 🏀 NOUVEAU : la Ligue 3x3 du dimanche arrive à Lachine.
+> 🏀 NOUVEAU : la Ligue 3x3 du dimanche arrive à Dorval.
 >
 > 14-15 ans · 11 dimanches · 12h-14h · du 10 janvier au 21 mars
 > Matchs arbitrés FIBA, classement en ligne, Top 5 vidéo chaque semaine, finale et trophées.
@@ -152,7 +152,7 @@ Republie chaque inscription d'équipe en story (« Bienvenue aux [nom d'équipe]
 
 > Salam / Bonjour à tous 👋
 >
-> L'OSMM lance une **ligue de basketball 3x3 pour les 14-15 ans**, tous les **dimanches de 12h à 14h**, du **10 janvier au 21 mars**, au Collège Sainte-Anne (Lachine).
+> L'OSMM lance une **ligue de basketball 3x3 pour les 14-15 ans**, tous les **dimanches de 12h à 14h**, du **10 janvier au 21 mars**, au Collège Sainte-Anne (Dorval).
 >
 > ✅ Encadrée par les coachs Gravity Basketball
 > ✅ Matchs arbitrés, classement, finale et trophées
@@ -167,13 +167,13 @@ Republie chaque inscription d'équipe en story (« Bienvenue aux [nom d'équipe]
 > Questions : Yassine, 438-341-2051. Merci de partager 🙏
 
 **Version courte (pour une annonce à la mosquée ou au centre communautaire) :**
-> Nouvelle ligue de basketball 3x3 pour les jeunes de 14-15 ans, les dimanches de 12h à 14h à Lachine, dès le 10 janvier. Places limitées. Infos et inscription : gravity.osmm-mtl.site, ou Yassine au 438-341-2051.
+> Nouvelle ligue de basketball 3x3 pour les jeunes de 14-15 ans, les dimanches de 12h à 14h à Dorval, dès le 10 janvier. Places limitées. Infos et inscription : gravity.osmm-mtl.site, ou Yassine au 438-341-2051.
 
 ---
 
 ## 5. Lettre aux écoles et aux profs d'éducation physique
 
-**Objet :** Ligue de basketball 3x3 pour vos élèves de 14-15 ans (dimanches, Lachine)
+**Objet :** Ligue de basketball 3x3 pour vos élèves de 14-15 ans (dimanches, Dorval)
 
 > Bonjour [Madame / Monsieur],
 >
@@ -181,7 +181,7 @@ Republie chaque inscription d'équipe en story (« Bienvenue aux [nom d'équipe]
 >
 > Nous lançons cet hiver une **ligue de basketball 3x3 pour les 14-15 ans** :
 > - tous les dimanches de 12h à 14h, du 10 janvier au 21 mars 2027 ;
-> - au Collège Sainte-Anne (gymnase A), à Lachine ;
+> - au Collège Sainte-Anne (gymnase A), à Dorval ;
 > - matchs arbitrés selon les règles FIBA, encadrement par nos coachs ;
 > - inscription seul ou en équipe de 4, tous les niveaux sont bienvenus.
 >
