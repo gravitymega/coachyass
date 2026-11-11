@@ -22,4 +22,6 @@ Demande du 10 novembre 2026 : nouveau programme 3x3 pour les 14-15 ans, **dimanc
 - Le formulaire demande aussi, pour cette ligue seulement : taille de t-shirt, contact d'urgence, santé ou allergies, et autorisation parentale (obligatoire). Ces infos partent dans `details`, FormSubmit et Notion.
 - **Bug corrigé** : les champs Gravity Prep cachés étaient `required` et bloquaient en silence l'envoi du formulaire pour tous les autres programmes. Ils ne sont maintenant exigés que pour Gravity Prep.
 
+**Zeffy (10 nov.)** : l'utilisateur réédite le billet de l'ancienne Ligue 3v3 (`gravity-basketball-league-3v3-inscription`) au lieu d'en créer un. Ce lien est branché dans `SAISONS['dimanche-hiver-2027'].zeffy`. Attention : ce billet servait aussi au Championnat (260 $ / 936 $).
+
 **Reste à faire (utilisateur) :** créer le billet Zeffy et donner son URL ; publier selon le calendrier du kit.

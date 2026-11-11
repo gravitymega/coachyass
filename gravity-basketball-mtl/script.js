@@ -37,15 +37,14 @@ const ZEFFY_LINKS = {
 // même formulaire, même chaîne (Supabase, Notion, courriels), mais la catégorie
 // passe à 14-15 ans et la remarque est préfixée par SAISONS[...].label pour
 // qu'on reconnaisse ces inscriptions partout sans nouvelle valeur « Programme ».
-// zeffy : billet Zeffy dédié, vide tant qu'il n'est pas créé — un paiement Zeffy
-// affiche alors « paiement bientôt disponible » (jamais le billet de la ligue
-// du samedi).
+// zeffy : le billet Zeffy de l'ancienne Ligue 3v3 du samedi, que l'utilisateur
+// réédite pour la ligue du dimanche (choix du 10 nov. 2026, même adresse).
 const SAISONS = {
   'dimanche-hiver-2027': {
     label: 'Ligue 3x3 du dimanche — hiver 2027',
     age: '14-15 ans',
     titre: 'Réserve ta place — Ligue 3x3 du dimanche (14-15 ans)',
-    zeffy: '',
+    zeffy: 'https://www.zeffy.com/en-CA/ticketing/gravity-basketball-league-3v3-inscription',
   },
 };
 // La Ligue 3v3 du samedi (13-14 ans) est terminée : depuis le 10 nov. 2026, le
