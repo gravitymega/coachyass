@@ -908,3 +908,9 @@ body[data-screen=parents] #factory, body[data-screen=parents] #fog { display: no
 .lb-reward { text-align: center; }
 .lb-big { font-size: 90px; animation: lb-pulse 1.2s ease-in-out infinite; }
 .lb-machine { font-size: 24px; font-weight: 900; color: #b8860b; }
+/* Labo : le clavier (moteur « clavier ») */
+.lb-kbd { display: grid; gap: 6px; margin-top: 10px; }
+.lb-kbd-row { display: flex; gap: 4px; justify-content: center; }
+.lb-key { flex: 0 1 44px; min-width: 0; height: 48px; border: 0; border-radius: 10px; background: #fff; color: #2b2140; font: inherit; font-size: 20px; font-weight: 700; box-shadow: 0 3px 0 rgba(0,0,0,.18); cursor: pointer; }
+.lb-key.down { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,.18); background: #e4f0ff; }
+.lb-key.hint { background: #ffe680; outline: 3px solid #ffc93c; }

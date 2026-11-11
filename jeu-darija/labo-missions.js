@@ -13,6 +13,7 @@
 //   maison  : { aFaire: 'texte', questions: [{ q, choix: [{ t, bon? }] }] } → en vrai avec Papa ou Maman, puis questions
 //   quiz    : { questions: [{ q, dit?, choix: [{ t, bon? }] }] }
 //   sons    : { longueur: 3 }                                       → répéter les sons dans l'ordre
+//   clavier : { mot: 'BIP' | '{prenom}' }                           → taper le mot lettre par lettre (clavier dessiné ou vrai clavier)
 // Un chapitre : { id: 'c2', titre, histoire, badge: { e, nom }, fin: 'phrase montrée quand le défi est réussi', missions: [7 missions] }.
 // Le chapitre suivant s'ouvre le lendemain du défi du précédent (une seule nouvelle mission par jour dans tout le labo).
 // Indice après 2 essais ratés, solution montrée après 3, puis une nouvelle chance (act-labo.js).
@@ -187,6 +188,101 @@ export const CHAPITRES = [
             { q: '🥅 ⚽ ⚽ 🥅 ⚽ ⚽ 🥅 … et après ?', dit: 'But, ballon, ballon. But, ballon, ballon. But… et après ?', choix: [{ t: '⚽', bon: true }, { t: '🥅' }, { t: '🏀' }] },
           ] },
           { moteur: 'robot', consigne: 'Dernière action : Bip dribble jusqu’au but et marque !', indice: 'Monte d’abord, puis va à droite, puis redescends.', largeur: 5, hauteur: 3, depart: [0, 2], but: [4, 2], murs: [[2, 2]], maxFleches: 6, objet: '🥅' },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: 'c3',
+    titre: 'Le panier magique',
+    histoire: 'Dimanche, c’est basket ! Le docteur a inventé un panier magique qui compte les points tout seul. Mais Pingo a mélangé ses sept réglages. Chaque mission en répare un. Le septième jour, le panier magique s’allume !',
+    badge: { e: '🏀', nom: 'Meneur du labo' },
+    fin: '🏀 Le panier magique s’allume ! 🏀',
+    missions: [
+      {
+        id: 'c3-m1', domaine: 'maths', titre: 'Les points du panier', piece: { e: '🔢', nom: 'le compteur de points' },
+        histoire: ['Le panier magique compte les ballons qui rentrent.', 'Pour l’aider, on va faire des additions.', 'Additionner, c’est mettre ensemble !'],
+        notions: ['addition-20'],
+        etapes: [
+          { moteur: 'quiz', consigne: 'Combien de ballons en tout ?', indice: 'Compte les premiers ballons, puis continue avec les autres sans recommencer.', questions: [
+            { q: '🏀🏀🏀🏀🏀 + 🏀🏀🏀 = ?', dit: 'Cinq ballons, plus trois ballons. Ça fait combien ?', choix: [{ t: '7' }, { t: '8', bon: true }, { t: '9' }] },
+            { q: '🏀🏀🏀🏀🏀🏀🏀🏀🏀🏀 + 🏀🏀🏀🏀 = ?', dit: 'Dix ballons, plus quatre ballons. Ça fait combien ?', choix: [{ t: '14', bon: true }, { t: '13' }, { t: '40' }] },
+            { q: '9 + 6 = ?', dit: 'Neuf, plus six. Ça fait combien ?', indice: 'Neuf, plus un, ça fait dix. Il reste encore cinq.', choix: [{ t: '15', bon: true }, { t: '16' }, { t: '96' }] },
+          ] },
+        ],
+      },
+      {
+        id: 'c3-m2', domaine: 'code', titre: 'Bip monte l’escalier', piece: { e: '🪜', nom: 'la petite échelle' },
+        histoire: ['Bip veut accrocher le filet en haut du panier.', 'Pour monter, il prend l’escalier : à droite, en haut, à droite, en haut…', 'Quand quelque chose se répète, c’est un motif !'],
+        notions: ['suite-fleches', 'repeter'],
+        etapes: [
+          { moteur: 'robot', consigne: 'Fais monter Bip jusqu’au filet. Regarde : les marches se répètent !', indice: 'À droite, en haut. À droite, en haut. Encore une fois !', largeur: 4, hauteur: 4, depart: [0, 3], but: [3, 0], murs: [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [2, 0], [2, 3], [3, 3], [3, 2]], maxFleches: 6, objet: '🥅' },
+          { moteur: 'quiz', consigne: 'Une question de programmeur.', indice: 'Regarde ce qui revient toujours.', questions: [
+            { q: '→ ↑ → ↑ → … quelle flèche vient après ?', dit: 'Droite, en haut. Droite, en haut. Droite… quelle flèche vient après ?', choix: [{ t: '↑', bon: true }, { t: '↓' }, { t: '←' }] },
+          ] },
+        ],
+      },
+      {
+        id: 'c3-m3', domaine: 'ordi', titre: 'Le clavier du labo', piece: { e: '⌨️', nom: 'le bouton du panier' },
+        histoire: ['Voici le clavier : c’est là qu’on écrit des lettres.', 'Chaque touche a une lettre.', 'Pour régler le panier, écris ton prénom, puis le nom de Bip !'],
+        notions: ['clavier', 'prenom'],
+        etapes: [
+          { moteur: 'clavier', consigne: 'Écris ton prénom : trouve chaque lettre sur le clavier.', indice: 'Cherche la lettre que montre la petite main. La touche va briller.', mot: '{prenom}' },
+          { moteur: 'clavier', consigne: 'Maintenant, écris : BIP.', indice: 'B est sur la rangée du bas. I et P sont sur la rangée du haut.', mot: 'BIP' },
+        ],
+      },
+      {
+        id: 'c3-m4', domaine: 'sciences', titre: 'Ça flotte ou ça coule ?', piece: { e: '🛟', nom: 'la bouée du labo' },
+        histoire: ['Le ballon de basket est tombé dans la piscine du labo !', 'Est-ce qu’il flotte, ou est-ce qu’il coule ?', 'Faisons une expérience avec d’autres objets.'],
+        notions: ['flotte-coule'],
+        etapes: [
+          { moteur: 'ranger', consigne: 'Ça flotte ou ça coule ? Glisse chaque objet dans la bonne boîte.', indice: 'Les choses pleines d’air, ou très légères, flottent souvent. Les petites choses lourdes coulent.',
+            boites: [{ id: 'flotte', e: '🛟', nom: 'Ça flotte' }, { id: 'coule', e: '⚓', nom: 'Ça coule' }],
+            objets: [{ e: '🏀', nom: 'ballon', boite: 'flotte' }, { e: '🦆', nom: 'canard en plastique', boite: 'flotte' }, { e: '🍃', nom: 'feuille', boite: 'flotte' }, { e: '🪵', nom: 'morceau de bois', boite: 'flotte' },
+              { e: '🪨', nom: 'pierre', boite: 'coule' }, { e: '🔑', nom: 'clé', boite: 'coule' }, { e: '🪙', nom: 'pièce de monnaie', boite: 'coule' }, { e: '🔩', nom: 'boulon', boite: 'coule' }] },
+          { moteur: 'quiz', consigne: 'Une question de savant.', indice: 'Qu’est-ce qu’il y a à l’intérieur d’un ballon ?', questions: [
+            { q: 'Pourquoi le ballon de basket flotte ?', choix: [{ t: '💨 Il est plein d’air', bon: true }, { t: '🧱 Il est plein de pierres' }, { t: '🐟 Il sait nager' }] },
+          ] },
+        ],
+      },
+      {
+        id: 'c3-m5', domaine: 'enigme', titre: 'Les devinettes des formes', piece: { e: '🔺', nom: 'le triangle du réglage' },
+        histoire: ['Pingo a caché le réglage derrière des devinettes.', 'Elles parlent de formes : le rond, le carré, le triangle.', 'Écoute bien, puis trouve la réponse !'],
+        notions: ['formes', 'devinettes'],
+        etapes: [
+          { moteur: 'ranger', consigne: 'Range chaque objet avec sa forme.', indice: 'Un rond n’a pas de coins. Un carré a quatre côtés pareils. Un triangle a trois côtés.',
+            boites: [{ id: 'rond', e: '⚪', nom: 'Rond' }, { id: 'carre', e: '🟥', nom: 'Carré' }, { id: 'tri', e: '🔺', nom: 'Triangle' }],
+            objets: [{ e: '🏀', nom: 'ballon', boite: 'rond' }, { e: '🍪', nom: 'biscuit', boite: 'rond' }, { e: '🖼️', nom: 'cadre', boite: 'carre' }, { e: '🎁', nom: 'cadeau', boite: 'carre' }, { e: '🍕', nom: 'part de pizza', boite: 'tri' }, { e: '⛺', nom: 'tente', boite: 'tri' }] },
+          { moteur: 'quiz', consigne: 'Une devinette !', indice: 'Compte les côtés.', questions: [
+            { q: 'J’ai trois côtés et trois coins. Qui suis-je ?', choix: [{ t: '🔺 Le triangle', bon: true }, { t: '⚪ Le rond' }, { t: '🟥 Le carré' }] },
+            { q: 'Je n’ai aucun coin et je roule. Qui suis-je ?', choix: [{ t: '🟥 Le carré' }, { t: '⚪ Le rond', bon: true }, { t: '🔺 Le triangle' }] },
+          ] },
+        ],
+      },
+      {
+        id: 'c3-m6', domaine: 'maison', titre: 'Les paniers du dimanche', piece: { e: '📋', nom: 'le carnet des tirs' },
+        histoire: ['Aujourd’hui, la mission se fait en vrai, au basket !', 'Avec Papa ou Maman, fais dix tirs au panier.', 'Comptez ensemble les paniers réussis et les paniers ratés.'],
+        notions: ['soustraction-20'],
+        etapes: [
+          { moteur: 'maison', consigne: 'Avec Papa ou Maman : fais dix tirs et comptez les paniers réussis. Quand c’est fait, un parent appuie sur « C’est fait ».', aFaire: 'Faire 10 tirs (au basket, ou une balle dans un panier à linge à la maison). Compter ensemble les réussis et les ratés. Rater, c’est normal : on s’entraîne !',
+            questions: [
+              { q: 'Ali fait dix tirs. Il en rate trois. Combien de paniers réussis ?', dit: 'Ali fait dix tirs. Il en rate trois. Combien de paniers réussis ?', indice: 'Montre dix doigts, puis baisse-en trois.', choix: [{ t: '7', bon: true }, { t: '13' }, { t: '3' }] },
+              { q: 'Quand on rate un panier, on…', choix: [{ t: '💪 Réessaie, c’est comme ça qu’on progresse', bon: true }, { t: '😠 Arrête de jouer' }] },
+            ] },
+        ],
+      },
+      {
+        id: 'c3-m7', domaine: 'defi', titre: 'Le panier magique s’allume !', piece: { e: '🏆', nom: 'le badge Meneur du labo' },
+        histoire: ['Tous les réglages sont réparés. Merci !', 'Pour allumer le panier magique, il faut réussir quatre épreuves.', 'Une addition, un escalier, un mot à écrire, et la musique du panier !'],
+        notions: ['addition-20', 'repeter', 'clavier', 'memoire-sons'],
+        etapes: [
+          { moteur: 'quiz', consigne: 'Le panier compte les points.', indice: 'Sept, plus trois, ça fait dix. Il reste encore deux.', questions: [
+            { q: '7 + 5 = ?', dit: 'Sept, plus cinq. Ça fait combien ?', choix: [{ t: '12', bon: true }, { t: '11' }, { t: '75' }] },
+          ] },
+          { moteur: 'robot', consigne: 'Bip remonte l’escalier jusqu’au panier.', indice: 'À droite, en haut, encore et encore.', largeur: 4, hauteur: 4, depart: [0, 3], but: [3, 0], murs: [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [2, 0], [2, 3], [3, 3], [3, 2]], maxFleches: 6, objet: '🏀' },
+          { moteur: 'clavier', consigne: 'Écris le mot secret du panier : PANIER.', indice: 'Cherche la lettre que montre la petite main.', mot: 'PANIER' },
+          { moteur: 'sons', consigne: 'Écoute la musique du panier, puis touche les couleurs dans le même ordre.', indice: 'Écoute encore : la musique recommence.', longueur: 4 },
         ],
       },
     ],

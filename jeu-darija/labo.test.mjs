@@ -99,3 +99,13 @@ test('chapitres à la suite : le chapitre 2 s’ouvre le lendemain du défi du c
   assert.equal(missionsState(tout, labo, addDays(j, 7))[c2].etat, 'ouverte');
   for (const c of CHAPITRES) assert.ok(c.badge?.nom && c.fin, `${c.id} : badge et phrase de fin`);
 });
+
+test('moteur clavier : le prénom, sans accents, et le valideur', async () => {
+  const { motClavier, CLAVIER } = await import('./labo-core.js');
+  assert.equal(motClavier('{prenom}', 'Ali'), 'ALI');
+  assert.equal(motClavier('{prenom}', 'Éloïse'), 'ELOISE');
+  assert.equal(motClavier('bip'), 'BIP');
+  for (const l of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') assert.ok(CLAVIER.some((r) => r.includes(l)), `touche ${l}`);
+  assert.ok(validateMission({ id: 'c9-m1', domaine: 'ordi', titre: 't', histoire: ['h'], notions: ['n'], etapes: [{ moteur: 'clavier', consigne: 'c', mot: '' }] }).length);
+  assert.deepEqual(validateMission({ id: 'c9-m1', domaine: 'ordi', titre: 't', histoire: ['h'], notions: ['n'], etapes: [{ moteur: 'clavier', consigne: 'c', mot: 'PINGO' }] }), []);
+});
