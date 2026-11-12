@@ -1,6 +1,6 @@
 # Clubs de basket jeunesse à contacter — Ligue 3x3 du dimanche (14-15 ans)
 
-Liste montée le 12 novembre 2026 par recherche web. Les comptes Instagram existent, mais **les détails sont à vérifier** en ouvrant chaque profil (ville, catégories d'âge, club encore actif). Rien n'a encore été envoyé.
+Liste montée le 12 novembre 2026 par recherche web. Les comptes Instagram existent, mais **les détails sont à vérifier** en ouvrant chaque profil (ville, catégories d'âge, club encore actif). Courriels envoyés le 12 novembre à WILBA et à Sun Youth ; les autres clubs n'ont pas d'adresse courriel trouvée (Instagram ou téléphone). Westside Youth Basketball Club retiré : c'est un club de West Kelowna (C.-B.), pas de Montréal.
 
 Colonne « Statut » à remplir : à contacter → message envoyé → réponse → équipe inscrite.
 
@@ -8,10 +8,9 @@ Colonne « Statut » à remplir : à contacter → message envoyé → réponse 
 
 | Club | Secteur | Instagram | Autre contact | Statut |
 |---|---|---|---|---|
-| West Island Lakers (WILBA) | Pointe-Claire | à trouver | info@wilba.net · westislandlakersbasketball.teamsnapsites.com | à contacter |
+| West Island Lakers (WILBA) | Pointe-Claire | à trouver | info@wilba.net · westislandlakersbasketball.teamsnapsites.com | courriel envoyé le 12 nov. |
 | Leaders Basketball Program | LaSalle / Verdun | @leaders.basketball | 514-833-1214 · leadersbasketball.com | à contacter |
-| Westside Youth Basketball Club | Ouest (à vérifier) | à trouver | westkhoops.ca (formulaires U15/U16) | à contacter |
-| Cavaliers Basketball Ouest | Ouest (à vérifier) | à trouver | sites.google.com/view/cavaliersbasketballouest | à contacter |
+| Cavaliers — Club de Basketball de l'Ouest (CBO) | Vaudreuil-Soulanges | à trouver | sites.google.com/view/cavaliersbasketballouest · page Facebook du club | à contacter |
 | Sylvan Adams YM-YWHA Wolves | Côte-des-Neiges / Snowdon | à trouver | ymywha.com (Wolves Basketball) | à contacter |
 | Montreal United × CDNBCA | Côte-des-Neiges | à trouver | cdnbca.s1.yapla.com | à contacter |
 
@@ -19,7 +18,7 @@ Colonne « Statut » à remplir : à contacter → message envoyé → réponse 
 
 | Club | Secteur | Instagram | Note | Statut |
 |---|---|---|---|---|
-| Sun Youth Hornets (Jeunesse au Soleil) | Plateau / centre | @sunyouthbasketball | Gros programme, ~3 700 abonnés | à contacter |
+| Sun Youth Hornets (Jeunesse au Soleil) | Plateau / centre | @sunyouthbasketball | basketball@jas-sy.org (adresse probable) · 514-842-6822 | courriel envoyé le 12 nov. |
 | CB Organization | Montréal | @champsmtl | 800+ joueurs par an, 8 à 16 ans et + | à contacter |
 | Express St-Laurent Basketball | Saint-Laurent | @stlaurent_express_bb | Programme scolaire à vérifier, ~3 900 abonnés | à contacter |
 | UMB Huskies (Uptown Montreal Basketball) | Montréal | @uptownmontrealbasketball | à vérifier | à contacter |
