@@ -54,7 +54,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 | Billet Zeffy Gravity Prep + accès Espace Joueurs auto | `docs/contexte/zeffy-gravity-prep.md` |
 | API Meta / Instagram | `docs/contexte/meta-instagram.md` |
 | Boutique Gravity Basketball | `docs/contexte/boutique.md` |
-| **Charte visuelle Gravity** (« brand Gravity » : style noir éditorial du fil Instagram) | `docs/contexte/charte-gravity.md` |
+| **Charte visuelle Gravity** (« brand Gravity » : style noir éditorial du fil Instagram ; affiche de match et miniature YouTube toujours dans le même style, gabarits dans `docs/outils/affiche-match/`) | `docs/contexte/charte-gravity.md` |
 | Ligue 3x3 du dimanche 14-15 ans (hiver 2027, page, affiche, kit marketing) | `docs/contexte/ligue-3x3-dimanche.md` |
 | **Historique de toutes les discussions Claude** (août → nov. 2026, points ouverts) | `docs/contexte/historique-discussions.md` |
 | Jeu « L'Usine magique de Hbibiti » (darija pour Ali et Asma, PR #98) | `docs/contexte/jeu-darija.md` |

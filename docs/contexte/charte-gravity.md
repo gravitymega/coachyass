@@ -11,6 +11,12 @@ Demande du 13 novembre 2026 : « Oublie pas brand Gravity », avec une capture d
 - **Logo** : petit, en en-tête. Jamais de grand dégradé orange-bordeaux en fond : la carte « ENTRAÎNEMENT » de ce style n'a servi qu'une fois, pour l'intro d'un montage.
 - **Formats** : publication 4:5 (1080×1350), story / Reel 9:16 (1080×1920).
 
+## Affiche de match et miniature YouTube : toujours le même style (13 nov. 2026)
+« Pour l'affiche de la game et la miniature YouTube, garde en mémoire le même style toujours. »
+- **Affiche du match** (publication 4:5 et story 9:16) : style **noir et orange de la charte**. Photo d'un joueur en duotone, « GAME DAY. », Gravity VS adversaire, date dans un coup de pinceau orange.
+- **Miniature YouTube** (16:9) : style **« projecteurs »** de l'affiche Gravity vs NDG (fond brun, faisceaux de lumière, badge LIVE, gros VS, bandeau orange avec la date).
+- Les gabarits prêts à l'emploi sont dans `docs/outils/affiche-match/` (modifier `match.json`, puis lancer les deux scripts). Le premier usage est le match contre les Sentinels du Nord, samedi 14 nov. 2026 à 18 h 45, au Gymnase A de Dorval.
+
 ## Réalisations
-- 13 nov. 2026 : collage « LE GRIND. » (8 photos d'entraînement), en 4:5 et en story. Il a été fait avec PIL (Anton et Inter, grain par numpy). Fichiers livrés dans l'app, pas dans le dépôt.
+- 13 nov. 2026 : collage « THE GRIND. » en couleur (d'abord « LE GRIND. » en noir et blanc) (8 photos d'entraînement), en 4:5 et en story. Il a été fait avec PIL (Anton et Inter, grain par numpy). Fichiers livrés dans l'app, pas dans le dépôt.
 - La galerie du site (`gravity-basketball-mtl/assets/galerie/`, PR #153) utilise une version plus ancienne (photos couleur, slogan Oswald) : elle est à refaire dans ce style si l'utilisateur le demande.
