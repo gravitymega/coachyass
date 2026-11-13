@@ -14,7 +14,7 @@ Demande du 13 novembre 2026 : « Oublie pas brand Gravity », avec une capture d
 ## Affiche de match et miniature YouTube : toujours le même style (13 nov. 2026)
 « Pour l'affiche de la game et la miniature YouTube, garde en mémoire le même style toujours. »
 - **Affiche du match** (publication 4:5 et story 9:16) : style **noir et orange de la charte**. Photo d'un joueur en duotone, « GAME DAY. », Gravity VS adversaire, date dans un coup de pinceau orange.
-- **Miniature YouTube** (16:9) : style **« projecteurs »** de l'affiche Gravity vs NDG (fond brun, faisceaux de lumière, badge LIVE, gros VS, bandeau orange avec la date).
+- **Miniature YouTube** (16:9) : style **minimaliste**, choisi le 13 nov. 2026 d'après la miniature Gravity vs Legacy 3R du 17 oct. Fond noir avec fumée orange floue, badge rouge LIVE, « GAME DAY » espacé en orange, 2 gros logos (l'adversaire dans un cercle à bord orange), « VS » blanc contouré d'orange, noms en Anton blanc, bandeau orange avec la date en noir, bande noire « GRAVITY BASKETBALL MONTRÉAL · EN DIRECT SUR YOUTUBE ». Ce style remplace le style « projecteurs » (façon NDG), qui reste disponible dans `miniature_projecteurs.py` sur demande.
 - Les gabarits prêts à l'emploi sont dans `docs/outils/affiche-match/` (modifier `match.json`, puis lancer les deux scripts). Le premier usage est le match contre les Sentinels du Nord, samedi 14 nov. 2026 à 18 h 45, au Gymnase A de Dorval.
 
 ## Réalisations
