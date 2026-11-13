@@ -1,0 +1,14 @@
+{
+  "adversaire": "SENTINELS DU NORD",
+  "adversaire_l1": "SENTINELS",
+  "adversaire_l2": "DU NORD",
+  "logo_adversaire": "sentinels_logo.png",
+  "date_courte": "SAM. 14.11  ·  18H45",
+  "date_longue": "SAM. 14 NOV · 18H45",
+  "lieu_type": "MATCH À DOMICILE",
+  "salle": "GYMNASE A",
+  "rue": "100 BOUL. BOUCHARD, DORVAL",
+  "adresse": "GYMNASE A · 100 BOUL. BOUCHARD, DORVAL",
+  "photo": "photo-match.jpg",
+  "photo_cadrage": [0.55, 0.35]
+}

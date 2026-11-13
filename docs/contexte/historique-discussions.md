@@ -74,6 +74,7 @@ Résumé de chaque session Claude de Yassine, pour qu'une nouvelle session (ex. 
 | 10 nov. | Africa basketball without borders editions | Recherche des éditions et archives photo ; proposition : courriel à NBA Africa / NBA Photos (FR ou EN) pour les originaux HD. |
 | 10–11 nov. | Ali's sports encouragement ; Harley lab | Projet « Dr Ali » (encouragement sportif pour Ali), intégré au jeu Hbibiti (PR #145). |
 | 11 nov. | Transfert discussions téléphone | Comment retrouver les discussions sur harley-lab (même compte claude.ai, `git pull` + ce fichier, Remote Control, export des données) ; mise à jour de cet historique. |
+| 13 nov. | Branding (8 photos de match) | 8 photos retouchées aux couleurs Gravity (4:5, logo, slogan, Oswald, orange #e8672e) ; nouvelle section « Galerie photo » (`#galerie`, lien dans le menu) sur gravity.osmm-mtl.site, images fixes dans `gravity-basketball-mtl/assets/galerie/` (pleine taille + `-mini`). |
 
 ## Points encore ouverts (à reprendre)
 - harley-lab : authentifier Gmail dans `claude` (`/mcp`).
