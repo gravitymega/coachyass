@@ -24,6 +24,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 - Talent Perlé reste séparé de Gravity/OSMM (pas de domaine, de Supabase ni de Notion partagés).
 - Ne jamais mettre de secret dans le code ni dans le chat : variables d'environnement Netlify / secrets Cloudflare.
 - **Le documentaire (`documentaire/`, `voix-locale/`) ne doit être sur aucun site** (demande du 26 octobre 2026). Le site Coaching publie la racine du dépôt : tout nouveau dossier privé à la racine doit être ajouté à `_redirects` (`/dossier/*  /404  404!`).
+- **Courriels envoyés pour l'utilisateur** : toujours mettre `mqtad9@hotmail.com` en copie (cc) (demande du 16 nov. 2026).
 - Les choix déjà tranchés avec l'utilisateur (notés dans `docs/contexte/`) ne se remettent pas en question sans lui redemander.
 
 ## Backends (résumé)
@@ -57,6 +58,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 | Ligue 3x3 du dimanche 14-15 ans (hiver 2027, page, affiche, kit marketing) | `docs/contexte/ligue-3x3-dimanche.md` |
 | **Historique de toutes les discussions Claude** (août → nov. 2026, points ouverts) | `docs/contexte/historique-discussions.md` |
 | Jeu « L'Usine magique de Hbibiti » (darija pour Ali et Asma, PR #98) | `docs/contexte/jeu-darija.md` |
+| Location de gymnases (EMSB, CSSDM, LBPSB : tarifs comparés, demande envoyée à la LBPSB) | `docs/contexte/location-gymnases.md` |
 | **Dr Ali** : le labo du Dr Harley dans le jeu de Hbibiti (plan, missions, une par jour) | `docs/contexte/dr-ali.md` |
 
 **Après un changement important** : mettre à jour le fichier `docs/contexte/` concerné (ou en créer un et l'ajouter au tableau ci-dessus). Garder ce `CLAUDE.md` court.
