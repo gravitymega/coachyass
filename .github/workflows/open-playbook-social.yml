@@ -1,7 +1,8 @@
 # Gravity Playbook : une vidéo verticale par jour sur YouTube (Shorts) et Instagram (Reels).
 # Script : open-playbook/scripts/post-social.py. Sans secrets, la plate-forme est simplement sautée.
 # Secrets : YT_CLIENT_ID, YT_CLIENT_SECRET, YT_REFRESH_TOKEN, IG_USER_ID, IG_ACCESS_TOKEN.
-# Variable du dépôt : SOCIAL_START (AAAA-MM-JJ, premier jour de publication).
+# Variable du dépôt : SOCIAL_START_5C5 (AAAA-MM-JJ, premier jour ; 17 nov. 2026 par défaut).
+# Seulement les tactiques 5 contre 5 complètes, jusqu'au ballon au panier.
 name: Gravity Playbook · réseaux
 
 on:
@@ -31,7 +32,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Publier
         env:
-          SOCIAL_START: ${{ vars.SOCIAL_START }}
+          SOCIAL_START_5C5: ${{ vars.SOCIAL_START_5C5 }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
