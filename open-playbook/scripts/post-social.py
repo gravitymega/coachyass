@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Publie la vidéo verticale du jour sur YouTube (Shorts) et Instagram (Reels) : comptes « Gravity Playbook ».
 
-Une fiche par jour, dans un ordre fixe (systèmes d'abord, puis défense, transition, remises, principes, exercices).
-Le rang du jour = nombre de jours depuis SOCIAL_START (variable du dépôt, AAAA-MM-JJ). Aucun état à garder.
+Une fiche par jour : seulement les tactiques complètes en 5 contre 5 qui finissent avec le ballon au panier
+(attaque, attaque de zone, transition, remises), dans cet ordre puis par niveau.
+Le rang du jour = nombre de jours (date de Montréal) depuis SOCIAL_START_5C5 (variable du dépôt, AAAA-MM-JJ,
+17 nov. 2026 par défaut). Aucun état à garder.
 La vidéo vient de la release GitHub « op-videos-vertical ». Titre, description et hashtags en anglais, sans lien.
 
 Secrets GitHub (sinon la plate-forme est sautée, sans erreur) :
@@ -15,6 +17,7 @@ Secrets GitHub (sinon la plate-forme est sautée, sans erreur) :
 """
 import argparse, datetime, json, os, sys, time, urllib.error, urllib.parse, urllib.request
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent.parent
 REPO = os.environ.get("GITHUB_REPOSITORY", "gravitymega/coachyass")
@@ -27,10 +30,38 @@ HOOK = {"attaque": "Film room", "zone_att": "Zone offense film room", "transitio
         "principes": "Coaching principle"}
 
 
+OFFENSE = ["attaque", "zone_att", "transition", "remises"]
+BASKET = (25, 5.25)
+
+
+def five_on_five(t):
+    """5 attaquants (1 à 5) et 5 défenseurs (x1 à x5) sur le terrain."""
+    start = t.get("start") or {}
+    return all(str(i) in start and f"x{i}" in start for i in range(1, 6))
+
+
+def ends_at_rim(t):
+    """Le ballon finit au panier : le dernier porteur est à 8 pieds ou moins du cercle (même règle que shotKind du site)."""
+    start = t["start"]
+    pos = {k: v[:2] for k, v in start.items() if k != "b"}
+    ball = start.get("b")
+    for s in t["steps"]:
+        for k, m in (s.get("m") or {}).items():
+            pos[k] = m[:2]
+        ball = s.get("p") or ball
+    if ball not in pos:
+        return False
+    x, y = pos[ball]
+    if t.get("court") == "full" and y > 47:  # tir vers le second panier, ramené dans le repère du demi-terrain
+        y = 94 - y
+    return ((x - BASKET[0]) ** 2 + (y - BASKET[1]) ** 2) ** 0.5 <= 8
+
+
 def lineup():
+    """Seulement les tactiques complètes en 5 contre 5, jusqu'au ballon au panier (demande du 17 nov. 2026)."""
     lib = json.loads((ROOT / "data/tactics.json").read_text(encoding="utf-8"))
-    todo = [t for t in lib["tactics"] if t.get("steps")]
-    return sorted(todo, key=lambda t: (ORDER.index(t["cat"]) if t["cat"] in ORDER else 99, t["lvl"]))
+    todo = [t for t in lib["tactics"] if t.get("steps") and t["cat"] in OFFENSE and five_on_five(t) and ends_at_rim(t)]
+    return sorted(todo, key=lambda t: (ORDER.index(t["cat"]), t["lvl"]))
 
 
 def texts(t):
@@ -121,8 +152,9 @@ def main():
     if a.id:
         t = next((x for x in todo if x["id"] == a.id), None) or sys.exit(f"Fiche inconnue : {a.id}")
     else:
-        start = datetime.date.fromisoformat(os.environ.get("SOCIAL_START") or "2026-11-04")
-        day = (datetime.datetime.now(datetime.timezone.utc).date() - start).days
+        # Date de Montréal : le lancement planifié arrive souvent en retard (après minuit UTC).
+        start = datetime.date.fromisoformat(os.environ.get("SOCIAL_START_5C5") or "2026-11-17")
+        day = (datetime.datetime.now(ZoneInfo("America/Montreal")).date() - start).days
         if day < 0:
             return print(f"Début des publications le {start}")
         t = todo[day % len(todo)]
