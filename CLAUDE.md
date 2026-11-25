@@ -6,7 +6,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 
 | Dossier | Hébergement | URL | Rôle |
 |---|---|---|---|
-| `/` (racine) | Netlify `gravity-coaching` | coaching.osmm-mtl.site | Réservation Gravity Coaching (1 séance 30 $, 3 = 80 $, 6 = 150 $ ; Vendredi Coaching sur Zeffy) |
+| `/` (racine) | Netlify `gravity-coaching` | coaching.osmm-mtl.site | Réservation Gravity Coaching (1 séance 30 $, 3 = 80 $, 6 = 150 $ ; paiement Interac seulement) |
 | `gravity-pickup-site/` | Netlify `gravity-pickup` | pickup.osmm-mtl.site | **Fermé le 30 sept. 2026** (page « Programme terminé ») |
 | `osmm-montreal/` | Netlify `osmm-montreal` | osmm-mtl.site | Vitrine OSMM (organisme communautaire) |
 | `gravity-admin-dashboard/` | Netlify | gravity-admin-dashboard.netlify.app | Dashboard admin (Supabase) : équipes, partenaires, galerie, réservations, championnat, Espace Joueurs, Instagram |
@@ -20,6 +20,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 
 ## Règles permanentes
 
+- **Paiement : virement Interac seulement** (Zeffy retiré de partout le 25 nov. 2026, à ne pas remettre sans demande).
 - **Aucun frais** en dehors de l'abonnement Claude : plans gratuits seulement (Netlify, Cloudflare, Supabase, Brevo, Zeffy, Google). L'API Anthropic est facturée à part : pas de `ANTHROPIC_API_KEY` sans accord explicite. IA d'Art craft = Gemini (gratuit) puis Workers AI en secours. Détails : `docs/contexte/aucun-frais-ia-gratuites.md`.
 - Talent Perlé reste séparé de Gravity/OSMM (pas de domaine, de Supabase ni de Notion partagés).
 - Ne jamais mettre de secret dans le code ni dans le chat : variables d'environnement Netlify / secrets Cloudflare.
@@ -52,7 +53,7 @@ Repo `gravitymega/coachyass` : plusieurs sites statiques déployés séparément
 | Espace Joueurs | `docs/contexte/espace-joueurs.md` |
 | Inscription GRAV (base Notion unifiée) | `docs/contexte/inscription-grav-notion.md` |
 | Courriels : bug Resend, suspension, migration Brevo | `docs/contexte/courriels-resend-brevo.md` |
-| Billet Zeffy Gravity Prep + accès Espace Joueurs auto | `docs/contexte/zeffy-gravity-prep.md` |
+| Billet Zeffy Gravity Prep (historique : Zeffy retiré le 25 nov. 2026) | `docs/contexte/zeffy-gravity-prep.md` |
 | API Meta / Instagram | `docs/contexte/meta-instagram.md` |
 | Boutique Gravity Basketball | `docs/contexte/boutique.md` |
 | Ligue 3x3 du dimanche 14-15 ans (hiver 2027, page, affiche, kit marketing) | `docs/contexte/ligue-3x3-dimanche.md` |

@@ -174,7 +174,8 @@
           <label for="program-location">Lieu / secteur</label>
           <input type="text" id="program-location">
         </div>
-        <div class="field">
+        <!-- Zeffy retiré le 25 nov. 2026 (paiement Interac seulement) : champ gardé caché pour le code. -->
+        <div class="field" hidden>
           <label for="program-zeffy">Lien de paiement Zeffy (optionnel)</label>
           <input type="url" id="program-zeffy" placeholder="https://www.zeffy.com/...">
         </div>
@@ -660,7 +661,7 @@ Gravity Basketball</textarea>
 
     <section class="panel championship-only" data-group="championnat">
       <h2>Championnat — inscriptions</h2>
-      <p class="muted">Confirme un paiement une fois l'Interac ou le Zeffy reçu. Les tailles d'uniforme apparaissent une fois saisies par l'inscrit.</p>
+      <p class="muted">Confirme un paiement une fois le virement Interac reçu. Les tailles d'uniforme apparaissent une fois saisies par l'inscrit.</p>
       <div class="table-wrap">
         <table class="data-table" id="championship-reg-table">
           <thead>
@@ -838,7 +839,6 @@ Gravity Basketball</textarea>
               <th>Genre</th>
               <th>Équipe</th>
               <th>Affiche</th>
-              <th>Zeffy</th>
               <th>Ordre</th>
               <th>Statut</th>
               <th></th>
@@ -863,7 +863,7 @@ Gravity Basketball</textarea>
           <textarea id="team-description" rows="3" placeholder="Présentation courte de l'équipe, affichée sur sa fiche."></textarea>
         </div>
 
-        <div class="field">
+        <div class="field" hidden>
           <label for="team-zeffy">Lien Zeffy propre à cette équipe (optionnel)</label>
           <input type="url" id="team-zeffy" placeholder="https://www.zeffy.com/...">
         </div>
@@ -1360,7 +1360,6 @@ Gravity Basketball</textarea>
         </div>
         <p class="save-note" id="shop-import-note" hidden></p>
         <div id="shop-import-preview" style="margin-top:12px;"></div>
-        <div id="shop-import-zeffy" style="margin-top:12px;"></div>
       </div>
 
       <form id="shop-product-form" class="product-form" hidden style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);">

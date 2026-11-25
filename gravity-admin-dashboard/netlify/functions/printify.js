@@ -13,7 +13,7 @@
 //   - order    (PUBLIC, POST)  crée la commande dans Printify. Elle n'est PAS
 //                              envoyée en production : l'admin clique « Send to
 //                              production » dans Printify une fois le paiement
-//                              Interac/Zeffy reçu. ⚠️ La boutique Printify doit
+//                              Interac reçu. ⚠️ La boutique Printify doit
 //                              avoir l'approbation des commandes en « Manuel »,
 //                              sinon Printify l'envoie seul après 24 h.
 //

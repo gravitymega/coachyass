@@ -1,5 +1,7 @@
 ## Boutique Gravity Basketball (7 octobre 2026)
 
+> **25 novembre 2026 : paiement par virement Interac seulement.** Le bouton « carte / Zeffy », `ZEFFY_BOUTIQUE_URL` et le texte « À reporter dans ta boutique Zeffy » de l'import Printify ont été retirés.
+
 Page `gravity-basketball-mtl/boutique.html` (lien « Boutique » dans le menu et le pied de page de `index.html`, ajoutée au sitemap) : panier côté navigateur (`localStorage`), formulaire de commande (nom, courriel, téléphone, joueur/équipe, paiement Interac ou carte).
 
 - **Produits gérés par l'utilisateur dans le Dashboard** (demande explicite : c'est lui qui entre les détails et la photo de chaque produit) : groupe de menu « Boutique » de `gravity-admin-dashboard` (visible comme « Mes équipes », admins qui gèrent `gravity-basketball`) — ajouter/éditer/masquer/supprimer : nom, description, prix (taxes incluses), tailles et couleurs (listes séparées par des virgules), photo, étiquette (« Nouveau »…), ordre d'affichage.

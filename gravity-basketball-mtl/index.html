@@ -415,6 +415,16 @@
       <p class="section-kicker">Ambiance</p>
       <h2 class="section-title">Les matchs en vidéo</h2>
 
+      <!-- Chaîne YouTube (fonction youtube du Dashboard, flux public de la chaîne) -->
+      <div class="yt-block" id="yt-block" hidden>
+        <div class="yt-head">
+          <h3 class="yt-title"><svg viewBox="0 0 28 20" width="28" height="20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#ff0033"/><path d="M11 6l7 4-7 4z" fill="#fff"/></svg> <span id="yt-channel-name">Notre chaîne YouTube</span></h3>
+          <a class="btn btn-ghost" id="yt-subscribe" href="#" target="_blank" rel="noopener">S'abonner</a>
+        </div>
+        <div class="yt-player" id="yt-player"></div>
+        <div class="yt-grid" id="yt-grid"></div>
+      </div>
+
       <div class="ig-carousel" id="ig-carousel" hidden>
         <button type="button" class="ig-carousel-nav ig-carousel-prev" id="ig-prev" aria-label="Publication précédente">&#8249;</button>
         <div class="ig-carousel-track" id="ig-carousel-track"></div>
@@ -666,15 +676,8 @@
         <div class="form-section">
           <p class="form-section-title">Paiement</p>
           <div class="field" id="field-mode-paiement">
-            <label>Mode de paiement</label>
-            <label class="checkbox-field">
-              <input type="radio" name="mode_paiement" value="Interac" checked>
-              <span>Interac — au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou <span id="interac-email-form">mqtad9@hotmail.com</span></span>
-            </label>
-            <label class="checkbox-field">
-              <input type="radio" name="mode_paiement" value="Zeffy">
-              <span>Zeffy — paiement en ligne par carte</span>
-            </label>
+            <input type="hidden" name="mode_paiement" value="Interac">
+            <p class="pay-interac">Paiement par <strong>virement Interac</strong> au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou à <span id="interac-email-form">mqtad9@hotmail.com</span>, après l'envoi du formulaire.</p>
           </div>
 
           <label class="checkbox-field">
@@ -691,15 +694,8 @@
         <h3>Demande envoyée !</h3>
         <p>Merci ! Gravity Basketball a bien reçu ta demande d'inscription.</p>
         <p>On te recontacte par téléphone, courriel ou Instagram pour confirmer.</p>
-        <div class="zeffy-payment-cta" id="interac-payment-cta" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border, #2a2536);" hidden>
+        <div class="payment-cta" id="interac-payment-cta" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border, #2a2536);" hidden>
           <p class="section-lead">Dernière étape : envoie le montant d'inscription par virement Interac au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou à <span id="interac-email-success">mqtad9@hotmail.com</span> pour confirmer ta place.</p>
-        </div>
-        <div class="zeffy-payment-cta" id="zeffy-payment-cta" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border, #2a2536);" hidden>
-          <p class="section-lead" style="margin-bottom:12px;">Dernière étape : règle les frais d'inscription en ligne (paiement sécurisé par carte débit et crédit, sans frais pour Gravity Basketball).</p>
-          <a href="#" id="zeffy-payment-link" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Payer par carte débit et crédit</a>
-        </div>
-        <div class="zeffy-payment-cta" id="payment-pending-cta" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border, #2a2536);" hidden>
-          <p class="section-lead">On te contacte très bientôt par téléphone, courriel ou Instagram pour finaliser le paiement de ton inscription.</p>
         </div>
       </div>
     </div>

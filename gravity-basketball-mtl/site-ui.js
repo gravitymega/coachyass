@@ -187,3 +187,55 @@
     });
   }
 })();
+
+// ---------- Chaîne YouTube (section Vidéos) ----------
+// La fonction Netlify « youtube » lit le flux public de la chaîne (sans clé).
+// La vidéo ne se charge qu'au clic (youtube-nocookie) : page rapide, pas de pisteur avant.
+(function () {
+  'use strict';
+  var block = document.getElementById('yt-block');
+  if (!block) return;
+  var FEED = 'https://gravity-admin-dashboard.netlify.app/.netlify/functions/youtube';
+  var esc = function (s) { return String(s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var player = document.getElementById('yt-player');
+  var grid = document.getElementById('yt-grid');
+
+  function play(v, autoplay) {
+    player.innerHTML = '<div class="yt-frame"><iframe src="https://www.youtube-nocookie.com/embed/' + v.id + '?rel=0&modestbranding=1' + (autoplay ? '&autoplay=1' : '') +
+      '" title="' + esc(v.title) + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>' +
+      '<p class="yt-now">' + esc(v.title) + '</p>';
+    grid.querySelectorAll('.yt-card').forEach(function (c) { c.classList.toggle('is-current', c.dataset.id === v.id); });
+  }
+
+  function poster(v) {
+    // Avant le clic : une image (légère) avec un bouton lecture, pas d'iframe.
+    player.innerHTML = '<button type="button" class="yt-frame yt-poster" aria-label="Lire : ' + esc(v.title) + '">' +
+      '<img src="https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg" alt="" loading="lazy"><span class="yt-play" aria-hidden="true"></span></button>' +
+      '<p class="yt-now">' + esc(v.title) + '</p>';
+    player.querySelector('button').addEventListener('click', function () { play(v, true); });
+  }
+
+  fetch(FEED).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+    var videos = d && Array.isArray(d.videos) ? d.videos.filter(function (v) { return /^[\w-]{11}$/.test(v.id); }) : [];
+    if (!videos.length) return;
+    if (d.channel && /^UC[\w-]{22}$/.test(d.channel.id)) {
+      document.getElementById('yt-subscribe').href = 'https://www.youtube.com/channel/' + d.channel.id + '?sub_confirmation=1';
+      if (d.channel.title) document.getElementById('yt-channel-name').textContent = d.channel.title;
+    }
+    poster(videos[0]);
+    grid.innerHTML = videos.slice(0, 8).map(function (v) {
+      return '<button type="button" class="yt-card" data-id="' + v.id + '"><img src="https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg" alt="" loading="lazy">' +
+        '<span>' + esc(v.title) + '</span></button>';
+    }).join('');
+    grid.addEventListener('click', function (e) {
+      var b = e.target.closest('.yt-card');
+      if (!b) return;
+      var v = videos.find(function (x) { return x.id === b.dataset.id; });
+      if (v) { play(v, true); player.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    });
+    block.hidden = false;
+    // Avec des vidéos YouTube, la carte « Bientôt disponible » d'Instagram n'a plus de sens.
+    var igEmpty = document.getElementById('ig-carousel-empty');
+    if (igEmpty) igEmpty.hidden = true;
+  }).catch(function () { /* chaîne indisponible : la section garde Instagram */ });
+})();
