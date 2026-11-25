@@ -153,9 +153,7 @@ const TEMPLATES = {
         <p>Bonjour ${escapeHtml(f.nom)},</p>
         <p>Merci ! Gravity Pickups a bien reçu votre réservation${f.forfait ? ` (<strong>${escapeHtml(f.forfait)}</strong>)` : ''}${f.creneau ? `, créneau <strong>${escapeHtml(f.creneau)}</strong>` : ''}.</p>
         ${f.dates ? `<p>Date(s) : <strong>${escapeHtml(f.dates)}</strong></p>` : ''}
-        ${f.modePaiement === 'Zeffy'
-          ? '<p>Complétez votre paiement en ligne par carte (lien envoyé séparément) pour confirmer votre place.</p>'
-          : '<p>Dernière étape : envoyez le montant par virement Interac au <strong>438-341-2051</strong> ou à <strong>mqtad9@hotmail.com</strong> pour confirmer votre place.</p>'}
+        <p>Dernière étape : envoyez le montant par virement Interac au <strong>438-341-2051</strong> ou à <strong>mqtad9@hotmail.com</strong> pour confirmer votre place.</p>
       `,
     };
   },
@@ -170,9 +168,7 @@ const TEMPLATES = {
         <p>Bonjour ${escapeHtml(f.nom)},</p>
         <p>Merci ! Gravity Basketball a bien reçu votre demande d'inscription${f.programme ? ` — <strong>${escapeHtml(f.programme)}</strong>` : ''}.</p>
         <p>On vous recontacte par téléphone, courriel ou Instagram pour confirmer.</p>
-        ${f.modePaiement === 'Zeffy'
-          ? '<p>Complétez votre paiement en ligne par carte (lien envoyé séparément) pour confirmer votre place.</p>'
-          : `<p>Dernière étape : envoyez le montant d'inscription par virement Interac au <strong>438-341-2051</strong> ou à <strong>${interacEmail}</strong> pour confirmer votre place.</p>`}
+        <p>Dernière étape : envoyez le montant d'inscription par virement Interac au <strong>438-341-2051</strong> ou à <strong>${interacEmail}</strong> pour confirmer votre place.</p>
       `,
     };
   },

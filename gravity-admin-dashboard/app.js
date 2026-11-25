@@ -1013,7 +1013,7 @@ partnerForm.addEventListener('submit', async (e) => {
   }, 1200);
 });
 
-// ---------- Mes équipes : équipes (affiche + Zeffy par équipe) ----------
+// ---------- Mes équipes : équipes (affiches) ----------
 async function loadTeams() {
   const { data, error } = await supabase
     .from('teams')
@@ -1041,7 +1041,6 @@ function renderTeamsTable() {
           <td>${escapeHtml(t.genre)}</td>
           <td>${escapeHtml(t.nom_equipe)}</td>
           <td>${t.affiche_url ? `<img src="${escapeHtml(t.affiche_url)}" alt="" style="height:32px; width:auto; max-width:80px; object-fit:contain;">` : '<span class="muted">—</span>'}</td>
-          <td>${t.zeffy_url ? '<span class="program-status-pill active">Propre</span>' : '<span class="muted">Lien global</span>'}</td>
           <td>${t.display_order}</td>
           <td><span class="program-status-pill ${t.active ? 'active' : 'inactive'}">${t.active ? 'Actif' : 'Inactif'}</span></td>
           <td>
@@ -1052,7 +1051,7 @@ function renderTeamsTable() {
           </td>
         </tr>
       `)
-      .join('') || '<tr><td colspan="8" class="empty-note">Aucune équipe trouvée.</td></tr>';
+      .join('') || '<tr><td colspan="7" class="empty-note">Aucune équipe trouvée.</td></tr>';
 
   teamsTbody.querySelectorAll('.team-edit-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -4791,7 +4790,6 @@ const shopColorFr = (c) => SHOP_COLOR_FR[String(c).toLowerCase().trim()] || c;
 let shopImportCatalog = [];
 const shopImportNote = document.getElementById('shop-import-note');
 const shopImportPreview = document.getElementById('shop-import-preview');
-const shopImportZeffy = document.getElementById('shop-import-zeffy');
 
 function showShopImportNote(text, isError) {
   shopImportNote.textContent = text;
@@ -4887,8 +4885,6 @@ async function applyShopImport(e) {
     }
     await loadShopProducts();
     showShopImportNote(`${done.length} produit(s) importé(s). Les prix sont en ligne sur la boutique.`, false);
-    shopImportZeffy.innerHTML = `<p style="margin:0 0 6px;"><strong>À reporter dans ta boutique Zeffy</strong> (mêmes noms et prix) :</p>
-      <textarea readonly rows="${done.length + 1}" style="width:100%;">${escapeHtml(done.map((d) => `${d.name} — ${d.price} $ — couleurs : ${d.colors.join(', ')} — tailles : ${d.sizes.join(', ')}`).join('\n'))}</textarea>`;
     renderShopImportPreview();
   } catch (err) {
     showShopImportNote('Erreur : ' + err.message, true);

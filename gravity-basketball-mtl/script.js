@@ -22,41 +22,24 @@ const DEFAULT_INTERAC_EMAIL = 'mqtad9@hotmail.com';
 // sa notification admin dédiée Resend — doublon assumé une fois Resend réparé.
 const FORMSUBMIT_EMAIL = 'Gavitybasketball@gmail.com';
 
-// Liens de paiement Zeffy par programme (comme pour le Championnat et Basket Libre).
-// Note : "Ligue 3v3" (13-14 ans) et le Championnat partagent le même événement
-// Zeffy — confirmé par Yassine que le tarif est bien le même pour les deux
-// programmes (260 $ individuel / 936 $ équipe complète).
-const ZEFFY_LINKS = {
-  'Ligue 3v3': 'https://www.zeffy.com/en-CA/ticketing/gravity-basketball-league-3v3-inscription',
-  'Ligue Maison': 'https://www.zeffy.com/en-CA/ticketing/gravity-ligue-maison-inscription',
-  'Gravity Prep': 'https://www.zeffy.com/en-CA/ticketing/gravity-prep-saison-2026--2027',
-};
+// Paiement : virement Interac seulement (Zeffy retiré le 25 nov. 2026).
 
 // Ligue 3x3 du dimanche, hiver 2027 (14-15 ans) — page ligue-3x3-dimanche.html.
 // Ses boutons mènent ici avec ?programme=Ligue%203v3&saison=dimanche-hiver-2027 :
 // même formulaire, même chaîne (Supabase, Notion, courriels), mais la catégorie
 // passe à 14-15 ans et la remarque est préfixée par SAISONS[...].label pour
 // qu'on reconnaisse ces inscriptions partout sans nouvelle valeur « Programme ».
-// zeffy : le billet Zeffy de l'ancienne Ligue 3v3 du samedi, que l'utilisateur
-// réédite pour la ligue du dimanche (choix du 10 nov. 2026, même adresse).
 const SAISONS = {
   'dimanche-hiver-2027': {
     label: 'Ligue 3x3 du dimanche — hiver 2027',
     age: '14-15 ans',
     titre: 'Réserve ta place — Ligue 3x3 du dimanche (14-15 ans)',
-    zeffy: 'https://www.zeffy.com/en-CA/ticketing/gravity-basketball-league-3v3-inscription',
   },
 };
 // La Ligue 3v3 du samedi (13-14 ans) est terminée : depuis le 10 nov. 2026, le
 // programme « Ligue 3v3 » du site EST la ligue du dimanche, avec ou sans ?saison=.
 const SAISON = SAISONS[new URLSearchParams(window.location.search).get('saison')] || SAISONS['dimanche-hiver-2027'];
 
-// Formulaire Zeffy unique pour "Mes équipes" — un seul événement avec choix de
-// catégorie/équipe dans le formulaire lui-même. Vide tant que le lien n'est pas
-// fourni : chaque équipe affiche alors "Inscription bientôt disponible" au lieu
-// d'un bouton mort. Une équipe peut aussi avoir son propre lien (teams.zeffy_url,
-// rempli depuis le dashboard admin) qui prend le dessus sur ce lien global.
-const ZEFFY_URL = '';
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('inscription-form');
@@ -391,29 +374,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }).catch(() => {});
         form.hidden = true;
         success.hidden = false;
-        const interacCta = document.getElementById('interac-payment-cta');
-        const zeffyCta = document.getElementById('zeffy-payment-cta');
-        const zeffyLink = document.getElementById('zeffy-payment-link');
-        const paymentPendingCta = document.getElementById('payment-pending-cta');
-        const modePaiement = get('mode_paiement') || 'Interac';
-        const link = payload.details.saison ? (SAISON && SAISON.zeffy) : ZEFFY_LINKS[programme];
         const interacEmailSuccessEl = document.getElementById('interac-email-success');
         if (interacEmailSuccessEl) interacEmailSuccessEl.textContent = isPrep ? GRAVITY_PREP_EMAIL : DEFAULT_INTERAC_EMAIL;
-
-        interacCta.hidden = true;
-        zeffyCta.hidden = true;
-        paymentPendingCta.hidden = true;
-
-        if (modePaiement === 'Zeffy' && link) {
-          zeffyLink.href = link;
-          zeffyCta.hidden = false;
-        } else if (modePaiement === 'Zeffy') {
-          // Zeffy choisi mais pas de lien dédié pour ce programme (ex. Gravity
-          // Prep) — on ne redirige jamais vers le mauvais événement de paiement.
-          paymentPendingCta.hidden = false;
-        } else {
-          interacCta.hidden = false;
-        }
+        document.getElementById('interac-payment-cta').hidden = false;
         success.scrollIntoView({ behavior: 'smooth', block: 'center' });
       })
       .catch(() => {
@@ -529,7 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // qu'une seule ligne de prix (même comportement que la page actuelle,
           // ex. Ligue Maison "Coût : 180 $"). S'il y a plusieurs paliers de prix
           // (ex. individuel / équipe), on n'essaie pas de les caser dans cette
-          // liste simple — ils resteront visibles ailleurs (Zeffy, dashboard).
+          // liste simple — ils resteront visibles ailleurs (dashboard).
           const items = [...program.details];
           if (Array.isArray(program.pricing) && program.pricing.length === 1) {
             items.push(program.pricing[0]);
@@ -721,7 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(() => {});
   }
 
-  // ---------- Mes équipes (catégories, affiches, inscription Zeffy, joueurs) ----------
+  // ---------- Mes équipes (catégories, affiches, inscription, joueurs) ----------
   // Contenu 100% géré depuis le dashboard admin (tables Supabase "teams" et
   // "players"). Rien n'est codé en dur ici : si le fetch échoue ou ne renvoie
   // rien, le message de chargement reste affiché tel quel (aucune section
@@ -775,10 +738,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ? `<img class="programme-poster team-poster" src="${escapeHtml(team.affiche_url)}" alt="Affiche ${escapeHtml(team.nom_equipe)}" loading="lazy">`
       : `<div class="team-poster-placeholder">Affiche à venir</div>`;
 
-    const zeffyLink = team.zeffy_url || ZEFFY_URL;
-    const zeffy = zeffyLink
-      ? `<a class="btn btn-primary btn-block" href="${escapeHtml(zeffyLink)}" target="_blank" rel="noopener">S'inscrire — ${escapeHtml(team.nom_equipe)}</a>`
-      : `<span class="team-zeffy-soon">Inscription bientôt disponible</span>`;
+    // Inscription par le formulaire du site (paiement Interac).
+    const signup = `<a class="btn btn-primary btn-block" href="#inscription">S'inscrire — ${escapeHtml(team.nom_equipe)}</a>`;
 
     const playersHtml = players.length
       ? players.map((p) => playerCardHtml(p, team.nom_equipe)).join('')
@@ -800,7 +761,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         ${poster}
         ${description}
-        <div class="team-zeffy">${zeffy}</div>
+        <div class="team-zeffy">${signup}</div>
         <div class="players-grid">${playersHtml}</div>
       </div>`;
   }

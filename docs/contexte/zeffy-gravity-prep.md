@@ -1,3 +1,6 @@
+> **Zeffy retiré le 25 novembre 2026** (demande « Enlève Zeffy de partout et garde juste virement Interac »). Les fonctions `zeffy-webhook.js` et `zeffy-webhook-prep.js` ont été supprimées. L'accès Espace Joueurs d'un joueur Gravity Prep se crée maintenant à la main : Dashboard → « Créer un accès », une fois l'Interac reçu. Ce qui suit est l'historique.
+> À faire par l'utilisateur : supprimer le webhook dans Zeffy (Settings → Integrations), désactiver ou supprimer les billets Zeffy, et retirer les variables Netlify `ZEFFY_WEBHOOK_SECRET` et `ZEFFY_PREP_WEBHOOK_SECRET` du Dashboard (devenues inutiles).
+
 ## Billet Zeffy Gravity Prep + création automatique de l'accès Espace Joueurs (13 septembre 2026)
 
 Contexte tiré des documents fournis par l'utilisateur (contrat joueur Post-Grad, description de saison, présentation du Circuit Prep U) : Gravity Prep = le programme "Post-Grad" (saison du 1er octobre 2026 au 28 mars 2027, 850 $, payable en un seul versement sur Zeffy — le contrat prévoit un échéancier en 3 versements mais l'utilisateur a choisi un billet Zeffy unique plein tarif plutôt que 3 billets par versement).

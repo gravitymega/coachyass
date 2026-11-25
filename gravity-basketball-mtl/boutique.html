@@ -265,15 +265,9 @@
             </div>
 
             <div class="field">
-              <label>Mode de paiement</label>
-              <label class="checkbox-field">
-                <input type="radio" name="mode_paiement" value="Interac" checked>
-                <span>Interac — au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou mqtad9@hotmail.com</span>
-              </label>
-              <label class="checkbox-field">
-                <input type="radio" name="mode_paiement" value="Zeffy">
-                <span>Carte débit / crédit (paiement en ligne)</span>
-              </label>
+              <label>Paiement</label>
+              <input type="hidden" name="mode_paiement" value="Interac">
+              <p class="pay-interac">Par <strong>virement Interac</strong> au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou à mqtad9@hotmail.com, après l'envoi de la commande.</p>
             </div>
 
             <p class="error-msg" id="order-error" role="alert" hidden></p>
@@ -287,13 +281,6 @@
             <p>On te contacte par téléphone ou courriel pour la remise de ta commande.</p>
             <div id="pay-interac" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);" hidden>
               <p class="section-lead">Dernière étape : envoie <strong id="pay-interac-amount"></strong> par virement Interac au <a href="tel:+14383412051" class="tel-link">438-341-2051</a> ou à mqtad9@hotmail.com (indique ton nom dans le message).</p>
-            </div>
-            <div id="pay-zeffy" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);" hidden>
-              <p class="section-lead" style="margin-bottom:12px;">Dernière étape : règle ta commande en ligne par carte.</p>
-              <a href="#" id="pay-zeffy-link" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Payer par carte débit et crédit</a>
-            </div>
-            <div id="pay-pending" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border);" hidden>
-              <p class="section-lead">On t'envoie le lien de paiement par carte très bientôt.</p>
             </div>
             <button type="button" class="btn btn-ghost btn-block" id="order-again" style="margin-top:20px;">Passer une autre commande</button>
           </div>
@@ -355,9 +342,6 @@ if ('serviceWorker' in navigator) {
       couleurs: ['Noir', 'Gris'],
     },
   ];
-
-  // Lien Zeffy de la boutique (à créer). Vide = message « lien envoyé bientôt ».
-  const ZEFFY_BOUTIQUE_URL = 'https://www.zeffy.com/en-CA/ticketing/boutique-gravity-basketball';
 
   // Frais de livraison à domicile (taxes incluses), ajoutés au total. Les
   // commandes livrées partent chez Printify (voir PRINTIFY_ORDER_URL).
@@ -700,11 +684,8 @@ if ('serviceWorker' in navigator) {
     }
 
     document.getElementById('order-success-summary').textContent = `${lignes.length > 1 ? 'Articles' : 'Article'} : ${cart.map((l) => `${l.qte} × ${lineLabel(l)}`).join(' · ')} — Total ${fmt(total)}`;
-    document.getElementById('pay-interac').hidden = modePaiement !== 'Interac';
+    document.getElementById('pay-interac').hidden = false;
     document.getElementById('pay-interac-amount').textContent = fmt(total);
-    document.getElementById('pay-zeffy').hidden = !(modePaiement === 'Zeffy' && ZEFFY_BOUTIQUE_URL);
-    document.getElementById('pay-zeffy-link').href = ZEFFY_BOUTIQUE_URL || '#';
-    document.getElementById('pay-pending').hidden = !(modePaiement === 'Zeffy' && !ZEFFY_BOUTIQUE_URL);
     form.hidden = true;
     document.getElementById('order-success').hidden = false;
 
