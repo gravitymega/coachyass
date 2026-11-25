@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="strict-origin">
+<meta name="theme-color" content="#0d0b12">
+<title>Match | Gravity Basketball</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0b12; --card: #17141d; --border: #2a2536; --text: #f5f5f5; --muted: #a8a8a8;
+    --accent: #e8672e; --accent-light: #ff8a4c; --accent-2-light: #f0425f; --win: #4fd18b;
+    --grad: linear-gradient(135deg, #c04d1c, #d81e5b);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 400 15px/1.5 Inter, system-ui, sans-serif; }
+  [hidden] { display: none !important; }
+  main { max-width: 960px; margin: 0 auto; padding: 0 16px 48px; }
+  .top { display: flex; align-items: center; gap: 10px; padding: 14px 16px; max-width: 960px; margin: 0 auto; }
+  .top img { width: 40px; height: 40px; border-radius: 50%; }
+  .top a { color: var(--text); text-decoration: none; font: 600 16px Oswald, sans-serif; letter-spacing: .03em; text-transform: uppercase; }
+  .top button { margin-left: auto; }
+  h2 { font: 600 20px Oswald, sans-serif; letter-spacing: .02em; text-transform: uppercase; margin: 32px 0 12px; }
+  .btn { appearance: none; border: 0; border-radius: 999px; padding: 9px 16px; font: 600 14px Inter, sans-serif; color: #fff; background: var(--grad); cursor: pointer; }
+  .btn.ghost { background: transparent; border: 1px solid var(--border); }
+  .muted { color: var(--muted); }
+  .score { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 20px 16px; text-align: center; position: relative; overflow: hidden; }
+  .score::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 10% 0%, rgba(232,103,46,.25), transparent 60%), radial-gradient(circle at 90% 100%, rgba(216,30,91,.22), transparent 60%); pointer-events: none; }
+  .score .teams { position: relative; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; }
+  .score .name { font: 600 clamp(15px, 4vw, 22px) Oswald, sans-serif; text-transform: uppercase; overflow-wrap: anywhere; }
+  .score .pts { font: 700 clamp(40px, 13vw, 76px)/1 Oswald, sans-serif; }
+  .score .pts.win { color: var(--accent-light); }
+  .score .sep { font: 500 clamp(22px, 6vw, 40px) Oswald, sans-serif; color: var(--muted); }
+  .score .date { position: relative; margin-top: 8px; color: var(--muted); font-size: 14px; }
+  .reels { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(160px, 220px); gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
+  .reel { scroll-snap-align: start; margin: 0; }
+  .reel video { width: 100%; aspect-ratio: 9 / 16; background: #000; border-radius: 14px; display: block; object-fit: cover; }
+  .reel figcaption { margin-top: 6px; font-size: 13px; }
+  .reel b { display: block; font: 600 16px Oswald, sans-serif; text-transform: uppercase; }
+  .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; white-space: nowrap; }
+  th, td { padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; }
+  th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: var(--card); }
+  tr.total td { font-weight: 700; }
+  tbody tr:last-child td { border-bottom: 0; }
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 10px; }
+  .chip { flex: none; border: 1px solid var(--border); background: transparent; color: var(--text); border-radius: 999px; padding: 6px 12px; font: 500 13px Inter, sans-serif; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--grad); border-color: transparent; }
+  .plays { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .plays button { width: 100%; display: flex; gap: 12px; align-items: center; text-align: left; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; color: var(--text); font: inherit; cursor: pointer; }
+  .plays button:hover, .plays button[aria-current="true"] { border-color: var(--accent); }
+  .plays .clock { font: 600 14px Oswald, sans-serif; color: var(--accent-light); min-width: 52px; }
+  .plays .who { margin-left: auto; color: var(--muted); font-size: 13px; text-align: right; }
+  .viewer { position: sticky; top: 8px; z-index: 2; margin-bottom: 12px; }
+  .viewer video { width: 100%; max-height: 60vh; background: #000; border-radius: 14px; display: block; }
+  svg.mom { width: 100%; height: auto; display: block; background: var(--card); border: 1px solid var(--border); border-radius: 14px; }
+  .state { text-align: center; padding: 80px 16px; }
+  footer { max-width: 960px; margin: 0 auto; padding: 24px 16px 40px; color: var(--muted); font-size: 13px; text-align: center; }
+  footer a { color: var(--accent-light); }
+</style>
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="">
+  <a href="/">Gravity Basketball</a>
+  <button class="btn ghost" id="btn-share" type="button" hidden>Partager</button>
+</header>
+<main>
+  <p class="state" id="state">Chargement du match…</p>
+  <div id="page" hidden>
+    <section class="score" aria-label="Score final">
+      <div class="teams">
+        <div><div class="name" id="team"></div><div class="pts" id="pts-us"></div></div>
+        <div class="sep">–</div>
+        <div><div class="name" id="opp"></div><div class="pts" id="pts-opp"></div></div>
+      </div>
+      <div class="date" id="date"></div>
+    </section>
+
+    <section id="reels-sec" hidden>
+      <h2>Highlights des joueurs</h2>
+      <div class="reels" id="reels"></div>
+    </section>
+
+    <section>
+      <h2>Feuille de match</h2>
+      <div class="table-scroll"><table id="box"></table></div>
+    </section>
+
+    <section id="mom-sec" hidden>
+      <h2>Le fil du match</h2>
+      <p class="muted">Écart au score : au-dessus de la ligne, Gravity mène.</p>
+      <svg class="mom" id="mom" viewBox="0 0 600 160" role="img" aria-label="Écart au score au fil du match"></svg>
+    </section>
+
+    <section id="plays-sec" hidden>
+      <h2>Les actions en vidéo</h2>
+      <div class="viewer" id="viewer" hidden><video id="viewer-video" controls playsinline></video></div>
+      <div class="chips" id="chips" role="group" aria-label="Filtrer par joueur"></div>
+      <ul class="plays" id="plays"></ul>
+    </section>
+  </div>
+</main>
+<footer>
+  Statistiques lues par intelligence artificielle à partir de la vidéo, puis vérifiées par le coach : de petites erreurs restent possibles.<br>
+  <a href="/">gravity.osmm-mtl.site</a> · Instagram <a href="https://www.instagram.com/gravitybasketball_mtl/" rel="noopener">@gravitybasketball_mtl</a>
+</footer>
+<script type="module" src="match.js"></script>
+</body>
+</html>

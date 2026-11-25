@@ -13,6 +13,7 @@ import {
 } from './stats-core.js';
 import { loadDetector, detectPlayers, jerseyColor, cropJpeg, scaledJpeg, detectorDevice } from './detect.js';
 import { SITE, accessToken, rest, uploadFile, fillTeams, loadRoster, loadGames, sessionEmail, logout } from './supa.js';
+import { initShare, renderShare, buildReels, publishPage } from './stats-share.js';
 
 const STORE_KEY = 'artcraft-voice-password'; // même mot de passe que les autres modules IA
 const MOUNT = '/st';
@@ -178,7 +179,9 @@ document.querySelectorAll('input[name=mode]').forEach(r => r.addEventListener('c
 async function grabBitmap(ff, t) {
   const code = await ff.exec(['-ss', t.toFixed(2), '-i', state.input, '-frames:v', '1', '-vf', "scale='min(1920,iw)':-2", '/f.bmp'], 30000);
   if (code !== 0) return null;
-  const data = await ff.readFile('/f.bmp');
+  // Instant au bout de la vidéo : ffmpeg réussit sans écrire d'image. On saute cette image.
+  const data = await ff.readFile('/f.bmp').catch(() => null);
+  if (!data) return null;
   await ff.deleteFile('/f.bmp');
   return createImageBitmap(new Blob([data], { type: 'image/bmp' }));
 }
@@ -288,13 +291,14 @@ async function readWindow(ff, win, nums) {
   return normalizeEvents(raw, win, nums);
 }
 
-$('btn-run').addEventListener('click', run);
-async function run() {
-  if (state.busy || !state.file) return;
+$('btn-run').addEventListener('click', () => run());
+async function run({ chained = false } = {}) {
+  if (!chained && (state.busy || !state.file)) return false;
   state.busy = true;
   $('btn-run').disabled = true;
+  $('btn-all').disabled = true;
   showError('');
-  const release = await keepAwake();
+  const release = chained ? () => {} : await keepAwake();
   try {
     const ff = await getFFmpeg('run-progress');
     await mountInput(ff);
@@ -327,15 +331,69 @@ async function run() {
     }
     setEvents([...state.events.filter(e => e.manual), ...found]);
     setProgress('run-progress', 1, `${state.events.length} actions trouvées sur ${windows.length} portions` + (failed ? ` (${failed} portion${failed > 1 ? 's' : ''} illisible${failed > 1 ? 's' : ''})` : '') + ' : vérifie-les ci-dessous.');
+    return true;
   } catch (err) {
     console.error(err);
     showError('Recherche impossible : ' + (err.message || err));
+    return false;
+  } finally {
+    release();
+    if (!chained) state.busy = false;
+    $('btn-run').disabled = false;
+    $('btn-all').disabled = false;
+  }
+}
+
+// ---------- Tout en un clic ----------
+// Trouver les actions, puis enchaîner ce qui est coché : Espace Joueurs, devoirs,
+// highlights par joueur, page du match. La connexion admin est demandée avant de commencer.
+$('btn-all').addEventListener('click', async () => {
+  if (state.busy || !state.file) return;
+  const send = $('auto-send').checked, devoirs = $('auto-devoirs').checked;
+  const reels = $('auto-reels').checked, page = $('auto-page').checked;
+  showError('');
+  const release = await keepAwake();
+  state.busy = true;
+  const done = [];
+  try {
+    // Connexion admin d'abord (le formulaire est dans l'étape 3 ou 4 : on la montre), puis plus rien à toucher.
+    const prefix = send || devoirs ? 'sb' : page ? 'share' : null;
+    if (prefix && !sessionEmail()) {
+      $(prefix === 'sb' ? 'step-send' : 'step-share').hidden = false;
+      setTimeout(() => $(`${prefix}-login`).scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+    }
+    if (prefix) await accessToken(prefix);
+    if (!await run({ chained: true })) return;
+    if (!state.events.length) throw new Error('aucune action trouvée.');
+    // Un souci avec l'Espace Joueurs (ex. aucun joueur n'a de fiche) n'empêche pas les highlights ni la page.
+    try {
+      if (devoirs) await prepareDevoirs();
+      if (send || devoirs) {
+        $('send-stats').checked = send;
+        $('send-clips').checked = send;
+        $('send-devoirs').checked = devoirs;
+        done.push(await sendToSpace());
+      }
+    } catch (err) {
+      console.warn(err);
+      done.push(`Espace Joueurs non envoyé (${err.message})`);
+    }
+    if (reels) done.push(`${await buildReels()} highlight(s)`);
+    if (page) {
+      $('page-reels').checked = reels;
+      await publishPage();
+      done.push('page du match publiée');
+    }
+    $('step-share').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setProgress('run-progress', 1, `Terminé : ${state.events.length} actions · ${done.join(' · ')}. Vérifie les actions : tu peux corriger puis renvoyer ou republier.`);
+  } catch (err) {
+    console.error(err);
+    showError('Tout en un clic arrêté : ' + (err.message || err) + (done.length ? ` (déjà fait : ${done.join(', ')})` : ''));
   } finally {
     release();
     state.busy = false;
-    $('btn-run').disabled = false;
   }
-}
+});
 
 // ---------- Import du Mode direct ----------
 $('btn-import').addEventListener('click', () => $('import-file').click());
@@ -373,6 +431,7 @@ function setEvents(list, { keepIds = false } = {}) {
   state.events = merged.map(e => ({ ...e, id: keepIds ? e.id : state.nextId++ }));
   $('step-review').hidden = false;
   $('step-send').hidden = false;
+  $('step-share').hidden = false;
   refresh();
 }
 
@@ -428,6 +487,7 @@ $('btn-add').addEventListener('click', () => {
   state.events.sort((a, b) => a.t - b.t);
   $('step-review').hidden = false;
   $('step-send').hidden = false;
+  $('step-share').hidden = false;
   refresh();
 });
 $('numbers').addEventListener('change', refresh);
@@ -665,6 +725,7 @@ function refresh() {
   renderMomentum();
   const box = renderBox();
   renderSendList(box);
+  renderShare();
   const s = sessionEmail();
   $('sb-account').textContent = s ? `Connecté au Dashboard : ${s}` : '';
 }
@@ -681,31 +742,7 @@ $('btn-devoirs').addEventListener('click', async () => {
   state.busy = true;
   showError('');
   try {
-    const box = renderBox();
-    const rows = sendable(box);
-    if (!rows.length) throw new Error('aucun joueur avec une fiche (et son numéro) dans les actions.');
-    const token = await accessToken('sb');
-    $('devoirs').innerHTML = '';
-    for (let i = 0; i < rows.length; i++) {
-      const r = rows[i];
-      setProgress('send-progress', i / rows.length, `Devoirs de #${r.numero} ${r.player.full_name}… ${i + 1} / ${rows.length}`);
-      const player = {
-        poste: r.player.poste, categorie_age: r.player.age_category,
-        match: { date: $('game-date').value, adversaire: $('opponent').value },
-        stats: { points: r.pts, tirs_2: `${r.fg2m}/${r.fg2a}`, tirs_3: `${r.fg3m}/${r.fg3a}`, lancers: `${r.ftm}/${r.fta}`, rebonds_off: r.oreb, rebonds_def: r.dreb, passes: r.ast, interceptions: r.stl, contres: r.blk, pertes: r.tov, fautes: r.pf },
-        actions: state.events.filter(e => e.equipe === 'nous' && e.numero === r.numero).map(e => ({ moment: fmtClock(e.t), action: EVENT_TYPES[e.type].label, detail: e.detail })),
-        matchs_precedents: await history(r.player.id, token),
-      };
-      try {
-        const d = await askCoach({ mode: 'devoirs', player }, o => o);
-        state.devoirs.set(r.player.id, d);
-      } catch (err) {
-        state.devoirs.delete(r.player.id);
-        console.warn(err);
-      }
-      renderDevoirs(rows);
-    }
-    setProgress('send-progress', 1, 'Devoirs prêts : relis-les, enlève ceux qui ne conviennent pas, puis envoie.');
+    await prepareDevoirs();
   } catch (err) {
     console.error(err);
     showError('Devoirs impossibles : ' + (err.message || err));
@@ -713,6 +750,34 @@ $('btn-devoirs').addEventListener('click', async () => {
     state.busy = false;
   }
 });
+
+async function prepareDevoirs() {
+  const box = renderBox();
+  const rows = sendable(box);
+  if (!rows.length) throw new Error('aucun joueur avec une fiche (et son numéro) dans les actions.');
+  const token = await accessToken('sb');
+  $('devoirs').innerHTML = '';
+  for (let i = 0; i < rows.length; i++) {
+    const r = rows[i];
+    setProgress('send-progress', i / rows.length, `Devoirs de #${r.numero} ${r.player.full_name}… ${i + 1} / ${rows.length}`);
+    const player = {
+      poste: r.player.poste, categorie_age: r.player.age_category,
+      match: { date: $('game-date').value, adversaire: $('opponent').value },
+      stats: { points: r.pts, tirs_2: `${r.fg2m}/${r.fg2a}`, tirs_3: `${r.fg3m}/${r.fg3a}`, lancers: `${r.ftm}/${r.fta}`, rebonds_off: r.oreb, rebonds_def: r.dreb, passes: r.ast, interceptions: r.stl, contres: r.blk, pertes: r.tov, fautes: r.pf },
+      actions: state.events.filter(e => e.equipe === 'nous' && e.numero === r.numero).map(e => ({ moment: fmtClock(e.t), action: EVENT_TYPES[e.type].label, detail: e.detail })),
+      matchs_precedents: await history(r.player.id, token),
+    };
+    try {
+      const d = await askCoach({ mode: 'devoirs', player }, o => o);
+      state.devoirs.set(r.player.id, d);
+    } catch (err) {
+      state.devoirs.delete(r.player.id);
+      console.warn(err);
+    }
+    renderDevoirs(rows);
+  }
+  setProgress('send-progress', 1, 'Devoirs prêts : relis-les, enlève ceux qui ne conviennent pas, puis envoie.');
+}
 
 function renderDevoirs(rows) {
   $('devoirs').innerHTML = rows.filter(r => state.devoirs.has(r.player.id)).map(r => {
@@ -752,75 +817,7 @@ $('btn-send').addEventListener('click', async () => {
   $('btn-send').disabled = true;
   showError('');
   try {
-    const box = renderBox();
-    const rows = sendable(box);
-    if (!rows.length) throw new Error('aucun joueur avec une fiche (et son numéro) dans les actions.');
-    const token = await accessToken('sb');
-    const date = $('game-date').value || new Date().toISOString().slice(0, 10);
-    const opp = $('opponent').value.trim();
-    const game = state.games.find(g => g.date_match === date) || null;
-    const byNum = new Map(rows.map(r => [r.numero, r.player]));
-    let done = 0;
-    const steps = [];
-
-    if ($('send-stats').checked) {
-      setProgress('send-progress', 0, 'Envoi des stats…');
-      await rest('player_stats', {
-        method: 'POST', token, prefer: 'return=minimal',
-        body: rows.map(r => playerStatsRow(r, { playerId: r.player.id, gameDate: date, gameId: game && game.id, notes: opp ? `vs ${opp} (Art craft)` : 'Art craft' })),
-      });
-      steps.push(`stats de ${rows.length} joueur${rows.length > 1 ? 's' : ''}`);
-    }
-
-    if ($('send-clips').checked) {
-      const ff = await getFFmpeg('send-progress');
-      await mountInput(ff);
-      const clips = state.events.filter(e => e.equipe === 'nous' && CLIP_TYPES.includes(e.type))
-        .map(e => ({ e, players: clipPlayers(e, state.events).map(n => byNum.get(n)).filter(Boolean) }))
-        .filter(c => c.players.length);
-      const folder = `${date}_${(state.team || 'equipe').slice(0, 8)}`;
-      for (let i = 0; i < clips.length; i++) {
-        const { e, players } = clips[i];
-        setProgress('send-progress', i / clips.length, `Clips · ${i + 1} / ${clips.length} (${EVENT_TYPES[e.type].label}, ${fmtClock(e.t)})`);
-        const blob = await cutClip(ff, e);
-        const path = `${folder}/${Math.round(e.t * 10)}-${e.type}.mp4`;
-        await uploadFile('player-clips', path, blob, token);
-        await rest('player_clips', {
-          method: 'POST', token, prefer: 'return=minimal',
-          body: players.map(p => ({
-            site: SITE, player_id: p.id, game_id: game && game.id, game_date: date, adversaire: opp || null,
-            event_type: e.type, titre: EVENT_TYPES[e.type].label + (p.numero !== e.numero && e.numero != null ? ` de #${e.numero} (ta passe)` : ''),
-            t_seconds: e.t, file_path: path,
-          })),
-        });
-        done++;
-      }
-      steps.push(`${done} clip${done > 1 ? 's' : ''}`);
-    }
-
-    if ($('send-devoirs').checked && state.devoirs.size) {
-      let n = 0;
-      for (const r of rows) {
-        const d = state.devoirs.get(r.player.id);
-        if (!d) continue;
-        const [rep] = await rest('player_reports', {
-          method: 'POST', token, prefer: 'return=representation',
-          body: { site: SITE, player_id: r.player.id, game_id: game && game.id, game_date: date, adversaire: opp || null, points_forts: d.points_forts || [], points_faibles: d.points_faibles || [], message: d.message || '' },
-        });
-        if ((d.devoirs || []).length) {
-          await rest('player_assignments', {
-            method: 'POST', token, prefer: 'return=minimal',
-            body: d.devoirs.map(x => ({ site: SITE, player_id: r.player.id, report_id: rep.id, titre: x.titre, categorie: x.categorie, description: x.description, repetitions: x.repetitions, duree_min: x.duree_min })),
-          });
-        }
-        n++;
-      }
-      steps.push(`devoirs de ${n} joueur${n > 1 ? 's' : ''}`);
-    } else if ($('send-devoirs').checked) {
-      steps.push('pas de devoirs (clique d\'abord « Préparer les devoirs »)');
-    }
-    setProgress('send-progress', 1, `Envoyé dans l'Espace Joueurs : ${steps.join(', ')}.`);
-    refresh();
+    await sendToSpace();
   } catch (err) {
     console.error(err);
     showError('Envoi impossible : ' + (err.message || err));
@@ -829,4 +826,87 @@ $('btn-send').addEventListener('click', async () => {
     $('btn-send').disabled = false;
   }
 });
+
+async function sendToSpace() {
+  const box = renderBox();
+  const rows = sendable(box);
+  if (!rows.length) throw new Error('aucun joueur avec une fiche (et son numéro) dans les actions.');
+  const token = await accessToken('sb');
+  const date = $('game-date').value || new Date().toISOString().slice(0, 10);
+  const opp = $('opponent').value.trim();
+  const game = state.games.find(g => g.date_match === date) || null;
+  const byNum = new Map(rows.map(r => [r.numero, r.player]));
+  let done = 0;
+  const steps = [];
+
+  if ($('send-stats').checked) {
+    setProgress('send-progress', 0, 'Envoi des stats…');
+    await rest('player_stats', {
+      method: 'POST', token, prefer: 'return=minimal',
+      body: rows.map(r => playerStatsRow(r, { playerId: r.player.id, gameDate: date, gameId: game && game.id, notes: opp ? `vs ${opp} (Art craft)` : 'Art craft' })),
+    });
+    steps.push(`stats de ${rows.length} joueur${rows.length > 1 ? 's' : ''}`);
+  }
+
+  if ($('send-clips').checked) {
+    const ff = await getFFmpeg('send-progress');
+    await mountInput(ff);
+    const clips = state.events.filter(e => e.equipe === 'nous' && CLIP_TYPES.includes(e.type))
+      .map(e => ({ e, players: clipPlayers(e, state.events).map(n => byNum.get(n)).filter(Boolean) }))
+      .filter(c => c.players.length);
+    const folder = `${date}_${(state.team || 'equipe').slice(0, 8)}`;
+    for (let i = 0; i < clips.length; i++) {
+      const { e, players } = clips[i];
+      setProgress('send-progress', i / clips.length, `Clips · ${i + 1} / ${clips.length} (${EVENT_TYPES[e.type].label}, ${fmtClock(e.t)})`);
+      const blob = await cutClip(ff, e);
+      const path = `${folder}/${Math.round(e.t * 10)}-${e.type}.mp4`;
+      await uploadFile('player-clips', path, blob, token);
+      await rest('player_clips', {
+        method: 'POST', token, prefer: 'return=minimal',
+        body: players.map(p => ({
+          site: SITE, player_id: p.id, game_id: game && game.id, game_date: date, adversaire: opp || null,
+          event_type: e.type, titre: EVENT_TYPES[e.type].label + (p.numero !== e.numero && e.numero != null ? ` de #${e.numero} (ta passe)` : ''),
+          t_seconds: e.t, file_path: path,
+        })),
+      });
+      done++;
+    }
+    steps.push(`${done} clip${done > 1 ? 's' : ''}`);
+  }
+
+  if ($('send-devoirs').checked && state.devoirs.size) {
+    let n = 0;
+    for (const r of rows) {
+      const d = state.devoirs.get(r.player.id);
+      if (!d) continue;
+      const [rep] = await rest('player_reports', {
+        method: 'POST', token, prefer: 'return=representation',
+        body: { site: SITE, player_id: r.player.id, game_id: game && game.id, game_date: date, adversaire: opp || null, points_forts: d.points_forts || [], points_faibles: d.points_faibles || [], message: d.message || '' },
+      });
+      if ((d.devoirs || []).length) {
+        await rest('player_assignments', {
+          method: 'POST', token, prefer: 'return=minimal',
+          body: d.devoirs.map(x => ({ site: SITE, player_id: r.player.id, report_id: rep.id, titre: x.titre, categorie: x.categorie, description: x.description, repetitions: x.repetitions, duree_min: x.duree_min })),
+        });
+      }
+      n++;
+    }
+    steps.push(`devoirs de ${n} joueur${n > 1 ? 's' : ''}`);
+  } else if ($('send-devoirs').checked) {
+    steps.push('pas de devoirs (clique d\'abord « Préparer les devoirs »)');
+  }
+  setProgress('send-progress', 1, `Envoyé dans l'Espace Joueurs : ${steps.join(', ')}.`);
+  refresh();
+  return `Espace Joueurs : ${steps.join(', ')}`;
+}
 $('sb-account').addEventListener('dblclick', () => { logout(); refresh(); });
+
+initShare({
+  state, mountInput, showError,
+  meta: () => ({
+    team: $('team').value ? $('team').selectedOptions[0].text.split(' · ')[0] : 'Gravity',
+    opponent: $('opponent').value.trim(),
+    date: $('game-date').value,
+    roster: state.roster.length ? state.roster : numbers().map(n => ({ numero: n })),
+  }),
+});

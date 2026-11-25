@@ -12,6 +12,13 @@
     # page) — FormSubmit refuse les requêtes sans en-tête Referer.
     Referrer-Policy = "strict-origin"
 
+# Page d'un match (créée par Art craft) : lien partagé aux parents, jamais indexée.
+[[headers]]
+  for = "/match.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Referrer-Policy = "strict-origin"
+
 # /sw.js doit toujours être revérifié par le navigateur (voir sw.js).
 [[headers]]
   for = "/sw.js"
