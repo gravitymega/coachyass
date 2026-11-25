@@ -112,3 +112,13 @@ export async function fillTeams(select) {
   (teams || []).forEach(t => select.appendChild(new Option([t.nom_equipe, t.categorie, t.genre].filter(Boolean).join(' · '), t.id)));
   return teams || [];
 }
+
+// Suppression de fichiers du stockage (chemins complets dans le bucket).
+export async function removeFiles(bucket, paths, token) {
+  const res = await fetch(`${SB_URL}/storage/v1/object/${bucket}`, {
+    method: 'DELETE',
+    headers: { apikey: SB_KEY, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prefixes: paths }),
+  });
+  if (!res.ok) throw new Error(await errorText(res));
+}

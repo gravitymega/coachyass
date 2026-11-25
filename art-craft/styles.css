@@ -349,3 +349,14 @@ fieldset .inline { flex-wrap: wrap; }
 .report .verdict { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap; }
 .report .verdict.bon { background: #1fa463; }
 .report .verdict.mauvais { background: #e0393e; }
+
+/* ---------- Stats auto : highlights par joueur ---------- */
+#reel-list li { flex-wrap: wrap; }
+#reel-list .check { flex: 1 1 200px; display: flex; gap: 8px; align-items: center; min-width: 0; }
+#reel-list .name { white-space: normal; }
+#reel-list a.tool { text-decoration: none; white-space: nowrap; }
+.reel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin: 12px 0; }
+.reel-fig { margin: 0; }
+.reel-fig video { width: 100%; aspect-ratio: 9 / 16; background: #000; border-radius: 10px; display: block; }
+.reel-fig figcaption { font-size: 13px; color: var(--muted); margin-top: 4px; text-align: center; }
+#page-link { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

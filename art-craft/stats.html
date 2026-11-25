@@ -15,7 +15,7 @@
   <img src="assets/logo.png" alt="" class="top-logo">
   <div>
     <h1>Art craft <span>Stats auto</span></h1>
-    <p>Dépose la vidéo d'un match : les joueurs sont détectés dans ton navigateur, l'IA lit les numéros et note les actions (paniers, rebonds, passes, pertes…). Tu vérifies, puis chaque joueur reçoit ses stats, ses clips et ses devoirs dans son Espace Joueurs.</p>
+    <p>Dépose la vidéo d'un match : les joueurs sont détectés dans ton navigateur, l'IA lit les numéros et note les actions (paniers, rebonds, passes, pertes…). Tu vérifies, puis chaque joueur reçoit ses stats, ses clips et ses devoirs dans son Espace Joueurs, son highlight vertical, et les parents reçoivent la page du match par un lien.</p>
   </div>
 </header>
 <nav class="tabs">
@@ -87,8 +87,17 @@
       <label>Précisions pour l'IA (facultatif)
         <textarea id="context" rows="2" maxlength="1500" placeholder="ex. On attaque vers la droite en 1re demie. Le #23 porte un bandeau."></textarea>
       </label>
+      <fieldset>
+        <legend>⚡ Tout en un clic (facultatif)</legend>
+        <p class="muted">Une fois les actions trouvées, l'outil enchaîne tout seul ce qui est coché. Tu pourras toujours corriger les actions après, puis renvoyer ou republier.</p>
+        <label class="check"><input type="checkbox" id="auto-send"> Envoyer stats et clips dans l'Espace Joueurs</label>
+        <label class="check"><input type="checkbox" id="auto-devoirs"> Préparer et envoyer les devoirs (IA)</label>
+        <label class="check"><input type="checkbox" id="auto-reels" checked> Monter le highlight de chaque joueur</label>
+        <label class="check"><input type="checkbox" id="auto-page" checked> Publier la page du match à partager</label>
+      </fieldset>
       <div class="row">
-        <button class="btn big" id="btn-run" type="button">Trouver les actions</button>
+        <button class="btn big" id="btn-all" type="button">⚡ Tout faire</button>
+        <button class="btn" id="btn-run" type="button">Trouver les actions seulement</button>
         <button class="btn ghost" id="btn-import" type="button">Importer les stats du Mode direct (.json)</button>
         <input type="file" id="import-file" accept=".json,application/json" hidden>
       </div>
@@ -171,6 +180,53 @@
     </div>
     <div id="devoirs" class="fields"></div>
     <div class="progress" id="send-progress" hidden><div></div><span></span></div>
+  </section>
+
+  <section class="card" id="step-share" hidden>
+    <h2><b>4</b> Highlights par joueur et page du match</h2>
+    <p class="muted">Un montage vertical (9:16) par joueur avec ses meilleures actions (paniers, contres, interceptions, passes, rebonds), son nom et sa ligne de stats, prêt pour Instagram ou un recruteur. Puis une page du match à partager aux parents par un simple lien, sans compte : score, feuille de stats, highlights et clips des actions.</p>
+    <ul class="bin" id="reel-list"></ul>
+    <div class="row">
+      <label class="inline">Qualité <select id="reel-quality"><option value="720" selected>720p (léger)</option><option value="1080">1080p</option></select></label>
+      <button class="btn" id="btn-reels" type="button">Monter les highlights</button>
+      <span class="muted" id="reel-info"></span>
+    </div>
+    <div class="reel-grid" id="reel-previews" hidden></div>
+    <h3 class="sub">Page du match à partager</h3>
+    <div class="fields">
+      <label>Noms sur la page publique
+        <select id="page-privacy">
+          <option value="first" selected>Prénom seulement (conseillé : joueurs mineurs)</option>
+          <option value="full">Prénom et nom</option>
+          <option value="number">Numéros seulement</option>
+        </select>
+      </label>
+      <label class="check"><input type="checkbox" id="page-reels" checked> Highlights des joueurs cochés ci-dessus</label>
+      <label class="check"><input type="checkbox" id="page-clips" checked> Clips des actions de notre équipe (paniers, passes, contres, interceptions, rebonds)</label>
+    </div>
+    <p class="muted">Toute personne qui a le lien peut voir la page (elle n'est pas indexée par Google et n'est liée nulle part). Stockage gratuit Supabase (1 Go en tout) : supprime les vieilles pages quand tu n'en as plus besoin.</p>
+    <form class="pub-login" id="share-login" hidden>
+      <p class="muted">Connexion avec ton compte admin du Dashboard Gravity :</p>
+      <div class="row">
+        <input type="email" id="share-email" placeholder="Courriel" autocomplete="username" required>
+        <input type="password" id="share-password" placeholder="Mot de passe" autocomplete="current-password" required>
+        <button class="btn" type="submit">Se connecter</button>
+        <button class="btn ghost" type="button" id="share-login-cancel">Annuler</button>
+      </div>
+      <p class="error-inline" id="share-login-error"></p>
+    </form>
+    <div class="row">
+      <button class="btn big" id="btn-publish" type="button">Publier la page du match</button>
+    </div>
+    <div class="progress" id="share-progress" hidden><div></div><span></span></div>
+    <div class="row" id="page-result" hidden>
+      <a id="page-link" class="btn ghost" target="_blank" rel="noopener"></a>
+      <button class="btn" id="btn-copy-link" type="button">Copier le lien</button>
+    </div>
+    <div id="pages-wrap" hidden>
+      <h3 class="sub">Pages publiées depuis cet appareil</h3>
+      <ul class="bin" id="pages-list"></ul>
+    </div>
   </section>
 
   <p class="error" id="error" role="alert" hidden></p>
