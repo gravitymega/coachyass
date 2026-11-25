@@ -9,7 +9,7 @@
 //
 // GET /.netlify/functions/youtube → { channel: { id, title, url }, videos: [{ id, title, published }] }
 
-const DEFAULT_CHANNEL = ''; // ex. '@gravitybasketballmtl' ou 'UCxxxxxxxxxxxxxxxxxxxxxx'
+const DEFAULT_CHANNEL = '@gravitybasketball_mtl'; // chaîne Gravity Basketball (remplaçable par la variable YOUTUBE_CHANNEL)
 const MAX_VIDEOS = 12;
 const CACHE_S = 1800; // 30 min : les nouvelles vidéos apparaissent vite, sans surcharger YouTube
 
