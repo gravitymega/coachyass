@@ -24,3 +24,22 @@ Compromis assumé (choisi explicitement par l'utilisateur après lui avoir prés
 **14 septembre 2026 : copie optionnelle des inscriptions dans un Google Sheet du Drive de Karim.** En plus de Netlify Forms (qui reste la source de vérité + la notification courriel), le formulaire peut aussi envoyer chaque inscription dans un Google Sheet, via un petit script Google Apps Script (`talent-perle-site/google-apps-script-inscriptions.gs`, à coller une fois par Karim dans un Sheet de son Drive puis déployer comme application web). L'URL du déploiement va dans `TP_SHEET_URL` en haut du deuxième `<script>` de `talent-perle-site/index.html` (vide par défaut = fonctionnalité désactivée, aucun impact si non configurée). Choisi plutôt que Zapier pour rester sans compte tiers, cohérent avec le choix Netlify Forms du 12 septembre.
 
 **Les inscriptions elles-mêmes restent sans dashboard** : contrairement aux autres sites, il n'y a pas de backend (Notion/Supabase) derrière les *inscriptions*. Elles sont stockées dans Netlify Forms (onglet Forms du site `talent-perle`) et, si `TP_SHEET_URL` est configuré, dupliquées dans un Google Sheet du Drive de Karim. Ce choix (pas un manque) reste inchangé — voir la section "Dashboard Talent Perlé" ci-dessous pour ce qui, en revanche, est maintenant géré par un vrai backend (activités, photos, événements, partenaires — pas les inscriptions).
+
+## Refonte du site Gravity Basketball (25 novembre 2026)
+
+Demande : « fais le tour de mes sites Gravity Basketball, modernise le design, rajoute des vidéos et des photos, bien pro et clair, avec une bonne taille de police ». Le travail porte sur `gravity-basketball-mtl/` (gravity.osmm-mtl.site).
+- **Style** : une couche « REFONTE NOVEMBRE 2026 » est ajoutée à la fin de `styles.css`. Elle reprend les mêmes classes et les mêmes ids, donc `script.js`, les formulaires, l'Espace Joueurs et la boutique ne changent pas. Le texte passe à 17 px sur téléphone et 18 px sur ordinateur (tout ce qui est en rem suit). Les titres sont plus grands (`clamp`), la colonne fait 1160 px et les lignes de texte au plus 68 caractères. Boutons en pilule, cartes arrondies. Les sections apparaissent en douceur, sauf si l'appareil demande moins d'animations.
+- **Accueil** (`index.html`) :
+  - Grande bannière plein écran avec une photo ou une vidéo derrière le titre. Sans média, elle montre un terrain dessiné en SVG.
+  - Une bande de 4 chiffres clés.
+  - « Qui sommes-nous » en deux colonnes, avec une photo.
+  - Les programmes en grille de cartes, avec le titre dans la carte. Le logo répété 5 fois est retiré.
+  - Nouvelle section « La ligue en photos » (grille, grande photo en tête, agrandissement au clic avec flèches et Échap).
+  - Pied de page en 4 colonnes.
+  - Menu raccourci (7 liens + bouton « S'inscrire »). Sous 1360 px de large, il passe dans un panneau avec un bouton ☰.
+- **Médias** (`site-ui.js`, lecture publique Supabase, site `gravity-basketball-mtl`) :
+  - Photos : Dashboard → **Galerie photos**. La 1re photo va dans la bannière, la 2e dans « Qui sommes-nous », et la galerie en montre 1, 5, 9 ou 13 (rangées pleines).
+  - Vidéo de la bannière : la 1re vidéo **téléversée** (champ `video_url`) de Dashboard → Galerie vidéo. Elle joue en boucle, sans le son. Pas de vidéo si l'appareil demande moins d'animations ou économise les données. Si la vidéo ne démarre pas, la bannière montre la photo à la place.
+  - Les vidéos Instagram restent dans la section « Les matchs en vidéo ».
+- `boutique.html` et `ligue-3x3-dimanche.html` profitent du nouveau style (taille du texte, boutons, couleurs), sans changement de contenu.
+- **Testé** dans Chromium à 390, 1180, 1280, 1360, 1366 et 1440 px : pas de défilement horizontal, menu mobile qui s'ouvre et se ferme, 6 photos et une vidéo simulées (bannière, galerie, agrandissement, photo de « Qui sommes-nous »), vidéo remplacée par la photo quand l'appareil demande moins d'animations. **Le site n'a pas encore de vraies photos** : il faut en ajouter dans le Dashboard pour que la bannière et la galerie se remplissent.

@@ -111,35 +111,74 @@
       <img src="assets/logo.png" alt="Gravity Basketball" class="brand-logo" width="512" height="396">
       <span class="brand-name">Gravity Basketball</span>
     </a>
-    <nav class="nav">
-      <a href="#top">Accueil</a>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav" id="site-nav">
       <a href="#apropos">Qui sommes-nous</a>
       <a href="#programmes">Programmes</a>
-      <a href="#autres-activites">Autres activités</a>
       <a href="https://gravity-championnat.netlify.app" target="_blank" rel="noopener">Championnat</a>
       <a href="#videos">Vidéos</a>
-      <a href="#inscription">Inscription</a>
       <a href="#espace-joueurs">Espace Joueurs</a>
       <a href="boutique.html">Boutique</a>
-      <a href="#avis">Avis</a>
       <a href="#contact">Contact</a>
+      <a href="#inscription" class="nav-cta">S'inscrire</a>
     </nav>
   </div>
 </header>
 
 <main id="top">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container hero-inner">
-      <img src="assets/logo.png" alt="Logo Gravity Basketball" class="hero-logo" width="512" height="396" fetchpriority="high">
-      <p class="hero-kicker">Ligue basketball 3v3 · Montréal</p>
-      <h1>Ligue de basketball 3v3 à Montréal, compétitive et bien encadrée</h1>
-      <p class="hero-sub">Gravity Basketball développe des programmes de basketball 3v3 pour les jeunes du secteur Dorval-Lachine, à Montréal. Cet hiver : la <strong>Ligue 3x3 du dimanche</strong> pour les 14-15 ans, de 12h à 14h au Collège Sainte-Anne (Dorval), du 10 janvier au 21 mars 2027. Lève-tôt 214 $ jusqu'au 6 décembre.</p>
-      <div class="hero-cta">
-        <a href="#inscription" class="btn btn-primary">S'inscrire à la ligue</a>
-        <a href="#programmes" class="btn btn-ghost">Voir le programme</a>
+  <!-- HERO : photo ou vidéo de la galerie (Dashboard), sinon le terrain dessiné -->
+  <section class="hero hero-v2">
+    <div class="hero-media" id="hero-media" aria-hidden="true">
+      <svg class="hero-court" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <defs>
+          <linearGradient id="hc-floor" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#2a160f"/><stop offset=".55" stop-color="#160d12"/><stop offset="1" stop-color="#0d0b12"/>
+          </linearGradient>
+          <radialGradient id="hc-light" cx=".72" cy=".1" r=".75">
+            <stop offset="0" stop-color="#ff8a4c" stop-opacity=".45"/><stop offset="1" stop-color="#ff8a4c" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1600" height="900" fill="url(#hc-floor)"/>
+        <g stroke="rgba(255,255,255,.035)" stroke-width="2">
+          <path d="M0 120H1600M0 240H1600M0 360H1600M0 480H1600M0 600H1600M0 720H1600M0 840H1600"/>
+        </g>
+        <g fill="none" stroke="rgba(255,255,255,.16)" stroke-width="4">
+          <path d="M1000 900V560a300 300 0 0 1 600 0v340"/>
+          <rect x="1180" y="560" width="240" height="340"/>
+          <circle cx="1300" cy="560" r="120"/>
+          <path d="M760 900a540 540 0 0 1 1080 0"/>
+        </g>
+        <g fill="none" stroke="#e8672e" stroke-width="5" opacity=".9">
+          <path d="M1300 860v-60"/><circle cx="1300" cy="780" r="22"/>
+        </g>
+        <rect width="1600" height="900" fill="url(#hc-light)"/>
+      </svg>
+    </div>
+    <div class="hero-shade"></div>
+    <div class="container-wide hero-inner">
+      <div class="hero-copy">
+        <p class="hero-kicker"><span class="dot"></span> Inscriptions ouvertes · Hiver 2027</p>
+        <h1>Ligue de basketball 3x3 à Montréal</h1>
+        <p class="hero-sub">Compétitive, arbitrée et bien encadrée. La <strong>Ligue 3×3 du dimanche</strong> pour les 14-15 ans : de 12h à 14h au Collège Sainte-Anne (Dorval), du 10 janvier au 21 mars 2027.</p>
+        <div class="hero-cta">
+          <a href="#inscription" class="btn btn-primary btn-lg">S'inscrire à la ligue</a>
+          <a href="#programmes" class="btn btn-ghost btn-lg">Voir les programmes</a>
+        </div>
+        <p class="hero-note">Lève-tôt <strong>214 $</strong> jusqu'au 6 décembre · 8 équipes maximum</p>
       </div>
+    </div>
+  </section>
+
+  <!-- CHIFFRES CLÉS -->
+  <section class="facts" aria-label="La ligue en bref">
+    <div class="container-wide facts-grid">
+      <div class="fact"><strong>3×3</strong><span>Règles FIBA, matchs arbitrés</span></div>
+      <div class="fact"><strong>11</strong><span>dimanches de jeu, finale et trophées</span></div>
+      <div class="fact"><strong>100 %</strong><span>de temps de jeu, personne sur le banc</span></div>
+      <div class="fact"><strong>Dorval</strong><span>Collège Sainte-Anne, gymnase A</span></div>
     </div>
   </section>
 
@@ -148,12 +187,21 @@
     <div class="container">
       <p class="section-kicker">Qui sommes-nous</p>
       <h2 class="section-title">Le basketball comme point d'ancrage</h2>
+      <div class="about-layout">
+      <div class="about-text">
       <p class="section-lead">
         Gravity Basketball est né d'un constat simple : dans le secteur Dorval-Lachine, les jeunes qui voulaient jouer un basketball
         sérieux — pas juste un gymnase ouvert le vendredi soir — n'avaient pas vraiment d'endroit où aller. On a construit ça :
         une ligue 3v3 arbitrée, avec de vraies règles FIBA, un vrai calendrier, et un niveau d'exigence qui pousse chaque
         joueur à progresser.
       </p>
+
+      </div>
+      <figure class="about-photo" id="about-photo">
+        <img src="assets/logo.png" alt="Gravity Basketball" width="512" height="396" loading="lazy" class="about-logo">
+        <figcaption>Secteur Dorval-Lachine · Montréal</figcaption>
+      </figure>
+      </div>
 
       <div class="apropos-grid">
         <div class="apropos-card">
@@ -191,11 +239,9 @@
       <h2 class="section-title">Nos programmes Gravity Basketball</h2>
       <p class="section-lead">Quatre programmes sous la bannière Gravity Basketball, secteur Dorval-Lachine à Montréal — d'autres suivront.</p>
 
-      <h3 class="programme-name" id="programme-name-ligue-3v3">Ligue 3x3 du dimanche (14-15 ans) · Hiver 2027</h3>
+      <div class="prog-grid">
       <div class="programme-card">
-        <div class="programme-badge">
-          <img src="assets/logo.png" alt="Gravity Basketball" width="512" height="396" loading="lazy">
-        </div>
+        <h3 class="programme-name" id="programme-name-ligue-3v3">Ligue 3x3 du dimanche (14-15 ans) · Hiver 2027</h3>
         <div class="programme-details">
           <ul class="programme-list" id="programme-list-ligue-3v3">
             <li><span class="li-label">Catégorie d'âge</span><span class="li-value">14-15 ans</span></li>
@@ -213,11 +259,8 @@
         </div>
       </div>
 
-      <h3 class="programme-name" id="programme-name-ligue-maison">Ligue Maison</h3>
       <div class="programme-card">
-        <div class="programme-badge">
-          <img src="assets/logo.png" alt="Gravity Basketball" width="512" height="396" loading="lazy">
-        </div>
+        <h3 class="programme-name" id="programme-name-ligue-maison">Ligue Maison</h3>
         <div class="programme-details">
           <p class="section-lead" style="margin-bottom:16px;" id="programme-desc-ligue-maison">Un programme de 10 semaines pensé pour le développement et le perfectionnement des jeunes joueurs de 9 à 10 ans, en participation mixte, dans une ambiance encourageante et ludique.</p>
           <ul class="programme-list" id="programme-list-ligue-maison">
@@ -264,11 +307,8 @@
         </div>
       </div>
 
-      <h3 class="programme-name" id="programme-name-gravity-prep">Gravity Prep</h3>
       <div class="programme-card">
-        <div class="programme-badge">
-          <img src="assets/logo.png" alt="Gravity Basketball" width="512" height="396" loading="lazy">
-        </div>
+        <h3 class="programme-name" id="programme-name-gravity-prep">Gravity Prep</h3>
         <div class="programme-details">
           <p class="section-lead" style="margin-bottom:16px;" id="programme-desc-gravity-prep">Gravity Prep est notre programme avancé pour joueurs sérieux qui visent la prochaine étape — cégep, université ou circuits compétitifs. Encadrement individualisé (évaluation, technique, physique, vidéo) combiné à une vraie saison de matchs dans un cadre exigeant et formateur, où respect, engagement, intégrité, développement et professionnalisme guident chaque entraînement.</p>
           <ul class="programme-list" id="programme-list-gravity-prep">
@@ -319,11 +359,8 @@
         </div>
       </div>
 
-      <h3 class="programme-name" id="programme-name-u15-masculin">Gravity U15 Masculin</h3>
       <div class="programme-card">
-        <div class="programme-badge">
-          <img src="assets/logo.png" alt="Gravity Basketball" width="512" height="396" loading="lazy">
-        </div>
+        <h3 class="programme-name" id="programme-name-u15-masculin">Gravity U15 Masculin</h3>
         <div class="programme-details">
           <p class="section-lead" style="margin-bottom:16px;" id="programme-desc-u15-masculin">Programme de basketball pour les jeunes garçons de catégorie U15. Détails complets à venir.</p>
           <ul class="programme-list" id="programme-list-u15-masculin">
@@ -351,6 +388,7 @@
           <a href="#inscription" class="btn btn-primary btn-block" data-programme="Gravity U15 Masculin">Réserver ma place</a>
         </div>
       </div>
+      </div>
     </div>
   </section>
 
@@ -361,13 +399,12 @@
       <h2 class="section-title">D'autres façons de jouer</h2>
       <p class="section-lead">En dehors de la Ligue 3v3 et de la Ligue Maison, voici d'autres activités basketball offertes par notre équipe.</p>
 
-      <h3 class="programme-name">Gravity Coaching</h3>
+      <div class="prog-grid">
       <div class="programme-card">
-        <div class="programme-badge">
-          <img src="assets/logo.png" alt="Gravity Basketball" width="512" height="396" loading="lazy">
-        </div>
+        <h3 class="programme-name">Gravity Coaching</h3>
         <p class="section-lead" style="text-align:center; margin-bottom:16px;">Entraînement individuel et en petit groupe, sur mesure, pour progresser à ton rythme.</p>
         <a href="https://gravity-coaching.netlify.app" target="_blank" rel="noopener" class="btn btn-primary btn-block">Voir le programme</a>
+      </div>
       </div>
     </div>
   </section>
@@ -392,6 +429,22 @@
       <a href="https://www.instagram.com/gravitybasketball_mtl" target="_blank" rel="noopener" class="btn btn-ghost btn-block" style="margin-top:16px;">Suivre sur Instagram</a>
     </div>
   </section>
+
+  <!-- GALERIE PHOTOS (Dashboard → Galerie photos, site Gravity Basketball MTL) -->
+  <section id="galerie" class="section" hidden>
+    <div class="container-wide">
+      <p class="section-kicker">En images</p>
+      <h2 class="section-title">La ligue en photos</h2>
+      <div class="gallery-grid" id="gallery-grid"></div>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo agrandie">
+    <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Fermer">×</button>
+    <button type="button" class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Photo précédente">‹</button>
+    <figure><img id="lightbox-img" alt=""><figcaption id="lightbox-cap"></figcaption></figure>
+    <button type="button" class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Photo suivante">›</button>
+  </div>
 
   <!-- AMÈNE UN AMI -->
   <section id="parrainage" class="section">
@@ -789,14 +842,33 @@
 
 </main>
 
-<footer class="site-footer">
-  <div class="container">
-    <p><strong>Gravity Basketball</strong> · Basketball 3v3 · Montréal</p>
-    <p class="footer-muted">Programmes actuels : Ligue 3x3 du dimanche (14-15 ans) et Ligue Maison (9-10 ans) — secteur Dorval-Lachine</p>
-    <p class="footer-muted">📸 <a href="https://www.instagram.com/GravityBasketballMTL" target="_blank" rel="noopener">@GravityBasketballMTL</a></p>
-    <p class="footer-muted">🛍️ <a href="boutique.html">Boutique Gravity</a> — hoodies, t-shirts, tuques</p>
-    <p class="footer-muted"><a href="https://gravity-championnat.netlify.app/partenariat" target="_blank" rel="noopener">Devenir partenaire</a></p>
+<footer class="site-footer site-footer-v2">
+  <div class="container-wide footer-grid">
+    <div class="footer-brand">
+      <img src="assets/logo.png" alt="Gravity Basketball" width="512" height="396" loading="lazy">
+      <p><strong>Gravity Basketball</strong><br>Basketball 3x3 et programmes jeunesse · secteur Dorval-Lachine, Montréal</p>
+    </div>
+    <div>
+      <h3>Programmes</h3>
+      <a href="ligue-3x3-dimanche.html">Ligue 3x3 du dimanche (14-15 ans)</a>
+      <a href="#programmes">Ligue Maison (9-10 ans)</a>
+      <a href="#programmes">Gravity Prep (18-21 ans)</a>
+      <a href="https://gravity-coaching.netlify.app" target="_blank" rel="noopener">Gravity Coaching</a>
+    </div>
+    <div>
+      <h3>Le club</h3>
+      <a href="#inscription">Inscription</a>
+      <a href="#espace-joueurs">Espace Joueurs</a>
+      <a href="boutique.html">Boutique</a>
+      <a href="https://gravity-championnat.netlify.app/partenariat" target="_blank" rel="noopener">Devenir partenaire</a>
+    </div>
+    <div>
+      <h3>Nous joindre</h3>
+      <a href="tel:+14383412051">438-341-2051</a>
+      <a href="https://www.instagram.com/GravityBasketballMTL" target="_blank" rel="noopener">Instagram @GravityBasketballMTL</a>
+    </div>
   </div>
+  <p class="footer-copy">© <span id="footer-year">2026</span> Gravity Basketball · Montréal</p>
 </footer>
 
 <!-- BANDEAU PRODUIT VEDETTE (affilié Amazon) -->
@@ -812,6 +884,7 @@
 </div>
 
 <script src="script.js" defer></script>
+<script src="site-ui.js" defer></script>
 <script src="https://gravity-shared-chat.netlify.app/chat-widget.js" data-site="gravity-basketball" data-site-name="Gravity Basketball" defer></script>
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister();});}).catch(function(){});}</script>
 
